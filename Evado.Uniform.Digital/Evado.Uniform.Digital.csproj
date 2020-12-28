@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{35125365-B9A7-4A88-A50E-5D8B0C8CE9B9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Evado.UniForm.Clinical</RootNamespace>
+    <AssemblyName>Evado.UniForm.Clinical</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSScriptLibrary, Version=3.3.0.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Exterial_Packages\CSScriptLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MarkdownSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Exterial_Packages\MarkdownSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="newtonsoft.json">
+      <HintPath>..\exterial_packages\newtonsoft.json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EuDemoUserRegistration.ads.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuDemoUserRegistration.cs" />
+    <Compile Include="EuCustomers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuAdapter.Common.cs" />
+    <Compile Include="EuUserProfiles.user.cs" />
+    <Compile Include="EuAdapterClasses.cs" />
+    <Compile Include="EuUserProfiles.ads.cs" />
+    <Compile Include="EuStaticContentTemplates.cs" />
+    <Compile Include="EuReportTemplates.cs" />
+    <Compile Include="EuAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuClassAdapterBase.cs" />
+    <Compile Include="EvEmail.cs" />
+    <Compile Include="EuReports.cs" />
+    <Compile Include="EuApplicationEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EdPlatformSettings.cs" />
+    <Compile Include="EuAdapter.cs" />
+    <Compile Include="AssemblyAttributes.cs" />
+    <Compile Include="EuBinaryFiles.cs" />
+    <Compile Include="EuConversions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuAlerts.cs" />
+    <Compile Include="EuAdapter.HomePage.cs" />
+    <Compile Include="EuActivities.cs" />
+    <Compile Include="EuMenusUtility.cs" />
+    <Compile Include="EuUserProfiles.cs" />
+    <Compile Include="EvServerPageScript.cs" />
+    <Compile Include="EuMilestones.cs" />
+    <Compile Include="EuOrganisations.cs" />
+    <Compile Include="EuSchedules.cs" />
+    <Compile Include="EuFormFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuForms.cs" />
+    <Compile Include="EuApplicationObjects.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuMenus.cs" />
+    <Compile Include="EuFormGenerator.cs" />
+    <Compile Include="EuSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuFormRecords.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EdApplicationSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evado.ActiveDirectoryServices\Evado.ActiveDirectoryServices.csproj">
+      <Project>{817E3F80-25D6-41BF-BD18-6F27967C7CE6}</Project>
+      <Name>Evado.ActiveDirectoryServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.bll\evado.bll.csproj">
+      <Project>{AE805124-3D88-4AE5-A1E7-5A5A595A298E}</Project>
+      <Name>evado.bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.dal\evado.dal.csproj">
+      <Project>{E474874D-B81D-4A38-B3AB-88EEA768649D}</Project>
+      <Name>evado.dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model.Digital\Evado.Model.Digital.csproj">
+      <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
+      <Name>Evado.Model.Digital</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model.integration\evado.model.integration.csproj">
+      <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
+      <Name>evado.model.integration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Evado.Uniform\evado.model.uniform\evado.model.uniform.csproj">
+      <Project>{eb6a905c-2e28-4a70-b791-dc807165bcd7}</Project>
+      <Name>evado.model.uniform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

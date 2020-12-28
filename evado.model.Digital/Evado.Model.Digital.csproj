@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <DebugType>
+    </DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C85C0FC2-76E7-496C-AEA1-1F97FA573C93}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Evado.Model.Digital</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Evado.Model.Digital</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>false</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Evado.Model.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="newtonsoft.json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\exterial_packages\newtonsoft.json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EvCustomerLabels.Designer.cs">
+      <DependentUpon>EvCustomerLabels.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EvCustomer.cs" />
+    <Compile Include="evdataitem.cs" />
+    <Compile Include="EvMediaMetadata.cs" />
+    <Compile Include="EvFormObjectStates.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EvFormRecordTypes.cs" />
+    <Compile Include="EvStaticContentTemplates.cs" />
+    <Compile Include="EvReportSource.cs" />
+    <Compile Include="EvModuleCodes.cs" />
+    <Compile Include="EvExportParameters.cs" />
+    <Compile Include="evapplicationpage.cs" />
+    <Compile Include="EvPageIds.cs" />
+    <Compile Include="evactivity.cs" />
+    <Compile Include="EvActivityForm.cs" />
+    <Compile Include="evalert.cs" />
+    <Compile Include="EvBinaryFileMetadata.cs" />
+    <Compile Include="evchart.cs" />
+    <Compile Include="evchartqueryitem.cs" />
+    <Compile Include="evchartseries.cs" />
+    <Compile Include="evform.cs" />
+    <Compile Include="evformcontent.cs" />
+    <Compile Include="evformdesign.cs" />
+    <Compile Include="evformfield.cs" />
+    <Compile Include="evformfielddesign.cs" />
+    <Compile Include="evformfieldselectionlist.cs" />
+    <Compile Include="evformfieldtable.cs" />
+    <Compile Include="evformfieldtablecolumnheader.cs" />
+    <Compile Include="evformfieldtablerow.cs" />
+    <Compile Include="evformfieldvalidationnotvalid.cs" />
+    <Compile Include="evformfieldvalidationrules.cs" />
+    <Compile Include="evformrecordcomment.cs" />
+    <Compile Include="evformrecordsummary.cs" />
+    <Compile Include="EvFormSection.cs" />
+    <Compile Include="evformstaticfield.cs" />
+    <Compile Include="evidentifiers.cs" />
+    <Compile Include="evmenuitem.cs" />
+    <Compile Include="evmilestone.cs" />
+    <Compile Include="evmilestonedata.cs" />
+    <Compile Include="evmilestonevalidationrules.cs" />
+    <Compile Include="EvcStatics.cs" />
+    <Compile Include="EvClassParameters.cs" />
+    <Compile Include="evorganisation.cs" />
+    <Compile Include="evqueryparameters.cs" />
+    <Compile Include="evreport.cs" />
+    <Compile Include="evreportcolumn.cs" />
+    <Compile Include="evreportcsv.cs" />
+    <Compile Include="evreportgenerator.cs" />
+    <Compile Include="evreporthtml.cs" />
+    <Compile Include="evreportquery.cs" />
+    <Compile Include="evreportrow.cs" />
+    <Compile Include="evreportsection.cs" />
+    <Compile Include="EvRoleList.cs" />
+    <Compile Include="evschedule.cs" />
+    <Compile Include="EdPlatform.cs" />
+    <Compile Include="EvAncillaryRecord.cs" />
+    <Compile Include="EdApplication.cs" />
+    <Compile Include="evuserprofile.cs" />
+    <Compile Include="evusersignoff.cs" />
+    <Compile Include="Properties\assemblyinfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EvCustomerLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EvCustomerLabels.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\evado.uniform\evado.model\evado.model.csproj">
+      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

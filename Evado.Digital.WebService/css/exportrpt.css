@@ -1,0 +1,695 @@
+    Body
+    {
+      border: none;
+      padding: 0px;
+      margin: 0px;
+      color: #000000;
+      font-family: Arial;
+      background-color: #ebebeb;
+      font-family : Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+    }
+    fieldset
+    {
+      height: auto;
+      margin: 0pt;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0pt;
+      vertical-align: top;
+      text-align: center;
+      /* font-size: 10pt; */
+      background-color: #fff;
+    }
+    legend
+    {
+      color: #b72521;
+      font-weight: bold;
+    }
+    #PageSet 
+    {
+      height: auto;
+      padding: 0pt;
+      vertical-align: top;
+      text-align: center;
+      /* font-size: 10pt; */
+      width: 1000px;
+      border-style: none;
+    }
+    #Blank /* fieldset for the page*/
+    {
+      height: auto;
+      margin: 0pt;
+      padding: 0pt;
+      border: None;
+      vertical-align: top;
+      text-align: center;
+      /* font-size: 10pt; */
+      width: 100%;
+    }
+    fieldset .Spacer
+    {
+      position: relative;
+      float: right;
+      height: 740px;
+      width: 0px;
+      margin-right: -20pt;
+      padding: 0pt;
+    }
+    fieldset .Spacer650
+    {
+      position: relative;
+      float: right;
+      height: 685px;
+      width: 0px;
+      margin-right: -20pt;
+      padding: 0pt;
+    }
+    fieldset .Field_50
+    {
+      height: auto;
+      width: 48%;
+      margin: 0pt;
+      margin-left: 5pt;
+      margin-right: 5pt;
+      padding: 0pt;
+      border-top: #8e5ba6 1px solid;
+      border-right: #8e5ba6 1px solid;
+      border-left: #8e5ba6 1px solid;
+      border-bottom: #8e5ba6 1px solid;
+      vertical-align: top;
+      text-align: left;
+      /* font-size: 10pt; */
+      color: #b72521;
+      /* font-size: 10pt; */
+    }
+    .Fields .HeightSpacer
+    {
+      position: relative;
+      float: right;
+      height: 640px;
+      width: 0px;
+      margin-right: -20pt;
+      padding: 0pt;
+    }
+    p .Button
+    {
+      text-align: right;
+      margin: 3px;
+      margin-right: 15px;
+      padding: 0;
+    }
+    .SuperScript
+    {
+      vertical-align: super;
+    }
+    .floatLeft
+    {
+      float: left;
+    }
+    .floatRight
+    {
+      float: right;
+    }
+    .Left
+    {
+      text-align: left;
+    }
+    .Right
+    {
+      text-align: right;
+    }
+    .Center
+    {
+      text-align: center;
+    }
+    .Top
+    {
+      vertical-align: top;
+    }
+    .header2
+    {
+      font-size: 12pt;
+      color: #000000;
+      font-weight: bold;
+      margin: 3pt;
+      padding: 0pt;
+    }
+    .header3
+    {
+      font-size: 12pt;
+      color: #000000;
+      font-weight: bold;
+      margin: 3pt;
+      padding: 0pt;
+    }
+    .para
+    {
+      /* font-size: 10pt; */
+      color: #909191;
+      margin: 3pt;
+      padding: 0pt;
+    }
+    .Signoff
+    {
+      /* font-size: 10pt; */
+      color: #000000;
+      margin: 3pt;
+      padding: 0pt;
+    }
+    .BlankSpace
+    {
+      color: white;
+      background: white;
+      margin: 0;
+      padding: 0;
+    }
+    .BlankLine
+    {
+      color: white;
+      background: white;
+      margin: 0;
+      padding: 0;
+      border-top: #ccccff solid;
+    }
+    h1, .h1
+    {
+      font-size: 14pt;
+      color: #b72521;
+      font-family: Arial;
+      font-variant: normal;
+      font-weight: bold;
+    }
+    h2, .h2
+    {
+      font-size: 12pt;
+      color: #b72521;
+      font-family: Arial;
+      font-variant: normal;
+      font-weight: bold;
+    }
+    h3, .h3
+    {
+      font-size: 12pt;
+      color: #b72521;
+      font-family: Arial;
+      font-variant: normal;
+      font-weight: bold;
+    }
+    h4, .h4
+    {
+      font-size: 12pt;
+      color: #000000;
+      font-family: Arial;
+      font-variant: normal;
+      font-weight: bold;
+    }
+    a
+    {
+    }
+    a:visited, .Anchor:visited
+    {
+      color: #b70000;
+      text-decoration: none;
+    }
+    a:hover, .Anchor:hover
+    {
+      color: #b72521;
+      text-decoration: underline;
+    }
+    a:link, .Anchor:link
+    {
+      color: #b72521;
+      text-decoration: none;
+    }
+    a:disabled, a:disabled, a:disabled
+    {
+      color: #808080;
+      text-decoration: none;
+    }
+    li
+    {
+      margin-top: 0pt;
+      margin-bottom: 5pt;
+    }
+    ul
+    {
+      list-style-position: outside;
+      list-style-type: disc;
+    }
+    p
+    {
+      list-style-position: inside;
+      /* font-size: 10pt; */
+      color: #000000;
+      font-family: Arial;
+      text-decoration: none;
+    }
+    table
+    {
+      padding: 0px;
+      margin: 0px;
+      /* font-size: 10pt; */
+      font-family: Arial;
+      color: #000000;
+    }
+    tr
+    {
+    }
+    td
+    {
+      text-align: left;
+      vertical-align: middle;
+    }
+    .border
+    {
+      padding: 0px;
+      margin: 0;
+      /* font-size: 10pt; */
+      font-family: Arial;
+      background: #646464;
+    }
+    .border tr
+    {
+    }
+    .border th
+    {
+      text-align: center;
+      vertical-align: middle;
+      background: #ebebeb;
+      color: #ffffff;
+    }
+    .border td
+    {
+      text-align: left;
+      vertical-align: middle;
+      background: #ffffff;
+    }
+    .width_100
+    {
+      width: 100%;
+    }
+    .Page_Break_Before
+    {
+      page-break-before: always;
+      vertical-align: top;
+    }
+    #Footer
+    {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: smaller;
+      color: #c0c0c0;
+    }
+    #Footer .Left
+    {
+      text-align: left;
+    }
+    #Footer .Right
+    {
+      text-align: right;
+    }
+    #Properties
+    {
+      visibility: hidden;
+    }
+    .Title
+    {
+      font-weight: bold;
+      font-size: 16pt;
+      text-transform: uppercase;
+      color: #b72521;
+      font-family: Arial;
+      font-variant: normal;
+    }
+    #divDataChange
+    {
+      border-right: #a9a9a9 solid;
+      border-top: #a9a9a9 solid;
+      margin-left: 10%;
+      border-left: #a9a9a9 solid;
+      margin-right: 10%;
+      border-bottom: #a9a9a9 solid;
+    }
+    .Error
+    {
+      font-weight: bold;
+      color: #000000;
+      background-color: #ff0000;
+    }
+    .Alert
+    {
+      font-weight: bold;
+      color: #000000;
+      background-color: #ffcc66;
+    }
+    .LabRange
+    {
+      font-weight: bold;
+      color: #000000;
+      background-color: #ffff99;
+    }
+    .Safety
+    {
+      font-weight: bold;
+      color: #000000;
+      background-color: #00ffff;
+    }
+    .LinkBackground
+    {
+      border: 0px;
+      padding: 0px;
+      margin: 0px;
+      background-image: url(./button.jpg );
+      background-color: #ffffff;
+      height: 20pt;
+      vertical-align: middle;
+      font-weight: normal;
+      /* font-size: 10pt; */
+      color: #000000;
+      font-style: normal;
+      font-family: Arial;
+      text-align: left;
+    }
+    .LinkDisabled
+    {
+      text-align: center;
+      color: #808080;
+      text-decoration: none;
+    }
+    .LinkDisabled:visited
+    {
+      text-align: center;
+      color: #808080;
+      text-decoration: none;
+    }
+    .LinkDisabled:hover
+    {
+      text-align: center;
+      color: #808080;
+      text-decoration: none;
+    }
+    .LinkDisabled:link
+    {
+      text-align: center;
+      color: #808080;
+      text-decoration: none;
+    }
+    
+    /* end Web css */
+    /* This style sheet defines the report layout styles. 
+ *
+ */
+
+.Rpt_Title
+{
+  margin: 5px;
+  margin-left: 0;
+  padding: 5pt;
+	text-align: Left;
+	width: 97%;
+  font-size: 14pt;
+  color: #000000;
+  font-variant:normal;
+  font-weight:bold;
+	text-align: Left;
+}
+
+.Rpt_SubTitle
+{
+  margin: 5px;
+  margin-left: 0;
+  padding: 5pt;
+	text-align: Left;
+	width: 97%;
+  font-size: 12pt;
+  color: #000000;
+  font-variant:normal;
+  font-weight:bold;
+	text-align: Left;
+}
+
+.Rpt_MainTable
+{  
+  padding: 0;
+  margin: 0px;
+  margin-left: 10px;
+  color:#000000;
+}
+
+.Rpt_Table
+{  
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color:#000000;
+  
+}
+
+.Rpt_Table100
+{  
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color:#000000;  
+}
+
+.Rpt_Title
+{  
+  width: 97%;
+  margin: 0;
+  padding: 0;
+  color:#000000;
+  background-color: #ffffff;
+
+  margin-left: 10pt; 
+  margin-right: 10pt; 
+}
+
+.Rpt_Parameters
+{  
+  width: 97%;
+  margin: 0;
+  padding: 0;
+  color:#000000;
+
+  margin-left: 10pt; 
+  margin-right: 10pt; 
+  
+}
+.Rpt_Parameters tr
+{
+  height: 22px;
+}
+.Rpt_Parameters tr .Prompt
+{
+  width: 15%;
+  text-align: right;
+}
+.Rpt_Table97 tr
+{
+  height: 22px;
+}
+#Rpt_ContentTable
+{
+  /*border: #0c0c0c 1px solid;*/
+  width: 97%;
+  margin: 0;
+  padding: 0;
+  color: #000000;
+  margin-left: 10px;
+  margin-right: 10px;
+  /* font-size: 10pt; */
+}
+
+.Rpt_Grid
+{  
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color:#000000;
+}
+
+.Rpt_Row
+{  
+ height: 22pt;	
+}
+
+.Rpt_Section
+{  
+  width:100%;
+  margin: 10px;
+  padding: 0px;
+	text-align: Left;
+  vertical-align : top;
+  text-align: center;
+  font-weight: normal;
+  width: 980px;
+  color:#000000;
+	text-align: Left;
+}
+
+.Rpt_Col
+{  
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  text-align: left;
+}
+
+.Rpt_Col_Center
+{  
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  text-align: center;
+}
+
+.Rpt_Col_50
+{  
+  width:50%;
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  text-align: left;
+}
+
+.Rpt_Col_35
+{  
+  width:35%;
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  text-align: left;
+}
+
+.Rpt_Col_70
+{  
+  width:70%;
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  text-align: left;
+}
+
+.Rpt_Col_80
+{  
+  width:80%;
+  margin: 0px;
+  padding: 0px;
+  vertical-align : top;
+  
+  text-align: left;
+}
+.Rpt_Header
+{
+  border: #0c0c0c 1px solid;
+  padding: 3px;
+  font-weight: bold;
+  /* font-size: 10pt; */
+  color: #000000;
+  line-height: normal;
+  font-style: normal;
+  height: 16pt;
+  background-color: #ebebeb;
+  vertical-align:middle;
+  text-align:center;
+}
+.Rpt_Item
+{
+	padding: 3px;
+	margin: 0px;
+  Color: #000000;
+  font-Weight: normal;
+  Background-Color: #ffffff; 
+  vertical-align:middle;
+	text-align: Left;
+}
+
+.Rpt_Alt
+{
+	padding: 3px;
+	margin: 0px;
+  font-weight: normal;
+  color: #000000;
+  background-color: #ebebeb;
+  vertical-align:middle;
+	text-align: Left;
+}
+
+.Rpt_border
+{ 
+  border: #000000 1px solid;
+}
+
+.Rpt, .Rpt_field
+{ 
+  padding-left: 10pt;
+  color:#000000;
+}
+
+.Rpt_blnk
+{ 
+  background:#FFFFFF;
+  color:#FFFFFF;
+}
+
+/* Styles added by Andres */
+
+.Rpt_Table97
+{
+  margin: 0px;
+  padding: 0;
+  width: 100%;
+}
+
+
+.Flat_Rpt_Item
+{
+  padding: 3px;
+  /* font-size: 10pt; */
+  color: #000000;
+  line-height: normal;
+  font-style: normal;
+  height: 16pt;
+  background-color: #ebebeb;
+  vertical-align:middle;
+	text-align: Left;
+}
+
+.Flat_Rpt_Item_Alt
+{
+  padding: 3px;
+  color: #000000;
+  line-height: normal;
+  font-style: normal;
+  height: 16pt;
+  background-color: #ffffff;
+  vertical-align:middle;
+	text-align: Left;
+}
+
+
+.Flat_Rpt_Field_Name
+{
+  font-weight: bold;
+  padding: 3px;
+}
+
+.Flat_Rpt_Field_Value
+{
+	padding: 3px;
+  Color: black;
+}
+
+
+.Rpt_Total
+{
+  font-weight: bold;
+  line-height: normal;
+  font-style: normal;
+  vertical-align:middle;
+  text-align:right;
+  color: #bf382f;
+}

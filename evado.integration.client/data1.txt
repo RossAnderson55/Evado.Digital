@@ -1,0 +1,17 @@
+﻿QueryType:,Import_Subjects,,,,,,,,,,,,
+Parameter:,Name,Value,,,,,,,,,,,
+Parameter:,Project_Id,CATChEz,,,,,,,,,,,
+,,,,,,,,,,,,,
+ColumnEvdoFieldId:,OrgId,SponsorId,Sex,DateOfBirth,Age,Height,Weight,Bmi,History,Categories,Diseases,Race,RaceOther
+ColumnDataType:,Text,Text,Text,Date,Integer,Integer,Integer,Floating_Point,Text,Text,Text,Text,Text
+ColumnName:,OrgId,SponsorId,Sex,DateOfBirth,Age,Height,Weight,Bmi,History,Categories,Diseases,Race,RaceOther
+ColumnIndex:,false,true,false,false,false,false,false,false,false,false,false,false,false
+ColumnMetaData:,metadata1,metadata2,metadata3,metadata4,metadata5,metadata6,metadata7,metadata8,metadata9,metadata10,metadata11,metadata12,metadata13
+RowData:,TEST02,1001,Male,6-Aug-68,44,179,0,0,,,,9,
+RowData:,TEST02,1002,Male,9-Apr-52,62,171,96,32.83061,,,,9,
+RowData:,TEST02,1003,Male,31-Oct-36,76,186,0,0,,,,9,
+RowData:,TEST02,1004,Female,22-Apr-43,70,167,0,0,,,,9,
+RowData:,TEST02,1005,Female,22-Apr-43,70,167,0,0,,,,9,
+RowData:,TEST02,1006,Female,22-Apr-43,70,167,0,0,,,,9,
+RowData:,TEST02,1007,Female,22-Apr-43,70,167,0,0,,,,9,
+RowData:,TEST02,1008,Female,22-Apr-43,70,167,0,0,,,,9,

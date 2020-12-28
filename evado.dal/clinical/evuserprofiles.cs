@@ -1,0 +1,1619 @@
+/* <copyright file="Dal\eclinical\EvUserProfiles.cs" company="EVADO HOLDING PTY. LTD.">
+ *     
+ *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
+ *     
+ *      The use and distribution terms for this software are contained in the file
+ *      named license.txt, which can be found in the root of this distribution.
+ *      By using this software in any fashion, you are agreeing to be bound by the
+ *      terms of this license.
+ *     
+ *      You must not remove this notice, or any other, from this software.
+ *     
+ * </copyright>
+ *
+ ****************************************************************************************/
+
+using System;
+using System.Data.SqlClient;
+using System.Data;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.Text;
+
+//References to Evado specific libraries
+
+using Evado.Model;
+using Evado.Model.Digital;
+
+
+namespace Evado.Dal.Clinical
+{
+  /// <summary>
+  /// A business Component used to manage Ethics roles
+  /// The Evado.Evado.User is used in most methods 
+  /// and is used to store serializable information about an account
+  /// </summary>
+  public class EvUserProfiles : EvDalBase
+  {
+    #region class initialisation methods
+    // ==================================================================================
+    /// <summary>
+    /// This method initialises the class
+    /// </summary>
+    // ----------------------------------------------------------------------------------
+    public EvUserProfiles()
+    {
+      this.ClassNameSpace = "Evado.Dal.Clinical.EvUserProfiles.";
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method initialises the class
+    /// </summary>
+    /// <param name="Settings">EvApplicationSetting data object.</param>
+    // ----------------------------------------------------------------------------------
+    public EvUserProfiles(EvClassParameters Settings)
+    {
+      this.ClassParameters = Settings;
+      this.ClassNameSpace = "Evado.Dal.Clinical.EvUserProfiles.";
+
+      this.LogMethod("EvUserProfiles initialisation method.");
+      this.LogDebug("CustomerGuid: " + this.ClassParameters.CustomerGuid);
+      this.LogDebug("ApplicationGuid: " + this.ClassParameters.ApplicationGuid);
+
+      this.LogMethodEnd("EvUserProfiles");
+    }
+
+    #endregion
+
+    #region Initialise Class variables and objects
+    //
+    // Static constants
+    //
+    /// <summary>
+    /// This constant selects all rows from EvUserProfile_View view.
+    /// </summary>
+
+    private const string SQL_SELECT_QUERY = "Select * FROM EV_USER_PROFILE_VIEW ";
+
+    /// <summary>
+    /// This constant defines a store procedure for adding items to UserProfile table.
+    /// </summary>
+    private const string STORED_PROCEDURE_AddItem = "usr_UserProfile_add";
+
+    /// <summary>
+    /// This constant defines a store procedure for updating items to UserProfile table.
+    /// </summary>
+    private const string STORED_PROCEDURE_UpdateItem = "usr_UserProfile_update";
+
+    /// <summary>
+    /// This constant defines a store procedure for deleting items from UserProfile table.
+    /// </summary>
+    private const string STORED_PROCEDURE_DeleteItem = "usr_UserProfile_delete";
+
+    private const string DB_PATIENT_GUID = "PA_GUID";
+
+    private const string DB_CUSTOMER_GUID = "CU_GUID";
+
+    private const string DB_ORG_ID = "OrgId";
+
+    private const string DB_USER_ID = "UserId";
+
+    private const string DB_AD_NAME = "UP_ActiveDirectName";
+
+    private const string DB_USER_GUID = "UP_Guid";
+
+    private const string DB_EXPIRY_DATE = "UP_EXPIRY_DATE";
+
+
+    /// <summary>
+    /// This constant defines a string parameter as Guid for the UserProfile object
+    /// </summary>
+    private const string PARM_Guid = "@Guid";
+
+    private const string PARM_PATIENT_GUID = "@PATIENT_GUID";
+
+    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
+
+    private const string PARM_APPLICATION_GUID = "@APPLICATION_GUID";
+
+    private const string PARM_OrgId = "@OrgId";
+
+    private const string PARM_UserId = "@UserId";
+
+    private const string PARM_ACTIVE_DIRECTORY_NAME = "@ActiveDirectName";
+
+    private const string PARM_PREFIX = "@PREFIX";
+
+    private const string PARM_GIVEN_NAME = "@GIVEN_NAME";
+
+    private const string PARM_FAMILY_NAME = "FAMILY_NAME";
+
+    private const string PARM_SUFFIX = "@SUFFIX";
+
+    private const string PARM_ADDRESS_1 = "@ADDRESS_1";
+    private const string PARM_ADDRESS_2 = "@ADDRESS_2";
+    private const string PARM_ADDRESS_CITY = "@ADDRESS_CITY";
+    private const string PARM_ADDRESS_STATE = "@ADDRESS_STATE";
+    private const string PARM_ADDRESS_POSTCODE = "@ADDRESS_POST_CODE";
+    private const string PARM_ADDRESS_COUNTRY = "@ADDRESS_COUNTRY";
+
+    private const string PARM_TELEPHONE = "@TELEPHONE";
+
+    private const string PARM_MOBILE_PHONE = "@MOBILE_PHONE";
+
+    private const string PARM_CommonName = "@CommonName";
+
+    private const string PARM_EmailAddress = "@EmailAddress";
+
+    private const string PARM_RoleId = "@RoleId";
+
+    private const string PARM_Title = "@Title";
+
+    private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
+
+    private const string PARM_UpdatedBy = "@UpdatedBy";
+
+    private const string PARM_UpdateDate = "@UpdateDate";
+
+    private const string PARM_EXPIRY_DATE = "@EXPIRY_DATE";
+
+    private const string PARM_TrialId = "@TrialId";
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region SQL Parameter methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns an array of sql query parameters. 
+    /// </summary>
+    /// <returns>SqlParameter: An array of sql query parameters</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Create an array of sql query parameters. 
+    /// 
+    /// 2. Return an array of sql query parameters.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    private static SqlParameter[] getItemsParameters()
+    {
+      SqlParameter[] parms = new SqlParameter[]
+      {
+        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
+        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( PARM_PATIENT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( PARM_OrgId, SqlDbType.NVarChar, 10),
+        new SqlParameter( PARM_UserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_PREFIX, SqlDbType.NVarChar, 10),
+        new SqlParameter( PARM_GIVEN_NAME, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_FAMILY_NAME, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_SUFFIX, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_1, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_2, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_CITY, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_STATE, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_POSTCODE, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_ADDRESS_COUNTRY, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_TELEPHONE, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_MOBILE_PHONE, SqlDbType.NVarChar, 50),
+        new SqlParameter( PARM_CommonName, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_EmailAddress, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_RoleId, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_Title, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_EXPIRY_DATE, SqlDbType.DateTime),
+        new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_UpdatedBy, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime),
+      };
+
+      return parms;
+    }//END getItemsParameters class
+
+    // =====================================================================================
+    /// <summary>
+    /// This method assigns UserProfile object's values to the array of sql query parameters.
+    /// </summary>
+    /// <param name="parms">SqlParameter: An Array of sql parameters</param>
+    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile: A user profile object</param>
+    /// <remarks>
+    /// This method consists of the following step:
+    /// 
+    /// 1. Bind the User Profile object's values to the array of sql query parameters.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    private void setUsersParameters(
+      SqlParameter[] parms,
+      Evado.Model.Digital.EvUserProfile UserProfile)
+    {
+      //
+      // If the user role is not patient empty the patient GUID
+      //
+      if (UserProfile.RoleId != EvRoleList.Patient)
+      {
+        UserProfile.PatientGuid = Guid.Empty;
+      }
+
+      parms[0].Value = UserProfile.Guid;
+      parms[1].Value = UserProfile.CustomerGuid;
+      parms[2].Value = UserProfile.PatientGuid;
+      parms[3].Value = UserProfile.OrgId;
+      parms[4].Value = UserProfile.UserId;
+      parms[5].Value = UserProfile.ActiveDirectoryUserId;
+      parms[6].Value = UserProfile.Prefix;
+      parms[7].Value = UserProfile.GivenName;
+      parms[8].Value = UserProfile.FamilyName;
+      parms[9].Value = UserProfile.Suffix;
+      parms[10].Value = UserProfile.Address_1;
+      parms[11].Value = UserProfile.Address_2;
+      parms[12].Value = UserProfile.AddressCity;
+      parms[13].Value = UserProfile.AddressState;
+      parms[14].Value = UserProfile.AddressPostCode;
+      parms[15].Value = UserProfile.AddressCountry;
+      parms[16].Value = UserProfile.Telephone;
+      parms[17].Value = UserProfile.MobilePhone;
+      parms[18].Value = UserProfile.CommonName;
+      parms[19].Value = UserProfile.EmailAddress.ToLower();
+      parms[20].Value = UserProfile.RoleId;
+      parms[21].Value = UserProfile.Title;
+      parms[22].Value = UserProfile.ExpiryDate;
+      parms[23].Value = UserProfile.UpdatedByUserId;
+      parms[24].Value = UserProfile.UserCommonName;
+      parms[25].Value = DateTime.Now;
+
+      if (UserProfile.RoleId == Evado.Model.Digital.EvRoleList.Patient)
+      {
+        parms[6].Value = String.Empty;
+        parms[7].Value = String.Empty;
+        parms[8].Value = String.Empty;
+        parms[9].Value = String.Empty;
+        parms[10].Value = String.Empty;
+        parms[11].Value = String.Empty;
+        parms[12].Value = String.Empty;
+        parms[13].Value = String.Empty;
+        parms[14].Value = String.Empty;
+        parms[15].Value = String.Empty;
+        parms[16].Value = String.Empty;
+        parms[17].Value = String.Empty;
+      }
+
+    }//END setUsersParameters class.
+
+    #endregion
+
+    #region Data Reader methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method extracts data row values to the UserProfile object.
+    /// </summary>
+    /// <param name="Row">DataRow: A data row object</param>
+    /// <returns>Evado.Model.Digital.EvUserProfile: A userprofile object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Extract the compatible data row values to the userprofile object. 
+    /// 
+    /// 2. Return a userprofile object.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.Digital.EvUserProfile readRow(
+      DataRow Row)
+    {
+      // 
+      // Initialise the local variable.
+      // 
+      Evado.Model.Digital.EvUserProfile profile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // Update the object properties.
+      // 
+      profile.Guid = EvSqlMethods.getGuid(Row, "UP_Guid");
+      profile.CustomerGuid = EvSqlMethods.getGuid(Row, "CU_Guid");
+      profile.OrgId = EvSqlMethods.getString(Row, "OrgId");
+      profile.UserId = EvSqlMethods.getString(Row, "UserId");
+      profile.ActiveDirectoryUserId = EvSqlMethods.getString(Row, "UP_ActiveDirectName");
+
+      profile.RoleId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.Digital.EvRoleList>(
+        EvSqlMethods.getString(Row, "RoleId"));
+
+      profile.Prefix = EvSqlMethods.getString(Row, "UP_PREFIX");
+      profile.GivenName = EvSqlMethods.getString(Row, "UP_GIVEN_NAME");
+      profile.FamilyName = EvSqlMethods.getString(Row, "UP_FAMILY_NAME");
+      profile.Suffix = EvSqlMethods.getString(Row, "UP_SUFFIX");
+      profile.Address_1 = EvSqlMethods.getString(Row, "UP_ADDRESS_1");
+      profile.Address_2 = EvSqlMethods.getString(Row, "UP_ADDRESS_2");
+      profile.AddressCity = EvSqlMethods.getString(Row, "UP_ADDRESS_CITY");
+      profile.AddressState = EvSqlMethods.getString(Row, "UP_ADDRESS_STATE");
+      profile.AddressPostCode = EvSqlMethods.getString(Row, "UP_ADDRESS_POST_CODE");
+      profile.AddressCountry = EvSqlMethods.getString(Row, "UP_ADDRESS_COUNTRY");
+      profile.Telephone = EvSqlMethods.getString(Row, "UP_TELEPHONE");
+      profile.MobilePhone = EvSqlMethods.getString(Row, "UP_MOBILE_PHONE");
+      profile.CommonName = EvSqlMethods.getString(Row, "UP_CommonName");
+      profile.EmailAddress = EvSqlMethods.getString(Row, "UP_EmailAddress").ToLower();
+      profile.Title = EvSqlMethods.getString(Row, "UP_Title");
+      profile.ExpiryDate = EvSqlMethods.getDateTime(Row, EvUserProfiles.DB_EXPIRY_DATE);
+
+      //
+      // this value must be set after the user's role has been set to ensure that only patient users are linked
+      // to a patient object.
+      //
+      profile.PatientGuid = EvSqlMethods.getGuid(Row, "PA_Guid");
+
+      profile.UpdatedByUserId = EvSqlMethods.getString(Row, "UP_UpdatedByUserId");
+      profile.UpdatedBy = EvSqlMethods.getString(Row, "UP_UpdatedBy");
+      profile.UpdatedDate = EvSqlMethods.getDateTime(Row, "UP_UpdateDate");
+
+      profile.OrganisationName = EvSqlMethods.getString(Row, "O_Name");
+
+      // 
+      // Return the profile Object.
+      // 
+      return profile;
+
+    }//END readRow method.
+
+    #endregion
+
+    #region UserProfile Query methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns a list of UserProfile object based on OrgId and OrderBy string.
+    /// </summary>
+    /// <param name="OrgId">String: The selection organistion's identifier</param>
+    /// <returns>List of Evado.Model.Digital.EvUserProfile: A list of UserProfile objects.</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define the sql query parameters and sql query string. 
+    /// 
+    /// 2. Execute the sql query string and store the results on datatable. 
+    /// 
+    /// 3. Loop through the table and extract data row to the UserProfile object. 
+    /// 
+    /// 4. Add the UserProfile object's values to the UserProfiles list. 
+    /// 
+    /// 5. Return the UserProfiles list. 
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public List<Evado.Model.Digital.EvUserProfile> GetView(string OrgId)
+    {
+
+      this.LogMethod("GetView method.");
+      this.LogDebug("OrgId: " + OrgId);
+
+      // 
+      // Define the local variables
+      // 
+      string sqlQueryString;
+      List<Evado.Model.Digital.EvUserProfile> view = new List<Evado.Model.Digital.EvUserProfile>();
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter ( EvUserProfiles.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter ( EvUserProfiles.PARM_APPLICATION_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter ( PARM_OrgId, SqlDbType.Char, 10 )
+      };
+      cmdParms[0].Value = this.ClassParameters.CustomerGuid;
+      cmdParms[1].Value = this.ClassParameters.ApplicationGuid;
+      cmdParms[2].Value = OrgId;
+
+      //
+      // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
+      // to ensure that Evado organisations are not displayed in the org list.
+      //
+      if (this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
+        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
+        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff)
+      {
+        cmdParms[1].Value = Guid.Empty;
+      }
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE ( (" + EvUserProfiles.DB_CUSTOMER_GUID + " = " + EvUserProfiles.PARM_CUSTOMER_GUID + " )\r\n"
+        + " OR (" + EvUserProfiles.DB_CUSTOMER_GUID + " = " + EvUserProfiles.PARM_APPLICATION_GUID + " ) )\r\n";
+
+      if (OrgId != String.Empty)
+      {
+        sqlQueryString += " AND (OrgId = @OrgId) \r\n";
+      }
+
+      sqlQueryString += " ORDER BY OrgId, UserId;";
+
+      this.LogDebug(sqlQueryString);
+
+      this.LogDebug("EvSqlMethods Log: " + EvSqlMethods.Log);
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // Iterate through the results extracting the role information.
+        // 
+        for (int count = 0; count < table.Rows.Count; count++)
+        {
+          // 
+          // Extract the table row.
+          // 
+          DataRow row = table.Rows[count];
+
+          Evado.Model.Digital.EvUserProfile profile = this.readRow(row);
+
+          view.Add(profile);
+        }
+      }
+      this.LogValue(" View count: " + view.Count);
+
+      // 
+      // Return the ArrayList containing the User data object.
+      // 
+      return view;
+
+    }//END GetView method.
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns a list of UserProfile object based on OrgId and useGuid condition
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public List<Evado.Model.EvOption> GetEventUserList()
+    {
+
+      this.LogMethod("GetList method. ");
+      // 
+      // Define local variables
+      // 
+      List<Evado.Model.EvOption> list = new List<Evado.Model.EvOption>();
+      Evado.Model.EvOption option = new Evado.Model.EvOption();
+
+      // 
+      // Initialise the option list with a null data object.
+      // 
+      list.Add(option);
+
+      //
+      // get the list of users for this customer.
+      //
+      var userProfileList = this.GetView(String.Empty);
+
+      //
+      // iterate through the list to create the option list of users.
+      //
+      foreach (EvUserProfile user in userProfileList)
+      {
+        option = new Evado.Model.EvOption(user.UserId,
+         String.Format("({0} - {1}) {2} - {3}", user.OrgId, user.OrganisationName, user.UserId, user.CommonName));
+
+        list.Add(option);
+      }
+
+      this.LogValue("View count: " + list.Count);
+
+      // 
+      // Return the ArrayList of EvOptions data objects.
+      // 
+      return list;
+
+    }//END GetList method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns a list of UserProfile object based on OrgId and useGuid condition
+    /// </summary>
+    /// <param name="OrgId">string: an organization identifier</param>
+    /// <param name="useGuid">Boolean: true, if Guid is used</param>
+    /// <returns>List of Evado.Model.Digital.EvUserProfile: A list of UserProfile objects.</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define the sql query parameters and sql query string. 
+    /// 
+    /// 2. Execute the sql query string and store the results on datatable. 
+    /// 
+    /// 3. Loop through the table and extract data row to the UserProfile object. 
+    /// 
+    /// 4. Add the UserProfile object's values to the UserProfiles list. 
+    /// 
+    /// 5. Return the UserProfiles list. 
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public List<Evado.Model.EvOption> GetList(String OrgId, bool useGuid)
+    {
+
+      this.LogMethod("GetList method. ");
+      this.LogValue("OrgId: " + OrgId);
+      // 
+      // Define local variables
+      // 
+      List<Evado.Model.EvOption> list = new List<Evado.Model.EvOption>();
+      Evado.Model.EvOption option = new Evado.Model.EvOption();
+      if (useGuid == true)
+      {
+        option = new Evado.Model.EvOption(Guid.Empty.ToString(), String.Empty);
+      }
+      list.Add(option);
+
+      //
+      // get the list of users for this customer.
+      //
+      var userProfileList = this.GetView(OrgId);
+
+      //
+      // iterate through the list to create the option list of users.
+      //
+      foreach (EvUserProfile user in userProfileList)
+      {
+
+        if (useGuid == true)
+        {
+          option = new Evado.Model.EvOption(user.Guid.ToString(),
+           String.Format("{0} - {1}", user.UserId, user.CommonName));
+        }
+        else
+        {
+          option = new Evado.Model.EvOption(user.UserId,
+           String.Format("{0} - {1}", user.UserId, user.CommonName));
+        }
+        if (OrgId == string.Empty)
+        {
+          option.Description =
+           String.Format("({0} - {1}) {2} - {3}", user.OrgId, user.OrganisationName, user.UserId, user.CommonName);
+        }
+
+        list.Add(option);
+      }
+
+      this.LogValue("View count: " + list.Count);
+
+      // 
+      // Return the ArrayList of EvOptions data objects.
+      // 
+      return list;
+
+    }//END GetList method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns true if the user exists in the database.
+    /// </summary>
+    /// <param name="UserId">String: The user identifier.</param>
+    /// <returns>Boolean: True: user exists in the database.</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define the sql query parameters and sql query string. 
+    /// 
+    /// 2. Execute the sql query string and store the results on datatable. 
+    /// 
+    /// 3. Return true of more than on record is returned.
+    /// 
+    /// 4. Return false if no records are returned.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public bool ExistingUserId(String UserId)
+    {
+
+      this.LogMethod("ExistngUserId method.");
+      this.LogDebug("UserId: " + UserId);
+
+      // 
+      // Define the local variables
+      // 
+      string sqlQueryString;
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+         new SqlParameter ( PARM_UserId, SqlDbType.Char, 50 )
+      };
+      cmdParms[0].Value = UserId;
+
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE (" + EvUserProfiles.DB_USER_ID + " = " + EvUserProfiles.PARM_UserId + ")\r\n";
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // Iterate through the results extracting the role information.
+        // 
+        if (table.Rows.Count > 0)
+        {
+          return true;
+        }
+      }
+
+      // 
+      // Return the ArrayList containing the User data object.
+      // 
+      return false;
+
+    }//END GetView method.
+
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns true if the user exists in the database.
+    /// </summary>
+    /// <param name="OrgId">String: The user identifier.</param>
+    /// <returns>Boolean: True: user exists in the database.</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define the sql query parameters and sql query string. 
+    /// 
+    /// 2. Execute the sql query string and store the results on datatable. 
+    /// 
+    /// 3. Return true of more than on record is returned.
+    /// 
+    /// 4. Return false if no records are returned.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public int UserCount(String OrgId)
+    {
+
+      this.LogMethod("UserCount method.");
+      this.LogDebug("UserId: " + OrgId);
+
+      // 
+      // Define the local variables
+      // 
+      string sqlQueryString;
+      int count = 0;
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+         new SqlParameter ( PARM_OrgId, SqlDbType.Char, 10 )
+      };
+      cmdParms[0].Value = OrgId;
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY;
+
+      if (OrgId != String.Empty)
+      {
+        sqlQueryString = SQL_SELECT_QUERY
+          + "WHERE (" + EvUserProfiles.DB_ORG_ID + " = " + EvUserProfiles.PARM_OrgId + ") ;";
+      }
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        count = table.Rows.Count;
+      }
+
+      // 
+      // Return the ArrayList containing the User data object.
+      // 
+      this.LogMethodEnd("UserCount");
+      return count;
+
+    }//END GetView method.
+    #endregion
+
+    #region Retrieve Query methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the UserProfile table based on UserId
+    /// </summary>
+    /// <param name="UserId">string: A User identifier</param>
+    /// <returns>Evado.Model.Digital.EvUserProfile: A UserProfile object</returns>
+    /// <remarks>
+    /// This method consists of follwoing steps. 
+    /// 
+    /// 1. Return an empty userprofile object, if the UserId is empty. 
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the result on table. 
+    /// 
+    /// 4. Return an empty userprofile object, if the table has no value. 
+    /// 
+    /// 5. Else, add role values to Userprofile object. 
+    /// 
+    /// 6. Return the UserProfile object. 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.Digital.EvUserProfile GetItem(string UserId)
+    {
+      this.LogMethod("GetItem method ");
+      this.LogDebug("UserId: " + UserId);
+      // 
+      // Define local variables
+      // 
+      string sqlQueryString;
+      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // If a UserId is equal to an empty string, add a string "User Id null" to a StringBuilder 
+      // object _DebugLog and return userProfile object.  
+      // 
+      if (UserId == String.Empty)
+      {
+        this.LogValue("User Id null");
+        return userProfile;
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter ( PARM_UserId, SqlDbType.Char, 100 )
+      };
+      cmdParms[0].Value = UserId;
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE (" + EvUserProfiles.DB_USER_ID + " = " + EvUserProfiles.PARM_UserId + ")\r\n";
+
+      this.LogDebug(sqlQueryString);
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // If no rows return, add a string "Query result empty" to a StringBuilder
+        // object and return a userPrfile object. 
+        // 
+        if (table.Rows.Count == 0)
+        {
+          this.LogEvent("EvUserProfiles query return empty result.");
+          this.LogClass(EvSqlMethods.Log);
+          return userProfile;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows[0];
+
+        // 
+        // Fill the role object.
+        // 
+        userProfile = this.readRow(row);
+
+        this.LogDebug("UserProfile.UserId: " + userProfile.UserId);
+        this.LogDebug("UserProfile.CommonName: " + userProfile.CommonName);
+
+      }//END Using
+
+      //
+      // load the user parmeter list.
+      //
+      userProfile.Parameters = this.LoadObjectParameters(userProfile.Guid);
+
+      //
+      // Attach the customer object to the user.
+
+      this.GetCustomer(userProfile);
+
+      // 
+      // Return the userProfile data object.
+      // 
+      this.LogMethodEnd("GetItem");
+      return userProfile;
+
+    }//END GetItem method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the userprofile data table based on the AdsUserId
+    /// </summary>
+    /// <param name="AdsUserId">string: An adverse user identifier</param>
+    /// <returns>Evado.Model.Digital.EvUserProfile: a user profile object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Return an empty userprofile object, if the AdsUserId is empty. 
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the result on table. 
+    /// 
+    /// 4. Return an empty userprofile object, if the table has no value. 
+    /// 
+    /// 5. Else, add role values to Userprofile object. 
+    /// 
+    /// 6. Return the UserProfile object. 
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.Digital.EvUserProfile GetItemByAdsId(string AdsUserId)
+    {
+      this.LogMethod("getItemByAdsId method ");
+      this.LogValue("AdsUserId: " + AdsUserId);
+      // 
+      // Define local variables
+      // 
+      string sqlQueryString;
+      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // If AdsUserId is equal to an empty string, return userProfile object. 
+      // 
+      if (AdsUserId == String.Empty)
+      {
+        return userProfile;
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter ( EvUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.Char, 100 )
+      };
+      cmdParms[0].Value = AdsUserId;
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE (" + EvUserProfiles.DB_AD_NAME + " = " + EvUserProfiles.PARM_ACTIVE_DIRECTORY_NAME + ")\r\n";
+
+      this.LogValue(sqlQueryString);
+
+      //
+      // Execute the query against the database.
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // If no rows found, return a userProfile object
+        // 
+        if (table.Rows.Count == 0)
+        {
+          return userProfile;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows[0];
+
+        // 
+        // Fill the role object.
+        // 
+        userProfile = this.readRow(row);
+
+      }//END Using 
+
+      //
+      // load the user parmeter list.
+      //
+      userProfile.Parameters = this.LoadObjectParameters(userProfile.Guid);
+
+      //
+      // Attach the customer object to the user.
+
+      this.GetCustomer(userProfile);
+
+      // 
+      // Return the userProfile data object.
+      // 
+      this.LogMethodEnd("GetItem");
+      return userProfile;
+
+    }// Close GetItemByAdsId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method gets the information for a user.
+    /// </summary>
+    /// <param name="UserProfileGuid">GUID: A UserProfileGuid</param>
+    /// <returns>EvUserProfile Data object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define local variables.
+    /// 
+    /// 2. If a UserProfileid is equal to an empty GUID, return userProfile object. 
+    /// 
+    /// 3. Define the SQL query parameters and load the query values.
+    /// 
+    /// 4. Generate the SQL query string.
+    /// 
+    /// 5. Execute the query against the database.
+    /// 
+    /// 6. If no rows found, return userProfile object.
+    /// 
+    /// 7. Extract the table row.
+    /// 
+    /// 8. Fill the role object.
+    /// 
+    /// 9. Get the users TrialUser Profiles.
+    /// 
+    /// 10.Return the EvUserProfile data object.
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.Digital.EvUserProfile GetItem(Guid UserProfileGuid)
+    {
+      this.LogMethod("getItem method ");
+      this.LogValue("UserProfileGuid: " + UserProfileGuid);
+      // 
+      // Define local variables
+      // 
+      string sqlQueryString;
+      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // If a UserProfileid is equal to an empty GUID, return userProfile object. 
+      // 
+      if (UserProfileGuid == Guid.Empty)
+      {
+        return userProfile;
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter ( EvUserProfiles.PARM_Guid, SqlDbType.UniqueIdentifier )
+      };
+      cmdParms[0].Value = UserProfileGuid;
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE (" + EvUserProfiles.DB_USER_GUID + " = " + EvUserProfiles.PARM_Guid + ")";
+
+      this.LogValue(sqlQueryString);
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // If no rows found, return userProfile object. 
+        // 
+        if (table.Rows.Count == 0)
+        {
+          return userProfile;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows[0];
+
+        // 
+        // Fill the role object.
+        // 
+        userProfile = this.readRow(row);
+
+      }//END Using 
+
+      //
+      // add the user parmeter list.
+      //
+      userProfile.Parameters = this.LoadObjectParameters(userProfile.Guid);
+
+      //
+      // Attach the customer object to the user.
+
+      this.GetCustomer(userProfile);
+
+      // 
+      // Return the EvUserProfile data object.
+      // 
+      this.LogMethodEnd("GetItem");
+      return userProfile;
+
+    }//END GetItem method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method gets the information for a user.
+    /// </summary>
+    /// <param name="PatientGuid">GUID: A UserProfileGuid</param>
+    /// <returns>EvUserProfile Data object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define local variables.
+    /// 
+    /// 2. If a UserProfileid is equal to an empty GUID, return userProfile object. 
+    /// 
+    /// 3. Define the SQL query parameters and load the query values.
+    /// 
+    /// 4. Generate the SQL query string.
+    /// 
+    /// 5. Execute the query against the database.
+    /// 
+    /// 6. If no rows found, return userProfile object.
+    /// 
+    /// 7. Extract the table row.
+    /// 
+    /// 8. Fill the role object.
+    /// 
+    /// 9. Get the users TrialUser Profiles.
+    /// 
+    /// 10.Return the EvUserProfile data object.
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.Digital.EvUserProfile getItemByPatientGuid(Guid PatientGuid)
+    {
+      this.LogMethod("getItemByPatientGuid method ");
+      this.LogValue("UserProfileGuid: " + PatientGuid);
+      // 
+      // Define local variables
+      // 
+      string sqlQueryString;
+      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // If a UserProfileid is equal to an empty GUID, return userProfile object. 
+      // 
+      if (PatientGuid == Guid.Empty)
+      {
+        return userProfile;
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter ( EvUserProfiles.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter ( EvUserProfiles.PARM_APPLICATION_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter ( EvUserProfiles.PARM_PATIENT_GUID, SqlDbType.UniqueIdentifier )
+      };
+      cmdParms[0].Value = this.ClassParameters.CustomerGuid;
+      cmdParms[1].Value = this.ClassParameters.ApplicationGuid;
+      cmdParms[2].Value = PatientGuid;
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE ( (" + EvUserProfiles.DB_CUSTOMER_GUID + " = " + EvUserProfiles.PARM_CUSTOMER_GUID + " )\r\n"
+        + "     OR (" + EvUserProfiles.DB_CUSTOMER_GUID + " = " + EvUserProfiles.PARM_APPLICATION_GUID + " ) )\r\n"
+        + " AND  (" + EvUserProfiles.DB_PATIENT_GUID + " = " + EvUserProfiles.PARM_PATIENT_GUID + ")";
+
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (PA_GUID = " + PARM_PATIENT_GUID + ");";
+
+      this.LogValue(sqlQueryString);
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // If no rows found, return userProfile object. 
+        // 
+        if (table.Rows.Count == 0)
+        {
+          return userProfile;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows[0];
+
+        // 
+        // Fill the role object.
+        // 
+        userProfile = this.readRow(row);
+
+      }//END Using 
+
+      // 
+      // Return the EvUserProfile data object.
+      // 
+      return userProfile;
+
+    }//END GetItem method
+
+ 
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieved the Customer the user is associated with using the CustomerGuid 
+    /// </summary>
+    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile object</param>
+    // -------------------------------------------------------------------------------------
+    public EvEventCodes GetCustomer(Evado.Model.Digital.EvUserProfile UserProfile)
+    {
+      this.LogMethod("GetCustomer method ");
+      this.LogValue("UserProfile.CustomerGuid: " + UserProfile.CustomerGuid);
+
+      // 
+      // If a UserProfileid is equal to an empty GUID, return userProfile object. 
+      // 
+      if (UserProfile.CustomerGuid == Guid.Empty)
+      {
+        return EvEventCodes.Ok;
+      }
+
+      // 
+      // Define local variables
+      // 
+      EvCustomers dal_Customers = new EvCustomers(this.ClassParameters);
+
+      //
+      // Retrieve the customer object.
+      //
+      var customer = dal_Customers.getItem(UserProfile.CustomerGuid);
+
+      this.LogDebug("Customer.Guid {0}.", customer.Guid);
+
+      //
+      // if the guids match add the customer object to the UserProfile.
+      //
+      if (customer.Guid == UserProfile.CustomerGuid)
+      {
+        UserProfile.Customer = customer;
+
+        this.LogDebug("UserProfile.Customer.Name {0}.", UserProfile.Customer.Name);
+        this.LogMethodEnd("GetCustomer");
+        return EvEventCodes.Ok;
+      }
+
+      this.LogDebugClass("Customer GUID did not match the user profile");
+
+      if (UserProfile.OrgId.ToLower() != "evado")
+      {
+        this.LogError(EvEventCodes.Identifier_Customer_Id_Error,
+          "The User is not and Evado user and does not have a customer");
+      }
+
+      this.LogMethodEnd("GetCustomer");
+      return EvEventCodes.Identifier_Customer_Id_Error;
+    }//END GetCustomer method
+
+    #endregion
+
+    #region Update Data methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the UserProfile table based on UserId
+    /// </summary>
+    /// <param name="UserId">string: A User identifier</param>
+    /// <returns>Evado.Model.Digital.EvUserProfile: A UserProfile object</returns>
+    /// <remarks>
+    /// This method consists of follwoing steps. 
+    /// 
+    /// 1. Return an empty userprofile object, if the UserId is empty. 
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the result on table. 
+    /// 
+    /// 4. Return an empty userprofile object, if the table has no value. 
+    /// 
+    /// 5. Else, add role values to Userprofile object. 
+    /// 
+    /// 6. Return the UserProfile object. 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    private Evado.Model.Digital.EvUserProfile getUser(string UserId)
+    {
+      this.LogMethod("getUser method ");
+      this.LogValue("UserId: " + UserId);
+      // 
+      // Define local variables
+      // 
+      string sqlQueryString;
+      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // If a UserId is equal to an empty string, add a string "User Id null" to a StringBuilder 
+      // object _DebugLog and return userProfile object.  
+      // 
+      if (UserId == String.Empty)
+      {
+        this.LogValue("User Id null");
+        return userProfile;
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter cmdParms = new SqlParameter(PARM_UserId, SqlDbType.Char, 100);
+      cmdParms.Value = UserId;
+      // 
+      // Generate the SQL query string
+      // 
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (UserId = @UserId);";
+
+      this.LogDebug(sqlQueryString);
+
+      //
+      // Execute the query against the database
+      //
+      using (DataTable table = EvSqlMethods.RunQuery(sqlQueryString, cmdParms))
+      {
+        // 
+        // If no rows return, add a string "Query result empty" to a StringBuilder
+        // object and return a userPrfile object. 
+        // 
+        if (table.Rows.Count == 0)
+        {
+          this.LogValue(" Query result empty.");
+          return userProfile;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows[0];
+
+        // 
+        // Fill the role object.
+        // 
+        userProfile = this.readRow(row);
+
+        this.LogDebug("UserProfile.UserId: " + userProfile.UserId);
+        this.LogDebug("UserProfile.CommonName: " + userProfile.CommonName);
+
+      }//END Using 
+
+      this.LogMethodEnd("getUser");
+      // 
+      // Return the userProfile data object.
+      // 
+      return userProfile;
+
+    }//END GetItem method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method updates items to the UserProfile table. 
+    /// </summary>
+    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile: A UserProfile object</param>
+    /// <returns>Evado.Model.EvEventCodes: an event code for updating items</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Exit, if the Old user profile's Uid is not defined. 
+    /// 
+    /// 2. Add items to datachange object if they do not exist on the old userProfile object. 
+    /// 
+    /// 3. Define the sql query parameters and execute the storeprocedure for updating items. 
+    /// 
+    /// 4. Exit, if the storeprocedure runs fail. 
+    /// 
+    /// 5. Add datachange object's values to the backup datachanges object. 
+    /// 
+    /// 6. Return an event code for updating items. 
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.EvEventCodes UpdateItem(
+      Evado.Model.Digital.EvUserProfile UserProfile)
+    {
+      this.FlushLog();
+      this.LogMethod("UpdateItem method. ");
+      this.LogValue("UserId: " + UserProfile.UserId);
+      this.LogDebug("ProjectDashboardComponents: " + UserProfile.ProjectDashboardComponents);
+
+      // 
+      // Define the local variables.
+      // 
+      Evado.Model.Digital.EvUserProfile oldUser = new Evado.Model.Digital.EvUserProfile();
+
+      // 
+      // Get the old user id for to verify that the user exists and instrument differential
+      // comparision.
+      // 
+      oldUser = this.getUser(UserProfile.UserId);
+      if (oldUser.Guid == Guid.Empty)
+      {
+        return Evado.Model.EvEventCodes.Data_InvalidId_Error;
+      }
+
+      // 
+      // Compare the objects.
+      // 
+      EvDataChanges dataChanges = new EvDataChanges();
+      Evado.Model.EvDataChange dataChange = new Evado.Model.EvDataChange();
+      dataChange.TableName = Evado.Model.EvDataChange.DataChangeTableNames.EvUserProfiles;
+      dataChange.RecordGuid = UserProfile.Guid;
+      dataChange.UserId = UserProfile.UpdatedByUserId;
+      dataChange.DateStamp = DateTime.Now;
+
+      //
+      // Add items to the datachange object, if they do not exist on Old User Profile object. 
+      //
+      if (UserProfile.UserId != oldUser.UserId)
+      {
+        dataChange.AddItem("UserId", oldUser.UserId, UserProfile.UserId);
+      }
+      if (UserProfile.ActiveDirectoryUserId != oldUser.ActiveDirectoryUserId)
+      {
+        dataChange.AddItem("ActiveDirectoryUserId", oldUser.ActiveDirectoryUserId, UserProfile.ActiveDirectoryUserId);
+      }
+      if (UserProfile.Prefix != oldUser.Prefix)
+      {
+        dataChange.AddItem("Prefix", oldUser.Prefix, UserProfile.Prefix);
+      }
+      if (UserProfile.GivenName != oldUser.GivenName)
+      {
+        dataChange.AddItem("GivenName", oldUser.CommonName, UserProfile.GivenName);
+      }
+      if (UserProfile.FamilyName != oldUser.FamilyName)
+      {
+        dataChange.AddItem("FamilyName", oldUser.CommonName, UserProfile.FamilyName);
+      }
+      if (UserProfile.Suffix != oldUser.Suffix)
+      {
+        dataChange.AddItem("Suffix", oldUser.Suffix, UserProfile.Suffix);
+      }
+      if (UserProfile.CommonName != oldUser.CommonName)
+      {
+        dataChange.AddItem("CommonName", oldUser.CommonName, UserProfile.CommonName);
+      }
+      if (UserProfile.EmailAddress != oldUser.EmailAddress)
+      {
+        dataChange.AddItem("EmailAddress", oldUser.EmailAddress, UserProfile.EmailAddress);
+      }
+      if (UserProfile.RoleId != oldUser.RoleId)
+      {
+        dataChange.AddItem("RoleId", oldUser.RoleId.ToString(), UserProfile.RoleId.ToString());
+      }
+      if (UserProfile.Title != oldUser.Title)
+      {
+        dataChange.AddItem("Title", oldUser.Title, UserProfile.Title);
+      }
+      if (UserProfile.Telephone != oldUser.Telephone)
+      {
+        dataChange.AddItem("Telephone", oldUser.Telephone, UserProfile.Telephone);
+      }
+      if (UserProfile.OrgId != oldUser.OrgId)
+      {
+        dataChange.AddItem("OrgId", oldUser.OrgId, UserProfile.OrgId);
+      }
+      if (UserProfile.Address_1 != oldUser.Address_1)
+      {
+        dataChange.AddItem("Address_1", oldUser.Address_1, UserProfile.Address_1);
+      }
+      if (UserProfile.Address_2 != oldUser.Address_2)
+      {
+        dataChange.AddItem("Address_2", oldUser.Address_2, UserProfile.Address_2);
+      }
+      if (UserProfile.AddressCity != oldUser.AddressCity)
+      {
+        dataChange.AddItem("AddressCity", oldUser.AddressCity, UserProfile.AddressCity);
+      }
+      if (UserProfile.AddressPostCode != oldUser.AddressPostCode)
+      {
+        dataChange.AddItem("AddressPostCode", oldUser.AddressPostCode, UserProfile.AddressPostCode);
+      }
+      if (UserProfile.AddressState != oldUser.AddressState)
+      {
+        dataChange.AddItem("AddressState", oldUser.AddressState, UserProfile.AddressState);
+      }
+      if (UserProfile.AddressCountry != oldUser.AddressCountry)
+      {
+        dataChange.AddItem("AddressCountry", oldUser.AddressCountry, UserProfile.AddressCountry);
+      }
+
+      if (UserProfile.Guid == Guid.Empty)
+      {
+        UserProfile.Guid = Guid.NewGuid();
+      }
+
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = getItemsParameters();
+      setUsersParameters(cmdParms, UserProfile);
+
+      //
+      // Execute the update command.
+      //
+      if (EvSqlMethods.StoreProcUpdate(STORED_PROCEDURE_UpdateItem, cmdParms) == 0)
+      {
+        return Evado.Model.EvEventCodes.Database_Record_Update_Error;
+      }
+
+      this.UpdateObjectParameters(UserProfile.Parameters, UserProfile.Guid);
+      // 
+      // Post the data changes
+      // 
+      dataChanges.AddItem(dataChange);
+
+      this.LogMethodEnd("UpdateItem");
+      return Evado.Model.EvEventCodes.Ok;
+
+    }//END UpdateItem method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method adds items to the UserProfile data table. 
+    /// </summary>
+    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile: A User Profile object</param>
+    /// <returns>Evado.Model.EvEventCodes object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Exit, if the Guid exists. 
+    /// 
+    /// 2. Create new DB row Guid, if it is empty. 
+    /// 
+    /// 3. Define the sql parameters and execute the storeprocedure for adding items. 
+    /// 
+    /// 4. Exit, if the storeprocedure runs fail. 
+    /// 
+    /// 5. Else, return an event code for adding items.
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.EvEventCodes AddItem(
+      Evado.Model.Digital.EvUserProfile UserProfile)
+    {
+      this.FlushLog();
+      this.LogMethod("addItem method. ");
+      this.LogValue("UserId: " + UserProfile.UserId);
+      // 
+      // Define the local variables.
+      // 
+      Evado.Model.Digital.EvUserProfile user = this.getUser(UserProfile.UserId);
+
+      //
+      // If UserId is not equal to an empty GUID, return a Data_Duplicate_Id_Error. 
+      //
+      if (user.Guid != Guid.Empty)
+      {
+        this.LogDebug("UserGuid: " + user.Guid);
+        this.LogDebug("UserId: " + user.UserId);
+        return Evado.Model.EvEventCodes.Data_Duplicate_Id_Error;
+      }
+
+      // 
+      // Define the guid for the user of one is not allocated.
+      // 
+      if (UserProfile.Guid == Guid.Empty)
+      {
+        UserProfile.Guid = Guid.NewGuid();
+      }
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter[] cmdParms = getItemsParameters();
+      setUsersParameters(cmdParms, UserProfile);
+
+      /*
+      */
+      if (this.ClassParameters.LoggingLevel > 4)
+      {
+        // 
+        // Extract the parameters
+        //
+        if (cmdParms != null)
+        {
+          this.LogDebug("Parameters:");
+          foreach (SqlParameter prm in cmdParms)
+          {
+            this.LogDebug("Name: " + prm.ParameterName
+              + ", Value: " + prm.Value
+              + ", Type: " + prm.DbType);
+          }
+        }
+      }
+
+      //
+      // Execute the update command.
+      //
+      if (EvSqlMethods.StoreProcUpdate(STORED_PROCEDURE_AddItem, cmdParms) == 0)
+      {
+        return Evado.Model.EvEventCodes.Database_Record_Update_Error;
+      }
+
+      this.LogMethodEnd("UpdateItem");
+      return Evado.Model.EvEventCodes.Ok;
+
+    } //END AddItem Method 
+
+    // =====================================================================================
+    /// <summary>
+    /// This class deletes items from UserProfile table. 
+    /// </summary>
+    /// <param name="Profile">Evado.Model.Digital.EvUserProfile: A User Profile object</param>
+    /// <returns>Evado.Model.EvEventCodes: an event code for deleting items</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Exit, if the Guid is empty. 
+    /// 
+    /// 2. Define the sql query parameters and execute the storeprocedure for deleting items.
+    /// 
+    /// 3. Exit, if the storeprocedure runs fail. 
+    /// 
+    /// 4. Else, return an event code for deleting items.
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public Evado.Model.EvEventCodes DeleteItem(Evado.Model.Digital.EvUserProfile Profile)
+    {
+      this.LogMethod("DeleteItem method. "
+      + " UserId: " + Profile.UserId);
+
+      // 
+      // Check that the UserId is valid.
+      // 
+      if (Profile.Guid == Guid.Empty)
+      {
+        return Evado.Model.EvEventCodes.Identifier_Global_Unique_Identifier_Error;
+      }
+
+      // 
+      // Define the query parameters.
+      // 
+      SqlParameter[] cmdParms = new SqlParameter[]
+      {
+        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
+        new SqlParameter( PARM_UpdatedBy, SqlDbType.NVarChar,100),
+        new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime)
+      };
+      cmdParms[0].Value = Profile.Guid;
+      cmdParms[1].Value = Profile.UpdatedByUserId;
+      cmdParms[2].Value = Profile.UserCommonName;
+      cmdParms[3].Value = DateTime.Now;
+
+      //
+      // Execute the update command.
+      //
+      if (EvSqlMethods.StoreProcUpdate(STORED_PROCEDURE_DeleteItem, cmdParms) == 0)
+      {
+        return Evado.Model.EvEventCodes.Database_Record_Update_Error;
+      }
+
+      return Evado.Model.EvEventCodes.Ok;
+
+    }//END DeleteItem method
+
+    #endregion
+
+
+  }//END EvUserProfiles class
+
+}//END namespace Evado.Dal.Clinical

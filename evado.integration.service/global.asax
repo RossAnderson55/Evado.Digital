@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="Evado.Integration.Service.Global" Language="C#" %>

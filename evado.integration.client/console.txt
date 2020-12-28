@@ -1,0 +1,68 @@
+13-06-18 17:43:26 DEBUG: getAppConfigValues method finished.
+---------------------------------------------------------------------------------------------------------------------
+13-06-18 17:43:26 DEBUG: Evado.IntegrationClient.Program.getParameterValues method started.
+---------------------------------------------------------------------------------------------------------------------
+13-06-18 17:43:26 DEBUG: Evado.IntegrationClient.Program.setFileNames method started.
+13-06-18 17:43:26 DEBUG: QueryType: Export_Schedule
+13-06-18 17:43:26 DEBUG: InputFileName: 
+13-06-18 17:43:26 DEBUG: filename: .\reg01\
+13-06-18 17:43:27 DEBUG: FilePath: .\
+13-06-18 17:43:27 DEBUG: LogFileName: reg01-export_schedule-log.txt
+13-06-18 17:43:27 DEBUG: CsvFileName: reg01-export_schedule-data.csv
+---------------------------------------------------------------------------------------------------------------------
+13-06-18 17:43:27 DEBUG: Evado.IntegrationClient.Program.exportQuery method started.
+13-06-18 17:43:27 DEBUG: QueryType: Export_Schedule
+13-06-18 17:43:27 DEBUG: ImportFileName: 
+13-06-18 17:43:27 DEBUG: CsvFileName: reg01-export_schedule-data.csv
+13-06-18 17:43:27 DEBUG: CSV queryData:"QueryType:","Export_Schedule"
+"Parameter:","Name","Value"
+"Parameter:","Project_Id","REG01"
+"EventCode:","Ok"
+
+13-06-18 17:43:27 DEBUG: filename: .\reg01\
+---------------------------------------------------------------------------------------------------------------------
+13-06-18 17:43:27 DEBUG: Evado.IntegrationClient.Program.sendQuery method. 
+13-06-18 17:43:27 DEBUG: QueryData: Query Type: Export_Schedule
+Customer: ,
+ProjectId: REG01
+Name,Value
+Project_Id,REG01
+
+13-06-18 17:43:27 DEBUG: stWebServiceUrl: http://172.16.89.141:8080/ec/int/service/V2_0/Export_Schedule?session=SessionId
+13-06-18 17:43:27 DEBUG: Serialising the querry data object
+13-06-18 17:43:27 DEBUG: Query: {"QueryType":1,"ParameterList":[{"Name":2,"Value":"REG01"}],"Columns":null,"DataRows":null,"EventCode":-1,"ErrorMessage":null,"ProcessLog":null}
+13-06-18 17:43:27 DEBUG: Creating the WebRequest.
+13-06-18 17:43:27 DEBUG: Sending the the WebRequest.
+---------------------------------------------------------------------------------------------------------------------
+13-06-18 17:43:29 DEBUG: Evado.IntegrationClient.Program.ConvertResponseToString method. 
+13-06-18 17:43:29 DEBUG: Status code: 200 OK
+13-06-18 17:43:29 DEBUG: Access-Control-Allow-Origin: *
+13-06-18 17:43:29 DEBUG: Content-Length: 5987
+13-06-18 17:43:29 DEBUG: Cache-Control: private
+13-06-18 17:43:29 DEBUG: Content-Type: application/json
+13-06-18 17:43:29 DEBUG: Date: Wed, 13 Jun 2018 07:43:29 GMT
+13-06-18 17:43:29 DEBUG: Set-Cookie: Evado_UniForm=14rb502ovbipwchpc4yqqv0d; path=/; HttpOnly
+13-06-18 17:43:29 DEBUG: Server: Microsoft-IIS/10.0
+13-06-18 17:43:29 DEBUG: X-AspNet-Version: 4.0.30319
+13-06-18 17:43:29 DEBUG: X-Powered-By: ASP.NET
+13-06-18 17:43:29 DEBUG: ConvertResponseToString method FINISHED.
+13-06-18 17:43:29 DEBUG: JSON Serialised text length: 5987
+13-06-18 17:43:29 DEBUG: Deserialising JSON to Evado.Model.UniForm.AppData object.
+13-06-18 17:43:30 DEBUG: sendQuery method. FINISHED
+13-06-18 17:43:30 DEBUG: CSV Result: "QueryType:","Export_Schedule"
+"Parameter:","Name","Value"
+"Parameter:","Project_Id","REG01"
+"ColumnEvdoFieldId:",,"ProjectId","S_ScheduleId","S_Title","S_Description","S_Milestone_Period_Increment","M_MilestoneId","M_Title","M_Description","M_Order","M_Type","M_Inter_Visit_Period","M_Milestone_Range","M_Mandatory_Activity","M_Optional_Activity","M_Non_Clinical_Activity"
+"ColumnDataType:","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text","Text"
+"ColumnName:","ProjectId","S_ScheduleId","S_Title","S_Description","S_Milestone_Period_Increment","M_MilestoneId","M_Title","M_Description","M_Order","M_Type","M_Inter_Visit_Period","M_Milestone_Range","M_Mandatory_Activity","M_Optional_Activity","M_Non_Clinical_Activity"
+"ColumnIndex:","False","False","False","False","False","True","False","False","False","False","False","False","False","False","False"
+"ColumnMetaData:","","","","","Enumeration:  Days;Weeks;Months;","","","","","","","","","",""
+"RowData:","REG01","1","Default","Update to include CRF Lab Test collection processes.","Days","SCN","Screening","","0","Clinical","0","0","DC001","",""
+"RowData:","REG01","1","Default","Update to include CRF Lab Test collection processes.","Days","V001","Followup visit 1 month","","0","Clinical","1","5","DC002","",""
+"RowData:","REG01","1","Default","Update to include CRF Lab Test collection processes.","Days","V002","Followup visit 2 months","","0","Clinical","2","5","DC002","",""
+"RowData:","REG01","1","Default","Update to include CRF Lab Test collection processes.","Days","V003","Followup visit 3 months","","0","Clinical","3","5","DC002","",""
+"RowData:","REG01","1","Default","Update to include CRF Lab Test collection processes.","Days","V006","Followup visit 6 months","","0","Clinical","6","10","DC002","",""
+"EventCode:","Ok"
+
+13-06-18 17:43:30 DEBUG: executeQuery method Finished.
+13-06-18 17:43:30 DEBUG: FINISHED: Evado Integration Test.

@@ -1,0 +1,281 @@
+{
+  "QueryType": 1,
+  "ParameterList": [
+    {
+      "Name": 2,
+      "Value": "REG01"
+    }
+  ],
+  "Columns": [
+    {
+      "DataType": 2,
+      "Name": "ProjectId",
+      "EvadoFieldId": "ProjectId",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "S_ScheduleId",
+      "EvadoFieldId": "S_ScheduleId",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "S_Title",
+      "EvadoFieldId": "S_Title",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "S_Description",
+      "EvadoFieldId": "S_Description",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "S_Milestone_Period_Increment",
+      "EvadoFieldId": "S_Milestone_Period_Increment",
+      "MetaData": "Enumeration:  Days;Weeks;Months;",
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_MilestoneId",
+      "EvadoFieldId": "M_MilestoneId",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": true
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Title",
+      "EvadoFieldId": "M_Title",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Description",
+      "EvadoFieldId": "M_Description",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Order",
+      "EvadoFieldId": "M_Order",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Type",
+      "EvadoFieldId": "M_Type",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Inter_Visit_Period",
+      "EvadoFieldId": "M_Inter_Visit_Period",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Milestone_Range",
+      "EvadoFieldId": "M_Milestone_Range",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Mandatory_Activity",
+      "EvadoFieldId": "M_Mandatory_Activity",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Optional_Activity",
+      "EvadoFieldId": "M_Optional_Activity",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    },
+    {
+      "DataType": 2,
+      "Name": "M_Non_Clinical_Activity",
+      "EvadoFieldId": "M_Non_Clinical_Activity",
+      "MetaData": null,
+      "SqlDbType": 0,
+      "SqlLegnth": 0,
+      "SqlName": null,
+      "SqlParameter": "",
+      "Index": false
+    }
+  ],
+  "DataRows": [
+    {
+      "Columns": 15,
+      "Values": [
+        "REG01",
+        "1",
+        "Default",
+        "Update to include CRF Lab Test collection processes.",
+        "Days",
+        "SCN",
+        "Screening",
+        "",
+        "0",
+        "Clinical",
+        "0",
+        "0",
+        "DC001",
+        "",
+        ""
+      ]
+    },
+    {
+      "Columns": 15,
+      "Values": [
+        "REG01",
+        "1",
+        "Default",
+        "Update to include CRF Lab Test collection processes.",
+        "Days",
+        "V001",
+        "Followup visit 1 month",
+        "",
+        "0",
+        "Clinical",
+        "1",
+        "5",
+        "DC002",
+        "",
+        ""
+      ]
+    },
+    {
+      "Columns": 15,
+      "Values": [
+        "REG01",
+        "1",
+        "Default",
+        "Update to include CRF Lab Test collection processes.",
+        "Days",
+        "V002",
+        "Followup visit 2 months",
+        "",
+        "0",
+        "Clinical",
+        "2",
+        "5",
+        "DC002",
+        "",
+        ""
+      ]
+    },
+    {
+      "Columns": 15,
+      "Values": [
+        "REG01",
+        "1",
+        "Default",
+        "Update to include CRF Lab Test collection processes.",
+        "Days",
+        "V003",
+        "Followup visit 3 months",
+        "",
+        "0",
+        "Clinical",
+        "3",
+        "5",
+        "DC002",
+        "",
+        ""
+      ]
+    },
+    {
+      "Columns": 15,
+      "Values": [
+        "REG01",
+        "1",
+        "Default",
+        "Update to include CRF Lab Test collection processes.",
+        "Days",
+        "V006",
+        "Followup visit 6 months",
+        "",
+        "0",
+        "Clinical",
+        "6",
+        "10",
+        "DC002",
+        "",
+        ""
+      ]
+    }
+  ],
+  "EventCode": -1,
+  "ErrorMessage": null,
+  "ProcessLog": "13-06-18 17:43:29: Integration Service - Processing schedule data.\r\n"
+}

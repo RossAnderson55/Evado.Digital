@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <DebugType>
+    </DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E474874D-B81D-4A38-B3AB-88EEA768649D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Evado.Dal</AssemblyName>
+    <AssemblyOriginatorKeyFile>invision.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Evado.Dal</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>false</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Evado.Dal.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\evado.model.Digital\Evado.Model.Digital.csproj">
+      <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
+      <Name>Evado.Model.Digital</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
+    <Reference Include="Accessibility" />
+    <Reference Include="newtonsoft.json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\newtonsoft.json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clinical\EvAncillaryRecords.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvCustomers.cs" />
+    <Compile Include="Clinical\EvFormFieldSelectionLists.cs" />
+    <Compile Include="EvObjectParameters.cs" />
+    <Compile Include="Clinical\evformsections.cs" />
+    <Compile Include="EvDalBase.cs" />
+    <Compile Include="EvStaticSetting.cs" />
+    <Compile Include="Clinical\EvFormRecordComments.cs" />
+    <Compile Include="Clinical\EvBinaryFiles.cs" />
+    <Compile Include="EvDataBaseUpdates.cs" />
+    <Compile Include="EvApplicationEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvFormRecordFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvMilestoneActivities.cs" />
+    <Compile Include="Clinical\EvMilestones.cs" />
+    <Compile Include="Clinical\EvReportSaved.cs" />
+    <Compile Include="Clinical\EvReports.cs" />
+    <Compile Include="Clinical\EvReportTemplates.cs" />
+    <Compile Include="Clinical\EvActivities.cs" />
+    <Compile Include="EvEncrypt.cs" />
+    <Compile Include="Clinical\EvFormFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvForms.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvSchedules.cs" />
+    <Compile Include="Clinical\EdPlatforms.cs" />
+    <Compile Include="Clinical\EvDataChanges.cs" />
+    <Compile Include="Clinical\EvMenus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvOrganisations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EvSqlMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvAlerts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvFormRecords.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EdApplications.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvActivityForms.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clinical\EvUserProfiles.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\assemblyinfo.cs" />
+    <Compile Include="AssemblyAttributes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="invision.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

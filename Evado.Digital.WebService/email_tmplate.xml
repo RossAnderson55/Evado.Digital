@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-16"?>
+<EvStaticContentTemplates xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IntroductoryEmail_Title>{Customer} - Evado Account Details</IntroductoryEmail_Title>
+  <IntroductoryEmail_Body>Hi  {FirstName} {FamilyName}
+
+    This email contains your account details for accessing the Evado eClinical environment for the {Customer} trial environment.
+
+    Your Evado {Customer} user details are:
+
+    - Your user identifier: {UserId}
+
+    - Your password is: {Password}
+
+    - {Customer} EDC URL: {CustomerUrl}
+
+    Login {Customer} environment:
+
+    -  Log in using the above URL: {CustomerUrl}
+    -  The Evado home login page will be displayed.
+    -  Enter your user id as: {UserId}
+    -  Enter your password: {Password}
+    -  Click the Login button
+    -  Evado eClinical Home page will be displayed.
+
+    Please do not hesitate to contact us if you have any questions.
+
+    For support email:  __support@evado.com__ and one of our team will be happy to assist you.
+
+    Regards
+    Evado Support</IntroductoryEmail_Body>
+  <ResetPasswordEmail_Title>Password Reset Request</ResetPasswordEmail_Title>
+  <ResetPasswordEmail_Body>Hi  {FirstName} {FamilyName}
+
+    This email enables you to reset your Evado password.
+
+    Click the link below to open a web page and reset your user password.
+
+    {ResetUrl}
+
+    For support email:  __support@evado.com__ and one of our team will be happy to assist you.
+
+    Regards
+    Evado Support</ResetPasswordEmail_Body>
+  <UpdatePasswordEmail_Title>Evado Password Update Notification</UpdatePasswordEmail_Title>
+  <UpdatePasswordEmail_Body>Hi  {FirstName} {FamilyName}
+
+    This email contains an update of your account details for accessing the Evado eClinical environment for the {Customer} trial environment.
+
+    Your Evado {Customer} user details are:
+
+    - Your user identifier: {UserId}
+
+    - Your password is: {Password}
+
+    - {Customer} EDC URL: {CustomerUrl}
+
+    Please do not hesitate to contact us if you have any questions.
+
+    For support email:  __support@evado.com__ and one of our team will be happy to assist you.
+
+    Regards
+    Evado Support</UpdatePasswordEmail_Body>
+  <PasswordConfirmationEmail_Title>Password Reset Confirmation</PasswordConfirmationEmail_Title>
+  <PasswordConfirmationEmail_Body>Hi  {FirstName} {FamilyName}
+
+    Your evado user password has been reset on {DateStamp}
+
+    If you did not initiate this place contact Evado support immediately by emailing __support@evado.com__ so our staff can reset your email address for your.
+
+    Regards
+    Evado Support</PasswordConfirmationEmail_Body>
+  <DemoRegistrationInstuctions>Thanks you for opening the Evado OnDemand demonstration page.  
+
+This page will let you create an Evado demonstration and evaluation account so you can explore Evado in your own time.  The demonstration account gives you the same role as a site user would have.  You can add subjects, create subject visit schedule, attend visits and collect subject data. 
+
+To create your demo account you will need to provide: your name, a contact phone number and an email account.  The Evado demonstration account credentials will be emailed to you.   Your user account will be active for 28 days.
+
+The demonstration trial you will be joining, is a typical single trial customer, for a neck disability outcome study.   
+
+Once you have entered your name, telephone no, and email address, click the ‘Create User Account’ button and the user account will be generated and an email will be sent you containing your user ID, password and the link to access the login page.</DemoRegistrationInstuctions>
+  <DemoRegistrationConfirmation>Thank you for registering your demonstration user account.  Your account will be active for 28 days from today.   You can login at any time to explore Evado OnDemand.
+
+Online support is available if you encounter any problems or issues by emailing support@evado.com.
+
+Your account role is that of a typical site user.  If you want to explore more  Evado OnDemand features  contact support@evado.com to discuss your requirements.</DemoRegistrationConfirmation>
+  <DemoRegistrationError>Thank you for registering your demonstration user account.  Unfortunately and error has occurred registering you details.  Please contact  support@evado.com to arrange your demonstration account.</DemoRegistrationError>
+</EvStaticContentTemplates>
