@@ -446,7 +446,7 @@ namespace Evado.Bll.Clinical
         case EvReport.SelectionListTypes.Record_State:
           {
             this.LogValue ( "Record source selected." );
-            returnList = EvForm.getRptRecordStates ( );
+            returnList = EdRecord.getRptRecordStates ( );
             break;
           }
 
@@ -475,7 +475,7 @@ namespace Evado.Bll.Clinical
           {
             this.LogValue ( "Form source selected." );
             EvForms formsBll = new EvForms ( this.ClassParameter );
-            returnList = formsBll.getList ( Project.ApplicationId, EvFormRecordTypes.Null, EvFormObjectStates.Form_Issued, false );
+            returnList = formsBll.getList ( Project.ApplicationId, EvFormRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
             break;
           }
 

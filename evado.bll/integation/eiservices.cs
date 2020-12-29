@@ -304,7 +304,7 @@ namespace Evado.Bll.Integration
     /// <param name="ResultData">Evado.Model.Integration.EiData object</param>
     //-----------------------------------------------------------------------------------
     public void getFormFieldColumns (
-      List<Evado.Model.Digital.EvFormField> FieldList,
+      List<Evado.Model.Digital.EdRecordField> FieldList,
       Evado.Model.Integration.EiData ResultData )
     {
       this.LogMethod ( "getFormFieldColumns method." );
@@ -313,7 +313,7 @@ namespace Evado.Bll.Integration
       //
       // Iterate through the field list creating column object for each field object.
       //
-      foreach (Evado.Model.Digital.EvFormField field in FieldList)
+      foreach (Evado.Model.Digital.EdRecordField field in FieldList)
       {
         this.LogDebug ( "Field: " + field.FieldId + ", Type: " + field.TypeId );
         //
@@ -402,7 +402,7 @@ namespace Evado.Bll.Integration
     //-----------------------------------------------------------------------------------
    // private void getFormFieldColumnData (
     public void getFormFieldColumnData (
-      List<Evado.Model.Digital.EvFormField> FieldList,
+      List<Evado.Model.Digital.EdRecordField> FieldList,
       Evado.Model.Integration.EiData ResultData,
       Evado.Model.Integration.EiDataRow Row )
     {
@@ -415,7 +415,7 @@ namespace Evado.Bll.Integration
       //
       // Iterate through the field list creating column object for each field object.
       //
-      foreach (Evado.Model.Digital.EvFormField field in FieldList)
+      foreach (Evado.Model.Digital.EdRecordField field in FieldList)
       {
         //
         // add the correct column type for the field data type.
@@ -495,7 +495,7 @@ namespace Evado.Bll.Integration
     //-----------------------------------------------------------------------------------
     //private void getCheckBoxFieldColumn (
     public void getCheckBoxFieldColumn (
-      Evado.Model.Digital.EvFormField Field,
+      Evado.Model.Digital.EdRecordField Field,
       Evado.Model.Integration.EiData ResultData )
     {
       this.LogMethod ( "getCheckBoxFieldColumn method." );
@@ -529,7 +529,7 @@ namespace Evado.Bll.Integration
     /// <param name="Row">Evado.Model.Integration.EiDataRow object</param>
     //-----------------------------------------------------------------------------------
     private void getCheckBoxFieldColumnValues (
-      Evado.Model.Digital.EvFormField Field,
+      Evado.Model.Digital.EdRecordField Field,
       Evado.Model.Integration.EiData ResultData,
       Evado.Model.Integration.EiDataRow Row )
     {
@@ -578,7 +578,7 @@ namespace Evado.Bll.Integration
     //-----------------------------------------------------------------------------------
     //private void getTableFieldColumn (
     public void getTableFieldColumn (
-      Evado.Model.Digital.EvFormField Field,
+      Evado.Model.Digital.EdRecordField Field,
       Evado.Model.Integration.EiData ResultData )
     {
       this.LogMethod ( "getTableFieldColumn method." );
@@ -616,17 +616,17 @@ namespace Evado.Bll.Integration
 
           switch (Field.Table.Header [ tableColumn ].TypeId)
           {
-            case Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeNumeric:
+            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeNumeric:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Floating_Point;
               break;
             }
-            case Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeDate:
+            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeDate:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Date;
               break;
             }
-            case Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeYesNo:
+            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeYesNo:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Boolean;
               break;
@@ -654,7 +654,7 @@ namespace Evado.Bll.Integration
     //-----------------------------------------------------------------------------------
     //private void getTableFieldColumnValues (
     public void getTableFieldColumnValues (
-      Evado.Model.Digital.EvFormField Field,
+      Evado.Model.Digital.EdRecordField Field,
       Evado.Model.Integration.EiData ResultData,
       Evado.Model.Integration.EiDataRow Row )
     {
@@ -704,7 +704,7 @@ namespace Evado.Bll.Integration
             //
             switch (Field.Table.Header [ tableColumn ].TypeId)
             {
-              case Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeYesNo:
+              case Evado.Model.Digital.EdRecordTableHeader.ItemTypeYesNo:
               {
                 if (value == "yes" || value == "1" || value == "true")
                 {

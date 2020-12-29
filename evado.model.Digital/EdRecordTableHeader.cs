@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// The Column Header Class definition.
   /// </summary>
   [Serializable]
-  public class EvFormFieldTableColumnHeader
+  public class EdRecordTableHeader
   {
 
     #region Define the Object ScheduleStates as Constants.

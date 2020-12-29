@@ -97,10 +97,6 @@ namespace Evado.Model.Digital
     /// </summary>
     public const string CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID = "TM";
     /// <summary>
-    /// this constant defines the management menu group identifier.
-    /// </summary>
-    public const string CONST_MENU_GLOBAL_PROJECT_GROUP_ID = "GBL";
-    /// <summary>
     /// this constant defines the global project menu group identifier.
     /// </summary>
     public const string CONST_MENU_PROJECT_RECORD_GROUP_ID = "TR";
@@ -124,24 +120,9 @@ namespace Evado.Model.Digital
     public const string CONST_SITE_DASHBOARD_GROUP = "STDSH";
 
     /// <summary>
-    /// The constant defines site dashboard group key value
-    /// </summary>
-    public const string CONST_FINANCE_DASHBOARD_GROUP = "FNDSH";
-
-    /// <summary>
-    /// The constant defines site dashboard group key value
-    /// </summary>
-    public const string CONST_BUDGET_DASHBOARD_GROUP = "BDDSH";
-
-    /// <summary>
     /// The constant defines trail menu group key value
     /// </summary>
     public const string CONST_PROJECT_MENU_GROUP = "TMNU";
-
-    /// <summary>
-    /// The constant defines trail menu group key value
-    /// </summary>
-    public const string CONST_GLOBAL_PROJECT_MENU_GROUP = "GMNU";
 
     /// <summary>
     /// The constant defines subject menu group key value
@@ -339,8 +320,6 @@ namespace Evado.Model.Digital
     //  ---------------------------------------------------------------------------------
     public bool SelectMenuItem (
       List<EvModuleCodes> LoadedModuleList,
-      EdApplication Project,
-      EvOrganisation Organisation, 
       EvRoleList UserRole )
     {
       //
@@ -348,7 +327,7 @@ namespace Evado.Model.Digital
       //
       if ( this.hasRole ( UserRole ) == false )
       {
-        return false;
+        //return false;
       }
 
       if ( this.hasModule( EvModuleCodes.All_Modules ) == true )

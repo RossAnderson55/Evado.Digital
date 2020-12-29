@@ -114,7 +114,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="Form">Form object</param>
     /// <returns>bool : True: SubmittedRecords Successfully,  False : script exited permaturally</returns>
     //  ---------------------------------------------------------------------------------
-    public EvEventCodes runScript ( EvServerPageScript.ScripEventTypes Type, EvForm Form )
+    public EvEventCodes runScript ( EvServerPageScript.ScripEventTypes Type, EdRecord Form )
     {
       this._debugLog.AppendLine (  Evado.Model.Digital.EvcStatics.CONST_METHOD_START
        + "Evado.UniForm.Clinical.EvServerPageScript.runScript" );
@@ -123,7 +123,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the methods variables and objects.
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
-      string stFileName = Form.TrialId + "_" + Form.FormId;
+      string stFileName = Form.ApplicationId + "_" + Form.LayoutId;
 
       this._debugLog.AppendLine ( "Type: " + Type );
       this._debugLog.AppendLine ( "FileName: " + stFileName );
@@ -248,7 +248,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="Form">Form object</param>
     /// <returns>bool : True: SubmittedRecords Successfully,  False : script exited permaturally</returns>
     //  ---------------------------------------------------------------------------------
-    private EvEventCodes OnOpenPage ( string FileName, EvForm Form )
+    private EvEventCodes OnOpenPage ( string FileName, EdRecord Form )
     {
       this._debugLog.AppendLine (  Evado.Model.Digital.EvcStatics.CONST_METHOD_START
        + "Evado.UniForm.Clinical.EvServerPageScript.OnOpenPage" );
@@ -337,7 +337,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="Form">Form object</param>
     /// <returns>New computed OnUpdateForm value.</returns>
     //  ---------------------------------------------------------------------------------
-    private EvEventCodes onUpdatePage ( string FileName, EvForm Form )
+    private EvEventCodes onUpdatePage ( string FileName, EdRecord Form )
     {
       this._debugLog.AppendLine (  Evado.Model.Digital.EvcStatics.CONST_METHOD_START
        + "Evado.UniForm.Clinical.EvServerPageScript.onUpdatePage" );

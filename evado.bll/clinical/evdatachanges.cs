@@ -447,15 +447,15 @@ namespace Evado.Bll.Clinical
       // 
       // Get the form objects list .
       // 
-      List<EvForm> view = forms.GetFormList ( TrialId, EvFormRecordTypes.Null,
-        EvFormObjectStates.Null );
+      List<EdRecord> view = forms.GetFormList ( TrialId, EvFormRecordTypes.Null,
+        EdRecordObjectStates.Null );
 
       this._DebugLog.AppendLine (  forms.Log );
 
       // 
       // Iterate through the form objects list. 
       // 
-      foreach ( EvForm form in view )
+      foreach ( EdRecord form in view )
       {
         option = new EvOption ( form.Guid.ToString ( ),
          form.Title + " (" + form.Design.Version + " " + form.StateDesc + ")" );
@@ -552,7 +552,7 @@ namespace Evado.Bll.Clinical
     private List<EvOption> GetFormList ( string ProjectId )
     {
       EvForms forms = new EvForms ( );
-      return forms.getList ( ProjectId, EvFormRecordTypes.Null, EvFormObjectStates.Form_Issued, true );
+      return forms.getList ( ProjectId, EvFormRecordTypes.Null, EdRecordObjectStates.Form_Issued, true );
     }//END GetFormList class
 
 
@@ -653,7 +653,7 @@ namespace Evado.Bll.Clinical
       EvFormRecords trialRecords = new EvFormRecords ( );
       EvQueryParameters query = new EvQueryParameters ( ProjectId );
       query.SubjectId = SubjectId;
-      query.State = EvFormObjectStates.Queried_Record_Copy.ToString ( );
+      query.State = EdRecordObjectStates.Queried_Record_Copy.ToString ( );
       query.NotSelectedState = true;
 
       List<EvOption> list = trialRecords.getOptionList ( query, true );

@@ -66,7 +66,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration defines the trial record form type.
     /// </summary>
-    Trial_Record = 8,
+    Normal_Record = 8,
 
     /// <summary>
     /// This enumeration defines the updateable medical record form type.

@@ -69,37 +69,22 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This constat selects all rows from a view EvTrial_View.
     /// </summary>
-    private const string SQL_SELECAS_QUERY = "Select * FROM EvTrial_View ";
-
-    /// <summary>
-    /// This constant selects all rows from a view EvTrialByOrganisation_View.
-    /// </summary>
-    private const string SQL_SELECAS_QUERY_BY_ORGANISATION = "Select * FROM EvTrialByOrganisation_View ";
+    private const string SQL_SELECT_QUERY = "Select * FROM ED_APPLICATION_SETTINGS ";
 
     /// <summary>
     /// This constant defines a stored procedure for adding a Project.
     /// </summary>
-    private const string STORED_PROCEDURE_ADD_TRIAL = "usr_Trial_add";
+    private const string STORED_PROCEDURE_ADD_TRIAL = "USR_APPLICATION_SETTINGS_ADD";
 
     /// <summary>
     /// This constant defines a stored procedure for updating a Project. 
     /// </summary>
-    private const string STORED_PROCEDURE_UPDATE_TRIAL = "usr_Trial_update";
+    private const string STORED_PROCEDURE_UPDATE_TRIAL = "USR_APPLICATION_SETTINGS_UPDATE";
 
     /// <summary>
     /// This constant defines a stored procedure for deleting a Project. 
     /// </summary>
-    private const string STORED_PROCEDURE_DELETE_TRIAL = "usr_Trial_delete";
-
-    /// <summary>
-    /// This constant defines a stored procedure for deleting a Project Data. 
-    /// </summary>
-    private const string STORED_PROCEDURE_DELETE_TRIAL_DATA = "usr_Delete_Trial_Data";
-
-    /// <summary>
-    /// This constant defines a stored procedure for deleting Project Subject Data. 
-    /// </summary>
-    private const string STORED_PROCEDURE_DELETE_SUBJECAS_DATA = "usr_Delete_Trial_Subject_Data";
+    private const string STORED_PROCEDURE_DELETE_TRIAL = "USR_APPLICATION_SETTINGS_DELETE";
 
     //
     // Define the SQL parameter constants.
@@ -148,10 +133,24 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     private static SqlParameter [ ] GetParameters ( )
     {
+      /*
+        @Guid uniqueidentifier,
+	      @CUSTOMER_GUID uniqueidentifier,
+	      @STATE varchar(20),
+	      @TITLE nvarchar(50),
+	      @HTTP_REFERENCE nvarchar(250),
+	      @DESCRIPTION ntext,
+	      @CONFIRMATION_EMAIL_TITLE nvarchar(100),
+	      @CONFIRMATION_EMAIL_BODY ntext,
+	      @SIGN_OFFS ntext,
+	      @UPDATE_USER_ID nvarchar(100),
+	      @UPDATE_USER nvarchar(100),
+	      @UPDATE_DATE datetime
+       */
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_APPLICATON_ID, SqlDbType.VarChar, 10),
+        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( PARM_STATE,SqlDbType.NVarChar, 20),
         new SqlParameter( PARM_Title, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250),
@@ -172,29 +171,29 @@ namespace Evado.Dal.Clinical
     /// This method assigns the Project object's values to the array of sql query parameters.
     /// </summary>
     /// <param name="cmdParms">SqlParameter: an array of sql query parameters</param>
-    /// <param name="Trial">EvTrial: A Project object</param>
+    /// <param name="Application">EvTrial: A Project object</param>
     /// <remarks>
     /// This method consists of the following step:
     /// 
     /// 1. Bind the Project Object's values to the array of sql query parameters.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EdApplication Trial )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdApplication Application )
     {
       // 
       // Set the parameter values.
       // 
-      cmdParms [ 0 ].Value = Trial.Guid;
-      cmdParms [ 1 ].Value = Trial.ApplicationId;
-      cmdParms [ 2 ].Value = Trial.State.ToString ( );
-      cmdParms [ 3 ].Value = Trial.Title;
-      cmdParms [ 4 ].Value = Trial.HttpReference;
-      cmdParms [ 5 ].Value = Trial.Description;
-      cmdParms [ 6 ].Value = Trial.ConfirmationEmailSubject;
-      cmdParms [ 7 ].Value = Trial.ConfirmationEmailBody;
-      cmdParms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Trial.Signoffs );
-      cmdParms [ 9 ].Value = Trial.UpdatedByUserId;
-      cmdParms [ 10 ].Value = Trial.UserCommonName;
+      cmdParms [ 0 ].Value = Application.Guid;
+      cmdParms [ 1 ].Value = this.ClassParameters.CustomerGuid;
+      cmdParms [ 2 ].Value = Application.State.ToString ( );
+      cmdParms [ 3 ].Value = Application.Title;
+      cmdParms [ 4 ].Value = Application.HttpReference;
+      cmdParms [ 5 ].Value = Application.Description;
+      cmdParms [ 6 ].Value = Application.ConfirmationEmailSubject;
+      cmdParms [ 7 ].Value = Application.ConfirmationEmailBody;
+      cmdParms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Application.Signoffs );
+      cmdParms [ 9 ].Value = Application.UpdatedByUserId;
+      cmdParms [ 10 ].Value = Application.UserCommonName;
       cmdParms [ 11 ].Value = DateTime.Now; //Update Date
     }//END SetParameters method   
 
@@ -312,10 +311,11 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the SQL query string.
       // 
-      _sqlQueryString = SQL_SELECAS_QUERY
+      _sqlQueryString = SQL_SELECT_QUERY
         + " WHERE  ( " + EdApplications.DB_CUSTOMER_GUID + " = " + EdApplications.PARM_CUSTOMER_GUID + " )\r\n";
 
-      if ( State != EdApplication.ApplicationStates.All )
+      if ( State != EdApplication.ApplicationStates.All
+        && State != EdApplication.ApplicationStates.Null )
       {
           if ( StateValueNotSelected == true )
           {
@@ -326,7 +326,7 @@ namespace Evado.Dal.Clinical
             _sqlQueryString += " AND (AS_State = '" + State + "') ";
           }
       }
-      _sqlQueryString += " ORDER BY TrialId";
+      _sqlQueryString += " ORDER BY APPLICATION_ID";
 
       this.LogDebug ( _sqlQueryString );
 
@@ -347,9 +347,14 @@ namespace Evado.Dal.Clinical
             // 
             DataRow row = table.Rows [ Count ];
 
-            EdApplication trial = this.getRowData ( row );
+            EdApplication application = this.getRowData ( row );
 
-            view.Add ( trial );
+            //
+            // load the application parameters.
+            //
+            application.Parameters = this.LoadObjectParameters ( application.Guid );
+
+            view.Add ( application );
           }
         }
       }
@@ -487,7 +492,7 @@ namespace Evado.Dal.Clinical
       // 
       // Define the local variables
       // 
-      EdApplication project = new EdApplication ( );
+      EdApplication application = new EdApplication ( );
 
       // 
       // Check that the data object has a valid trial object unique identifier.
@@ -495,7 +500,7 @@ namespace Evado.Dal.Clinical
       if ( ApplicationGuid == Guid.Empty )
       {
         this.LogMethodEnd ( "GetApplication." );
-        return project;
+        return application;
       }
 
       // 
@@ -512,7 +517,7 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the SQL statement for the query.
       // 
-      _sqlQueryString = SQL_SELECAS_QUERY
+      _sqlQueryString = SQL_SELECT_QUERY
         + "WHERE (" + EdApplications.DB_CUSTOMER_GUID + " = " + EdApplications.PARM_CUSTOMER_GUID + " )\r\n"
         + " AND (AS_GUID = " + EdApplications.PARM_Guid + ")\r\n";
 
@@ -527,7 +532,7 @@ namespace Evado.Dal.Clinical
         if ( table.Rows.Count == 0 )
         {
           this.LogMethodEnd ( "GetApplication." );
-          return project;
+          return application;
         }
 
         // 
@@ -538,16 +543,21 @@ namespace Evado.Dal.Clinical
         // 
         // Fill the EvTrial object.
         // 
-        project = this.getRowData ( row );
+        application = this.getRowData ( row );
 
       }//END Using 
 
-      this.LogDebug ( "State: " + project.State );
+      //
+      // load the application parameters.
+      //
+      application.Parameters = this.LoadObjectParameters ( application.Guid );
+
+      this.LogDebug ( "State: " + application.State );
       // 
       // Return the EvStudy data object.
       // 
       this.LogMethodEnd ( "GetApplication." );
-      return project;
+      return application;
 
     }//END GetTrial method
 
@@ -608,7 +618,7 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the SQL statement for the query.
       // 
-      _sqlQueryString = SQL_SELECAS_QUERY
+      _sqlQueryString = SQL_SELECT_QUERY
         + "WHERE (" + EdApplications.DB_CUSTOMER_GUID + " = " + EdApplications.PARM_CUSTOMER_GUID + " )\r\n"
         + " AND (APPLICATION_ID = " + EdApplications.PARM_APPLICATON_ID + ")\r\n";
 
@@ -637,6 +647,11 @@ namespace Evado.Dal.Clinical
         application = this.getRowData ( row );
 
       }//END Using 
+
+      //
+      // load the application parameters.
+      //
+      application.Parameters = this.LoadObjectParameters ( application.Guid );
 
       // 
       // Return the EvTrial object.
@@ -719,6 +734,7 @@ namespace Evado.Dal.Clinical
         return EvEventCodes.Database_Record_Update_Error;
       }
 
+      this.UpdateObjectParameters ( Application.Parameters, Application.Guid );
 
       // 
       // Store the datachange object 

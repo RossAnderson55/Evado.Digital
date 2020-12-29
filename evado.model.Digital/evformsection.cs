@@ -381,7 +381,7 @@ namespace Evado.Model.Digital
     /// This method adds a default display role to the section.
     /// </summary>
     /// <param name="Role">String: a role string</param>
-    public void addRole ( EvForm.FormAccessRoles Role )
+    public void addRole ( EdRecord.FormAccessRoles Role )
     {
       string role = Role.ToString ( );
 
@@ -398,7 +398,7 @@ namespace Evado.Model.Digital
     /// This method deletes a default display role to the section.
     /// </summary>
     /// <param name="Role">String: a role string</param>
-    public void deleteRole ( EvForm.FormAccessRoles Role )
+    public void deleteRole ( EdRecord.FormAccessRoles Role )
     {
       string role = Role.ToString ( );
 
@@ -416,7 +416,7 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="Role">EvRoleList: a role enumeration</param>
     /// <returns></returns>
-    public bool hasRole ( EvForm.FormAccessRoles Role )
+    public bool hasRole ( EdRecord.FormAccessRoles Role )
     {
       if ( this._DisplayRoles == String.Empty )
       {

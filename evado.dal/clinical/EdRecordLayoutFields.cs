@@ -34,7 +34,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form field data object.
   /// </summary>
-  public class EvFormFields : EvDalBase
+  public class EdRecordLayoutFields : EvDalBase
     {
     #region class initialisation methods
     // ==================================================================================
@@ -42,7 +42,7 @@ namespace Evado.Dal.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvFormFields ( )
+    public EdRecordLayoutFields ( )
       {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
       }
@@ -53,7 +53,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvFormFields ( EvClassParameters ClassParameters )
+    public EdRecordLayoutFields ( EvClassParameters ClassParameters )
       {
       this.ClassParameters = ClassParameters;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
@@ -485,7 +485,7 @@ namespace Evado.Dal.Clinical
     /// 2. Update the values from formfield object to the sql query parameters array. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private void setParameters ( SqlParameter [ ] cmdParms, EvFormField FormField )
+    private void setParameters ( SqlParameter [ ] cmdParms, EdRecordField FormField )
       {
       //
       // Initialize the serialized table structure. 
@@ -500,19 +500,19 @@ namespace Evado.Dal.Clinical
         {
         this.LogValue ( "Column 1 header text: " + FormField.Table.Header [ 0 ].Text );
 
-        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EvFormFieldTable> ( FormField.Table );
+        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( FormField.Table );
         }
 
-      if ( FormField.ValidationRules.ValidationLowerLimit >= FormField.ValidationRules.ValidationUpperLimit )
+      if ( FormField.Design.ValidationLowerLimit >= FormField.Design.ValidationUpperLimit )
         {
-        FormField.ValidationRules.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        FormField.ValidationRules.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        FormField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        FormField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
         }
 
-      if ( FormField.ValidationRules.AlertLowerLimit >= FormField.ValidationRules.AlertUpperLimit )
+      if ( FormField.Design.AlertLowerLimit >= FormField.Design.AlertUpperLimit )
         {
-        FormField.ValidationRules.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        FormField.ValidationRules.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        FormField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        FormField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
         }
 
       //
@@ -520,7 +520,7 @@ namespace Evado.Dal.Clinical
       //
       cmdParms [ 0 ].Value = FormField.Guid;
       cmdParms [ 1 ].Value = FormField.FormGuid;
-      cmdParms [ 2 ].Value = FormField.TrialId;
+      cmdParms [ 2 ].Value =String.Empty;
       cmdParms [ 3 ].Value = FormField.FieldId;
       cmdParms [ 4 ].Value = FormField.TypeId;
       cmdParms [ 5 ].Value = FormField.Design.Title;
@@ -534,48 +534,47 @@ namespace Evado.Dal.Clinical
       cmdParms [ 12 ].Value = serialisedTableStructure;
       cmdParms [ 13 ].Value = FormField.Design.Order;
       cmdParms [ 14 ].Value = FormField.Design.Mandatory;
-      cmdParms [ 15 ].Value = FormField.Design.SafetyReport;
-      cmdParms [ 16 ].Value = FormField.Design.DataPoint;
+      cmdParms [ 16 ].Value = FormField.Design.AiDataPoint;
       cmdParms [ 17 ].Value = FormField.Design.HideField;
       cmdParms [ 18 ].Value = FormField.UpdatedByUserId;
-      cmdParms [ 19 ].Value = FormField.UserCommonName;
+      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
 
       cmdParms [ 20 ].Value = DateTime.Now;
-      cmdParms [ 21 ].Value = FormField.cDashMetadata;
+      cmdParms [ 21 ].Value = FormField.Design.cDashMetadata;
       cmdParms [ 22 ].Value = FormField.Design.UnitScaling;
       cmdParms [ 23 ].Value = FormField.Design.ExSelectionListId;
       cmdParms [ 24 ].Value = FormField.Design.ExSelectionListCategory;
       cmdParms [ 25 ].Value = FormField.Design.FieldCategory;
       cmdParms [ 26 ].Value = FormField.Design.DefaultValue;
-      cmdParms [ 27 ].Value = FormField.Design.SelectByCodingValue;
+      cmdParms [ 27 ].Value = true;
       cmdParms [ 28 ].Value = FormField.Design.SummaryField;
       cmdParms [ 29 ].Value = FormField.Design.MultiLineTextField;
 
-      cmdParms [ 30 ].Value = FormField.Design.HorizontalButtons;
-      cmdParms [ 31 ].Value = FormField.Design.FormIds;
+      cmdParms [ 30 ].Value = false;
+      cmdParms [ 31 ].Value = String.Empty;
       cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
       cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
       cmdParms [ 34 ].Value = FormField.Design.Options;
       cmdParms [ 35 ].Value = FormField.Design.Section;
-      cmdParms [ 36 ].Value = FormField.ValidationRules.ValidationLowerLimit;
-      cmdParms [ 37 ].Value = FormField.ValidationRules.ValidationUpperLimit;
-      cmdParms [ 38 ].Value = FormField.ValidationRules.AlertLowerLimit;
-      cmdParms [ 39 ].Value = FormField.ValidationRules.AlertUpperLimit;
+      cmdParms [ 36 ].Value = FormField.Design.ValidationLowerLimit;
+      cmdParms [ 37 ].Value = FormField.Design.ValidationUpperLimit;
+      cmdParms [ 38 ].Value = FormField.Design.AlertLowerLimit;
+      cmdParms [ 39 ].Value = FormField.Design.AlertUpperLimit;
 
       cmdParms [ 40 ].Value = EvcStatics.CONST_NUMERIC_MINIMUM;
       cmdParms [ 41 ].Value = EvcStatics.CONST_NUMERIC_MAXIMUM;
-      cmdParms [ 42 ].Value = FormField.ValidationRules.NotValidForMale;
-      cmdParms [ 43 ].Value = FormField.ValidationRules.NotValidForFemale;
-      cmdParms [ 44 ].Value = FormField.ValidationRules.IsAfterBirthDate;
-      cmdParms [ 45 ].Value = FormField.ValidationRules.IsAfterConsentDate;
-      cmdParms [ 46 ].Value = FormField.ValidationRules.NotValid.EncodedRules;
-      cmdParms [ 47 ].Value = FormField.ValidationRules.NotValidOptions.EncodedRules;
-      cmdParms [ 48 ].Value = FormField.ValidationRules.NormalRangeLowerLimit;
-      cmdParms [ 49 ].Value = FormField.ValidationRules.NormalRangeUpperLimit;
+      cmdParms [ 42 ].Value = false;
+      cmdParms [ 43 ].Value = false;
+      cmdParms [ 44 ].Value = false;
+      cmdParms [ 45 ].Value = false;
+      cmdParms [ 46 ].Value = false;
+      cmdParms [ 47 ].Value = false;
+      cmdParms [ 48 ].Value = FormField.Design.NormalRangeLowerLimit;
+      cmdParms [ 49 ].Value = FormField.Design.NormalRangeUpperLimit;
 
-      cmdParms [ 50 ].Value = FormField.ValidationRules.WithinDaysOfRecordDate;
-      cmdParms [ 51 ].Value = FormField.ValidationRules.WithinDaysOfVisitDate;
-      cmdParms [ 52 ].Value = FormField.Design.AnalogueScale;
+      cmdParms [ 50 ].Value = 99;
+      cmdParms [ 51 ].Value = 999;
+      cmdParms [ 52 ].Value = String.Empty;
       cmdParms [ 53 ].Value = FormField.Design.AnalogueLegendStart;
       cmdParms [ 54 ].Value = FormField.Design.AnalogueLegendFinish;
       cmdParms [ 55 ].Value = FormField.Design.JavaScript;
@@ -613,63 +612,33 @@ namespace Evado.Dal.Clinical
     /// 8. Return the formfield object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvFormField getRowData ( DataRow Row )
+    private EdRecordField getRowData ( DataRow Row )
       {
       // 
       // Initialise xmltable string and a return formfield object. 
       // 
       string xmlTable = String.Empty;
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       //
       // Update formfield object with the compatible data row items. 
       //
       formField.CustomerGuid = EvSqlMethods.getGuid ( Row, DB_CUSTOMER_GUID );
       formField.Guid = EvSqlMethods.getGuid ( Row, "TCI_Guid" );
-      //formField.Uid = EvSqlMethods.getInteger ( Row, "TCI_Uid" );
       formField.FormGuid = EvSqlMethods.getGuid ( Row, "TC_Guid" );
-      //formField.FormUid = EvSqlMethods.getInteger ( Row, "TC_Uid" );
-      //formField.FormItemUid = formField.Uid;
 
-      formField.TrialId = EvSqlMethods.getString ( Row, "TrialId" );
       formField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
       String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
       xmlTable = EvSqlMethods.getString ( Row, "TCI_Table" );
 
-      //
-      // Extract the form fields validation rules
-      //
-      string xmlValidationRules = EvSqlMethods.getString ( Row, "TCI_XmlValidationRules" );
-      if ( xmlValidationRules != String.Empty )
-        {
-        formField.ValidationRules =
-          Evado.Model.EvStatics.DeserialiseObject<EvFormFieldValidationRules> ( xmlValidationRules );
-        }
-      else
-        {
-        formField.ValidationRules = new EvFormFieldValidationRules ( );
-
-        formField.ValidationRules.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationLowerLimit" );
-        formField.ValidationRules.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationUpperLimit" );
-        formField.ValidationRules.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-        formField.ValidationRules.AlertUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-        formField.ValidationRules.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_LOWER_LIMIT" );
-        formField.ValidationRules.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_UPPER_LIMIT" );
-
-        formField.ValidationRules.NotValidForMale = EvSqlMethods.getBool ( Row, "TCI_NOT_VALID_FOR_MALES" );
-        formField.ValidationRules.NotValidForFemale = EvSqlMethods.getBool ( Row, "TCI_NOT_VALID_FOR_FEMALES" );
-        formField.ValidationRules.IsAfterBirthDate = EvSqlMethods.getBool ( Row, "TCI_AFTER_DATE_OF_BIRTH" );
-        formField.ValidationRules.IsAfterConsentDate = EvSqlMethods.getBool ( Row, "TCI_AFTER_CONSENT_DATE" );
-
-        formField.ValidationRules.WithinDaysOfRecordDate = EvSqlMethods.getInteger ( Row, "TCI_DAYS_FROM_RECORD_DATE" );
-        formField.ValidationRules.WithinDaysOfVisitDate = EvSqlMethods.getInteger ( Row, "TCI_DAYS_FROM_VISIT_DATE" );
-
-        formField.ValidationRules.NotValid.EncodedRules = EvSqlMethods.getString ( Row, "TCI_FIELD_NOT_VALID" );
-        formField.ValidationRules.NotValidOptions.EncodedRules = EvSqlMethods.getString ( Row, "TCI_FIELD_OPTIONS_NOT_VALID" );
-
-        }
+      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationLowerLimit" );
+      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationUpperLimit" );
+      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
+      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
+      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_LOWER_LIMIT" );
+      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_UPPER_LIMIT" );
 
       string xmlDesign = EvSqlMethods.getString ( Row, "TCI_XmlData" );
       if ( xmlDesign != String.Empty )
@@ -680,7 +649,7 @@ namespace Evado.Dal.Clinical
         xmlDesign = xmlDesign.Replace ( "Medication_Summary", "Special_Medication_Summary" );
         xmlDesign = xmlDesign.Replace ( "Matrix", "Special_Matrix" );
 
-        formField.Design = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldDesign> ( xmlDesign );
+        formField.Design = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordFieldDesign> ( xmlDesign );
         }
       else
         {
@@ -689,23 +658,14 @@ namespace Evado.Dal.Clinical
         formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, "TCI_EX_SELECTION_LIST_CATEGORY" );
         formField.Design.FieldCategory = EvSqlMethods.getString ( Row, "TCI_FIELD_CATEGORY" );
         formField.Design.DefaultValue = EvSqlMethods.getString ( Row, "TCI_DEFAULT_VALUE" );
-        formField.Design.SelectByCodingValue = EvSqlMethods.getBool ( Row, "TCI_SELECT_BY_CODING_VALUE" );
         formField.Design.SummaryField = EvSqlMethods.getBool ( Row, "TCI_SUMMARY_FIELD" );
         formField.Design.MultiLineTextField = EvSqlMethods.getBool ( Row, "TCI_MULTI_LINE_TEXT_FIELD" );
-        formField.Design.HorizontalButtons = EvSqlMethods.getBool ( Row, "TCI_HORIZONTAL_BUTTONS" );
-        formField.Design.FormIds = EvSqlMethods.getString ( Row, "TCI_FORM_IDS" );
         formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, "TCI_INITIAL_OPTION_LIST" );
         formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, "TCI_INITIALVERSION" );
         formField.Design.Options = EvSqlMethods.getString ( Row, "TCI_OPTIONS" );
         formField.Design.Section = EvSqlMethods.getString ( Row, "TCI_SECTION" );
         formField.Design.Instructions = EvSqlMethods.getString ( Row, "TCI_INSTRUCTIONS" );
         formField.Design.HttpReference = EvSqlMethods.getString ( Row, "TCI_Reference" );
-
-        value = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_SCALE" );
-        if ( value != String.Empty )
-          {
-          formField.Design.AnalogueScale = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormField.AnalogueScaleOptions> ( value );
-          }
         formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_START" );
         formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_FINISH" );
         }
@@ -716,14 +676,12 @@ namespace Evado.Dal.Clinical
       formField.Design.Unit = EvSqlMethods.getString ( Row, "TCI_Unit" );
       formField.Design.Order = EvSqlMethods.getInteger ( Row, "TCI_Order" );
       formField.Design.Mandatory = EvSqlMethods.getBool ( Row, "TCI_Mandatory" );
-      formField.Design.DataPoint = EvSqlMethods.getBool ( Row, "TCI_DataPoint" );
-      formField.Design.SafetyReport = EvSqlMethods.getBool ( Row, "TCI_SafetyReport" );
+      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, "TCI_DataPoint" );
       formField.Design.HideField = EvSqlMethods.getBool ( Row, "TCI_HideField" );
-      formField.FormId = EvSqlMethods.getString ( Row, "FormId" );
       formField.UpdatedByUserId = EvSqlMethods.getString ( Row, "TCI_UpdatedByUserId" );
       formField.Updated = EvSqlMethods.getString ( Row, "TCI_UpdatedBy" );
       formField.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TCI_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
-      formField.cDashMetadata = EvSqlMethods.getString ( Row, "TCI_CDASH_METADATA" );
+      formField.Design.cDashMetadata = EvSqlMethods.getString ( Row, "TCI_CDASH_METADATA" );
 
       //
       // if the data type is a table then deseriallise the formfield data table.
@@ -735,14 +693,14 @@ namespace Evado.Dal.Clinical
         //
         // Initialise the table objects.
         //
-        formField.Table = new EvFormFieldTable ( );
+        formField.Table = new EdRecordTable ( );
 
         //
         // Validate whehter the Table has data.
         //
         if ( xmlTable != String.Empty )
           {
-          formField.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldTable> ( xmlTable );
+          formField.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
 
           // 
           // Iterate through the table and set the validation rules
@@ -759,7 +717,7 @@ namespace Evado.Dal.Clinical
               String cell = formField.Table.Rows [ j ].Column [ i ];
 
               if ( cell == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
-                && formField.Table.Header [ i ].TypeId != EvFormFieldTableColumnHeader.ItemTypeNumeric )
+                && formField.Table.Header [ i ].TypeId != EdRecordTableHeader.ItemTypeNumeric )
                 {
                 cell = "NA";
                 }
@@ -776,17 +734,6 @@ namespace Evado.Dal.Clinical
         this.LogValue ( "Column 1 header text: " + formField.Table.Header [ 0 ].Text );
         }
 
-      //
-      // If the selection validation options are missing add them.
-      //
-      if ( ( formField.TypeId == Evado.Model.EvDataTypes.Selection_List
-          || formField.TypeId == Evado.Model.EvDataTypes.Radio_Button_List
-          || formField.TypeId == Evado.Model.EvDataTypes.Check_Box_List )
-        && ( formField.ValidationRules.NotValidOptions == null ) )
-        {
-        formField.ValidationRules.NotValidOptions = new EvFormFieldValidationNotValid ( );
-        }
-
       // 
       // If it is an external selection list, add the relevant coding visitSchedule items.
       // 
@@ -795,7 +742,7 @@ namespace Evado.Dal.Clinical
         this.LogValue ( "External ListId: " + formField.Design.ExSelectionListId
           + " Category: " + formField.Design.ExSelectionListCategory );
 
-        EvFormFieldSelectionLists externalCodingLists = new EvFormFieldSelectionLists ( );
+        EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
 
         formField.Design.Options = externalCodingLists.getItemCodingList (
           formField.Design.ExSelectionListId,
@@ -825,23 +772,24 @@ namespace Evado.Dal.Clinical
       //
       // If formfield typeId is either analogue scale or horizontal radio buttons, select the design by coding value
       //
-      if ( formField.TypeId == Evado.Model.EvDataTypes.Analogue_Scale
-        || formField.TypeId == Evado.Model.EvDataTypes.Horizontal_Radio_Buttons )
+
+      if ( formField.Design.ValidationLowerLimit >= formField.Design.ValidationUpperLimit )
         {
-        formField.Design.SelectByCodingValue = true;
+          formField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+          formField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
         }
 
-      if ( formField.ValidationRules.ValidationLowerLimit >= formField.ValidationRules.ValidationUpperLimit )
+      if ( formField.Design.AlertLowerLimit >= formField.Design.AlertUpperLimit )
         {
-        formField.ValidationRules.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        formField.ValidationRules.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+          formField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+          formField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
         }
 
-      if ( formField.ValidationRules.AlertLowerLimit >= formField.ValidationRules.AlertUpperLimit )
-        {
-        formField.ValidationRules.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        formField.ValidationRules.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
-        }
+      if ( formField.Design.NormalRangeLowerLimit >= formField.Design.NormalRangeUpperLimit )
+      {
+        formField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        formField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+      }
 
       // 
       // Return the formfield object.
@@ -857,20 +805,18 @@ namespace Evado.Dal.Clinical
     /// <param name="Row">DataRow: an sql data query row</param>
     /// <returns>EvFormField: a form field object</returns>
     // -------------------------------------------------------------------------------------
-    private EvFormField getChartOptionRowData ( DataRow Row )
+    private EdRecordField getChartOptionRowData ( DataRow Row )
       {
       // 
       // Initialise xmltable string and a return formfield object. 
       // 
       string xmlTable = String.Empty;
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.TrialId = EvSqlMethods.getString ( Row, "TrialId" );
       formField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
-      formField.FormId = EvSqlMethods.getString ( Row, "FormId" );
       formField.Design.Title = EvSqlMethods.getString ( Row, "TCI_Subject" );
       String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
@@ -906,16 +852,16 @@ namespace Evado.Dal.Clinical
     /// 5. Return the FormFields list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormField> GetView ( Guid FormGuid )
+    public List<EdRecordField> GetView ( Guid FormGuid )
       {
       this.LogMethod ( "GetView" );
       this.LogValue ( "FormGuid: " + FormGuid );
       //
       // Initialize the debug log and a return list of formfield
       //
-      List<EvFormField> view = new List<EvFormField> ( );
+      List<EdRecordField> view = new List<EdRecordField> ( );
 
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
       //    EvFormSections FormSections = new EvFormSections ( );
       // 
       // Define the SQL query parameters.
@@ -1122,18 +1068,18 @@ namespace Evado.Dal.Clinical
       // 
       if ( OnlySingleFields == false )
         {
-        _sqlQueryString = _sqlQueryView + "WHERE (" + EvFormFields.DB_CUSTOMER_GUID + "=" + EvFormFields.PARM_CUSTOMER_GUID + ") "
+        _sqlQueryString = _sqlQueryView + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
           + "\r\n AND (TrialId = @TrialId) "
           + " AND (FormId = @FormId) "
-          + " AND (TC_State = '" + EvFormObjectStates.Form_Issued + "') "
+          + " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
           + " ORDER BY TCI_Order";
         }
       else
         {
-        _sqlQueryString = _sqlQueryView + "WHERE (" + EvFormFields.DB_CUSTOMER_GUID + "=" + EvFormFields.PARM_CUSTOMER_GUID + ") "
+        _sqlQueryString = _sqlQueryView + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
           + "\r\n AND (TrialId = @TrialId) "
           + " AND (FormId = @FormId) "
-          + " AND (TC_State = '" + EvFormObjectStates.Form_Issued + "') "
+          + " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
           + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
           + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Table + "') "
           + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
@@ -1236,7 +1182,7 @@ namespace Evado.Dal.Clinical
       // Define the query string.
       // 
       _sqlQueryString = _sqlDataAnalysisQuery_List
-        + "WHERE (" + EvFormFields.DB_CUSTOMER_GUID + "=" + EvFormFields.PARM_CUSTOMER_GUID + ") "
+        + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
           + "\r\n AND  WHERE (TrialId = @TrialId) ;";
 
       this.LogDebug ( _sqlQueryString );
@@ -1263,29 +1209,30 @@ namespace Evado.Dal.Clinical
           //
           // if it is a non numeric field the continue to the next field.
           //
-          if ( field.Design.hasNumericValues == false )
-            {
-            this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a non numeric field",
-              field.FormId, field.FieldId, field.TypeId );
-            continue;
-            }
-          this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a numeric field",
-              field.FormId, field.FieldId, field.TypeId );
+            /*
+            if ( field.Design.hasNumericValues == false )
+              {
+              this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a non numeric field",
+                field.FormId, field.FieldId, field.TypeId );
+              continue;
+              }
+            this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a numeric field",
+                field.FormId, field.FieldId, field.TypeId );
 
 
-          option = new EvOption (
-              field.FormId + EvChart.CONST_SOURCE_DELIMITER + field.FieldId,
-              field.FormId + " : " + field.FieldId + " - " + field.Title );
+            option = new EvOption (
+                field.FormId + EvChart.CONST_SOURCE_DELIMITER + field.FieldId,
+                field.FormId + " : " + field.FieldId + " - " + field.Title );
 
-          if ( option.Description.Length > 80 )
-            {
-            option.Description = option.Description.Substring ( 0, 80 ) + " ...";
-            }
-
-          // 
-          // Append the new FormField object to the array.
-          // 
-          list.Add ( option );
+            if ( option.Description.Length > 80 )
+              {
+              option.Description = option.Description.Substring ( 0, 80 ) + " ...";
+              }
+            // 
+            // Append the new FormField object to the array.
+            // 
+            list.Add ( option );
+            */
 
           }//END iteration loop
 
@@ -1349,7 +1296,7 @@ namespace Evado.Dal.Clinical
       // Initialize a list of report rows, a formfield object and the number of report columns
       // 
       List<EvReportRow> reportRows = new List<EvReportRow> ( );
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
       int inNoColumns = Report.Columns.Count;
 
       //
@@ -1470,10 +1417,10 @@ namespace Evado.Dal.Clinical
       // Generate the SQL query string.
       //
       _sqlQueryString = _sqlQueryView
-        + "WHERE (" + EvFormFields.DB_CUSTOMER_GUID + "=" + EvFormFields.PARM_CUSTOMER_GUID + ") "
+        + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
         + "\r\n AND(TrialId = @TrialId) "
         + "\r\n AND (FormId = @FormId) "
-        + "\r\n AND (TC_State = '" + EvFormObjectStates.Form_Issued + "') "
+        + "\r\n AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
         + " ORDER BY TCI_Order";
 
       this.LogValue ( "SQL QUERY: " + _sqlQueryString );
@@ -1499,7 +1446,7 @@ namespace Evado.Dal.Clinical
 
           this.LogValue ( "Field: " + formField.FieldId
             + " - " + formField.Title
-            + " Type: " + formField.Type );
+            + " Type: " + formField.TypeId );
 
           EvReportRow reportRow = new EvReportRow ( Report.Columns.Count );
 
@@ -1508,7 +1455,7 @@ namespace Evado.Dal.Clinical
           //
           reportRow.ColumnValues [ 0 ] = formField.FieldId;
           reportRow.ColumnValues [ 1 ] = formField.Title;
-          reportRow.ColumnValues [ 2 ] = formField.Type;
+          reportRow.ColumnValues [ 2 ] = EvStatics.getEnumStringValue(formField.TypeId);
 
           //
           // Switch formfield typeId and update the third column value
@@ -1525,10 +1472,10 @@ namespace Evado.Dal.Clinical
                 }
             case Evado.Model.EvDataTypes.Numeric:
                 {
-                reportRow.ColumnValues [ 3 ] = "Val. Min: " + formField.ValidationRules.ValidationLowerLimit
-                  + " Val. Max: " + formField.ValidationRules.ValidationUpperLimit
-                  + " Alert. Min: " + formField.ValidationRules.AlertLowerLimit
-                  + " Alert. Max: " + formField.ValidationRules.AlertUpperLimit;
+                reportRow.ColumnValues [ 3 ] = "Val. Min: " + formField.Design.ValidationLowerLimit
+                  + " Val. Max: " + formField.Design.ValidationUpperLimit
+                  + " Alert. Min: " + formField.Design.AlertLowerLimit
+                  + " Alert. Max: " + formField.Design.AlertUpperLimit;
                 if ( formField.Design.Unit != String.Empty )
                   {
                   reportRow.ColumnValues [ 3 ] += " Unit: " + formField.Design.UnitHtml;
@@ -1539,7 +1486,7 @@ namespace Evado.Dal.Clinical
             case Evado.Model.EvDataTypes.Special_Matrix:
                 {
                 reportRow.ColumnValues [ 3 ] = String.Empty;
-                foreach ( EvFormFieldTableColumnHeader header in formField.Table.Header )
+                foreach ( EdRecordTableHeader header in formField.Table.Header )
                   {
                   reportRow.ColumnValues [ 3 ] += "Col: " + header.No
                     + " Title: " + header.Text
@@ -1606,7 +1553,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Formfield data object. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvFormField getField ( long Uid )
+    public EdRecordField getField ( long Uid )
       {
       //
       // Initialize the debug log and a return formfield object. 
@@ -1614,7 +1561,7 @@ namespace Evado.Dal.Clinical
       this.LogMethod ( "getField" );
       this.LogValue ( "Uid: " + Uid );
 
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       // 
       // Validate whether the Unique identifier is not zero
@@ -1687,7 +1634,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the formfield object.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvFormField getField ( Guid FieldGuid )
+    public EdRecordField getField ( Guid FieldGuid )
       {
       //
       // Initialize the debug log and a return formfield object.
@@ -1695,7 +1642,7 @@ namespace Evado.Dal.Clinical
       this.LogMethod ( "getField" );
       this.LogValue ( "FieldGuid: " + FieldGuid );
 
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       // 
       // Validate whether the field Guid is not empty.
@@ -1772,7 +1719,7 @@ namespace Evado.Dal.Clinical
     /// 6. Return a formfield object. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvFormField getField ( string ProjectId, Guid FormGuid, string FieldId )
+    public EdRecordField getField ( string ProjectId, Guid FormGuid, string FieldId )
       {
       //
       // Initialize the debug log and a return formfield object
@@ -1782,7 +1729,7 @@ namespace Evado.Dal.Clinical
         + " FormGuid: " + FormGuid
         + " FieldId: " + FieldId );
 
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       // 
       // Validate whether the VisitId and FieldId are not empty
@@ -1850,7 +1797,7 @@ namespace Evado.Dal.Clinical
       // 
       if ( formField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
         {
-        EvFormFieldSelectionLists externalCodingLists = new EvFormFieldSelectionLists ( );
+        EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
 
         formField.Design.Options = externalCodingLists.getItemCodingList (
           formField.Design.ExSelectionListId,
@@ -1888,11 +1835,9 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for updating items. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EvFormField FormField )
+    public EvEventCodes UpdateItem ( EdRecordField FormField )
       {
       this.LogMethod ( "updateItem method. " );
-      this.LogValue ( "ProjectId: " + FormField.TrialId );
-      this.LogValue ( "FormId: " + FormField.FormId );
       this.LogValue ( "FieldId: " + FormField.FieldId );
       //
       // Initialize debug log and the old formfield object
@@ -1902,7 +1847,7 @@ namespace Evado.Dal.Clinical
       //
       // retrieve the previous version of the field.
       //
-      EvFormField oldItem = this.getField ( FormField.Guid );
+      EdRecordField oldItem = this.getField ( FormField.Guid );
       if ( oldItem.Guid == Guid.Empty )
         {
         this.LogValue ( "FormId not returned." );
@@ -1953,7 +1898,7 @@ namespace Evado.Dal.Clinical
     /// 2. Return the datachange object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private EvDataChange SetDataChange ( EvFormField OldField, EvFormField NewField )
+    private EvDataChange SetDataChange ( EdRecordField OldField, EdRecordField NewField )
       {
       this.LogMethod ( "SetDataChange method. " );
       // 
@@ -1990,92 +1935,46 @@ namespace Evado.Dal.Clinical
 
       dataChange.AddItem ( "Unit", OldField.Design.Unit, NewField.Design.Unit );
 
-      if ( OldField.ValidationRules != null
-        && NewField.ValidationRules != null )
-        {
-        dataChange.AddItem ( "Validation_NotValidForFemale",
-          OldField.ValidationRules.NotValidForFemale,
-          NewField.ValidationRules.NotValidForFemale );
-
-        dataChange.AddItem ( "Validation_NotValidForMale",
-          OldField.ValidationRules.NotValidForMale,
-          NewField.ValidationRules.NotValidForMale );
 
         dataChange.AddItem ( "Design_JavaScript",
           OldField.Design.JavaScript,
           NewField.Design.JavaScript );
 
-        if ( OldField.ValidationRules.NotValidOptions != null
-          && NewField.ValidationRules.NotValidOptions != null )
-          {
 
-          for ( int count = 0; count < NewField.ValidationRules.NotValidOptions.Rules.Count; count++ )
-            {
-            if ( OldField.ValidationRules.NotValidOptions.Rules.Count
-              <= count )
-              {
-              dataChange.AddItem ( "Validation_Options_Rules_" + count,
-                "",
-                NewField.ValidationRules.NotValidOptions.Rules [ count ] );
-              }
-            else
-              {
-              dataChange.AddItem ( "Validation_Options_Rules_" + count,
-                OldField.ValidationRules.NotValidOptions.Rules [ count ],
-                NewField.ValidationRules.NotValidOptions.Rules [ count ] );
-              }
-            }
-          }
 
-        dataChange.AddItem ( "Validation_IsAfterBirthDate",
-          OldField.ValidationRules.IsAfterBirthDate,
-          NewField.ValidationRules.IsAfterBirthDate );
-
-        dataChange.AddItem ( "Validation_IsAfterConsentDate",
-          OldField.ValidationRules.IsAfterConsentDate,
-          NewField.ValidationRules.IsAfterConsentDate );
-
-        dataChange.AddItem ( "Validation_WithinDaysOfRecordDate",
-          OldField.ValidationRules.WithinDaysOfRecordDate,
-          NewField.ValidationRules.WithinDaysOfRecordDate );
-
-        dataChange.AddItem ( "Validation_WithinDaysOfVisitDate",
-          OldField.ValidationRules.WithinDaysOfVisitDate,
-          NewField.ValidationRules.WithinDaysOfVisitDate );
 
 
         dataChange.AddItem ( "Validation_AlertLowerLimit",
-          OldField.ValidationRules.AlertLowerLimit,
-          NewField.ValidationRules.AlertLowerLimit );
+          OldField.Design.AlertLowerLimit,
+          NewField.Design.AlertLowerLimit );
 
         dataChange.AddItem ( "Validation_AlertUpperLimit",
-          OldField.ValidationRules.AlertUpperLimit,
-          NewField.ValidationRules.AlertUpperLimit );
+          OldField.Design.AlertUpperLimit,
+          NewField.Design.AlertUpperLimit );
 
         dataChange.AddItem ( "Validation_NormaRangeLowerLimit",
-          OldField.ValidationRules.NormalRangeLowerLimit,
-          NewField.ValidationRules.NormalRangeLowerLimit );
+          OldField.Design.NormalRangeLowerLimit,
+          NewField.Design.NormalRangeLowerLimit );
 
         dataChange.AddItem ( "Validation_NormaRangeUpperLimit",
-          OldField.ValidationRules.NormalRangeUpperLimit,
-          NewField.ValidationRules.NormalRangeUpperLimit );
+          OldField.Design.NormalRangeUpperLimit,
+          NewField.Design.NormalRangeUpperLimit );
 
         dataChange.AddItem ( "Validation_ValidationLowerLimit",
-          OldField.ValidationRules.ValidationLowerLimit,
-          NewField.ValidationRules.ValidationLowerLimit );
+          OldField.Design.ValidationLowerLimit,
+          NewField.Design.ValidationLowerLimit );
 
         dataChange.AddItem ( "Validation_SafetyUpperLimit",
-          OldField.ValidationRules.ValidationUpperLimit,
-          NewField.ValidationRules.ValidationUpperLimit );
-        }
+          OldField.Design.ValidationUpperLimit,
+          NewField.Design.ValidationUpperLimit );
 
       if ( OldField.Table != null
         && NewField.Table != null )
         {
         for ( int index = 0; index < NewField.Table.Header.Length; index++ )
           {
-          EvFormFieldTableColumnHeader oldHeader = OldField.Table.Header [ index ];
-          EvFormFieldTableColumnHeader newHeader = NewField.Table.Header [ index ];
+          EdRecordTableHeader oldHeader = OldField.Table.Header [ index ];
+          EdRecordTableHeader newHeader = NewField.Table.Header [ index ];
 
           dataChange.AddItem ( "Field_Table_Header_No_" + index, oldHeader.No, newHeader.No );
 
@@ -2134,14 +2033,9 @@ namespace Evado.Dal.Clinical
           NewField.Design.AnalogueLegendStart );
 
         dataChange.AddItem (
-          "Field_Design_AnalogueScale",
-          OldField.Design.AnalogueScale,
-          NewField.Design.AnalogueScale );
-
-        dataChange.AddItem (
           "Field_Design_DataPoint",
-          OldField.Design.DataPoint,
-          NewField.Design.DataPoint );
+          OldField.Design.AiDataPoint,
+          NewField.Design.AiDataPoint );
 
         dataChange.AddItem (
           "Field_Design_DefaultValue",
@@ -2168,20 +2062,12 @@ namespace Evado.Dal.Clinical
           OldField.Design.FieldCategory,
           NewField.Design.FieldCategory );
 
-        dataChange.AddItem (
-          "Field_Design_FormIds",
-          OldField.Design.FormIds,
-          NewField.Design.FormIds );
 
         dataChange.AddItem (
           "Field_Design_HideField",
           OldField.Design.HideField,
           NewField.Design.HideField );
 
-        dataChange.AddItem (
-          "Field_Design_HorizontalButtons,",
-          OldField.Design.HorizontalButtons,
-          NewField.Design.HorizontalButtons );
 
         dataChange.AddItem (
           "Field_Design_InitialOptionList",
@@ -2218,20 +2104,11 @@ namespace Evado.Dal.Clinical
           OldField.Design.HttpReference,
           NewField.Design.HttpReference );
 
-        dataChange.AddItem (
-          "Field_Design_SafetyReport",
-          OldField.Design.SafetyReport,
-          NewField.Design.SafetyReport );
 
         dataChange.AddItem (
           "Field_Design_Section",
           OldField.Design.Section,
           NewField.Design.Section );
-
-        dataChange.AddItem (
-          "Field_Design_SelectByCodingValue",
-          OldField.Design.SelectByCodingValue,
-          NewField.Design.SelectByCodingValue );
 
         dataChange.AddItem (
           "Field_Design_Subject,",
@@ -2275,7 +2152,7 @@ namespace Evado.Dal.Clinical
     /// 4. Return the event code for adding items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes AddItem ( EvFormField FormField )
+    public EvEventCodes AddItem ( EdRecordField FormField )
       {
       //
       // Initialize the debug log, a local sql query string and a new formfield object. 
@@ -2286,7 +2163,7 @@ namespace Evado.Dal.Clinical
 
       string _sqlQueryString = String.Empty;
 
-      EvFormField newField = this.getField ( FormField.TrialId, FormField.FormGuid, FormField.FieldId );
+      EdRecordField newField = this.getField ( FormField.Guid );
 
       //
       // Validate whether the formUid and Uid do not exist. 
@@ -2337,13 +2214,12 @@ namespace Evado.Dal.Clinical
     /// 3. Return the event code for deleting the items from formfield table.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes DeleteItem ( EvFormField Field )
+    public EvEventCodes DeleteItem ( EdRecordField Field )
       {
       //
       // Initialize the debug log
       //
       this.LogMethod ( "DeleteItem method." );
-      this.LogValue ( "ProjectId: " + Field.TrialId );
       this.LogValue ( "FieldId: " + Field.FieldId );
 
       // 
@@ -2352,10 +2228,6 @@ namespace Evado.Dal.Clinical
       if ( Field.Guid == Guid.Empty )
         {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
-        }
-      if ( Field.UserCommonName == String.Empty )
-        {
-        return EvEventCodes.Identifier_User_Id_Error;
         }
 
       // 
@@ -2370,7 +2242,7 @@ namespace Evado.Dal.Clinical
       };
       _cmdParms [ 0 ].Value = Field.Guid;
       _cmdParms [ 1 ].Value = Field.UpdatedByUserId;
-      _cmdParms [ 2 ].Value = Field.UserCommonName;
+      _cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       _cmdParms [ 3 ].Value = DateTime.Now;
 
       //

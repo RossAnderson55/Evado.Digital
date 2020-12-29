@@ -30,16 +30,17 @@ namespace Evado.Model.Digital
   /// This class defines the Form Field design data object.
   /// </summary>
   [Serializable]
-  public class EvFormFieldDesign
+  public class EdRecordFieldDesign
   {
     /// <summary>
     ///  Class initialisation method.
     /// </summary>
-    public EvFormFieldDesign ( )
+    public EdRecordFieldDesign ( )
     {
-      this.TypeId = EvDataTypes.Null;
-      this.QuizValue = String.Empty;
-      this.QuizAnswer = String.Empty;
+      if ( this.TypeId == null )
+      {
+        this.TypeId = EvDataTypes.Null;
+      }
     }
 
     #region Internal members
@@ -59,10 +60,9 @@ namespace Evado.Model.Digital
     private string _FieldCategory = String.Empty;
     private bool _SelectByCodingValue = true;
     private bool _Mandatory = false;
-    private bool _SafetyReport = false;
     private bool _HideField = false;
     private bool _SummaryField = false;
-    private bool _DataPoint = true;
+    private bool _AiDataPoint = true;
     private bool _MultiLineTextField = false;
     private bool _HorizontalButtons = false;
     private string _FormIds = String.Empty;
@@ -71,19 +71,28 @@ namespace Evado.Model.Digital
 
     private string _JavaScript = String.Empty;
 
-    private EvFormField.AnalogueScaleOptions _AnalogueScale = EvFormField.AnalogueScaleOptions.Null;
     private string _AnalogueLegendStart = String.Empty;
     private string _AnalogueLegendFinish = String.Empty;
-    private EvFormFieldTable _Table = null;
+    private EdRecordTable _Table = null;
     #endregion
 
     #region class property
 
-
+    EvDataTypes _TypeId = EvDataTypes.Null;
     /// <summary>
     /// This property contains a type identifier of a form field.
     /// </summary>
-    public Evado.Model.EvDataTypes TypeId { get; set; }
+    public Evado.Model.EvDataTypes TypeId
+    {
+      get
+      {
+        return this._TypeId;
+      }
+      set
+      {
+        this._TypeId = value;
+      }
+    }
 
     /// <summary>
     /// This property contains a dictionary global unique identifier of form field design
@@ -133,21 +142,6 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a subject of form field design
     /// </summary>
-    public string Subject
-    {
-      get
-      {
-        return this._Title;
-      }
-      set
-      {
-        this._Title = value.Trim ( );
-      }
-    }
-
-    /// <summary>
-    /// This property contains a subject of form field design
-    /// </summary>
     public string Title
     {
       get
@@ -185,32 +179,6 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property contains html instructions of form field design
-    /// </summary>
-    public string htmInstructions
-    {
-      get
-      {
-        return this._Instructions.Replace ( "\r\n", "<br/>" );
-      }
-    }
-
-    /// <summary>
-    /// This property contains an instruction paragraph array of form field design
-    /// </summary>
-    public string [ ] InstructionPar
-    {
-      get
-      {
-        return this._Instructions.Split ( '\r' );
-      }
-      set
-      {
-        string Null = this._Instructions;
-      }
-    }
-
-    /// <summary>
     /// This property contains a reference of form field design
     /// </summary>
     public string HttpReference
@@ -225,21 +193,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    String _ValueWidth = String.Empty;
-    /// <summary>
-    /// This property contains a value width as a string value.
-    /// </summary>
-    public string ValueWidth
-    {
-      get
-      {
-        return this._ValueWidth;
-      }
-      set
-      {
-        this._ValueWidth = value.Trim ( );
-      }
-    }
 
     /// <summary>
     /// This property indicates whether the form field design contains multi line text field.
@@ -400,15 +353,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    /// <summary>
-    /// This property contains a quiz value 
-    /// </summary>
-    public string QuizValue { get; set; }
-
-    /// <summary>
-    /// This property contains a quiz value 
-    /// </summary>
-    public string QuizAnswer { get; set; }
 
     /// <summary>
     /// This property contains a JavaScript string for the validation rules
@@ -511,21 +455,6 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property contains an analogue scale object of form field design
-    /// </summary>
-    public EvFormField.AnalogueScaleOptions AnalogueScale
-    {
-      get
-      {
-        return this._AnalogueScale;
-      }
-      set
-      {
-        this._AnalogueScale = value;
-      }
-    }
-
-    /// <summary>
     /// This property contains an analogue legend start of form field design
     /// </summary>
     public string AnalogueLegendStart
@@ -555,33 +484,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    /// <summary>
-    /// This property contains a coding value that a form field design is selected by.
-    /// </summary>
-    public bool SelectByCodingValue
-    {
-      get
-      {
-        return this._SelectByCodingValue;
-
-      }
-      set
-      {
-        this._SelectByCodingValue = value;
-
-        //
-        // If the select by codeing is true and the field is not a 
-        // selection list set it to false.
-        //
-        if ( this.TypeId != EvDataTypes.Radio_Button_List
-          && this.TypeId != EvDataTypes.Selection_List
-          && this.TypeId != EvDataTypes.External_Selection_List
-          && this.TypeId != EvDataTypes.Special_Quiz_Radio_Buttons )
-        {
-          this._SelectByCodingValue = false;
-        }
-      }
-    }
 
     /// <summary>
     /// This property indicates whether a form field design is manadatory.
@@ -599,32 +501,17 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property indicates a safe report of form field design
-    /// </summary>
-    public bool SafetyReport
-    {
-      get
-      {
-        return this._SafetyReport;
-      }
-      set
-      {
-        this._SafetyReport = value;
-      }
-    }
-
-    /// <summary>
     /// This property indicates a data point of form field design
     /// </summary>
-    public bool DataPoint
+    public bool AiDataPoint
     {
       get
       {
-        return this._DataPoint;
+        return this._AiDataPoint;
       }
       set
       {
-        this._DataPoint = value;
+        this._AiDataPoint = value;
 
         //
         // Turn off the data point output if the data cannot be outputte.
@@ -647,8 +534,7 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Special_Subject_Demographics:
           case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
-              this._DataPoint = false;
-              this._SafetyReport = false;
+              this._AiDataPoint = false;
               break;
             }
         }
@@ -686,24 +572,9 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property indicates horizontal buttons of form field design
-    /// </summary>
-    public bool HorizontalButtons
-    {
-      get
-      {
-        return this._HorizontalButtons;
-      }
-      set
-      {
-        this._HorizontalButtons = value;
-      }
-    }
-
-    /// <summary>
     /// This property contains a table object of form field design
     /// </summary>
-    public EvFormFieldTable Table
+    public EdRecordTable Table
     {
       get
       {
@@ -715,18 +586,19 @@ namespace Evado.Model.Digital
       }
     }
 
+    String _cDashMetadata = String.Empty;
     /// <summary>
-    /// This property contains a form identifier of form field design
+    /// This property contains cDash metadata values. 
     /// </summary>
-    public string FormIds
+    public string cDashMetadata
     {
       get
       {
-        return this._FormIds.Trim ( );
+        return this._cDashMetadata;
       }
       set
       {
-        this._FormIds = value;
+        this._cDashMetadata = value;
       }
     }
 
@@ -758,6 +630,70 @@ namespace Evado.Model.Digital
       {
         this._InitialVersion = value;
       }
+    }
+
+    #endregion
+
+    #region Validation Rules
+
+    private float _ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+    /// <summary>
+    /// This property contains the numeric validation lower limit.
+    /// </summary>
+    public float ValidationLowerLimit
+    {
+      get { return this._ValidationLowerLimit; }
+      set { this._ValidationLowerLimit = value; }
+    }
+
+    private float _ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+    /// <summary>
+    /// This property contains the numeric validation upper limit
+    /// </summary>
+    public float ValidationUpperLimit
+    {
+      get { return this._ValidationUpperLimit; }
+      set { this._ValidationUpperLimit = value; }
+    }
+
+    private float _AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+    /// <summary>
+    /// This property contains the numeric alert lower limit.
+    /// </summary>
+    public float AlertLowerLimit
+    {
+      get { return this._AlertLowerLimit; }
+      set { this._AlertLowerLimit = value; }
+    }
+
+    private float _AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+    /// <summary>
+    /// This property contains the numeric alert upper limit
+    /// </summary>
+    public float AlertUpperLimit
+    {
+      get { return this._AlertUpperLimit; }
+      set { this._AlertUpperLimit = value; }
+    }
+
+    private float _NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+    /// <summary>
+    /// This property contains the numeric normal lower limit.
+    /// </summary>
+    public float NormalRangeLowerLimit
+    {
+      get { return this._NormalRangeLowerLimit; }
+      set { this._NormalRangeLowerLimit = value; }
+    }
+
+    private float _NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+    /// <summary>
+    /// This property contains the numeric normal upper limit
+    /// </summary>
+    public float NormalRangeUpperLimit
+    {
+      get { return this._NormalRangeUpperLimit; }
+      set { this._NormalRangeUpperLimit = value; }
     }
 
     #endregion

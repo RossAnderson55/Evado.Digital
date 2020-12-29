@@ -1753,16 +1753,13 @@
     <value>Common Form Selection</value>
   </data>
   <data name="Form_Field_Is_Data_Point_List_Label" xml:space="preserve">
-    <value> ( Data Point ) </value>
+    <value> ( AI Data Point ) </value>
   </data>
   <data name="Form_Field_Is_Hidden_List_Label" xml:space="preserve">
     <value> ( Hidden Field ) </value>
   </data>
   <data name="Form_Field_Is_Mandatory_List_Label" xml:space="preserve">
     <value> ( Mandatory ) </value>
-  </data>
-  <data name="Form_Field_Selection_By_Value_Label" xml:space="preserve">
-    <value> ( Selection by value ) </value>
   </data>
   <data name="Record_Page_Title_Sponsor_Prefix" xml:space="preserve">
     <value> Spnsr: </value>

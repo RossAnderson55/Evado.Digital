@@ -28,7 +28,7 @@ namespace Evado.Model.Digital
   /// Business entity used to model Trial
   /// </summary>
   [Serializable]
-  public class EdApplication 
+  public class EdApplication : Evado.Model.EvParameters
   {
     #region Emunerators
 
@@ -90,7 +90,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration define an identifier field name of a trial
       /// </summary>
-      TrialId,
+      ApplicationId,
 
       /// <summary>
       /// This enumeration define an service field name of a trial
@@ -486,114 +486,12 @@ namespace Evado.Model.Digital
     public List<EvOption> ScheduleList { get; set; }
 
 
-    /// <summary>
-    /// This property contains a list of class parameters.
-    /// </summary>
-    public List<EvObjectParameter> Parameters { get; set; }
-
     // END Properties
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region Class methods
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns the parameter object if exists in the parameter list.
-    /// </summary>
-    /// <param name="Name">The paramater name</param>
-    /// <returns>EvApplicationParameter object </returns>
-    //  ------------------------------------------------------------------------------
-    private String getParameter ( Object Name )
-    {
-      string name = Name.ToString ( );
-      //
-      // If the list is null then return null 
-      if ( this.Parameters == null )
-      {
-        this.Parameters = new List<EvObjectParameter> ( );
-        return String.Empty;
-      }
-
-      //
-      // foreach item in the list return the parameter if the names match.
-      //
-      foreach ( EvObjectParameter parm in this.Parameters )
-      {
-        if ( parm.Name.ToLower ( ) == name.ToLower ( ) )
-        {
-          return parm.Value;
-        }
-      }
-
-      //
-      // return null if the object is not found.
-      return String.Empty;
-    }//END getParameter method
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns the parameter object if exists in the parameter list.
-    /// </summary>
-    /// <param name="Name">The paramater name</param>
-    /// <param name="DataType">EvDataTypes enumeration list value</param>
-    /// <param name="Value">String value</param>
-    /// <returns>EvApplicationParameter object </returns>
-    //  ------------------------------------------------------------------------------
-    private void setParameter ( Object Name, EvDataTypes DataType, String Value )
-    {
-      EvObjectParameter parameter = new EvObjectParameter ( Name, DataType, Value );
-      //
-      // If the list is null then return null 
-      if ( this.Parameters == null )
-      {
-        this.Parameters = new List<EvObjectParameter> ( );
-      }
-
-      //
-      // foreach item in the list return the parameter if the names match.
-      //
-      foreach ( EvObjectParameter parm in this.Parameters )
-      {
-        if ( parm.Name == parameter.Name )
-        {
-          parm.Value = parameter.Value;
-          parm.DataType = parameter.DataType;
-          return;
-        }
-      }
-
-
-      this.Parameters.Add ( parameter );
-    }//END getParameter method
-
-    // ==================================================================================
-    /// <summary>
-    /// This class provides a list of trial types.
-    /// </summary>
-    /// <param name="Input">string: an input string</param>
-    /// <returns>string: a string of format option list</returns>
-    /// <remarks>
-    /// This method consists of the following step:
-    /// 
-    /// 1. Format the input string by removing a space and "," character
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    private string FormatOptionList ( string Input )
-    {
-      //
-      // Format the input string by removing a space and "," character
-      //
-      Input = Input.Replace ( "; ", ";" );
-
-      if ( Input.IndexOf ( ';' ) == -1
-        && Input.IndexOf ( ',' ) > -1 )
-      {
-        Input = Input.Replace ( ",", ";" );
-      }
-      return Input;
-    }//END FormatOptionList method
 
     // ==================================================================================
     /// <summary>
@@ -624,7 +522,7 @@ namespace Evado.Model.Digital
       //
       switch ( FieldName )
       {
-        case ApplicationFieldNames.TrialId:
+        case ApplicationFieldNames.ApplicationId:
           {
             this._ApplicationId = Value;
             return;

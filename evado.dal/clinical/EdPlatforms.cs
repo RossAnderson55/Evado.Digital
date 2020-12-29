@@ -75,12 +75,7 @@ namespace Evado.Dal.Clinical
      * 
      * *********************************************************************************/
     // The log file source. 
-    // private static string _EventLogSource = ConfigurationManager.AppSettings[ "EventUpdatedSource" ];
-
-    private const string SQL_SITE_PROFILE_QUERY = "Select "
-      + "SiteId, Site_Guid, SP_XmlData, UpdateLog "
-      + "FROM SiteProfiles";
-
+ 
     private const string SQL_APPLICATION_PROFILE_QUERY = "Select * "
       + "FROM ED_PLATFORM_SETTINGS";
 

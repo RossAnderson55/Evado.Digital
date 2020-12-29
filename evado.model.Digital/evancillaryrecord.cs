@@ -104,7 +104,7 @@ namespace Evado.Model.Digital
     private DateTime _ReviewDate = EvStatics.CONST_DATE_NULL;
     private string _Approver = String.Empty;
     private DateTime _ApprovalDate = EvStatics.CONST_DATE_NULL;
-    private EvFormObjectStates _State = EvFormObjectStates.Null;
+    private EdRecordObjectStates _State = EdRecordObjectStates.Null;
     private DateTime _UpdatedDate = EvcStatics.CONST_DATE_NULL;
     private string _BookedOutBy = String.Empty;
     private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff>();
@@ -313,7 +313,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a form state object of subject record
     /// </summary>
-    public EvFormObjectStates State
+    public EdRecordObjectStates State
     {
       get { return this._State; }
       set { this._State = value; }

@@ -126,18 +126,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvCustomers.cs" />
-    <Compile Include="Clinical\EvFormFieldSelectionLists.cs" />
+    <Compile Include="Clinical\EdRecordFieldSelectionLists.cs" />
     <Compile Include="EvObjectParameters.cs" />
-    <Compile Include="Clinical\evformsections.cs" />
+    <Compile Include="Clinical\EdRecordSections.cs" />
     <Compile Include="EvDalBase.cs" />
     <Compile Include="EvStaticSetting.cs" />
-    <Compile Include="Clinical\EvFormRecordComments.cs" />
+    <Compile Include="Clinical\EdRecordComments.cs" />
     <Compile Include="Clinical\EvBinaryFiles.cs" />
     <Compile Include="EvDataBaseUpdates.cs" />
     <Compile Include="EvApplicationEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvFormRecordFields.cs">
+    <Compile Include="Clinical\EdRecordFields.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvMilestoneActivities.cs" />
@@ -147,10 +147,10 @@
     <Compile Include="Clinical\EvReportTemplates.cs" />
     <Compile Include="Clinical\EvActivities.cs" />
     <Compile Include="EvEncrypt.cs" />
-    <Compile Include="Clinical\EvFormFields.cs">
+    <Compile Include="Clinical\EdRecordLayoutFields.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvForms.cs">
+    <Compile Include="Clinical\EdRecordLayouts.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvSchedules.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Clinical\EvAlerts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvFormRecords.cs">
+    <Compile Include="Clinical\EdRecords.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EdApplications.cs">

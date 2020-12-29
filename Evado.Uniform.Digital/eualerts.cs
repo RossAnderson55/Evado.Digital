@@ -256,7 +256,7 @@ namespace Evado.UniForm.Clinical
                Model.UniForm.ApplicationMethods.Get_Object );
 
             groupCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Adverse_Event_Report.ToString ( ) ); 
 
             groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
@@ -273,7 +273,7 @@ namespace Evado.UniForm.Clinical
                Model.UniForm.ApplicationMethods.Get_Object );
 
             groupCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Serious_Adverse_Event_Report.ToString ( ) ); 
 
             groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
@@ -289,7 +289,7 @@ namespace Evado.UniForm.Clinical
                Model.UniForm.ApplicationMethods.Get_Object );
 
             groupCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Concomitant_Medication.ToString ( ) ); 
 
             groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
@@ -971,7 +971,7 @@ namespace Evado.UniForm.Clinical
             recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 
             recordCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Adverse_Event_Report.ToString ( ) ); 
 
             break;
@@ -986,7 +986,7 @@ namespace Evado.UniForm.Clinical
             recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 
             recordCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Serious_Adverse_Event_Report.ToString ( ) ); 
 
             break;
@@ -1000,7 +1000,7 @@ namespace Evado.UniForm.Clinical
             recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 
             recordCommand.AddParameter (
-              EvForm.CONST_RECORD_TYPE,
+              EdRecord.CONST_RECORD_TYPE,
               EvFormRecordTypes.Concomitant_Medication.ToString ( ) ); 
 
             break;

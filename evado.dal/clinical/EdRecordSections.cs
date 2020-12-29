@@ -34,24 +34,24 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form section data object.
   /// </summary>
-  public class EvFormSections : EvDalBase
+  public class EdRecordSections : EvDalBase
   {
     #region class initialisation method.
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EvFormSections ( )
+    public EdRecordSections ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormSections.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordSections.";
     }
 
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EvFormSections ( EvClassParameters Settings )
+    public EdRecordSections ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFoEvFormSectionsrmRecords.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordSections.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {
@@ -274,7 +274,7 @@ namespace Evado.Dal.Clinical
     /// 2. Insert the modified data for the new Guid.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EvForm Form )
+    public EvEventCodes UpdateItem ( EdRecord Form )
     {
       this.LogMethod ( "updateItem method. " );
        this.LogDebug ( "Section Count: " + Form.Design.FormSections.Count );

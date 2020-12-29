@@ -34,7 +34,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form field selection list data object.
   /// </summary>
-  public class EvFormFieldSelectionLists : EvDalBase
+  public class EdRecordFieldSelectionLists : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -42,7 +42,7 @@ namespace Evado.Dal.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvFormFieldSelectionLists ( )
+    public EdRecordFieldSelectionLists ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFieldSelectionLists.";
       if ( int.TryParse ( _stMaximumListLength, out _MaximumListLength ) == false )
@@ -57,7 +57,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvFormFieldSelectionLists ( EvClassParameters ClassParameters )
+    public EdRecordFieldSelectionLists ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFieldSelectionLists.";

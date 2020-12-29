@@ -467,7 +467,7 @@ namespace Evado.UniForm.Clinical
     /// This property contains the form analysis record list.
     /// Default is null.
     /// </summary>
-    public List<EvForm> AnalysisRecordlist { get; set; }
+    public List<EdRecord> AnalysisRecordlist { get; set; }
 
     /// <summary>
     /// This property contains a analysis form selection list.
@@ -609,31 +609,31 @@ namespace Evado.UniForm.Clinical
     //
     public bool FormsAdaperLoaded { get; set; }
 
-    List<EvForm> _FormList = new List<EvForm> ( );
+    List<EdRecord> _FormList = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of eClinical evForm object for the currently selected record.
     /// </summary>
-    public List<EvForm> FormList
+    public List<EdRecord> FormList
     {
       get { return _FormList; }
       set { _FormList = value; }
     }
 
-    EvForm _Form = new EvForm ( );
+    EdRecord _Form = new EdRecord ( );
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
-    public EvForm Form
+    public EdRecord Form
     {
       get { return _Form; }
       set { _Form = value; }
     }
 
-    EvFormField _FormField = new EvFormField ( );
+    EdRecordField _FormField = new EdRecordField ( );
     /// <summary>
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
-    public EvFormField FormField
+    public EdRecordField FormField
     {
       get { return _FormField; }
       set { _FormField = value; }
@@ -644,15 +644,15 @@ namespace Evado.UniForm.Clinical
     public EvFormRecordTypes FormRecordType { get; set; }
     public EvFormRecordTypes CommonRecordType { get; set; }
 
-    public List<EvForm> AdminRecordList { get; set; }
-    public List<EvForm> ProjectRecordList { get; set; }
-    public List<EvForm> CommonRecordList { get; set; }
+    public List<EdRecord> AdminRecordList { get; set; }
+    public List<EdRecord> ProjectRecordList { get; set; }
+    public List<EdRecord> CommonRecordList { get; set; }
 
     String _FormRecords_Selected_FormId = String.Empty;
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public String RecordSelecteionFormId
+    public String RecordSelectionFormId
     {
       get { return _FormRecords_Selected_FormId; }
       set { _FormRecords_Selected_FormId = value; }
@@ -732,11 +732,11 @@ namespace Evado.UniForm.Clinical
       this.FormType = EvFormRecordTypes.Null;
     }
 
-    EvFormObjectStates _FormState = EvFormObjectStates.Null;
+    EdRecordObjectStates _FormState = EdRecordObjectStates.Null;
     /// <summary>
     /// COntains the currently selected form state.
     /// </summary>
-    public EvFormObjectStates FormState
+    public EdRecordObjectStates FormState
     {
       get { return _FormState; }
       set { _FormState = value; }
@@ -757,21 +757,21 @@ namespace Evado.UniForm.Clinical
     /// </summary>
     public List<EvOption> FormVersionList { get; set; }
 
-    List<EvForm> _CommonFormList = new List<EvForm> ( );
+    List<EdRecord> _CommonFormList = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of eClinical evForm object for the currently selected record.
     /// </summary>
-    public List<EvForm> CommonFormList
+    public List<EdRecord> CommonFormList
     {
       get { return _CommonFormList; }
       set { _CommonFormList = value; }
     }
 
-    EvForm _CommonForm = new EvForm ( );
+    EdRecord _CommonForm = new EdRecord ( );
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
-    public EvForm CommonForm
+    public EdRecord CommonForm
     {
       get { return _CommonForm; }
       set { _CommonForm = value; }
@@ -787,11 +787,11 @@ namespace Evado.UniForm.Clinical
       set { _CommonFormSection = value; }
     }
 
-    EvFormField _CommonFormField = new EvFormField ( );
+    EdRecordField _CommonFormField = new EdRecordField ( );
     /// <summary>
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
-    public EvFormField CommonFormField
+    public EdRecordField CommonFormField
     {
       get { return _CommonFormField; }
       set { _CommonFormField = value; }
@@ -825,11 +825,11 @@ namespace Evado.UniForm.Clinical
       this._CommonFormType = EvFormRecordTypes.Null;
     }
 
-    EvFormObjectStates _CommonFormState = EvFormObjectStates.Null;
+    EdRecordObjectStates _CommonFormState = EdRecordObjectStates.Null;
     /// <summary>
     /// COntains the currently selected form state.
     /// </summary>
-    public EvFormObjectStates CommonFormState
+    public EdRecordObjectStates CommonFormState
     {
       get { return _CommonFormState; }
       set { _CommonFormState = value; }
@@ -1050,7 +1050,7 @@ namespace Evado.UniForm.Clinical
     public String substituteDataValue (
       String Content,
       EvMilestone SubjectMilestone,
-      EvForm FormRecord,
+      EdRecord FormRecord,
       String QuestionnaireUrl )
     {
       String content = this.substituteDataValue ( Content );
@@ -1096,7 +1096,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public String substituteDataValue (
       String Content,
-      EvForm CommonRecord,
+      EdRecord CommonRecord,
       String ConsentUrl )
     {
       String content = this.substituteDataValue ( Content );
@@ -1182,9 +1182,9 @@ namespace Evado.UniForm.Clinical
     }
 
 
-    public EvForm Record { get; set; }
+    public EdRecord Record { get; set; }
 
-    public EvForm CommonRecord { get; set; }
+    public EdRecord CommonRecord { get; set; }
 
     public EvAncillaryRecord AncillaryRecord = new EvAncillaryRecord ( );
 

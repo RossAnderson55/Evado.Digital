@@ -553,15 +553,15 @@ namespace Evado.Bll.Clinical
       // 
       // If state is null set it to created.
       // 
-      if ( AncillaryRecord.State == EvFormObjectStates.Null )
+      if ( AncillaryRecord.State == EdRecordObjectStates.Null )
       {
-        AncillaryRecord.State = EvFormObjectStates.Draft_Record;
+        AncillaryRecord.State = EdRecordObjectStates.Draft_Record;
       }
 
       // 
       // If the record state is created then reset the approveal properties.
       // 
-      if ( AncillaryRecord.State == EvFormObjectStates.Draft_Record )
+      if ( AncillaryRecord.State == EdRecordObjectStates.Draft_Record )
       {
         AncillaryRecord.Reviewer = String.Empty;
         AncillaryRecord.ReviewDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
@@ -575,7 +575,7 @@ namespace Evado.Bll.Clinical
       if ( AncillaryRecord.Action == EvAncillaryRecords.ACTION_SIGNED )
       {
         this._DebugLog.AppendLine ( "Researcher Signoff record." );
-        AncillaryRecord.State = EvFormObjectStates.Submitted_Record;
+        AncillaryRecord.State = EdRecordObjectStates.Submitted_Record;
         AncillaryRecord.Researcher = AncillaryRecord.UserCommonName;
         AncillaryRecord.ResearcherUserId = AuthenticatedUserId;
         AncillaryRecord.ResearcherDate = DateTime.Now;
@@ -599,7 +599,7 @@ namespace Evado.Bll.Clinical
         && AncillaryRecord.Approver == String.Empty )
       {
         this._DebugLog.AppendLine ( "Withdrawn Record." );
-        AncillaryRecord.State = EvFormObjectStates.Withdrawn;
+        AncillaryRecord.State = EdRecordObjectStates.Withdrawn;
 
         return;
       }

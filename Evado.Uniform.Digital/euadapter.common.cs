@@ -505,7 +505,7 @@ namespace Evado.UniForm.Clinical
       // Customer object.
       //
       if ( this.Session.UserProfile.CustomerGuid != Guid.Empty
-        && this.Session.UserProfile.CustomerGuid != this._ApplicationObjects.ApplicationSettings.Guid )
+        && this.Session.UserProfile.CustomerGuid != this._ApplicationObjects.PlatformSettings.Guid )
       {
         this.ClassParameters.CustomerGuid = this.Session.UserProfile.CustomerGuid;
 
@@ -525,26 +525,19 @@ namespace Evado.UniForm.Clinical
     private void loadTrialFormList ( )
     {
       this.LogMethod ( "loadTrialFormList" );
-      //this.LogDebug ( "TrialId: '" + this.Session.Trial.TrialId + "'" );
-
-      if ( this.Session.UserProfile.hasAdministrationAccess == false
-        && this.Session.UserProfile.hasTrialManagementAccess == false )
-      {
-        this.LogMethod ( "loadTrialFormList" );
-        return;
-      }
+      this.LogDebug ( "ApplicationId: '" + this.Session.Application.ApplicationId + "'" );
 
       if ( this.Session.Application.ApplicationId == String.Empty )
       {
-        this.LogDebug ( "Trial not defined" );
-        this.LogMethod ( "loadTrialFormList" );
+        this.LogDebug ( "ApplicationId not defined" );
+        this.LogMethodEnd ( "loadTrialFormList" );
         return;
       }
 
       if ( this.Session.FormList.Count > 0 )
       {
         this.LogDebug ( "FormList loaded." );
-        this.LogMethod ( "loadTrialFormList" );
+        this.LogMethodEnd ( "loadTrialFormList" );
         return;
       }
 
@@ -553,7 +546,7 @@ namespace Evado.UniForm.Clinical
       //
       EvForms bll_Forms = new EvForms ( this.ClassParameters );
       this.Session.FormType = EvFormRecordTypes.Null;
-      this.Session.FormState = EvFormObjectStates.Form_Issued;
+      this.Session.FormState = EdRecordObjectStates.Form_Issued;
       this.Session.FormsAdaperLoaded = true;
 
       // 
@@ -568,7 +561,7 @@ namespace Evado.UniForm.Clinical
 
       this.LogDebug ( " list count: " + this.Session.FormList.Count );
 
-      this.LogMethod ( "loadTrialFormList" );
+      this.LogMethodEnd ( "loadTrialFormList" );
 
     }//END loadTrialFormList method
   }///END EuAdapter class

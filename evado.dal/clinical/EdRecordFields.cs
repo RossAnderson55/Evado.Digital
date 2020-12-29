@@ -35,24 +35,24 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form record field data object.
   /// </summary>
-  public class EvFormRecordFields : EvDalBase
+  public class EdRecordFields : EvDalBase
   {
     #region class initialisation method.
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EvFormRecordFields ( )
+    public EdRecordFields ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordFields.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordFields.";
     }
 
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EvFormRecordFields ( EvClassParameters Settings )
+    public EdRecordFields ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordFields.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordFields.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {
@@ -333,7 +333,7 @@ namespace Evado.Dal.Clinical
     /// 2. Update the values from formfield object to the array of sql query parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EvFormField RecordField )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecordField RecordField )
     {
       this.LogMethod ( "SetParameters method" );
       //
@@ -389,12 +389,12 @@ namespace Evado.Dal.Clinical
       if ( RecordField.Design.TypeId == Evado.Model.EvDataTypes.Special_Matrix
         || RecordField.Design.TypeId == Evado.Model.EvDataTypes.Table )
       {
-        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EvFormFieldTable> ( RecordField.Table );
+        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( RecordField.Table );
         cmdParms [ 5 ].Value = serialisedTableStructure;
         cmdParms [ 3 ].Value = String.Empty;
       }
 
-      if ( RecordField.Design.TypeId == Evado.Model.EvDataTypes.Signature )
+      if ( RecordField.TypeId == Evado.Model.EvDataTypes.Signature )
       {
         this.LogDebug ( "Encrypting the Signature value" );
 
@@ -407,17 +407,7 @@ namespace Evado.Dal.Clinical
       }
 
       cmdParms [ 6 ].Value = String.Empty;
-      cmdParms [ 7 ].Value = RecordField.State.ToString ( );
-      cmdParms [ 8 ].Value = RecordField.AuthoredByUserId;
-      cmdParms [ 9 ].Value = RecordField.AuthoredBy;
-      cmdParms [ 10 ].Value = RecordField.AuthoredDate;
-      cmdParms [ 11 ].Value = RecordField.ReviewedByUserId;
-      cmdParms [ 12 ].Value = RecordField.ReviewedBy;
-      cmdParms [ 13 ].Value = RecordField.ReviewedDate;
-      cmdParms [ 14 ].Value = RecordField.UpdatedByUserId;
-      cmdParms [ 15 ].Value = RecordField.UserCommonName;
       cmdParms [ 16 ].Value = DateTime.Now;
-      cmdParms [ 17 ].Value = RecordField.BookedOutBy;
 
       this.LogMethodEnd ( "SetParameters" );
     }//END SetParameters method.
@@ -456,7 +446,7 @@ namespace Evado.Dal.Clinical
     /// 10. Return the formfield object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvFormField getRowData (
+    private EdRecordField getRowData (
       DataRow Row )
     {
       //this.LogMethod ( "getRowData method" );
@@ -464,18 +454,16 @@ namespace Evado.Dal.Clinical
       // Initialise method template table string, a return formfield object and an annotation string. 
       // 
       string stTemplateTable = String.Empty;
-      EvFormField recordField = new EvFormField ( );
+      EdRecordField recordField = new EdRecordField ( );
 
       // 
       // Fill the evForm object.l
       //
-      recordField.Guid = EvSqlMethods.getGuid ( Row, EvFormRecordFields.DB_RECORD_FIELDS_GUID );
-      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EvFormRecords.DB_RECORDS_GUID );
-      recordField.FormGuid = EvSqlMethods.getGuid ( Row, EvFormRecords.DB_FORMS_GUID );
-      recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EvFormRecordFields.DB_FORM_FIELDS_GUID );
+      recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_RECORD_FIELDS_GUID );
+      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORDS_GUID );
+      recordField.FormGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_FORMS_GUID );
+      recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_FORM_FIELDS_GUID );
 
-      recordField.TrialId = EvSqlMethods.getString ( Row, "TrialId" );
-      recordField.FormId = EvSqlMethods.getString ( Row, "FormId" );
       recordField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
       String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
 
@@ -530,7 +518,7 @@ namespace Evado.Dal.Clinical
         xmlDesign = xmlDesign.Replace ( "Medication_Summary", "Special_Medication_Summary" );
         xmlDesign = xmlDesign.Replace ( "Matrix", "Special_Matrix" );
 
-        recordField.Design = Evado.Model.EvStatics.DeserialiseObject<EvFormFieldDesign> ( xmlDesign );
+        recordField.Design = Evado.Model.EvStatics.DeserialiseObject<EdRecordFieldDesign> ( xmlDesign );
       }
       else
       {
@@ -538,72 +526,24 @@ namespace Evado.Dal.Clinical
         recordField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, "TCI_EX_SELECTION_LIST_ID" );
         recordField.Design.FieldCategory = EvSqlMethods.getString ( Row, "TCI_FIELD_CATEGORY" );
         recordField.Design.DefaultValue = EvSqlMethods.getString ( Row, "TCI_DEFAULT_VALUE" );
-        recordField.Design.SelectByCodingValue = EvSqlMethods.getBool ( Row, "TCI_SELECT_BY_CODING_VALUE" );
         recordField.Design.SummaryField = EvSqlMethods.getBool ( Row, "TCI_SUMMARY_FIELD" );
         recordField.Design.MultiLineTextField = EvSqlMethods.getBool ( Row, "TCI_MULTI_LINE_TEXT_FIELD" );
-        recordField.Design.HorizontalButtons = EvSqlMethods.getBool ( Row, "TCI_HORIZONTAL_BUTTONS" );
-        recordField.Design.FormIds = EvSqlMethods.getString ( Row, "TCI_FORM_IDS" );
         recordField.Design.InitialOptionList = EvSqlMethods.getString ( Row, "TCI_INITIAL_OPTION_LIST" );
         recordField.Design.Options = EvSqlMethods.getString ( Row, "TCI_OPTIONS" );
         recordField.Design.Section = EvSqlMethods.getString ( Row, "TCI_SECTION" );
         recordField.Design.Instructions = EvSqlMethods.getString ( Row, "TCI_INSTRUCTIONS" );
         recordField.Design.HttpReference = EvSqlMethods.getString ( Row, "TCI_Reference" );
-
-        value = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_SCALE" );
-        if ( value != String.Empty )
-        {
-          recordField.Design.AnalogueScale = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormField.AnalogueScaleOptions> ( value );
-        }
         recordField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_START" );
         recordField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_FINISH" );
       }
       recordField.Design.JavaScript = EvSqlMethods.getString ( Row, "TCI_JAVA_SCRIPT" );
 
-      //
-      // Extract the form fields validation rules
-      //
-      string stValidationRules = EvSqlMethods.getString ( Row, "TCI_XmlValidationRules" );
-      if ( stValidationRules != string.Empty )
-      {
-        recordField.ValidationRules =
-          Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldValidationRules> ( stValidationRules );
-
-        // 
-        // If the selection newField is null
-        // 
-        if ( ( recordField.TypeId == Evado.Model.EvDataTypes.Selection_List
-            || recordField.TypeId == Evado.Model.EvDataTypes.External_Selection_List
-            || recordField.TypeId == Evado.Model.EvDataTypes.Check_Box_List
-            || recordField.TypeId == Evado.Model.EvDataTypes.Radio_Button_List )
-          && recordField.ValidationRules.NotValidOptions == null )
-        {
-          recordField.ValidationRules.NotValidOptions = new EvFormFieldValidationNotValid ( );
-        }
-
-      }//END string exists
-
-      else
-      {
-        recordField.ValidationRules = new EvFormFieldValidationRules ( );
-
-        recordField.ValidationRules.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationLowerLimit" );
-        recordField.ValidationRules.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationUpperLimit" );
-        recordField.ValidationRules.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-        recordField.ValidationRules.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-        recordField.ValidationRules.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_LOWER_LIMIT" );
-        recordField.ValidationRules.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_UPPER_LIMIT" );
-
-        recordField.ValidationRules.NotValidForMale = EvSqlMethods.getBool ( Row, "TCI_NOT_VALID_FOR_MALES" );
-        recordField.ValidationRules.NotValidForFemale = EvSqlMethods.getBool ( Row, "TCI_NOT_VALID_FOR_FEMALES" );
-        recordField.ValidationRules.IsAfterBirthDate = EvSqlMethods.getBool ( Row, "TCI_AFTER_DATE_OF_BIRTH" );
-        recordField.ValidationRules.IsAfterConsentDate = EvSqlMethods.getBool ( Row, "TCI_AFTER_CONSENT_DATE" );
-
-        recordField.ValidationRules.WithinDaysOfRecordDate = EvSqlMethods.getInteger ( Row, "TCI_DAYS_FROM_RECORD_DATE" );
-        recordField.ValidationRules.WithinDaysOfVisitDate = EvSqlMethods.getInteger ( Row, "TCI_DAYS_FROM_VISIT_DATE" );
-
-        recordField.ValidationRules.NotValid.EncodedRules = EvSqlMethods.getString ( Row, "TCI_FIELD_NOT_VALID" );
-        recordField.ValidationRules.NotValidOptions.EncodedRules = EvSqlMethods.getString ( Row, "TCI_FIELD_OPTIONS_NOT_VALID" );
-      }
+      recordField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationLowerLimit" );
+      recordField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationUpperLimit" );
+      recordField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
+      recordField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
+      recordField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_LOWER_LIMIT" );
+      recordField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_UPPER_LIMIT" );
 
       recordField.Design.Order = EvSqlMethods.getInteger ( Row, "TCI_Order" );
       recordField.Design.Mandatory = EvSqlMethods.getBool ( Row, "TCI_Mandatory" );
@@ -629,31 +569,15 @@ namespace Evado.Dal.Clinical
       }
 
       _AnnotationText = EvSqlMethods.getString ( Row, "TRI_Annotation" );
-      recordField.AuthoredByUserId = EvSqlMethods.getString ( Row, "TRI_AuthoredByUserId" );
-      recordField.AuthoredBy = EvSqlMethods.getString ( Row, "TRI_AuthoredBy" );
-      recordField.AuthoredDate = EvSqlMethods.getDateTime ( Row, "TRI_AuthoredDate" );
-      recordField.ReviewedByUserId = EvSqlMethods.getString ( Row, "TRI_ReviewedByUserId" );
-      recordField.ReviewedBy = EvSqlMethods.getString ( Row, "TRI_ReviewedBy" );
-      recordField.ReviewedDate = EvSqlMethods.getDateTime ( Row, "TRI_ReviewedDate" );
-
-      recordField.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormField.FieldStates> (
-        EvSqlMethods.getString ( Row, "TRI_State" ) );
 
       recordField.UpdatedByUserId = EvSqlMethods.getString ( Row, "TRI_UpdatedByUserId" );
       recordField.Updated = EvSqlMethods.getString ( Row, "TRI_UpdatedBy" );
       recordField.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TRI_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
       recordField.BookedOutBy = EvSqlMethods.getString ( Row, "TRI_BookedOutBy" );
 
-      if ( recordField.TypeId == Evado.Model.EvDataTypes.Date )
+      if ( recordField.Design.TypeId == Evado.Model.EvDataTypes.Date )
       {
         recordField.ItemText = String.Empty;
-      }
-      // 
-      // Ensure that the formfield state is not null.
-      // 
-      if ( recordField.State == EvFormField.FieldStates.Null )
-      {
-        recordField.State = EvFormField.FieldStates.Empty;
       }
 
       //
@@ -672,19 +596,11 @@ namespace Evado.Dal.Clinical
       this.processNotAvailableValues ( Row, recordField );
 
       // 
-      // Update the formfield state to current state enumeration.
-      //
-      if ( ( int ) recordField.State < 0 )
-      {
-        recordField.State = ( EvFormField.FieldStates ) Math.Abs ( ( int ) recordField.State );
-      }
-
-      // 
       // Update the formfield type to current type enumeration.
       // 
-      if ( ( int ) recordField.TypeId < 0 )
+      if ( (int) recordField.TypeId < 0 )
       {
-        recordField.TypeId = ( Evado.Model.EvDataTypes ) Math.Abs ( ( int ) recordField.TypeId );
+        recordField.TypeId = (Evado.Model.EvDataTypes) Math.Abs ( (int) recordField.TypeId );
       }
 
       //
@@ -819,7 +735,7 @@ namespace Evado.Dal.Clinical
       // 
       String stTemplateTable = String.Empty;
       String stAnnotationText = String.Empty;
-      EvFormFieldDesign fieldDesign = new EvFormFieldDesign ( );
+      EdRecordFieldDesign fieldDesign = new EdRecordFieldDesign ( );
       EvFormFieldValidationRules fieldValidationRules = new EvFormFieldValidationRules ( );
 
       //
@@ -831,7 +747,7 @@ namespace Evado.Dal.Clinical
       string stDesign = EvSqlMethods.getString ( Row, "TCI_XmlData" );
       if ( stDesign != string.Empty )
       {
-        fieldDesign = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldDesign> ( stDesign );
+        fieldDesign = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordFieldDesign> ( stDesign );
       }
 
       //
@@ -930,7 +846,7 @@ namespace Evado.Dal.Clinical
         {
           String fieldText = EvSqlMethods.getString ( Row, "TRI_ItemText" );
 
-          EvFormFieldTable table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldTable> ( fieldText );
+          EdRecordTable table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( fieldText );
 
           //
           // Iterate through the table columns.
@@ -1065,313 +981,6 @@ namespace Evado.Dal.Clinical
 
     // =====================================================================================
     /// <summary>
-    /// This method fills the comment list of formfield object.
-    /// </summary>
-    /// <param name="RecordGuid">Guid: a retrieved formfield object</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Fill the comment list to formfield object. 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private void getAllFieldComments (
-      Guid RecordGuid )
-    {
-      this.LogMethod ( "getAllFieldComments method." );
-      //
-      // skip retrieving comment if they exist. 
-      //
-      if ( _SkipRetrievingComments == true )
-      {
-        return;
-      }
-
-      //
-      // Initialise the methods variable and objects.
-      //
-      EvFormRecordComments formRecordComments = new EvFormRecordComments ( );
-
-      //
-      // Fill the record comment list.
-      //
-      this._FieldCommandList = formRecordComments.getCommentList (
-        RecordGuid,
-        Guid.Empty,
-        EvFormRecordComment.CommentTypeCodes.Form_Field,
-        EvFormRecordComment.AuthorTypeCodes.Not_Set );
-
-      this.LogClass ( formRecordComments.Log );
-
-    }//END fillAllFieldComments method
-
-    // =====================================================================================
-    /// <summary>
-    /// This method fills the comment list of formfield object.
-    /// </summary>
-    /// <param name="Field">EvFormField: a retrieved formfield object</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Fill the comment list to formfield object. 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private void selectFieldComments (
-      EvFormField Field )
-    {
-      //this.LogMethod ( "selectFieldComments method." );
-      //
-      // Initialize the debug log and a formfield comments object. 
-      //
-      EvFormRecordComments formRecordComments = new EvFormRecordComments ( );
-      Field.CommentList = new List<EvFormRecordComment> ( );
-
-      //
-      // append form field comments.
-      //
-      foreach ( EvFormRecordComment comment in this._FieldCommandList )
-      {
-        if ( comment.RecordFieldGuid == Field.Guid )
-        {
-          Field.CommentList.Add ( comment );
-        }
-      }
-
-      //this.LogDebugValue ( "Field.CommentList.Count: " + Field.CommentList.Count );
-      //this.LogMethodEnd ( "selectFieldComments " );
-
-    }//END selectFieldComments method
-
-    // =====================================================================================
-    /// <summary>
-    /// This method reformats formfield comments into a EvFormRecordComment structure.
-    /// </summary>
-    /// <param name="Field">EvFormField: a formfield object</param>
-    /// <param name="AnnotationText">String: a string containing the annotation</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Validate whether the comment list and annotation text are not empty. 
-    /// 
-    /// 2. If annotation text is xml, deserialize the comment list 
-    /// 
-    /// 3. Loop through the comment list and reset the values. 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private void updateFieldComments (
-      EvFormField Field,
-      String AnnotationText )
-    {
-      //this.LogMethod ( "updateFieldComments method. " );
-
-      //
-      // Validate whether the comment list is not empty. 
-      //
-      if ( Field.CommentList.Count > 0 )
-      {
-        //this.LogDebugValue ( "DB Comments exist\r\n" );
-
-        return;
-      }
-
-      //
-      // Validate whether the annotation text is not empty.
-      //
-      if ( AnnotationText == String.Empty )
-      {
-        //this.LogDebugValue ( "No Annotations" );
-        return;
-      }
-
-      //
-      // If the annotation is xml, deserialize the annotation text. 
-      //
-      if ( AnnotationText.Contains ( "<?xml version=" ) == true )
-      {
-        this.LogDebug ( "XML structure" );
-        AnnotationText = AnnotationText.Replace ( "EvFormComment", "EvFormRecordComment" );
-
-        Field.CommentList = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EvFormRecordComment>> ( AnnotationText );
-
-        //
-        // Iterate through the comment list and reset the values
-        //
-        foreach ( EvFormRecordComment comment in Field.CommentList )
-        {
-          comment.Content = comment.Content.Trim ( );
-          comment.NewComment = true;
-          comment.RecordGuid = Field.RecordGuid;
-          comment.RecordFieldGuid = Field.Guid;
-
-          if ( comment.Content.Length > 3 )
-          {
-            string stSearch = comment.Content.Substring ( comment.Content.Length - 3 );
-
-            //this.LogDebugValue ( "Last 3 char: '" + stSearch + "'" );
-            if ( stSearch.Contains ( "by" ) == true )
-            {
-              int inOn = comment.Content.LastIndexOf ( "by" );
-              if ( inOn > 0 )
-              {
-                comment.Content = comment.Content.Substring ( 0, ( inOn ) );
-              }
-            }
-            //this.LogDebugValue ( "Comment: '" + comment.Content + "'" );
-          }
-        }
-
-        return;
-      }
-      //this.LogDebugValue ( "Process the text comments." );
-
-      //
-      // Convert the comment into the comment with a delimiter
-      //
-      String stComments = AnnotationText.Replace ( "\r\n", "^" );
-
-      //
-      // Convert the comments string into array of comments.
-      //
-      String [ ] arrComments = stComments.Split ( '^' );
-      //this.LogDebugValue ( "There are " + arrComments.Length + "comments" );
-
-      //
-      // Iterate through the array of comments
-      //
-      for ( int i = ( arrComments.Length - 1 ); i >= 0; i-- )
-      {
-        this.ParseComments ( Field, arrComments [ i ] );
-      }
-
-      //
-      // Empty the comments array.
-      //
-      //Field.Annotation = String.Empty;
-
-    }//END updateFieldComments method
-
-    // =====================================================================================
-    /// <summary>
-    /// This method updates the formfield comment structure.
-    /// </summary>
-    /// <param name="Field">EvForm object: containing the formfield object</param>
-    /// <param name="Comment">String: the comment string</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Extract the date string, user name string and content string. 
-    /// 
-    /// 2. Update the content type based on delimiter values
-    /// 
-    /// 3. Update the content body string
-    /// 
-    /// 4. Append the comment to the list
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void ParseComments (
-      EvFormField Field,
-      String Comment )
-    {
-      //
-      // Initialize the debug log, the local variables and objects. 
-      //
-      this.LogMethod ( "ParseComments method. " );
-
-      const string delimiter_NameStart = " by ";
-      const string delimiter_DateStart = " on ";
-      const string delimiter_Query = "Value Queried";
-      const string delimiter_DM = "Jessie";
-      int inLastBy = 0;
-      int inLastOn = 0;
-      int inDateStart = 0;
-      int inNameStart = 0;
-      string stName = String.Empty;
-      string stDate = String.Empty;
-      string stContent = String.Empty;
-      DateTime dtValue = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      EvFormRecordComment comment = new EvFormRecordComment ( );
-
-      //
-      // If there is no comment there is nothing to process.
-      //
-      if ( Comment == String.Empty )
-      {
-        return;
-      }
-
-      comment.AuthorType = EvFormRecordComment.AuthorTypeCodes.Record_Author;
-
-      //
-      // Extract the date string.
-      //
-      inLastOn = Comment.LastIndexOf ( delimiter_DateStart );
-
-      inDateStart = inLastOn + delimiter_DateStart.Length;
-
-      stDate = Comment.Substring ( inDateStart );
-
-      this.LogDebug ( "Date string: '" + stDate + "'" );
-
-      //
-      // Extract the user name
-      //
-      inLastBy = Comment.LastIndexOf ( delimiter_NameStart );
-
-      inNameStart = inLastBy + delimiter_NameStart.Length;
-
-      this.LogDebug ( "inLastBy: " + inLastBy + " inNameStart: " + inNameStart );
-
-      if ( ( inLastOn - inNameStart ) > 0 )
-      {
-        stName = Comment.Substring ( inNameStart, inLastOn - inNameStart );
-      }
-
-      this.LogDebug ( "Name string: '" + stName + "'" );
-
-      //
-      // Extract the content.
-      //
-      if ( inLastBy > 0 )
-      {
-        stContent = Comment.Substring ( 0, inLastBy );
-      }
-      this.LogDebug ( "Content string: '" + stContent + "'" );
-
-      if ( stContent.Contains ( delimiter_Query ) == true )
-      {
-        comment.AuthorType = EvFormRecordComment.AuthorTypeCodes.Monitor;
-      }
-
-      if ( stName.Contains ( delimiter_DM ) == true )
-      {
-        comment.AuthorType = EvFormRecordComment.AuthorTypeCodes.Data_Manager;
-      }
-
-      //
-      // Update the content body string. 
-      //
-      if ( stContent != String.Empty )
-      {
-        //this.LogDebugValue ( "Comment: \r\n stContent: " + stContent
-        //  + "\r\n Name: " + stName
-        //  + "\r\n Date: " + stDate );
-
-        comment.RecordGuid = Field.RecordGuid;
-        comment.RecordFieldGuid = Field.Guid;
-        comment.Content = stContent.Replace ( "\r\n", " " );
-        comment.UserCommonName = stName;
-        comment.CommentDate = DateTime.Parse ( stDate );
-        comment.NewComment = true;
-
-        //
-        // Append the comment to the list.
-        //
-        Field.CommentList.Add ( comment );
-      }
-
-    }//ENd ParseComments method.
-
-    // =====================================================================================
-    /// <summary>
     /// This method attached external selectionlist options to the formfield list.
     /// </summary>
     /// <param name="Row">DataRow: an sql data row object</param>
@@ -1390,7 +999,7 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     private void getExternalSelectionList (
       DataRow Row,
-      EvFormField Field )
+      EdRecordField Field )
     {
       // 
       // Validate whether the formfield type is external selectionlist. 
@@ -1404,7 +1013,7 @@ namespace Evado.Dal.Clinical
       //
       // Initialize the external codeing list object.
       //
-      EvFormFieldSelectionLists externalCodingLists = new EvFormFieldSelectionLists ( );
+      EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
 
       this.LogDebug ( "Ext ListId: " + Field.Design.ExSelectionListId
         + " Category: " + Field.Design.ExSelectionListCategory );
@@ -1445,7 +1054,7 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     private void processTableRowObject (
       DataRow Row,
-      EvFormField Field )
+      EdRecordField Field )
     {
       //this.LogMethod ( "processTableRowObject method " );
       //this.LogDebugValue ( "FieldId: " + Field.FieldId );
@@ -1479,7 +1088,7 @@ namespace Evado.Dal.Clinical
       // 
       // Deserialize the formfield item text to the formfield table. 
       // 
-      Field.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormFieldTable> ( Field.ItemText );
+      Field.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( Field.ItemText );
 
       // 
       // Empty the formfield itemtext so it will not cause problems when XML styling the record object.
@@ -1501,7 +1110,7 @@ namespace Evado.Dal.Clinical
         {
           String cell = Field.Table.Rows [ j ].Column [ i ];
 
-          if ( Field.Table.Header [ i ].TypeId != EvFormFieldTableColumnHeader.ItemTypeNumeric )
+          if ( Field.Table.Header [ i ].TypeId != EdRecordTableHeader.ItemTypeNumeric )
           {
             Field.Table.Rows [ j ].Column [ i ] = Evado.Model.EvStatics.convertNumNullToTextNull ( cell );
           }
@@ -1531,7 +1140,7 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     private void processNotAvailableValues (
       DataRow Row,
-      EvFormField Field )
+      EdRecordField Field )
     {
       //this.LogMethod ( "processNotAvailableValues method " );
       //
@@ -1597,8 +1206,8 @@ namespace Evado.Dal.Clinical
     /// 6. Return the formfields list.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormField> getRecordFieldList (
-      EvForm Record,
+    public List<EdRecordField> getRecordFieldList (
+      EdRecord Record,
       bool IncludeComments )
     {
       this.LogMethod ( "getRecordFieldList method. " );
@@ -1607,8 +1216,8 @@ namespace Evado.Dal.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      List<EvFormField> formFieldList = new List<EvFormField> ( );
-      EvFormField recordField = new EvFormField ( );
+      List<EdRecordField> formFieldList = new List<EdRecordField> ( );
+      EdRecordField recordField = new EdRecordField ( );
 
       // 
       // Validate whether the record Guid is not empty. 
@@ -1616,14 +1225,6 @@ namespace Evado.Dal.Clinical
       if ( Record.Guid == Guid.Empty )
       {
         return formFieldList;
-      }
-
-      //
-      // get the list of field comments.
-      //
-      if ( IncludeComments == true )
-      {
-        this.getAllFieldComments ( Record.Guid );
       }
 
       // 
@@ -1667,23 +1268,6 @@ namespace Evado.Dal.Clinical
           // Get the object data from the row.
           // 
           recordField = this.getRowData ( row );
-
-
-          //
-          // if skip retrieving comments is selected, fill the comment list and format it
-          //
-          if ( IncludeComments == true )
-          {
-            //
-            // Select the field comment list.
-            //
-            this.selectFieldComments ( recordField );
-
-            //
-            // Reformats text comments into EvFormRecordComment object structures.
-            //
-            this.updateFieldComments ( recordField, _AnnotationText );
-          }
 
           // Append the new record field object to the array.
           // 
@@ -1971,7 +1555,7 @@ namespace Evado.Dal.Clinical
       // Initialize the Method debug log, a report rows list and a formfield object
       //
       List<EvReportRow> reportRows = new List<EvReportRow> ( );
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
       int inNoColumns = Report.Columns.Count;
 
       //
@@ -2147,7 +1731,7 @@ namespace Evado.Dal.Clinical
 
         reportRow.ColumnValues [ 0 ] = formField.FieldId;
         reportRow.ColumnValues [ 1 ] = formField.Title;
-        reportRow.ColumnValues [ 2 ] = formField.Type;
+        reportRow.ColumnValues [ 2 ] = EvStatics.getEnumStringValue( formField.TypeId );
         reportRow.ColumnValues [ 3 ] = String.Empty;
 
         Report.DataRecords.Add ( reportRow );
@@ -2588,7 +2172,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the formfield data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvFormField GetItem (
+    private EdRecordField GetItem (
       Guid Guid )
     {
       this.LogMethod ( "GetItem method" );
@@ -2596,7 +2180,7 @@ namespace Evado.Dal.Clinical
       // 
       // Initialize the debug log and a return formfield object. 
       // 
-      EvFormField field = new EvFormField ( );
+      EdRecordField field = new EdRecordField ( );
 
       // 
       // Validate the Guid is not empty. 
@@ -2655,7 +2239,7 @@ namespace Evado.Dal.Clinical
     //
     // Store the record state to control when to output record values.
     //
-    EvFormObjectStates _RecordState = EvFormObjectStates.Null;
+    EdRecordObjectStates _RecordState = EdRecordObjectStates.Null;
 
     // =====================================================================================
     /// <summary>
@@ -2674,7 +2258,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes UpdateFields (
-      EvForm FormRecord )
+      EdRecord FormRecord )
     {
       this.LogMethod ( "UpdateFields method " );
       this.LogDebug ( "RecordFieldList.Count: " + FormRecord.Fields.Count );
@@ -2688,7 +2272,7 @@ namespace Evado.Dal.Clinical
       // 
       // Iterate through the formfields object. 
       // 
-      foreach ( EvFormField field in FormRecord.Fields )
+      foreach ( EdRecordField field in FormRecord.Fields )
       {
 
         if ( field == null )
@@ -2697,17 +2281,8 @@ namespace Evado.Dal.Clinical
           continue;
         }
 
-        field.UserCommonName = FormRecord.UserCommonName;
         field.UpdatedByUserId = FormRecord.UpdatedByUserId;
 
-        // 
-        // Set the newField state.
-        // 
-        if ( field.ItemValue == String.Empty
-          && field.State == EvFormField.FieldStates.Null )
-        {
-          field.State = EvFormField.FieldStates.Empty;
-        }
 
         //
         // If Guid is empty, add new field else update field.
@@ -2718,20 +2293,16 @@ namespace Evado.Dal.Clinical
         }
         else
         {
-          if ( field.Action != String.Empty )
+          iReturn = this.updateField ( field );
+
+          if ( iReturn != EvEventCodes.Ok )
           {
-            iReturn = this.updateField ( field );
+            this.LogEvent ( "Guid: " + field.Guid
+            + " FieldId: " + field.FieldId
+            + " >> '" + field.ItemValue
+            + " >> ERROR UPDATING FIELD." );
 
-            if ( iReturn != EvEventCodes.Ok )
-            {
-              this.LogEvent ( "Guid: " + field.Guid
-              + " FieldId: " + field.FieldId
-              + " >> '" + field.ItemValue
-              + "' S: " + field.State + " >> ERROR UPDATING FIELD." );
-
-              return iReturn;
-            }
-
+            return iReturn;
           }
         }//END Update Action.
 
@@ -2764,18 +2335,17 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     private EvEventCodes updateField (
-      EvFormField RecordField )
+      EdRecordField RecordField )
     {
       this.LogMethod ( "updateField method. " );
       this.LogDebug ( "Guid: " + RecordField.Guid );
       this.LogDebug ( "RecordGuid: " + RecordField.RecordGuid );
-      this.LogDebug ( "State: " + RecordField.State );
       this.LogDebug ( "Value: " + RecordField.ItemValue );
       this.LogDebug ( "FieldType: " + RecordField.Design.TypeId );
       // 
       // Initialise the methods variables and objects
       // 
-      EvFormRecordComments recordComments = new EvFormRecordComments ( );
+      EdRecordComments recordComments = new EdRecordComments ( );
       EvEventCodes eventCode = EvEventCodes.Ok;
 
       //
@@ -2799,13 +2369,6 @@ namespace Evado.Dal.Clinical
         this.LogDebug ( "FormFieldGuid Empty" );
 
         return EvEventCodes.Identifier_General_ID_Error;
-      }
-
-      if ( RecordField.UserCommonName == String.Empty )
-      {
-        this.LogDebug ( "UserId Empty" );
-
-        return EvEventCodes.Identifier_User_Id_Error;
       }
 
       // 
@@ -2858,12 +2421,6 @@ namespace Evado.Dal.Clinical
         }
       }
 
-      //
-      // Add record comments to event code. 
-      //
-      eventCode = recordComments.addNewComments ( RecordField.CommentList );
-
-      this.LogDebug ( "Field Comment status: " + recordComments.Log );
       // 
       // Return event exit code .
       // 
@@ -2891,7 +2448,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for adding items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes UpdateFieldValues ( EvFormField RecordField )
+    public EvEventCodes UpdateFieldValues ( EdRecordField RecordField )
     {
       this.LogMethod ( "UpdateFieldValues method. " );
       //this.LogDebugValue ( "RecordFieldGuid: " + RecordField.Guid );
@@ -2899,8 +2456,7 @@ namespace Evado.Dal.Clinical
       //
       // Only update the record data values if the record has been submitted or locked.
       //
-      if ( this._RecordState != EvFormObjectStates.Submitted_Record
-        && this._RecordState != EvFormObjectStates.Locked_Record )
+      if ( this._RecordState != EdRecordObjectStates.Submitted_Record )
       {
         return EvEventCodes.Ok;
       }
@@ -3040,7 +2596,7 @@ namespace Evado.Dal.Clinical
             //
             for ( int column = 0; column < RecordField.Table.Header.Length; column++ )
             {
-              EvFormFieldTableColumnHeader header = RecordField.Table.Header [ column ];
+              EdRecordTableHeader header = RecordField.Table.Header [ column ];
 
               this.LogDebug ( "Header" + header.Text );
 
@@ -3142,16 +2698,15 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for adding items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvEventCodes addField ( EvFormField RecordField )
+    private EvEventCodes addField ( EdRecordField RecordField )
     {
       this.LogMethod ( "addField method. " );
       this.LogDebug ( "RecordGuid: " + RecordField.RecordGuid );
       this.LogDebug ( "FormFieldGuid: " + RecordField.FormFieldGuid );
-      this.LogDebug ( "State: " + RecordField.State );
       //
       // Initialize the method debug log 
       //
-      EvFormRecordComments recordComments = new EvFormRecordComments ( );
+      EdRecordComments recordComments = new EdRecordComments ( );
       EvEventCodes eventCode = EvEventCodes.Ok;
 
       // 
@@ -3168,14 +2723,6 @@ namespace Evado.Dal.Clinical
       if ( RecordField.FormFieldGuid == Guid.Empty )
       {
         return EvEventCodes.Identifier_General_ID_Error;
-      }
-
-      //
-      // Validate whether the usercommon name is not empty. 
-      //
-      if ( RecordField.UserCommonName == String.Empty )
-      {
-        return EvEventCodes.Identifier_User_Id_Error;
       }
 
       // 
@@ -3200,12 +2747,6 @@ namespace Evado.Dal.Clinical
         return eventCode;
       }
 
-      //
-      // Add record comments to event code. 
-      //
-      eventCode = recordComments.addNewComments ( RecordField.CommentList );
-
-      this.LogDebug ( "Field Comment status: " + recordComments.Log );
 
       return eventCode;
 
@@ -3227,7 +2768,7 @@ namespace Evado.Dal.Clinical
     /// 3. Return the event code for deleting items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvEventCodes DeleteItem ( EvFormField RecordField )
+    private EvEventCodes DeleteItem ( EdRecordField RecordField )
     {
       // 
       // Validate whether the Guid and UserCommonName are not empty.
@@ -3235,11 +2776,6 @@ namespace Evado.Dal.Clinical
       if ( RecordField.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
-      }
-
-      if ( RecordField.UserCommonName == String.Empty )
-      {
-        return EvEventCodes.Identifier_User_Id_Error;
       }
 
       // 
@@ -3253,7 +2789,7 @@ namespace Evado.Dal.Clinical
         new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
       };
       cmdParms [ 0 ].Value = RecordField.Guid;
-      cmdParms [ 1 ].Value = RecordField.UserCommonName;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 2 ].Value = RecordField.UpdatedByUserId;
       cmdParms [ 3 ].Value = DateTime.Now;
 

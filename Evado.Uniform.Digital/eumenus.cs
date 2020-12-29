@@ -333,7 +333,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Initialse the methods objects and variables.
         // 
-        foreach ( EvModuleCodes str in this.ApplicationObjects.ApplicationSettings.LoadedModuleList )
+        foreach ( EvModuleCodes str in this.ApplicationObjects.PlatformSettings.LoadedModuleList )
         {
           this.LogDebug ( "- " + str );
         }
@@ -357,7 +357,7 @@ namespace Evado.UniForm.Clinical
           //
           // Load the menu items that are associated with the loaded modules.
           //
-          if ( this.ApplicationObjects.ApplicationSettings.hasModule ( menuItem.ModuleList ) == false )
+          if ( this.ApplicationObjects.PlatformSettings.hasModule ( menuItem.ModuleList ) == false )
           {
             this.LogDebug ( "REMOVE: Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
             //
@@ -861,7 +861,7 @@ namespace Evado.UniForm.Clinical
       // Create the customer name object
       // 
       List<EvOption> roleList = EvMenuItem.getRoleList (
-        this.ApplicationObjects.ApplicationSettings.LoadedModules,
+        this.ApplicationObjects.PlatformSettings.LoadedModules,
         false );
       string roles = this.Session.MenuItem.RoleList;
 

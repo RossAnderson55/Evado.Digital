@@ -72,7 +72,7 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "-SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "-UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
-      this.LogInit ( "-Version: " + this.ApplicationObjects.ApplicationSettings.Version );
+      this.LogInit ( "-Version: " + this.ApplicationObjects.PlatformSettings.Version );
 
       this.LogInit ( "Settings:" );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
@@ -327,7 +327,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.ApplicationObjects.ApplicationSettings.Guid;
+      ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
       ClientDataObject.Title = EvLabels.DataBase_Update_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -725,7 +725,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.ApplicationObjects.ApplicationSettings.Guid;
+      ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
       ClientDataObject.Title = EvLabels.Audit_Config_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -1154,8 +1154,8 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      EvFormDesign initialContent = new EvFormDesign ( );
-      EvFormDesign newContent = new EvFormDesign ( );
+      EdRecordDesign initialContent = new EdRecordDesign ( );
+      EdRecordDesign newContent = new EdRecordDesign ( );
       Evado.Model.UniForm.TableRow row = new Model.UniForm.TableRow ( );
 
       if ( Item.InitialValue == String.Empty
@@ -1166,35 +1166,15 @@ namespace Evado.UniForm.Clinical
 
       if ( Item.InitialValue != String.Empty )
       {
-        initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormDesign> ( Item.InitialValue );
+        initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordDesign> ( Item.InitialValue );
       }
 
       if ( Item.NewValue != String.Empty )
       {
-        newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormDesign> ( Item.NewValue );
+        newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordDesign> ( Item.NewValue );
       }
 
       Item.ItemId = "FormDesign";
-
-      //
-      // JavaValidationScript.
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "JavaValidationScript",
-        initialContent.JavaValidationScript.ToString ( ),
-        newContent.JavaValidationScript.ToString ( ) );
-
-      //
-      // TemplateName
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "TemplateName",
-        initialContent.TemplateName.ToString ( ),
-        newContent.TemplateName.ToString ( ) );
 
       //
       // Title
@@ -1223,8 +1203,8 @@ namespace Evado.UniForm.Clinical
         RowList,
         Instance,
         Item.ItemId + "FormCategory",
-        initialContent.FormCategory.ToString ( ),
-        newContent.FormCategory.ToString ( ) );
+        initialContent.RecordCategory.ToString ( ),
+        newContent.RecordCategory.ToString ( ) );
 
       //
       // Instructions
@@ -1237,124 +1217,24 @@ namespace Evado.UniForm.Clinical
         newContent.Instructions.ToString ( ) );
 
       //
-      // RecordSubjectInstructions
+      // Description
       //
       this.addAuditReportRow (
         RowList,
         Instance,
-        Item.ItemId + "RecordSubjectInstructions",
-        initialContent.RecordSubjectInstructions.ToString ( ),
-        newContent.RecordSubjectInstructions.ToString ( ) );
+        Item.ItemId + "Description",
+        initialContent.Description.ToString ( ),
+        newContent.Description.ToString ( ) );
 
       //
-      // StartDateInstructions
+      // Description
       //
       this.addAuditReportRow (
         RowList,
         Instance,
-        Item.ItemId + "StartDateInstructions",
-        initialContent.StartDateInstructions.ToString ( ),
-        newContent.StartDateInstructions.ToString ( ) );
-
-      //
-      // FinishDateInstructions
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "FinishDateInstructions",
-        initialContent.FinishDateInstructions.ToString ( ),
-        newContent.FinishDateInstructions.ToString ( ) );
-
-      //
-      // SubjectScreeningIdInstructions
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectScreeningIdInstructions",
-        initialContent.SubjectScreeningIdInstructions,
-        newContent.SubjectScreeningIdInstructions );
-
-      //
-      // SubjectRandomisedIdInstructions
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectRandomisedIdInstructions",
-        initialContent.SubjectRandomisedIdInstructions.ToString ( ),
-        newContent.SubjectRandomisedIdInstructions.ToString ( ) );
-
-      //
-      // SubjectExternalIdInstructions
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectExternalIdInstructions",
-        initialContent.SubjectExternalIdInstructions.ToString ( ),
-        newContent.SubjectExternalIdInstructions.ToString ( ) );
-
-      //
-      // SubjectScreeningIdFormat
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectScreeningIdFormat",
-        initialContent.SubjectScreeningIdFormat.ToString ( ),
-        newContent.SubjectScreeningIdFormat.ToString ( ) );
-
-      //
-      // SubjectSponsorIdFormat
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectSponsorIdFormat",
-        initialContent.SubjectSponsorIdFormat.ToString ( ),
-        newContent.SubjectSponsorIdFormat.ToString ( ) );
-
-      //
-      // SubjectRandomisedIdFormat
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectRandomisedIdFormat",
-        initialContent.SubjectRandomisedIdFormat.ToString ( ),
-        newContent.SubjectRandomisedIdFormat.ToString ( ) );
-
-      //
-      // SubjectSponsorIdInstructions
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectSponsorIdInstructions",
-        initialContent.SubjectSponsorIdInstructions.ToString ( ),
-        newContent.SubjectSponsorIdInstructions.ToString ( ) );
-
-      //
-      // SubjectExternalIdFormat
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "SubjectExternalIdFormat",
-        initialContent.SubjectExternalIdFormat.ToString ( ),
-        newContent.SubjectExternalIdFormat.ToString ( ) );
-
-      //
-      // Approval
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "Approval",
-        initialContent.Approval.ToString ( ),
-        newContent.Approval.ToString ( ) );
+        Item.ItemId + "UpdateReason",
+        initialContent.UpdateReason.ToString ( ),
+        newContent.UpdateReason.ToString ( ) );
 
       //
       // Version
@@ -1375,16 +1255,6 @@ namespace Evado.UniForm.Clinical
         Item.ItemId + "TypeId",
         initialContent.TypeId.ToString ( ),
         newContent.TypeId.ToString ( ) );
-
-      //
-      // Version
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "Version",
-        initialContent.Version.ToString ( ),
-        newContent.Version.ToString ( ) );
 
     }//END writeFormContentValues method
 
@@ -1915,7 +1785,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.ApplicationObjects.ApplicationSettings.Guid;
+      ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
       ClientDataObject.Title = EvLabels.Audit_Record_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -2052,7 +1922,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.ApplicationObjects.ApplicationSettings.Guid;
+      ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
       ClientDataObject.Title = EvLabels.Audit_Config_Item_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -2234,7 +2104,7 @@ namespace Evado.UniForm.Clinical
 
       try
       {
-        this.ApplicationObjects.ApplicationSettings = this._Bll_ApplicationSettings.getItem ( "A" );
+        this.ApplicationObjects.PlatformSettings = this._Bll_ApplicationSettings.getItem ( "A" );
 
         this.LogClass ( this._Bll_ApplicationSettings.Log );
 
@@ -2244,9 +2114,9 @@ namespace Evado.UniForm.Clinical
 
         //this.LogDebugValue ( "ProHiddenFields: " + this.ApplicationObjects.ApplicationProfile.ProHiddenFields );
 
-        this.ApplicationObjects.ApplicationSettings.Version = this.ApplicationObjects.FullVersion;
+        this.ApplicationObjects.PlatformSettings.Version = this.ApplicationObjects.FullVersion;
 
-        this.LogValue ( "Version: " + this.ApplicationObjects.ApplicationSettings.Version );
+        this.LogValue ( "Version: " + this.ApplicationObjects.PlatformSettings.Version );
         // 
         // return the client ResultData object for the customer.
         // 
@@ -2287,7 +2157,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
-      ClientDataObject.Id = this.ApplicationObjects.ApplicationSettings.Guid;
+      ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
       ClientDataObject.Title = EvLabels.ApplicationProfile_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -2367,7 +2237,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createGeneralGroup" );
-      this.LogValue ( " version: " + this.ApplicationObjects.ApplicationSettings.Version );
+      this.LogValue ( " version: " + this.ApplicationObjects.PlatformSettings.Version );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2393,7 +2263,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.Version.ToString ( ),
         EvLabels.Application_Profile_Version_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.Version, 30 );
+        this.ApplicationObjects.PlatformSettings.Version, 30 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
@@ -2472,7 +2342,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.Lite_Max_Subject_No.ToString ( ),
         EvLabels.Settings_Lite_Trial_Max_Subject_No_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.LiteMaxSubjectNo, 0, 100000 );
+        this.ApplicationObjects.PlatformSettings.LiteMaxSubjectNo, 0, 100000 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
       //
@@ -2481,18 +2351,18 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.Standard_Max_Subject_No.ToString ( ),
         EvLabels.Settings_Standard_Trial_Max_Subject_No_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.StandardMaxSubjectNo, 0, 100000 );
+        this.ApplicationObjects.PlatformSettings.StandardMaxSubjectNo, 0, 100000 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
 
-      this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.ApplicationSettings.DemoAccountExpiryDays );
+      this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
       //
       // create the demonstration account expiry period in days.
       //
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.DemoAccountExpiryDays.ToString ( ),
         EvLabels.Settings_Demo_Account_Expiry_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.DemoAccountExpiryDays, 0, 365 );
+        this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays, 0, 365 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
       //
@@ -2501,7 +2371,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.DemoRegistrationVideoUrl.ToString ( ),
         EvLabels.Settings_Demo_Video_URL_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.DemoRegistrationVideoUrl, 100 );
+        this.ApplicationObjects.PlatformSettings.DemoRegistrationVideoUrl, 100 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
 
@@ -2513,21 +2383,21 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the hidden milestone fields
       // 
-      this.LogDebug ( "LoadedModules: " + this.ApplicationObjects.ApplicationSettings.LoadedModules );
-      this.LogDebug ( "DepersonalisedAccess: " + this.ApplicationObjects.ApplicationSettings.DepersonalisedAccess );
+      this.LogDebug ( "LoadedModules: " + this.ApplicationObjects.PlatformSettings.LoadedModules );
+      this.LogDebug ( "DepersonalisedAccess: " + this.ApplicationObjects.PlatformSettings.DepersonalisedAccess );
 
       pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdPlatform.SettingFieldNames.LoadedModules.ToString ( ),
         EvLabels.Application_Profile_Loaded_Modules_Field_Label,
         EvLabels.Application_Profile_Loaded_Modules_Description,
-        this.ApplicationObjects.ApplicationSettings.LoadedModules,
+        this.ApplicationObjects.PlatformSettings.LoadedModules,
         loadedModulesList );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
       // 
       // Create the regulatory reports options
       // 
-      stOptionListValue = this.ApplicationObjects.ApplicationSettings.RegulatoryReports;
+      stOptionListValue = this.ApplicationObjects.PlatformSettings.RegulatoryReports;
       stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
 
       pageField = pageGroup.createFreeTextField (
@@ -2544,7 +2414,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createBooleanField (
         Model.Digital.EdPlatform.SettingFieldNames.Display_Site_Dashboard.ToString ( ),
         EvLabels.Application_Profile_Display_Site_Dashboard_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.DisplaySiteDashboard );
+        this.ApplicationObjects.PlatformSettings.DisplaySiteDashboard );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
       // 
@@ -2553,7 +2423,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.HelpUrl.ToString ( ),
         EvLabels.Application_Profile_Help_Url_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.HelpUrl,
+        this.ApplicationObjects.PlatformSettings.HelpUrl,
         50 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
@@ -2598,7 +2468,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpServer.ToString ( ),
         EvLabels.Application_Profile_SMTP_Server_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.SmtpServer,
+        this.ApplicationObjects.PlatformSettings.SmtpServer,
         50 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
@@ -2608,7 +2478,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpServerPort.ToString ( ),
         EvLabels.Application_Profile_SMTP_Port_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.SmtpServerPort, 0, 650000 );
+        this.ApplicationObjects.PlatformSettings.SmtpServerPort, 0, 650000 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
       // 
@@ -2617,7 +2487,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpUserId.ToString ( ),
         EvLabels.Application_Profile_SMTP_User_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.SmtpUserId,
+        this.ApplicationObjects.PlatformSettings.SmtpUserId,
         50 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
@@ -2627,7 +2497,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpPassword.ToString ( ),
         EvLabels.Application_Profile_SMTP_Password_Field_Label,
-        this.ApplicationObjects.ApplicationSettings.SmtpPassword,
+        this.ApplicationObjects.PlatformSettings.SmtpPassword,
         50 );
       pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
 
@@ -2703,7 +2573,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the disease type list options
       // 
-      stOptionListValue = this.ApplicationObjects.ApplicationSettings.DiseaseTypeListOptions;
+      stOptionListValue = this.ApplicationObjects.PlatformSettings.DiseaseTypeListOptions;
       stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
 
       pageField = pageGroup.createFreeTextField (
@@ -2717,7 +2587,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the disease list options
       // 
-      stOptionListValue = this.ApplicationObjects.ApplicationSettings.DiseaseListOptions;
+      stOptionListValue = this.ApplicationObjects.PlatformSettings.DiseaseListOptions;
       stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
 
       pageField = pageGroup.createFreeTextField (
@@ -2731,7 +2601,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the disease list options
       // 
-      stOptionListValue = this.ApplicationObjects.ApplicationSettings.CategoryListOptions;
+      stOptionListValue = this.ApplicationObjects.PlatformSettings.CategoryListOptions;
       stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
 
       pageField = pageGroup.createFreeTextField (
@@ -2745,7 +2615,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the disease list options
       // 
-      stOptionListValue = this.ApplicationObjects.ApplicationSettings.EarlyWithdrawalOptions;
+      stOptionListValue = this.ApplicationObjects.PlatformSettings.EarlyWithdrawalOptions;
       stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
 
       pageField = pageGroup.createFreeTextField (
@@ -2807,8 +2677,8 @@ namespace Evado.UniForm.Clinical
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.ApplicationObjects.ApplicationSettings = new Model.Digital.EdPlatform ( );
-        this.ApplicationObjects.ApplicationSettings.Guid = Guid.NewGuid ( );
+        this.ApplicationObjects.PlatformSettings = new Model.Digital.EdPlatform ( );
+        this.ApplicationObjects.PlatformSettings.Guid = Guid.NewGuid ( );
 
         this.getDataObject ( clientDataObject );
 
@@ -2866,8 +2736,8 @@ namespace Evado.UniForm.Clinical
         // 
         // Initialise the update variables.
         // 
-        this.ApplicationObjects.ApplicationSettings.UserId = this.Session.UserProfile.UserId;
-        this.ApplicationObjects.ApplicationSettings.UserCommonName = this.Session.UserProfile.CommonName;
+        this.ApplicationObjects.PlatformSettings.UserId = this.Session.UserProfile.UserId;
+        this.ApplicationObjects.PlatformSettings.UserCommonName = this.Session.UserProfile.CommonName;
 
         // 
         // Delete the object.
@@ -2882,21 +2752,21 @@ namespace Evado.UniForm.Clinical
         // 
         this.updateObjectValue ( PageCommand.Parameters );
 
-        foreach ( EvObjectParameter parm in this.ApplicationObjects.ApplicationSettings.Parameters )
+        foreach ( EvObjectParameter parm in this.ApplicationObjects.PlatformSettings.Parameters )
         {
           this.LogDebug ( "Parameter N: {0}, V: {1}", parm.Name, parm.Value );
         }
 
         this.LogDebug ( "Subject No: Lite {0}, Subject {1}",
-          this.ApplicationObjects.ApplicationSettings.LiteMaxSubjectNo,
-          this.ApplicationObjects.ApplicationSettings.StandardMaxSubjectNo );
+          this.ApplicationObjects.PlatformSettings.LiteMaxSubjectNo,
+          this.ApplicationObjects.PlatformSettings.StandardMaxSubjectNo );
 
-        this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.ApplicationSettings.DemoAccountExpiryDays );
+        this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
 
         // 
         // update the object.
         // 
-        EvEventCodes result = this._Bll_ApplicationSettings.updateItem ( this.ApplicationObjects.ApplicationSettings );
+        EvEventCodes result = this._Bll_ApplicationSettings.updateItem ( this.ApplicationObjects.PlatformSettings );
 
         // 
         // get the debug ResultData.
@@ -2954,7 +2824,7 @@ namespace Evado.UniForm.Clinical
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + " Evado.UniForm.Clinical.ApplicationProperties.updateObjectValue method. "
         + " Parameters.Count: " + Parameters.Count
-        + " Customer.Guid: " + this.ApplicationObjects.ApplicationSettings.Guid );
+        + " Customer.Guid: " + this.ApplicationObjects.PlatformSettings.Guid );
 
       /// 
       /// Iterate through the parameter values updating the ResultData object
@@ -3002,7 +2872,7 @@ namespace Evado.UniForm.Clinical
              Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Model.Digital.EdPlatform.SettingFieldNames> (
             parameter.Name );
 
-          this.ApplicationObjects.ApplicationSettings.setValue ( fieldName, parameter.Value );
+          this.ApplicationObjects.PlatformSettings.setValue ( fieldName, parameter.Value );
 
         }
         catch ( Exception Ex )

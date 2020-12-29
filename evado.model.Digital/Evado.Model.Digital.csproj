@@ -124,7 +124,7 @@
     <Compile Include="EvCustomer.cs" />
     <Compile Include="evdataitem.cs" />
     <Compile Include="EvMediaMetadata.cs" />
-    <Compile Include="EvFormObjectStates.cs">
+    <Compile Include="EdRecordObjectStates.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EvFormRecordTypes.cs" />
@@ -141,15 +141,14 @@
     <Compile Include="evchart.cs" />
     <Compile Include="evchartqueryitem.cs" />
     <Compile Include="evchartseries.cs" />
-    <Compile Include="evform.cs" />
-    <Compile Include="evformcontent.cs" />
-    <Compile Include="evformdesign.cs" />
-    <Compile Include="evformfield.cs" />
-    <Compile Include="evformfielddesign.cs" />
+    <Compile Include="EdRecord.cs" />
+    <Compile Include="EdRecordDesign.cs" />
+    <Compile Include="EdRecordField.cs" />
+    <Compile Include="EdRecordFieldDesign.cs" />
     <Compile Include="evformfieldselectionlist.cs" />
-    <Compile Include="evformfieldtable.cs" />
-    <Compile Include="evformfieldtablecolumnheader.cs" />
-    <Compile Include="evformfieldtablerow.cs" />
+    <Compile Include="EdRecordTable.cs" />
+    <Compile Include="EdRecordTableHeader.cs" />
+    <Compile Include="EdRecordTableRow.cs" />
     <Compile Include="evformfieldvalidationnotvalid.cs" />
     <Compile Include="evformfieldvalidationrules.cs" />
     <Compile Include="evformrecordcomment.cs" />
@@ -190,8 +189,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\evado.uniform\evado.model\evado.model.csproj">
-      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>
   </ItemGroup>

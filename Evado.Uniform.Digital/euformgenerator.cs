@@ -53,7 +53,7 @@ namespace Evado.UniForm.Clinical
       this.ApplicationObjects = ApplicationObjects;
       this.Session = Session;
       this.ClassParameters = Settings;
-      this._ModuleList = ApplicationObjects.ApplicationSettings.LoadedModuleList;
+      this._ModuleList = ApplicationObjects.PlatformSettings.LoadedModuleList;
 
       this.LoggingLevel = Settings.LoggingLevel;
     }
@@ -103,12 +103,12 @@ namespace Evado.UniForm.Clinical
     //
     // The form access role
     //
-    EvFormObjectStates _FormState = EvFormObjectStates.Null;
+    EdRecordObjectStates _FormState = EdRecordObjectStates.Null;
 
     //
     // The form access role
     //
-    EvForm.FormAccessRoles _FormAccessRole = EvForm.FormAccessRoles.Null;
+    EdRecord.FormAccessRoles _FormAccessRole = EdRecord.FormAccessRoles.Null;
 
     //
     // Lists the Evado Clinical modules that are enabled.
@@ -128,7 +128,7 @@ namespace Evado.UniForm.Clinical
     // 
     // Used internally selection field enablement.
     // 
-    private List<Evado.Model.Digital.EvFormField> _Fields = new List<Evado.Model.Digital.EvFormField> ( );
+    private List<Evado.Model.Digital.EdRecordField> _Fields = new List<Evado.Model.Digital.EdRecordField> ( );
 
     // 
     // Used internally for validation field enablement for FirstSubject sex
@@ -212,7 +212,7 @@ namespace Evado.UniForm.Clinical
     /// </remarks>
     // ---------------------------------------------------------------------------------
     public bool generateForm (
-       Evado.Model.Digital.EvForm Form,
+       Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Page ClientPage,
       String BinaryFilePath )
     {
@@ -250,8 +250,8 @@ namespace Evado.UniForm.Clinical
         //
         // Hide signature from all non-record editors.
         //
-        if ( this._FormAccessRole != EvForm.FormAccessRoles.Patient
-          && this._FormAccessRole != EvForm.FormAccessRoles.Record_Author )
+        if ( this._FormAccessRole != EdRecord.FormAccessRoles.Patient
+          && this._FormAccessRole != EdRecord.FormAccessRoles.Record_Author )
         {
           this._HideSignatureField = true;
         }
@@ -267,8 +267,8 @@ namespace Evado.UniForm.Clinical
       // 
       switch ( this._FormAccessRole )
       {
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Patient:
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Record_Author:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Patient:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author:
           {
             //this.LogDebug ( "Record Author "  );
             ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -276,8 +276,8 @@ namespace Evado.UniForm.Clinical
             // 
             // If the hide annotation of the form is not queried and being edited.
             // 
-            if ( Form.QueryState != EvForm.QueryStates.None
-              && Form.QueryState != EvForm.QueryStates.Null )
+            if ( Form.QueryState != EdRecord.QueryStates.None
+              && Form.QueryState != EdRecord.QueryStates.Null )
             {
               this._OnEdit_HideFieldAnnotation = false;
               ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Annotated_Fields;
@@ -289,20 +289,20 @@ namespace Evado.UniForm.Clinical
             }
             break;
           }
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Monitor:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Monitor:
           {
             //this.LogDebug ( "Monitor" );
             ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
             ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Review_Fields;
             break;
           }
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Data_Manager:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Data_Manager:
           {
             //this.LogDebug ( "data manager" );
             ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
             ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Review_Fields;
 
-            if ( this._FormState == EvFormObjectStates.Locked_Record )
+            if ( this._FormState == EdRecordObjectStates.Locked_Record )
             {
               ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
               ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Annotated_Fields;
@@ -384,7 +384,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     //  ---------------------------------------------------------------------------------
     private void createFormHeader (
-       Evado.Model.Digital.EvForm Form,
+       Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createFormHeader" );
@@ -398,7 +398,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Initialise the group if the user is not a patient.
       // 
-      if ( this._FormAccessRole != EvForm.FormAccessRoles.Patient )
+      if ( this._FormAccessRole != EdRecord.FormAccessRoles.Patient )
       {
         formHeaderGroup = PageObject.AddGroup (
           String.Empty,
@@ -408,9 +408,9 @@ namespace Evado.UniForm.Clinical
         formHeaderGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
 
-        if ( this._FormAccessRole == EvForm.FormAccessRoles.Monitor
-          || this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-          || this._FormAccessRole == EvForm.FormAccessRoles.Record_Reader )
+        if ( this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
+          || this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+          || this._FormAccessRole == EdRecord.FormAccessRoles.Record_Reader )
         {
           if ( Form.VisitTitle != String.Empty )
           {
@@ -439,7 +439,7 @@ namespace Evado.UniForm.Clinical
               EuFormGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.FORM_TITLE,
               Form.RecordId
               + EvLabels.Space_Arrow_Right
-              + Form.FormId
+              + Form.LayoutId
               + EvLabels.Space_Hypen
               + Form.Title,
               Form.Design.Reference );
@@ -452,7 +452,7 @@ namespace Evado.UniForm.Clinical
               EvLabels.Label_Form_Id,
               Form.RecordId
               + EvLabels.Space_Arrow_Right
-              + Form.FormId
+              + Form.LayoutId
               + EvLabels.Space_Hypen
               + Form.Title, 50 );
             groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -479,7 +479,7 @@ namespace Evado.UniForm.Clinical
           {
             groupField = formHeaderGroup.createHtmlLinkField (
               EuFormGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.FORM_TITLE,
-              Form.FormId
+              Form.LayoutId
               + EvLabels.Space_Hypen
               + Form.Title,
               Form.Design.Reference );
@@ -492,7 +492,7 @@ namespace Evado.UniForm.Clinical
               EvLabels.Label_Form_Id,
               Form.RecordId
               + EvLabels.Space_Arrow_Right
-              + Form.FormId
+              + Form.LayoutId
               + EvLabels.Space_Hypen
               + Form.Title, 50 );
             groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -535,7 +535,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>Returns a string containing the Java Scripts.</returns>
     //  ----------------------------------------------------------------------------------
     public Evado.Model.Digital.EvFormSection getSection (
-       Evado.Model.Digital.EvForm Form )
+       Evado.Model.Digital.EdRecord Form )
     {
       this.LogMethod ( "hasSection method. "
         + " NextSection: " + Form.NextSection );
@@ -572,7 +572,7 @@ namespace Evado.UniForm.Clinical
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     private void getFieldCategories (
-       Evado.Model.Digital.EvForm Form,
+       Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Group PageGroup )
     {
       this.LogMethod ( "getFieldCategories" );
@@ -586,7 +586,7 @@ namespace Evado.UniForm.Clinical
       //
       // build the category list by iterating through the list of fields.
       //
-      foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
       {
         // 
         // Free text, text, date, time, table and matrix fields are not available for categorisation.
@@ -637,7 +637,7 @@ namespace Evado.UniForm.Clinical
           //
           // iterate through the fields to fine the fields in the category
           //
-          foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+          foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
           {
             // 
             // Free text, text, date, time, table and matrix fields are not available for categorisation.
@@ -687,7 +687,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormFooter (
-       Evado.Model.Digital.EvForm Form,
+       Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Page ClientDataObject )
     {
       this.LogMethod ( "createFormFooter" );
@@ -701,7 +701,7 @@ namespace Evado.UniForm.Clinical
       //
       // Do not display the form footer for questionnaire forms, when they are being edited.
       //
-      if ( Form.FormAccessRole == EvForm.FormAccessRoles.Patient )
+      if ( Form.FormAccessRole == EdRecord.FormAccessRoles.Patient )
       {
         this.LogDebug ( "EXIT: form footer for patient access and if annotations are hidden during editing." );
         return;
@@ -721,9 +721,9 @@ namespace Evado.UniForm.Clinical
       // Display the comments.
       // 
       if ( Form.CommentList.Count > 0
-        || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Record_Author
-        || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Monitor
-        || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Data_Manager )
+        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author
+        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Monitor
+        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Data_Manager )
       {
         this.LogDebug ( "display comments." );
         // 
@@ -752,9 +752,9 @@ namespace Evado.UniForm.Clinical
         // 
         // If in edit mode display a new comment field.
         // 
-        if ( this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Record_Author
-          || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Monitor
-          || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Data_Manager )
+        if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author
+          || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Monitor
+          || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Data_Manager )
         {
           this.LogDebug ( "Add Comment Field" );
           groupField = pageGroup.createFreeTextField (
@@ -855,7 +855,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createCommonFormFields (
-       Evado.Model.Digital.EvForm Form,
+       Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Page ClientDataObject )
     {
       this.LogMethod ( "getCommonFormFields" );
@@ -1009,9 +1009,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.Digital.EvFormField field = new EvFormField ( );
+      Evado.Model.Digital.EdRecordField field = new EdRecordField ( );
 
-      field.State = EvFormField.FieldStates.Empty;
+      field.State = EdRecordField.FieldStates.Empty;
       field.TypeId = FieldType;
       field.FieldId = FieldId;
       field.Design.Title = FieldTitle;
@@ -1022,11 +1022,11 @@ namespace Evado.UniForm.Clinical
       field.cDashMetadata = Field.cDashMetadata;
       if ( FieldValue != String.Empty )
       {
-        field.State = EvFormField.FieldStates.With_Value;
+        field.State = EdRecordField.FieldStates.With_Value;
       }
       if ( Field.Queried == true )
       {
-        field.State = EvFormField.FieldStates.Queried;
+        field.State = EdRecordField.FieldStates.Queried;
       }
       this.LogDebug ( "field.State: " + field.State );
 
@@ -1039,7 +1039,7 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the form field.
       //
-      this.createFormField ( field, FieldGroup, EvFormObjectStates.Null );
+      this.createFormField ( field, FieldGroup, EdRecordObjectStates.Null );
 
     }//END public createStaticField method.
 
@@ -1075,9 +1075,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.Digital.EvFormField field = new EvFormField ( );
+      Evado.Model.Digital.EdRecordField field = new EdRecordField ( );
 
-      field.State = EvFormField.FieldStates.Empty;
+      field.State = EdRecordField.FieldStates.Empty;
       field.TypeId = EvDataTypes.Text;
       field.FieldId = FieldId;
       field.Design.Title = FieldTitle;
@@ -1089,11 +1089,11 @@ namespace Evado.UniForm.Clinical
       field.cDashMetadata = Field.cDashMetadata;
       if ( FieldValue != String.Empty )
       {
-        field.State = EvFormField.FieldStates.With_Value;
+        field.State = EdRecordField.FieldStates.With_Value;
       }
       if ( Field.Queried == true )
       {
-        field.State = EvFormField.FieldStates.Queried;
+        field.State = EdRecordField.FieldStates.Queried;
       }
 
       if ( field.TypeId == Evado.Model.EvDataTypes.Free_Text )
@@ -1105,7 +1105,7 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the form field.
       //
-      this.createFormField ( field, FieldGroup, EvFormObjectStates.Null );
+      this.createFormField ( field, FieldGroup, EdRecordObjectStates.Null );
 
     }//END public createMultiLineStaticField method.
 
@@ -1149,9 +1149,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.Digital.EvFormField field = new EvFormField ( );
+      Evado.Model.Digital.EdRecordField field = new EdRecordField ( );
 
-      field.State = EvFormField.FieldStates.Empty;
+      field.State = EdRecordField.FieldStates.Empty;
       field.TypeId = FieldType;
       field.FieldId = FieldId;
       field.Design.Title = FieldTitle;
@@ -1162,11 +1162,11 @@ namespace Evado.UniForm.Clinical
       field.cDashMetadata = Field.cDashMetadata;
       if ( FieldValue != String.Empty )
       {
-        field.State = EvFormField.FieldStates.With_Value;
+        field.State = EdRecordField.FieldStates.With_Value;
       }
       if ( Field.Queried == true )
       {
-        field.State = EvFormField.FieldStates.Queried;
+        field.State = EdRecordField.FieldStates.Queried;
       }
 
       if ( field.TypeId == Evado.Model.EvDataTypes.Free_Text )
@@ -1184,7 +1184,7 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the form field.
       //
-      this.createFormField ( field, FieldGroup, EvFormObjectStates.Null );
+      this.createFormField ( field, FieldGroup, EdRecordObjectStates.Null );
 
     }//END public createStaticField method.
 
@@ -1225,9 +1225,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.Digital.EvFormField field = new EvFormField ( );
+      Evado.Model.Digital.EdRecordField field = new EdRecordField ( );
 
-      field.State = EvFormField.FieldStates.Empty;
+      field.State = EdRecordField.FieldStates.Empty;
       field.TypeId = FieldType;
       field.FieldId = FieldId;
       field.Design.Title = FieldTitle;
@@ -1238,11 +1238,11 @@ namespace Evado.UniForm.Clinical
       field.cDashMetadata = Field.cDashMetadata;
       if ( FieldValue != String.Empty )
       {
-        field.State = EvFormField.FieldStates.With_Value;
+        field.State = EdRecordField.FieldStates.With_Value;
       }
       if ( Field.Queried == true )
       {
-        field.State = EvFormField.FieldStates.Queried;
+        field.State = EdRecordField.FieldStates.Queried;
       }
       field.Design.Options = FieldOptions;
       if ( FieldOptions.Contains ( ":" ) == true )
@@ -1253,7 +1253,7 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the form field.
       //
-      this.createFormField ( field, FieldGroup, EvFormObjectStates.Null );
+      this.createFormField ( field, FieldGroup, EdRecordObjectStates.Null );
 
     }//END public createStaticField method.
 
@@ -1303,9 +1303,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.Digital.EvFormField field = new EvFormField ( );
+      Evado.Model.Digital.EdRecordField field = new EdRecordField ( );
 
-      field.State = EvFormField.FieldStates.Empty;
+      field.State = EdRecordField.FieldStates.Empty;
       field.TypeId = FieldType;
       field.FieldId = FieldId;
       field.Design.Title = FieldTitle;
@@ -1317,11 +1317,11 @@ namespace Evado.UniForm.Clinical
       field.cDashMetadata = Field.cDashMetadata;
       if ( FieldValue != String.Empty )
       {
-        field.State = EvFormField.FieldStates.With_Value;
+        field.State = EdRecordField.FieldStates.With_Value;
       }
       if ( Field.Queried == true )
       {
-        field.State = EvFormField.FieldStates.Queried;
+        field.State = EdRecordField.FieldStates.Queried;
       }
 
       field.ValidationRules = new EvFormFieldValidationRules ( );
@@ -1331,7 +1331,7 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the form field.
       //
-      this.createFormField ( field, FieldGroup, EvFormObjectStates.Null );
+      this.createFormField ( field, FieldGroup, EdRecordObjectStates.Null );
 
     }//END public createStaticField method.
 
@@ -1351,7 +1351,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormSections (
-         Evado.Model.Digital.EvForm Form,
+         Evado.Model.Digital.EdRecord Form,
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createFormSections" );
@@ -1372,7 +1372,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Determine how many fields are in this section.
         //
-        foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+        foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
         {
           if ( field.Design.Section == section.No.ToString ( )
             || field.Design.Section == section.Title )
@@ -1436,7 +1436,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Iterate through each form field in the section.
         // 
-        foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+        foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
         {
           // 
           // If the field is in the section identified by its section name (backward compatibility) or
@@ -1460,7 +1460,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Determine how many fields are in this section.
       //
-      foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
       {
         if ( field.Design.Section == String.Empty )
         {
@@ -1497,7 +1497,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Iterate through each form field in the section.
       // 
-      foreach ( Evado.Model.Digital.EvFormField field in Form.Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
       {
         if ( field.Design.Section == String.Empty )
         {
@@ -1524,9 +1524,9 @@ namespace Evado.UniForm.Clinical
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormField (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Group FieldGroup,
-      Evado.Model.Digital.EvFormObjectStates FormState )
+      Evado.Model.Digital.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "getFormField" );
       this.LogDebug ( "FieldId: " + Field.FieldId );
@@ -1595,12 +1595,12 @@ namespace Evado.UniForm.Clinical
       // 
       // if the field is queried then add the queried status parameter.
       // 
-      if ( Field.State == EvFormField.FieldStates.Queried )
+      if ( Field.State == EdRecordField.FieldStates.Queried )
       {
         this.LogDebug ( "Queried field" );
         groupField.AddParameter (
           Evado.Model.UniForm.FieldParameterList.Status,
-           Evado.Model.Digital.EvFormField.FieldStates.Queried.ToString ( ) );
+           Evado.Model.Digital.EdRecordField.FieldStates.Queried.ToString ( ) );
 
         groupField.setDefaultBackBroundColor ( Model.UniForm.Background_Colours.Orange );
       }
@@ -1766,7 +1766,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void createFormFieldHeader (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "createFormFieldHeader" );
@@ -1789,7 +1789,7 @@ namespace Evado.UniForm.Clinical
       // 
       switch ( this._FormAccessRole )
       {
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Data_Manager:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Data_Manager:
           {
             // 
             // Display the Data Cleansing components
@@ -1799,7 +1799,7 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Monitor:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Monitor:
           {
             // 
             // Display the Data Cleansing components
@@ -1809,14 +1809,14 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case Evado.Model.Digital.EvForm.FormAccessRoles.Patient:
+        case Evado.Model.Digital.EdRecord.FormAccessRoles.Patient:
           {
             break;
           }
 
         default:
           {
-            if ( this._FormState == EvFormObjectStates.Submitted_Record )
+            if ( this._FormState == EdRecordObjectStates.Submitted_Record )
             {
             }
 
@@ -1844,7 +1844,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void createFieldHeaderText (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "createFieldHeaderText" );
@@ -1856,8 +1856,8 @@ namespace Evado.UniForm.Clinical
       //
       // set the field to reaonly if the field state is not edit or data cleansing.
       //
-      if ( this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Record_Reader
-        || this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Monitor )
+      if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Reader
+        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Monitor )
       {
         GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -1865,7 +1865,7 @@ namespace Evado.UniForm.Clinical
       // 
       // design header information
       // 
-      if ( this._FormAccessRole == Evado.Model.Digital.EvForm.FormAccessRoles.Form_Designer )
+      if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Form_Designer )
       {
         sbDescription.Append (
            "Form field identifier: " + Field.FieldId );
@@ -1886,7 +1886,7 @@ namespace Evado.UniForm.Clinical
         {
           sbDescription.Append ( ", SR" );
         }
-        if ( Field.Design.DataPoint == true )
+        if ( Field.Design.AiDataPoint == true )
         {
           sbDescription.Append ( ", DP" );
         }
@@ -1977,7 +1977,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void getFieldDataCleansingAnnotationField (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFieldDataCheansingAnnotationField" );
@@ -2015,7 +2015,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void getFieldReviewAnnotationField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFieldReviewAnnotationField" );
@@ -2054,7 +2054,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void getFieldEditAnnotationField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFieldEditAnnotationField" );
@@ -2101,7 +2101,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getTextField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getTextField method. MultiLineTextField: "
@@ -2138,9 +2138,9 @@ namespace Evado.UniForm.Clinical
     /// <param name="FormState">Evado.Model.Digital.EvFormObjectStates enumeration object.</param>
     //  ---------------------------------------------------------------------------------
     private void getSignatureField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField,
-      Evado.Model.Digital.EvFormObjectStates FormState )
+      Evado.Model.Digital.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "getSignatureField" );
       this.LogDebug ( "FormState: " + FormState );
@@ -2177,9 +2177,9 @@ namespace Evado.UniForm.Clinical
       // the state is not empty or draft and a signature exists it is readonly.
       //
       if ( Field.ItemText != String.Empty
-        && FormState != EvFormObjectStates.Empty_Record
-        && FormState != EvFormObjectStates.Draft_Record
-        && FormState != EvFormObjectStates.Completed_Record)
+        && FormState != EdRecordObjectStates.Empty_Record
+        && FormState != EdRecordObjectStates.Draft_Record
+        && FormState != EdRecordObjectStates.Completed_Record)
       {
         GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
       }
@@ -2200,7 +2200,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getFreeTextField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFreeTextField" );
@@ -2223,7 +2223,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getReadOnlyField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getReadOnlyField" );
@@ -2253,7 +2253,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getQuizRadioButtonField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getQuizField" );
@@ -2284,7 +2284,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getStreamedVideoField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getStreamedVideoField" );
@@ -2342,7 +2342,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getExternalImageField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getExternalImageField" );
@@ -2395,7 +2395,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getHttpLinkField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getHttpLinkField" );
@@ -2422,7 +2422,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getComputedField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( ".getComputedField" );
@@ -2447,7 +2447,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getNumericField (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getNumericField" );
@@ -2505,7 +2505,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getIntegerRangeField (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getIntegerRangeField" );
@@ -2561,7 +2561,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getFloatRangeField (
-       Evado.Model.Digital.EvFormField Field,
+       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFloatRangeField" );
@@ -2616,7 +2616,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
-    private void getDateField ( Evado.Model.Digital.EvFormField Field,
+    private void getDateField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getDateField" );
@@ -2659,7 +2659,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
-    private void getTimeField ( Evado.Model.Digital.EvFormField Field,
+    private void getTimeField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getDateField" );
@@ -2691,7 +2691,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getYesNoField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getYesNoField" );
@@ -2725,7 +2725,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getQueryYesNoField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getQueryYesNoField" );
@@ -2838,7 +2838,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Iteration through the fields looking for a match.
       // 
-      foreach ( Evado.Model.Digital.EvFormField field in this._Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in this._Fields )
       {
         string fieldName = field.FieldId;
 
@@ -2870,7 +2870,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getRadioButtonListField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getRadioButtonoField method. Value: " + Field.ItemValue );
@@ -2935,7 +2935,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getSelectonField ( Evado.Model.Digital.EvFormField Field,
+    private void getSelectonField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getSelectonField" );
@@ -2998,7 +2998,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField"> Evado.Model.UniForm.Field object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getCheckButtonListField ( Evado.Model.Digital.EvFormField Field,
+    private void getCheckButtonListField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getCheckButtonoField" );
@@ -3063,7 +3063,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField"> Evado.Model.UniForm.Field object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getQueryCheckButtonListField ( Evado.Model.Digital.EvFormField Field,
+    private void getQueryCheckButtonListField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getQueryCheckButtonListField" );
@@ -3132,7 +3132,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField"> Evado.Model.UniForm.Field object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getHorizontalRadioButtonField ( Evado.Model.Digital.EvFormField Field,
+    private void getHorizontalRadioButtonField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getHorizontalRadioButtonField" );
@@ -3194,7 +3194,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">  Evado.Model.UniForm.Fields object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getAnalogueScaleField ( Evado.Model.Digital.EvFormField Field,
+    private void getAnalogueScaleField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getAnalogueScale" );
@@ -3210,24 +3210,6 @@ namespace Evado.UniForm.Clinical
 
       GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Max_Label,
        Field.Design.AnalogueLegendFinish );
-
-      // 
-      // Set the scaling.
-      // 
-      if ( Field.Design.AnalogueScale == Evado.Model.Digital.EvFormField.AnalogueScaleOptions.Zero_to_Forty )
-      {
-        GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Increment, 1 );
-      }
-
-      if ( Field.Design.AnalogueScale == Evado.Model.Digital.EvFormField.AnalogueScaleOptions.Zero_to_Twenty )
-      {
-        GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Increment, 2 );
-      }
-
-      if ( Field.Design.AnalogueScale == Evado.Model.Digital.EvFormField.AnalogueScaleOptions.Zero_to_Ten )
-      {
-        GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Increment, 4 );
-      }
 
       // 
       // Set the custom validation script if it exists.
@@ -3250,7 +3232,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getUserEndorsementField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getPasswordField" );
@@ -3277,7 +3259,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getTableField (
-        Evado.Model.Digital.EvFormField Field,
+        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getFormFieldTable" );
@@ -3322,7 +3304,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Proces the Options or Unit field value.
         // 
-        if ( Field.Table.Header [ column ].TypeId == Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeMatrix )
+        if ( Field.Table.Header [ column ].TypeId == Evado.Model.Digital.EdRecordTableHeader.ItemTypeMatrix )
         {
           GroupField.Table.Header [ column ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
         }
@@ -3350,7 +3332,7 @@ namespace Evado.UniForm.Clinical
         // Initialise iteration variables and objects.
         // 
         Evado.Model.UniForm.TableRow row = new Evado.Model.UniForm.TableRow ( );
-        Evado.Model.Digital.EvFormFieldTableRow evRow = Field.Table.Rows [ inRow ];
+        Evado.Model.Digital.EdRecordTableRow evRow = Field.Table.Rows [ inRow ];
 
         // 
         // iterate through the table columns processing the table cells.
@@ -3413,11 +3395,11 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     public void updateFormObject (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-         Evado.Model.Digital.EvForm Form )
+         Evado.Model.Digital.EdRecord Form )
     {
       this.LogMethod ( "updateFormObject" );
       this.LogDebug ( "Returned Field count = " + CommandParameters.Count );
-      this.LogDebug ( "FormId: " + Form.FormId );
+      this.LogDebug ( "FormId: " + Form.LayoutId );
       this.LogDebug ( "RecordId: " + Form.RecordId );
       this.LogDebug ( "Form State: " + Form.State );
       //
@@ -3436,8 +3418,8 @@ namespace Evado.UniForm.Clinical
       // 
       // If the state is editable then update the TestReport.
       // 
-      if ( this._FormAccessRole != EvForm.FormAccessRoles.Form_Designer
-        && this._FormAccessRole != EvForm.FormAccessRoles.Record_Reader )
+      if ( this._FormAccessRole != EdRecord.FormAccessRoles.Form_Designer
+        && this._FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
       {
         this.LogDebug ( "Updating field values." );
         // 
@@ -3470,7 +3452,7 @@ namespace Evado.UniForm.Clinical
           // This will produce a summary value that can be displayed to users.
           //
           if ( Form.TypeId == EvFormRecordTypes.Patient_Record 
-            && Form.Fields[ count].FieldId == EvForm.FormClassFieldNames.RecordSubject.ToString() )
+            && Form.Fields[ count].FieldId == EdRecord.FormClassFieldNames.RecordSubject.ToString() )
           {
             Form.RecordSubject = Form.Fields [ count ].ItemValue;
           }
@@ -3502,7 +3484,7 @@ namespace Evado.UniForm.Clinical
         {
           EvFormRecordComment.AuthorTypeCodes authorCode = EvFormRecordComment.AuthorTypeCodes.Reviewer;
 
-          if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager )
+          if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager )
           {
             authorCode = EvFormRecordComment.AuthorTypeCodes.Data_Manager;
           }
@@ -3565,7 +3547,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateCommonRecordFields (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-         Evado.Model.Digital.EvForm Form )
+         Evado.Model.Digital.EdRecord Form )
     {
       this.LogMethod ( "updateCommonRecordFields" );
       this.LogDebug ( " RecordId: " + Form.RecordId );
@@ -3590,8 +3572,8 @@ namespace Evado.UniForm.Clinical
       }//END Processing Common FormRecord fields.
 
 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Record_Author
-        || this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager )
       {
         //  
         // Update FormRecord Therapy.
@@ -3633,9 +3615,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Add the annotation.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Record_Author
-        || this._FormAccessRole == EvForm.FormAccessRoles.Monitor
-        || this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager )
       {
         //  
         // Update FormRecord Therapy.
@@ -3841,7 +3823,7 @@ namespace Evado.UniForm.Clinical
       List<Evado.Model.UniForm.Parameter> CommandParameters,
       string FieldId,
         Evado.Model.Digital.EvFormStaticField Field,
-        Evado.Model.Digital.EvFormObjectStates FormState )
+        Evado.Model.Digital.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "updateStaticFieldAnnotation" );
       this.LogDebug ( "FieldId: " + FieldId );
@@ -3852,12 +3834,12 @@ namespace Evado.UniForm.Clinical
       // 
       // Process the test field for test edit mode.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Record_Author )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
       {
         // 
         // Update comments fields for an queried field
         // 
-        if ( FormState == Evado.Model.Digital.EvFormObjectStates.Queried_Record )
+        if ( FormState == Evado.Model.Digital.EdRecordObjectStates.Queried_Record )
         {
           Field.Queried = false;
         }
@@ -3867,8 +3849,8 @@ namespace Evado.UniForm.Clinical
       // 
       // Process the test field for test edit mode.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-        || this._FormAccessRole == EvForm.FormAccessRoles.Monitor )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Monitor )
       {
         // 
         // Get the query check box value.
@@ -3928,20 +3910,20 @@ namespace Evado.UniForm.Clinical
           // 
           comment.AuthorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Record_Author;
 
-          if ( this._FormAccessRole == EvForm.FormAccessRoles.Monitor
+          if ( this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
              && Field.Queried == true )
           {
             comment.AuthorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Monitor;
             comment.Content = "Value Queried: " + stAnnotation;
           }
-          if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
+          if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
              && Field.Queried == true )
           {
             comment.AuthorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Data_Manager;
             comment.Content = "Value Queried: " + stAnnotation;
           }
 
-          if ( FormState == Evado.Model.Digital.EvFormObjectStates.Queried_Record )
+          if ( FormState == Evado.Model.Digital.EdRecordObjectStates.Queried_Record )
           {
             comment.Content = "Value Updated: " + stAnnotation;
           }
@@ -3976,7 +3958,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateFormComments (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-         Evado.Model.Digital.EvForm Form )
+         Evado.Model.Digital.EdRecord Form )
     {
       this.LogMethod ( "updateFormComments" );
       this.LogDebug ( "RecordId: " + Form.RecordId );
@@ -3989,11 +3971,11 @@ namespace Evado.UniForm.Clinical
       string stValue = String.Empty;
       Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes authorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Record_Author;
 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager )
       {
         authorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Data_Manager;
       }
-      else if ( this._FormAccessRole == EvForm.FormAccessRoles.Monitor )
+      else if ( this._FormAccessRole == EdRecord.FormAccessRoles.Monitor )
       {
         authorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Monitor;
       }
@@ -4001,9 +3983,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Get the static test comment field value.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-        || this._FormAccessRole == EvForm.FormAccessRoles.Monitor
-        || this._FormAccessRole == EvForm.FormAccessRoles.Record_Author )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
       {
         stValue = this.GetParameterValue ( CommandParameters, EuFormGenerator.CONST_FORM_COMMENT_FIELD_ID );
 
@@ -4069,8 +4051,8 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateFormField (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-        Evado.Model.Digital.EvFormField FormField,
-         Evado.Model.Digital.EvFormObjectStates FormState )
+        Evado.Model.Digital.EdRecordField FormField,
+         Evado.Model.Digital.EdRecordObjectStates FormState )
     {
 
       this.LogMethod ( "updateFormField" );
@@ -4104,9 +4086,9 @@ namespace Evado.UniForm.Clinical
       // 
       // If the test is in EDIT mode update the fields values.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Record_Author
-        || this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-        || this._FormAccessRole == EvForm.FormAccessRoles.Patient )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Patient )
       {
 
         switch ( FormField.TypeId )
@@ -4198,7 +4180,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateTextField (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-        Evado.Model.Digital.EvFormField FormField,
+        Evado.Model.Digital.EdRecordField FormField,
        bool IsFreeText )
     {
       //this.LogMethod ( "updateTextField method " );
@@ -4269,7 +4251,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateUserEndorcementField (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-        Evado.Model.Digital.EvFormField FormField )
+        Evado.Model.Digital.EdRecordField FormField )
     {
       //this.LogMethod ( "updateUserEndorcementField method " );
       //this.LogDebugValue ( "FormField.FieldId: " + FormField.FieldId );
@@ -4327,7 +4309,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="SectionId">String Section idenifier</param>
     /// <returns>EvFormSection object</returns>
     //  ----------------------------------------------------------------------------------
-    private EvFormSection getSection ( EvFormField FormField )
+    private EvFormSection getSection ( EdRecordField FormField )
     {
       //this.LogMethod ( "updateUserEndorcementField method " );
       //this.LogDebugValue ( "Design.Section: " + FormField.Design.Section );
@@ -4362,7 +4344,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void updateFormTableFields (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-        Evado.Model.Digital.EvFormField FormField )
+        Evado.Model.Digital.EdRecordField FormField )
     {
       this.LogMethod ( "updateFormTableFields method " );
       //this.LogDebugValue ( "FieldId: " + FormField.FieldId );
@@ -4402,7 +4384,7 @@ namespace Evado.UniForm.Clinical
               // 
               // If NA is entered set to numeric null.
               // 
-              if ( FormField.Table.Header [ inCol ].TypeId == Evado.Model.Digital.EvFormFieldTableColumnHeader.ItemTypeNumeric )
+              if ( FormField.Table.Header [ inCol ].TypeId == Evado.Model.Digital.EdRecordTableHeader.ItemTypeNumeric )
               {
                 if ( stValue.ToLower ( ) == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NOT_AVAILABLE.ToLower ( ) )
                 {
@@ -4425,9 +4407,9 @@ namespace Evado.UniForm.Clinical
 
               // If there are test table value the set the field to entered.
               if ( stValue != String.Empty
-                && FormField.State == Evado.Model.Digital.EvFormField.FieldStates.Empty )
+                && FormField.State == Evado.Model.Digital.EdRecordField.FieldStates.Empty )
               {
-                FormField.State = Evado.Model.Digital.EvFormField.FieldStates.With_Value;
+                FormField.State = Evado.Model.Digital.EdRecordField.FieldStates.With_Value;
                 FormField.ItemValue = "Entered";
               }
 
@@ -4458,8 +4440,8 @@ namespace Evado.UniForm.Clinical
 
     private void updateFormFieldAnnotation (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
-        Evado.Model.Digital.EvFormField FormField,
-        Evado.Model.Digital.EvFormObjectStates FormState )
+        Evado.Model.Digital.EdRecordField FormField,
+        Evado.Model.Digital.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "updateFormFieldAnnotation method" );
       // 
@@ -4470,8 +4452,8 @@ namespace Evado.UniForm.Clinical
       // 
       // In this currentSchedule state not annotation can be added to the field so exit.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Form_Designer
-        || this._FormAccessRole == EvForm.FormAccessRoles.Record_Reader )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Form_Designer
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Record_Reader )
       {
         this.LogDebug ( "No annotation are collected" );
         return;
@@ -4483,17 +4465,17 @@ namespace Evado.UniForm.Clinical
       // 
       // Process the test field for test edit mode.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Record_Author
-        || this._FormAccessRole == EvForm.FormAccessRoles.Monitor
-        || this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager )
       {
         this.LogDebug ( " FormDisplayStates Edit" );
         // 
         // Update comments fields for an queried letter
         // 
-        if ( FormState == Evado.Model.Digital.EvFormObjectStates.Queried_Record )
+        if ( FormState == Evado.Model.Digital.EdRecordObjectStates.Queried_Record )
         {
-          FormField.State = Evado.Model.Digital.EvFormField.FieldStates.With_Value;
+          FormField.State = Evado.Model.Digital.EdRecordField.FieldStates.With_Value;
           FormField.Action = Evado.Bll.Clinical.EvFormRecordFields.ActionSaveItem;
           sAnnotation = "Value Updated: ";
         }
@@ -4503,8 +4485,8 @@ namespace Evado.UniForm.Clinical
       // 
       // Process the test field for test edit mode.
       // 
-      if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-        || this._FormAccessRole == EvForm.FormAccessRoles.Monitor )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+        || this._FormAccessRole == EdRecord.FormAccessRoles.Monitor )
       {
         this.LogDebug ( "FormDisplayStates Review" );
         // 
@@ -4524,7 +4506,7 @@ namespace Evado.UniForm.Clinical
             || stQuery.ToLower ( ) == "checked"
             || stQuery.ToLower ( ) == "yes" )
           {
-            FormField.State = Evado.Model.Digital.EvFormField.FieldStates.Queried;
+            FormField.State = Evado.Model.Digital.EdRecordField.FieldStates.Queried;
             FormField.Action = Evado.Bll.Clinical.EvFormRecordFields.ActionQueryItem;
             sAnnotation = "Value Queried: ";
           }//END query checked
@@ -4533,7 +4515,7 @@ namespace Evado.UniForm.Clinical
         else
         {
           sAnnotation = "Value Confirmed: ";
-          FormField.State = Evado.Model.Digital.EvFormField.FieldStates.Confirmed;
+          FormField.State = Evado.Model.Digital.EdRecordField.FieldStates.Confirmed;
           FormField.Action = Evado.Bll.Clinical.EvFormRecordFields.ActionConfirmItem;
         }
 
@@ -4587,14 +4569,14 @@ namespace Evado.UniForm.Clinical
           // 
           // Set the annotation type
           // 
-          if ( this._FormAccessRole == EvForm.FormAccessRoles.Monitor
-            && FormField.State == Evado.Model.Digital.EvFormField.FieldStates.Queried )
+          if ( this._FormAccessRole == EdRecord.FormAccessRoles.Monitor
+            && FormField.State == Evado.Model.Digital.EdRecordField.FieldStates.Queried )
           {
             comment.AuthorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Monitor;
           }
 
-          if ( this._FormAccessRole == EvForm.FormAccessRoles.Data_Manager
-            && FormField.State == Evado.Model.Digital.EvFormField.FieldStates.Queried )
+          if ( this._FormAccessRole == EdRecord.FormAccessRoles.Data_Manager
+            && FormField.State == Evado.Model.Digital.EdRecordField.FieldStates.Queried )
           {
             comment.AuthorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Data_Manager;
           }
@@ -4627,7 +4609,7 @@ namespace Evado.UniForm.Clinical
     //  ----------------------------------------------------------------------------------
     private void getFormJavaScript (
       Guid PageGuid,
-      List<Evado.Model.Digital.EvFormField> FieldList,
+      List<Evado.Model.Digital.EdRecordField> FieldList,
       Evado.Model.UniForm.Page ClientDataObject,
       String BinaryFilePath )
     {
@@ -4697,7 +4679,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>String:  Java Script source code</returns>
     //  ----------------------------------------------------------------------------------
     private String getComputedFieldScripts (
-      List<Evado.Model.Digital.EvFormField> FieldList )
+      List<Evado.Model.Digital.EdRecordField> FieldList )
     {
       this.LogMethod ( "getComputedFieldScripts smethod. " );
       // 
@@ -4723,7 +4705,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Iterate through the form fields to extract field values.
       // 
-      foreach ( Evado.Model.Digital.EvFormField field in FieldList )
+      foreach ( Evado.Model.Digital.EdRecordField field in FieldList )
       {
         // 
         // Extract the computed fields script and add it to the function.
@@ -4803,7 +4785,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>Returns a string containing the Java Scripts.</returns>
     //  ----------------------------------------------------------------------------------
     public String getCustomValidationScripts (
-      List<Evado.Model.Digital.EvFormField> FieldList )
+      List<Evado.Model.Digital.EdRecordField> FieldList )
     {
       this.LogMethod ( "getCustomValidationScripts" );
       // 
@@ -4814,7 +4796,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Iterate through the form fields to extract field values.
       // 
-      foreach ( Evado.Model.Digital.EvFormField field in FieldList )
+      foreach ( Evado.Model.Digital.EdRecordField field in FieldList )
       {
         // 
         // Extract the computed fields script and add it to the function.

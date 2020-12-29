@@ -647,10 +647,10 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the report alert class
       //
-      email.SmtpServer = this.ApplicationObjects.ApplicationSettings.SmtpServer;
-      email.SmtpServerPort = this.ApplicationObjects.ApplicationSettings.SmtpServerPort;
-      email.SmtpUserId = this.ApplicationObjects.ApplicationSettings.SmtpUserId;
-      email.SmtpPassword = this.ApplicationObjects.ApplicationSettings.SmtpPassword;
+      email.SmtpServer = this.ApplicationObjects.PlatformSettings.SmtpServer;
+      email.SmtpServerPort = this.ApplicationObjects.PlatformSettings.SmtpServerPort;
+      email.SmtpUserId = this.ApplicationObjects.PlatformSettings.SmtpUserId;
+      email.SmtpPassword = this.ApplicationObjects.PlatformSettings.SmtpPassword;
 
       //
       // Set the email alert to the recipents

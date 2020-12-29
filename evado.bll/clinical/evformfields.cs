@@ -64,7 +64,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._DalFormFields = new Evado.Dal.Clinical.EvFormFields ( Settings );
+      this._DalFormFields = new Evado.Dal.Clinical.EdRecordLayoutFields ( Settings );
     }
     #endregion
 
@@ -84,7 +84,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EvFormFields _DalFormFields = new Evado.Dal.Clinical.EvFormFields ( );
+    private Evado.Dal.Clinical.EdRecordLayoutFields _DalFormFields = new Evado.Dal.Clinical.EdRecordLayoutFields ( );
 
     #endregion
 
@@ -104,14 +104,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the formfield list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormField> GetView ( Guid FormGuid )
+    public List<EdRecordField> GetView ( Guid FormGuid )
     {
       // 
       // Initialise the methods objects and variables.
       // 
       this.LogMethod ( "GetView" );
       this.LogValue ( "FormGuid: " + FormGuid );
-      List<EvFormField> view = new List<EvFormField> ( );
+      List<EdRecordField> view = new List<EdRecordField> ( );
 
       //
       // Query the database
@@ -270,11 +270,11 @@ namespace Evado.Bll.Clinical
     /// 2. Return the formfield object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvFormField getField ( Guid FieldGuid )
+    public EdRecordField getField ( Guid FieldGuid )
     {
       this.LogMethod ( "getField" );
       this.LogValue ( "FieldGuid: " + FieldGuid );
-      EvFormField formField = new EvFormField ( );
+      EdRecordField formField = new EdRecordField ( );
 
       //
       // Query the database
@@ -310,7 +310,7 @@ namespace Evado.Bll.Clinical
     /// 5. Return an event code of the method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes SaveItem ( EvFormField FormField )
+    public EvEventCodes SaveItem ( EdRecordField FormField )
     {
       this.LogMethod ( "saveItem Method" );
       this.LogValue ( "Guid: " + FormField.Guid );
@@ -386,7 +386,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return an event code for deleting items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes DeleteFields ( EvForm Form )
+    public EvEventCodes DeleteFields ( EdRecord Form )
     {
       this.LogMethod ( "DeleteFields" );
       this.LogValue ( "Guid: " + Form.Guid );
@@ -398,14 +398,14 @@ namespace Evado.Bll.Clinical
       // 
       // Retrieve the TestReport items
       // 
-      List<EvFormField> Items = this._DalFormFields.GetView ( Form.Guid );
+      List<EdRecordField> Items = this._DalFormFields.GetView ( Form.Guid );
 
       // 
       // Iterate through the items deleting them
       // 
       for ( int Count = 0; Count < Items.Count; Count++ )
       {
-        EvFormField FormItem = (EvFormField) Items [ Count ];
+        EdRecordField FormItem = (EdRecordField) Items [ Count ];
         FormItem.UserCommonName = Form.UserCommonName;
         iReturn = _DalFormFields.DeleteItem ( FormItem );
         if ( iReturn < EvEventCodes.Ok )

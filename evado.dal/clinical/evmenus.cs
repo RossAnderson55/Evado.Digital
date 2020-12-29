@@ -454,7 +454,7 @@ namespace Evado.Dal.Clinical
         _sqlQueryString += " AND (Mnu_Group = @Group) ";
       }
 
-      _sqlQueryString += " ORDER BY Mnu_Order";
+      _sqlQueryString += " ORDER BY   Mnu_Order";
 
       this.LogDebug( _sqlQueryString );
 

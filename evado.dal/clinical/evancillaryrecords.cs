@@ -273,7 +273,7 @@ namespace Evado.Dal.Clinical
       record.ReviewDate = EvSqlMethods.getDateTime( Row, "TSR_ReviewDate" );
       record.Approver = EvSqlMethods.getString( Row, "TSR_Approver" );
       record.ApprovalDate = EvSqlMethods.getDateTime( Row, "TSR_ApprovalDate" );
-      record.State = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvFormObjectStates> ( EvSqlMethods.getString ( Row, "TSR_State" ) );
+      record.State = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( EvSqlMethods.getString ( Row, "TSR_State" ) );
       record.UpdatedByUserId = EvSqlMethods.getString( Row, "TSR_UpdatedByUserId" );
       record.UpdatedBy = EvSqlMethods.getString( Row, "TSR_UpdatedBy" );
       record.UpdatedDate = EvSqlMethods.getDateTime( Row, "TSR_UpdateDate" );
@@ -555,13 +555,13 @@ namespace Evado.Dal.Clinical
       };
       cmdParms [ 0 ].Value = ProjectId;
       cmdParms [ 1 ].Value = SubjectId; _sqlQueryString = "Select " + sGroup + ", "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Draft_Record + "' THEN 1 ELSE 0 END)  AS Draft_Record , "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Queried_Record + "' THEN 1 ELSE 0 END)  AS Queried_Record , "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Submitted_Record + "' THEN 1 ELSE 0 END)   AS Submitted_Record, "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Source_Data_Verified + "' THEN 1 ELSE 0 END) AS Source_Data_Verified, "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Queried_Record_Copy + "' THEN 1 ELSE 0 END) AS Queried_Record_Copy, "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Locked_Record + "' THEN 1 ELSE 0 END) AS Completed_Record, "
-        + "SUM(CASE TR_State WHEN '" + EvFormObjectStates.Withdrawn + "' THEN 1 ELSE 0 END) AS Cancelled, "
+        + "SUM(CASE TR_State WHEN '" + EdRecordObjectStates.Draft_Record + "' THEN 1 ELSE 0 END)  AS Draft_Record , "
+        + "SUM(CASE TR_State WHEN 'Queried_Record' THEN 1 ELSE 0 END)  AS Queried_Record , "
+        + "SUM(CASE TR_State WHEN 'Submitted_Record' THEN 1 ELSE 0 END)   AS Submitted_Record, "
+        + "SUM(CASE TR_State WHEN 'Source_Data_Verified' THEN 1 ELSE 0 END) AS Source_Data_Verified, "
+        + "SUM(CASE TR_State WHEN 'Queried_Record_Copy' THEN 1 ELSE 0 END) AS Queried_Record_Copy, "
+        + "SUM(CASE TR_State WHEN 'Locked_Record' THEN 1 ELSE 0 END) AS Completed_Record, "
+        + "SUM(CASE TR_State WHEN '" + EdRecordObjectStates.Withdrawn + "' THEN 1 ELSE 0 END) AS Cancelled, "
         + "COUNT(TR_State) AS Total "
         + "FROM EvSubjectRecord_View "
         + "WHERE TrialId = @TrialId ";
@@ -746,8 +746,7 @@ namespace Evado.Dal.Clinical
       SqlParameter cmdParms = new SqlParameter( PARM_RecordId, SqlDbType.NVarChar, 17 );
       cmdParms.Value = RecordId;
 
-      _sqlQueryString = _sqlQuery_View + " WHERE not( TSR_State = '" + EvFormObjectStates.Queried_Record_Copy + "' ) " +
-        " AND ( RecordId = @RecordId );";
+      _sqlQueryString = _sqlQuery_View + " WHERE ( RecordId = @RecordId );";
 
       //
       // Execute the query against the database.

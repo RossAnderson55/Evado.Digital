@@ -342,15 +342,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogValue ( "Project.ProjectId: " + this.Session.Application.ApplicationId );
 
-      //
-      // If the global project is being saved empty the project object.
-      //
-      if ( this.Session.Application.ApplicationId == Evado.Model.Digital.EvcStatics.CONST_GLOBAL_PROJECT )
-      {
-        this.ApplicationObjects.GlobalStudy = this.Session.Application;
-      }
-
-
       return false;
 
     }//END getProject method.
@@ -377,7 +368,7 @@ namespace Evado.UniForm.Clinical
         // Initialise the methods variables and objects.
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        bool hasRegistryModule = this.ApplicationObjects.ApplicationSettings.hasModule ( EvModuleCodes.Registry_Module );
+        bool hasRegistryModule = this.ApplicationObjects.PlatformSettings.hasModule ( EvModuleCodes.Registry_Module );
 
         // 
         // Log access to page.
@@ -838,9 +829,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu item
         //
         if ( item.SelectMenuItem (
-          this.ApplicationObjects.ApplicationSettings.LoadedModuleList,
-          this.Session.Application,
-          new EvOrganisation ( ),
+          this.ApplicationObjects.PlatformSettings.LoadedModuleList,
           this.Session.UserProfile.RoleId ) == false )
         {
           continue;
@@ -922,7 +911,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the Project disease list.
         // 
-        ArrayList diseaseList = this.ApplicationObjects.ApplicationSettings.getDiseaseTypeListOptions ( true );
+        ArrayList diseaseList = this.ApplicationObjects.PlatformSettings.getDiseaseTypeListOptions ( true );
       }
 
       this.LogMethodEnd ( "getApplication_Status_Group" );
@@ -938,14 +927,20 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getProjectPage_Settings_Group" );
-      this.LogValue ( "LoadedModules: " + this.ApplicationObjects.ApplicationSettings.LoadedModules );
-      this.LogValue ( "Clinical_Module: " + this.ApplicationObjects.ApplicationSettings.hasModule ( EvModuleCodes.Clinical_Module ) );
+      this.LogValue ( "LoadedModules: " + this.ApplicationObjects.PlatformSettings.LoadedModules );
+      this.LogValue ( "Clinical_Module: " + this.ApplicationObjects.PlatformSettings.hasModule ( EvModuleCodes.Clinical_Module ) );
       //
       // Initialise the methods variables and objects.
       //
       List<EvOption> optionList = new List<EvOption> ( );
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
 
+
+
+
+    /// <summary>
+    /// This enumeration defines the null selectoin 
+    /// </summ"
       // 
       // Add the project settings group
       // 
@@ -982,7 +977,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the Using binary files field
         // 
-        if ( this.ApplicationObjects.ApplicationSettings.hasModule ( EvModuleCodes.Imaging_Module ) == true )
+        if ( this.ApplicationObjects.PlatformSettings.hasModule ( EvModuleCodes.Imaging_Module ) == true )
         {
           groupField = pageGroup.createBooleanField (
             Model.Digital.EdApplication.ApplicationFieldNames.Enable_Binary_Data.ToString ( ),
@@ -1217,10 +1212,10 @@ namespace Evado.UniForm.Clinical
       this.Session.ExportParameters.OutputDirectoryUrl = this.UniForm_BinaryServiceUrl;
       this.Session.ExportParameters.UserProfile = this.Session.UserProfile;
 
-      this.Session.ExportParameters.SmtpServer = this.ApplicationObjects.ApplicationSettings.SmtpServer;
-      this.Session.ExportParameters.SmtpServerPort = this.ApplicationObjects.ApplicationSettings.SmtpServerPort;
-      this.Session.ExportParameters.SmtpUserId = this.ApplicationObjects.ApplicationSettings.SmtpUserId;
-      this.Session.ExportParameters.SmtpPassword = this.ApplicationObjects.ApplicationSettings.SmtpPassword;
+      this.Session.ExportParameters.SmtpServer = this.ApplicationObjects.PlatformSettings.SmtpServer;
+      this.Session.ExportParameters.SmtpServerPort = this.ApplicationObjects.PlatformSettings.SmtpServerPort;
+      this.Session.ExportParameters.SmtpUserId = this.ApplicationObjects.PlatformSettings.SmtpUserId;
+      this.Session.ExportParameters.SmtpPassword = this.ApplicationObjects.PlatformSettings.SmtpPassword;
 
       //
       // Update the site selection.
@@ -1594,19 +1589,6 @@ namespace Evado.UniForm.Clinical
         this.Session.Application = new Model.Digital.EdApplication ( );
         this.Session.Application.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
 
-        //
-        // if the global project exists, use it to initialise the new project.
-        //
-        if ( this.ApplicationObjects.GlobalStudy.Guid != Guid.Empty )
-        {
-          this.Session.Application = this.ApplicationObjects.GlobalStudy;
-          this.Session.Application.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-          this.Session.Application.Title = String.Empty;
-          this.Session.Application.ApplicationId = String.Empty;
-          this.Session.Application.Description = EvLabels.Project_Create_Project_Description;
-          this.Session.Application.State = Model.Digital.EdApplication.ApplicationStates.Null;
-          this.Session.Application.Signoffs = new List<EvUserSignoff> ( );
-        }
         //this.Session.Trial.TrialId = "NewTrial";
         LogDebug ( "Trial ID {0}", this.Session.Application.ApplicationId );
 

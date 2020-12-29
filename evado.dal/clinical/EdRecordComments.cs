@@ -37,7 +37,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form record comment data object.
   /// </summary>
-  public class EvFormRecordComments  : EvDalBase
+  public class EdRecordComments  : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -45,7 +45,7 @@ namespace Evado.Dal.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvFormRecordComments ( )
+    public EdRecordComments ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordComments.";
     }
@@ -56,7 +56,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvFormRecordComments ( EvClassParameters Settings )
+    public EdRecordComments ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordComments.";

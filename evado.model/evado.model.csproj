@@ -57,6 +57,7 @@
     <Compile Include="evlabels.designer.cs" />
     <Compile Include="evobjectparameter.cs" />
     <Compile Include="evoption.cs" />
+    <Compile Include="EvParameters.cs" />
     <Compile Include="evsegment.cs" />
     <Compile Include="evsignatureblock.cs" />
     <Compile Include="evstatics.cs" />

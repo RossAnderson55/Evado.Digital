@@ -246,7 +246,7 @@ namespace Evado.UniForm.Clinical
 
       if ( this.Session.FormList.Count > 0
         && this.Session.FormsAdaperLoaded == true
-        && this.Session.FormState == EvFormObjectStates.Form_Issued
+        && this.Session.FormState == EdRecordObjectStates.Form_Issued
         && this.Session.FormType == EvFormRecordTypes.Null )
       {
         this.LogDebug ( "FormList loaded" );
@@ -266,7 +266,7 @@ namespace Evado.UniForm.Clinical
       //
       EvForms bll_Forms = new EvForms ( this.ClassParameters );
       this.Session.FormType = EvFormRecordTypes.Null;
-      this.Session.FormState = EvFormObjectStates.Form_Issued;
+      this.Session.FormState = EdRecordObjectStates.Form_Issued;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -676,9 +676,9 @@ namespace Evado.UniForm.Clinical
       this.Session.ChartSourceOptionList = new List<EvOption> ( );
       this.Session.ChartSourceOptionList.Add ( new EvOption ( ) );
 
-      foreach ( EvForm form in this.Session.FormList )
+      foreach ( EdRecord form in this.Session.FormList )
       {
-        if ( form.State != EvFormObjectStates.Form_Issued )
+        if ( form.State != EdRecordObjectStates.Form_Issued )
         {
           continue;
         }
@@ -686,7 +686,7 @@ namespace Evado.UniForm.Clinical
         //this.LogDebug ( "Form ID {0}, State {1} , field.count {2}.",
         //  form.FormId, form.State, form.Fields.Count );
 
-        foreach ( EvFormField field in form.Fields )
+        foreach ( EdRecordField field in form.Fields )
         {
           //
           // Select numeric fields.
@@ -718,7 +718,7 @@ namespace Evado.UniForm.Clinical
     /// This method creates the chart option object.
     /// </summary>
     //  ------------------------------------------------------------------------------
-    private EvOption createChartOption ( EvFormField Field )
+    private EvOption createChartOption ( EdRecordField Field )
     {
       //this.LogMethod ( "createChartOption" );
       //
@@ -1004,7 +1004,7 @@ namespace Evado.UniForm.Clinical
         if ( this.Session.AnalysisQueryFormId == null )
         {
           this.LogValue ( "Initialise query clinical object parameters" );
-          this.Session.AnalysisRecordlist = new List<EvForm> ( );
+          this.Session.AnalysisRecordlist = new List<EdRecord> ( );
           this.Session.AnalysisQueryFormId = String.Empty;
           this.Session.AnalysisQueryFormFieldId = String.Empty;
           this.Session.AnalysisQueryFormFieldValue = String.Empty;
@@ -1157,7 +1157,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AnalysisFormSelectionList = bllForms.getList (
             this.Session.Application.ApplicationId,
             EvFormRecordTypes.Null,
-            EvFormObjectStates.Form_Issued,
+            EdRecordObjectStates.Form_Issued,
             false );
 
         this.LogValue ( "Form selection list count: " + this.Session.AnalysisFormSelectionList.Count );
@@ -1235,7 +1235,7 @@ namespace Evado.UniForm.Clinical
       }
       else
       {
-        this.Session.AnalysisRecordlist = new List<EvForm> ( );
+        this.Session.AnalysisRecordlist = new List<EdRecord> ( );
       }
 
       this.LogValue ( "Record list count: " + this.Session.AnalysisRecordlist.Count );
@@ -1428,7 +1428,7 @@ namespace Evado.UniForm.Clinical
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EvForm formRecord in this.Session.AnalysisRecordlist )
+      foreach ( Evado.Model.Digital.EdRecord formRecord in this.Session.AnalysisRecordlist )
       {
         string stTitle = formRecord.RecordId
           + EvLabels.Space_Arrow_Right
@@ -1491,8 +1491,8 @@ namespace Evado.UniForm.Clinical
       // Initialise method variables and objects.
       //
       EvFormRecords trialRecords = new EvFormRecords ( );
-      EvForm record = new EvForm ( );
-      List<EvForm> formRecordList = new List<EvForm> ( );
+      EdRecord record = new EdRecord ( );
+      List<EdRecord> formRecordList = new List<EdRecord> ( );
       EvFormRecordExport recordExport = new EvFormRecordExport ( );
       System.Text.StringBuilder sOutput = new StringBuilder ( );
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
@@ -1501,7 +1501,7 @@ namespace Evado.UniForm.Clinical
       //
       // Iterate through the record to fill a list of records witih all fields and comments.
       //
-      foreach ( EvForm rec in this.Session.AnalysisRecordlist )
+      foreach ( EdRecord rec in this.Session.AnalysisRecordlist )
       {
         // 
         // Retrieve the records

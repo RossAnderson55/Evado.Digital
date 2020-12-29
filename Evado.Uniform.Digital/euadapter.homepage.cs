@@ -199,7 +199,7 @@ namespace Evado.UniForm.Clinical
           //
           // TO BE ENABLED WHEN THE TRIAL CONFIGURATION AND DESIGN COMPONENTS ARE ENABLED.
           // 
-          this.generateProjectDashboard ( clientDataObject.Page );
+          this.getApplicationDashboard ( clientDataObject.Page );
 
           // 
           // Generate the alert list.
@@ -263,16 +263,6 @@ namespace Evado.UniForm.Clinical
 
       string stAlertSelect = PageCommand.GetParameter ( EuAdapter.CONST_ALERT_SELECT );
 
-      //
-      // If the global project is being saved empty the project object.
-      //
-      if ( this.Session.Application.ApplicationId == Evado.Model.Digital.EvcStatics.CONST_GLOBAL_PROJECT
-        && this.Session.TrialSelectionList.Count > 2 )
-      {
-        this.LogValue ( "Reset Global Project." );
-        this._ApplicationObjects.GlobalStudy = this.Session.Application;
-        this.Session.Application = new Model.Digital.EdApplication ( );
-      }
 
       this.LogMethodEnd ( "updateSelectionValue" );
     }
@@ -472,7 +462,7 @@ namespace Evado.UniForm.Clinical
       if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
       {
         this.LogValue ( "Selection lists are reset." );
-        this.Session.CommonRecordList = new List<EvForm> ( );
+        this.Session.CommonRecordList = new List<EdRecord> ( );
       }
 
       this.LogMethodEnd ( "resetSubjectList" );
@@ -532,7 +522,6 @@ namespace Evado.UniForm.Clinical
       this.LogValue ( "TrialType: " + this.Session.Application.Type );
       this.LogValue ( "OnlyAdministrationMenu: " + OnlyAdministrationMenu );
       this.LogValue ( "selectedMenuGroup : " + this.Session.MenuGroupItem.Group );
-      //this.LogDebugValue ( "Loaded Modules: " + this._ApplicationObjects.ApplicationProfile.LoadedModules );
       this.LogDebug ( "User Role: " + this.Session.UserProfile.RoleId );
       // 
       // Initialise the methods variables and objects.
@@ -576,10 +565,7 @@ namespace Evado.UniForm.Clinical
         if ( groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP
           || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_SITE_DASHBOARD_GROUP
           || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_SUBJECT_MENU_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_PROJECT_MENU_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_GLOBAL_PROJECT_MENU_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_FINANCE_DASHBOARD_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_BUDGET_DASHBOARD_GROUP )
+          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_PROJECT_MENU_GROUP )
         {
           continue;
         }
@@ -596,7 +582,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu item
         //
         if ( groupHeader.SelectMenuHeader (
-          this._ApplicationObjects.ApplicationSettings.LoadedModuleList,
+          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
           this.Session.Application,
           this.Session.UserProfile.RoleId ) == false )
         {
@@ -718,8 +704,7 @@ namespace Evado.UniForm.Clinical
         // Display only Admin menu if OnlyAdminMenu = true 
         //
         if ( groupHeader.Group != EvMenuItem.CONST_MENU_ADMIN_GROUP_ID
-          && groupHeader.Group != EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID
-          && groupHeader.Group != EvMenuItem.CONST_MENU_GLOBAL_PROJECT_GROUP_ID )
+          && groupHeader.Group != EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID)
         {
           continue;
         }
@@ -736,7 +721,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu EDC components should be displayed.
         //
         if ( groupHeader.SelectMenuHeader (
-          this._ApplicationObjects.ApplicationSettings.LoadedModuleList,
+          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
           this.Session.Application,
           this.Session.UserProfile.RoleId ) == false )
         {
@@ -793,13 +778,15 @@ namespace Evado.UniForm.Clinical
             continue;
           }
 
+          this.LogDebug ( "PageId {0}", item.PageId );
+
           if ( item.Group == EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID
             && item.PageId != EvPageIds.Trial_View_Page
-            && item.PageId != EvPageIds.Global_Project
             && item.PageId != EvPageIds.Report_Template_View
             && item.PageId != EvPageIds.Report_Template_Form
             && item.PageId != EvPageIds.Operational_Report_Page )
           {
+            this.LogDebug ( "{0} is NOT selected.", item.PageId );
             continue;
           }
 
@@ -809,9 +796,7 @@ namespace Evado.UniForm.Clinical
           // Validate the menu item
           //
           if ( item.SelectMenuItem (
-            this._ApplicationObjects.ApplicationSettings.LoadedModuleList,
-            this.Session.Application,
-            new EvOrganisation(),
+            this._ApplicationObjects.PlatformSettings.LoadedModuleList,
             this.Session.UserProfile.RoleId ) == false )
           {
             continue;
@@ -861,7 +846,7 @@ namespace Evado.UniForm.Clinical
       EvMenuItem GroupHeader,
       Evado.Model.UniForm.Group GroupObject )
     {
-      this.LogMethod ( "generateMenuGroupItems" );
+      this.LogMethod ( "getMenuGroupItems" );
       this.LogDebug ( "GroupHeader Group: " + GroupHeader.Group );
       // 
       // Initialise the methods variables and objects.
@@ -896,9 +881,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu item
         //
         if ( item.SelectMenuItem (
-          this._ApplicationObjects.ApplicationSettings.LoadedModuleList,
-          this.Session.Application,
-          new EvOrganisation(),
+          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
           this.Session.UserProfile.RoleId ) == false )
         {
           this.LogDebug ( "SKIPPED item not selected." );
@@ -918,22 +901,28 @@ namespace Evado.UniForm.Clinical
           groupCommand.Title = "- " + groupCommand.Title;
           commandList.Add ( groupCommand );
         }
+        else
+        {
+          this.LogDebug ( "Command is null." );
+        }
 
+        this.LogDebug ( "Command list count {0}.",
+          commandList.Count );
       }//END pageMenuGroup menu item iteration loop.
 
       //
       // Add the menu pageMenuGroup if there are commands in the pageMenuGroup.
       //
-      if ( commandList.Count > 1 )
+      if ( commandList.Count > 0 )
       {
         foreach ( Evado.Model.UniForm.Command command in commandList )
         {
           GroupObject.addCommand ( command );
         }
       }
-      this.LogMethodEnd ( "generateMenuGroupItems" );
+      this.LogMethodEnd ( "getMenuGroupItems" );
 
-    }//END generateMenuGroupItems method
+    }//END getMenuGroupItems method
 
     // ==================================================================================
     /// <summary>
@@ -989,10 +978,10 @@ namespace Evado.UniForm.Clinical
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     // ----------------------------------------------------------------------------------
-    public void generateProjectDashboard (
+    public void getApplicationDashboard (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "generateProjectDashboard" );
+      this.LogMethod ( "getApplicationDashboard" );
       this.LogDebug ( "Configration Access: " + this.Session.UserProfile.hasTrialManagementAccess );
       this.LogDebug ( "ProjectDashboardComponents: " + this.Session.UserProfile.ProjectDashboardComponents );
       // 
@@ -1056,9 +1045,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu item
         //
         if ( item.SelectMenuItem (
-          this._ApplicationObjects.ApplicationSettings.LoadedModuleList,
-          this.Session.Application,
-          new EvOrganisation ( ),
+          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
           this.Session.UserProfile.RoleId ) == false )
         {
           continue;
@@ -1080,7 +1067,7 @@ namespace Evado.UniForm.Clinical
       }
 
       this.LogDebugClass ( this._MenuUtility.Log );
-      this.LogMethodEnd ( "generateProjectDashboard" );
+      this.LogMethodEnd ( "getApplicationDashboard" );
 
     }//END generateProjectDashboard method
        
@@ -1270,7 +1257,7 @@ namespace Evado.UniForm.Clinical
                Evado.Model.Digital.EvcStatics.STRING_BOOLEAN_TRUE );
 
             alertSelect.AddParameter (
-              Model.Digital.EdApplication.ApplicationFieldNames.TrialId.ToString ( ),
+              Model.Digital.EdApplication.ApplicationFieldNames.ApplicationId.ToString ( ),
               this.Session.Application.ApplicationId );
 
           //
@@ -1286,7 +1273,7 @@ namespace Evado.UniForm.Clinical
               Model.UniForm.ApplicationMethods.Save_Object );
 
             alertSelect.AddParameter (
-              Model.Digital.EdApplication.ApplicationFieldNames.TrialId.ToString ( ),
+              Model.Digital.EdApplication.ApplicationFieldNames.ApplicationId.ToString ( ),
               this.Session.Application.ApplicationId );
           }
 

@@ -119,7 +119,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>ClientClientDataObjectGorup object</returns>
     // ---------------------------------------------------------------------------------
     public static Evado.Model.UniForm.Group convertListOfEvFormFields (
-      List< Evado.Model.Digital.EvFormField> FormRecordFields,
+      List< Evado.Model.Digital.EdRecordField> FormRecordFields,
         Evado.Model.Digital.EvFormSection Section,
       Evado.Model.UniForm.EditAccess EditStatus )
     {
@@ -141,7 +141,7 @@ namespace Evado.UniForm.Clinical
     /// <returns>ClientClientDataObjectGorup object</returns>
     // ---------------------------------------------------------------------------------
     public static Evado.Model.UniForm.Group convertListOfEvFormFields (
-      List< Evado.Model.Digital.EvFormField> FormRecordFields,
+      List< Evado.Model.Digital.EdRecordField> FormRecordFields,
        Evado.Model.Digital.EvFormSection Section,
       Evado.Model.UniForm.EditAccess EditStatus,
       Evado.Model.UniForm.GroupLayouts GroupLayout )
@@ -184,7 +184,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Iterate through the EV option list.
       // 
-      foreach (  Evado.Model.Digital.EvFormField field in FormRecordFields )
+      foreach (  Evado.Model.Digital.EdRecordField field in FormRecordFields )
       {
         EuConversions._Status += "\r\nField: " + field.FieldId + ", Sectn: " + field.Design.Section;
 
@@ -238,7 +238,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="FormField">The list of EvFormField objects.</param>
     /// <returns>List of ClientClientDataObjectFields</returns>
     // ---------------------------------------------------------------------------------
-    public static Evado.Model.UniForm.Field convertEvFormfield (  Evado.Model.Digital.EvFormField FormField )
+    public static Evado.Model.UniForm.Field convertEvFormfield (  Evado.Model.Digital.EdRecordField FormField )
     {
       // 
       // Initialise the method variables and objects.
@@ -373,7 +373,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="FormField">The list of EvFormField objects.</param>
     /// <returns>List of ClientClientDataObjectFields</returns>
     // ---------------------------------------------------------------------------------
-    private static Evado.Model.UniForm.Field generateTableField (  Evado.Model.Digital.EvFormField FormField )
+    private static Evado.Model.UniForm.Field generateTableField (  Evado.Model.Digital.EdRecordField FormField )
     {
       // 
       // Initialise the method variables and objects.

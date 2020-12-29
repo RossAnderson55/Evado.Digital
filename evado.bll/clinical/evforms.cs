@@ -65,7 +65,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._DalForms = new Evado.Dal.Clinical.EvForms ( Settings );
+      this._DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
     }
     #endregion
 
@@ -74,7 +74,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EvForms _DalForms = new Evado.Dal.Clinical.EvForms ( );
+    private Evado.Dal.Clinical.EdRecordLayouts _DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( );
 
     #endregion
 
@@ -96,10 +96,10 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvForm> GetFormList ( 
+    public List<EdRecord> GetFormList ( 
       String TrialId,
       EvFormRecordTypes TypeId,
-      EvFormObjectStates State )
+      EdRecordObjectStates State )
     {
       // 
       // Initialise the methods objects and variables.
@@ -109,7 +109,7 @@ namespace Evado.Bll.Clinical
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State  );
 
-      List<EvForm> _view = _DalForms.GetFormList ( TrialId, TypeId, State, false );
+      List<EdRecord> _view = _DalForms.GetFormList ( TrialId, TypeId, State, false );
 
       this.LogClass ( this._DalForms.Log );
 
@@ -134,10 +134,10 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvForm> GetFormListWithFields (
+    public List<EdRecord> GetFormListWithFields (
       String TrialId,
       EvFormRecordTypes TypeId,
-      EvFormObjectStates State )
+      EdRecordObjectStates State )
     {
       // 
       // Initialise the methods objects and variables.
@@ -147,7 +147,7 @@ namespace Evado.Bll.Clinical
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State );
 
-      List<EvForm> _view = _DalForms.GetFormList ( TrialId, TypeId, State, true );
+      List<EdRecord> _view = _DalForms.GetFormList ( TrialId, TypeId, State, true );
 
       this.LogClass ( this._DalForms.Log );
 
@@ -173,7 +173,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( string ProjectId, EvFormRecordTypes TypeId, EvFormObjectStates State, bool SelectByGuid )
+    public List<EvOption> getList ( string ProjectId, EvFormRecordTypes TypeId, EdRecordObjectStates State, bool SelectByGuid )
     {
       this.LogMethod ( "GetList." );
       this.LogValue ( "ProjectId: " + ProjectId );
@@ -202,14 +202,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvForm getForm ( Guid Guid )
+    public EdRecord getForm ( Guid Guid )
     {
       // 
       // Initialise the methods objects and variables.
       // 
        this.LogMethod ( "getForm method." );
       this.LogValue ( "Guid: " + Guid );
-      EvForm form = new EvForm ( );
+      EdRecord form = new EdRecord ( );
 
       //
       // Query the database
@@ -239,7 +239,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvForm getForm ( string TrialId, string FormId )
+    public EdRecord getForm ( string TrialId, string FormId )
     {
       // 
       // Initialise the methods objects and variables.
@@ -251,7 +251,7 @@ namespace Evado.Bll.Clinical
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EvForm Item = this._DalForms.getForm ( TrialId, FormId, true );
+      EdRecord Item = this._DalForms.getForm ( TrialId, FormId, true );
       this.LogClass ( this._DalForms.Log );
 
       // 
@@ -276,14 +276,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvForm GetIssuedItem ( string TrialId, string FormId )
+    public EdRecord GetIssuedItem ( string TrialId, string FormId )
     {
        this.LogMethod ( "GetIssuedItem method." );
       // 
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EvForm Item = _DalForms.getForm ( TrialId, FormId, true );
+      EdRecord Item = _DalForms.getForm ( TrialId, FormId, true );
       this.LogClass ( this._DalForms.Log );
 
 
@@ -318,7 +318,7 @@ namespace Evado.Bll.Clinical
     /// 5. Return an event code of the method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes SaveItem ( EvForm Form )
+    public EvEventCodes SaveItem ( EdRecord Form )
     {
        this.LogMethod ( "saveForm method." );
       this.LogValue ( "Action: " + Form.SaveAction );
@@ -338,13 +338,13 @@ namespace Evado.Bll.Clinical
         return EvEventCodes.Identifier_User_Id_Error;
       }
 
-      if ( Form.TrialId == String.Empty )
+      if ( Form.ApplicationId == String.Empty )
       {
         this.LogValue ( "Empty Project" );
         return EvEventCodes.Identifier_Project_Id_Error;
       }
 
-      if ( Form.FormId == String.Empty )
+      if ( Form.LayoutId == String.Empty )
       {
         this.LogValue ( "Empty FormId" );
         return EvEventCodes.Identifier_Form_Id_Error;
@@ -374,8 +374,8 @@ namespace Evado.Bll.Clinical
       // 
       // If the Action is DELETE and the state is draft.
       // 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Deleted
-        && Form.State == EvFormObjectStates.Form_Draft )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Deleted
+        && Form.State == EdRecordObjectStates.Form_Draft )
       {
         iReturn = this._DalForms.DeleteItem ( Form );
         if ( iReturn != EvEventCodes.Ok )
@@ -401,12 +401,12 @@ namespace Evado.Bll.Clinical
       // 
       //  Check if trial has been used.  If so return an error.
       //  
-      if ( Form.State == EvFormObjectStates.Withdrawn )
+      if ( Form.State == EdRecordObjectStates.Withdrawn )
       {
         // 
         // Query the database to identify the
         // 
-        if ( records.CheckIfFormUsed ( Form.TrialId, Form.FormId ) == true )
+        if ( records.CheckIfFormUsed ( Form.ApplicationId, Form.LayoutId ) == true )
         {
           return EvEventCodes.Business_Logic_Form_Used_Error;
 
@@ -440,7 +440,7 @@ namespace Evado.Bll.Clinical
       // 
       // If the trial being approved then withdraw the pervious issues trial
       // 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Approved )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Approved )
       {
         this.LogValue ( "Withdraw the form" );
 
@@ -482,7 +482,7 @@ namespace Evado.Bll.Clinical
     /// 2. Update the form object's values and its state based on the form actions: review, approved, withdrawn or draft. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void updateState ( EvForm Form )
+    private void updateState ( EdRecord Form )
     {
        this.LogMethod ( "updateState." );
       this.LogValue ( "Action: " + Form.SaveAction );
@@ -504,11 +504,11 @@ namespace Evado.Bll.Clinical
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Saved )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Saved )
       {
         this.LogValue ( "Saving  Form" );
 
-        Form.State = EvFormObjectStates.Form_Draft;
+        Form.State = EdRecordObjectStates.Form_Draft;
 
         Form.ReviewedByUserId = String.Empty;
         Form.ReviewedBy = String.Empty;
@@ -525,12 +525,12 @@ namespace Evado.Bll.Clinical
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Reviewed
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Reviewed
         && Form.ReviewedBy == String.Empty )
       {
         this.LogValue ( "Reviewing Form" );
 
-        Form.State = EvFormObjectStates.Form_Reviewed;
+        Form.State = EdRecordObjectStates.Form_Reviewed;
         Form.ReviewedByUserId = AuthenticatedUserId;
         Form.ReviewedBy = Form.UserCommonName;
         Form.ReviewedDate = DateTime.Now;
@@ -539,12 +539,12 @@ namespace Evado.Bll.Clinical
         return;
       }
 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Approved
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Approved
         && Form.ApprovedBy == String.Empty )
       {
         this.LogValue ( "Issuing Form" );
 
-        Form.State = EvFormObjectStates.Form_Issued;
+        Form.State = EdRecordObjectStates.Form_Issued;
         Form.ApprovedByUserId = AuthenticatedUserId;
         Form.ApprovedBy = Form.UserCommonName;
         Form.ApprovalDate = DateTime.Now;
@@ -553,10 +553,10 @@ namespace Evado.Bll.Clinical
         return;
       }
 
-      if ( Form.SaveAction == EvForm.SaveActionCodes.Form_Withdrawn
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Withdrawn
         && Form.ApprovedBy.Length > 0 )
       {
-        Form.State = EvFormObjectStates.Withdrawn;
+        Form.State = EdRecordObjectStates.Withdrawn;
         return;
       }
 
@@ -564,16 +564,16 @@ namespace Evado.Bll.Clinical
       // If none of the above occur, save the record
       // 
       this.LogValue ( "Saving Form. State:" + Form.State );
-      if ( Form.State == EvFormObjectStates.Null )
+      if ( Form.State == EdRecordObjectStates.Null )
       {
-        Form.State = EvFormObjectStates.Form_Draft;
+        Form.State = EdRecordObjectStates.Form_Draft;
       }
       Form.Design.Version += 0.01F;
 
       // 
       // Reset the approval values if in draft state.
       // 
-      if ( Form.State == EvFormObjectStates.Form_Draft )
+      if ( Form.State == EdRecordObjectStates.Form_Draft )
       {
         Form.ReviewedBy = String.Empty;
         Form.ReviewedByUserId = String.Empty;
@@ -608,7 +608,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return an event code for copying items
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes CopyForm ( EvForm Form, string UserCommonName )
+    public EvEventCodes CopyForm ( EdRecord Form, string UserCommonName )
     {
        this.LogMethod ( "CopyForm method." );
       this.LogValue ( "FormGuid: " + Form.Guid );
@@ -665,7 +665,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return an event code for revising items
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes ReviseForm ( EvForm Form, string UserCommonName )
+    public EvEventCodes ReviseForm ( EdRecord Form, string UserCommonName )
     {
        this.LogMethod ( "ReviseForm method." );
       this.LogValue ( "FormGuid: " + Form.Guid );

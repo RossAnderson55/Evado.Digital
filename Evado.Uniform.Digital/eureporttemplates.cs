@@ -767,7 +767,7 @@ namespace Evado.UniForm.Clinical
       //
       optionList = EvReportTemplates.getReportScopeList (
         this.Session.UserProfile.RoleId,
-        this.ApplicationObjects.ApplicationSettings.hasModule ( EvModuleCodes.Management_Module ) );
+        this.ApplicationObjects.PlatformSettings.hasModule ( EvModuleCodes.Management_Module ) );
 
       groupField = pageGroup.createSelectionListField (
         EuReportTemplates.CONST_REPORT_SCOPE,
@@ -1849,7 +1849,7 @@ namespace Evado.UniForm.Clinical
       //
       optionList = EvReportTemplates.getReportScopeList (
         this.Session.UserProfile.RoleId,
-        this.ApplicationObjects.ApplicationSettings.hasModule ( EvModuleCodes.Management_Module ) );
+        this.ApplicationObjects.PlatformSettings.hasModule ( EvModuleCodes.Management_Module ) );
 
       //
       // Add the Rport scop  field.

@@ -1243,11 +1243,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EvForm> _FormList = new List<EvForm> ( );
+    private List<EdRecord> _FormList = new List<EdRecord> ( );
     /// <summary>
     /// This property defines a form list object of milestone.
     /// </summary>
-    public List<EvForm> FormList
+    public List<EdRecord> FormList
     {
       get
       {
@@ -1575,22 +1575,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    private EvForm.QueryStates _RecordQueryState = EvForm.QueryStates.Null;
-    /// <summary>
-    /// This property contains enumerated the subject's record query state value.
-    /// </summary>
-    public EvForm.QueryStates RecordQueryState
-    {
-      get
-      {
-        return this._RecordQueryState;
-      }
-      set
-      {
-        this._RecordQueryState = value;
-      }
-    }
-
     private bool _ProtocolViolation = false;
     /// <summary>
     /// This property indicates whether this milestone is a has a protocol violation.  
@@ -1778,11 +1762,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EvForm> _RecordList = null;
+    private List<EdRecord> _RecordList = null;
     /// <summary>
     /// This property contains a list of the record object of milestone.
     /// </summary>
-    public List<EvForm> RecordList
+    public List<EdRecord> RecordList
     {
       get { return _RecordList; }
       set { _RecordList = value; }

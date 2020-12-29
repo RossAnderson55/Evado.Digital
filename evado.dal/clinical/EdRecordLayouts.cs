@@ -31,7 +31,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form data object.
   /// </summary>
-  public class EvForms : EvDalBase
+  public class EdRecordLayouts : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -39,7 +39,7 @@ namespace Evado.Dal.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvForms ( )
+    public EdRecordLayouts ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvForms.";
     }
@@ -50,7 +50,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvForms ( EvClassParameters Settings )
+    public EdRecordLayouts ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvForms.";
@@ -60,9 +60,9 @@ namespace Evado.Dal.Clinical
         this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._Dal_FormSections = new EvFormSections ( this.ClassParameters );
+      this._Dal_FormSections = new EdRecordSections ( this.ClassParameters );
 
-      this._Dal_FormFields = new EvFormFields ( this.ClassParameters );
+      this._Dal_FormFields = new EdRecordLayoutFields ( this.ClassParameters );
     }
 
     #endregion
@@ -143,8 +143,8 @@ namespace Evado.Dal.Clinical
     /// </summary>
     private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
 
-    EvFormSections _Dal_FormSections = new EvFormSections ( );
-    EvFormFields _Dal_FormFields = new EvFormFields ( );
+    EdRecordSections _Dal_FormSections = new EdRecordSections ( );
+    EdRecordLayoutFields _Dal_FormFields = new EdRecordLayoutFields ( );
     // 
     // Define the SQL query string variable.
     //
@@ -227,12 +227,12 @@ namespace Evado.Dal.Clinical
     /// 2. Fill the parameters array with the values from the form object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EvForm Form )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord Form )
     {
       // 
       // If the FormUid is emptry create a new value.
       // 
-      EvFormSections formsections = new EvFormSections ( );
+      EdRecordSections formsections = new EdRecordSections ( );
       if ( Form.Guid == Guid.Empty )
       {
         Form.Guid = Guid.NewGuid ( );
@@ -242,41 +242,41 @@ namespace Evado.Dal.Clinical
       // Fill the parameters array with the values from the form object. 
       // 
       cmdParms [ 0 ].Value = Form.Guid;
-      cmdParms [ 1 ].Value = Form.TrialId.Trim ( );
-      cmdParms [ 2 ].Value = Form.FormId.Trim ( );
+      cmdParms [ 1 ].Value = Form.ApplicationId.Trim ( );
+      cmdParms [ 2 ].Value = Form.LayoutId.Trim ( );
       cmdParms [ 3 ].Value = Form.Design.Title;
       cmdParms [ 4 ].Value = Form.Design.Reference;
       cmdParms [ 5 ].Value = Form.Design.Instructions;
       cmdParms [ 6 ].Value = Form.Design.TypeId.ToString ( );
       cmdParms [ 7 ].Value = String.Empty;
       cmdParms [ 8 ].Value = String.Empty;
-      cmdParms [ 9 ].Value = Form.Authors;
+      cmdParms [ 9 ].Value = String.Empty;
 
-      cmdParms [ 10 ].Value = Form.ReviewedByUserId;
-      cmdParms [ 11 ].Value = Form.ReviewedBy;
-      cmdParms [ 12 ].Value = Form.ReviewedDate;
-      cmdParms [ 13 ].Value = Form.ApprovedByUserId;
-      cmdParms [ 14 ].Value = Form.ApprovedBy;
-      cmdParms [ 15 ].Value = Form.ApprovalDate;
+      cmdParms [ 10 ].Value = String.Empty;
+      cmdParms [ 11 ].Value = String.Empty;
+      cmdParms [ 12 ].Value = EvStatics.CONST_DATE_NULL;
+      cmdParms [ 13 ].Value = String.Empty;
+      cmdParms [ 14 ].Value = String.Empty;
+      cmdParms [ 15 ].Value = EvStatics.CONST_DATE_NULL;
       cmdParms [ 16 ].Value = Form.Design.Version;
       cmdParms [ 17 ].Value = Form.State.ToString ( );
       cmdParms [ 18 ].Value = Form.UpdatedByUserId;
-      cmdParms [ 19 ].Value = Form.UserCommonName;
+      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
 
       cmdParms [ 20 ].Value = DateTime.Now;
       cmdParms [ 21 ].Value = Form.cDashMetadata;
-      cmdParms [ 22 ].Value = Form.Design.TemplateName;
+      cmdParms [ 22 ].Value = String.Empty;
       cmdParms [ 23 ].Value = Form.Design.JavaValidationScript;
-      cmdParms [ 24 ].Value = Form.Design.FormCategory;
+      cmdParms [ 24 ].Value = Form.Design.RecordCategory;
       cmdParms [ 25 ].Value = Form.Design.hasCsScript;
-      cmdParms [ 26 ].Value = Form.Design.hasSectionNavigation;
-      cmdParms [ 27 ].Value = Form.Design.HiddenFields;
-      cmdParms [ 28 ].Value = Form.Design.RegulatoryTemplate;
-      cmdParms [ 29 ].Value = Form.Design.OnEdit_HideFieldAnnotation;
+      cmdParms [ 26 ].Value = false;
+      cmdParms [ 27 ].Value = false;
+      cmdParms [ 28 ].Value = String.Empty;
+      cmdParms [ 29 ].Value = false;
 
-      cmdParms [ 30 ].Value = Form.Design.TrialSites;
-      cmdParms [ 31 ].Value = Form.Description;
-      cmdParms [ 32 ].Value = Form.UpdateReason.ToString ( );
+      cmdParms [ 30 ].Value = String.Empty;
+      cmdParms [ 31 ].Value = Form.Design.Description;
+      cmdParms [ 32 ].Value = Form.Design.UpdateReason.ToString ( );
       cmdParms [ 33 ].Value = this.ClassParameters.CustomerGuid;
 
       }//END SetParameters class.
@@ -301,44 +301,37 @@ namespace Evado.Dal.Clinical
     /// 3. Return the form data object.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private EvForm getRowData ( DataRow Row )
+    private EdRecord getRowData ( DataRow Row )
     {
       //
       // Initialize the method status, a return form object and the title string.
       //
       this.LogMethod ( "getRowData method" );
 
-      EvForm form = new EvForm ( );
-      EvFormSections _Dal_FormSections = new EvFormSections ( );
+      EdRecord form = new EdRecord ( );
+      EdRecordSections _Dal_FormSections = new EdRecordSections ( );
 
       string Title = String.Empty;
 
       // 
       // Extract the compatible data row values to the form object. 
       // 
-      form.CustomerGuid = EvSqlMethods.getGuid ( Row, EvForms.DB_CUSTOMER_GUID );
+      form.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_CUSTOMER_GUID );
       form.Guid = EvSqlMethods.getGuid ( Row, "TC_Guid" );
-      form.TrialId = EvSqlMethods.getString ( Row, "TrialId" );
-      form.FormId = EvSqlMethods.getString ( Row, "FormId" );
+      form.ApplicationId = EvSqlMethods.getString ( Row, "TrialId" );
+      form.LayoutId = EvSqlMethods.getString ( Row, "FormId" );
 
       string stXmlDesign = EvSqlMethods.getString ( Row, "TC_XmlData" );
       if ( stXmlDesign != string.Empty )
       {
-        form.Design = Evado.Model.EvStatics.DeserialiseObject<EvFormDesign> ( stXmlDesign );
+        form.Design = Evado.Model.EvStatics.DeserialiseObject<EdRecordDesign> ( stXmlDesign );
 
       }
       else
       {
-        form.Design.TemplateName = EvSqlMethods.getString ( Row, "TC_TEMPLATE_NAME" );
         form.Design.JavaValidationScript = EvSqlMethods.getString ( Row, "TC_JAVA_VALIDATION_SCRIPT" );
-        form.Design.FormCategory = EvSqlMethods.getString ( Row, "TC_FORM_CATEGORY" );
+        form.Design.RecordCategory = EvSqlMethods.getString ( Row, "TC_FORM_CATEGORY" );
         form.Design.hasCsScript = EvSqlMethods.getBool ( Row, "TC_HAS_CS_SCRIPT" );
-        form.Design.hasSectionNavigation = EvSqlMethods.getBool ( Row, "TC_HAS_SECTION_NAVIGATION" );
-        form.Design.HiddenFields = EvSqlMethods.getString ( Row, "TC_HIDDEN_FIELDS" );
-        form.Design.RegulatoryTemplate = EvSqlMethods.getBool ( Row, "TC_REGULATORY_TEMPLATE" );
-        form.Design.OnEdit_HideFieldAnnotation = EvSqlMethods.getBool ( Row, "TC_HIDE_ANNOTATION_DURING_EDITING" );
-        form.Design.TrialSites = EvSqlMethods.getString ( Row, "TC_TRIAL_SITES" );
-
       }
 
       //
@@ -361,8 +354,8 @@ namespace Evado.Dal.Clinical
       form.Design.Title = EvSqlMethods.getString ( Row, "TC_Title" );
       form.Design.Reference = EvSqlMethods.getString ( Row, "TC_Reference" );
       form.Design.Instructions = EvSqlMethods.getString ( Row, "TC_Instructions" );
-      form.Description = EvSqlMethods.getString ( Row, "TC_DESCRIPTION" );
-      form.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvForm.UpdateReasonList> (
+      form.Design.Description = EvSqlMethods.getString ( Row, "TC_DESCRIPTION" );
+      form.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
         EvSqlMethods.getString ( Row, "TC_UPDATE_REASON" ) );
       if ( form.Design.TypeId == EvFormRecordTypes.Null )
       {
@@ -376,15 +369,8 @@ namespace Evado.Dal.Clinical
         form.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvFormRecordTypes> ( value );
       }
 
-      form.Authors = EvSqlMethods.getString ( Row, "TC_Authors" );
-      form.ReviewedByUserId = EvSqlMethods.getString ( Row, "TC_ReviewedByUserId" );
-      form.ReviewedBy = EvSqlMethods.getString ( Row, "TC_ReviewedBy" );
-      form.ReviewedDate = EvSqlMethods.getDateTime ( Row, "TC_ReviewedDate" );
-      form.ApprovedByUserId = EvSqlMethods.getString ( Row, "TC_ApprovedByUserId" );
-      form.ApprovedBy = EvSqlMethods.getString ( Row, "TC_ApprovedBy" );
-      form.ApprovalDate = EvSqlMethods.getDateTime ( Row, "TC_ApprovalDate" );
       form.Design.Version = EvSqlMethods.getFloat ( Row, "TC_Version" );
-      form.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormObjectStates> (
+      form.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, "TC_State" ) );
       form.UpdatedByUserId = EvSqlMethods.getString ( Row, "TC_UpdatedByUserId" );
       form.Updated = EvSqlMethods.getString ( Row, "TC_UpdatedBy" );
@@ -396,7 +382,7 @@ namespace Evado.Dal.Clinical
       // 
       if ( ( int ) form.State < 0 )
       {
-        form.State = ( EvFormObjectStates ) Math.Abs ( ( int ) form.State );
+        form.State = ( EdRecordObjectStates ) Math.Abs ( ( int ) form.State );
       }
 
       if ( ( int ) form.Design.TypeId < 0 )
@@ -406,14 +392,7 @@ namespace Evado.Dal.Clinical
 
       if ( form.Design.TypeId == EvFormRecordTypes.Assessment_Record )
       {
-        form.Design.TypeId = EvFormRecordTypes.Trial_Record;
-      }
-
-      if ( form.ApprovedBy != string.Empty )
-      {
-        form.Design.Approval = "Version: " + form.Version;
-        form.Design.Approval += " approved by: " + form.ApprovedBy;
-        form.Design.Approval += " on " + form.ApprovalDate.ToString ( "dd MMM yyyy" );
+        form.Design.TypeId = EvFormRecordTypes.Normal_Record;
       }
 
 
@@ -450,10 +429,10 @@ namespace Evado.Dal.Clinical
     /// 6. Return the Forms list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public List<EvForm> GetFormList ( 
+    public List<EdRecord> GetFormList ( 
       string TrialId,
       EvFormRecordTypes TypeId,
-      EvFormObjectStates State,
+      EdRecordObjectStates State,
       bool WithFields )
     {
       //
@@ -464,7 +443,7 @@ namespace Evado.Dal.Clinical
       this.LogDebug ( "TypeId: '{0}'", TypeId );
       this.LogDebug ( "State: '{0}'", State );
 
-      List<EvForm> view = new List<EvForm> ( );
+      List<EdRecord> view = new List<EdRecord> ( );
 
       //
       // Validate whether the trial identifier is not empty 
@@ -494,7 +473,7 @@ namespace Evado.Dal.Clinical
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View
-        + "WHERE ( (" + EvForms.DB_CUSTOMER_GUID + " = " + EvForms.PARM_CUSTOMER_GUID + " )\r\n"
+        + "WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
         + " AND (TrialId = @TrialId ) ";
 
       if ( TypeId != EvFormRecordTypes.Null )
@@ -502,13 +481,13 @@ namespace Evado.Dal.Clinical
         _sqlQueryString += "AND ( TC_TypeId = @TypeId ) ";
       }
 
-      if ( State != EvFormObjectStates.Null )
+      if ( State != EdRecordObjectStates.Null )
       {
         _sqlQueryString += "AND ( TC_State = @State ) ";
       }
       else
       {
-        _sqlQueryString += "AND NOT( TC_State = '" + EvFormObjectStates.Withdrawn + "' ) ";
+        _sqlQueryString += "AND NOT( TC_State = '" + EdRecordObjectStates.Withdrawn + "' ) ";
 
       }
 
@@ -531,7 +510,7 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ count ];
 
-          EvForm form = this.getRowData ( row );
+          EdRecord form = this.getRowData ( row );
 
           if ( WithFields == true )
           {
@@ -582,7 +561,7 @@ namespace Evado.Dal.Clinical
     public List<EvOption> GetList ( 
       string TrialId, 
       EvFormRecordTypes TypeId, 
-      EvFormObjectStates State, bool SelectByGuid )
+      EdRecordObjectStates State, bool SelectByGuid )
     {
       //
       // Initialize the method status, a return option list and an option object
@@ -616,14 +595,14 @@ namespace Evado.Dal.Clinical
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View
-        + " WHERE ( (" + EvForms.DB_CUSTOMER_GUID + " = " + EvForms.PARM_CUSTOMER_GUID + " )\r\n"
+        + " WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
         + " AND ( TrialId = @TrialId ) ";
 
       if ( TypeId != EvFormRecordTypes.Null )
       {
         _sqlQueryString += "AND (TC_TypeId = @TypeId ) ";
       }
-      if ( State != EvFormObjectStates.Null )
+      if ( State != EdRecordObjectStates.Null )
       {
         _sqlQueryString += "AND (TC_State = @State ) ";
       }
@@ -698,13 +677,13 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Options list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private List<EvOption> GetValidationList ( EvForm Form )
+    private List<EvOption> GetValidationList ( EdRecord Form )
     {
       //
       // Initialize the method status and the return option list
       //
       this.LogMethod ( "GetValidationList, method. " );
-      this.LogValue ( "ProjectId: " + Form.TrialId );
+      this.LogValue ( "ProjectId: " + Form.ApplicationId );
       this.LogValue ( "TypeId: " + Form.Design.TypeId );
 
       List<EvOption> list = new List<EvOption> ( );
@@ -719,18 +698,18 @@ namespace Evado.Dal.Clinical
         new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 30),
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = Form.TrialId;
+      cmdParms [ 1 ].Value = Form.ApplicationId;
       cmdParms [ 2 ].Value = Form.Design.TypeId;
 
       //
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View
-        + " WHERE ( (" + EvForms.DB_CUSTOMER_GUID + " = " + EvForms.PARM_CUSTOMER_GUID + " )\r\n"
+        + " WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
         + " AND (TrialId = @TrialId ) "
         + " AND (TC_TypeId = @TypeId ) "
-        + " AND ((TC_State = '" + EvFormObjectStates.Form_Draft + "' ) "
-        + "  OR (TC_State = '" + EvFormObjectStates.Form_Reviewed + "' )) "
+        + " AND ((TC_State = '" + EdRecordObjectStates.Form_Draft + "' ) "
+        + "  OR (TC_State = '" + EdRecordObjectStates.Form_Reviewed + "' )) "
         + ") ORDER BY FormId";
 
       this.LogValue ( _sqlQueryString );
@@ -799,7 +778,7 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EvForm getForm ( Guid FormGuid )
+    public EdRecord getForm ( Guid FormGuid )
     {
       //
       // Initialize the method status, a return form object and a form field object 
@@ -807,9 +786,9 @@ namespace Evado.Dal.Clinical
       this.LogMethod ( "getItemByGuid merhod. " );
       this.LogValue ( "Form Guid: " + FormGuid );
 
-      EvForm Form = new EvForm ( );
+      EdRecord Form = new EdRecord ( );
       //EvFormsSections FormSection = new EvFormsSections ( );
-      Form.FormId = String.Empty;
+      Form.LayoutId = String.Empty;
 
       //
       // Validate whether the formGuid is not empty.
@@ -899,7 +878,7 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EvForm getForm ( 
+    public EdRecord getForm ( 
       string TrialId, 
       string FormId, 
       bool Issued )
@@ -910,7 +889,7 @@ namespace Evado.Dal.Clinical
       //
       // Initialize the method status, a return form object and a formfield object
       //
-      EvForm Form = new EvForm ( );
+      EdRecord Form = new EdRecord ( );
 
       //
       // If the FieldId is null then return empty instrument object.
@@ -951,16 +930,16 @@ namespace Evado.Dal.Clinical
       // 
       this._sqlQueryString = _sqlQuery_View + " WHERE (TrialId = @TrialId) AND (FormId = @FormId) "
         + " AND TC_SUPERSEDED = 0 "
-        + " AND NOT(TC_State = '" + EvFormObjectStates.Withdrawn + "') ";
+        + " AND NOT(TC_State = '" + EdRecordObjectStates.Withdrawn + "') ";
 
 
       if ( Issued == true )
       {
-        _sqlQueryString += " AND (TC_State = '" + EvFormObjectStates.Form_Issued + "'); ";
+        _sqlQueryString += " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "'); ";
       }
       else
       {
-        _sqlQueryString += " AND NOT(TC_State = '" + EvFormObjectStates.Form_Issued + "'); ";
+        _sqlQueryString += " AND NOT(TC_State = '" + EdRecordObjectStates.Form_Issued + "'); ";
       }
       this.LogValue ( _sqlQueryString );
 
@@ -1027,7 +1006,7 @@ namespace Evado.Dal.Clinical
     /// 6. Return the event code for updating items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EvForm Form )
+    public EvEventCodes UpdateItem ( EdRecord Form )
     {
       this.LogMethod ( "updateItem() method." );
       // 
@@ -1035,8 +1014,8 @@ namespace Evado.Dal.Clinical
       // 
       EvDataChanges dataChanges = new EvDataChanges ( );
 
-      EvForm oldForm = this.getForm ( Form.Guid );
-      this.LogValue ( "old form Form Id." + oldForm.FormId );
+      EdRecord oldForm = this.getForm ( Form.Guid );
+      this.LogValue ( "old form Form Id." + oldForm.LayoutId );
 
       //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       //
@@ -1049,14 +1028,14 @@ namespace Evado.Dal.Clinical
       //
       foreach ( EvOption form in formList )
       {
-        this.LogValue ( "oldForm FormId: " + oldForm.FormId
-          + " Form FormId: " + Form.FormId + " FormId: " + form.Value );
+        this.LogValue ( "oldForm FormId: " + oldForm.LayoutId
+          + " Form FormId: " + Form.LayoutId + " FormId: " + form.Value );
         //
         // IF the old form Id does not match the updated Form Id 
         // it has been changed. So the new form id needs to be validated.
         //
-        if ( oldForm.FormId.ToLower ( ) != Form.FormId.ToLower ( )
-          && form.Value.ToLower ( ) == Form.FormId.ToLower ( ) )
+        if ( oldForm.LayoutId.ToLower ( ) != Form.LayoutId.ToLower ( )
+          && form.Value.ToLower ( ) == Form.LayoutId.ToLower ( ) )
         {
           this.LogValue ( " >> Duplicate form Id." );
 
@@ -1132,11 +1111,11 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for adding new items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes AddItem ( EvForm Form )
+    public EvEventCodes AddItem ( EdRecord Form )
     {
       this.LogMethod ( "AddItem method. " );
-      this.LogValue ( "ProjectId: " + Form.TrialId );
-      this.LogValue ( "FormId: " + Form.FormId );
+      this.LogValue ( "ProjectId: " + Form.ApplicationId );
+      this.LogValue ( "FormId: " + Form.LayoutId );
       this.LogValue ( "Version: " + Form.Design.Version );
       // 
       // Initialise the methods status, a formfield object and a new Guid
@@ -1145,7 +1124,7 @@ namespace Evado.Dal.Clinical
       //
       // Validate whether the Guid does not exist.
       //
-      EvForm currentForm = this.getForm ( Form.TrialId, Form.FormId, false );
+      EdRecord currentForm = this.getForm ( Form.ApplicationId, Form.LayoutId, false );
 
       if ( currentForm.Guid != Guid.Empty )
       {
@@ -1205,7 +1184,6 @@ namespace Evado.Dal.Clinical
             // 
             Form.Fields [ count ].FormGuid = Form.Guid;
             Form.Fields [ count ].UpdatedByUserId = Form.UpdatedByUserId;
-            Form.Fields [ count ].UserCommonName = Form.UserCommonName;
 
             // 
             // Add the newField to the database.
@@ -1239,19 +1217,14 @@ namespace Evado.Dal.Clinical
     /// 3. Return an event code for withdrawing issued form
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes WithdrawIssuedForm ( EvForm Form )
+    public EvEventCodes WithdrawIssuedForm ( EdRecord Form )
     {
       // 
       // Validate whether the formId and user common name are not empty
       // 
-      if ( Form.FormId == String.Empty )
+      if ( Form.LayoutId == String.Empty )
       {
         return EvEventCodes.Identifier_Project_Id_Error;
-      }
-
-      if ( Form.UserCommonName == String.Empty )
-      {
-        return EvEventCodes.Identifier_User_Id_Error;
       }
 
       // 
@@ -1265,10 +1238,10 @@ namespace Evado.Dal.Clinical
         new SqlParameter(PARM_UpdatedBy, SqlDbType.NVarChar, 100),
         new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
       };
-      cmdParms [ 0 ].Value = Form.TrialId;
-      cmdParms [ 1 ].Value = Form.FormId;
+      cmdParms [ 0 ].Value = Form.ApplicationId;
+      cmdParms [ 1 ].Value = Form.LayoutId;
       cmdParms [ 2 ].Value = Form.UpdatedByUserId;
-      cmdParms [ 3 ].Value = Form.UserCommonName;
+      cmdParms [ 3 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 4 ].Value = DateTime.Now;
 
       //
@@ -1302,12 +1275,12 @@ namespace Evado.Dal.Clinical
     /// 3. Return an event code for deleting items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes DeleteItem ( EvForm Form )
+    public EvEventCodes DeleteItem ( EdRecord Form )
     {
       //
       // Initialize the method status
       //
-      this.LogMethod ( "DeleteItem method. FormId; " + Form.FormId );
+      this.LogMethod ( "DeleteItem method. FormId; " + Form.LayoutId );
 
       // 
       // Validate whether the form Guid and user common name are not empty.
@@ -1315,10 +1288,6 @@ namespace Evado.Dal.Clinical
       if ( Form.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
-      }
-      if ( Form.UserCommonName == String.Empty )
-      {
-        return EvEventCodes.Identifier_User_Id_Error;
       }
 
       // 
@@ -1333,7 +1302,7 @@ namespace Evado.Dal.Clinical
       };
       cmdParms [ 0 ].Value = Form.Guid;
       cmdParms [ 1 ].Value = Form.UpdatedByUserId;
-      cmdParms [ 2 ].Value = Form.UserCommonName;
+      cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
 
       //
@@ -1370,7 +1339,7 @@ namespace Evado.Dal.Clinical
     /// 2. Return the datachange data object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvDataChange setChangeRecord ( EvForm RecordForm, EvForm OldRecordForm )
+    private EvDataChange setChangeRecord ( EdRecord RecordForm, EdRecord OldRecordForm )
     {
       //
       // Initialize the method status and the datachange object. 
@@ -1380,7 +1349,7 @@ namespace Evado.Dal.Clinical
       EvDataChange dataChange = new EvDataChange ( );
       dataChange.Guid = Guid.NewGuid ( );
       dataChange.TableName = EvDataChange.DataChangeTableNames.EvForms;
-      dataChange.TrialId = RecordForm.TrialId;
+      dataChange.TrialId = RecordForm.ApplicationId;
       dataChange.RecordGuid = RecordForm.Guid;
       dataChange.UserId = RecordForm.UpdatedByUserId;
       dataChange.DateStamp = DateTime.Now;
@@ -1388,7 +1357,7 @@ namespace Evado.Dal.Clinical
       //
       // Add new items to datachange object if they do not exist. 
       //
-      dataChange.AddItem ( "FormId", OldRecordForm.FormId, RecordForm.FormId );
+      dataChange.AddItem ( "FormId", OldRecordForm.LayoutId, RecordForm.LayoutId );
 
       dataChange.AddItem ( "Title", OldRecordForm.Design.Title, RecordForm.Design.Title );
 
@@ -1397,20 +1366,6 @@ namespace Evado.Dal.Clinical
       dataChange.AddItem ( "Instructions", OldRecordForm.Design.Instructions, RecordForm.Design.Instructions );
 
       dataChange.AddItem ( "TypeId", OldRecordForm.Design.TypeId, RecordForm.Design.TypeId );
-
-      dataChange.AddItem ( "Authors", OldRecordForm.Authors, RecordForm.Authors );
-
-      dataChange.AddItem ( "ReviewedByUserId", OldRecordForm.ReviewedByUserId, RecordForm.ReviewedByUserId );
-
-      dataChange.AddItem ( "ReviewedBy", OldRecordForm.ReviewedBy, RecordForm.ReviewedBy );
-
-      dataChange.AddItem ( "ReviewedDate", OldRecordForm.ReviewedDate, RecordForm.ReviewedDate );
-
-      dataChange.AddItem ( "ApprovedByUserId", OldRecordForm.ApprovedByUserId, RecordForm.ApprovedByUserId );
-
-      dataChange.AddItem ( "ApprovedBy", OldRecordForm.ApprovedBy, RecordForm.ApprovedBy );
-
-      dataChange.AddItem ( "ApprovalDate", OldRecordForm.ApprovalDate, RecordForm.ApprovalDate );
 
       dataChange.AddItem ( "Version", OldRecordForm.Design.Version, RecordForm.Design.Version );
 
@@ -1422,17 +1377,10 @@ namespace Evado.Dal.Clinical
       if ( OldRecordForm.Design != null
         && RecordForm.Design != null )
       {
-        dataChange.AddItem ( "Design_Approval",
-          OldRecordForm.Design.Approval,
-          RecordForm.Design.Approval );
-
-        dataChange.AddItem ( "Design_FinishDateInstructions",
-          OldRecordForm.Design.FinishDateInstructions,
-          RecordForm.Design.FinishDateInstructions );
 
         dataChange.AddItem ( "Design_FormCategory",
-          OldRecordForm.Design.FormCategory,
-          RecordForm.Design.FormCategory );
+          OldRecordForm.Design.RecordCategory,
+          RecordForm.Design.RecordCategory );
 
         for ( int count = 0; count < RecordForm.Design.FormSections.Count; count++ )
         {
@@ -1485,70 +1433,13 @@ namespace Evado.Dal.Clinical
           OldRecordForm.Design.hasCsScript,
           RecordForm.Design.hasCsScript );
 
-        dataChange.AddItem ( "Design_hasSectionNavigation",
-          OldRecordForm.Design.hasSectionNavigation,
-          RecordForm.Design.hasSectionNavigation );
-
-        dataChange.AddItem ( "Design_HiddenFields",
-          OldRecordForm.Design.HiddenFields,
-          RecordForm.Design.HiddenFields );
-
         dataChange.AddItem ( "Design_HiddenFields",
           OldRecordForm.Design.JavaValidationScript,
           RecordForm.Design.JavaValidationScript );
 
-        dataChange.AddItem ( "Design_RecordSubjectInstructions",
-          OldRecordForm.Design.RecordSubjectInstructions,
-          RecordForm.Design.RecordSubjectInstructions );
-
         dataChange.AddItem ( "Design_Reference",
           OldRecordForm.Design.Reference,
           RecordForm.Design.Reference );
-
-        dataChange.AddItem ( "Design_RegulatoryTemplate",
-          OldRecordForm.Design.RegulatoryTemplate,
-          RecordForm.Design.RegulatoryTemplate );
-
-        dataChange.AddItem ( "Design_StartDateInstructions",
-          OldRecordForm.Design.StartDateInstructions,
-          RecordForm.Design.StartDateInstructions );
-
-        dataChange.AddItem ( "Design_SubjectExternalIdFormat",
-          OldRecordForm.Design.SubjectExternalIdFormat,
-          RecordForm.Design.SubjectExternalIdFormat );
-
-        dataChange.AddItem ( "Design_SubjectExternalIdInstructions",
-          OldRecordForm.Design.SubjectExternalIdInstructions,
-          RecordForm.Design.SubjectExternalIdInstructions );
-
-        dataChange.AddItem ( "Design_SubjectRandomisedIdFormat",
-          OldRecordForm.Design.SubjectRandomisedIdFormat,
-          RecordForm.Design.SubjectRandomisedIdFormat );
-
-        dataChange.AddItem ( "Design_SubjectRandomisedIdInstructions",
-          OldRecordForm.Design.SubjectRandomisedIdInstructions,
-          RecordForm.Design.SubjectRandomisedIdInstructions );
-
-        dataChange.AddItem ( "Design_SubjectScreeningIdFormat",
-          OldRecordForm.Design.SubjectScreeningIdFormat,
-          RecordForm.Design.SubjectScreeningIdFormat );
-
-        dataChange.AddItem ( "Design_SubjectExternalIdFormat",
-          OldRecordForm.Design.SubjectScreeningIdInstructions,
-          RecordForm.Design.SubjectScreeningIdInstructions );
-
-        dataChange.AddItem ( "Design_SubjectSponsorIdFormat",
-          OldRecordForm.Design.SubjectSponsorIdFormat,
-          RecordForm.Design.SubjectSponsorIdFormat );
-
-        dataChange.AddItem ( "Design_SubjectSponsorIdInstructions",
-          OldRecordForm.Design.SubjectSponsorIdInstructions,
-          RecordForm.Design.SubjectSponsorIdInstructions );
-
-        dataChange.AddItem ( "Design_TemplateName",
-          OldRecordForm.Design.TemplateName,
-          RecordForm.Design.TemplateName );
-
       }//END Form Design object
       // 
       // Return the data change object.
@@ -1580,12 +1471,12 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for copying items.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes CopyForm ( EvForm Form, bool Copy )
+    public EvEventCodes CopyForm ( EdRecord Form, bool Copy )
     {
       //
       // Initialize the method status, a number of affected records and a numeric version
       //
-      this.LogMethod ( "CopyForm method. FormId; " + Form.FormId );
+      this.LogMethod ( "CopyForm method. FormId; " + Form.LayoutId );
 
       int databaseRecordAffected = 0;
 
@@ -1596,10 +1487,6 @@ namespace Evado.Dal.Clinical
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
-      if ( Form.UserCommonName == String.Empty )
-      {
-        return EvEventCodes.Identifier_User_Id_Error;
-      }
 
       // 
       // Update the version if revising the form.
@@ -1607,7 +1494,7 @@ namespace Evado.Dal.Clinical
       if ( Copy == false )
       {
         //---------------------- Check for duplicate Checklist identifiers. ------------------
-        EvForm currentForm = this.getForm ( Form.TrialId, Form.FormId, false );
+        EdRecord currentForm = this.getForm ( Form.ApplicationId, Form.LayoutId, false );
 
         if ( currentForm.Guid != Guid.Empty )
         {
@@ -1639,7 +1526,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 1 ].Value = Copy;
       cmdParms [ 2 ].Value = Form.Design.Version;
       cmdParms [ 3 ].Value = Form.UpdatedByUserId;
-      cmdParms [ 4 ].Value = Form.UserCommonName;
+      cmdParms [ 4 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 5 ].Value = DateTime.Now;
 
       //

@@ -67,7 +67,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EvFormFieldSelectionLists _dalExternalSelectionLists = new Evado.Dal.Clinical.EvFormFieldSelectionLists();
+    private Evado.Dal.Clinical.EdRecordFieldSelectionLists _dalExternalSelectionLists = new Evado.Dal.Clinical.EdRecordFieldSelectionLists();
 
     // 
     // The global variables for the busines object.

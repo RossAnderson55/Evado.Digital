@@ -217,7 +217,7 @@ namespace Evado.UniForm.Clinical
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + this.ClassNameSpace + "getDataObject_RegistrationPage" );
       this.LogDebug ( "AdminOrganisation.OrgId: " + this.Session.AdminOrganisation.OrgId );
-      this.LogDebug ( "Demo Expiry {0}", this.ApplicationObjects.ApplicationSettings.DemoAccountExpiryDays.ToString() );
+      this.LogDebug ( "Demo Expiry {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays.ToString() );
       try
       {
         // 
@@ -233,7 +233,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AdminUserProfile.OrgId = this.Session.AdminOrganisation.OrgId;
         this.Session.AdminUserProfile.CustomerGuid = this.Session.Customer.Guid;
         this.Session.AdminUserProfile.ExpiryDate = DateTime.Now.AddDays (
-          this.ApplicationObjects.ApplicationSettings.DemoAccountExpiryDays );
+          this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
@@ -440,7 +440,7 @@ namespace Evado.UniForm.Clinical
       //
       // if there is not video donot create the video field.
       //
-      if ( this.ApplicationObjects.ApplicationSettings.DemoRegistrationVideoUrl == String.Empty )
+      if ( this.ApplicationObjects.PlatformSettings.DemoRegistrationVideoUrl == String.Empty )
       {
         return;
       }
@@ -450,7 +450,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Field groupField = PageGroup.createField ( );
       groupField.Type = Evado.Model.EvDataTypes.Streamed_Video;
-      groupField.Value = this.ApplicationObjects.ApplicationSettings.DemoRegistrationVideoUrl;
+      groupField.Value = this.ApplicationObjects.PlatformSettings.DemoRegistrationVideoUrl;
       groupField.Description = String.Empty;
 
       int iWidth = 800;

@@ -55,9 +55,9 @@ namespace Evado.Bll.Clinical
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
 
-      this._DalRecords = new Evado.Dal.Clinical.EvFormRecords ( Settings );
+      this._DalRecords = new Evado.Dal.Clinical.EdRecords ( Settings );
 
-      this._DalForms = new Evado.Dal.Clinical.EvForms ( Settings );
+      this._DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
     }
     #endregion
 
@@ -75,8 +75,8 @@ namespace Evado.Bll.Clinical
     //
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EvFormRecords _DalRecords = new Evado.Dal.Clinical.EvFormRecords ( );
-    private Evado.Dal.Clinical.EvForms _DalForms = new Evado.Dal.Clinical.EvForms ( );
+    private Evado.Dal.Clinical.EdRecords _DalRecords = new Evado.Dal.Clinical.EdRecords ( );
+    private Evado.Dal.Clinical.EdRecordLayouts _DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( );
 
     //
     // Instantiate the Business Logic.
@@ -109,7 +109,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> getRecordList (
+    public List<EdRecord> getRecordList (
       string TrialId,
       string OrgId,
       string SubjectId,
@@ -145,7 +145,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( query );
+      List<EdRecord> view = this._DalRecords.getRecordList ( query );
 
       this.LogClass ( this._DalRecords.Log );
 
@@ -176,7 +176,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> getRecordList (
+    public List<EdRecord> getRecordList (
       string TrialId,
       string SubjectId,
       string VisitId,
@@ -198,7 +198,7 @@ namespace Evado.Bll.Clinical
       // Initialise the query object
       // 
       EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.TrialId = TrialId;
+      query.ApplicationId = TrialId;
       query.SubjectId = SubjectId;
       query.VisitId = VisitId;
       query.State = State;
@@ -209,7 +209,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( query );
+      List<EdRecord> view = this._DalRecords.getRecordList ( query );
 
       this.LogClass ( this._DalRecords.Log );
       //
@@ -238,7 +238,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> getRecordList (
+    public List<EdRecord> getRecordList (
       String TrialId,
       String SubjectId,
       String FormId,
@@ -267,7 +267,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( query );
+      List<EdRecord> view = this._DalRecords.getRecordList ( query );
 
       this.LogClass ( this._DalRecords.Log );
 
@@ -298,7 +298,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> getRecordList (
+    public List<EdRecord> getRecordList (
       string TrialId,
       string OrgId,
       string State,
@@ -320,7 +320,7 @@ namespace Evado.Bll.Clinical
       // 
       EvQueryParameters query = new EvQueryParameters ( TrialId );
       query.UserCommonName = UserCommonName;
-      query.TrialId = TrialId;
+      query.ApplicationId = TrialId;
       query.OrgId = OrgId;
       query.State = State;
       query.NotSelectedState = NotSelectedState;
@@ -330,7 +330,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( query );
+      List<EdRecord> view = this._DalRecords.getRecordList ( query );
 
       this.LogClass ( this._DalRecords.Log );
 
@@ -360,7 +360,7 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod ( "getRecordCount method. " );
       this.LogValue ( "EvQueryParameters parameters." );
-      this.LogValue ( "- ProjectId: " + QueryParameters.TrialId );
+      this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
       this.LogValue ( "- FormId: " + QueryParameters.FormId );
       this.LogValue ( "- OrgId: " + QueryParameters.OrgId );
       this.LogValue ( "- MilestoneId: " + QueryParameters.MilestoneId );
@@ -407,12 +407,12 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> getRecordList (
+    public List<EdRecord> getRecordList (
       EvQueryParameters QueryParameters )
     {
       this.LogMethod ( "getRecordList method. " ); 
       this.LogDebug ( "EvQueryParameters parameters." );
-      this.LogDebug ( "- TrialId: " + QueryParameters.TrialId );
+      this.LogDebug ( "- ApplicationId: " + QueryParameters.ApplicationId );
       this.LogDebug ( "- FormId: " + QueryParameters.FormId );
       this.LogDebug ( "- OrgId: " + QueryParameters.OrgId );
       this.LogDebug ( "- MilestoneId: " + QueryParameters.MilestoneId );
@@ -435,7 +435,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( QueryParameters );
+      List<EdRecord> view = this._DalRecords.getRecordList ( QueryParameters );
 
       this.LogClass ( this._DalRecords.Log );
 
@@ -465,7 +465,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> GetCurrentRecordsView (
+    public List<EdRecord> GetCurrentRecordsView (
       string TrialId,
       string OrgId,
       string SubjectId,
@@ -482,7 +482,7 @@ namespace Evado.Bll.Clinical
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getCurrentRecordList (
+      List<EdRecord> view = this._DalRecords.getCurrentRecordList (
         TrialId,
         OrgId,
         SubjectId,
@@ -520,7 +520,7 @@ namespace Evado.Bll.Clinical
     /// 5. Return the last records list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> GetLastInstanceView (
+    public List<EdRecord> GetLastInstanceView (
       string TrialId,
       string SubjectId,
       string MilestoneId )
@@ -534,31 +534,31 @@ namespace Evado.Bll.Clinical
       // Initialise the query object
       // 
       EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.TrialId = TrialId;
+      query.ApplicationId = TrialId;
       query.SubjectId = SubjectId;
       query.MilestoneId = MilestoneId;
-      query.State = EvFormObjectStates.Withdrawn + ";" + EvFormObjectStates.Queried_Record_Copy;
+      query.State = EdRecordObjectStates.Withdrawn + ";" + EdRecordObjectStates.Queried_Record_Copy;
       query.NotSelectedState = true;
       query.OrderBy = "FormId, TR_RecordDate; ";
       String FormIdList = String.Empty;
-      List<EvForm> recordList = new List<EvForm> ( );
-      EvForm lastRecord = new EvForm ( );
+      List<EdRecord> recordList = new List<EdRecord> ( );
+      EdRecord lastRecord = new EdRecord ( );
 
       // 
       // Execute the query.
       // 
-      List<EvForm> view = this._DalRecords.getRecordList ( query );
+      List<EdRecord> view = this._DalRecords.getRecordList ( query );
 
       this.LogClass ( this._DalRecords.Log );
 
       //
       // Identify the forms in the list.
       //
-      foreach ( EvForm record in view )
+      foreach ( EdRecord record in view )
       {
-        if ( FormIdList.Contains ( record.FormId ) == false )
+        if ( FormIdList.Contains ( record.LayoutId ) == false )
         {
-          FormIdList += ";" + record.FormId;
+          FormIdList += ";" + record.LayoutId;
         }
       }
 
@@ -580,14 +580,14 @@ namespace Evado.Bll.Clinical
           //
           // reset the record for a new formId.
           //
-          lastRecord = new EvForm ( );
+          lastRecord = new EdRecord ( );
 
-          foreach ( EvForm record in view )
+          foreach ( EdRecord record in view )
           {
             //
             // Process the records that match the form id.
             //
-            if ( arrFormIdList [ i ] == record.FormId )
+            if ( arrFormIdList [ i ] == record.LayoutId )
             {
               if ( lastRecord.RecordDate < record.RecordDate )
               {
@@ -637,7 +637,7 @@ namespace Evado.Bll.Clinical
       bool ByUid )
     {
       this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.GetList method. " );
-      this.LogValue ( "TrialId: " + Query.TrialId
+      this.LogValue ( "TrialId: " + Query.ApplicationId
       + ", OrgId: " + Query.OrgId
       + ", VisitId: " + Query.VisitId
       + ", State: " + Query.State
@@ -727,7 +727,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return an arraylist of form record objects.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvForm> GetItemQuery ( string ProjectId, string FormId, string ItemId, string Value )
+    public List<EdRecord> GetItemQuery ( string ProjectId, string FormId, string ItemId, string Value )
     {
       this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.getItemQuery method" );
       this.LogValue ( "ProjectId: " + ProjectId +
@@ -737,7 +737,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       //
-      List<EvForm> recordList = this._DalRecords.getRecordByFieldValue ( ProjectId, FormId, ItemId, Value );
+      List<EdRecord> recordList = this._DalRecords.getRecordByFieldValue ( ProjectId, FormId, ItemId, Value );
       this.LogClass ( this._DalRecords.Log );
 
       return recordList;
@@ -762,7 +762,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm getRecord ( Guid RecordGuid )
+    public EdRecord getRecord ( Guid RecordGuid )
     {
       this.LogMethod( "getRecord method. " );
       this.LogValue ( "RecordGuid: " + RecordGuid );
@@ -770,7 +770,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       // 
-      EvForm record = new EvForm ( );
+      EdRecord record = new EdRecord ( );
 
       //
       // Execute the query
@@ -796,7 +796,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm getRecordNoFieldComments ( Guid RecordGuid )
+    public EdRecord getRecordNoFieldComments ( Guid RecordGuid )
     {
       this.LogValue ( "DAL:EvRecord:getRecord method. " );
       this.LogValue ( "RecordGuid: " + RecordGuid );
@@ -804,7 +804,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       // 
-      EvForm record = new EvForm ( );
+      EdRecord record = new EdRecord ( );
 
       //
       // Execute the query
@@ -830,14 +830,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm getRecord ( String RecordId )
+    public EdRecord getRecord ( String RecordId )
     {
       this.LogMethod ( "GetRecord method. " );
       this.LogValue ( "RecordId: " + RecordId );
       // 
       // Initialise the method variables and objects.
       // 
-      EvForm record = new EvForm ( );
+      EdRecord record = new EdRecord ( );
 
       //
       // Execute the query
@@ -865,7 +865,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm getRecord ( 
+    public EdRecord getRecord ( 
       String RecordId,
       bool IncludeComments )
     {
@@ -874,7 +874,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       // 
-      EvForm record = new EvForm ( );
+      EdRecord record = new EdRecord ( );
 
       //
       // Execute the query
@@ -902,7 +902,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm getRecordBySource (
+    public EdRecord getRecordBySource (
       String SourceId,
       bool IncludeComments )
     {
@@ -911,7 +911,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       // 
-      EvForm record = new EvForm ( );
+      EdRecord record = new EdRecord ( );
 
       //
       // Execute the query
@@ -941,7 +941,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return an event code for locking form records.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes lockItem ( EvForm Record )
+    public EvEventCodes lockItem ( EdRecord Record )
     {
       // 
       // Initialise method variables
@@ -972,7 +972,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return an event code for locking form records.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes unlockItem ( EvForm Record )
+    public EvEventCodes unlockItem ( EdRecord Record )
     {
       // 
       // Initialise method variables
@@ -1030,7 +1030,7 @@ namespace Evado.Bll.Clinical
       // Initialise the methods variables and objects.
       //
       List<EvActvityForm> activityFormList = new List<EvActvityForm> ( );
-      EvForm newFormRecord = new EvForm ( );
+      EdRecord newFormRecord = new EdRecord ( );
       EvActivity mandatoryActivity = getMandatoryActivity ( SubectMilestone.ActivityList );
 
       //
@@ -1065,15 +1065,15 @@ namespace Evado.Bll.Clinical
         //
         // Initialise the form record to be generated.
         //
-        newFormRecord = new EvForm ( );
-        newFormRecord.TrialId = SubectMilestone.ProjectId;
+        newFormRecord = new EdRecord ( );
+        newFormRecord.ApplicationId = SubectMilestone.ProjectId;
         newFormRecord.OrgId = SubectMilestone.OrgId;
         newFormRecord.SubjectId = SubectMilestone.SubjectId;
         newFormRecord.VisitId = SubectMilestone.VisitId;
         newFormRecord.MilestoneId = SubectMilestone.MilestoneId;
         newFormRecord.ActivityId = mandatoryActivity.ActivityId;
         newFormRecord.IsMandatoryActivity = mandatoryActivity.IsMandatory;
-        newFormRecord.FormId = activityRecord.FormId;
+        newFormRecord.LayoutId = activityRecord.FormId;
         newFormRecord.IsMandatory = activityRecord.Mandatory;
         newFormRecord.UpdatedByUserId = UserProfile.UserId;
         newFormRecord.UserCommonName = UserProfile.CommonName;
@@ -1081,7 +1081,7 @@ namespace Evado.Bll.Clinical
         //
         // Submit the initialised record to be created.
         //
-        EvForm createdRecord = this.createRecord ( newFormRecord );
+        EdRecord createdRecord = this.createRecord ( newFormRecord );
 
         if ( createdRecord.Guid == Guid.Empty )
         {
@@ -1192,26 +1192,26 @@ namespace Evado.Bll.Clinical
     /// 3. Return the form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvForm createRecord ( EvForm Record )
+    public EdRecord createRecord ( EdRecord Record )
     {
       this.LogMethod ( "createRecord method." );
-      this.LogDebug ( "ProjectId: " + Record.TrialId );
+      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
       this.LogDebug ( "OrgId: " + Record.OrgId );
       this.LogDebug ( "MilestoneId: " + Record.MilestoneId );
       this.LogDebug ( "ActivityId: " + Record.ActivityId );
       this.LogDebug ( "SubjectId: " + Record.SubjectId );
       this.LogDebug ( "VisitId: " + Record.VisitId );
-      this.LogDebug ( "FormId: " + Record.FormId );
+      this.LogDebug ( "FormId: " + Record.LayoutId );
 
       // 
       // Instantiate the local variables
       //
-      EvForm formRecord = new EvForm ( );
+      EdRecord formRecord = new EdRecord ( );
 
       // 
       // Check that the ResultData object has valid identifiers to add it to the database.
       //
-      if ( Record.TrialId == String.Empty )
+      if ( Record.ApplicationId == String.Empty )
       {
         this.LogValue ( " Trial Empty " );
         Record.EventCode = EvEventCodes.Identifier_Project_Id_Error;
@@ -1241,7 +1241,7 @@ namespace Evado.Bll.Clinical
         return Record;
       }
 
-      if ( Record.FormId == String.Empty )
+      if ( Record.LayoutId == String.Empty )
       {
         this.LogValue ( " FormId Empty " );
         formRecord.EventCode = EvEventCodes.Identifier_Form_Id_Error;
@@ -1260,11 +1260,11 @@ namespace Evado.Bll.Clinical
       //
       // Retrieve the specified form to determine the form QueryType.
       //
-      EvForm form = this._DalForms.getForm ( Record.TrialId, Record.FormId, true );
+      EdRecord form = this._DalForms.getForm ( Record.ApplicationId, Record.LayoutId, true );
 
       this.LogDebugClass ( this._DalForms.Log );
-      this.LogDebug ( "form ProjectId: " + form.TrialId );
-      this.LogDebug ( "form Id: " + form.FormId );
+      this.LogDebug ( "form ProjectId: " + form.ApplicationId );
+      this.LogDebug ( "form Id: " + form.LayoutId );
       this.LogDebug ( "form title: " + form.Title );
       this.LogDebug ( "form TypeId: " + form.Design.TypeId );
 
@@ -1329,13 +1329,13 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public EvEventCodes saveRecord (
-      EvForm FormRecord,
+      EdRecord FormRecord,
       bool HadEditAccess )
     {
       this.LogMethod ( "saveItem method. " );
       this.LogValue ( "FormRecord.Guid: " + FormRecord.Guid );
-      this.LogValue ( "FormGuid: " + FormRecord.FormGuid );
-      this.LogValue ( "TrialId: " + FormRecord.TrialId );
+      this.LogValue ( "FormGuid: " + FormRecord.LayoutGuid );
+      this.LogValue ( "TrialId: " + FormRecord.ApplicationId );
       this.LogValue ( "SubjectId: " + FormRecord.SubjectId );
       this.LogValue ( "Action: " + FormRecord.SaveAction );
       this.LogValue ( "UserRole.Edit: " + HadEditAccess );
@@ -1353,12 +1353,12 @@ namespace Evado.Bll.Clinical
         this.LogValue ( "Record Guid is empty" );
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
-      if ( FormRecord.FormGuid == Guid.Empty )
+      if ( FormRecord.LayoutGuid == Guid.Empty )
       {
         this.LogValue ( "Form ID is empty" );
         return EvEventCodes.Identifier_Form_Id_Error;
       }
-      if ( FormRecord.TrialId == String.Empty )
+      if ( FormRecord.ApplicationId == String.Empty )
       {
         this.LogValue ( "Project ID is empty" );
         return EvEventCodes.Identifier_Project_Id_Error;
@@ -1379,9 +1379,9 @@ namespace Evado.Bll.Clinical
       // If a review query has been raised then process the query.
       // 
       if ( FormRecord.hasQueredItems == true
-        && ( FormRecord.SaveAction == EvForm.SaveActionCodes.Review_Save
-          || FormRecord.SaveAction == EvForm.SaveActionCodes.Monitor_Save
-          || FormRecord.SaveAction == EvForm.SaveActionCodes.DataManager_Save ) )
+        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
+          || FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
+          || FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save ) )
       {
         this.LogValue ( "Processing a queried record." );
 
@@ -1453,7 +1453,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private EvEventCodes queryRecord (
-      EvForm FormRecord,
+      EdRecord FormRecord,
       bool HadEditAccess )
     {
       this.LogMethod ( "queryRecord method." );
@@ -1548,7 +1548,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return the query message. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private string queryMessage ( EvForm FormRecord )
+    private string queryMessage ( EdRecord FormRecord )
     {
       this.LogMethod ( "queryMessage method " );
       // 
@@ -1564,7 +1564,7 @@ namespace Evado.Bll.Clinical
       //
       EvFormRecordComment.AuthorTypeCodes authorType = EvFormRecordComment.AuthorTypeCodes.Monitor;
 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.DataManager_Save )
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save )
       {
         authorType = EvFormRecordComment.AuthorTypeCodes.Data_Manager;
       }
@@ -1572,13 +1572,13 @@ namespace Evado.Bll.Clinical
       // 
       // Iterate through the items append those items that have been queried.
       // 
-      foreach ( EvFormField field in FormRecord.Fields )
+      foreach ( EdRecordField field in FormRecord.Fields )
       {
         string fieldMessage = String.Empty;
         //
         // Select queried fields.
         //
-        if ( field.State == EvFormField.FieldStates.Queried )
+        if ( field.State == EdRecordField.FieldStates.Queried )
         {
           queriedFields = true;
           //
@@ -1655,7 +1655,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private EvEventCodes sendAlert (
-      EvForm FormRecord,
+      EdRecord FormRecord,
       String Message,
       EvAlert.AlertTypes Alert )
     {
@@ -1672,7 +1672,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the alert object properties
       // 
-      trialAlert.ProjectId = FormRecord.TrialId;
+      trialAlert.ProjectId = FormRecord.ApplicationId;
       trialAlert.ToOrgId = FormRecord.OrgId;
       trialAlert.RecordId = FormRecord.RecordId;
 
@@ -1726,7 +1726,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return an event code for closing alert message.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private EvEventCodes closeAlert ( EvForm FormRecord )
+    private EvEventCodes closeAlert ( EdRecord FormRecord )
     {
       this.LogMethod ( "closeAlert method. " );
       this.LogValue ( "RecordId: " + FormRecord.RecordId );
@@ -1741,7 +1741,7 @@ namespace Evado.Bll.Clinical
       // 
       // Close alert if record being signed be authoredBy. 
       // 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.Submit_Record )
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Submit_Record )
       {
         this.LogValue ( " Closing alerts. " );
         iReturn = this._BllTrialAlerts.CloseAlert (
@@ -1793,7 +1793,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void updateFormState (
-      EvForm FormRecord,
+      EdRecord FormRecord,
       bool HadEditAccess )
     {
       this.LogMethod ( "updateState method. " );
@@ -1817,14 +1817,14 @@ namespace Evado.Bll.Clinical
       // 
       // Set the query state if not defined in the database reset if correctly.
       // 
-      if ( FormRecord.QueryState == EvForm.QueryStates.Null
+      if ( FormRecord.QueryState == EdRecord.QueryStates.Null
         && FormRecord.QueriedBy != String.Empty )
       {
-        FormRecord.QueryState = EvForm.QueryStates.Open;
+        FormRecord.QueryState = EdRecord.QueryStates.Open;
 
-        if ( FormRecord.State != EvFormObjectStates.Queried_Record )
+        if ( FormRecord.State != EdRecordObjectStates.Queried_Record )
         {
-          FormRecord.QueryState = EvForm.QueryStates.Closed;
+          FormRecord.QueryState = EdRecord.QueryStates.Closed;
         }
       }//END query state not set correctly.
 
@@ -1833,18 +1833,18 @@ namespace Evado.Bll.Clinical
       // 
       // If state is null set it to created.
       // 
-      if ( FormRecord.State == EvFormObjectStates.Null )
+      if ( FormRecord.State == EdRecordObjectStates.Null )
       {
-        FormRecord.State = EvFormObjectStates.Empty_Record;
+        FormRecord.State = EdRecordObjectStates.Empty_Record;
       }
 
       // 
       // If the Author edits the record reset the review and approval states.
       // 
       if ( ( HadEditAccess == true )
-        && ( FormRecord.SaveAction == EvForm.SaveActionCodes.Save_Record )
-        && ( FormRecord.State == EvFormObjectStates.Submitted_Record
-          || FormRecord.State == EvFormObjectStates.Source_Data_Verified ) )
+        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Save_Record )
+        && ( FormRecord.State == EdRecordObjectStates.Submitted_Record
+          || FormRecord.State == EdRecordObjectStates.Source_Data_Verified ) )
       {
         this.setDraftRecordStatus ( FormRecord );
 
@@ -1856,7 +1856,7 @@ namespace Evado.Bll.Clinical
       // Perform author signoff of the record and save it to the database.
       // 
       if ( ( HadEditAccess == true )
-        && ( FormRecord.SaveAction == EvForm.SaveActionCodes.Submit_Record ) )
+        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Submit_Record ) )
       {
         this.LogValue ( "Author submitting a record." );
 
@@ -1865,9 +1865,9 @@ namespace Evado.Bll.Clinical
         // 
         // Close the query state if the record is signed off by the author.
         // 
-        if ( FormRecord.QueryState == EvForm.QueryStates.Open )
+        if ( FormRecord.QueryState == EdRecord.QueryStates.Open )
         {
-          FormRecord.QueryState = EvForm.QueryStates.Closed;
+          FormRecord.QueryState = EdRecord.QueryStates.Closed;
         }
       }
 
@@ -1876,9 +1876,9 @@ namespace Evado.Bll.Clinical
       // record to the database.  
       // A new copy will be created of the record for followup action.
       // 
-      if ( ( FormRecord.SaveAction == EvForm.SaveActionCodes.Monitor_Save
-          || FormRecord.SaveAction == EvForm.SaveActionCodes.Review_Save
-          || FormRecord.SaveAction == EvForm.SaveActionCodes.DataManager_Save )
+      if ( ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
+          || FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
+          || FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save )
         && ( FormRecord.hasQueredItems == true ) )
       {
         this.LogValue ( "Reviewer query signoff" );
@@ -1892,7 +1892,7 @@ namespace Evado.Bll.Clinical
       // 
       // Perform the monitor signoff and save the record to the database.
       // 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.Monitor_Save
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
         && FormRecord.Monitor == String.Empty )
       {
         this.LogValue ( "Monitor signoff" );
@@ -1905,7 +1905,7 @@ namespace Evado.Bll.Clinical
       // 
       // Perform the reviewer signoff and save the record to the database.
       // 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.Review_Save
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
         && FormRecord.ReviewedBy == String.Empty )
       {
         this.LogValue ( "Reviewer signoff" );
@@ -1918,7 +1918,7 @@ namespace Evado.Bll.Clinical
       // 
       // Perform the final approval signoff and save the record to the database.
       // 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.DataManager_Save
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save
         && FormRecord.ApprovedBy == String.Empty )
       {
         this.LogValue ( "Data manager signoff" );
@@ -1931,13 +1931,13 @@ namespace Evado.Bll.Clinical
       // 
       // Perform withdrawn of the trial record and save it to the database.
       // 
-      if ( FormRecord.SaveAction == EvForm.SaveActionCodes.Withdrawn_Record
-        && ( FormRecord.State == EvFormObjectStates.Empty_Record
-          || FormRecord.State == EvFormObjectStates.Draft_Record
-          || FormRecord.State == EvFormObjectStates.Completed_Record ) )
+      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Withdrawn_Record
+        && ( FormRecord.State == EdRecordObjectStates.Empty_Record
+          || FormRecord.State == EdRecordObjectStates.Draft_Record
+          || FormRecord.State == EdRecordObjectStates.Completed_Record ) )
       {
         this.LogValue ( " Withdrawn Record." );
-        FormRecord.State = EvFormObjectStates.Withdrawn;
+        FormRecord.State = EdRecordObjectStates.Withdrawn;
 
         return;
       }
@@ -1955,7 +1955,7 @@ namespace Evado.Bll.Clinical
     /// 1. Reset the form object to default values and update the state to draft. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void setDraftRecordStatus ( EvForm Record )
+    private void setDraftRecordStatus ( EdRecord Record )
     {
 
       this.LogMethod ( "setDraftRecordStatus method." );
@@ -1973,7 +1973,7 @@ namespace Evado.Bll.Clinical
       Record.ApprovalDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
       Record.SignoffStatement = String.Empty;
 
-      Record.State = EvFormObjectStates.Draft_Record;
+      Record.State = EdRecordObjectStates.Draft_Record;
 
     }//END setUpdateRecordState method. 
 
@@ -1992,7 +1992,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void submitRecordSignoff ( 
-      EvForm Record, 
+      EdRecord Record, 
       String AuthenticatedUserId )
     {
       this.LogMethod ( "submitRecordSignoff method." );
@@ -2001,7 +2001,7 @@ namespace Evado.Bll.Clinical
       // 
       EvUserSignoff userSignoff = new EvUserSignoff ( );
 
-      Record.State = EvFormObjectStates.Submitted_Record;
+      Record.State = EdRecordObjectStates.Submitted_Record;
       Record.AuthoredByUserId = AuthenticatedUserId;
       Record.AuthoredBy = Record.UserCommonName;
       Record.AuthoredDate = DateTime.Now;
@@ -2047,7 +2047,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void queryRecordAction (
-      EvForm Record,
+      EdRecord Record,
       String AuthenticatedUserId )
     {
       this.LogMethod ( "queryRecordAction method." );
@@ -2056,11 +2056,11 @@ namespace Evado.Bll.Clinical
       // 
       EvUserSignoff userSignoff = new EvUserSignoff ( );
 
-      Record.State = EvFormObjectStates.Queried_Record;
+      Record.State = EdRecordObjectStates.Queried_Record;
       Record.QueriedByUserId = AuthenticatedUserId;
       Record.QueriedBy = Record.UserCommonName;
       Record.QueriedDate = DateTime.Now;
-      Record.QueryState = EvForm.QueryStates.Open;
+      Record.QueryState = EdRecord.QueryStates.Open;
 
       // 
       // Append the signoff object.
@@ -2102,7 +2102,7 @@ namespace Evado.Bll.Clinical
     /// 3. Reset the sign off ResultData. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void reviewSubmitAction ( EvForm Record, string AuthenticatedUserId )
+    private void reviewSubmitAction ( EdRecord Record, string AuthenticatedUserId )
     {
       this.LogMethod ( "reviewSubmitAction method." );
       // 
@@ -2143,7 +2143,7 @@ namespace Evado.Bll.Clinical
     /// 3. Reset the sign off ResultData. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void montorSubmitAction ( EvForm Record, string AuthenticatedUserId )
+    private void montorSubmitAction ( EdRecord Record, string AuthenticatedUserId )
     {
       this.LogMethod ( "montorSubmitAction method." );
       // 
@@ -2151,7 +2151,7 @@ namespace Evado.Bll.Clinical
       // 
       EvUserSignoff userSignoff = new EvUserSignoff ( );
 
-      Record.State = EvFormObjectStates.Source_Data_Verified;
+      Record.State = EdRecordObjectStates.Source_Data_Verified;
       Record.MonitorUserId = AuthenticatedUserId;
       Record.Monitor = Record.UserCommonName;
       Record.MonitorDate = DateTime.Now;
@@ -2183,14 +2183,14 @@ namespace Evado.Bll.Clinical
     /// 3. Reset the sign off ResultData. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void dataManagerSubmitAction ( EvForm Record, string AuthenticatedUserId )
+    private void dataManagerSubmitAction ( EdRecord Record, string AuthenticatedUserId )
     {
       this.LogMethod ( "dataManagerSubmitAction method." );
       // 
       // Initialise the local variables
       // 
       EvUserSignoff userSignoff = new EvUserSignoff ( );
-      Record.State = EvFormObjectStates.Locked_Record;
+      Record.State = EdRecordObjectStates.Locked_Record;
       Record.ApprovedByUserId = AuthenticatedUserId;
       Record.ApprovedBy = Record.UserCommonName;
       Record.ApprovalDate = DateTime.Now;
@@ -2230,7 +2230,7 @@ namespace Evado.Bll.Clinical
     /// 4. Add teh formfield object to the list of formfield objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvFormField> processFormFields ( EvForm Record )
+    private List<EdRecordField> processFormFields ( EdRecord Record )
     {
       this.LogMethod ( "processFormFields method." );
       this.LogValue ( "Field count: " + Record.Fields.Count );
@@ -2242,54 +2242,54 @@ namespace Evado.Bll.Clinical
       // 
       for ( int count = 0; count < Record.Fields.Count; count++ )
       {
-        EvFormField field = Record.Fields [ count ];
+        EdRecordField field = Record.Fields [ count ];
         field.UpdatedByUserId = Record.UpdatedByUserId;
         field.UserCommonName = Record.UserCommonName;
 
-        if ( field.State == EvFormField.FieldStates.Empty
-          || field.State == EvFormField.FieldStates.With_Value )
+        if ( field.State == EdRecordField.FieldStates.Empty
+          || field.State == EdRecordField.FieldStates.With_Value )
         {
           this.LogValue ( " Field Action: ActionSaveItem. " );
           field.Action = EvFormRecordFields.ActionSaveItem;
         }
 
-        if ( field.State == EvFormField.FieldStates.With_Value
-          && Record.State == EvFormObjectStates.Source_Data_Verified )
+        if ( field.State == EdRecordField.FieldStates.With_Value
+          && Record.State == EdRecordObjectStates.Source_Data_Verified )
         {
           this.LogValue ( " Field Action: ActionConfirmItem. " );
           field.Action = EvFormRecordFields.ActionConfirmItem;
         }
 
-        if ( field.State == EvFormField.FieldStates.Queried )
+        if ( field.State == EdRecordField.FieldStates.Queried )
         {
           this.LogValue ( " Field Action: ActionQueryItem. " );
           field.Action = EvFormRecordFields.ActionQueryItem;
         }
 
-        if ( Record.SaveAction == EvForm.SaveActionCodes.Submit_Record
-          && ( field.State == EvFormField.FieldStates.Confirmed
-            || field.State == EvFormField.FieldStates.Queried ) )
+        if ( Record.SaveAction == EdRecord.SaveActionCodes.Submit_Record
+          && ( field.State == EdRecordField.FieldStates.Confirmed
+            || field.State == EdRecordField.FieldStates.Queried ) )
         {
           this.LogValue ( " Form Action: signoff query. " );
-          field.State = EvFormField.FieldStates.With_Value;
+          field.State = EdRecordField.FieldStates.With_Value;
           field.Action = EvFormRecordFields.ActionSaveItem;
         }
 
-        if ( Record.SaveAction == EvForm.SaveActionCodes.Save_Record
-          && ( field.State == EvFormField.FieldStates.Confirmed
-            || field.State == EvFormField.FieldStates.Queried ) )
+        if ( Record.SaveAction == EdRecord.SaveActionCodes.Save_Record
+          && ( field.State == EdRecordField.FieldStates.Confirmed
+            || field.State == EdRecordField.FieldStates.Queried ) )
         {
           this.LogValue ( " Form Action: save item. " );
-          field.State = EvFormField.FieldStates.With_Value;
+          field.State = EdRecordField.FieldStates.With_Value;
           field.Action = EvFormRecordFields.ActionSaveItem;
         }
 
-        if ( Record.SaveAction == EvForm.SaveActionCodes.DataManager_Save
-          && ( field.State == EvFormField.FieldStates.Confirmed
-            || field.State == EvFormField.FieldStates.With_Value ) )
+        if ( Record.SaveAction == EdRecord.SaveActionCodes.DataManager_Save
+          && ( field.State == EdRecordField.FieldStates.Confirmed
+            || field.State == EdRecordField.FieldStates.With_Value ) )
         {
           this.LogValue ( " Form Action: save item. " );
-          field.State = EvFormField.FieldStates.Confirmed;
+          field.State = EdRecordField.FieldStates.Confirmed;
           field.Action = EvFormRecordFields.ActionSaveItem;
         }
 
@@ -2329,7 +2329,7 @@ namespace Evado.Bll.Clinical
     /// 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void updateFieldState ( EvFormField Field )
+    private void updateFieldState ( EdRecordField Field )
     {
       this.LogMethod ( "updateFieldStatemethod " );
 
@@ -2337,7 +2337,7 @@ namespace Evado.Bll.Clinical
       {
         this.LogDebug ( "Action: " + Field.Action + " >> ADD New record" );
         Field.Action = EvFormRecordFields.ActionSaveItem;
-        Field.State = EvFormField.FieldStates.Empty;
+        Field.State = EdRecordField.FieldStates.Empty;
         Field.AuthoredBy = Field.UserCommonName;
         Field.AuthoredDate = DateTime.Now;
       }
@@ -2352,7 +2352,7 @@ namespace Evado.Bll.Clinical
         case EvFormRecordFields.ActionQueryItem:
           {
             this.LogDebug ( "Action: " + Field.Action + " >> Field Queried. " );
-            Field.State = EvFormField.FieldStates.Queried;
+            Field.State = EdRecordField.FieldStates.Queried;
             Field.ReviewedByUserId = Field.UpdatedByUserId;
             Field.ReviewedBy = Field.UserCommonName;
             Field.ReviewedDate = DateTime.Now;
@@ -2362,7 +2362,7 @@ namespace Evado.Bll.Clinical
         case EvFormRecordFields.ActionConfirmItem:
           {
             this.LogDebug ( "Action: " + Field.Action + " >> Field Confirmed by Reviewer." );
-            Field.State = EvFormField.FieldStates.Confirmed;
+            Field.State = EdRecordField.FieldStates.Confirmed;
             Field.ReviewedByUserId = Field.UpdatedByUserId;
             Field.ReviewedBy = Field.UserCommonName;
             Field.ReviewedDate = DateTime.Now;
@@ -2375,7 +2375,7 @@ namespace Evado.Bll.Clinical
             if ( Field.ItemValue != String.Empty
                 || Field.ItemText != String.Empty )
             {
-              Field.State = EvFormField.FieldStates.With_Value;
+              Field.State = EdRecordField.FieldStates.With_Value;
             }
             Field.AuthoredByUserId = Field.UpdatedByUserId;
             Field.AuthoredBy = Field.UserCommonName;

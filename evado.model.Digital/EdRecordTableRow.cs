@@ -27,14 +27,14 @@ namespace Evado.Model.Digital
   /// This class defines the form field table row data object.
   /// </summary>
   [Serializable]
-  public class EvFormFieldTableRow
+  public class EdRecordTableRow
   {
 
     #region Public method
     /// <summary>
     /// This class loops the table row and clear its column.
     /// </summary>
-    public EvFormFieldTableRow()
+    public EdRecordTableRow()
     {
       for (int i = 0; i < _Column.Length; i++)
       {
@@ -46,7 +46,7 @@ namespace Evado.Model.Digital
     #region Internal variables
     private const int MaxRows = 50;
     private int _No = 0;
-    private string[] _Column = new String[EvFormFieldTable.Columns];
+    private string[] _Column = new String[EdRecordTable.Columns];
     #endregion
 
     #region Class property

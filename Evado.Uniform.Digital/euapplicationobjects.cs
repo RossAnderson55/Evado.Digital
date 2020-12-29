@@ -93,8 +93,6 @@ namespace Evado.UniForm.Clinical
 
       this.loadGlobalMenu ( );
 
-      this.getGlobalStudy ( );
-
       this.LoadEmailTemplates ( );
 
       this.loadSmtpServerProperties ( );
@@ -345,174 +343,14 @@ namespace Evado.UniForm.Clinical
       }
     }
 
-    private Model.Digital.EdPlatform _ApplicationSettings = new Model.Digital.EdPlatform ( );
+    private Model.Digital.EdPlatform _PlatformSettings = new Model.Digital.EdPlatform ( );
     /// <summary>
-    /// This property object contains the site property object.
+    /// This property object contains the platform settings object.
     /// </summary>
-    public Model.Digital.EdPlatform ApplicationSettings
+    public Model.Digital.EdPlatform PlatformSettings
     {
-      get { return _ApplicationSettings; }
-      set { _ApplicationSettings = value; }
-    }
-
-     Evado.Model.Digital.EdApplication _GlobalStudy = new  Evado.Model.Digital.EdApplication ( );
-    /// <summary>
-    /// This property object contains the eClinical global studys object.
-    /// </summary>
-    public  Evado.Model.Digital.EdApplication GlobalStudy
-    {
-      get
-      {
-        return this._GlobalStudy;
-      }
-      set
-      {
-        this._GlobalStudy = value;
-      }
-    }
-
-
-    List< Evado.Model.Digital.EvForm> _GlobalFormList = new List< Evado.Model.Digital.EvForm> ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form objects.
-    /// </summary>
-    public List< Evado.Model.Digital.EvForm> GlobalFormList
-    {
-      get
-      {
-        return this._GlobalFormList;
-      }
-      set
-      {
-        this._GlobalFormList = value;
-      }
-    }
-
-     Evado.Model.Digital.EvForm _GlobalForm = new  Evado.Model.Digital.EvForm ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form objects.
-    /// </summary>
-    public  Evado.Model.Digital.EvForm GlobalForm
-    {
-      get
-      {
-        return this._GlobalForm;
-      }
-      set
-      {
-        this._GlobalForm = value;
-      }
-    }
-
-    Evado.Model.Digital.EvFormSection _GlobalFormSection = new Evado.Model.Digital.EvFormSection ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form section objects.
-    /// </summary>
-    public Evado.Model.Digital.EvFormSection GlobalFormSection
-    {
-      get
-      {
-        return this._GlobalFormSection;
-      }
-      set
-      {
-        this._GlobalFormSection = value;
-      }
-    }
-
-     Evado.Model.Digital.EvFormField _GlobalFormField = new  Evado.Model.Digital.EvFormField ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form field objects.
-    /// </summary>
-    public  Evado.Model.Digital.EvFormField GlobalFormField
-    {
-      get
-      {
-        return this._GlobalFormField;
-      }
-      set
-      {
-        this._GlobalFormField = value;
-      }
-    }
-
-    List<Evado.Model.Digital.EvForm> _GlobalCommonFormList = new List<Evado.Model.Digital.EvForm> ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global common form objects.
-    /// </summary>
-    public List<Evado.Model.Digital.EvForm> GlobalCommonFormList
-    {
-      get
-      {
-        return this._GlobalCommonFormList;
-      }
-      set
-      {
-        this._GlobalCommonFormList = value;
-      }
-    }
-    Evado.Model.Digital.EvForm _GlobalCommonForm = new Evado.Model.Digital.EvForm ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form objects.
-    /// </summary>
-    public Evado.Model.Digital.EvForm GlobalCommonForm
-    {
-      get
-      {
-        return this._GlobalCommonForm;
-      }
-      set
-      {
-        this._GlobalCommonForm = value;
-      }
-    }
-
-    Evado.Model.Digital.EvFormSection _GlobalCommonFormSection = new Evado.Model.Digital.EvFormSection ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form section objects.
-    /// </summary>
-    public Evado.Model.Digital.EvFormSection GlobalCommonFormSection
-    {
-      get
-      {
-        return this._GlobalCommonFormSection;
-      }
-      set
-      {
-        this._GlobalCommonFormSection = value;
-      }
-    }
-
-    Evado.Model.Digital.EvFormField _GlobalCommonFormField = new Evado.Model.Digital.EvFormField ( );
-    /// <summary>
-    /// This property object contains a list of  eClinical global form field objects.
-    /// </summary>
-    public Evado.Model.Digital.EvFormField GlobalCommonFormField
-    {
-      get
-      {
-        return this._GlobalCommonFormField;
-      }
-      set
-      {
-        this._GlobalCommonFormField = value;
-      }
-    }
-
-    List< Evado.Model.Digital.EvSchedule> _GlobalScheduleList = new List< Evado.Model.Digital.EvSchedule> ( );
-    /// <summary>
-    /// This property object contains the eClinical global schedule object.
-    /// </summary>
-    public List< Evado.Model.Digital.EvSchedule> GlobalScheduleList
-    {
-      get
-      {
-        return this._GlobalScheduleList;
-      }
-      set
-      {
-        this._GlobalScheduleList = value;
-      }
+      get { return _PlatformSettings; }
+      set { _PlatformSettings = value; }
     }
 
     private List<EvMenuItem> _MenuList = new List<EvMenuItem> ( );
@@ -587,6 +425,14 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "loadGlobalMenu method" );
       this.LogDebugValue ( "PlatformId: " + this._PlatformId );
+      this.LogDebugValue ( "LoadedModules: " + this.PlatformSettings.LoadedModules );
+
+      if ( this.PlatformSettings.LoadedModules.Contains ( "Null" ) == true )
+      {
+        this.PlatformSettings.LoadedModules = "Administration_Module;Trial_Module;Registry_Module"
+          + " Patient_Module;Clinical_Outcome_Assessments;Imaging_Module;Integration_Module:Auxiliary_Subject_Data";
+      }
+
       try
       {
         // 
@@ -594,7 +440,7 @@ namespace Evado.UniForm.Clinical
         // 
         EvMenus bll_Menu = new EvMenus ( this.Settings );
 
-        foreach ( EvModuleCodes str in this.ApplicationSettings.LoadedModuleList )
+        foreach ( EvModuleCodes str in this.PlatformSettings.LoadedModuleList )
         {
           this.LogDebugValue ( "-" + str );
         }
@@ -614,13 +460,13 @@ namespace Evado.UniForm.Clinical
         {
           EvMenuItem menuItem = this.MenuList [ count ];
 
-          //this.LogDebugFormat ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
+          this.LogDebugFormat ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
           //
           // Load the menu items that are associated with the loaded modules.
           //
-          if ( this.ApplicationSettings.hasModule ( menuItem.ModuleList ) == false )
+          if ( this.PlatformSettings.hasModule ( menuItem.ModuleList ) == false )
           {
-            //this.LogDebugFormat ( "REMOVE: Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
+            this.LogDebugFormat ( "REMOVE: Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
             //
             // Remove the menu item from the list.
             //
@@ -699,7 +545,7 @@ namespace Evado.UniForm.Clinical
       //
       // Get the Application profile.
       //
-      this._ApplicationSettings = applicationProfiles.getItem ( "A" );
+      this._PlatformSettings = applicationProfiles.getItem ( "A" );
 
       this.LogDebug ( applicationProfiles.Log );
 
@@ -746,22 +592,22 @@ namespace Evado.UniForm.Clinical
 
       this.LogDebugValue ( "Full version: " + _AssembyAttributes.FullVersion );
 
-      this._ApplicationSettings.Version = _AssembyAttributes.FullVersion;
-      this._ApplicationSettings.MinorVersion = _AssembyAttributes.MinorVersion;
+      this._PlatformSettings.Version = _AssembyAttributes.FullVersion;
+      this._PlatformSettings.MinorVersion = _AssembyAttributes.MinorVersion;
 
       //
       // Set the Stide GUid used by encryption module.
       //
-      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._ApplicationSettings.Guid.ToString ( );
+      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._PlatformSettings.Guid.ToString ( );
 
       // 
       // Log the Site Properties on startup.
       // 
-      this.LogDebugValue ( "Version: " + this._ApplicationSettings.Version );
+      this.LogDebugValue ( "Version: " + this._PlatformSettings.Version );
       this.LogDebugValue ( "Loaded Modules: " );
-      for ( int i = 0; i < this._ApplicationSettings.LoadedModuleList.Count; i++ )
+      for ( int i = 0; i < this._PlatformSettings.LoadedModuleList.Count; i++ )
       {
-        this.LogDebugValue ( "- " + this._ApplicationSettings.LoadedModuleList [ i ] );
+        this.LogDebugValue ( "- " + this._PlatformSettings.LoadedModuleList [ i ] );
       }
 
     }//ENd loadSiteProperties method
@@ -806,73 +652,14 @@ namespace Evado.UniForm.Clinical
       // 
       // Log the disabled fields on startup.
       // 
-      this.LogDebugValue ( "Hidden Trial Subject Fields: " + this._ApplicationSettings.HideSubjectFields );
+      this.LogDebugValue ( "Hidden Trial Subject Fields: " + this._PlatformSettings.HideSubjectFields );
 
       // 
       // Log the Maximum selection list length on startup.
       // 
-      this.LogDebugValue ( "MaximumSelectionListLength: " + this._ApplicationSettings.MaximumSelectionListLength );
+      this.LogDebugValue ( "MaximumSelectionListLength: " + this._PlatformSettings.MaximumSelectionListLength );
 
     }//END setStaticEnvironmentalProperties method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method gets the global project object.
-    /// 
-    /// </summary>
-    /// <returns>Bool: True: global project object loaded</returns>
-    // ----------------------------------------------------------------------------------
-    public bool getGlobalStudy ( )
-    {
-      this.LogMethod ( "getGlobalStudy" );
-      this.LogDebugValue ( "Current ProjectId: " + this._GlobalStudy.ApplicationId );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Guid parameterProjectGuid = Guid.Empty;
-      String parameterProjectId = String.Empty;
-      Bll.Clinical.EdApplications bll_Projects = new Bll.Clinical.EdApplications ( );
-
-      // 
-      // if the parameter value exists then set the customerId
-      // 
-      parameterProjectId = EvcStatics.CONST_GLOBAL_PROJECT;
-
-      // 
-      // If the current trial is empty and the parameter id is set then set
-      // set the current trial to the parameter trial identifier to load a new trial object.
-      // 
-      if ( parameterProjectId == this._GlobalStudy.ApplicationId )
-      {
-        this.LogDebugValue ( "Current Studyid: match Exit." );
-
-        return true;
-      }
-
-      //
-      // Retreive the global project.
-      //
-      this._GlobalStudy = bll_Projects.GetApplication ( parameterProjectId );
-
-      this.LogDebugValue ( bll_Projects.Log );
-
-      this.LogDebugValue ( "GlobalStudy.StudyId: " + this.GlobalStudy.ApplicationId );
-
-      // 
-      // test that the user profile exists.
-      // 
-      if ( this._GlobalStudy.ApplicationId == String.Empty )
-      {
-        this.LogDebugValue ( "Gobal Project does not exist." );
-
-        this.LogMethodEnd ( "getGlobalStudy" );
-        return false;
-      }
-
-      this.LogMethodEnd ( "getGlobalStudy" );
-      return true;
-
-    }//END getGlobalStudy method.
 
     ///  =======================================================================================
     /// <summary>
@@ -914,38 +701,37 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     private void loadSmtpServerProperties ( )
     {
-      this.LogDebugValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
-        + "Evado.UniForm.Clinical.GlobalApplicationObjects.loadSmtpServerProperties method" );
+      this.LogMethod ( "loadSmtpServerProperties method" );
 
       // 
       // Log the SMTP server.
       // 
-      this.LogDebugValue ( " SmtpServer: " + this._ApplicationSettings.SmtpServer );
+      this.LogDebugValue ( " SmtpServer: " + this._PlatformSettings.SmtpServer );
 
       // 
       // Log the SMTP port setting
       // 
-      this.LogDebugValue ( " SmtpServerPort: " + this._ApplicationSettings.SmtpServerPort );
+      this.LogDebugValue ( " SmtpServerPort: " + this._PlatformSettings.SmtpServerPort );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._ApplicationSettings.SmtpUserId );
+      this.LogDebugValue ( " SmtpUserId: " + this._PlatformSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " SmtpPassword: " + this._ApplicationSettings.SmtpPassword );
+      this.LogDebugValue ( " SmtpPassword: " + this._PlatformSettings.SmtpPassword );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._ApplicationSettings.SmtpUserId );
+      this.LogDebugValue ( " SmtpUserId: " + this._PlatformSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " EmailAlertTestAddress: " + this._ApplicationSettings.EmailAlertTestAddress );
+      this.LogDebugValue ( " EmailAlertTestAddress: " + this._PlatformSettings.EmailAlertTestAddress );
 
 
     }//END setSmtpServerProperties method

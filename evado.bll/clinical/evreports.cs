@@ -127,7 +127,7 @@ namespace Evado.Bll.Clinical
       {
         case EvReport.ReportSourceCode.FormFields:
           {
-            Evado.Dal.Clinical.EvFormFields DAL_formField = new Evado.Dal.Clinical.EvFormFields ( this.ClassParameter );
+            Evado.Dal.Clinical.EdRecordLayoutFields DAL_formField = new Evado.Dal.Clinical.EdRecordLayoutFields ( this.ClassParameter );
 
             report = DAL_formField.getReport ( Report );
 
@@ -137,7 +137,7 @@ namespace Evado.Bll.Clinical
           }
         case EvReport.ReportSourceCode.Field_Monitoring_Query:
           {
-            Evado.Dal.Clinical.EvFormRecordFields DAL_formRecordField = new Evado.Dal.Clinical.EvFormRecordFields ( this.ClassParameter );
+            Evado.Dal.Clinical.EdRecordFields DAL_formRecordField = new Evado.Dal.Clinical.EdRecordFields ( this.ClassParameter );
 
             report = DAL_formRecordField.getMonitoringReport ( Report );
 
@@ -153,7 +153,7 @@ namespace Evado.Bll.Clinical
           }
         case EvReport.ReportSourceCode.Subject_Record_Status:
           {
-            Evado.Dal.Clinical.EvFormRecords dalRecords = new Evado.Dal.Clinical.EvFormRecords ( this.ClassParameter );
+            Evado.Dal.Clinical.EdRecords dalRecords = new Evado.Dal.Clinical.EdRecords ( this.ClassParameter );
 
             report = dalRecords.getRecordStatusReport ( Report );
             this.LogDebug(  dalRecords.Log );

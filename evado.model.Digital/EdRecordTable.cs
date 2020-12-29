@@ -26,7 +26,7 @@ namespace Evado.Model.Digital
   /// This class defines the form field table data object.
   /// </summary>
     [Serializable]
-    public class EvFormFieldTable
+    public class EdRecordTable
     {
       /// <summary>
       /// This constant defines the number of columns in a table.
@@ -40,16 +40,16 @@ namespace Evado.Model.Digital
       /// This class generates a form field table with 10 rows.
       /// </summary>
       // ----------------------------------------------------------------------------------
-      public EvFormFieldTable( )
+      public EdRecordTable( )
       {
-        this._Rows = new List<EvFormFieldTableRow> ( );
+        this._Rows = new List<EdRecordTableRow> ( );
 
         // 
         // Initialise the header array.
         // 
         for ( int i = 0; i < 10; i++ )
         {
-          this._Header [ i ] = new EvFormFieldTableColumnHeader( );
+          this._Header [ i ] = new EdRecordTableHeader( );
         }
       }//END EvFormFieldTable method.
 
@@ -59,19 +59,19 @@ namespace Evado.Model.Digital
       /// </summary>
       /// <param name="RowCount">integer: a row count</param>
       // ----------------------------------------------------------------------------------
-      public EvFormFieldTable( int RowCount )
+      public EdRecordTable( int RowCount )
       {
         // 
         // Redemension the array.
         // 
-        this._Rows = new List<EvFormFieldTableRow> ( );
+        this._Rows = new List<EdRecordTableRow> ( );
 
         // 
         // Initialise the array.
         // 
         for ( int i = 0; i < RowCount; i++ )
         {
-          EvFormFieldTableRow row = new EvFormFieldTableRow ( );
+          EdRecordTableRow row = new EdRecordTableRow ( );
           row.No = i + 1;
           this._Rows.Add( row) ;
         }
@@ -81,7 +81,7 @@ namespace Evado.Model.Digital
         // 
         for ( int i = 0; i < 10; i++ )
         {
-          this._Header [ i ] = new EvFormFieldTableColumnHeader( );
+          this._Header [ i ] = new EdRecordTableHeader( );
         }
 
       }//END EvFormFieldTable method
@@ -89,8 +89,8 @@ namespace Evado.Model.Digital
 
       #region private variables.
 
-      private EvFormFieldTableColumnHeader [] _Header = new EvFormFieldTableColumnHeader [ 10 ];
-      private List<EvFormFieldTableRow> _Rows = new List<EvFormFieldTableRow>();
+      private EdRecordTableHeader [] _Header = new EdRecordTableHeader [ 10 ];
+      private List<EdRecordTableRow> _Rows = new List<EdRecordTableRow>();
       private int _ColumnCount = 1;
       private String _PreFilledColumnList = "0";
 
@@ -101,7 +101,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This property contains a header array of a form field table
       /// </summary>
-      public EvFormFieldTableColumnHeader [] Header
+      public EdRecordTableHeader [] Header
       {
         get { return this._Header; }
         set { this._Header = value; }
@@ -143,7 +143,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This property contains a row array of a form field table
       /// </summary>
-      public List<EvFormFieldTableRow> Rows
+      public List<EdRecordTableRow> Rows
       {
         get { return this._Rows; }
         set { this._Rows = value; }
@@ -172,7 +172,7 @@ namespace Evado.Model.Digital
         // 
         // Create the new row arry.
         // 
-        List<EvFormFieldTableRow> newRows = new List<EvFormFieldTableRow> ( );
+        List<EdRecordTableRow> newRows = new List<EdRecordTableRow> ( );
 
         // 
         // Initialise the new array and fill it with the currentMonth values.
@@ -182,7 +182,7 @@ namespace Evado.Model.Digital
           //
           // Initialise the new row.
           //
-          newRows.Add ( new EvFormFieldTableRow ( ) );
+          newRows.Add ( new EdRecordTableRow ( ) );
 
           // 
           // Fill the new row with the old rows contents.

@@ -159,7 +159,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the methods objects and variables.
       // 
-      List<EvForm> recordList = new List<EvForm> ( );
+      List<EdRecord> recordList = new List<EdRecord> ( );
 
       //
       // if the ResultData sourc is not project or common record exit.
@@ -202,7 +202,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the methods objects and variables.
       // 
-      List<EvForm> recordList = new List<EvForm> ( );
+      List<EdRecord> recordList = new List<EdRecord> ( );
       EvFormRecords formRecords = new EvFormRecords ( this.ClassParameter );
 
       EvQueryParameters queryParameters = new EvQueryParameters ( ExportParameters.Project.ApplicationId );
@@ -218,14 +218,14 @@ namespace Evado.Bll.Clinical
       queryParameters.RecordRangeStart = ExportParameters.RecordRangeStart;
       queryParameters.RecordRangeFinish = ExportParameters.RecordRangeFinish;
 
-      queryParameters.State = EvFormObjectStates.Withdrawn
-        + ";" + EvFormObjectStates.Queried_Record_Copy
-        + ";" + EvFormObjectStates.Draft_Record;
+      queryParameters.State = EdRecordObjectStates.Withdrawn
+        + ";" + EdRecordObjectStates.Queried_Record_Copy
+        + ";" + EdRecordObjectStates.Draft_Record;
 
       if ( ExportParameters.IncludeDraftRecords == true )
       {
-        queryParameters.State = EvFormObjectStates.Withdrawn
-          + ";" + EvFormObjectStates.Queried_Record_Copy;
+        queryParameters.State = EdRecordObjectStates.Withdrawn
+          + ";" + EdRecordObjectStates.Queried_Record_Copy;
       }
 
       queryParameters.IncludeTestSites = ExportParameters.IncludeTestSites;
@@ -278,7 +278,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public String createExportFile (
-      System.Collections.Generic.List<EvForm> FormRecordList,
+      System.Collections.Generic.List<EdRecord> FormRecordList,
       Evado.Model.Digital.EvUserProfile UserProfile,
       bool IncludeFreeTextData,
       bool IncludeDraftRecords )
@@ -291,7 +291,7 @@ namespace Evado.Bll.Clinical
         //
         // Initialise the methods variables and objects.
         //
-        EvForm headerForm = new EvForm ( );
+        EdRecord headerForm = new EdRecord ( );
         System.Text.StringBuilder stCsvData = new System.Text.StringBuilder ( );
 
         //
@@ -314,16 +314,16 @@ namespace Evado.Bll.Clinical
         // 
         // Create the report header
         // 
-        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "ProjectId: " + headerForm.TrialId ) );
+        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "ProjectId: " + headerForm.ApplicationId ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Type: " + headerForm.Design.Type ) );
-        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "FormId: " + headerForm.FormId ) );
+        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "FormId: " + headerForm.LayoutId ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Title: " + headerForm.Title ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Exported on: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm" )
           + " By " + UserProfile.CommonName ) );
 
-        this.LogDebug ( "ProjectId: " + headerForm.TrialId );
+        this.LogDebug ( "ProjectId: " + headerForm.ApplicationId );
         this.LogDebug ( "Form Type: " + headerForm.Design.Type );
-        this.LogDebug ( "FormId: " + headerForm.FormId );
+        this.LogDebug ( "FormId: " + headerForm.LayoutId );
         this.LogDebug ( "Form Title: " + headerForm.Title );
         this.LogDebug ( "Exported on: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm" )
           + " By " + UserProfile.CommonName );
@@ -343,20 +343,20 @@ namespace Evado.Bll.Clinical
         // 
         // Iterate through the datagrid processing each letter in the grid
         // 
-        foreach ( EvForm record in FormRecordList )
+        foreach ( EdRecord record in FormRecordList )
         {
           this._ExportColumnRow = new string [ this._OutputDataColumnCount ];
           // 
           // IF the item is a valid record output it.
           //
-          if ( record.State == EvFormObjectStates.Queried_Record
-            || record.State == EvFormObjectStates.Withdrawn )
+          if ( record.State == EdRecordObjectStates.Queried_Record
+            || record.State == EdRecordObjectStates.Withdrawn )
           {
             this.LogDebug ( "RecordID: " + record.RecordId + " >> Withdrawn or querid record." );
             continue;
           }
 
-          if ( record.State == EvFormObjectStates.Draft_Record
+          if ( record.State == EdRecordObjectStates.Draft_Record
             && IncludeDraftRecords == false )
           {
             this.LogDebug ( "RecordID: " + record.RecordId + " >> Initialised record." );
@@ -384,7 +384,7 @@ namespace Evado.Bll.Clinical
           //
           // Output the record fields
           //
-          foreach ( EvFormField recordField in record.Fields )
+          foreach ( EdRecordField recordField in record.Fields )
           {
             this.LogDebug ( "FieldId: " + recordField.FieldId );
             this.LogDebug ( "field Type: " + recordField.TypeId );
@@ -560,18 +560,18 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form ResultData object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private EvForm getHeaderForm ( EvForm FormRecord )
+    private EdRecord getHeaderForm ( EdRecord FormRecord )
     {
       this.LogMethod ( "getHeaderForm method " );
       //
       // Initialise the mehtods parameters and variables.
       //
-      EvForm form = new EvForm ( );
+      EdRecord form = new EdRecord ( );
 
         this.LogDebug ( "Forms " );
         EvForms forms = new EvForms ( );
 
-        form = forms.getForm ( FormRecord.TrialId, FormRecord.FormId );
+        form = forms.getForm ( FormRecord.ApplicationId, FormRecord.LayoutId );
       return form;
 
     }//END getHeaderForm method
@@ -595,7 +595,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private int createExportRecordHeader (
-      EvForm HeaderRecord,
+      EdRecord HeaderRecord,
       bool ExportFreeText )
     {
       this.LogMethod ( "createExportRecordHeader method " );
@@ -623,7 +623,7 @@ namespace Evado.Bll.Clinical
       //
       // Output the form field header information
       //
-      foreach ( EvFormField formField in HeaderRecord.Fields )
+      foreach ( EdRecordField formField in HeaderRecord.Fields )
       {
         this.LogDebug ( "FieldId: " + formField.FieldId + ", Type: " + formField.TypeId );
 
@@ -711,7 +711,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return empty header string with no form QueryType. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private String ExportDataCommonRecordHeader ( EvForm HeaderRecord )
+    private String ExportDataCommonRecordHeader ( EdRecord HeaderRecord )
     {
       //
       // Create the AE header
@@ -759,7 +759,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the output string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private String ExportCheckBoxHeader ( EvFormField FormField )
+    private String ExportCheckBoxHeader ( EdRecordField FormField )
     {
       //
       // Output the header static fields
@@ -794,7 +794,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return the table header string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private string ExportTableHeader ( EvFormField FormField )
+    private string ExportTableHeader ( EdRecordField FormField )
     {
       System.Text.StringBuilder sOutput = new System.Text.StringBuilder ( );
       //
@@ -899,7 +899,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return the table header string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private String ExportTableSpacer ( EvFormField FormField )
+    private String ExportTableSpacer ( EdRecordField FormField )
     {
       String stTableHeader = String.Empty;
       //
@@ -939,7 +939,7 @@ namespace Evado.Bll.Clinical
     /// 3. Else, return empty string.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private bool getExportRecordFieldData ( EvFormField FormField,
+    private bool getExportRecordFieldData ( EdRecordField FormField,
       bool ExportFreeText )
     {
       //
@@ -1011,7 +1011,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the exported form record string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void ExportDataCommonRecordData ( EvForm FormRecord )
+    private void ExportDataCommonRecordData ( EdRecord FormRecord )
     {
       //
       // select the record type
@@ -1064,7 +1064,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void ExportCheckBoxData (
-      EvFormField FormField )
+      EdRecordField FormField )
     {
       this.LogMethod ( "ExportCheckBoxData method. " );
       //
@@ -1125,7 +1125,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void ExportTableData ( 
-      EvFormField FormField )
+      EdRecordField FormField )
     {
       this.LogMethod ( "ExportTableData method. " );
       this.LogDebug ( "record FieldId: " + FormField.FieldId );

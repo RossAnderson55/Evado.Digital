@@ -28,7 +28,7 @@ namespace Evado.Model.Digital
     /// This enumeration defines the form object states a form or record can have
     /// </summary>
     //  ----------------------------------------------------------------------------------- 
-    public enum EvFormObjectStates
+    public enum EdRecordObjectStates
     {
       /// <summary>
       /// This enumeration value defines the null or not set status value.
@@ -74,27 +74,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines the record is submitted as completed record.
       /// </summary>
       Submitted_Record = 8,
-
-      /// <summary>
-      /// This enumeration defines the record is queried.
-      /// </summary>
-      Queried_Record = 9,
-
-      /// <summary>
-      /// This enumeration defines the record is a source verified.
-      /// </summary>
-      Source_Data_Verified = 10,
-
-      /// <summary>
-      /// This enumeration defines the record is a completed and signed off by DM.
-      /// </summary>
-      Locked_Record = 11,
-
-      /// <summary>
-      /// This enumeration defines the a copy of a queried record.
-      /// </summary>
-      Queried_Record_Copy = 12,
-
     }
 
 }//END namespace Evado.Model.Digital

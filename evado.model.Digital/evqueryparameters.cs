@@ -42,7 +42,7 @@ namespace Evado.Model.Digital
     /// <param name="ProjectId">String Project identifier</param>
     public EvQueryParameters( String ProjectId )
     {
-      this.TrialId = ProjectId;
+      this.ApplicationId = ProjectId;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Evado.Model.Digital
     /// <param name="OrgId">String: organisation identifier</param>
     public EvQueryParameters ( String ProjectId, string OrgId )
     {
-      this.TrialId = ProjectId;
+      this.ApplicationId = ProjectId;
       this.OrgId = OrgId;
     }
     #endregion
@@ -204,10 +204,6 @@ namespace Evado.Model.Digital
     /// </summary>
     public string State = String.Empty;
     /// <summary>
-    /// This field defines the subject's screening identifier.
-    /// </summary>
-    public EvForm.QueryStates QueryState = EvForm.QueryStates.Null;
-    /// <summary>
     /// This field defines the subject's state selection
     /// </summary>
     public string SubjectState = String.Empty;
@@ -234,7 +230,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This field defines the project identifier
     /// </summary>
-    public string TrialId = String.Empty;
+    public string ApplicationId = String.Empty;
     /// <summary>
     /// This field defines the schedule idenifier
     /// </summary>

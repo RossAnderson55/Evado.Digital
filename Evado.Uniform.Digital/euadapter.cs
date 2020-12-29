@@ -146,7 +146,7 @@ namespace Evado.UniForm.Clinical
         //
         // Define the application Guid
         //
-        this.ClassParameters.ApplicationGuid = this._ApplicationObjects.ApplicationSettings.Guid;
+        this.ClassParameters.ApplicationGuid = this._ApplicationObjects.PlatformSettings.Guid;
         this.ClassParameters.PlatformId = this._ApplicationObjects.PlatformId;
 
         //
@@ -246,7 +246,7 @@ namespace Evado.UniForm.Clinical
 
     #region Class local objects.
 
-    public static readonly string CONST_RECORD_STATE_SELECTION_DEFAULT = EvFormObjectStates.Withdrawn + ";" + EvFormObjectStates.Queried_Record_Copy;
+    public static readonly string CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn + ";" + EdRecordObjectStates.Queried_Record_Copy;
 
     private EuApplicationObjects _ApplicationObjects = new EuApplicationObjects ( );
 
@@ -338,7 +338,7 @@ namespace Evado.UniForm.Clinical
       {
         this._LicensedModules = value;
 
-        if ( this._ApplicationObjects.ApplicationSettings != null )
+        if ( this._ApplicationObjects.PlatformSettings != null )
         {
           this._ApplicationObjects.LicensedModules = this._LicensedModules;
         }
@@ -411,7 +411,7 @@ namespace Evado.UniForm.Clinical
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-        Evado.Bll.EvStaticSetting.SiteGuid = this._ApplicationObjects.ApplicationSettings.Guid;
+        Evado.Bll.EvStaticSetting.SiteGuid = this._ApplicationObjects.PlatformSettings.Guid;
 
         // 
         // Load the user profile.
@@ -1386,7 +1386,7 @@ namespace Evado.UniForm.Clinical
       //  
       // Load the paremeters from the web.config if not already loaded.
       // 
-      if ( this._ApplicationObjects.ApplicationSettings.Guid != Guid.Empty )
+      if ( this._ApplicationObjects.PlatformSettings.Guid != Guid.Empty )
       {
         this.LogInitValue ( "APPLICATION OBJECT IS LOADED" );
 
@@ -1408,7 +1408,7 @@ namespace Evado.UniForm.Clinical
       this._ApplicationObjects.loadGlobalParameters ( );
 
       this.LogInit ( this._ApplicationObjects.Log );
-      this.LogInitValue ( "Version: " + this._ApplicationObjects.ApplicationSettings.Version );
+      this.LogInitValue ( "Version: " + this._ApplicationObjects.PlatformSettings.Version );
 
       // 
       // Save the application parameters to global objects.

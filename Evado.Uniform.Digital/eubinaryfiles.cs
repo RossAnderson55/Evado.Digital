@@ -1098,12 +1098,12 @@ namespace Evado.UniForm.Clinical
       groupField.Table.Header [ 0 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 0 ].No = 1;
       groupField.Table.Header [ 0 ].Text = EvLabels.Binary_File_Version_Column_0_Text; // Version
-      groupField.Table.Header [ 0 ].TypeId = EvFormFieldTableColumnHeader.ItemTypeText;
+      groupField.Table.Header [ 0 ].TypeId = EdRecordTableHeader.ItemTypeText;
 
       groupField.Table.Header [ 1 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 1 ].No = 2;
       groupField.Table.Header [ 1 ].Text = EvLabels.Binary_File_Version_Column_1_Text;  // Status
-      groupField.Table.Header [ 1 ].TypeId = EvFormFieldTableColumnHeader.ItemTypeText;
+      groupField.Table.Header [ 1 ].TypeId = EdRecordTableHeader.ItemTypeText;
 
       groupField.Table.Header [ 2 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 2 ].No = 3;
