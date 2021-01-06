@@ -77,7 +77,7 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "-Settings.UserProfile.UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-Settings.UserProfile.CommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_FormFields = new EvFormFields ( Settings );
+      this._Bll_FormFields = new EdRecordFields ( Settings );
 
     }//END Method
 
@@ -86,7 +86,7 @@ namespace Evado.UniForm.Clinical
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EvFormFields _Bll_FormFields = new Evado.Bll.Clinical.EvFormFields ( );
+    private Evado.Bll.Clinical.EdRecordFields _Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( );
 
     public const string CONST_REFRESH = "RFSH";
     public const string CONST_TABLE_ROW_FIELD = "ROWS";
@@ -423,7 +423,7 @@ namespace Evado.UniForm.Clinical
       //
       // Add the save groupCommand for the page.
       //
-      switch ( this.Session.Form.State )
+      switch ( this.Session.RecordLayout.State )
       {
         case EdRecordObjectStates.Form_Draft:
         case EdRecordObjectStates.Form_Reviewed:
@@ -444,12 +444,12 @@ namespace Evado.UniForm.Clinical
 
             groupCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EvFormFields.Action_Save );
+             EdRecordFields.Action_Save );
 
             //
             // Add the same groupCommand.
             //
-            int majorVersion = ( int ) this.Session.Form.Design.Version;
+            int majorVersion = ( int ) this.Session.RecordLayout.Design.Version;
             if ( this.Session.FormField.Design.InitialVersion == majorVersion )
             {
               groupCommand = PageGroup.addCommand (
@@ -464,7 +464,7 @@ namespace Evado.UniForm.Clinical
 
               groupCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EvFormFields.Action_Delete );
+               EdRecordFields.Action_Delete );
             }
 
             return;
@@ -580,7 +580,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      int formVersion = (int) this.Session.Form.Design.Version;
+      int formVersion = (int) this.Session.RecordLayout.Design.Version;
       bool bEditType = this.Session.FormField.Design.InitialVersion == formVersion;
 
       this.LogValue ( "formVersion: " + formVersion );
@@ -614,7 +614,7 @@ namespace Evado.UniForm.Clinical
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EvLabels.Form_Title_Field_Label,
-        this.Session.Form.Title );
+        this.Session.RecordLayout.Title );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
@@ -637,7 +637,7 @@ namespace Evado.UniForm.Clinical
       // Create the form field type selection.
       //
       optionList = EdRecordField.getDataTypes ( 
-        this.Session.Form.Design.TypeId );
+        this.Session.RecordLayout.Design.TypeId );
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
@@ -671,7 +671,7 @@ namespace Evado.UniForm.Clinical
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
 
-      foreach ( EvFormSection section in this.Session.Form.Design.FormSections )
+      foreach ( EvFormSection section in this.Session.RecordLayout.Design.FormSections )
       {
         if ( section.Title != String.Empty )
         {
@@ -1548,13 +1548,13 @@ namespace Evado.UniForm.Clinical
         //
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
         int order = 0;
-        int initialVersion = (int) this.Session.Form.Design.Version;
+        int initialVersion = (int) this.Session.RecordLayout.Design.Version;
 
         // 
         // Log access to page.
         // 
         this.LogPageAccess (
-          this.ClassNameSpace + "EuFormFields.createObject",
+          this.ClassNameSpace + "createObject",
           this.Session.UserProfile );
 
         // 
@@ -1576,16 +1576,23 @@ namespace Evado.UniForm.Clinical
           }
         }
 
+        if ( stSectionNo == String.Empty )
+        {
+          stSectionNo = "-1";
+        }
+
         order = order * 2 + 1;
 
         this.Session.FormField = new  Evado.Model.Digital.EdRecordField ( );
         this.Session.FormField.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.FormField.LayoutGuid = this.Session.Form.Guid;
-        this.Session.FormField.LayoutId = this.Session.Form.LayoutId;
+        this.Session.FormField.LayoutGuid = this.Session.RecordLayout.Guid;
+        this.Session.FormField.LayoutId = this.Session.RecordLayout.LayoutId;
         this.Session.FormField.Design.InitialVersion = initialVersion;
         this.Session.FormField.Order = order;
         this.Session.FormField.Design.SectionNo = EvStatics.getInteger (stSectionNo );
         this.LogValue ( "Field.InitialVersion: " + this.Session.FormField.Design.InitialVersion );
+        this.LogValue ( "Field.LayoutGuid: " + this.Session.FormField.LayoutGuid );
+        this.LogValue ( "Field.LayoutId: " + this.Session.FormField.LayoutId );
 
         // 
         // Generate the new page layout 
@@ -1663,7 +1670,7 @@ namespace Evado.UniForm.Clinical
         if ( this.Session.FormField.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
           this.Session.FormField.Guid = Guid.Empty;
-          this.Session.Form.Fields = new List<EdRecordField> ( );
+          this.Session.RecordLayout.Fields = new List<EdRecordField> ( );
         }
 
         // 
@@ -1778,7 +1785,7 @@ namespace Evado.UniForm.Clinical
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecordField field in this.Session.Form.Fields )
+      foreach ( EdRecordField field in this.Session.RecordLayout.Fields )
       {
         this.LogValue ( "FormField.Guid: " + field.Guid + ", FieldId: " + field.FieldId );
 

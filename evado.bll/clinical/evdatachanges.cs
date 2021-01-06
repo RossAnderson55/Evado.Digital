@@ -435,7 +435,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the methods variables.
       // 
-      EvForms forms = new EvForms ( );
+      EdRecordLayouts forms = new EdRecordLayouts ( );
       List<EvOption> list = new List<EvOption> ( );
 
       // 
@@ -447,7 +447,7 @@ namespace Evado.Bll.Clinical
       // 
       // Get the form objects list .
       // 
-      List<EdRecord> view = forms.GetFormList ( TrialId, EdRecordTypes.Null,
+      List<EdRecord> view = forms.getLayoutList ( TrialId, EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
       this._DebugLog.AppendLine (  forms.Log );
@@ -551,7 +551,7 @@ namespace Evado.Bll.Clinical
     //  ----------------------------------------------------------------------------------
     private List<EvOption> GetFormList ( string ProjectId )
     {
-      EvForms forms = new EvForms ( );
+      EdRecordLayouts forms = new EdRecordLayouts ( );
       return forms.getList ( ProjectId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, true );
     }//END GetFormList class
 
@@ -650,7 +650,7 @@ namespace Evado.Bll.Clinical
       //
       // Initialise the method variables and objects.
       // 
-      EvFormRecords trialRecords = new EvFormRecords ( );
+      EdRecords trialRecords = new EdRecords ( );
       EvQueryParameters query = new EvQueryParameters ( ProjectId );
       query.SubjectId = SubjectId;
 
@@ -779,7 +779,7 @@ namespace Evado.Bll.Clinical
     //  ----------------------------------------------------------------------------------
     private List<EvOption> GetFormFieldList ( Guid RecordGuid )
     {
-      EvFormFields formFields = new EvFormFields ( );
+      EdRecordFields formFields = new EdRecordFields ( );
 
       return formFields.GetList ( RecordGuid );
     }//END GetFormFieldList class

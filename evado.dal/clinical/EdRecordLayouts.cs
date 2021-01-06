@@ -74,7 +74,7 @@ namespace Evado.Dal.Clinical
     //
     // Define the Selection selectionList query string constant.
     //
-    private const string _sqlQuery_View = "Select * FROM ED_RECORD_LAYOOUT_VIEW ";
+    private const string _sqlQuery_View = "Select * FROM ED_RECORD_LAYOUT_VIEW ";
 
     // 
     // The SQL Store Procedure constants
@@ -127,7 +127,7 @@ namespace Evado.Dal.Clinical
     private const string PARM_VERSION = "@VERSION";
     private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
     private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
-    private const string PARM_LANGUAGE = "@_LANGUAGE";
+    private const string PARM_LANGUAGE = "@LANGUAGE";
     private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -433,7 +433,7 @@ namespace Evado.Dal.Clinical
 
       _sqlQueryString += ") ORDER BY " + EdRecordLayouts.DB_LAYOUT_ID + "," + EdRecordLayouts.DB_STATE+ ";";
 
-      this.LogValue ( _sqlQueryString );
+      this.LogDebug ( _sqlQueryString );
 
       //
       //Execute the query against the database
@@ -482,12 +482,12 @@ namespace Evado.Dal.Clinical
       //
       // initialise the methods variables and objects.
       //
-      EdRecordLayoutFields dal_FormFields = new EdRecordLayoutFields ( this.ClassParameters );
+      EdRecordFields dal_FormFields = new EdRecordFields ( this.ClassParameters );
 
       // 
       // Retrieve the instrument items.
       // 
-      Layout.Fields = dal_FormFields.GetView ( Layout.Guid );
+      Layout.Fields = dal_FormFields.GetFieldList ( Layout.Guid );
       this.LogClass ( dal_FormFields.Log );
     }
 
@@ -692,7 +692,7 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EdRecord getLayout ( Guid FormGuid )
+    public EdRecord GetLayout ( Guid FormGuid )
     {
       //
       // Initialize the method status, a return form object and a form field object 
@@ -716,7 +716,7 @@ namespace Evado.Dal.Clinical
       // Generate the Selection query string.
       // 
       this._sqlQueryString = _sqlQuery_View 
-        + " WHERE (" + EdRecordLayouts.PARM_LAYOUT_GUID + " = " + EdRecordLayouts.DB_LAYOUT_GUID + ");";
+        + " WHERE (" + EdRecordLayouts.DB_LAYOUT_GUID + " = " + EdRecordLayouts.PARM_LAYOUT_GUID + ");";
 
 
       this.LogValue ( _sqlQueryString );
@@ -788,7 +788,7 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EdRecord getForm (
+    public EdRecord GetLayout (
       string ApplicationId,
       string LayoutId,
       bool Issued )
@@ -826,18 +826,20 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the Selection query string.
       // 
-      this._sqlQueryString = _sqlQuery_View + " WHERE (TrialId = @TrialId) AND (FormId = @FormId) "
-        + " AND TC_SUPERSEDED = 0 "
-        + " AND NOT(TC_State = '" + EdRecordObjectStates.Withdrawn + "') ";
+      this._sqlQueryString = _sqlQuery_View
+        + " WHERE (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + ")"
+        + "   AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) "
+        + "   AND (" + EdRecordLayouts.DB_LAYOUT_ID + " = " + EdRecordLayouts.PARM_LAYOUT_ID + " ) "
+        + "   AND NOT (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Withdrawn + "' ) ";
 
 
       if ( Issued == true )
       {
-        _sqlQueryString += " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "'); ";
+        _sqlQueryString += " AND (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Issued + "'); ";
       }
       else
       {
-        _sqlQueryString += " AND NOT(TC_State = '" + EdRecordObjectStates.Form_Issued + "'); ";
+        _sqlQueryString += " AND NOT(" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Issued + "'); ";
       }
       this.LogValue ( _sqlQueryString );
 
@@ -912,7 +914,7 @@ namespace Evado.Dal.Clinical
       // 
       EvDataChanges dataChanges = new EvDataChanges ( );
 
-      EdRecord oldForm = this.getLayout ( Layout.Guid );
+      EdRecord oldForm = this.GetLayout ( Layout.Guid );
       this.LogValue ( "old form Form Id." + oldForm.LayoutId );
 
       //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1022,7 +1024,7 @@ namespace Evado.Dal.Clinical
       //
       // Validate whether the Guid does not exist.
       //
-      EdRecord currentForm = this.getForm ( Layout.ApplicationId, Layout.LayoutId, false );
+      EdRecord currentForm = this.GetLayout ( Layout.ApplicationId, Layout.LayoutId, false );
 
       if ( currentForm.Guid != Guid.Empty )
       {
@@ -1094,7 +1096,7 @@ namespace Evado.Dal.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      EdRecordLayoutFields dal_LayoutFields = new EdRecordLayoutFields ( );
+      EdRecordFields dal_LayoutFields = new EdRecordFields ( );
 
       //
       // update the layout sections.
@@ -1424,7 +1426,7 @@ namespace Evado.Dal.Clinical
       if ( Copy == false )
       {
         //---------------------- Check for duplicate Checklist identifiers. ------------------
-        EdRecord currentForm = this.getForm ( Form.ApplicationId, Form.LayoutId, false );
+        EdRecord currentForm = this.GetLayout ( Form.ApplicationId, Form.LayoutId, false );
 
         if ( currentForm.Guid != Guid.Empty )
         {

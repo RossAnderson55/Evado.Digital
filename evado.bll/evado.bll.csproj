@@ -172,10 +172,10 @@
     <Compile Include="Clinical\evschedules.cs" />
     <Compile Include="Clinical\EdPlatforms.cs" />
     <Compile Include="Clinical\EvDataChanges.cs" />
-    <Compile Include="Clinical\EvForms.cs">
+    <Compile Include="Clinical\EdRecordLayouts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvFormFields.cs" />
+    <Compile Include="Clinical\EdRecordFields.cs" />
     <Compile Include="Clinical\EvDataAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,7 +188,7 @@
     <Compile Include="Clinical\EvFormRecordFields.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvFormRecords.cs">
+    <Compile Include="Clinical\EdRecords.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EdApplications.cs">

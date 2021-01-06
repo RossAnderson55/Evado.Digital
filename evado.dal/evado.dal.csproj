@@ -147,7 +147,7 @@
     <Compile Include="Clinical\EvReportTemplates.cs" />
     <Compile Include="Clinical\EvActivities.cs" />
     <Compile Include="EvEncrypt.cs" />
-    <Compile Include="Clinical\EdRecordLayoutFields.cs">
+    <Compile Include="Clinical\EdRecordFields.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EdRecordLayouts.cs">

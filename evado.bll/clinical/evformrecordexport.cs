@@ -203,7 +203,7 @@ namespace Evado.Bll.Clinical
       // Initialise the methods objects and variables.
       // 
       List<EdRecord> recordList = new List<EdRecord> ( );
-      EvFormRecords formRecords = new EvFormRecords ( this.ClassParameter );
+      EdRecords formRecords = new EdRecords ( this.ClassParameter );
 
       EvQueryParameters queryParameters = new EvQueryParameters ( ExportParameters.Project.ApplicationId );
       queryParameters.StartDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
@@ -546,9 +546,9 @@ namespace Evado.Bll.Clinical
       EdRecord form = new EdRecord ( );
 
         this.LogDebug ( "Forms " );
-        EvForms forms = new EvForms ( );
+        EdRecordLayouts forms = new EdRecordLayouts ( );
 
-        form = forms.getForm ( FormRecord.ApplicationId, FormRecord.LayoutId );
+        form = forms.GetLayout ( FormRecord.ApplicationId, FormRecord.LayoutId );
       return form;
 
     }//END getHeaderForm method

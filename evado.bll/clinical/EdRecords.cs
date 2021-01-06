@@ -31,7 +31,7 @@ namespace Evado.Bll.Clinical
   /// <summary>
   /// This business object manages the EvRecords in the system.
   /// </summary>
-  public class EvFormRecords : EvBllBase
+  public class EdRecords : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -39,7 +39,7 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvFormRecords ( )
+    public EdRecords ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
     }
@@ -50,7 +50,7 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvFormRecords ( EvClassParameters Settings )
+    public EdRecords ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
@@ -1236,7 +1236,7 @@ namespace Evado.Bll.Clinical
       //
       // Retrieve the specified form to determine the form QueryType.
       //
-      EdRecord form = this._DalForms.getForm ( Record.ApplicationId, Record.LayoutId, true );
+      EdRecord form = this._DalForms.GetLayout ( Record.ApplicationId, Record.LayoutId, true );
 
       this.LogDebugClass ( this._DalForms.Log );
       this.LogDebug ( "form ProjectId: " + form.ApplicationId );

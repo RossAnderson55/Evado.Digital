@@ -648,7 +648,7 @@ namespace Evado.UniForm.Clinical
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
-    public EdRecord Form
+    public EdRecord RecordLayout
     {
       get { return _Form; }
       set { _Form = value; }

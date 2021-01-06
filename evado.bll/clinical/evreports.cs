@@ -127,7 +127,7 @@ namespace Evado.Bll.Clinical
       {
         case EvReport.ReportSourceCode.FormFields:
           {
-            Evado.Dal.Clinical.EdRecordLayoutFields DAL_formField = new Evado.Dal.Clinical.EdRecordLayoutFields ( this.ClassParameter );
+            Evado.Dal.Clinical.EdRecordFields DAL_formField = new Evado.Dal.Clinical.EdRecordFields ( this.ClassParameter );
 
             report = DAL_formField.getReport ( Report );
 

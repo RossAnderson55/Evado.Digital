@@ -34,7 +34,7 @@ namespace Evado.Bll.Clinical
   /// <summary>
   /// A business to manage EvFormFields. This class uses ChecklistItem ResultData object for its content.
   /// </summary>
-  public class EvFormFields : EvBllBase
+  public class EdRecordFields : EvBllBase
   {
     
     #region class initialisation methods
@@ -43,7 +43,7 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvFormFields ( )
+    public EdRecordFields ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormFields.";
     }
@@ -54,7 +54,7 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvFormFields ( EvClassParameters Settings )
+    public EdRecordFields ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormFields.";
@@ -64,7 +64,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._DalFormFields = new Evado.Dal.Clinical.EdRecordLayoutFields ( Settings );
+      this._DalFormFields = new Evado.Dal.Clinical.EdRecordFields ( Settings );
     }
     #endregion
 
@@ -84,11 +84,11 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordLayoutFields _DalFormFields = new Evado.Dal.Clinical.EdRecordLayoutFields ( );
+    private Evado.Dal.Clinical.EdRecordFields _DalFormFields = new Evado.Dal.Clinical.EdRecordFields ( );
 
     #endregion
 
-    #region selectionList Query methods
+    #region Layout Field Query methods
 
     // =====================================================================================
     /// <summary>
@@ -116,7 +116,7 @@ namespace Evado.Bll.Clinical
       //
       // Query the database
       //
-      view = _DalFormFields.GetView ( FormGuid );
+      view = _DalFormFields.GetFieldList ( FormGuid );
       this.LogClass ( this._DalFormFields.Log );
 
       return view;
@@ -390,7 +390,7 @@ namespace Evado.Bll.Clinical
       // 
       // Retrieve the TestReport items
       // 
-      List<EdRecordField> Items = this._DalFormFields.GetView ( Form.Guid );
+      List<EdRecordField> Items = this._DalFormFields.GetFieldList ( Form.Guid );
 
       // 
       // Iterate through the items deleting them

@@ -474,7 +474,7 @@ namespace Evado.Bll.Clinical
         case EvReport.SelectionListTypes.LayoutId:
           {
             this.LogValue ( "Form source selected." );
-            EvForms formsBll = new EvForms ( this.ClassParameter );
+            EdRecordLayouts formsBll = new EdRecordLayouts ( this.ClassParameter );
             returnList = formsBll.getList ( Project.ApplicationId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
             break;
           }

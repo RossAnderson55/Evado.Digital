@@ -85,7 +85,7 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_FormRecords = new EvFormRecords ( Settings );
+      this._Bll_FormRecords = new EdRecords ( Settings );
 
       if ( this.Session.Record == null )
       {
@@ -121,7 +121,7 @@ namespace Evado.UniForm.Clinical
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EvFormRecords _Bll_FormRecords = new EvFormRecords ( );
+    private Evado.Bll.Clinical.EdRecords _Bll_FormRecords = new EdRecords ( );
     private EvServerPageScript _ServerPageScript = new EvServerPageScript ( );
 
     //
@@ -1208,7 +1208,7 @@ namespace Evado.UniForm.Clinical
       {
         this.LogDebug ( "Issued Forms is empty so create list." );
 
-        EvForms forms = new EvForms ( this.ClassParameters );
+        EdRecordLayouts forms = new EdRecordLayouts ( this.ClassParameters );
 
         this.Session.IssueFormList = forms.getList (
           this.Session.Application.ApplicationId,
@@ -2236,7 +2236,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      this._Bll_FormRecords = new EvFormRecords ( this.ClassParameters );
+      this._Bll_FormRecords = new EdRecords ( this.ClassParameters );
       Guid recordGuid = PageCommand.GetGuid ( );
       String recordId = PageCommand.GetParameter ( EvIdentifiers.RECORD_ID );
 

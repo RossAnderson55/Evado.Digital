@@ -36,7 +36,7 @@ namespace Evado.Bll.Clinical
   /// <summary>
   /// This business object manages the Forms objects in the system.
   /// </summary>
-  public class EvForms : EvBllBase
+  public class EdRecordLayouts : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -44,9 +44,9 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvForms ( )
+    public EdRecordLayouts ( )
     {
-      this.ClassNameSpace = "Evado.Bll.Clinical.EvForms.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdRecordLayouts.";
     }
 
     // ==================================================================================
@@ -55,17 +55,12 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvForms ( EvClassParameters Settings )
+    public EdRecordLayouts ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
-      this.ClassNameSpace = "Evado.Bll.Clinical.EvForms.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdRecordLayouts.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
-      {
-        this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
-
-      this._DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
+      this._Dal_RecordLayouts = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
     }
     #endregion
 
@@ -74,7 +69,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordLayouts _DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( );
+    private Evado.Dal.Clinical.EdRecordLayouts _Dal_RecordLayouts = new Evado.Dal.Clinical.EdRecordLayouts ( );
 
     #endregion
 
@@ -84,7 +79,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of form objects. 
     /// </summary>
-    /// <param name="TrialId">string: (Mandatory) a form identifier</param>
+    /// <param name="LayoutId">string: (Mandatory) a form identifier</param>
     /// <param name="TypeId">EvFormRecordTypes: a form QueryType</param>
     /// <param name="State">EvForm.FormObjecStates: a form state</param>
     /// <returns>List of EvForm: a list of form object</returns>
@@ -96,24 +91,24 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EdRecord> GetFormList ( 
-      String TrialId,
+    public List<EdRecord> getLayoutList ( 
+      String LayoutId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State )
     {
       // 
       // Initialise the methods objects and variables.
       // 
-      this.LogMethod ( "GetFormList" );
-      this.LogValue ( "TrialId: " + TrialId );
+      this.LogMethod ( "getLayoutList" );
+      this.LogValue ( "LayoutId: " + LayoutId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State  );
 
-      List<EdRecord> _view = _DalForms.getLayoutList ( TrialId, TypeId, State, false );
+      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( LayoutId, TypeId, State, false );
 
-      this.LogClass ( this._DalForms.Log );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
-      this.LogMethodEnd ( "GetFormList" );
+      this.LogMethodEnd ( "getLayoutList" );
       return _view;
 
     }//END GetFormList method.
@@ -134,7 +129,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EdRecord> GetFormListWithFields (
+    public List<EdRecord> GetRecordLayoutListWithFields (
       String TrialId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State )
@@ -142,25 +137,25 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the methods objects and variables.
       // 
-      this.LogMethod ( "GetFormList" );
+      this.LogMethod ( "GetRecordLayoutListWithFields" );
       this.LogValue ( "TrialId: " + TrialId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State );
 
-      List<EdRecord> _view = _DalForms.getLayoutList ( TrialId, TypeId, State, true );
+      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( TrialId, TypeId, State, true );
 
-      this.LogClass ( this._DalForms.Log );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
-      this.LogMethodEnd ( "GetFormList" );
+      this.LogMethodEnd ( "GetRecordLayoutListWithFields" );
       return _view;
 
-    }//END GetFormList method.
+    }//END GetRecordLayoutListWithFields method.
 
     // =====================================================================================
     /// <summary>
     /// This class returns a list of option for selected form objects. 
     /// </summary>
-    /// <param name="ProjectId">string: (Mandatory) a form identifier</param>
+    /// <param name="ApplicationId">string: (Mandatory) a form identifier</param>
     /// <param name="TypeId">EvFormRecordTypes: a form QueryType</param>
     /// <param name="State">EvForm.FormObjecStates: a form state</param>
     /// <param name="SelectByGuid">Boolean: true, if the list is selected by Guid.</param>
@@ -173,13 +168,17 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( string ProjectId, EdRecordTypes TypeId, EdRecordObjectStates State, bool SelectByGuid )
+    public List<EvOption> getList ( 
+      string ApplicationId, 
+      EdRecordTypes TypeId, 
+      EdRecordObjectStates State, 
+      bool SelectByGuid )
     {
       this.LogMethod ( "GetList." );
-      this.LogValue ( "ProjectId: " + ProjectId );
+      this.LogValue ( "ApplicationId: " + ApplicationId );
 
-      List<EvOption> List = _DalForms.GetList ( ProjectId, TypeId, State, SelectByGuid );
-      this.LogClass ( this._DalForms.Log );
+      List<EvOption> List = this._Dal_RecordLayouts.GetList ( ApplicationId, TypeId, State, SelectByGuid );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       return List;
 
@@ -202,20 +201,20 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EdRecord getForm ( Guid Guid )
+    public EdRecord GetLayout ( Guid Guid )
     {
       // 
       // Initialise the methods objects and variables.
       // 
-       this.LogMethod ( "getForm method." );
+      this.LogMethod ( "GetLayout method." );
       this.LogValue ( "Guid: " + Guid );
       EdRecord form = new EdRecord ( );
 
       //
       // Query the database
       //
-      form = this._DalForms.getLayout ( Guid );
-      this.LogClass ( this._DalForms.Log );
+      form = this._Dal_RecordLayouts.GetLayout ( Guid );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
       // Return the form object.
@@ -228,8 +227,8 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class retrieves a form object based on TrialId and FormId
     /// </summary>
-    /// <param name="FormId">string: a form identifier</param>
-    /// <param name="TrialId">string: a trial identifier</param>
+    /// <param name="LayoutId">string: a form identifier</param>
+    /// <param name="ApplicationId">string: a trial identifier</param>
     /// <returns>EvForm: a form ResultData object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -239,20 +238,22 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EdRecord getForm ( string TrialId, string FormId )
+    public EdRecord GetLayout ( 
+      String ApplicationId, 
+      String LayoutId )
     {
+      this.LogMethod ( "GetLayout method." );
+      this.LogValue ( "TrialId: " + ApplicationId );
+      this.LogValue ( "FormId:" + LayoutId );
       // 
       // Initialise the methods objects and variables.
       // 
-       this.LogMethod ( "getForm method." );
-      this.LogValue ( "TrialId: " + TrialId );
-      this.LogValue ( "FormId:" + FormId );
 
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EdRecord Item = this._DalForms.getForm ( TrialId, FormId, true );
-      this.LogClass ( this._DalForms.Log );
+      EdRecord Item = this._Dal_RecordLayouts.GetLayout ( ApplicationId, LayoutId, true );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
       // Return the form object.
@@ -283,8 +284,8 @@ namespace Evado.Bll.Clinical
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EdRecord Item = _DalForms.getForm ( TrialId, FormId, true );
-      this.LogClass ( this._DalForms.Log );
+      EdRecord Item = _Dal_RecordLayouts.GetLayout ( TrialId, FormId, true );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
 
       // 
@@ -302,7 +303,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class saves items to form ResultData table
     /// </summary>
-    /// <param name="Form">EvForm: a form object</param>
+    /// <param name="Layout">EvForm: a form object</param>
     /// <returns>EvEventCodes: an event code for saving items</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -318,25 +319,25 @@ namespace Evado.Bll.Clinical
     /// 5. Return an event code of the method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes SaveItem ( EdRecord Form )
+    public EvEventCodes SaveItem ( EdRecord Layout )
     {
        this.LogMethod ( "saveForm method." );
-      this.LogValue ( "Action: " + Form.SaveAction );
+      this.LogValue ( "Action: " + Layout.SaveAction );
       // 
       // Initialise the local variables
       // 
-      EvFormRecords records = new EvFormRecords ( );
-      EvFormFields formFields = new EvFormFields ( );
+      EdRecords records = new EdRecords ( this.ClassParameter);
+      EdRecordFields formFields = new EdRecordFields ( this.ClassParameter );
       EvEventCodes iReturn = EvEventCodes.Ok;
 
 
-      if ( Form.ApplicationId == String.Empty )
+      if ( Layout.ApplicationId == String.Empty )
       {
         this.LogValue ( "Empty Project" );
         return EvEventCodes.Identifier_Project_Id_Error;
       }
 
-      if ( Form.LayoutId == String.Empty )
+      if ( Layout.LayoutId == String.Empty )
       {
         this.LogValue ( "Empty FormId" );
         return EvEventCodes.Identifier_Form_Id_Error;
@@ -345,10 +346,10 @@ namespace Evado.Bll.Clinical
       // 
       // If the Action is DELETE and the state is draft.
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Deleted
-        && Form.State == EdRecordObjectStates.Form_Draft )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Form_Deleted
+        && Layout.State == EdRecordObjectStates.Form_Draft )
       {
-        iReturn = this._DalForms.DeleteItem ( Form );
+        iReturn = this._Dal_RecordLayouts.DeleteItem ( Layout );
         if ( iReturn != EvEventCodes.Ok )
         {
           return iReturn;
@@ -357,27 +358,27 @@ namespace Evado.Bll.Clinical
         // 
         // Withdraw the TestReport items associated with this TestReport.
         // 
-        iReturn = formFields.DeleteFields ( Form );
+        iReturn = formFields.DeleteFields ( Layout );
         return iReturn;
       }
 
       // 
       // Update the form state based on the form object Action property.
       // 
-      this.updateState ( Form );
-      this.LogValue ( "Form State: " + Form.State );
+      this.updateState ( Layout );
+      this.LogValue ( "Form State: " + Layout.State );
 
       // 
       // If the trial is in use and not being re-issued then it cannot be withdrawn.
       // 
       //  Check if trial has been used.  If so return an error.
       //  
-      if ( Form.State == EdRecordObjectStates.Withdrawn )
+      if ( Layout.State == EdRecordObjectStates.Withdrawn )
       {
         // 
         // Query the database to identify the
         // 
-        if ( records.CheckIfFormUsed ( Form.ApplicationId, Form.LayoutId ) == true )
+        if ( records.CheckIfFormUsed ( Layout.ApplicationId, Layout.LayoutId ) == true )
         {
           return EvEventCodes.Business_Logic_Form_Used_Error;
 
@@ -391,15 +392,15 @@ namespace Evado.Bll.Clinical
       // 
       this.LogValue ( "Save Form to Database." );
 
-      if ( Form.Guid == Guid.Empty )	// Add new form
+      if ( Layout.Guid == Guid.Empty )	// Add new form
       {
         this.LogValue ( "Add Form to database" );
 
         // 
         // Add the trial to the database.
         // 
-        iReturn = this._DalForms.AddItem ( Form );
-        this.LogClass ( this._DalForms.Log );
+        iReturn = this._Dal_RecordLayouts.AddItem ( Layout );
+        this.LogClass ( this._Dal_RecordLayouts.Log );
 
         // 
         // Return the DAL DebugLog.
@@ -411,15 +412,15 @@ namespace Evado.Bll.Clinical
       // 
       // If the trial being approved then withdraw the pervious issues trial
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Approved )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Form_Approved )
       {
         this.LogValue ( "Withdraw the form" );
 
         // 
         // Update the trial to withdraw is from use.
         // 
-        iReturn = this._DalForms.WithdrawIssuedForm ( Form );
-        this.LogClass ( this._DalForms.Log );
+        iReturn = this._Dal_RecordLayouts.WithdrawIssuedForm ( Layout );
+        this.LogClass ( this._Dal_RecordLayouts.Log );
       }
 
       // 
@@ -430,8 +431,8 @@ namespace Evado.Bll.Clinical
       // 
       // Update the trial int the database.
       // 
-      iReturn = this._DalForms.UpdateItem ( Form );
-      this.LogClass ( this._DalForms.Log );
+      iReturn = this._Dal_RecordLayouts.UpdateItem ( Layout );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
       // Return the DAL DebugLog.
@@ -561,8 +562,8 @@ namespace Evado.Bll.Clinical
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
-      iReturn = this._DalForms.CopyForm ( Form, true );
-      this.LogClass ( this._DalForms.Log );
+      iReturn = this._Dal_RecordLayouts.CopyForm ( Form, true );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
       // Return the response.
@@ -608,8 +609,8 @@ namespace Evado.Bll.Clinical
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
-      iReturn = this._DalForms.CopyForm ( Form, false );
-      this.LogClass ( this._DalForms.Log );
+      iReturn = this._Dal_RecordLayouts.CopyForm ( Form, false );
+      this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
       // Return the response.

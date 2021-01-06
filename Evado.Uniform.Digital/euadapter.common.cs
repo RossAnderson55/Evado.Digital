@@ -549,7 +549,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and object.
       //
-      EvForms bll_Forms = new EvForms ( this.ClassParameters );
+      EdRecordLayouts bll_Forms = new EdRecordLayouts ( this.ClassParameters );
       this.Session.FormType = EdRecordTypes.Null;
       this.Session.FormState = EdRecordObjectStates.Form_Issued;
       this.Session.FormsAdaperLoaded = true;
@@ -557,7 +557,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.FormList = bll_Forms.GetFormListWithFields (
+      this.Session.FormList = bll_Forms.GetRecordLayoutListWithFields (
         this.Session.Application.ApplicationId,
         this.Session.FormType,
         this.Session.FormState );

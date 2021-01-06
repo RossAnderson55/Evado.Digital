@@ -81,8 +81,8 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
 
-      this._Bll_FormFields = new Evado.Bll.Clinical.EvFormFields ( this.ClassParameters );
-      this._Bll_FormRecords = new Evado.Bll.Clinical.EvFormRecords ( this.ClassParameters );
+      this._Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( this.ClassParameters );
+      this._Bll_FormRecords = new Evado.Bll.Clinical.EdRecords ( this.ClassParameters );
       this._Bll_DataAnalysis = new Evado.Bll.Clinical.EvDataAnalysis ( this.ClassParameters );
 
     }//END Method
@@ -92,8 +92,8 @@ namespace Evado.UniForm.Clinical
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EvFormFields _Bll_FormFields = new Evado.Bll.Clinical.EvFormFields ( );
-    private Evado.Bll.Clinical.EvFormRecords _Bll_FormRecords = new Evado.Bll.Clinical.EvFormRecords ( );
+    private Evado.Bll.Clinical.EdRecordFields _Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( );
+    private Evado.Bll.Clinical.EdRecords _Bll_FormRecords = new Evado.Bll.Clinical.EdRecords ( );
 
     private Evado.Bll.Clinical.EvDataAnalysis _Bll_DataAnalysis = new Evado.Bll.Clinical.EvDataAnalysis ( );
 
@@ -264,14 +264,14 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and object.
       //
-      EvForms bll_Forms = new EvForms ( this.ClassParameters );
+      EdRecordLayouts bll_Forms = new EdRecordLayouts ( this.ClassParameters );
       this.Session.FormType = EdRecordTypes.Null;
       this.Session.FormState = EdRecordObjectStates.Form_Issued;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.FormList = bll_Forms.GetFormListWithFields (
+      this.Session.FormList = bll_Forms.GetRecordLayoutListWithFields (
         this.Session.Application.ApplicationId,
         this.Session.FormType,
         this.Session.FormState );
@@ -1148,8 +1148,8 @@ namespace Evado.UniForm.Clinical
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
-      Evado.Bll.Clinical.EvForms bllForms = new Evado.Bll.Clinical.EvForms ( );
-      Evado.Bll.Clinical.EvFormFields bllEvFormFields = new Evado.Bll.Clinical.EvFormFields ( );
+      Evado.Bll.Clinical.EdRecordLayouts bllForms = new Evado.Bll.Clinical.EdRecordLayouts ( );
+      Evado.Bll.Clinical.EdRecordFields bllEvFormFields = new Evado.Bll.Clinical.EdRecordFields ( );
       Evado.Bll.Clinical.EvFormRecordFields trialRecordFields = new Evado.Bll.Clinical.EvFormRecordFields ( );
 
       //
@@ -1221,7 +1221,7 @@ namespace Evado.UniForm.Clinical
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
-      Evado.Bll.Clinical.EvFormRecords trialRecords = new Evado.Bll.Clinical.EvFormRecords ( );
+      Evado.Bll.Clinical.EdRecords trialRecords = new Evado.Bll.Clinical.EdRecords ( );
 
       if ( this.Session.AnalysisQueryFormId != String.Empty
         && this.Session.AnalysisQueryFormFieldId != String.Empty
@@ -1485,7 +1485,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise method variables and objects.
       //
-      EvFormRecords trialRecords = new EvFormRecords ( );
+      EdRecords trialRecords = new EdRecords ( );
       EdRecord record = new EdRecord ( );
       List<EdRecord> formRecordList = new List<EdRecord> ( );
       EvFormRecordExport recordExport = new EvFormRecordExport ( );

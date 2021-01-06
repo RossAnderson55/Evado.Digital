@@ -162,6 +162,7 @@ GO
 CREATE TABLE [dbo].[ED_ENTITY_LAYOUTS](
 	[CU_GUID] [uniqueidentifier] NOT NULL,
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
+	[APPLICATION_ID] [nvarchar](20) NULL,
 	[LAYOUT_ID] [nvarchar](20) NULL,
 	[EDEL_STATE] [varchar](50) NULL,
 	[EDEL_TITLE] [nvarchar](100) NULL,

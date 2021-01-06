@@ -34,7 +34,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form field data object.
   /// </summary>
-  public class EdRecordLayoutFields : EvDalBase
+  public class EdRecordFields : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -42,7 +42,7 @@ namespace Evado.Dal.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdRecordLayoutFields ( )
+    public EdRecordFields ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
     }
@@ -53,7 +53,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdRecordLayoutFields ( EvClassParameters ClassParameters )
+    public EdRecordFields ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
@@ -74,7 +74,7 @@ namespace Evado.Dal.Clinical
      * *********************************************************************************/
 
 
-    private const string SQL_FIELD_QUERY_VIEW = "Select *  FROM ED_RECORD_LAYOUT_FIELD_VIEW ";
+    private const string SQL_FIELD_QUERY_VIEW = "Select *  FROM ED_RECORD_FIELD_VIEW ";
 
     /// <summary>
     /// This constant defines the sql query for selecting all items from the formfield analysis list view. 
@@ -97,8 +97,8 @@ namespace Evado.Dal.Clinical
     private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
 
     // database fields/columns.
-    private const string DB_GUID = "EDRL_GUID";
-    private const string DB_LAYOUT_GUID = "EDRLF_GUID";
+    private const string DB_GUID = "EDRLF_GUID";
+    private const string DB_LAYOUT_GUID = "EDRL_GUID";
     private const string DB_LAYOUT_ID = "LAYOUT_ID";
     private const string DB_FIELD_ID = "FIELD_ID";
     private const string DB_TYPE_ID = "EDRLF_TYPE_ID";
@@ -113,8 +113,8 @@ namespace Evado.Dal.Clinical
     private const string DB_AI_DATA_POINT = "EDRLF_AI_DATA_POINT";
     private const string DB_ANALYTICS_DATA_POINT = "EDRLF_ANALYTICS_DATA_POINT";
     private const string DB_HIDDEN = "EDRLF_HIDDEN";
-    private const string DB_EX_SELECTION_LIST_ID = "EX_SELECTION_LIST_ID";
-    private const string DB_EX_SELECTION_LIST_CATEGORY = "EX_SELECTION_LIST_CATEGORY";
+    private const string DB_EX_SELECTION_LIST_ID = "EDRLF_EX_SELECTION_LIST_ID";
+    private const string DB_EX_SELECTION_LIST_CATEGORY = "EDRLF_EX_SELECTION_LIST_CATEGORY";
     private const string DB_DEFAULT_VALUE = "EDRLF_DEFAULT_VALUE";
     private const string DB_UNIT = "EDRLF_UNIT";
     private const string DB_UNIT_SCALING = "EDRLF_UNIT_SCALING";
@@ -139,7 +139,7 @@ namespace Evado.Dal.Clinical
     // query parmeters.
     private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
     private const string PARM_GUID = "@GUID";
-    private const string PARM_LAYOUT_GUID = "@GUID";
+    private const string PARM_LAYOUT_GUID = "@LAYOUT_GUID";
     private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
     private const string PARM_FIELD_ID = "@FIELD_ID";
     private const string PARM_TYPE_ID = "@TYPE_ID";
@@ -197,43 +197,43 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( EdRecordLayoutFields.PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdRecordLayoutFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdRecordLayoutFields.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
-        new SqlParameter( EdRecordLayoutFields.PARM_FIELD_ID, SqlDbType.NVarChar, 20),
-        new SqlParameter( EdRecordLayoutFields.PARM_TYPE_ID, SqlDbType.VarChar, 50),
-        new SqlParameter( EdRecordLayoutFields.PARM_ORDER, SqlDbType.Int),
-        new SqlParameter( EdRecordLayoutFields.PARM_TITLE, SqlDbType.VarChar, 150),
-        new SqlParameter( EdRecordLayoutFields.PARM_INSTRUCTIONS, SqlDbType.NText),
-        new SqlParameter( EdRecordLayoutFields.PARM_HTTP_REFERENCE, SqlDbType.VarChar, 250),
-        new SqlParameter( EdRecordLayoutFields.PARM_SECTION_ID, SqlDbType.SmallInt),
+        new SqlParameter( EdRecordFields.PARM_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordFields.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordFields.PARM_FIELD_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdRecordFields.PARM_TYPE_ID, SqlDbType.VarChar, 50),
+        new SqlParameter( EdRecordFields.PARM_ORDER, SqlDbType.Int),
+        new SqlParameter( EdRecordFields.PARM_TITLE, SqlDbType.VarChar, 150),
+        new SqlParameter( EdRecordFields.PARM_INSTRUCTIONS, SqlDbType.NText),
+        new SqlParameter( EdRecordFields.PARM_HTTP_REFERENCE, SqlDbType.VarChar, 250),
+        new SqlParameter( EdRecordFields.PARM_SECTION_ID, SqlDbType.SmallInt),
 
-        new SqlParameter( EdRecordLayoutFields.PARM_OPTIONS, SqlDbType.VarChar, 250),
-        new SqlParameter( EdRecordLayoutFields.PARM_SUMMARY_FIELD, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayoutFields.PARM_MANDATORY, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayoutFields.PARM_AI_DATA_POINT, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayoutFields.PARM_ANALYTICS_DATA_POINT, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayoutFields.PARM_HIDDEN, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayoutFields.PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdRecordLayoutFields.PARM_EX_SELECTION_LIST_CATEGOR, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdRecordLayoutFields.PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 15),
-        new SqlParameter( EdRecordLayoutFields.PARM_UNIT, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdRecordFields.PARM_OPTIONS, SqlDbType.VarChar, 250),
+        new SqlParameter( EdRecordFields.PARM_SUMMARY_FIELD, SqlDbType.Bit),
+        new SqlParameter( EdRecordFields.PARM_MANDATORY, SqlDbType.Bit),
+        new SqlParameter( EdRecordFields.PARM_AI_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdRecordFields.PARM_ANALYTICS_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdRecordFields.PARM_HIDDEN, SqlDbType.Bit),
+        new SqlParameter( EdRecordFields.PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordFields.PARM_EX_SELECTION_LIST_CATEGOR, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordFields.PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdRecordFields.PARM_UNIT, SqlDbType.NVarChar, 15),
 
-        new SqlParameter( EdRecordLayoutFields.PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdRecordLayoutFields.PARM_VALIDATION_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_VALIDATION_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_ALERT_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_ALERT_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_NORMAL_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_NORMAL_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdRecordLayoutFields.PARM_FIELD_CATEGORY, SqlDbType.VarChar, 50),
-        new SqlParameter( EdRecordLayoutFields.PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
-        new SqlParameter( EdRecordLayoutFields.PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
+        new SqlParameter( EdRecordFields.PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordFields.PARM_VALIDATION_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_VALIDATION_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_ALERT_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_ALERT_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_NORMAL_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_NORMAL_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordFields.PARM_FIELD_CATEGORY, SqlDbType.VarChar, 50),
+        new SqlParameter( EdRecordFields.PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
+        new SqlParameter( EdRecordFields.PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
 
-        new SqlParameter( EdRecordLayoutFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
-        new SqlParameter( EdRecordLayoutFields.PARM_TABLE, SqlDbType.NText),
-        new SqlParameter( EdRecordLayoutFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
-        new SqlParameter(EdRecordLayoutFields. PARM_INITIAL_VERSION, SqlDbType.Int),
+        new SqlParameter( EdRecordFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
+        new SqlParameter( EdRecordFields.PARM_TABLE, SqlDbType.NText),
+        new SqlParameter( EdRecordFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
+        new SqlParameter(EdRecordFields. PARM_INITIAL_VERSION, SqlDbType.Int),
 
       };
 
@@ -374,7 +374,7 @@ namespace Evado.Dal.Clinical
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayoutFields.DB_GUID );
+      formField.Guid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_GUID );
       formField.LayoutGuid = EvSqlMethods.getGuid ( Row, DB_LAYOUT_GUID );
       formField.LayoutId = EvSqlMethods.getString ( Row, DB_LAYOUT_ID );
       formField.FieldId = EvSqlMethods.getString ( Row, DB_FIELD_ID );
@@ -532,11 +532,11 @@ namespace Evado.Dal.Clinical
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.FieldId = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_FIELD_ID );
-      formField.Design.Title = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_TITLE );
-      String value = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_TYPE_ID );
+      formField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
+      formField.Design.Title = EvSqlMethods.getString ( Row, EdRecordFields.DB_TITLE );
+      String value = EvSqlMethods.getString ( Row, EdRecordFields.DB_TYPE_ID );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
-      formField.Design.Options = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_OPTIONS );
+      formField.Design.Options = EvSqlMethods.getString ( Row, EdRecordFields.DB_OPTIONS );
 
       // 
       // Return the formfield object.
@@ -568,9 +568,9 @@ namespace Evado.Dal.Clinical
     /// 5. Return the FormFields list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EdRecordField> GetView ( Guid FormGuid )
+    public List<EdRecordField> GetFieldList ( Guid FormGuid )
     {
-      this.LogMethod ( "GetView" );
+      this.LogMethod ( "GetFieldList" );
       this.LogValue ( "FormGuid: " + FormGuid );
       //
       // Initialize the debug log and a return list of formfield
@@ -584,7 +584,7 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(EdRecordLayoutFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(EdRecordFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = FormGuid;
 
@@ -592,9 +592,8 @@ namespace Evado.Dal.Clinical
       // Define the query string.
       // 
       _sqlQueryString = SQL_FIELD_QUERY_VIEW 
-        + " WHERE (" + EdRecordLayoutFields.DB_LAYOUT_GUID + "="+ EdRecordLayoutFields.PARM_LAYOUT_GUID + ") ";
-
-      _sqlQueryString += " ORDER BY "+EdRecordLayoutFields.PARM_ORDER+";";
+        + " WHERE (" + EdRecordFields.DB_LAYOUT_GUID + "="+ EdRecordFields.PARM_LAYOUT_GUID + ") ";
+      _sqlQueryString += " ORDER BY "+EdRecordFields.DB_ORDER +";";
 
       //_Status += "\r\n" + sqlQueryString;
 
@@ -625,6 +624,7 @@ namespace Evado.Dal.Clinical
       // 
       // Pass back the result arrray.
       // 
+      this.LogMethodEnd ( "GetFieldList" );
       return view;
 
     }//END GetView method.
@@ -662,7 +662,7 @@ namespace Evado.Dal.Clinical
       EvOption option = new EvOption ( );
       list.Add ( option );
 
-      var FieldList = this.GetView ( LayoutGuid );
+      var FieldList = this.GetFieldList ( LayoutGuid );
 
       // 
       // Execute the query against the database.
@@ -755,24 +755,24 @@ namespace Evado.Dal.Clinical
       if ( OnlySingleValueFields == false )
       {
         _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdRecordLayoutFields.DB_APPLICATION_ID + "=" + EdRecordLayoutFields.PARM_APPLICATION_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+          + "WHERE (" + EdRecordFields.DB_APPLICATION_ID + "=" + EdRecordFields.PARM_APPLICATION_ID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordFields.DB_FIELD_ID + "=" + EdRecordFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdRecordFields.DB_ORDER + ";";
       }
       else
       {
         _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
-          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Table + "') "
-          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
-          + " AND (TCI_" + EdRecordLayoutFields.DB_TYPE_ID + "TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
-          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+          + "WHERE (" + EdRecordFields.DB_CUSTOMER_GUID + "=" + EdRecordFields.PARM_CUSTOMER_GUID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordFields.DB_FIELD_ID + "=" + EdRecordFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " AND (" + EdRecordFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
+          + " AND (" + EdRecordFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Table + "') "
+          + " AND (" + EdRecordFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
+          + " AND (TCI_" + EdRecordFields.DB_TYPE_ID + "TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
+          + " ORDER BY " + EdRecordFields.DB_ORDER + ";";
       }
 
       this.LogValue ( _sqlQueryString );
@@ -796,9 +796,9 @@ namespace Evado.Dal.Clinical
           // Process the results into the newField.
           // 
           option = new EvOption (
-              EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_FIELD_ID ),
-              EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_FIELD_ID )
-              + " - " + EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_TITLE ) );
+              EvSqlMethods.getString ( row, EdRecordFields.DB_FIELD_ID ),
+              EvSqlMethods.getString ( row, EdRecordFields.DB_FIELD_ID )
+              + " - " + EvSqlMethods.getString ( row, EdRecordFields.DB_TITLE ) );
 
           if ( option.Description.Length > 80 )
           {
@@ -871,9 +871,9 @@ namespace Evado.Dal.Clinical
       // Define the query string.
       // 
       _sqlQueryString = _sqlDataAnalysisQuery_List
-          + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
-          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+          + "WHERE (" + EdRecordFields.DB_CUSTOMER_GUID + "=" + EdRecordFields.PARM_CUSTOMER_GUID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + " ORDER BY " + EdRecordFields.DB_ORDER + ";";
 
       this.LogDebug ( _sqlQueryString );
 
@@ -1105,11 +1105,11 @@ namespace Evado.Dal.Clinical
       // Generate the SQL query string.
       //
       _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdRecordLayoutFields.DB_APPLICATION_ID + "=" + EdRecordLayoutFields.PARM_APPLICATION_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+          + "WHERE (" + EdRecordFields.DB_APPLICATION_ID + "=" + EdRecordFields.PARM_APPLICATION_ID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordFields.DB_FIELD_ID + "=" + EdRecordFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdRecordFields.DB_ORDER + ";";
 
       this.LogValue ( "SQL QUERY: " + _sqlQueryString );
 
@@ -1262,13 +1262,13 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query parameters.
       // 
-      SqlParameter cmdParms = new SqlParameter ( EdRecordLayoutFields.PARM_GUID, SqlDbType.UniqueIdentifier );
+      SqlParameter cmdParms = new SqlParameter ( EdRecordFields.PARM_GUID, SqlDbType.UniqueIdentifier );
       cmdParms.Value = FieldGuid;
 
       // 
       // Define the query string.
       // 
-      _sqlQueryString = SQL_FIELD_QUERY_VIEW + " WHERE (" + EdRecordLayoutFields.DB_GUID + " = " + EdRecordLayoutFields.PARM_GUID + "); ";
+      _sqlQueryString = SQL_FIELD_QUERY_VIEW + " WHERE (" + EdRecordFields.DB_GUID + " = " + EdRecordFields.PARM_GUID + "); ";
 
       // 
       // Execute the query against the database.
@@ -1684,31 +1684,26 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     public EvEventCodes AddItem ( EdRecordField FormField )
     {
-      //
-      // Initialize the debug log, a local sql query string and a new formfield object. 
-      //
       this.LogMethod ( "AddItem method. " );
       this.LogValue ( "FormGuid: " + FormField.LayoutGuid );
       this.LogValue ( "FieldId: " + FormField.FieldId );
+      //
+      // Initialize the debug log, a local sql query string and a new formfield object. 
+      //
+      FormField.Guid = Guid.NewGuid ( );
 
-      string _sqlQueryString = String.Empty;
-
-      EdRecordField newField = this.getField ( FormField.Guid );
+      //
+      // Test for new field with the same id.
+      //
+      EdRecordField newField = this.GetNewField ( FormField );
 
       //
       // Validate whether the formUid and Uid do not exist. 
       //
-      if ( newField.LayoutGuid != Guid.Empty )
+      if ( newField.Guid != Guid.Empty )
       {
         return EvEventCodes.Data_Duplicate_Field_Error;
       }//END  FormUid
-
-      if ( newField.Guid != Guid.Empty
-        && ( newField.Title != FormField.Title
-         || newField.TypeId != FormField.TypeId ) )
-      {
-        return EvEventCodes.Data_Duplicate_Field_Error;
-      }//END Uid
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -1724,9 +1719,41 @@ namespace Evado.Dal.Clinical
         return EvEventCodes.Database_Record_Update_Error;
       }
 
+      this.LogMethodEnd ( "AddItem" );
       return EvEventCodes.Ok;
 
     }//END AddItem class. 
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns the selected Field with the field identifier.
+    /// </summary>
+    /// <param name="Field">EvFormField: a formfield object</param>
+    /// <returns>EvEventCodes: an event code for deleting items from formfield table</returns>
+    // -------------------------------------------------------------------------------------
+    private EdRecordField GetNewField ( EdRecordField FormField )
+    {
+      this.LogMethod ( "validateFieldId method. " );
+      this.LogValue ( "FormGuid: " + FormField.LayoutGuid );
+      this.LogValue ( "FieldId: " + FormField.FieldId );
+      //
+      // Initialize the debug log, a local sql query string and a new formfield object. 
+      //
+
+      var fieldList = this.GetFieldList( FormField.LayoutGuid );
+
+      foreach ( EdRecordField field in fieldList )
+      {
+        if ( field.FieldId == FormField.FieldId )
+        {
+          return field;
+        }
+      }
+
+      this.LogMethodEnd ( "validateFieldId" );
+
+      return new EdRecordField ( ); ;
+    }
 
     // =====================================================================================
     /// <summary>
