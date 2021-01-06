@@ -60,6 +60,7 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EuRecordLayoutsProperties.cs" />
     <Compile Include="EuDemoUserRegistration.ads.cs">
       <SubType>Code</SubType>
     </Compile>

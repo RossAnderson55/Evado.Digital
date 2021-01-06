@@ -367,7 +367,7 @@ namespace Evado.Dal.Clinical
         //
         // Create the add query .
         //
-        sbSQL_AddQuery.AppendLine ( " INSERT INTO EV_FORM_SECTIONS "
+        sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_ENTITY_LAYOUT_SECTIONS  "
         + "(" + DB_LAYOUT_SECTION_GUID
         + ", " + DB_LAYOUT_GUID
         + ", " + DB_NUMBER

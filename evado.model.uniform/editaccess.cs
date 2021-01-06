@@ -48,24 +48,6 @@ namespace Evado.Model.UniForm
     /// </summary>
     Disabled = 3,
 
-    //
-    // Depreciated values.
-    //
-    /// <summary>
-    /// This enumeration defines the edit access is inherited from the parent object.
-    /// </summary>
-    Inherited_Access = 1,
-
-    /// <summary>
-    /// This enumeration defines the editing is enabled for this user.
-    /// </summary>
-    Edit_Enabled = 2,
-
-    /// <summary>
-    /// This enumeration defines that editing is disabled from this user.
-    /// </summary>
-    Edit_Disabled = 3,
-
   }//END Enumeration
 
 }//END namespace
