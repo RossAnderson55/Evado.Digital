@@ -219,13 +219,11 @@ namespace Evado.Bll.Clinical
       queryParameters.RecordRangeFinish = ExportParameters.RecordRangeFinish;
 
       queryParameters.State = EdRecordObjectStates.Withdrawn
-        + ";" + EdRecordObjectStates.Queried_Record_Copy
         + ";" + EdRecordObjectStates.Draft_Record;
 
       if ( ExportParameters.IncludeDraftRecords == true )
       {
-        queryParameters.State = EdRecordObjectStates.Withdrawn
-          + ";" + EdRecordObjectStates.Queried_Record_Copy;
+        queryParameters.State = EdRecordObjectStates.Withdrawn.ToString();
       }
 
       queryParameters.IncludeTestSites = ExportParameters.IncludeTestSites;
@@ -315,14 +313,14 @@ namespace Evado.Bll.Clinical
         // Create the report header
         // 
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "ProjectId: " + headerForm.ApplicationId ) );
-        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Type: " + headerForm.Design.Type ) );
+        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Type: " + EvStatics.getEnumStringValue( headerForm.TypeId ) ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "FormId: " + headerForm.LayoutId ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Title: " + headerForm.Title ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Exported on: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm" )
           + " By " + UserProfile.CommonName ) );
 
         this.LogDebug ( "ProjectId: " + headerForm.ApplicationId );
-        this.LogDebug ( "Form Type: " + headerForm.Design.Type );
+        this.LogDebug ( "Form Type: " + headerForm.Design.TypeId );
         this.LogDebug ( "FormId: " + headerForm.LayoutId );
         this.LogDebug ( "Form Title: " + headerForm.Title );
         this.LogDebug ( "Exported on: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm" )
@@ -349,8 +347,7 @@ namespace Evado.Bll.Clinical
           // 
           // IF the item is a valid record output it.
           //
-          if ( record.State == EdRecordObjectStates.Queried_Record
-            || record.State == EdRecordObjectStates.Withdrawn )
+          if ( record.State == EdRecordObjectStates.Withdrawn )
           {
             this.LogDebug ( "RecordID: " + record.RecordId + " >> Withdrawn or querid record." );
             continue;
@@ -368,18 +365,8 @@ namespace Evado.Bll.Clinical
           //
           // Output the record left hand static fields.
           //
-          this._ExportColumnRow [ 0 ] = record.SubjectId;
-          this._ExportColumnRow [ 1 ] = record.OrgId;
-          this._ExportColumnRow [ 2 ] = record.MilestoneId;
-          this._ExportColumnRow [ 3 ] = record.VisitId;
-          this._ExportColumnRow [ 4 ] = record.stVisitDate;
-          this._ExportColumnRow [ 5 ] = record.RecordId;
-          this._ExportColumnRow [ 6 ] = record.stRecordDate;
-
-          //
-          // Export common record ResultData.
-          //
-          this.ExportDataCommonRecordData ( record );
+          this._ExportColumnRow [ 0 ] = record.RecordId;
+          this._ExportColumnRow [ 1 ] = record.stRecordDate;
 
           //
           // Output the record fields
@@ -449,17 +436,7 @@ namespace Evado.Bll.Clinical
           //
           // record footer information
           //
-          this.LogDebug ( "AuthoredBy: " + record.AuthoredBy );
-          this.exportColumnValue ( StaticHeaderColumns.AuthoredBy, record.AuthoredBy );
           this.exportColumnValue ( StaticHeaderColumns.Comments, stComments );
-          this.exportColumnValue ( StaticHeaderColumns.AuthoredBy, record.AuthoredBy );
-          this.exportColumnValue ( StaticHeaderColumns.AuthoredDate, record.stAuthoredDate );
-          this.exportColumnValue ( StaticHeaderColumns.ReviewedBy, record.ReviewedBy );
-          this.exportColumnValue ( StaticHeaderColumns.ReviewedDate, record.stReviewedDate );
-          this.exportColumnValue ( StaticHeaderColumns.MonitoredBy, record.Monitor );
-          this.exportColumnValue ( StaticHeaderColumns.MonitorDate, record.stMonitorDate );
-          this.exportColumnValue ( StaticHeaderColumns.LockedBy, record.ApprovedBy );
-          this.exportColumnValue ( StaticHeaderColumns.LockedDate, record.stApprovalDate );
 
           //
           // Convert the output row into a CSV row.
@@ -607,18 +584,8 @@ namespace Evado.Bll.Clinical
       //
       System.Text.StringBuilder sbHeader = new System.Text.StringBuilder ( );
 
-      sbHeader.Append ( StaticHeaderColumns.SubjectId.ToString() );
-      sbHeader.Append ( ";" + StaticHeaderColumns.OrgId );
-      sbHeader.Append ( ";" + StaticHeaderColumns.MilestoneId );
-      sbHeader.Append ( ";" + StaticHeaderColumns.VisitId );
-      sbHeader.Append ( ";" + StaticHeaderColumns.Visit_Date );
       sbHeader.Append ( ";" + StaticHeaderColumns.RecordId );
       sbHeader.Append ( ";" + StaticHeaderColumns.RecordDate );
-
-      //
-      // Insert the common record header fields if appropriate.
-      //
-      sbHeader.Append ( this.ExportDataCommonRecordHeader ( HeaderRecord ) );
 
       //
       // Output the form field header information
@@ -636,12 +603,6 @@ namespace Evado.Bll.Clinical
         //
         switch ( formField.TypeId )
         {
-          case EvDataTypes.Special_Subject_Demographics:
-          case EvDataTypes.Special_Medication_Summary:
-            {
-              break;
-            }
-
           case EvDataTypes.Table:
           case EvDataTypes.Special_Matrix:
             {
@@ -696,54 +657,6 @@ namespace Evado.Bll.Clinical
       return this._ExportColumnHeader.Length;
 
     }//END getExportDataHeader method.
-
-    //  ==================================================================================
-    /// <summary>
-    /// This method exports the ResultData common record header
-    /// </summary>
-    /// <param name="HeaderRecord">EvForm: a form ResultData object</param>
-    /// <returns>String: a ResultData common record header string</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Return the header string based on the form types. 
-    /// 
-    /// 2. Return empty header string with no form QueryType. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private String ExportDataCommonRecordHeader ( EdRecord HeaderRecord )
-    {
-      //
-      // Create the AE header
-      //
-      switch( HeaderRecord.Design.TypeId )
-      {
-        case EvFormRecordTypes.Adverse_Event_Report :
-      {
-        return ";" + StaticHeaderColumns.Subject
-           + ";" + StaticHeaderColumns.OnsetDate
-           + ";" + StaticHeaderColumns.ResolvedDate;
-      }
-
-        case EvFormRecordTypes.Serious_Adverse_Event_Report :
-      {
-        return ";" + StaticHeaderColumns.ReferenceId
-           + ";" + StaticHeaderColumns.Subject
-           + ";" + StaticHeaderColumns.OnsetDate
-           + ";" + StaticHeaderColumns.ResolvedDate;
-      }
-        case EvFormRecordTypes.Concomitant_Medication :
-      {
-        return ";" + StaticHeaderColumns.ReferenceId
-           + ";" + StaticHeaderColumns.Subject
-           + ";" + StaticHeaderColumns.CommencementDate
-           + ";" + StaticHeaderColumns.CompletionDate ;
-      }
-      }
-
-      return String.Empty ;
-
-    }//END ExportDataCommonRecordHeader method
 
     //  ==================================================================================
     /// <summary>
@@ -947,11 +860,6 @@ namespace Evado.Bll.Clinical
       //
       switch ( FormField.TypeId )
       {
-        case EvDataTypes.Special_Subject_Demographics:
-        case EvDataTypes.Special_Medication_Summary:
-          {
-            return true;
-          }
         case EvDataTypes.Numeric:
           {
             this.exportColumnValue ( FormField.FieldId, FormField.ItemValue );
@@ -996,57 +904,6 @@ namespace Evado.Bll.Clinical
     }//ENd getExportData
 
     #endregion
-
-    //  ==================================================================================
-    /// <summary>
-    /// This class exports the ResultData common records
-    /// </summary>
-    /// <param name="FormRecord">EvForm: a form object</param>
-    /// <returns>String: a string of exported ResultData common record</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for formatting the exported form record string based on the form types
-    /// 
-    /// 2. Return the exported form record string. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void ExportDataCommonRecordData ( EdRecord FormRecord )
-    {
-      //
-      // select the record type
-      //
-      switch( FormRecord.Design.TypeId )
-      {
-        case EvFormRecordTypes.Adverse_Event_Report :
-      {
-        this.exportColumnValue( StaticHeaderColumns.Subject, FormRecord.RecordSubject );
-        this.exportColumnValue( StaticHeaderColumns.OnsetDate, FormRecord.stStartDate );
-        this.exportColumnValue( StaticHeaderColumns.ResolvedDate, FormRecord.stFinishDate );
-        return;
-      }
-
-        case EvFormRecordTypes.Serious_Adverse_Event_Report :
-      {
-        this.exportColumnValue( StaticHeaderColumns.ReferenceId, FormRecord.ReferenceId );
-        this.exportColumnValue( StaticHeaderColumns.Subject, FormRecord.RecordSubject );
-        this.exportColumnValue( StaticHeaderColumns.OnsetDate, FormRecord.stStartDate );
-        this.exportColumnValue( StaticHeaderColumns.ResolvedDate, FormRecord.stFinishDate );
-        return;
-      }
-
-        case EvFormRecordTypes.Concomitant_Medication:
-      {
-        this.exportColumnValue( StaticHeaderColumns.ReferenceId, FormRecord.ReferenceId );
-        this.exportColumnValue( StaticHeaderColumns.Subject, FormRecord.RecordSubject );
-        this.exportColumnValue( StaticHeaderColumns.CommencementDate, FormRecord.stStartDate );
-        this.exportColumnValue( StaticHeaderColumns.CompletionDate, FormRecord.stFinishDate );
-        return;
-      }
-      }
-
-    }//END Method
-
     //  ==================================================================================
     /// <summary>
     /// This method creates the export checkbox ResultData header.

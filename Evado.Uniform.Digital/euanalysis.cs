@@ -247,7 +247,7 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.FormList.Count > 0
         && this.Session.FormsAdaperLoaded == true
         && this.Session.FormState == EdRecordObjectStates.Form_Issued
-        && this.Session.FormType == EvFormRecordTypes.Null )
+        && this.Session.FormType == EdRecordTypes.Null )
       {
         this.LogDebug ( "FormList loaded" );
         this.LogMethodEnd ( "loadTrialFormList" );
@@ -265,7 +265,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the methods variables and object.
       //
       EvForms bll_Forms = new EvForms ( this.ClassParameters );
-      this.Session.FormType = EvFormRecordTypes.Null;
+      this.Session.FormType = EdRecordTypes.Null;
       this.Session.FormState = EdRecordObjectStates.Form_Issued;
 
       // 
@@ -310,9 +310,8 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasDataManagerAccess == false
-          && this.Session.UserProfile.hasMultiSiteAccess == false
-          && this.Session.UserProfile.hasTrialManagementAccess == false )
+        if (  this.Session.UserProfile.hasMultiSiteAccess == false
+          && this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getChartObject",
@@ -641,7 +640,7 @@ namespace Evado.UniForm.Clinical
           this.Session.Chart.QueryItems [ index ].ItemId,
           this.Session.ChartSourceOptionList );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // Define the report Type selection
@@ -654,7 +653,7 @@ namespace Evado.UniForm.Clinical
           this.Session.Chart.QueryItems [ index ].Aggregation.ToString ( ),
           optionList );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       }//END iteration loop.
 
@@ -726,6 +725,11 @@ namespace Evado.UniForm.Clinical
       //
       EvOption option = new EvOption ( );
 
+      if ( Field.LayoutId == null )
+      {
+        Field.LayoutId = String.Empty;
+      }
+
       //
       // if it is a non numeric field the continue to the next field.
       //
@@ -741,8 +745,8 @@ namespace Evado.UniForm.Clinical
        //   Field.FormId, Field.FieldId, Field.TypeId );
 
       option = new EvOption (
-          Field.FormId + EvChart.CONST_SOURCE_DELIMITER + Field.FieldId,
-          Field.FormId + " : " + Field.FieldId + " - " + Field.Title );
+          Field.LayoutId + EvChart.CONST_SOURCE_DELIMITER + Field.FieldId,
+          Field.LayoutId + " : " + Field.FieldId + " - " + Field.Title );
 
       if ( option.Description.Length > 80 )
       {
@@ -979,9 +983,8 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasDataManagerAccess == false
-          && this.Session.UserProfile.hasMultiSiteAccess == false
-          && this.Session.UserProfile.hasTrialManagementAccess == false )
+        if (  this.Session.UserProfile.hasMultiSiteAccess == false
+          && this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             "Evado.UniForm.Clinical.Reports.getRecordQueryObject",
@@ -1156,7 +1159,7 @@ namespace Evado.UniForm.Clinical
       {
         this.Session.AnalysisFormSelectionList = bllForms.getList (
             this.Session.Application.ApplicationId,
-            EvFormRecordTypes.Null,
+            EdRecordTypes.Null,
             EdRecordObjectStates.Form_Issued,
             false );
 
@@ -1335,7 +1338,7 @@ namespace Evado.UniForm.Clinical
           this.Session.AnalysisQueryFormId,
           this.Session.AnalysisFormSelectionList );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1350,7 +1353,7 @@ namespace Evado.UniForm.Clinical
           this.Session.AnalysisQueryFormFieldId,
           this.Session.AnalysisFormFieldSelectionList );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1365,7 +1368,7 @@ namespace Evado.UniForm.Clinical
           this.Session.AnalysisQueryFormFieldValue,
           this.Session.AnalysisFormFieldValueSelectionList );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1434,16 +1437,8 @@ namespace Evado.UniForm.Clinical
           + EvLabels.Space_Arrow_Right
           + formRecord.RecordId
           + EvLabels.Space_Open_Bracket
-          + EvLabels.Label_Subject_Id
-          + formRecord.SubjectId
-          + EvLabels.Space_Close_Bracket
-          + EvLabels.Space_Open_Bracket
           + EvLabels.Label_Date
           + formRecord.stRecordDate
-          + EvLabels.Space_Close_Bracket
-          + EvLabels.Space_Open_Bracket
-          + EvLabels.Label_Visit_Id
-          + formRecord.VisitId
           + EvLabels.Space_Close_Bracket
           + EvLabels.Space_Open_Bracket
           + EvLabels.Label_Status

@@ -239,75 +239,13 @@ namespace Evado.UniForm.Clinical
             groupCommand = new Model.UniForm.Command (
               EvLabels.Label_Record,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Model.UniForm.ApplicationMethods.Get_Object );
 
             groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 
             break;
           }
-        case EvAlert.AlertTypes.Adverse_Event_Report:
-        case EvAlert.AlertTypes.AE_Notification_Alert:
-          {
-            groupCommand = new Model.UniForm.Command (
-               EvLabels.Label_Record,
-               EuAdapter.APPLICATION_ID,
-               EuAdapterClasses.Common_Record.ToString ( ),
-               Model.UniForm.ApplicationMethods.Get_Object );
-
-            groupCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Adverse_Event_Report.ToString ( ) ); 
-
-            groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            break;
-          }
-        case EvAlert.AlertTypes.Serious_Adverse_Event_Report:
-        case EvAlert.AlertTypes.SAE_Notification_Alert:
-          {
-            groupCommand = new Model.UniForm.Command (
-               EvLabels.Label_Record,
-               EuAdapter.APPLICATION_ID,
-               EuAdapterClasses.Common_Record.ToString ( ),
-               Model.UniForm.ApplicationMethods.Get_Object );
-
-            groupCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Serious_Adverse_Event_Report.ToString ( ) ); 
-
-            groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            break;
-          }
-        case EvAlert.AlertTypes.Concomitant_Medication:
-          {
-            groupCommand = new Model.UniForm.Command (
-               EvLabels.Label_Record,
-               EuAdapter.APPLICATION_ID,
-               EuAdapterClasses.Common_Record.ToString ( ),
-               Model.UniForm.ApplicationMethods.Get_Object );
-
-            groupCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Concomitant_Medication.ToString ( ) ); 
-
-            groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            break;
-          }
-        case EvAlert.AlertTypes.Subject_Record:
-          {
-            groupCommand = new Model.UniForm.Command (
-               EvLabels.Label_Record,
-               EuAdapter.APPLICATION_ID,
-               EuAdapterClasses.Subjects.ToString ( ),
-               Model.UniForm.ApplicationMethods.Get_Object );
-
-            groupCommand.AddParameter ( EvIdentifiers.SUBJECT_ID, this.Session.Alert.RecordId );
-
-            break;
-          }//END milestone selection.
 
       }//END alert type switch
 
@@ -466,7 +404,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Alert_List_Alert_Type_Field_Label,
         this.Session.AlertType.ToString(),
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -482,7 +420,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Alert_List_Alert_State_Field_Label,
         this.Session.AlertState.ToString ( ),
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
 
@@ -739,7 +677,7 @@ namespace Evado.UniForm.Clinical
         EvAlert.AlertFieldNames.Alert_Id.ToString ( ),
         EvLabels.Label_Alert_Id,
         this.Session.Alert.ToOrgId );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Add from user name
@@ -748,7 +686,7 @@ namespace Evado.UniForm.Clinical
         EvAlert.AlertFieldNames.From_User.ToString ( ),
         EvLabels.Alert_Page_From_Label,
         this.Session.Alert.FromUser );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Add to user name
@@ -759,7 +697,7 @@ namespace Evado.UniForm.Clinical
           EvAlert.AlertFieldNames.To_User.ToString ( ),
           EvLabels.Alert_Page_To_Label,
           this.Session.Alert.ToUser );
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       // 
@@ -769,7 +707,7 @@ namespace Evado.UniForm.Clinical
         EvAlert.AlertFieldNames.Alert_Subject.ToString ( ),
         EvLabels.Alert_Page_Subject_Label,
         this.Session.Alert.Subject );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Add alert message name
@@ -778,7 +716,7 @@ namespace Evado.UniForm.Clinical
         EvAlert.AlertFieldNames.Message.ToString ( ),
         EvLabels.Alert_Page_Message_Label,
         this.Session.Alert.Message );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Add alert message name
@@ -788,7 +726,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Alert_Page_Status,
         this.Session.Alert.StateDesc );
 
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // include the acknowledged content if it exists.
@@ -800,14 +738,14 @@ namespace Evado.UniForm.Clinical
           EvLabels.Alert_Page_Acknowledged_Date_Label,
           this.Session.Alert.Acknowledged.ToString ( "dd MMM yyy HH:mm" ) );
 
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         pageField = pageGroup.createReadOnlyTextField (
           EvAlert.AlertFieldNames.Acknowledged_By.ToString ( ),
           EvLabels.Alert_Page_Acknowledged_By_Label,
           this.Session.Alert.AcknowledgedBy );
 
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       // 
@@ -821,14 +759,14 @@ namespace Evado.UniForm.Clinical
           EvLabels.Alert_Page_Closed_Date_Label,
           this.Session.Alert.Closed.ToString ( "dd MMM yyy HH:mm" ) );
 
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         pageField = pageGroup.createReadOnlyTextField (
           EvAlert.AlertFieldNames.Closed_By.ToString ( ),
           EvLabels.Alert_Page_Closed_By_Label,
           this.Session.Alert.ClosedBy );
 
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       this.LogValue ( "Edit Access: " + userHasEditAccess );
@@ -961,65 +899,11 @@ namespace Evado.UniForm.Clinical
 
       switch ( this.Session.Alert.TypeId )
       {
-        case EvAlert.AlertTypes.Adverse_Event_Report:
-        case EvAlert.AlertTypes.AE_Notification_Alert:
-          {
-            recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
-              this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Common_Record.ToString ( );
-
-            recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            recordCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Adverse_Event_Report.ToString ( ) ); 
-
-            break;
-          }
-        case EvAlert.AlertTypes.Serious_Adverse_Event_Report:
-        case EvAlert.AlertTypes.SAE_Notification_Alert:
-          {
-            recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
-              this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Common_Record.ToString ( );
-
-            recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            recordCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Serious_Adverse_Event_Report.ToString ( ) ); 
-
-            break;
-          }
-        case EvAlert.AlertTypes.Concomitant_Medication:
-          {
-            recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
-              this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Common_Record.ToString ( );
-
-            recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            recordCommand.AddParameter (
-              EdRecord.CONST_RECORD_TYPE,
-              EvFormRecordTypes.Concomitant_Medication.ToString ( ) ); 
-
-            break;
-          }
-        case EvAlert.AlertTypes.Subject_Record:
-          {
-            recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
-              this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Subjects.ToString ( );
-
-            recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
-
-            break;
-          }
         case EvAlert.AlertTypes.Trial_Record:
           {
             recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
               this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Scheduled_Record.ToString ( );
+            recordCommand.Object = EuAdapterClasses.Record.ToString ( );
 
             recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 
@@ -1042,35 +926,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "UserHasEditAccess" );
       this.LogValue ( "Alert.TypeId:  " + this.Session.Alert.TypeId );
-      // 
-      // Provide monitors and sponsors access to alert notifications.
-      // 
-      if ( this.Session.Alert.TypeId == EvAlert.AlertTypes.AE_Notification_Alert
-         || this.Session.Alert.TypeId == EvAlert.AlertTypes.SAE_Notification_Alert
-         || this.Session.Alert.TypeId == EvAlert.AlertTypes.Notiifcation_Alert )
-      {
-        if ( this.Session.UserProfile.hasMonitorAccess == true
-          || this.Session.UserProfile.hasSponsorAccess == true
-          || this.Session.UserProfile.hasDataManagerAccess == true )
-        {
-          return true;
-        }
-      }
 
-      // 
-      // Provide sites with access to query alerts.
-      // 
-      else if ( this.Session.Alert.TypeId == EvAlert.AlertTypes.Trial_Record
-        || this.Session.Alert.TypeId == EvAlert.AlertTypes.Subject_Record
-        || this.Session.Alert.TypeId == EvAlert.AlertTypes.Concomitant_Medication
-        || this.Session.Alert.TypeId == EvAlert.AlertTypes.Adverse_Event_Report
-        || this.Session.Alert.TypeId == EvAlert.AlertTypes.Serious_Adverse_Event_Report )
-      {
-        if ( this.Session.UserProfile.hasRecordEditAccess == true )
-        {
-          return true;
-        }
-      }
 
       return false;
     }

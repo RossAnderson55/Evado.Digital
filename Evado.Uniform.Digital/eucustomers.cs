@@ -384,7 +384,7 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false
+      if ( this.Session.UserProfile.hasManagementAccess == false
         && this.Session.UserProfile.hasRecordAccess == false )
       {
         this.LogIllegalAccess (
@@ -507,7 +507,7 @@ namespace Evado.UniForm.Clinical
       // Set the user edit access to the objects.
       //
       if ( this.Session.UserProfile.hasAdministrationAccess == true
-        || this.Session.UserProfile.hasConfigrationEditAccess == true )
+        || this.Session.UserProfile.hasManagementEditAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -709,7 +709,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createReadOnlyTextField (
         EvCustomerLabels.Customer_No_Field_Label,
         this.Session.Customer.CustomerNo.ToString() );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer Service Type object
@@ -717,7 +717,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createReadOnlyTextField (
         EvCustomerLabels.Customer_Service_Field_Label,
         this.Session.Customer.ServiceType.ToString ( ) );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer Service Type object
@@ -728,7 +728,7 @@ namespace Evado.UniForm.Clinical
           String.Empty,
           EvCustomerLabels.Customer_IsSingleStudy_Field_Label,
           this.Session.Customer.IsSingleStudy );
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
       }
       else
@@ -736,7 +736,7 @@ namespace Evado.UniForm.Clinical
         pageField = pageGroup.createReadOnlyTextField (
           EvCustomerLabels.Customer_No_of_Studies_Field_Label,
           this.Session.Customer.NoOfStudies.ToString ( ) );
-        pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       }
 
@@ -748,7 +748,7 @@ namespace Evado.UniForm.Clinical
         EvCustomerLabels.Customer_Name_Field_Label,
         this.Session.Customer.Name,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.Mandatory = true;
 
       pageField.setBackgroundColor (
@@ -762,7 +762,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Address,
         EvCustomerLabels.Customer_Address_Field_Label,
         this.Session.Customer.Address );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer telephone number object
@@ -771,7 +771,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Telephone.ToString ( ),
         EvCustomerLabels.Customer_Telephone_Field_Label,
         this.Session.Customer.Telephone );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       // 
@@ -781,7 +781,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Email_Address.ToString ( ),
         EvCustomerLabels.Customer_Email_Field_Label,
         this.Session.Customer.EmailAddress );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       // 
@@ -791,7 +791,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Administrator.ToString ( ),
         EvCustomerLabels.Customer_Administator_Field_Label,
         this.Session.Customer.Administrator, 50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       // 
@@ -801,7 +801,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.AdminEmailAddress.ToString ( ),
         EvCustomerLabels.Customer_AdministratorEmail_Field_Label,
         this.Session.Customer.AdminEmailAddress );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       this.LogMethodEnd ( "getCustomerDetailsObject" );
@@ -853,7 +853,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createReadOnlyTextField (
         EvCustomerLabels.Customer_No_Field_Label,
         this.Session.Customer.CustomerNo.ToString() );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the Customer home page header text object
@@ -862,7 +862,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Ads_Group.ToString ( ),
         EvCustomerLabels.Customer_Ads_Group_Field_Label,
         this.Session.Customer.AdsGroupName, 50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer telephone number object
@@ -871,7 +871,7 @@ namespace Evado.UniForm.Clinical
         EvCustomer.CustomerFieldNames.Home_Page_Header.ToString ( ),
         EvCustomerLabels.Customer_Home_Page_Header_Field_Label,
         this.Session.Customer.HomePageHeader, 100 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Generate the customer type list.
@@ -888,7 +888,7 @@ namespace Evado.UniForm.Clinical
         typeList );
 
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.Mandatory = true;
       pageField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -909,7 +909,7 @@ namespace Evado.UniForm.Clinical
         typeList );
 
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       // 
       // Create the customer Service Type object
       //
@@ -917,7 +917,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvCustomerLabels.Customer_IsSingleStudy_Field_Label,
         this.Session.Customer.IsSingleStudy );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Display the number of studies running.
@@ -925,7 +925,7 @@ namespace Evado.UniForm.Clinical
       pageField = pageGroup.createReadOnlyTextField (
         EvCustomerLabels.Customer_No_of_Studies_Field_Label,
         this.Session.Customer.NoOfStudies.ToString ( ) );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "getCustomerSettings_Group" );
 

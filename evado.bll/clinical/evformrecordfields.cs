@@ -62,7 +62,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._Dal_FormRecordFields = new Evado.Dal.Clinical.EdRecordFields ( Settings );
+      this._Dal_FormRecordFields = new Evado.Dal.Clinical.EdRecordValues ( Settings );
     }
     #endregion
     #region Class constants
@@ -96,7 +96,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordFields _Dal_FormRecordFields = new Evado.Dal.Clinical.EdRecordFields();
+    private Evado.Dal.Clinical.EdRecordValues _Dal_FormRecordFields = new Evado.Dal.Clinical.EdRecordValues();
 
     /// <summary>
     /// Define the class property and state variable.

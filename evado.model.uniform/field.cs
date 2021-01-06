@@ -216,8 +216,6 @@ namespace Evado.Model.UniForm
           case Model.EvDataTypes.Read_Only_Text:
           case Model.EvDataTypes.Donut_Chart:
           case Model.EvDataTypes.Sound:
-          case Model.EvDataTypes.Special_Medication_Summary:
-          case Model.EvDataTypes.Special_Subject_Demographics:
           case Model.EvDataTypes.Streamed_Video:
           case Model.EvDataTypes.Video:
             {
@@ -252,8 +250,6 @@ namespace Evado.Model.UniForm
           case Model.EvDataTypes.Read_Only_Text:
           case Model.EvDataTypes.Donut_Chart:
           case Model.EvDataTypes.Sound:
-          case Model.EvDataTypes.Special_Medication_Summary:
-          case Model.EvDataTypes.Special_Subject_Demographics:
           case Model.EvDataTypes.Streamed_Video:
           case Model.EvDataTypes.Video:
             {

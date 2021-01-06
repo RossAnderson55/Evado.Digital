@@ -54,109 +54,21 @@ namespace Evado.Model.Digital
       Administrator,
 
       /// <summary>
-      /// This enumeration defines the project manager role
+      /// This enumeration defines the manager role
       /// </summary>
-      Trial_Manager,
+      Manager,
+
+      /// <summary>
+      /// This enumeration defines the  coordinator role
+      /// </summary>
+      Coordinator,
 
       /// <summary>
       /// This enumeration defines the project coordinator role
       /// </summary>
-      Trial_Coordinator,
+      Application_User,
 
-      /// <summary>
-      /// This enumeration defines the monitor role
-      /// </summary>
-      Monitor,
 
-      /// <summary>
-      /// This enumeration defines the spoinsor role
-      /// </summary>
-      Sponsor,
-
-      /// <summary>
-      /// This enumeration defines the data manager role
-      /// </summary>
-      Data_Manager,
-
-      /// <summary>
-      /// This enumeration defines the data collector role
-      /// </summary>
-      Site_User,
-
-      /// <summary>
-      /// This enumeration defines the person who can register patients and subject role
-      /// </summary>
-      Patient_Registration,
-
-      /// <summary>
-      /// This enumeration defines the principal Investigator role
-      /// </summary>
-      Principal_Investigator,
-
-      /// <summary>
-      /// This enumeration defines the Investigator role
-      /// </summary>
-     Investigator,
-
-      /// <summary>
-      /// This enumeration defines the Patient role
-      /// </summary>
-      Patient,
-
-      /// <summary>
-      /// This enumeration defines the General Practioner role
-      /// </summary>
-      Patient_Doctor,
-
-      //
-      // Depreciated values.
-      //
-      /*
-      /// <summary>
-      /// This enumeration defines the data collector role
-      /// </summary>
-      Record_Author,
-
-      /// <summary>
-      /// This enumeration defines the project manager role
-      /// </summary>
-      Project_Manager,
-
-      /// <summary>
-      /// This enumeration defines the project coordinator role
-      /// </summary>
-      //Project_Coordinator,
-       * 
-      /// <summary>
-      /// This enumeration defines the project budget role
-      /// </summary>
-      Project_Budget,
-
-      /// <summary>
-      /// This enumeration defines the project finance role
-      /// </summary>
-      Project_Finance,
-
-      /// <summary>
-      /// This enumeration defines the project designer role
-      /// </summary>
-      Project_Designer,
-
-      /// <summary>
-      /// This enumeration defines the data read rolee
-      /// </summary>
-      Record_Reader,
-
-      /// <summary>
-      /// This enumeration defines the not patient access role
-      /// </summary>
-      Not_Patient,
-
-      /// <summary>
-      /// This enumeration defines the no access role
-      /// </summary>
-      No_Access,
-       * */
     }
 
 }//END namespace Evado.Model.Digital

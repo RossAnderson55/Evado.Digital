@@ -55,7 +55,7 @@ namespace Evado.Dal.Clinical
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
 
-      this._Dal_FormRecordFields = new EdRecordFields ( Settings );
+      this._Dal_FormRecordFields = new EdRecordValues ( Settings );
       this._Dal_FormSections = new EdRecordSections ( this.ClassParameters );
     }
 
@@ -187,7 +187,7 @@ namespace Evado.Dal.Clinical
     private String _TextComments = String.Empty;
     private String _TextAnnotations = String.Empty;
 
-    EdRecordFields _Dal_FormRecordFields = new EdRecordFields ( );
+    EdRecordValues _Dal_FormRecordFields = new EdRecordValues ( );
 
     EdRecordSections _Dal_FormSections = new EdRecordSections ( );
     #endregion
@@ -263,7 +263,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class binds values to query parameters.
     /// </summary>
-    /// <param name="cmdParms">SqlParameter: an array of sql parameters</param>
+    /// <param name="CommandParameters">SqlParameter: an array of sql parameters</param>
     /// <param name="Record">EvForm: a form object containing the parmeter values.</param>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -275,7 +275,9 @@ namespace Evado.Dal.Clinical
     /// 3. Update the items from form object to the array of sql query parameters. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord Record )
+    private void SetParameters ( 
+      SqlParameter [ ] CommandParameters, 
+      EdRecord Record )
     {
       // 
       // Initialise the monitorsignoff condition
@@ -301,52 +303,52 @@ namespace Evado.Dal.Clinical
       // 
       // Load the command parmameter values
       // 
-      cmdParms [ 0 ].Value = Record.Guid;
-      cmdParms [ 1 ].Value = Record.LayoutGuid;
-      cmdParms [ 2 ].Value = Record.ApplicationId;
-      cmdParms [ 3 ].Value = String.Empty;
-      cmdParms [ 4 ].Value = String.Empty;
-      cmdParms [ 5 ].Value = String.Empty;
-      cmdParms [ 6 ].Value = String.Empty;
-      cmdParms [ 7 ].Value = Record.MilestoneId;
-      cmdParms [ 8 ].Value = Record.ActivityId;
-      cmdParms [ 9 ].Value = Record.IsMandatoryActivity;
+      CommandParameters [ 0 ].Value = Record.Guid;
+      CommandParameters [ 1 ].Value = Record.LayoutGuid;
+      CommandParameters [ 2 ].Value = Record.ApplicationId;
+      CommandParameters [ 3 ].Value = String.Empty;
+      CommandParameters [ 4 ].Value = String.Empty;
+      CommandParameters [ 5 ].Value = String.Empty;
+      CommandParameters [ 6 ].Value = String.Empty;
+      CommandParameters [ 7 ].Value = Record.MilestoneId;
+      CommandParameters [ 8 ].Value = Record.ActivityId;
+      CommandParameters [ 9 ].Value = Record.IsMandatoryActivity;
 
-      cmdParms [ 10 ].Value = Record.IsMandatory;
-      cmdParms [ 11 ].Value = Record.RecordId;
-      cmdParms [ 12 ].Value = Record.RecordDate;
-      cmdParms [ 13 ].Value = bMonitorSignoff;
-      cmdParms [ 14 ].Value = String.Empty;
-      cmdParms [ 15 ].Value = String.Empty;
-      cmdParms [ 16 ].Value = String.Empty;
-      cmdParms [ 17 ].Value = String.Empty;
-      cmdParms [ 18 ].Value = String.Empty;
-      cmdParms [ 19 ].Value = EvStatics.CONST_DATE_NULL;
+      CommandParameters [ 10 ].Value = Record.IsMandatory;
+      CommandParameters [ 11 ].Value = Record.RecordId;
+      CommandParameters [ 12 ].Value = Record.RecordDate;
+      CommandParameters [ 13 ].Value = bMonitorSignoff;
+      CommandParameters [ 14 ].Value = String.Empty;
+      CommandParameters [ 15 ].Value = String.Empty;
+      CommandParameters [ 16 ].Value = String.Empty;
+      CommandParameters [ 17 ].Value = String.Empty;
+      CommandParameters [ 18 ].Value = String.Empty;
+      CommandParameters [ 19 ].Value = EvStatics.CONST_DATE_NULL;
 
-      cmdParms [ 20 ].Value = String.Empty;
-      cmdParms [ 21 ].Value = String.Empty;
-      cmdParms [ 22 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 23 ].Value = String.Empty;
-      cmdParms [ 24 ].Value = String.Empty;
-      cmdParms [ 25 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 26 ].Value = String.Empty;
-      cmdParms [ 27 ].Value = String.Empty;
-      cmdParms [ 28 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 29 ].Value = String.Empty;
+      CommandParameters [ 20 ].Value = String.Empty;
+      CommandParameters [ 21 ].Value = String.Empty;
+      CommandParameters [ 22 ].Value = EvStatics.CONST_DATE_NULL;
+      CommandParameters [ 23 ].Value = String.Empty;
+      CommandParameters [ 24 ].Value = String.Empty;
+      CommandParameters [ 25 ].Value = EvStatics.CONST_DATE_NULL;
+      CommandParameters [ 26 ].Value = String.Empty;
+      CommandParameters [ 27 ].Value = String.Empty;
+      CommandParameters [ 28 ].Value = EvStatics.CONST_DATE_NULL;
+      CommandParameters [ 29 ].Value = String.Empty;
 
-      cmdParms [ 30 ].Value = String.Empty;
-      cmdParms [ 31 ].Value = String.Empty;
-      cmdParms [ 32 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 33 ].Value = Record.State.ToString ( );
-      cmdParms [ 34 ].Value = String.Empty;
-      cmdParms [ 35 ].Value = Record.UpdatedByUserId;
-      cmdParms [ 36 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 37 ].Value = DateTime.Now;
-      cmdParms [ 38 ].Value = Record.Design.FormLanguage;
-      cmdParms [ 39 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Record.Signoffs );
+      CommandParameters [ 30 ].Value = String.Empty;
+      CommandParameters [ 31 ].Value = String.Empty;
+      CommandParameters [ 32 ].Value = EvStatics.CONST_DATE_NULL;
+      CommandParameters [ 33 ].Value = Record.State.ToString ( );
+      CommandParameters [ 34 ].Value = String.Empty;
+      CommandParameters [ 35 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 36 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 37 ].Value = DateTime.Now;
+      CommandParameters [ 38 ].Value = Record.Design.Language;
+      CommandParameters [ 39 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Record.Signoffs );
 
-      cmdParms [ 40 ].Value = false;
-      cmdParms [ 41 ].Value = Record.SourceId;
+      CommandParameters [ 40 ].Value = false;
+      CommandParameters [ 41 ].Value = Record.SourceId;
 
     }//END SetParameters class.
 
@@ -388,7 +390,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class binds the values to the array of createParameters
     /// </summary>
-    /// <param name="cmdParms">SqlParameter: an array of sql parameters</param>
+    /// <param name="CommandParameters">SqlParameter: an array of sql parameters</param>
     /// <param name="Record">EvForm: a form data object containing the parmeter values.</param>
     /// <remarks>
     /// This method consists of the following step: 
@@ -396,7 +398,9 @@ namespace Evado.Dal.Clinical
     /// 1. Load the form object values to the array of sql parameters. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void SetCreateParameters ( SqlParameter [ ] cmdParms, EdRecord Record )
+    private void SetCreateParameters (
+      SqlParameter [ ] CommandParameters, 
+      EdRecord Record )
     {
       //
       // If the form prefix is G_ it is a globalform 
@@ -413,20 +417,20 @@ namespace Evado.Dal.Clinical
       // 
       // Load the command parmameter values
       // 
-      cmdParms [ 0 ].Value = Record.Guid;
-      cmdParms [ 1 ].Value = Record.ApplicationId;
-      cmdParms [ 2 ].Value = String.Empty; ;
-      cmdParms [ 3 ].Value = String.Empty; ;
-      cmdParms [ 4 ].Value = String.Empty; ;
-      cmdParms [ 5 ].Value = Record.MilestoneId;
-      cmdParms [ 6 ].Value = Record.ActivityId;
-      cmdParms [ 7 ].Value = Record.IsMandatoryActivity;
-      cmdParms [ 8 ].Value = Record.IsMandatory;
-      cmdParms [ 9 ].Value = String.Empty; ;
-      cmdParms [ 10 ].Value = Record.LayoutId;
-      cmdParms [ 11 ].Value = Record.UpdatedByUserId;
-      cmdParms [ 12 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 13 ].Value = formProject;
+      CommandParameters [ 0 ].Value = Record.Guid;
+      CommandParameters [ 1 ].Value = Record.ApplicationId;
+      CommandParameters [ 2 ].Value = String.Empty; ;
+      CommandParameters [ 3 ].Value = String.Empty; ;
+      CommandParameters [ 4 ].Value = String.Empty; ;
+      CommandParameters [ 5 ].Value = Record.MilestoneId;
+      CommandParameters [ 6 ].Value = Record.ActivityId;
+      CommandParameters [ 7 ].Value = Record.IsMandatoryActivity;
+      CommandParameters [ 8 ].Value = Record.IsMandatory;
+      CommandParameters [ 9 ].Value = String.Empty; ;
+      CommandParameters [ 10 ].Value = Record.LayoutId;
+      CommandParameters [ 11 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 12 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 13 ].Value = formProject;
 
     }//END SetCreateParameters class.
 
@@ -493,11 +497,13 @@ namespace Evado.Dal.Clinical
         string xmlDesign = EvSqlMethods.getString ( Row, "TC_XmlData" );
         if ( xmlDesign != String.Empty )
         {
+          xmlDesign = xmlDesign.Replace ( "EvFormDesign", "EdRecordDesign" );
+          xmlDesign = xmlDesign.Replace ( "Trial_Record", "Normal_Record" );
           record.Design = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordDesign> ( xmlDesign );
         }
         else
         {
-          record.Design.JavaValidationScript = EvSqlMethods.getString ( Row, "TC_JAVA_VALIDATION_SCRIPT" );
+          record.Design.JavaScript = EvSqlMethods.getString ( Row, "TC_JAVA_VALIDATION_SCRIPT" );
           record.Design.RecordCategory = EvSqlMethods.getString ( Row, "TC_FORM_CATEGORY" );
           record.Design.hasCsScript = EvSqlMethods.getBool ( Row, "TC_HAS_CS_SCRIPT" );
         }
@@ -527,7 +533,6 @@ namespace Evado.Dal.Clinical
         record.Updated = EvSqlMethods.getString ( Row, "TR_UpdatedBy" );
         if ( record.Updated != string.Empty )
         {
-          record.UpdatedByUserId = EvSqlMethods.getString ( Row, "TR_UpdatedByUserId" );
           record.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TR_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
         }
         record.BookedOutBy = EvSqlMethods.getString ( Row, "TR_BookedOutBy" );
@@ -543,8 +548,7 @@ namespace Evado.Dal.Clinical
             || record.TypeId == EvFormRecordTypes.Informed_Consent_4 )
           && record.State == EvFormObjectStates.Draft_Record )
          */
-        if ( ( record.TypeId == EvFormRecordTypes.Informed_Consent )
-          && record.State == EdRecordObjectStates.Draft_Record )
+        if ( record.State == EdRecordObjectStates.Draft_Record )
         {
           this._SkipRetrievingComments = true;
         }
@@ -569,10 +573,14 @@ namespace Evado.Dal.Clinical
 
       if ( value == "Questionnaire" )
       {
-        value = EvFormRecordTypes.Questionnaire.ToString ( );
+        value = EdRecordTypes.Questionnaire.ToString ( );
       }
 
-      record.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvFormRecordTypes> ( value );
+      record.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> ( value );
+
+      record.Design.Approval = "Approved";
+
+      //record.Design.Approval = EvSqlMethods.getString ( Row, "TC_Approved" );
 
       return record;
 
@@ -2316,7 +2324,7 @@ namespace Evado.Dal.Clinical
       //
       for ( int i = 0; i < Report.Queries.Length; i++ )
       {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Trial )
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Application )
         {
           trialId = Report.Queries [ i ].Value;
         }
@@ -2721,7 +2729,7 @@ namespace Evado.Dal.Clinical
       form.LayoutId = EvSqlMethods.getString ( Row, "FormId" );
       form.Design.Title = EvSqlMethods.getString ( Row, "TC_Title" );
 
-      form.Design.TypeId = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormRecordTypes> ( EvSqlMethods.getString ( Row, "TC_TypeId" ) );
+      form.Design.TypeId = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordTypes> ( EvSqlMethods.getString ( Row, "TC_TypeId" ) );
 
       return form;
 
@@ -3043,8 +3051,7 @@ namespace Evado.Dal.Clinical
           || record.TypeId == EvFormRecordTypes.Informed_Consent_4 )
         && record.State == EvFormObjectStates.Draft_Record )
        */
-      if ( ( record.TypeId == EvFormRecordTypes.Informed_Consent )
-        && record.State == EdRecordObjectStates.Draft_Record )
+      if ( record.State == EdRecordObjectStates.Draft_Record )
       {
         IncludeComments = false;
       }
@@ -3083,10 +3090,9 @@ namespace Evado.Dal.Clinical
       {
         foreach ( EvFormSection section in FormRecord.Design.FormSections )
         {
-          if ( field.Design.Section == section.Title
-            || field.Design.Section == section.No.ToString ( ) )
+          if (field.Design.SectionNo == section.No )
           {
-            field.Design.Section = section.No.ToString ( );
+            field.Design.SectionNo = section.No;
           }
         }
       }
@@ -4018,7 +4024,7 @@ namespace Evado.Dal.Clinical
       dataChange.TrialId = NewRecord.ApplicationId;
       dataChange.RecordId = NewRecord.RecordId;
       dataChange.RecordGuid = NewRecord.Guid;
-      dataChange.UserId = NewRecord.UpdatedByUserId;
+      dataChange.UserId = this.ClassParameters.UserProfile.UserId;
       dataChange.DateStamp = DateTime.Now;
 
       //
@@ -4332,7 +4338,7 @@ namespace Evado.Dal.Clinical
         new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
       };
       cmdParms [ 0 ].Value = Record.Guid;
-      cmdParms [ 1 ].Value = Record.UpdatedByUserId;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
 
@@ -4398,7 +4404,7 @@ namespace Evado.Dal.Clinical
         new SqlParameter(PARM_BookedOut, SqlDbType.NVarChar, 100),
       };
       cmdParms [ 0 ].Value = Item.Guid;
-      cmdParms [ 1 ].Value = Item.UpdatedByUserId;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
       cmdParms [ 4 ].Value = Item.BookedOutBy;

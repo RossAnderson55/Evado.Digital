@@ -139,7 +139,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the formfield options list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> GetList ( Guid FormGuid, string OrderBy )
+    public List<EvOption> GetList ( Guid FormGuid )
     {
       this.LogMethod ( "GetList" );
       // 
@@ -151,7 +151,7 @@ namespace Evado.Bll.Clinical
       //
       // Query the database
       //
-      list = this._DalFormFields.GetList ( FormGuid, OrderBy );
+      list = this._DalFormFields.GetList ( FormGuid );
       this.LogClass ( this._DalFormFields.Log );
 
       return list;
@@ -314,10 +314,8 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod ( "saveItem Method" );
       this.LogValue ( "Guid: " + FormField.Guid );
-      this.LogValue ( "FormGuid: " + FormField.FormGuid );
+      this.LogValue ( "FormGuid: " + FormField.LayoutGuid );
       this.LogValue ( "FieldId: " + FormField.FieldId );
-      this.LogValue ( "ProjectId: " + FormField.TrialId );
-      this.LogValue ( "Action: " + FormField.Action );
       // 
       // Define the local variables.
       // 
@@ -326,24 +324,18 @@ namespace Evado.Bll.Clinical
       // 
       // Validate whether the FormGuid and UserCommonName are not empty
       // 
-      if ( FormField.FormGuid == Guid.Empty )
+      if ( FormField.LayoutGuid == Guid.Empty )
       {
         this.LogValue ( "Form Guid Error." );
 
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
-      if ( FormField.UserCommonName == String.Empty )
-      {
-        this.LogValue ( "User common name missing." );
-
-        return EvEventCodes.Identifier_User_Id_Error;
-      }
-
       //
       // If the action is set to delete the object.
       // 
-      if ( FormField.Action == EvFormFields.Action_Delete )
+      if ( FormField.Title == String.Empty 
+        && FormField.Design.Instructions == String.Empty )
       {
         iReturn = _DalFormFields.DeleteItem ( FormField );
         this.LogClass ( _DalFormFields.Log );
@@ -406,7 +398,6 @@ namespace Evado.Bll.Clinical
       for ( int Count = 0; Count < Items.Count; Count++ )
       {
         EdRecordField FormItem = (EdRecordField) Items [ Count ];
-        FormItem.UserCommonName = Form.UserCommonName;
         iReturn = _DalFormFields.DeleteItem ( FormItem );
         if ( iReturn < EvEventCodes.Ok )
         {

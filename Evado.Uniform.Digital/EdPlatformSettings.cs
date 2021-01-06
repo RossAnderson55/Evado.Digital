@@ -387,7 +387,7 @@ namespace Evado.UniForm.Clinical
         optionlist );
 
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "1" );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // create the version selectoin field.
@@ -400,7 +400,7 @@ namespace Evado.UniForm.Clinical
         this.Session.DataBaseUpdateOrderBy.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "1" );
 
       //
@@ -785,7 +785,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       if ( this.Session.AuditTableName == EvDataChange.DataChangeTableNames.EvMilestones )
@@ -814,7 +814,7 @@ namespace Evado.UniForm.Clinical
             this.Session.AuditScheduleGuid.ToString ( ),
             optionlist );
 
-          groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
           groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
         }
       }
@@ -841,7 +841,7 @@ namespace Evado.UniForm.Clinical
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -945,7 +945,7 @@ namespace Evado.UniForm.Clinical
           String.Empty,
           EvLabels.Label_Project_Id,
           dataChange.TrialId );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // Create the table of audit changes.
@@ -991,37 +991,26 @@ namespace Evado.UniForm.Clinical
             }
             else
             {
-              if ( dataChangeItem.InitialValue.Contains ( "<EvFormContent" ) == true
-                || dataChangeItem.NewValue.Contains ( "<EvFormContent" ) == true )
+
+              if ( dataChangeItem.InitialValue.Contains ( "<EvUserSignoff" ) == true
+                || dataChangeItem.NewValue.Contains ( "<EvUserSignoff" ) == true )
               {
-                this.writeFormContentValues (
-                      groupField.Table.Rows,
-                      count,
-                      dataChangeItem );
+                //
+                // Signoffs
+                //
+                this.writeSignoffValues (
+                  groupField.Table.Rows,
+                  count,
+                  dataChangeItem );
               }
               else
               {
-
-                if ( dataChangeItem.InitialValue.Contains ( "<EvUserSignoff" ) == true
-                  || dataChangeItem.NewValue.Contains ( "<EvUserSignoff" ) == true )
-                {
-                  //
-                  // Signoffs
-                  //
-                  this.writeSignoffValues (
-                    groupField.Table.Rows,
-                    count,
-                    dataChangeItem );
-                }
-                else
-                {
-                  Evado.Model.UniForm.TableRow row = new Model.UniForm.TableRow ( );
-                  row.Column [ 0 ] = count.ToString ( );
-                  row.Column [ 1 ] = dataChangeItem.ItemId;
-                  row.Column [ 2 ] = dataChangeItem.InitialValue;
-                  row.Column [ 3 ] = dataChangeItem.NewValue;
-                  groupField.Table.Rows.Add ( row );
-                }
+                Evado.Model.UniForm.TableRow row = new Model.UniForm.TableRow ( );
+                row.Column [ 0 ] = count.ToString ( );
+                row.Column [ 1 ] = dataChangeItem.ItemId;
+                row.Column [ 2 ] = dataChangeItem.InitialValue;
+                row.Column [ 3 ] = dataChangeItem.NewValue;
+                groupField.Table.Rows.Add ( row );
               }
             }
           }
@@ -1037,7 +1026,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.Audit_Data_User_Field_Title,
           dataChange.UserId );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // Define the user that updated the datachange object.
@@ -1047,7 +1036,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.Audit_Data_Date_Field_Title,
           dataChange.DateStamp.ToString ( "dd-MMM-yyy HH:mm:ss" ) );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       }//End Data change iteration loop
@@ -1193,8 +1182,8 @@ namespace Evado.UniForm.Clinical
         RowList,
         Instance,
         Item.ItemId + "Reference",
-        initialContent.Reference.ToString ( ),
-        newContent.Reference.ToString ( ) );
+        initialContent.HttpReference.ToString ( ),
+        newContent.HttpReference.ToString ( ) );
 
       //
       // FormCategory
@@ -1338,161 +1327,6 @@ namespace Evado.UniForm.Clinical
         newContent.Signoffs );
 
     }//END writeFormContentValues method
-
-    //===================================================================================
-    /// <summary>
-    /// This method process the list of ResultData changes.
-    /// </summary>
-    /// <param name="RowList">List<Evado.Model.UniForm.TableRow>: the list of rows in a table</param>
-    /// <param name="Instance">int: th instance of the change</param>
-    /// <param name="Item">EvDataChange object containing the change.</param>
-    //-----------------------------------------------------------------------------------
-    private void writeFormContentValues (
-      List<Evado.Model.UniForm.TableRow> RowList,
-      int Instance,
-      EvDataChangeItem Item )
-    {
-      System.Console.WriteLine ( "writeFormContentValues" );
-      //
-      // Initialise the methods variables and objects.
-      //
-      EvFormContent initialContent = new EvFormContent ( );
-      EvFormContent newContent = new EvFormContent ( );
-
-      if ( Item.InitialValue != String.Empty )
-      {
-        initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormContent> ( Item.InitialValue );
-      }
-
-      if ( Item.NewValue != String.Empty )
-      {
-        newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvFormContent> ( Item.NewValue );
-      }
-
-      if ( initialContent.Country != newContent.Country )
-      {
-        this.addAuditReportRow (
-             RowList,
-             Instance,
-           Item.ItemId + "_Country",
-           initialContent.Country,
-           newContent.Country );
-      }
-
-      //
-      // Finish date
-      //
-      this.writeFormStaticField (
-             RowList,
-             Instance,
-        Item.ItemId,
-        "FinishDate",
-        initialContent.FinishDate,
-        newContent.FinishDate );
-
-      //
-      // RecordSubject
-      //
-      this.writeFormStaticField (
-             RowList,
-             Instance,
-        Item.ItemId,
-        "RecordSubject",
-        initialContent.RecordSubject,
-        newContent.RecordSubject );
-
-      //
-      // StartDate
-      //
-      this.writeFormStaticField (
-             RowList,
-             Instance,
-        Item.ItemId,
-        "StartDate",
-        initialContent.StartDate,
-        newContent.StartDate );
-
-      //
-      // Signoffs
-      //
-      this.writeSignoffField (
-             RowList,
-             Instance,
-        Item.ItemId,
-        "UserSignoff",
-        initialContent.Signoffs,
-        newContent.Signoffs );
-
-    }//END writeFormContentValues method
-
-    //===================================================================================
-    /// <summary>
-    /// This method process the list of ResultData changes.
-    /// </summary>
-    /// <param name="RowList">List<Evado.Model.UniForm.TableRow>: the list of rows in a table</param>
-    /// <param name="Instance">int: the instance of the change</param>
-    /// <param name="ItemId">String: the item identifeir</param>
-    /// <param name="FieldId">String: the item field identifeir</param>
-    /// <param name="InitialStatic">EvFormStaticField initial object.</param>
-    /// <param name="NewStatic">EvFormStaticField new object</param>
-    //-----------------------------------------------------------------------------------
-    private void writeFormStaticField (
-      List<Evado.Model.UniForm.TableRow> RowList,
-      int Instance,
-      String ItemId,
-      String FieldId,
-      EvFormStaticField InitialStatic,
-      EvFormStaticField NewStatic )
-    {
-      if ( InitialStatic.CommentList != NewStatic.CommentList )
-      {
-        StringBuilder oldAnnotation = new StringBuilder ( );
-        StringBuilder newAnnotation = new StringBuilder ( );
-
-        for ( int count = 0; count < NewStatic.CommentList.Count; count++ )
-        {
-          EvFormRecordComment newComment = NewStatic.CommentList [ count ];
-
-          if ( count < InitialStatic.CommentList.Count )
-          {
-            EvFormRecordComment oldComment = InitialStatic.CommentList [ count ];
-            oldAnnotation.Append ( oldComment.CommentType
-              + ": " + oldComment.Content
-              + " by " + oldComment.UserCommonName
-              + " on " + oldComment.stCommentDate );
-
-            newAnnotation.Append ( newComment.CommentType
-              + ": " + newComment.Content
-              + " by " + newComment.UserCommonName
-              + " on " + newComment.stCommentDate );
-          }
-          else
-          {
-            newAnnotation.Append ( newComment.CommentType
-              + ": " + newComment.Content
-              + " by " + newComment.UserCommonName
-              + " on " + newComment.stCommentDate );
-          }
-        }
-
-        this.addAuditReportRow (
-             RowList,
-             Instance,
-           ItemId + "_" + FieldId + "_Annotation",
-           oldAnnotation.ToString ( ),
-           newAnnotation.ToString ( ) );
-      }
-
-      if ( InitialStatic.Queried != NewStatic.Queried )
-      {
-        this.addAuditReportRow (
-             RowList,
-             Instance,
-           ItemId + "_" + FieldId + "_Queried",
-           InitialStatic.Queried.ToString ( ),
-           NewStatic.Queried.ToString ( ) );
-      }
-    }//END writeFormStaticField method
 
     //===================================================================================
     /// <summary>
@@ -1814,7 +1648,7 @@ namespace Evado.UniForm.Clinical
     //  ------------------------------------------------------------------------------
     private void getRecord_Audit_SelectionGroup ( Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ("getRecord_Audit_SelectionGroup" );
+      this.LogMethod ( "getRecord_Audit_SelectionGroup" );
       this.LogValue ( "AuditTableName: " + this.Session.AuditTableName );
       // 
       // Initialise the methods variables and objects.
@@ -1986,7 +1820,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -2007,7 +1841,7 @@ namespace Evado.UniForm.Clinical
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -2034,7 +1868,7 @@ namespace Evado.UniForm.Clinical
             this.Session.AuditRecordItemGuid.ToString ( ),
             optionlist );
 
-          groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
           groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
         }//END option list exists.
@@ -2108,11 +1942,11 @@ namespace Evado.UniForm.Clinical
 
         this.LogClass ( this._Bll_ApplicationSettings.Log );
 
-        //this.LogDebugValue ( "Loaded Modules: " + this.ApplicationObjects.ApplicationProfile.LoadedModules );
+        //this.LogDebug ( "Loaded Modules: " + this.ApplicationObjects.ApplicationProfile.LoadedModules );
 
-        //this.LogDebugValue ( "Parameter Count: " + this.ApplicationObjects.ApplicationProfile.Parameters.Count );
+        //this.LogDebug ( "Parameter Count: " + this.ApplicationObjects.ApplicationProfile.Parameters.Count );
 
-        //this.LogDebugValue ( "ProHiddenFields: " + this.ApplicationObjects.ApplicationProfile.ProHiddenFields );
+        //this.LogDebug ( "ProHiddenFields: " + this.ApplicationObjects.ApplicationProfile.ProHiddenFields );
 
         this.ApplicationObjects.PlatformSettings.Version = this.ApplicationObjects.FullVersion;
 
@@ -2264,7 +2098,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.Version.ToString ( ),
         EvLabels.Application_Profile_Version_Field_Label,
         this.ApplicationObjects.PlatformSettings.Version, 30 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       // 
@@ -2274,7 +2108,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Application_Profile_Application_Url_Field_Title,
         this.ApplicationObjects.ApplicationUrl );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home Reset url
@@ -2283,7 +2117,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Application_Profile_Reset_Url_Field_Title,
         this.ApplicationObjects.PasswordResetUrl );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home support email address
@@ -2292,7 +2126,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Application_Support_Email_Address_Field_Title,
         this.ApplicationObjects.SupportEmailAddress );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home support email address
@@ -2301,7 +2135,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Application_NoReply_Email_Address_Field_Title,
         this.ApplicationObjects.NoReplyEmailAddress );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
     }//END createGeneralGroup Method
@@ -2343,7 +2177,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.Lite_Max_Subject_No.ToString ( ),
         EvLabels.Settings_Lite_Trial_Max_Subject_No_Field_Label,
         this.ApplicationObjects.PlatformSettings.LiteMaxSubjectNo, 0, 100000 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // create the lite trial maximum subject number field.
@@ -2352,7 +2186,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.Standard_Max_Subject_No.ToString ( ),
         EvLabels.Settings_Standard_Trial_Max_Subject_No_Field_Label,
         this.ApplicationObjects.PlatformSettings.StandardMaxSubjectNo, 0, 100000 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
@@ -2363,7 +2197,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.DemoAccountExpiryDays.ToString ( ),
         EvLabels.Settings_Demo_Account_Expiry_Field_Label,
         this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays, 0, 365 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // create the demonstratoin page video URL .
@@ -2372,19 +2206,18 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.DemoRegistrationVideoUrl.ToString ( ),
         EvLabels.Settings_Demo_Video_URL_Field_Label,
         this.ApplicationObjects.PlatformSettings.DemoRegistrationVideoUrl, 100 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       //
       // Create the Loaded modules list
       //
-      List<EvOption> loadedModulesList = Model.Digital.EdPlatform.getModuleList ( false );
+      List<EvOption> loadedModulesList = Model.Digital.EdPlatform.getModuleList ( );
 
       // 
       // Create the hidden milestone fields
       // 
       this.LogDebug ( "LoadedModules: " + this.ApplicationObjects.PlatformSettings.LoadedModules );
-      this.LogDebug ( "DepersonalisedAccess: " + this.ApplicationObjects.PlatformSettings.DepersonalisedAccess );
 
       pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdPlatform.SettingFieldNames.LoadedModules.ToString ( ),
@@ -2392,7 +2225,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Application_Profile_Loaded_Modules_Description,
         this.ApplicationObjects.PlatformSettings.LoadedModules,
         loadedModulesList );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the regulatory reports options
@@ -2406,7 +2239,7 @@ namespace Evado.UniForm.Clinical
         stOptionListValue,
         50,
         5 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the display site dashboard field
@@ -2415,7 +2248,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.Display_Site_Dashboard.ToString ( ),
         EvLabels.Application_Profile_Display_Site_Dashboard_Field_Label,
         this.ApplicationObjects.PlatformSettings.DisplaySiteDashboard );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the help url field
@@ -2425,7 +2258,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Application_Profile_Help_Url_Field_Label,
         this.ApplicationObjects.PlatformSettings.HelpUrl,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "createEmailGroup" );
 
@@ -2470,7 +2303,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Application_Profile_SMTP_Server_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpServer,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the SMTP Server
@@ -2479,7 +2312,7 @@ namespace Evado.UniForm.Clinical
         Model.Digital.EdPlatform.SettingFieldNames.SmtpServerPort.ToString ( ),
         EvLabels.Application_Profile_SMTP_Port_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpServerPort, 0, 650000 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the SMTP user
@@ -2489,7 +2322,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Application_Profile_SMTP_User_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpUserId,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the SMTP user
@@ -2499,7 +2332,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Application_Profile_SMTP_Password_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpPassword,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "createEmailGroup" );
     }//END createEmailGroup Method
@@ -2582,7 +2415,7 @@ namespace Evado.UniForm.Clinical
         stOptionListValue,
         50,
         5 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the disease list options
@@ -2596,7 +2429,7 @@ namespace Evado.UniForm.Clinical
         stOptionListValue,
         50,
         5 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the disease list options
@@ -2610,7 +2443,7 @@ namespace Evado.UniForm.Clinical
         stOptionListValue,
         50,
         5 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the disease list options
@@ -2624,7 +2457,7 @@ namespace Evado.UniForm.Clinical
         stOptionListValue,
         50,
         5 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END createSelectionListsGroup Method
 
@@ -2662,7 +2495,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false
+        if ( this.Session.UserProfile.hasManagementAccess == false
           && this.Session.UserProfile.hasRecordAccess == false )
         {
           this.LogIllegalAccess (

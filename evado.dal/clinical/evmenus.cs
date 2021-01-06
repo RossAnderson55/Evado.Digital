@@ -325,7 +325,7 @@ namespace Evado.Dal.Clinical
       //
       // If the item had project management ensure that administrators also have access.
       //
-      if ( MenuItem.hasRole ( Evado.Model.Digital.EvRoleList.Trial_Manager ) == true
+      if ( MenuItem.hasRole ( Evado.Model.Digital.EvRoleList.Manager ) == true
         && MenuItem.hasRole ( Evado.Model.Digital.EvRoleList.Administrator ) == false )
       {
         MenuItem.addRole ( Evado.Model.Digital.EvRoleList.Administrator );
@@ -368,7 +368,14 @@ namespace Evado.Dal.Clinical
       {
         MenuItem.Modules = MenuItem.Modules.Replace (
           "Clinical_Module",
-          Evado.Model.Digital.EvModuleCodes.Trial_Module.ToString ( ) );
+          Evado.Model.Digital.EvModuleCodes.Design_Module.ToString ( ) +";"
+          + Evado.Model.Digital.EvModuleCodes.Record_Module.ToString ( ) );
+      }
+      if ( MenuItem.Modules.Contains ( "Registry_Module" ) == true )
+      {
+        MenuItem.Modules = MenuItem.Modules.Replace (
+          "Registry_Module",
+          Evado.Model.Digital.EvModuleCodes.Record_Module.ToString ( ) );
       }
 
       if ( MenuItem.Modules.Contains ( "Management_Module" ) == false
@@ -379,13 +386,6 @@ namespace Evado.Dal.Clinical
           Evado.Model.Digital.EvModuleCodes.Management_Module.ToString ( ) );
       }
 
-      if ( MenuItem.Modules.Contains ( "Registry_Module" ) == false
-        && MenuItem.Modules.Contains ( "Registry" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Registry",
-          Evado.Model.Digital.EvModuleCodes.Registry_Module.ToString ( ) );
-      }
 
       MenuItem.Modules = MenuItem.Modules.Replace ( ";;", ";" );
       MenuItem.Modules = MenuItem.Modules.Replace ( " ", String.Empty);

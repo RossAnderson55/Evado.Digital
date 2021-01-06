@@ -35,13 +35,13 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the form record field data object.
   /// </summary>
-  public class EdRecordFields : EvDalBase
+  public class EdRecordValues : EvDalBase
   {
     #region class initialisation method.
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EdRecordFields ( )
+    public EdRecordValues ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordFields.";
     }
@@ -49,7 +49,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EdRecordFields ( EvClassParameters Settings )
+    public EdRecordValues ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordFields.";
@@ -333,7 +333,9 @@ namespace Evado.Dal.Clinical
     /// 2. Update the values from formfield object to the array of sql query parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecordField RecordField )
+    private void SetParameters ( 
+      SqlParameter [ ] cmdParms, 
+      EdRecordField RecordField )
     {
       this.LogMethod ( "SetParameters method" );
       //
@@ -389,6 +391,7 @@ namespace Evado.Dal.Clinical
       if ( RecordField.Design.TypeId == Evado.Model.EvDataTypes.Special_Matrix
         || RecordField.Design.TypeId == Evado.Model.EvDataTypes.Table )
       {
+
         serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( RecordField.Table );
         cmdParms [ 5 ].Value = serialisedTableStructure;
         cmdParms [ 3 ].Value = String.Empty;
@@ -459,10 +462,10 @@ namespace Evado.Dal.Clinical
       // 
       // Fill the evForm object.l
       //
-      recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_RECORD_FIELDS_GUID );
+      recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_RECORD_FIELDS_GUID );
       recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORDS_GUID );
-      recordField.FormGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_FORMS_GUID );
-      recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_FORM_FIELDS_GUID );
+      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_FORMS_GUID );
+      recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FORM_FIELDS_GUID );
 
       recordField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
       String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
@@ -484,19 +487,6 @@ namespace Evado.Dal.Clinical
             recordField.TypeId = EvDataTypes.Special_Matrix;
             break;
           }
-        case "medication_summary":
-        case "special_medication_summar":
-          {
-            recordField.TypeId = EvDataTypes.Special_Medication_Summary;
-            break;
-          }
-        case "subject_demographics":
-        case "special_subject_demograph":
-        case "demographics":
-          {
-            recordField.TypeId = EvDataTypes.Special_Subject_Demographics;
-            break;
-          }
         default:
           {
             recordField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
@@ -512,10 +502,11 @@ namespace Evado.Dal.Clinical
       string xmlDesign = EvSqlMethods.getString ( Row, "TCI_XmlData" );
       if ( xmlDesign != string.Empty )
       {
+        xmlDesign = xmlDesign.Replace ( "EvFormFieldDesign", "EdRecordFieldDesign" );
         xmlDesign = xmlDesign.Replace ( "<TypeId />", "<TypeId>" + recordField.TypeId + "</TypeId>" );
         xmlDesign = xmlDesign.Replace ( "Check_Button_List", "Check_Box_List" );
-        xmlDesign = xmlDesign.Replace ( "Subject_Demographics", "Special_Subject_Demographics" );
-        xmlDesign = xmlDesign.Replace ( "Medication_Summary", "Special_Medication_Summary" );
+        xmlDesign = xmlDesign.Replace ( "Subject_Demographics", "Table" );
+        xmlDesign = xmlDesign.Replace ( "Medication_Summary", "Table" );
         xmlDesign = xmlDesign.Replace ( "Matrix", "Special_Matrix" );
 
         recordField.Design = Evado.Model.EvStatics.DeserialiseObject<EdRecordFieldDesign> ( xmlDesign );
@@ -527,10 +518,9 @@ namespace Evado.Dal.Clinical
         recordField.Design.FieldCategory = EvSqlMethods.getString ( Row, "TCI_FIELD_CATEGORY" );
         recordField.Design.DefaultValue = EvSqlMethods.getString ( Row, "TCI_DEFAULT_VALUE" );
         recordField.Design.SummaryField = EvSqlMethods.getBool ( Row, "TCI_SUMMARY_FIELD" );
-        recordField.Design.MultiLineTextField = EvSqlMethods.getBool ( Row, "TCI_MULTI_LINE_TEXT_FIELD" );
         recordField.Design.InitialOptionList = EvSqlMethods.getString ( Row, "TCI_INITIAL_OPTION_LIST" );
         recordField.Design.Options = EvSqlMethods.getString ( Row, "TCI_OPTIONS" );
-        recordField.Design.Section = EvSqlMethods.getString ( Row, "TCI_SECTION" );
+        recordField.Design.SectionNo = EvSqlMethods.getInteger ( Row, "TCI_SECTION" );
         recordField.Design.Instructions = EvSqlMethods.getString ( Row, "TCI_INSTRUCTIONS" );
         recordField.Design.HttpReference = EvSqlMethods.getString ( Row, "TCI_Reference" );
         recordField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_START" );
@@ -569,8 +559,6 @@ namespace Evado.Dal.Clinical
       }
 
       _AnnotationText = EvSqlMethods.getString ( Row, "TRI_Annotation" );
-
-      recordField.UpdatedByUserId = EvSqlMethods.getString ( Row, "TRI_UpdatedByUserId" );
       recordField.Updated = EvSqlMethods.getString ( Row, "TRI_UpdatedBy" );
       recordField.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TRI_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
       recordField.BookedOutBy = EvSqlMethods.getString ( Row, "TRI_BookedOutBy" );
@@ -1085,6 +1073,9 @@ namespace Evado.Dal.Clinical
         Field.ItemText = EvSqlMethods.getString ( Row, "TCI_Table" );
       }
 
+      Field.ItemText = Field.ItemText.Replace ( "EvFormFieldTable", "EdRecordTable" );
+      Field.ItemText = Field.ItemText.Replace ( "EvFormFieldTableColumnHeader", "EdRecordTableHeader" );
+      Field.ItemText = Field.ItemText.Replace ( "EvFormFieldTableRow", "EdRecordTableRow" );
       // 
       // Deserialize the formfield item text to the formfield table. 
       // 
@@ -1664,7 +1655,7 @@ namespace Evado.Dal.Clinical
       //
       for ( int i = 0; i < Report.Queries.Length; i++ )
       {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Trial )
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Application )
         {
           cmdParms [ 0 ].Value = Report.Queries [ i ].Value;
         }
@@ -1674,7 +1665,7 @@ namespace Evado.Dal.Clinical
           cmdParms [ 1 ].Value = Report.Queries [ i ].Value;
         }
 
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Id )
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
         {
           cmdParms [ 2 ].Value = Report.Queries [ i ].Value;
         }
@@ -2281,8 +2272,7 @@ namespace Evado.Dal.Clinical
           continue;
         }
 
-        field.UpdatedByUserId = FormRecord.UpdatedByUserId;
-
+        field.LayoutId = FormRecord.LayoutId;
 
         //
         // If Guid is empty, add new field else update field.
@@ -2397,8 +2387,6 @@ namespace Evado.Dal.Clinical
       switch ( RecordField.Design.TypeId )
       {
         case EvDataTypes.Signature:
-        case EvDataTypes.Special_Medication_Summary:
-        case EvDataTypes.Special_Subject_Demographics:
         case EvDataTypes.Streamed_Video:
         case EvDataTypes.External_Image:
         case EvDataTypes.Html_Content:
@@ -2790,7 +2778,7 @@ namespace Evado.Dal.Clinical
       };
       cmdParms [ 0 ].Value = RecordField.Guid;
       cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 2 ].Value = RecordField.UpdatedByUserId;
+      cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 3 ].Value = DateTime.Now;
 
       //

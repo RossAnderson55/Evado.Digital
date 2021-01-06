@@ -95,32 +95,14 @@ namespace Evado.Model.Digital
       Null = 0,
 
       /// <summary>
+      /// This enumeration defines the form access roles is a reader.
+      /// </summary>
+      Record_Reader,
+
+      /// <summary>
       /// This enumeration defines the record author role this person is able to update the form content.
       /// </summary>
       Record_Author,
-
-      /// <summary>
-      /// This enumeration defines the patient record editor roles this user is able to update the form contents 
-      /// with registed access to various sections.
-      /// </summary>
-      Patient,
-
-      /// <summary>
-      /// This enumeration defines the record monitor role this person is able to review, query annotate the record if it 
-      /// is in Submitted state.
-      /// </summary>
-      Monitor,
-
-      /// <summary>
-      /// TThis enumeration defines the record monitor role this person is able to review, query annotate the record if it 
-      /// is in Submitted, or source data viewed state.  And edit the data if the record is in locked state.
-      /// </summary>
-      Data_Manager,
-
-      /// <summary>
-      /// This enumerate defiens the record view mode, and has the same access as the Null role
-      /// </summary>
-      Record_Reader,
 
       /// <summary>
       /// This enumerate defiens the record the form designer role.
@@ -933,27 +915,11 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a type of a form. 
     /// </summary>
-    public EvFormRecordTypes TypeId
+    public EdRecordTypes TypeId
     {
       get
       {
         return this.Design.TypeId;
-      }
-    }
-
-    private string _UpdatedByUserId = String.Empty;
-    /// <summary>
-    /// This property contains a user identifier who updates a form. 
-    /// </summary>
-    public string UpdatedByUserId
-    {
-      get
-      {
-        return this._UpdatedByUserId;
-      }
-      set
-      {
-        this._UpdatedByUserId = value;
       }
     }
 
@@ -1077,22 +1043,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region class methods
-
-    // ==================================================================================
-    /// <summary>
-    /// Ttis method updates formId if has not been set.
-    /// </summary>
-    //  ----------------------------------------------------------------------------------
-    public void updateCommonFormId ( )
-    {
-      if ( this.LayoutId != String.Empty )
-      {
-        return;
-      }
-
-     this._LayoutId =  EdRecord.getCommonFormId ( this.TypeId );
-
-    }//END updateObjectValue method.
 
     //  =================================================================================
     /// <summary>
@@ -1228,21 +1178,8 @@ namespace Evado.Model.Digital
       //
       switch ( UserProfile.RoleId )
       {
-        case EvRoleList.Patient:
-          {
-            if ( this.State == EdRecordObjectStates.Empty_Record
-              || this.State == EdRecordObjectStates.Draft_Record
-              || this.State == EdRecordObjectStates.Completed_Record )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.Patient;
-              break;
-            }
-
-            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            break;
-          }
-        case EvRoleList.Site_User:
-        case EvRoleList.Trial_Coordinator:
+        case EvRoleList.Application_User:
+        case EvRoleList.Coordinator:
           {
             if ( UserProfile.hasRecordEditAccess == true
               && ( this.State == EdRecordObjectStates.Empty_Record
@@ -1254,26 +1191,6 @@ namespace Evado.Model.Digital
               break;
             }
 
-            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            break;
-          }
-        case EvRoleList.Monitor:
-          {
-            if ( this.State == EdRecordObjectStates.Submitted_Record )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.Monitor;
-              break;
-            }
-            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            break;
-          }
-        case EvRoleList.Data_Manager:
-          {
-            if ( this.State == EdRecordObjectStates.Submitted_Record )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.Data_Manager;
-              break;
-            }
             this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             break;
           }
@@ -1313,10 +1230,8 @@ namespace Evado.Model.Digital
 
         foreach ( EdRecordField field in this._Fields )
         {
-          if ( field.Design.Section == section.No.ToString ( )
-            || field.Design.Section.Trim ( ) == section.Title.Trim ( ) )
+          if ( field.Design.SectionNo == section.No )
           {
-            field.Design.Section = section.Title;
             field.Order = order;
 
             order++;
@@ -1335,11 +1250,11 @@ namespace Evado.Model.Digital
       //
       foreach ( EdRecordField field in this._Fields )
       {
-        string section = field.Design.Section.Trim ( );
+        int section = field.Design.SectionNo;
 
         if ( stSectionindex.Contains ( section + CONST_DELIMITER ) == false )
         {
-          field.Design.Section = String.Empty;
+          field.Design.SectionNo = 0;
           field.Order = order;
 
           order++;
@@ -1464,7 +1379,7 @@ namespace Evado.Model.Digital
 
 
         case FormClassFieldNames.Reference:
-          return this._Design.Reference;
+          return this._Design.HttpReference;
 
         case FormClassFieldNames.FormCategory:
           return this._Design.RecordCategory;
@@ -1473,7 +1388,7 @@ namespace Evado.Model.Digital
           return this._Design.TypeId.ToString ( );
 
         case FormClassFieldNames.JavaScript:
-          return this._Design.JavaValidationScript;
+          return this._Design.JavaScript;
 
         case FormClassFieldNames.HasCsScript:
           return this._Design.hasCsScript.ToString ( );
@@ -1639,7 +1554,7 @@ namespace Evado.Model.Digital
 
         case FormClassFieldNames.Reference:
           {
-            this._Design.Reference = Value;
+            this._Design.HttpReference = Value;
             return;
           }
 
@@ -1650,7 +1565,7 @@ namespace Evado.Model.Digital
           }
         case FormClassFieldNames.TypeId:
           {
-            this._Design.TypeId = EvcStatics.Enumerations.parseEnumValue<EvFormRecordTypes> ( Value );
+            this._Design.TypeId = EvcStatics.Enumerations.parseEnumValue<EdRecordTypes> ( Value );
             return;
           }
         case FormClassFieldNames.HasCsScript:
@@ -1724,16 +1639,16 @@ namespace Evado.Model.Digital
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      list.Add ( new EvOption ( EvFormRecordTypes.Null.ToString ( ), String.Empty ) );
+      list.Add ( new EvOption ( EdRecordTypes.Null.ToString ( ), String.Empty ) );
 
       //
       // Add items from option object to the return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Normal_Record ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Normal_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Updatable_Record ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Updatable_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Questionnaire ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Questionnaire ) );
 
       return list;
     }//END getRecordTypes method
@@ -1761,16 +1676,16 @@ namespace Evado.Model.Digital
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      list.Add ( new EvOption ( EvFormRecordTypes.Null.ToString ( ), String.Empty ) );
+      list.Add ( new EvOption ( EdRecordTypes.Null.ToString ( ), String.Empty ) );
 
       //
       // Pull items' value from optoin object and add to the return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Normal_Record ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Normal_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Questionnaire ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Questionnaire ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EvFormRecordTypes.Updatable_Record ) );
+      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Updatable_Record ) );
 
       return list;
     }//END getCommonFormTypes method
@@ -1925,80 +1840,6 @@ namespace Evado.Model.Digital
       return list;
 
     }//ENd getRptRecordStates method
-
-    //  =================================================================================
-    /// <summary>
-    /// This static method returns the form identifier for a common form type.
-    /// </summary>
-    /// <param name="TypeId">FormRecordTypes: a type identifier</param>
-    /// <returns>string: a common form identifier</returns>
-    //  ---------------------------------------------------------------------------------
-    public static string getCommonFormId ( 
-      EvFormRecordTypes TypeId )
-    {
-      //
-      // Return the form identifier for the frorm type.
-      //
-      switch ( TypeId )
-      {
-        case EvFormRecordTypes.Adverse_Event_Report:
-          {
-            return "AE";
-          }
-        case EvFormRecordTypes.Concomitant_Medication:
-          {
-            return "CCM";
-          }
-        case EvFormRecordTypes.Serious_Adverse_Event_Report:
-          {
-            return "SAE";
-          }
-        case EvFormRecordTypes.Protocol_Exception:
-          {
-            return "PE";
-          }
-        case EvFormRecordTypes.Protocol_Variation:
-          {
-            return "PV";
-          }
-        case EvFormRecordTypes.Subject_Record:
-          {
-            return "TS";
-          }
-        case EvFormRecordTypes.Periodic_Followup:
-          {
-            return "PPF";
-          }
-        case EvFormRecordTypes.Patient_Record:
-          {
-            return "PR";
-          }
-        case EvFormRecordTypes.Informed_Consent:
-        //case EvFormRecordTypes.Informed_Consent_1:
-          {
-            return "IC";
-          }
-        /*
-      case EvFormRecordTypes.Informed_Consent_2:
-        {
-          return "IC2";
-          break;
-        }
-      case EvFormRecordTypes.Informed_Consent_3:
-        {
-          return "IC3";
-        }
-      case EvFormRecordTypes.Informed_Consent_4:
-        {
-          return "IC4";
-        }*/
-      }
-      //
-      // Retuirn the form id
-      //
-      return String.Empty;
-
-    }//END getCommonFormId method.
     #endregion
 
   }//END class EvForm

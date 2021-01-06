@@ -60,9 +60,6 @@ namespace Evado.Dal.Clinical
         this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._Dal_FormSections = new EdRecordSections ( this.ClassParameters );
-
-      this._Dal_FormFields = new EdRecordLayoutFields ( this.ClassParameters );
     }
 
     #endregion
@@ -77,74 +74,67 @@ namespace Evado.Dal.Clinical
     //
     // Define the Selection selectionList query string constant.
     //
-    private const string _sqlQuery_View = "Select * FROM EvForm_View ";
+    private const string _sqlQuery_View = "Select * FROM ED_RECORD_LAYOOUT_VIEW ";
 
     // 
     // The SQL Store Procedure constants
     // 
-    private const string _STORED_PROCEDURE_AddItem = "usr_Form_add";
-    private const string _STORED_PROCEDURE_UpdateItem = "usr_Form_update";
-    private const string _STORED_PROCEDURE_DeleteItem = "usr_Form_delete";
-    private const string _STORED_PROCEDURE_WithdrawItem = "usr_Form_withdraw";
-    private const string _STORED_PROCEDURE_CopyItem = "usr_Form_copy";
+    private const string STORED_PROCEDURE_ADD_ITEM = "USR_RECORD_LAYOUT_ADD";
+    private const string STORED_PROCEDURE_UPDATE_ITEM = "USR_RECORD_LAYOUT_UPDATE";
+    private const string STORED_PROCEDURE_DELETE_ITEM = "USR_RECORD_LAYOUT_DELETE";
+    private const string STORED_PROCEDURE_WithdrawItem = "USR_RECORD_LAYOUT_WITHDRAWN";
+    private const string STORED_PROCEDURE_COPY_ITEM = "USR_RECORD_LAYOUT_COPY";
 
     //
     // The field and parameter values for the SQl customer filter 
     //
     private const string DB_CUSTOMER_GUID = "CU_GUID";
-    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
+    private const string DB_LAYOUT_GUID = "EDRL_GUID";
+    private const string DB_APPLICATION_ID = "APPLICATION_ID";
+    private const string DB_LAYOUT_ID = "LAYOUT_ID";
+    private const string DB_STATE = "EDRL_STATE";
+    private const string DB_TITLE = "EDRL_TITLE";
+    private const string DB_HTTP_REFERENCE = "EDRL_HTTP_REFERENCE";
+    private const string DB_INSTRUCTIONS = "EDRL_INSTRUCTIONS";
+    private const string DB_DESCRIPTION = "EDRL_DESCRIPTION";
+    private const string DB_UPDATE_REASON = "EDRL_UPDATE_REASON";
+    private const string DB_RECORD_CATEGORY = "EDRL_RECORD_CATEGORY";
+    private const string DB_TYPE_ID = "EDRL_TYPE_ID";
+    private const string DB_VERSION = "EDRL_VERSION";
+    private const string DB_JAVA_SCRIPT = "EDRL_JAVA_SCRIPT";
+    private const string DB_HAS_CS_SCRIPT = "EDRL_HAS_CS_SCRIPT";
+    private const string DB_LANGUAGE = "EDRL_LANGUAGE";
+    private const string DB_CDASH_METADATA = "EDRL_CDASH_METADATA";
+    private const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
+    private const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
+    private const string DB_UPDATED_DATE = "EDRL_UPDATED_DATE";
 
     /// <summary>
     /// Define the query parameter names.
     /// </summary>
-    private const string PARM_Guid = "@Guid";
-    private const string PARM_Uid = "@Uid";
-    private const string PARM_TypeId = "@TypeId";
-    private const string PARM_FormId = "@FormId";
-    private const string PARM_Title = "@Title";
-    private const string PARM_Sampled = "@Sampled";
-    private const string PARM_Reference = "@Reference";
-    private const string PARM_Instructions = "@Instructions";
-    private const string PARM_TrialId = "@TrialId";
-    private const string PARM_XmlValidationRules = "@XmlValidationRules";
-    private const string PARM_XmlData = "@XmlData";
-    private const string PARM_Authors = "@Authors";
-    private const string PARM_ReviewedByUserId = "@ReviewedByUserId";
-    private const string PARM_ReviewedBy = "@ReviewedBy";
-    private const string PARM_ReviewedDate = "@ReviewedDate";
-    private const string PARM_ApprovedByUserId = "@ApprovedByUserId";
-    private const string PARM_ApprovedBy = "@ApprovedBy";
-    private const string PARM_ApprovalDate = "@ApprovalDate";
-    private const string PARM_Version = "@Version";
-    private const string PARM_State = "@State";
-    private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
-    private const string PARM_UpdatedBy = "@UpdatedBy";
-    private const string PARM_UpdateDate = "@UpdateDate";
-    private const string PARM_Copy = "@Copy";
-    //new columns
-    private const string PARM_TEMPLATE_NAME = "@TEMPLATE_NAME";
-    private const string PARM_JAVA_VALIDATION_SCRIPT = "@JAVA_VALIDATION_SCRIPT";
-    private const string PARM_FORM_CATEGORY = "@FORM_CATEGORY";
-    private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
-    private const string PARM_HAS_SECTION_NAVIGATION = "@HAS_SECTION_NAVIGATION";
-    private const string PARM_HIDDEN_FIELDS = "@HIDDEN_FIELDS";
-    private const string PARM_REGULATORY_TEMPLATE = "@REGULATORY_TEMPLATE";
-    private const string PARM_HIDE_ANNOTATION_DURING_EDITING = "@HIDE_ANNOTATION_DURING_EDITING";
-    private const string PARM_TRIAL_SITES = "@TRIAL_SITES";
-    private const string PARM_GROUPS = "@GROUPS";
+    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
+    private const string PARM_LAYOUT_GUID = "@GUID";
+    private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
+    private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
+    private const string PARM_STATE = "@STATE";
+    private const string PARM_TITLE = "@TITLE";
+    private const string PARM_HTTP_REFERENCE = "@HTTP_REFERENCE";
+    private const string PARM_INSTRUCTIONS = "@INSTRUCTIONS";
     private const string PARM_DESCRIPTION = "@DESCRIPTION";
     private const string PARM_UPDATE_REASON = "@UPDATE_REASON";
-
-
-
-
-    /// <summary>
-    /// This constant defines a string parameter as CDASH_METADATA for the Subject object. 
-    /// </summary>
+    private const string PARM_RECORD_CATEGORY = "@RECORD_CATEGORY";
+    private const string PARM_TYPE_ID = "@TYPE_ID";
+    private const string PARM_VERSION = "@VERSION";
+    private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
+    private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
+    private const string PARM_LANGUAGE = "@_LANGUAGE";
     private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
+    private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
+    private const string PARM_UPDATED_BY = "@UPDATED_BY";
+    private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
+    
+    private const string PARM_Copy = "@Copy";
 
-    EdRecordSections _Dal_FormSections = new EdRecordSections ( );
-    EdRecordLayoutFields _Dal_FormFields = new EdRecordLayoutFields ( );
     // 
     // Define the SQL query string variable.
     //
@@ -172,43 +162,27 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_FormId, SqlDbType.NVarChar, 20),
-        new SqlParameter( PARM_Title, SqlDbType.NVarChar, 80),
-        new SqlParameter( PARM_Reference, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_Instructions, SqlDbType.NText),
-        new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 25),
-        new SqlParameter( PARM_XmlValidationRules, SqlDbType.NText),
-        new SqlParameter( PARM_XmlData, SqlDbType.NText),
-        new SqlParameter( PARM_Authors, SqlDbType.NText),
-        new SqlParameter( PARM_ReviewedByUserId, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ReviewedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_ReviewedDate, SqlDbType.DateTime),
-        new SqlParameter( PARM_ApprovedByUserId, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_ApprovedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_ApprovalDate, SqlDbType.DateTime ),
-        new SqlParameter( PARM_Version, SqlDbType.NVarChar, 5),
-        new SqlParameter( PARM_State, SqlDbType.NVarChar, 20),
-        new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar,100),
-        new SqlParameter( PARM_UpdatedBy, SqlDbType.NVarChar,30),
-        new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime),
-        new SqlParameter( PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayouts.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdRecordLayouts.PARM_STATE, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdRecordLayouts.PARM_TITLE, SqlDbType.NVarChar, 80),
+        new SqlParameter( EdRecordLayouts.PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayouts.PARM_INSTRUCTIONS, SqlDbType.NText),
+        new SqlParameter( EdRecordLayouts.PARM_DESCRIPTION, SqlDbType.NText),   
+        new SqlParameter( EdRecordLayouts.PARM_UPDATE_REASON, SqlDbType.NVarChar, 50),
 
-        new SqlParameter( PARM_TEMPLATE_NAME, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_JAVA_VALIDATION_SCRIPT, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_FORM_CATEGORY, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
-        new SqlParameter( PARM_HAS_SECTION_NAVIGATION, SqlDbType.Bit),
-        new SqlParameter( PARM_HIDDEN_FIELDS, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_REGULATORY_TEMPLATE, SqlDbType.Bit),
-        new SqlParameter( PARM_HIDE_ANNOTATION_DURING_EDITING, SqlDbType.Bit),
-        new SqlParameter( PARM_TRIAL_SITES, SqlDbType.NVarChar, 250), 
-        new SqlParameter( PARM_DESCRIPTION, SqlDbType.NText),   
-        new SqlParameter( PARM_UPDATE_REASON, SqlDbType.NVarChar, 50),
-
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-      
+        new SqlParameter( EdRecordLayouts.PARM_RECORD_CATEGORY, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdRecordLayouts.PARM_TYPE_ID, SqlDbType.VarChar, 25),
+        new SqlParameter( EdRecordLayouts.PARM_VERSION, SqlDbType.Float),
+        new SqlParameter( EdRecordLayouts.PARM_JAVA_SCRIPT, SqlDbType.NText),   
+        new SqlParameter( EdRecordLayouts.PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayouts.PARM_LANGUAGE, SqlDbType.VarChar, 5),
+        new SqlParameter( EdRecordLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
       };
       return cmdParms;
     }//END GetParameters class
@@ -241,45 +215,29 @@ namespace Evado.Dal.Clinical
       // 
       // Fill the parameters array with the values from the form object. 
       // 
-      cmdParms [ 0 ].Value = Form.Guid;
-      cmdParms [ 1 ].Value = Form.ApplicationId.Trim ( );
-      cmdParms [ 2 ].Value = Form.LayoutId.Trim ( );
-      cmdParms [ 3 ].Value = Form.Design.Title;
-      cmdParms [ 4 ].Value = Form.Design.Reference;
-      cmdParms [ 5 ].Value = Form.Design.Instructions;
-      cmdParms [ 6 ].Value = Form.Design.TypeId.ToString ( );
-      cmdParms [ 7 ].Value = String.Empty;
-      cmdParms [ 8 ].Value = String.Empty;
-      cmdParms [ 9 ].Value = String.Empty;
+      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
+      cmdParms [ 1 ].Value = Form.Guid;
+      cmdParms [ 2 ].Value = Form.ApplicationId.Trim ( );
+      cmdParms [ 3 ].Value = Form.LayoutId.Trim ( );
+      cmdParms [ 4 ].Value = Form.State.ToString ( );
+      cmdParms [ 5 ].Value = Form.Design.Title;
+      cmdParms [ 6 ].Value = Form.Design.HttpReference;
+      cmdParms [ 7 ].Value = Form.Design.Instructions;
+      cmdParms [ 8 ].Value = Form.Design.Description;
+      cmdParms [ 9 ].Value = Form.Design.UpdateReason.ToString ( );
 
-      cmdParms [ 10 ].Value = String.Empty;
-      cmdParms [ 11 ].Value = String.Empty;
-      cmdParms [ 12 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 13 ].Value = String.Empty;
-      cmdParms [ 14 ].Value = String.Empty;
-      cmdParms [ 15 ].Value = EvStatics.CONST_DATE_NULL;
-      cmdParms [ 16 ].Value = Form.Design.Version;
-      cmdParms [ 17 ].Value = Form.State.ToString ( );
-      cmdParms [ 18 ].Value = Form.UpdatedByUserId;
-      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 10 ].Value = Form.Design.RecordCategory;
+      cmdParms [ 11 ].Value = Form.Design.TypeId.ToString ( );
+      cmdParms [ 12 ].Value = Form.Design.Version;
+      cmdParms [ 13 ].Value = Form.Design.JavaScript;
+      cmdParms [ 14 ].Value = Form.Design.hasCsScript;
+      cmdParms [ 15 ].Value = Form.Design.Language;
+      cmdParms [ 16 ].Value = Form.cDashMetadata;
+      cmdParms [ 17 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 18 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 19 ].Value = DateTime.Now;
 
-      cmdParms [ 20 ].Value = DateTime.Now;
-      cmdParms [ 21 ].Value = Form.cDashMetadata;
-      cmdParms [ 22 ].Value = String.Empty;
-      cmdParms [ 23 ].Value = Form.Design.JavaValidationScript;
-      cmdParms [ 24 ].Value = Form.Design.RecordCategory;
-      cmdParms [ 25 ].Value = Form.Design.hasCsScript;
-      cmdParms [ 26 ].Value = false;
-      cmdParms [ 27 ].Value = false;
-      cmdParms [ 28 ].Value = String.Empty;
-      cmdParms [ 29 ].Value = false;
-
-      cmdParms [ 30 ].Value = String.Empty;
-      cmdParms [ 31 ].Value = Form.Design.Description;
-      cmdParms [ 32 ].Value = Form.Design.UpdateReason.ToString ( );
-      cmdParms [ 33 ].Value = this.ClassParameters.CustomerGuid;
-
-      }//END SetParameters class.
+    }//END SetParameters class.
 
     #endregion
 
@@ -308,97 +266,80 @@ namespace Evado.Dal.Clinical
       //
       this.LogMethod ( "getRowData method" );
 
-      EdRecord form = new EdRecord ( );
-      EdRecordSections _Dal_FormSections = new EdRecordSections ( );
+      EdRecord layout = new EdRecord ( );
 
       string Title = String.Empty;
 
       // 
       // Extract the compatible data row values to the form object. 
       // 
-      form.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_CUSTOMER_GUID );
-      form.Guid = EvSqlMethods.getGuid ( Row, "TC_Guid" );
-      form.ApplicationId = EvSqlMethods.getString ( Row, "TrialId" );
-      form.LayoutId = EvSqlMethods.getString ( Row, "FormId" );
+      layout.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_CUSTOMER_GUID );
+      layout.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
+      layout.ApplicationId = EvSqlMethods.getString ( Row, DB_APPLICATION_ID );
+      layout.LayoutId = EvSqlMethods.getString ( Row, DB_LAYOUT_ID );
+      layout.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
+        EvSqlMethods.getString ( Row, DB_STATE ) );
+      layout.Design.Title = EvSqlMethods.getString ( Row, DB_TITLE );
+      layout.Design.HttpReference = EvSqlMethods.getString ( Row, DB_HTTP_REFERENCE );
+      layout.Design.Instructions = EvSqlMethods.getString ( Row, DB_INSTRUCTIONS );
+      layout.Design.Description = EvSqlMethods.getString ( Row, DB_DESCRIPTION );
+      layout.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
+        EvSqlMethods.getString ( Row, DB_UPDATE_REASON ) );
+      layout.Design.RecordCategory = EvSqlMethods.getString ( Row, DB_RECORD_CATEGORY );
 
-      string stXmlDesign = EvSqlMethods.getString ( Row, "TC_XmlData" );
-      if ( stXmlDesign != string.Empty )
-      {
-        form.Design = Evado.Model.EvStatics.DeserialiseObject<EdRecordDesign> ( stXmlDesign );
+      layout.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> (
+         EvSqlMethods.getString ( Row, DB_TYPE_ID ) );
+      layout.Design.Version = EvSqlMethods.getFloat ( Row, DB_VERSION );
 
-      }
-      else
-      {
-        form.Design.JavaValidationScript = EvSqlMethods.getString ( Row, "TC_JAVA_VALIDATION_SCRIPT" );
-        form.Design.RecordCategory = EvSqlMethods.getString ( Row, "TC_FORM_CATEGORY" );
-        form.Design.hasCsScript = EvSqlMethods.getBool ( Row, "TC_HAS_CS_SCRIPT" );
-      }
+      layout.Design.JavaScript = EvSqlMethods.getString ( Row, DB_JAVA_SCRIPT );
+      layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, DB_HAS_CS_SCRIPT );
+      layout.Design.Language = EvSqlMethods.getString ( Row, DB_LANGUAGE );
+      layout.cDashMetadata = EvSqlMethods.getString ( Row, DB_CDASH_METADATA );
+
+      layout.Updated = EvSqlMethods.getString ( Row, DB_UPDATED_BY );
+      layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
+
+      //
+      // get layout sections.
+      //
+      this.getSections ( layout );
+
+      return layout;
+
+    }//END getRowData method.
+
+    // =====================================================================================
+    /// <summary>
+    /// This class extracts the content of the reader and loads the Checklist object 
+    /// </summary>
+    /// <param name="Row">EdRecord: a data row object containing the query results</param>
+    //  ---------------------------------------------------------------------------------
+    private void getSections ( EdRecord Layout )
+    {
+      this.LogMethod ( "getSections" );
+      //
+      // Initialise the methods object and variables.
+      //
+      EdRecordSections dal_FormSections = new EdRecordSections ( this.ClassParameters );
 
       //
       // Retrieve the form selection list.
       //
-      List<EvFormSection> sectionList = _Dal_FormSections.getSectionList ( form.Guid );
+      List<EvFormSection> sectionList = dal_FormSections.getSectionList ( Layout.Guid );
       if ( sectionList.Count > 0 )
       {
         this.LogValue ( "Form section exist and have been read in." );
-        form.Design.FormSections = sectionList;
+        Layout.Design.FormSections = sectionList;
       }
       else
       {
         this.LogValue ( "No form section exist." );
-        _Dal_FormSections.UpdateItem ( form );
+        dal_FormSections.UpdateItem ( Layout );
 
-        this.LogValue ( _Dal_FormSections.Log );
+        this.LogValue ( dal_FormSections.Log );
       }
-
-      form.Design.Title = EvSqlMethods.getString ( Row, "TC_Title" );
-      form.Design.Reference = EvSqlMethods.getString ( Row, "TC_Reference" );
-      form.Design.Instructions = EvSqlMethods.getString ( Row, "TC_Instructions" );
-      form.Design.Description = EvSqlMethods.getString ( Row, "TC_DESCRIPTION" );
-      form.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
-        EvSqlMethods.getString ( Row, "TC_UPDATE_REASON" ) );
-      if ( form.Design.TypeId == EvFormRecordTypes.Null )
-      {
-        string value = EvSqlMethods.getString ( Row, "TC_TypeId" );
-
-        if ( value == "Questionnaire" )
-        {
-          value = EvFormRecordTypes.Questionnaire.ToString ( );
-        }
-
-        form.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvFormRecordTypes> ( value );
-      }
-
-      form.Design.Version = EvSqlMethods.getFloat ( Row, "TC_Version" );
-      form.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
-        EvSqlMethods.getString ( Row, "TC_State" ) );
-      form.UpdatedByUserId = EvSqlMethods.getString ( Row, "TC_UpdatedByUserId" );
-      form.Updated = EvSqlMethods.getString ( Row, "TC_UpdatedBy" );
-      form.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TC_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
-      form.cDashMetadata = EvSqlMethods.getString ( Row, "TC_CDASH_METADATA" );
-
-      // 
-      // Update the form state to current enumeration.
-      // 
-      if ( ( int ) form.State < 0 )
-      {
-        form.State = ( EdRecordObjectStates ) Math.Abs ( ( int ) form.State );
-      }
-
-      if ( ( int ) form.Design.TypeId < 0 )
-      {
-        form.Design.TypeId = ( EvFormRecordTypes ) Math.Abs ( ( int ) form.Design.TypeId );
-      }
-
-      if ( form.Design.TypeId == EvFormRecordTypes.Assessment_Record )
-      {
-        form.Design.TypeId = EvFormRecordTypes.Normal_Record;
-      }
-
-
-      return form;
-
-    }//END getRowData method.
+      this.LogMethodEnd ( "getSections" );
+    }
 
     #endregion
 
@@ -408,7 +349,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class returns a list of form object items based on VisitId, RecordTypeId, state and orderby value
     /// </summary>
-    /// <param name="TrialId">string: (Mandatory) a trial identifier for the query.</param>
+    /// <param name="ApplicationId">string: (Mandatory) a trial identifier for the query.</param>
     /// <param name="TypeId">EvFormRecordTypes: a form record type identifier.</param>
     /// <param name="State">EvForm.FormObjecStates: a form object state identifier.</param>
     /// <param name="WithFields">Boolean: true = include fields</param>
@@ -429,28 +370,27 @@ namespace Evado.Dal.Clinical
     /// 6. Return the Forms list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public List<EdRecord> GetFormList ( 
-      string TrialId,
-      EvFormRecordTypes TypeId,
+    public List<EdRecord> getLayoutList (
+      string ApplicationId,
+      EdRecordTypes TypeId,
       EdRecordObjectStates State,
       bool WithFields )
     {
+      this.LogMethod ( "GetFormList method." );
+      this.LogDebug ( "TrialId: '{0}'", ApplicationId );
+      this.LogDebug ( "TypeId: '{0}'", TypeId );
+      this.LogDebug ( "State: '{0}'", State );
       //
       // Initialize the method status and a return list of form object 
       //
-      this.LogMethod ( "GetFormList method." );
-      this.LogDebug ( "TrialId: '{0}'", TrialId );
-      this.LogDebug ( "TypeId: '{0}'", TypeId );
-      this.LogDebug ( "State: '{0}'", State );
-
       List<EdRecord> view = new List<EdRecord> ( );
 
       //
       // Validate whether the trial identifier is not empty 
       // 
-      if ( TrialId == String.Empty )
+      if ( ApplicationId == String.Empty )
       {
-        this.LogValue ( "TrialId is null" );
+        this.LogValue ( "Appl is null" );
         return view;
       }
 
@@ -460,12 +400,12 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
         new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 30),
-        new SqlParameter( PARM_State, SqlDbType.VarChar, 20)
+        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( PARM_TYPE_ID, SqlDbType.VarChar, 30),
+        new SqlParameter( PARM_STATE, SqlDbType.VarChar, 20)
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = TrialId;
+      cmdParms [ 1 ].Value = ApplicationId;
       cmdParms [ 2 ].Value = TypeId.ToString ( );
       cmdParms [ 3 ].Value = State.ToString ( );
 
@@ -474,24 +414,24 @@ namespace Evado.Dal.Clinical
       // 
       _sqlQueryString = _sqlQuery_View
         + "WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
-        + " AND (TrialId = @TrialId ) ";
+        + " AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) ";
 
-      if ( TypeId != EvFormRecordTypes.Null )
+      if ( TypeId != EdRecordTypes.Null )
       {
-        _sqlQueryString += "AND ( TC_TypeId = @TypeId ) ";
+        _sqlQueryString += "AND ( " + EdRecordLayouts.DB_TYPE_ID + " = " + EdRecordLayouts.PARM_TYPE_ID + " ) ";
       }
 
       if ( State != EdRecordObjectStates.Null )
       {
-        _sqlQueryString += "AND ( TC_State = @State ) ";
+        _sqlQueryString += "AND ( " + EdRecordLayouts.DB_STATE + " = " + EdRecordLayouts.PARM_STATE + " ) ";
       }
       else
       {
-        _sqlQueryString += "AND NOT( TC_State = '" + EdRecordObjectStates.Withdrawn + "' ) ";
+        _sqlQueryString += "AND NOT( " + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Withdrawn + "' ) ";
 
       }
 
-      _sqlQueryString += ") ORDER BY FormId,TC_Version";
+      _sqlQueryString += ") ORDER BY " + EdRecordLayouts.DB_LAYOUT_ID + "," + EdRecordLayouts.DB_STATE+ ";";
 
       this.LogValue ( _sqlQueryString );
 
@@ -510,18 +450,14 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ count ];
 
-          EdRecord form = this.getRowData ( row );
+          EdRecord layout = this.getRowData ( row );
 
           if ( WithFields == true )
           {
-            // 
-            // Retrieve the instrument items.
-            // 
-            form.Fields = this._Dal_FormFields.GetView ( form.Guid );
-            this.LogClass ( this._Dal_FormFields.Log );
+            this.getLayoutFields ( layout );
           }
 
-          view.Add ( form );
+          view.Add ( layout );
         }//END record iteration loop
 
       }//END using method
@@ -535,11 +471,31 @@ namespace Evado.Dal.Clinical
 
     }//END GetView method.
 
+    // ==================================================================================
+    /// <summary>
+    /// This method retrieves the layout's field objects.
+    /// </summary>
+    /// <param name="Layout">EdRecord object</param>
+    //  ---------------------------------------------------------------------------------
+    private void getLayoutFields ( EdRecord Layout )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      EdRecordLayoutFields dal_FormFields = new EdRecordLayoutFields ( this.ClassParameters );
+
+      // 
+      // Retrieve the instrument items.
+      // 
+      Layout.Fields = dal_FormFields.GetView ( Layout.Guid );
+      this.LogClass ( dal_FormFields.Log );
+    }
+
     // =====================================================================================
     /// <summary>
     /// This class returns a list of option object based on the VisitId, RecordTypeId, state and selectByGuid condition
     /// </summary>
-    /// <param name="TrialId">string: (Mandatory) a trial identifier.</param>
+    /// <param name="ApplicationId">string: (Mandatory) a trial identifier.</param>
     /// <param name="TypeId">EvFormRecordTypes: a form record type identifier</param>
     /// <param name="State">EvForm.FormObjecStates: a form object state identifier</param>
     /// <param name="SelectByGuid">Boolean: true, if the list is selected by Guid</param>
@@ -558,16 +514,16 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Options list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public List<EvOption> GetList ( 
-      string TrialId, 
-      EvFormRecordTypes TypeId, 
+    public List<EvOption> GetList (
+      string ApplicationId,
+      EdRecordTypes TypeId,
       EdRecordObjectStates State, bool SelectByGuid )
     {
       //
       // Initialize the method status, a return option list and an option object
       //
       this.LogMethod ( "GetList." );
-      this.LogValue ( "TrialId: " + TrialId );
+      this.LogValue ( "TrialId: " + ApplicationId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State );
       this.LogValue ( "SelectByUid: " + SelectByGuid );
@@ -575,80 +531,37 @@ namespace Evado.Dal.Clinical
       List<EvOption> list = new List<EvOption> ( );
       EvOption option = new EvOption ( );
       list.Add ( option );
-
-      //
-      // Initialise the query parameters.
-      // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ]
-      {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 30),
-        new SqlParameter( PARM_State, SqlDbType.VarChar, 20)
-      };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = TrialId;
-      cmdParms [ 2 ].Value = TypeId.ToString ( );
-      cmdParms [ 3 ].Value = State.ToString ( );
+      List<EdRecord> recordList = new List<EdRecord> ( );
 
       //
       // Build the query string
       // 
-      _sqlQueryString = _sqlQuery_View
-        + " WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
-        + " AND ( TrialId = @TrialId ) ";
+      recordList = this.getLayoutList ( ApplicationId, TypeId, State, false );
 
-      if ( TypeId != EvFormRecordTypes.Null )
-      {
-        _sqlQueryString += "AND (TC_TypeId = @TypeId ) ";
-      }
-      if ( State != EdRecordObjectStates.Null )
-      {
-        _sqlQueryString += "AND (TC_State = @State ) ";
-      }
-      _sqlQueryString += ") ORDER BY FormId";
-
-      this.LogValue ( _sqlQueryString );
-
-      //
-      //Execute the query against the database
-      //
-      //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-      {
         // 
         // Iterate through the results extracting the role information.
         // 
-        for ( int Count = 0; Count < table.Rows.Count; Count++ )
+        foreach( EdRecord record in recordList )
         {
-          // 
-          // Extract the table row
-          // 
-          DataRow row = table.Rows [ Count ];
-
           //
           // If SelectByGuid = True then optionId is to be the objects Checklist UID
           //
           if ( SelectByGuid == true )
           {
-            option = new EvOption (
-              EvSqlMethods.getString ( row, "TC_Guid" ),
-              EvSqlMethods.getString ( row, "FormId" ) + " - " + EvSqlMethods.getString ( row, "TC_Title" ) );
+            option = new EvOption ( record.Guid.ToString(),
+              record.LayoutId + " - " + record.Title );
           }
           //
           // If SelectByGuid = False then optionId is to be the objects FieldId.
           //
           else
           {
-            option = new EvOption (
-              EvSqlMethods.getString ( row, "FormId" ),
-              EvSqlMethods.getString ( row, "FormId" ) + " - " + EvSqlMethods.getString ( row, "TC_Title" ) );
+            option = new EvOption ( record.LayoutId,
+              record.LayoutId + " - " + record.Title );
           }
           list.Add ( option );
 
         }//END iteration loop
-
-      }//END Using method
 
       //
       // Return the ArrayList.
@@ -683,7 +596,7 @@ namespace Evado.Dal.Clinical
       // Initialize the method status and the return option list
       //
       this.LogMethod ( "GetValidationList, method. " );
-      this.LogValue ( "ProjectId: " + Form.ApplicationId );
+      this.LogValue ( "ApplicationId: " + Form.ApplicationId );
       this.LogValue ( "TypeId: " + Form.Design.TypeId );
 
       List<EvOption> list = new List<EvOption> ( );
@@ -694,8 +607,8 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 30),
+        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( PARM_TYPE_ID, SqlDbType.VarChar, 30),
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
       cmdParms [ 1 ].Value = Form.ApplicationId;
@@ -705,12 +618,11 @@ namespace Evado.Dal.Clinical
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View
-        + " WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
-        + " AND (TrialId = @TrialId ) "
-        + " AND (TC_TypeId = @TypeId ) "
-        + " AND ((TC_State = '" + EdRecordObjectStates.Form_Draft + "' ) "
-        + "  OR (TC_State = '" + EdRecordObjectStates.Form_Reviewed + "' )) "
-        + ") ORDER BY FormId";
+        + "WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
+        + " AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) "
+        + " AND ((" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Draft + "' ) "
+        + "  OR (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Reviewed + "' )) "
+        + ") ORDER BY "+ EdRecordLayouts.DB_LAYOUT_ID + ";";
 
       this.LogValue ( _sqlQueryString );
 
@@ -731,8 +643,9 @@ namespace Evado.Dal.Clinical
           DataRow row = table.Rows [ Count ];
 
           EvOption option = new EvOption (
-              EvSqlMethods.getString ( row, "FormId" ),
-              EvSqlMethods.getString ( row, "FormId" ) + " - " + EvSqlMethods.getString ( row, "TC_Title" ) );
+              EvSqlMethods.getString ( row, EdRecordLayouts.DB_LAYOUT_ID ),
+              EvSqlMethods.getString ( row, EdRecordLayouts.DB_LAYOUT_ID ) 
+              + " - " + EvSqlMethods.getString ( row, EdRecordLayouts.DB_TITLE ) );
 
           this.LogValue ( " " + option.Value + " " + option.Description );
 
@@ -742,11 +655,12 @@ namespace Evado.Dal.Clinical
 
       }//END Using method
 
-      this.LogValue ( " END GetValidationList method count: " + list.Count );
+      this.LogValue ( "count: " + list.Count );
 
       //
       // Return the ArrayList.
       //
+      this.LogMethodEnd ( "GetValidationList" );
       return list;
 
     }//END GetValidationList class
@@ -778,30 +692,31 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EdRecord getForm ( Guid FormGuid )
+    public EdRecord getLayout ( Guid FormGuid )
     {
       //
       // Initialize the method status, a return form object and a form field object 
       //
-      this.LogMethod ( "getItemByGuid merhod. " );
+      this.LogMethod ( "getLayout merhod. " );
       this.LogValue ( "Form Guid: " + FormGuid );
 
-      EdRecord Form = new EdRecord ( );
+      EdRecord layout = new EdRecord ( );
       //EvFormsSections FormSection = new EvFormsSections ( );
-      Form.LayoutId = String.Empty;
+      layout.LayoutId = String.Empty;
 
       //
       // Validate whether the formGuid is not empty.
       //
       if ( FormGuid == Guid.Empty )
       {
-        return Form;
+        return layout;
       }
 
       // 
       // Generate the Selection query string.
       // 
-      this._sqlQueryString = _sqlQuery_View + " WHERE TC_Guid = @Guid;";
+      this._sqlQueryString = _sqlQuery_View 
+        + " WHERE (" + EdRecordLayouts.PARM_LAYOUT_GUID + " = " + EdRecordLayouts.DB_LAYOUT_GUID + ");";
 
 
       this.LogValue ( _sqlQueryString );
@@ -809,7 +724,7 @@ namespace Evado.Dal.Clinical
       // Initialise the query parameters.
       //
 
-      SqlParameter cmdParms = new SqlParameter ( PARM_Guid, SqlDbType.UniqueIdentifier );
+      SqlParameter cmdParms = new SqlParameter ( PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier );
       cmdParms.Value = FormGuid;
 
       //
@@ -822,7 +737,7 @@ namespace Evado.Dal.Clinical
         // 
         if ( table.Rows.Count == 0 )
         {
-          return Form;
+          return layout;
         }
 
         // 
@@ -833,24 +748,19 @@ namespace Evado.Dal.Clinical
         // 
         // Fill the role object.
         // 
-        Form = this.getRowData ( row );
+        layout = this.getRowData ( row );
 
       }//END Using method
 
       // 
-      // Retrieve the instrument items.
+      // Retrieve the layout field items.
       // 
-      Form.Fields = this._Dal_FormFields.GetView ( Form.Guid );
-      this.LogClass ( this._Dal_FormFields.Log );
-
-
-      //Form.Design.FormSections = FormSection.GetView ( Form.Guid );
-      //  this.LogValue ( FormItems.DebugLog );
+      this.getLayoutFields ( layout );
 
       //
-      // Return Checklsit data object.
+      // Return Checklist data object.
       //
-      return Form;
+      return layout;
 
     }//END getForm method
 
@@ -858,8 +768,8 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class returns a form data object using TrialId, FormId and Issued condition
     /// </summary>
-    /// <param name="TrialId">string: a trial identifier</param>
-    /// <param name="FormId">string: a form identifier</param>
+    /// <param name="ApplicationId">string: a trial identifier</param>
+    /// <param name="LayoutId">string: a form identifier</param>
     /// <param name="Issued">Boolean: true, if the form is issued</param>
     /// <returns>EvForm: a form data object</returns>
     /// <remarks>
@@ -878,25 +788,25 @@ namespace Evado.Dal.Clinical
     /// 7. Return the form data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EdRecord getForm ( 
-      string TrialId, 
-      string FormId, 
+    public EdRecord getForm (
+      string ApplicationId,
+      string LayoutId,
       bool Issued )
     {
       this.LogMethod ( "getForm method. " );
-      this.LogDebug ( "TrialId: " + TrialId );
-      this.LogDebug ( "FormId: " + FormId );
+      this.LogDebug ( "ApplicatinId: " + ApplicationId );
+      this.LogDebug ( "LayoutId: " + LayoutId );
       //
       // Initialize the method status, a return form object and a formfield object
       //
-      EdRecord Form = new EdRecord ( );
+      EdRecord layout = new EdRecord ( );
 
       //
       // If the FieldId is null then return empty instrument object.
       //
-      if ( FormId == String.Empty )
+      if ( LayoutId == String.Empty )
       {
-        return Form;
+        return layout;
       }
 
 
@@ -905,25 +815,13 @@ namespace Evado.Dal.Clinical
       //
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter(PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter(PARM_FormId, SqlDbType.Char, 10)
+        new SqlParameter( EdRecordLayouts.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.Char, 10)
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = TrialId;
-      cmdParms [ 2 ].Value = FormId;
-
-      //
-      // If the form prefix is G_ it is a globalform 
-      //
-      string prefix = FormId.Substring ( 0, 2 );
-      this.LogDebug ( "prefix: " + prefix );
-
-      if ( prefix == "G_" )
-      {
-        TrialId = EvcStatics.CONST_GLOBAL_PROJECT;
-      }
-      this.LogDebug ( "Queried ProjectId: " + TrialId );
+      cmdParms [ 1 ].Value = ApplicationId;
+      cmdParms [ 2 ].Value = LayoutId;
 
       // 
       // Generate the Selection query string.
@@ -953,7 +851,7 @@ namespace Evado.Dal.Clinical
         // 
         if ( table.Rows.Count == 0 )
         {
-          return Form;
+          return layout;
         }
 
         // 
@@ -964,19 +862,19 @@ namespace Evado.Dal.Clinical
         // 
         // Fill the role object.
         // 
-        Form = this.getRowData ( row );
+        layout = this.getRowData ( row );
 
       }//END Using method
 
       // 
-      // Retrieve the instrument items.
+      // Retrieve the layout fields.
       // 
-      Form.Fields = _Dal_FormFields.GetView ( Form.Guid );
+      this.getLayoutFields ( layout );
 
       //
       // Return the Checklist data object.
       //
-      return Form;
+      return layout;
 
     }//END getForm method
 
@@ -988,7 +886,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class updates the items on form data table using a retrieved form data object.
     /// </summary>
-    /// <param name="Form">EvForm: a retrieved form data object</param>
+    /// <param name="Layout">EvForm: a retrieved form data object</param>
     /// <returns>EvEventCodes: an event code for updating the form data table</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1006,7 +904,7 @@ namespace Evado.Dal.Clinical
     /// 6. Return the event code for updating items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EdRecord Form )
+    public EvEventCodes UpdateItem ( EdRecord Layout )
     {
       this.LogMethod ( "updateItem() method." );
       // 
@@ -1014,14 +912,14 @@ namespace Evado.Dal.Clinical
       // 
       EvDataChanges dataChanges = new EvDataChanges ( );
 
-      EdRecord oldForm = this.getForm ( Form.Guid );
+      EdRecord oldForm = this.getLayout ( Layout.Guid );
       this.LogValue ( "old form Form Id." + oldForm.LayoutId );
 
       //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       //
       // Get the list of forms for this trial.
       //
-      List<EvOption> formList = this.GetValidationList ( Form );
+      List<EvOption> formList = this.GetValidationList ( Layout );
 
       //
       // Iterate through the forms to check that there are no duplicates.
@@ -1029,13 +927,13 @@ namespace Evado.Dal.Clinical
       foreach ( EvOption form in formList )
       {
         this.LogValue ( "oldForm FormId: " + oldForm.LayoutId
-          + " Form FormId: " + Form.LayoutId + " FormId: " + form.Value );
+          + " Form FormId: " + Layout.LayoutId + " FormId: " + form.Value );
         //
         // IF the old form Id does not match the updated Form Id 
         // it has been changed. So the new form id needs to be validated.
         //
-        if ( oldForm.LayoutId.ToLower ( ) != Form.LayoutId.ToLower ( )
-          && form.Value.ToLower ( ) == Form.LayoutId.ToLower ( ) )
+        if ( oldForm.LayoutId.ToLower ( ) != Layout.LayoutId.ToLower ( )
+          && form.Value.ToLower ( ) == Layout.LayoutId.ToLower ( ) )
         {
           this.LogValue ( " >> Duplicate form Id." );
 
@@ -1046,26 +944,26 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the DB row guid
       // 
-      if ( Form.Guid == Guid.Empty )
+      if ( Layout.Guid == Guid.Empty )
       {
-        Form.Guid = Guid.NewGuid ( );
+        Layout.Guid = Guid.NewGuid ( );
       }
 
       // 
       // Set the data change object values.
       // 
-      EvDataChange dataChange = this.setChangeRecord ( Form, oldForm );
+      EvDataChange dataChange = this.setChangeRecord ( Layout, oldForm );
 
       // 
       // Define the query parameters
       // 
       SqlParameter [ ] cmdParms = GetParameters ( );
-      SetParameters ( cmdParms, Form );
+      SetParameters ( cmdParms, Layout );
 
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _STORED_PROCEDURE_UpdateItem, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_UPDATE_ITEM, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -1073,9 +971,9 @@ namespace Evado.Dal.Clinical
       //
       // Update the form sections.
       //
-      EvEventCodes result = _Dal_FormSections.UpdateItem ( Form );
+      this.LogValue ( "Saving sections." );
 
-      this.LogValue ( _Dal_FormSections.Log );
+      EvEventCodes result = this.updateSections ( Layout );
 
       if ( result != EvEventCodes.Ok )
       {
@@ -1095,7 +993,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class adds new items to form data table based on retrieved form data objecgt
     /// </summary>
-    /// <param name="Form">EvForm: a retrieved form data object</param>
+    /// <param name="Layout">EvForm: a retrieved form data object</param>
     /// <returns>EvEventCodes: an event code for adding items</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1111,12 +1009,12 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for adding new items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes AddItem ( EdRecord Form )
+    public EvEventCodes AddItem ( EdRecord Layout )
     {
       this.LogMethod ( "AddItem method. " );
-      this.LogValue ( "ProjectId: " + Form.ApplicationId );
-      this.LogValue ( "FormId: " + Form.LayoutId );
-      this.LogValue ( "Version: " + Form.Design.Version );
+      this.LogValue ( "ProjectId: " + Layout.ApplicationId );
+      this.LogValue ( "FormId: " + Layout.LayoutId );
+      this.LogValue ( "Version: " + Layout.Design.Version );
       // 
       // Initialise the methods status, a formfield object and a new Guid
       // 
@@ -1124,11 +1022,11 @@ namespace Evado.Dal.Clinical
       //
       // Validate whether the Guid does not exist.
       //
-      EdRecord currentForm = this.getForm ( Form.ApplicationId, Form.LayoutId, false );
+      EdRecord currentForm = this.getForm ( Layout.ApplicationId, Layout.LayoutId, false );
 
       if ( currentForm.Guid != Guid.Empty )
       {
-        this.LogValue ( "Duplicate form Id. Version: " + Form.Version );
+        this.LogValue ( "Duplicate form Id. Version: " + Layout.Version );
 
         return EvEventCodes.Data_Duplicate_Id_Error;
       }
@@ -1136,18 +1034,18 @@ namespace Evado.Dal.Clinical
       // 
       // Set the Guid for new form
       // 
-      Form.Guid = Guid.NewGuid ( );
+      Layout.Guid = Guid.NewGuid ( );
 
       // 
       // Define the query parameters
       // 
       SqlParameter [ ] cmdParms = GetParameters ( );
-      SetParameters ( cmdParms, Form );
+      SetParameters ( cmdParms, Layout );
 
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _STORED_PROCEDURE_AddItem, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ADD_ITEM, cmdParms ) == 0 )
       {
         this.LogValue ( "Errors adding the form object to the database." );
         this.LogValue ( EvSqlMethods.Log );
@@ -1160,9 +1058,7 @@ namespace Evado.Dal.Clinical
       //
       this.LogValue ( "Saving sections." );
 
-      EvEventCodes result = _Dal_FormSections.UpdateItem ( Form );
-
-      this.LogValue ( _Dal_FormSections.Log );
+      EvEventCodes result = this.updateSections ( Layout );
 
       if ( result != EvEventCodes.Ok )
       {
@@ -1172,26 +1068,11 @@ namespace Evado.Dal.Clinical
       // 
       // If form fields of the new common form exists, add the new form fields to database. 
       // 
-      if ( Form.Guid != Guid.Empty
-        && Form.Fields.Count > 0 )
+      if ( Layout.Guid != Guid.Empty
+        && Layout.Fields.Count > 0 )
       {
-        for ( int count = 0; count < Form.Fields.Count; count++ )
-        {
-          if ( Form.Fields [ count ].Design.Title != String.Empty )
-          {
-            // 
-            // Initialise the newField to add to the database.
-            // 
-            Form.Fields [ count ].FormGuid = Form.Guid;
-            Form.Fields [ count ].UpdatedByUserId = Form.UpdatedByUserId;
+        this.updateFields ( Layout );
 
-            // 
-            // Add the newField to the database.
-            // 
-            _Dal_FormFields.AddItem ( Form.Fields [ count ] );
-            this.LogClass ( _Dal_FormFields.Log );
-          }
-        }
       }//END if form fields. 
 
       // 
@@ -1200,6 +1081,56 @@ namespace Evado.Dal.Clinical
       return EvEventCodes.Ok;
 
     }//END AddItem method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method updates the record layout sections.
+    /// </summary>
+    /// <param name="Layout">EdRecord objecty.</param>
+    /// <returns>EvEventCode enumerated value.</returns>
+    // ----------------------------------------------------------------------------------
+    private EvEventCodes updateFields ( EdRecord Layout )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdRecordLayoutFields dal_LayoutFields = new EdRecordLayoutFields ( );
+
+      //
+      // update the layout sections.
+      //
+      EvEventCodes result = dal_LayoutFields.UpdateFields ( Layout );
+
+      this.LogValue ( dal_LayoutFields.Log );
+
+      return result;
+
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method updates the record layout sections.
+    /// </summary>
+    /// <param name="Record">EdRecord objecty.</param>
+    /// <returns>EvEventCode enumerated value.</returns>
+    // ----------------------------------------------------------------------------------
+    private EvEventCodes updateSections ( EdRecord Record )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdRecordSections dal_LayoutSections = new EdRecordSections ( );
+
+      //
+      // update the layout sections.
+      //
+      EvEventCodes result = dal_LayoutSections.UpdateItem ( Record );
+
+      this.LogValue ( dal_LayoutSections.Log );
+
+      return result;
+
+    }
 
     // =====================================================================================
     /// <summary>
@@ -1232,22 +1163,22 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter(PARM_FormId, SqlDbType.NVarChar, 10),
-        new SqlParameter(PARM_UpdatedByUserId, SqlDbType.NVarChar,100),
-        new SqlParameter(PARM_UpdatedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
+        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
       };
       cmdParms [ 0 ].Value = Form.ApplicationId;
       cmdParms [ 1 ].Value = Form.LayoutId;
-      cmdParms [ 2 ].Value = Form.UpdatedByUserId;
+      cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 3 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 4 ].Value = DateTime.Now;
 
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _STORED_PROCEDURE_WithdrawItem, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_WithdrawItem, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -1295,20 +1226,20 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(PARM_Guid, SqlDbType.UniqueIdentifier ),
-        new SqlParameter(PARM_UpdatedByUserId, SqlDbType.NVarChar,100),
-        new SqlParameter(PARM_UpdatedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
+        new SqlParameter(EdRecordLayouts.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier ),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
       };
       cmdParms [ 0 ].Value = Form.Guid;
-      cmdParms [ 1 ].Value = Form.UpdatedByUserId;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
 
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _STORED_PROCEDURE_DeleteItem, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_DELETE_ITEM, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -1351,7 +1282,6 @@ namespace Evado.Dal.Clinical
       dataChange.TableName = EvDataChange.DataChangeTableNames.EvForms;
       dataChange.TrialId = RecordForm.ApplicationId;
       dataChange.RecordGuid = RecordForm.Guid;
-      dataChange.UserId = RecordForm.UpdatedByUserId;
       dataChange.DateStamp = DateTime.Now;
 
       //
@@ -1361,7 +1291,7 @@ namespace Evado.Dal.Clinical
 
       dataChange.AddItem ( "Title", OldRecordForm.Design.Title, RecordForm.Design.Title );
 
-      dataChange.AddItem ( "Reference", OldRecordForm.Design.Reference, RecordForm.Design.Reference );
+      dataChange.AddItem ( "Reference", OldRecordForm.Design.HttpReference, RecordForm.Design.HttpReference );
 
       dataChange.AddItem ( "Instructions", OldRecordForm.Design.Instructions, RecordForm.Design.Instructions );
 
@@ -1434,12 +1364,12 @@ namespace Evado.Dal.Clinical
           RecordForm.Design.hasCsScript );
 
         dataChange.AddItem ( "Design_HiddenFields",
-          OldRecordForm.Design.JavaValidationScript,
-          RecordForm.Design.JavaValidationScript );
+          OldRecordForm.Design.JavaScript,
+          RecordForm.Design.JavaScript );
 
         dataChange.AddItem ( "Design_Reference",
-          OldRecordForm.Design.Reference,
-          RecordForm.Design.Reference );
+          OldRecordForm.Design.HttpReference,
+          RecordForm.Design.HttpReference );
       }//END Form Design object
       // 
       // Return the data change object.
@@ -1515,24 +1445,24 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(PARM_Guid, SqlDbType.UniqueIdentifier ),
-        new SqlParameter(PARM_Copy, SqlDbType.Bit),
-        new SqlParameter(PARM_Version, SqlDbType.VarChar,10),
-        new SqlParameter(PARM_UpdatedByUserId, SqlDbType.NVarChar,100),
-        new SqlParameter(PARM_UpdatedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime), 
+        new SqlParameter(EdRecordLayouts.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier ),
+        new SqlParameter(EdRecordLayouts.PARM_Copy, SqlDbType.Bit),
+        new SqlParameter(EdRecordLayouts.PARM_VERSION, SqlDbType.Float),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
+        new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
       };
       cmdParms [ 0 ].Value = Form.Guid;
       cmdParms [ 1 ].Value = Copy;
       cmdParms [ 2 ].Value = Form.Design.Version;
-      cmdParms [ 3 ].Value = Form.UpdatedByUserId;
+      cmdParms [ 3 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 4 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 5 ].Value = DateTime.Now;
 
       //
       // Execute the update command.
       //
-      databaseRecordAffected = EvSqlMethods.StoreProcUpdate ( _STORED_PROCEDURE_CopyItem, cmdParms );
+      databaseRecordAffected = EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_COPY_ITEM, cmdParms );
       if ( databaseRecordAffected == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;

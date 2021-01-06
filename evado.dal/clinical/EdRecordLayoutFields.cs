@@ -30,12 +30,12 @@ using Evado.Model;
 using Evado.Model.Digital;
 
 namespace Evado.Dal.Clinical
-  {
+{
   /// <summary>
   /// This class is handles the data access layer for the form field data object.
   /// </summary>
   public class EdRecordLayoutFields : EvDalBase
-    {
+  {
     #region class initialisation methods
     // ==================================================================================
     /// <summary>
@@ -43,9 +43,9 @@ namespace Evado.Dal.Clinical
     /// </summary>
     // ----------------------------------------------------------------------------------
     public EdRecordLayoutFields ( )
-      {
+    {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
-      }
+    }
 
     // ==================================================================================
     /// <summary>
@@ -54,15 +54,15 @@ namespace Evado.Dal.Clinical
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
     public EdRecordLayoutFields ( EvClassParameters ClassParameters )
-      {
+    {
       this.ClassParameters = ClassParameters;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
-        {
+      {
         this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-        }
       }
+    }
 
     #endregion
 
@@ -72,27 +72,9 @@ namespace Evado.Dal.Clinical
      * Defines the classes constansts and global variables
      * 
      * *********************************************************************************/
-    /// 
-    /// Define the log source file
-    /// 
-    private static string _eventLogSource = ConfigurationManager.AppSettings [ "EventLogSource" ];
 
-    /// <summary>
-    /// This constant defines a sql query string for selecting all items from form field view. 
-    /// </summary>
-    private const string _sqlQueryView = "Select * \r\nFROM EvFormField_View ";
 
-    /// <summary>
-    /// This constant defines a sql query string for selecting all items from form field data index view. 
-    /// </summary>
-    private const string _sqlDataPointIndex = "Select * \r\nFROM EvFormField_DataIndex \r\n";
-
-    /// <summary>
-    /// This constant defines the data point index order for creating the index and 
-    /// retrieving the fields.
-    /// </summary>
-    public const string SQL_SCHEDULED_DATA_POINT_INDEX = "SCHEDULE_ID, M_Order, MilestoneId, MA_Order, "
-      + " MA_IsMandatory, ActivityId, ACF_Order, ACF_Mandatory, FormId, TCI_Order, FieldId";
+    private const string SQL_FIELD_QUERY_VIEW = "Select *  FROM ED_RECORD_LAYOUT_FIELD_VIEW ";
 
     /// <summary>
     /// This constant defines the sql query for selecting all items from the formfield analysis list view. 
@@ -102,284 +84,95 @@ namespace Evado.Dal.Clinical
     private string _sqlQueryString = String.Empty;
 
     #region Define the class storeprocedure.
-    /// <summary>
-    /// This constant defines the storeprocedure for adding items to the formfield table. 
-    /// </summary>
-    private const string _storedProcedureAddItem = "usr_FormField_add";
 
-    /// <summary>
-    /// This constant defines the storeprocedure for updating items on the formfield table. 
-    /// </summary>
-    private const string _storedProcedureUpdateItem = "usr_FormField_update";
-
-    /// <summary>
-    /// This constant defines the storeprocedure for deleting items from the formfield table. 
-    /// </summary>
-    private const string _storedProcedureDeleteItem = "usr_FormField_delete";
+    private const string STORED_PROCEDURE_ADD_ITEM = "USR_RECORD_LAYOUT_FIELD_ADD";
+    private const string STORED_PROCEDURE_UPDATE_ITEM = "USR_RECORD_LAYOUT_FIELD_UPDATE";
+    private const string STORED_PROCEDURE_DELTE_ITEM = "USR_RECORD_LAYOUT_FIELD_DELETE";
     #endregion
 
     #region Define the class parameters
 
     private const string DB_CUSTOMER_GUID = "CU_GUID";
 
-    /// <summary>
-    /// This constant defines a parameter for global unique identifier of CUSTOMER object
-    /// </summary>
     private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
 
-    /// <summary>
-    /// This constant defines the parameter for global unique identifier for the formfield object
-    /// </summary>
-    private const string PARM_Guid = "@Guid";
+    // database fields/columns.
+    private const string DB_GUID = "EDRL_GUID";
+    private const string DB_LAYOUT_GUID = "EDRLF_GUID";
+    private const string DB_LAYOUT_ID = "LAYOUT_ID";
+    private const string DB_FIELD_ID = "FIELD_ID";
+    private const string DB_TYPE_ID = "EDRLF_TYPE_ID";
+    private const string DB_ORDER = "EDRLF_ORDER";
+    private const string DB_TITLE = "EDRLF_TITLE";
+    private const string DB_INSTRUCTIONS = "EDRLF_INSTRUCTIONS";
+    private const string DB_HTTP_REFERENCE = "EDRLF_HTTP_REFERENCE";
+    private const string DB_SECTION_ID = "EDRLF_SECTION_ID";
+    private const string DB_OPTIONS = "EDRLF_OPTIONS";
+    private const string DB_SUMMARY_FIELD = "EDRLF_SUMMARY_FIELD";
+    private const string DB_MANDATORY = "EDRLF_MANDATORY";
+    private const string DB_AI_DATA_POINT = "EDRLF_AI_DATA_POINT";
+    private const string DB_ANALYTICS_DATA_POINT = "EDRLF_ANALYTICS_DATA_POINT";
+    private const string DB_HIDDEN = "EDRLF_HIDDEN";
+    private const string DB_EX_SELECTION_LIST_ID = "EX_SELECTION_LIST_ID";
+    private const string DB_EX_SELECTION_LIST_CATEGORY = "EX_SELECTION_LIST_CATEGORY";
+    private const string DB_DEFAULT_VALUE = "EDRLF_DEFAULT_VALUE";
+    private const string DB_UNIT = "EDRLF_UNIT";
+    private const string DB_UNIT_SCALING = "EDRLF_UNIT_SCALING";
+    private const string DB_VALIDATION_LOWER_LIMIT = "EDRLF_VALIDATION_LOWER_LIMIT";
+    private const string DB_VALIDATION_UPPER_LIMIT = "EDRLF_VALIDATION_UPPER_LIMIT";
+    private const string DB_ALERT_LOWER_LIMIT = "EDRLF_ALERT_LOWER_LIMIT";
+    private const string DB_ALERT_UPPER_LIMIT = "EDRLF_ALERT_UPPER_LIMIT";
+    private const string DB_NORMAL_LOWER_LIMITD = "EDRLF_NORMAL_LOWER_LIMIT";
+    private const string DB_NORMAL_UPPER_LIMIT = "EDRLF_NORMAL_UPPER_LIMIT";
+    private const string DB_FIELD_CATEGORY = "EDRLF_FIELD_CATEGORY";
+    private const string DB_ANALOGUE_LEGEND_START = "EDRLF_ANALOGUE_LEGEND_START";
+    private const string DB_ANALOGUE_LEGEND_FINISH = "EDRLF_ANALOGUE_LEGEND_FINISH";
+    private const string DB_JAVA_SCRIPT = "EDRLF_JAVA_SCRIPT";
+    private const string DB_TABLE = "EDRLF_TABLE";
+    private const string DB_INITIAL_OPTION_LIST = "EDRLF_INITIAL_OPTION_LIST";
+    private const string DB_INITIAL_VERSION = "EDRLF_INITIAL_VERSION";
+    private const string DB_DELETED = "EDRLF_DELETED";
 
-    /// <summary>
-    /// This constant defines the parameter for form global unique identifier for the formfield object
-    /// </summary>
-    private const string PARM_FormGuid = "@FormGuid";
+    private const string DB_APPLICATION_ID = "APPLICATION_ID";
+    private const string DB_LAYOUT_STATE = "EDRL_STATE";
 
-    /// <summary>
-    /// This constant defines the parameter for order for the formfield object
-    /// </summary>
-    private const string PARM_FieldOrder = "@Order";
-
-    /// <summary>
-    /// This constant defines the parameter for trial identifier for the formfield object
-    /// </summary>
-    private const string PARM_TrialId = "@TrialId";
-
-    /// <summary>
-    /// This constant defines the parameter for field identifier for the formfield object
-    /// </summary>
-    private const string PARM_FieldId = "@FieldId";
-
-    /// <summary>
-    /// This constant defines the parameter for type identifier for the formfield object
-    /// </summary>
-    private const string PARM_TypeId = "@TypeId";
-
-    /// <summary>
-    /// This constant defines the parameter for subject for the formfield object
-    /// </summary>
-    private const string PARM_Subject = "@Subject";
-
-    /// <summary>
-    /// This constant defines the parameter for instructions for the formfield object
-    /// </summary>
-    private const string PARM_Instructions = "@Instructions";
-
-    /// <summary>
-    /// This constant defines the parameter for Options for the formfield object
-    /// </summary>
-    private const string PARM_Options = "@Options";
-
-    /// <summary>
-    /// This constant defines the parameter for Reference for the formfield object
-    /// </summary>
-    private const string PARM_Reference = "@Reference";
-
-    /// <summary>
-    /// This constant defines the parameter for milestone for the formfield object
-    /// </summary>
-    private const string PARM_ImageId = "@ImageId";
-
-    /// <summary>
-    /// This constant defines the parameter for Unit for the formfield object
-    /// </summary>
-    private const string PARM_Unit = "@Unit";
-
-    /// <summary>
-    /// This constant defines the parameter for review for the formfield object
-    /// </summary>
-    private const string PARM_Review = "@Review";
-
-    /// <summary>
-    /// This constant defines the parameter for xml validation rules for the formfield object
-    /// </summary>
-    private const string PARM_XmlValidationRules = "@XmlValidationRules";
-
-    /// <summary>
-    /// This constant defines the parameter for xml data for the formfield object
-    /// </summary>
-    private const string PARM_XmlData = "@XmlData";
-
-    /// <summary>
-    /// This constant defines the parameter for table for the formfield object
-    /// </summary>
-    private const string PARM_Table = "@Table";
-
-    /// <summary>
-    /// This constant defines the parameter for mandatory for the formfield object
-    /// </summary>
-    private const string PARM_Mandatory = "@Mandatory";
-
-    /// <summary>
-    /// This constant defines the parameter for datapoint for the formfield object
-    /// </summary>
-    private const string PARM_DatePoint = "@DataPoint";
-
-    /// <summary>
-    /// This constant defines the parameter for hide field for the formfield object
-    /// </summary>
-    private const string PARM_HideField = "@HideField";
-
-    /// <summary>
-    /// This constant defines the parameter for safety report for the formfield object
-    /// </summary>
-    private const string PARM_SafetyReport = "@SafetyReport";
-
-    /// <summary>
-    /// This constant defines the parameter for reviewer for the formfield object
-    /// </summary>
-    private const string PARM_Reviewer = "@Reviewer";
-
-    /// <summary>
-    /// This constant defines the parameter for reviewed date for the formfield object
-    /// </summary>
-    private const string PARM_ReviewedDate = "@ReviewedDate";
-
-    /// <summary>
-    /// This constant defines the parameter for approver for the formfield object
-    /// </summary>
-    private const string PARM_Approver = "@Approver";
-
-    /// <summary>
-    /// This constant defines the parameter for approval date for the formfield object
-    /// </summary>
-    private const string PARM_ApprovalDate = "@ApprovalDate";
-
-    /// <summary>
-    /// This constant defines the parameter for state for the formfield object
-    /// </summary>
-    private const string PARM_State = "@State";
-
-    /// <summary>
-    /// This constant defines the parameter for user identifier of those who updates the formfield object
-    /// </summary>
-    private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
-
-    /// <summary>
-    /// This constant defines the parameter for user who updates the formfield object
-    /// </summary>
-    private const string PARM_UpdatedBy = "@UpdatedBy";
-
-    /// <summary>
-    /// This constant defines the parameter for updated date of the formfield object
-    /// </summary>
-    private const string PARM_UpdateDate = "@UpdateDate";
-
-    /// <summary>
-    /// This constant defines the parameter for form identifier of the formfield object
-    /// </summary>
-    private const string PARM_FormId = "@FormId";
-
-    /// <summary>
-    /// This constant defines the parameter for trial unique identifier of the formfield object
-    /// </summary>
-    private const string PARM_TrialUid = "@TrialUid";
-
-    /// <summary>
-    /// This constant defines the parameter for arm index of the formfield object
-    /// </summary>
-    private const string PARM_ScheduleId = "@ScheduleId";
-
-    /// <summary>
-    /// This constant defines the parameter for milestone identifier of the formfield object
-    /// </summary>
-    private const string PARM_MilestoneId = "@MilestoneId";
-    /// <summary>
-    /// This constant defines a string parameter as CDASH_METADATA for the Subject object. 
-    /// </summary>
-    private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
-    /// <summary>
-    /// This constant defines a string parameter as UNIT_SCALING for the Subject object. 
-    /// </summary>
-    private const string PARM_UNIT_SCALING = "@UNIT_SCALING";
-    /// <summary>
-    /// This constant defines a string parameter as EX_SELECTION_LIST_ID for the Subject object. 
-    /// </summary>
-    private const string PARM_EX_SELECTION_LIST_ID = "@EX_SELECTION_LIST_ID";
-    /// <summary>
-    /// This constant defines a string parameter as EX_SELECTION_LIST_ID for the Subject object. 
-    /// </summary>
-    private const string PARM_EX_SELECTION_LIST_CATEGORY = "@EX_SELECTION_LIST_CATEGORY";
-    /// <summary>
-    /// This constant defines a string parameter as FIELD_CATEGORY for the Subject object. 
-    /// </summary>
-    private const string PARM_FIELD_CATEGORY = "@FIELD_CATEGORY";
-    /// <summary>
-    /// This constant defines a string parameter as DEFAULT_VALUE for the Subject object. 
-    /// </summary>
-    private const string PARM_DEFAULT_VALUE = "@DEFAULT_VALUE";
-    /// <summary>
-    /// This constant defines a string parameter as SELECT_BY_CODING_VALUE for the Subject object. 
-    /// </summary>
-    private const string PARM_SELECT_BY_CODING_VALUE = "@SELECT_BY_CODING_VALUE";
-    /// <summary>
-    /// This constant defines a string parameter as SUMMARY_FIELD for the Subject object. 
-    /// </summary>
+    // query parmeters.
+    private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
+    private const string PARM_GUID = "@GUID";
+    private const string PARM_LAYOUT_GUID = "@GUID";
+    private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
+    private const string PARM_FIELD_ID = "@FIELD_ID";
+    private const string PARM_TYPE_ID = "@TYPE_ID";
+    private const string PARM_ORDER = "@ORDER";
+    private const string PARM_TITLE = "@TITLE";
+    private const string PARM_INSTRUCTIONS = "@INSTRUCTIONS";
+    private const string PARM_HTTP_REFERENCE = "@HTTP_REFERENCE";
+    private const string PARM_SECTION_ID = "@SECTION_ID";
+    private const string PARM_OPTIONS = "@OPTIONS";
     private const string PARM_SUMMARY_FIELD = "@SUMMARY_FIELD";
-    /// <summary>
-    /// This constant defines a string parameter as MULTI_LINE_TEXT_FIELD for the Subject object. 
-    /// </summary>
-    private const string PARM_MULTI_LINE_TEXT_FIELD = "@MULTI_LINE_TEXT_FIELD";
-    /// <summary>
-    /// This constant defines a string parameter as HORIZONTAL_BUTTONS for the Subject object. 
-    /// </summary>
-    private const string PARM_HORIZONTAL_BUTTONS = "@HORIZONTAL_BUTTONS";
-    /// <summary>
-    /// This constant defines a string parameter as FORM_IDS for the Subject object. 
-    /// </summary>
-    private const string PARM_FORM_IDS = "@FORM_IDS";
-    /// <summary>
-    /// This constant defines a string parameter as INITIAL_OPTION_LIST for the Subject object. 
-    /// </summary>
-    private const string PARM_INITIAL_OPTION_LIST = "@INITIAL_OPTION_LIST";
-    /// <summary>
-    /// This constant defines a parameter for INITIAL_VERSION of common form field object
-    /// </summary>
-    private const string PARM_INITIAL_VERSION = "@INITIAL_VERSION";
-    /// <summary>
-    /// This constant defines a string parameter as OPTION_LIST for the Subject object.
-    /// </summary>
-    private const string PARM_OPTIONS = "@Options";
-    /// <summary>
-    /// This constant defines a string parameter as SECTION for the Subject object. 
-    /// </summary>
-    private const string PARM_SECTION = "@SECTION";
-    /// <summary>
-    /// This constant defines a string parameter as SECTION for the Subject object. 
-    /// </summary>
-    private const string PARM_ANALOGUE_SCALE = "@ANALOGUE_SCALE";
-    /// <summary>
-    /// This constant defines a string parameter as SECTION for the Subject object. 
-    /// </summary>
+    private const string PARM_MANDATORY = "@MANDATORY";
+    private const string PARM_AI_DATA_POINT = "@AI_DATA_POINT";
+    private const string PARM_ANALYTICS_DATA_POINT = "@ANALYTICS_DATA_POINT";
+    private const string PARM_HIDDEN = "@HIDDEN";
+    private const string PARM_EX_SELECTION_LIST_ID = "EX_SELECTION_LIST_ID";
+    private const string PARM_EX_SELECTION_LIST_CATEGOR = "EX_SELECTION_LIST_CATEGORY";
+    private const string PARM_DEFAULT_VALUE = "@DEFAULT_VALUE";
+    private const string PARM_UNIT = "@UNIT";
+    private const string PARM_UNIT_SCALING = "@UNIT_SCALING";
+    private const string PARM_VALIDATION_LOWER_LIMIT = "@VALIDATION_LOWER_LIMIT";
+    private const string PARM_VALIDATION_UPPER_LIMIT = "@VALIDATION_UPPER_LIMIT";
+    private const string PARM_ALERT_LOWER_LIMIT = "@ALERT_LOWER_LIMIT";
+    private const string PARM_ALERT_UPPER_LIMIT = "@ALERT_UPPER_LIMIT";
+    private const string PARM_NORMAL_LOWER_LIMIT = "@NORMAL_LOWER_LIMIT";
+    private const string PARM_NORMAL_UPPER_LIMIT = "@NORMAL_UPPER_LIMIT";
+    private const string PARM_FIELD_CATEGORY = "@FIELD_CATEGORY";
     private const string PARM_ANALOGUE_LEGEND_START = "@ANALOGUE_LEGEND_START";
-    /// <summary>
-    /// This constant defines a string parameter as SECTION for the Subject object. 
-    /// </summary>
     private const string PARM_ANALOGUE_LEGEND_FINISH = "@ANALOGUE_LEGEND_FINISH";
-    /// <summary>
-    /// This constant defines a string parameter as JAVA SCRIPt  object. 
-    /// </summary>
     private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
-
-    private const string PARM_ValidationLowerLimit = "@ValidationLowerLimit";
-    private const string PARM_ValidationUpperLimit = "@ValidationUpperLimit";
-    private const string PARM_AlertLowerLimit = "@AlertLowerLimit";
-    private const string PARM_AlertUpperLimit = "@AlertUpperLimit";
-    private const string PARM_SafetyLowerLimit = "@SafetyLowerLimit";
-    private const string PARM_SafetyUpperLimit = "@SafetyUpperLimit";
-    private const string PARM_NOT_VALID_FOR_MALES = "@NOT_VALID_FOR_MALES";
-    private const string PARM_NOT_VALID_FOR_FEMALES = "@NOT_VALID_FOR_FEMALES";
-    private const string PARM_AFTER_DATE_OF_BIRTH = "@AFTER_DATE_OF_BIRTH";
-    private const string PARM_AFTER_CONSENT_DATE = "@AFTER_CONSENT_DATE";
-    private const string PARM_FIELD_NOT_VALID = "@FIELD_NOT_VALID";
-    private const string PARM_FIELD_OPTIONS_NOT_VALID = "@FIELD_OPTIONS_NOT_VALID";
-    private const string PARM_NUM_NORM_LOWER_LIMIT = "@NUM_NORM_LOWER_LIMIT";
-    private const string PARM_NUM_NORM_UPPER_LIMIT = "@NUM_NORM_UPPER_LIMIT";
-    private const string PARM_DAYS_FROM_RECORD_DATE = "@DAYS_FROM_RECORD_DATE";
-    private const string PARM_DAYS_FROM_VISIT_DATE = "@DAYS_FROM_VISIT_DATE";
-
+    private const string PARM_TABLE = "@TABLE";
+    private const string PARM_INITIAL_OPTION_LIST = "@INITIAL_OPTION_LIST";
+    private const string PARM_INITIAL_VERSION = "@INITIAL_VERSION";
+    private const string PARM_DELETED = "@DELETED";
 
     #endregion
 
@@ -401,75 +194,51 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     private static SqlParameter [ ] GetParameters ( )
-      {
+    {
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_FormGuid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_FieldId, SqlDbType.NVarChar, 20),
-        new SqlParameter( PARM_TypeId, SqlDbType.VarChar, 50),
-        new SqlParameter( PARM_Subject, SqlDbType.VarChar, 150),
-        new SqlParameter( PARM_Instructions, SqlDbType.NText),
-        new SqlParameter( PARM_Reference, SqlDbType.VarChar, 250),
-        new SqlParameter( PARM_ImageId, SqlDbType.VarChar, 50),
-        new SqlParameter( PARM_Unit, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdRecordLayoutFields.PARM_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordLayoutFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdRecordLayoutFields.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayoutFields.PARM_FIELD_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdRecordLayoutFields.PARM_TYPE_ID, SqlDbType.VarChar, 50),
+        new SqlParameter( EdRecordLayoutFields.PARM_ORDER, SqlDbType.Int),
+        new SqlParameter( EdRecordLayoutFields.PARM_TITLE, SqlDbType.VarChar, 150),
+        new SqlParameter( EdRecordLayoutFields.PARM_INSTRUCTIONS, SqlDbType.NText),
+        new SqlParameter( EdRecordLayoutFields.PARM_HTTP_REFERENCE, SqlDbType.VarChar, 250),
+        new SqlParameter( EdRecordLayoutFields.PARM_SECTION_ID, SqlDbType.SmallInt),
 
-        new SqlParameter( PARM_XmlValidationRules, SqlDbType.NText),//10
-        new SqlParameter( PARM_XmlData, SqlDbType.NText),
-        new SqlParameter( PARM_Table, SqlDbType.NText),
-        new SqlParameter( PARM_FieldOrder, SqlDbType.SmallInt),
-        new SqlParameter( PARM_Mandatory, SqlDbType.Bit),
-        new SqlParameter( PARM_SafetyReport, SqlDbType.Bit),
-        new SqlParameter( PARM_DatePoint, SqlDbType.Bit),
-        new SqlParameter( PARM_HideField, SqlDbType.Bit),
-        new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_UpdatedBy, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdRecordLayoutFields.PARM_OPTIONS, SqlDbType.VarChar, 250),
+        new SqlParameter( EdRecordLayoutFields.PARM_SUMMARY_FIELD, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_MANDATORY, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_AI_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_ANALYTICS_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_HIDDEN, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayoutFields.PARM_EX_SELECTION_LIST_CATEGOR, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayoutFields.PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdRecordLayoutFields.PARM_UNIT, SqlDbType.NVarChar, 15),
 
-        new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime), //20
-        new SqlParameter( PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_EX_SELECTION_LIST_CATEGORY, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_FIELD_CATEGORY, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_SELECT_BY_CODING_VALUE, SqlDbType.Bit),
-        new SqlParameter( PARM_SUMMARY_FIELD, SqlDbType.Bit),
-        new SqlParameter( PARM_MULTI_LINE_TEXT_FIELD, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayoutFields.PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayoutFields.PARM_VALIDATION_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_VALIDATION_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_ALERT_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_ALERT_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_NORMAL_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_NORMAL_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_FIELD_CATEGORY, SqlDbType.VarChar, 50),
+        new SqlParameter( EdRecordLayoutFields.PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
+        new SqlParameter( EdRecordLayoutFields.PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
 
-        new SqlParameter( PARM_HORIZONTAL_BUTTONS, SqlDbType.Bit),//30
-        new SqlParameter( PARM_FORM_IDS, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_INITIAL_VERSION, SqlDbType.Int),
-        new SqlParameter( PARM_OPTIONS, SqlDbType.NVarChar),
-        new SqlParameter( PARM_SECTION, SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_ValidationLowerLimit, SqlDbType.Float),
-        new SqlParameter( PARM_ValidationUpperLimit, SqlDbType.Float),
-        new SqlParameter( PARM_AlertLowerLimit, SqlDbType.Float),
-        new SqlParameter( PARM_AlertUpperLimit, SqlDbType.Float),
+        new SqlParameter( EdRecordLayoutFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
+        new SqlParameter( EdRecordLayoutFields.PARM_TABLE, SqlDbType.NText),
+        new SqlParameter( EdRecordLayoutFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
+        new SqlParameter(EdRecordLayoutFields. PARM_INITIAL_VERSION, SqlDbType.Int),
 
-        new SqlParameter( PARM_SafetyLowerLimit, SqlDbType.Float),//40
-        new SqlParameter( PARM_SafetyUpperLimit, SqlDbType.Float),
-        new SqlParameter( PARM_NOT_VALID_FOR_MALES, SqlDbType.Bit),
-        new SqlParameter( PARM_NOT_VALID_FOR_FEMALES, SqlDbType.Bit),
-        new SqlParameter( PARM_AFTER_DATE_OF_BIRTH, SqlDbType.Bit),
-        new SqlParameter( PARM_AFTER_CONSENT_DATE, SqlDbType.Bit),
-        new SqlParameter( PARM_FIELD_NOT_VALID, SqlDbType.NVarChar, 500),
-        new SqlParameter( PARM_FIELD_OPTIONS_NOT_VALID, SqlDbType.NVarChar, 500),
-        new SqlParameter( PARM_NUM_NORM_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( PARM_NUM_NORM_UPPER_LIMIT, SqlDbType.Float),
-
-        new SqlParameter( PARM_DAYS_FROM_RECORD_DATE, SqlDbType.Int),//50
-        new SqlParameter( PARM_DAYS_FROM_VISIT_DATE, SqlDbType.Int),
-        new SqlParameter( PARM_ANALOGUE_SCALE, SqlDbType.VarChar, 20),
-        new SqlParameter( PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
-        new SqlParameter( PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
-        new SqlParameter( PARM_JAVA_SCRIPT, SqlDbType.NText),
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
       };
 
       return cmdParms;
-      }//END GetParameters class
+    }//END GetParameters class
 
     // ==================================================================================
     /// <summary>
@@ -486,7 +255,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     private void setParameters ( SqlParameter [ ] cmdParms, EdRecordField FormField )
-      {
+    {
       //
       // Initialize the serialized table structure. 
       //
@@ -497,90 +266,72 @@ namespace Evado.Dal.Clinical
       //
       if ( FormField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
         || FormField.TypeId == Evado.Model.EvDataTypes.Table )
-        {
+      {
         this.LogValue ( "Column 1 header text: " + FormField.Table.Header [ 0 ].Text );
 
         serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( FormField.Table );
-        }
+      }
 
       if ( FormField.Design.ValidationLowerLimit >= FormField.Design.ValidationUpperLimit )
-        {
+      {
         FormField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
         FormField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
-        }
+      }
 
       if ( FormField.Design.AlertLowerLimit >= FormField.Design.AlertUpperLimit )
-        {
+      {
         FormField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
         FormField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
-        }
+      }
+
+      if ( FormField.Design.NormalRangeLowerLimit >= FormField.Design.NormalRangeUpperLimit )
+      {
+        FormField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        FormField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+      }
 
       //
       // Update the values from formfield object to the sql query parameters array. 
       //
       cmdParms [ 0 ].Value = FormField.Guid;
-      cmdParms [ 1 ].Value = FormField.FormGuid;
-      cmdParms [ 2 ].Value =String.Empty;
+      cmdParms [ 1 ].Value = FormField.LayoutGuid;
+      cmdParms [ 2 ].Value = FormField.LayoutId;
       cmdParms [ 3 ].Value = FormField.FieldId;
       cmdParms [ 4 ].Value = FormField.TypeId;
-      cmdParms [ 5 ].Value = FormField.Design.Title;
-      cmdParms [ 6 ].Value = FormField.Design.Instructions;
-      cmdParms [ 7 ].Value = FormField.Design.HttpReference;
-      cmdParms [ 8 ].Value = String.Empty;
-      cmdParms [ 9 ].Value = FormField.Design.Unit;
+      cmdParms [ 5 ].Value = FormField.Design.Order;
+      cmdParms [ 6 ].Value = FormField.Design.Title;
+      cmdParms [ 7 ].Value = FormField.Design.Instructions;
+      cmdParms [ 8 ].Value = FormField.Design.HttpReference;
+      cmdParms [ 9 ].Value = FormField.Design.SectionNo;
 
-      cmdParms [ 10 ].Value = String.Empty;
-      cmdParms [ 11 ].Value = String.Empty;
-      cmdParms [ 12 ].Value = serialisedTableStructure;
-      cmdParms [ 13 ].Value = FormField.Design.Order;
-      cmdParms [ 14 ].Value = FormField.Design.Mandatory;
-      cmdParms [ 16 ].Value = FormField.Design.AiDataPoint;
-      cmdParms [ 17 ].Value = FormField.Design.HideField;
-      cmdParms [ 18 ].Value = FormField.UpdatedByUserId;
-      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 10 ].Value = FormField.Design.Options;
+      cmdParms [ 11 ].Value = FormField.Design.SummaryField;
+      cmdParms [ 12 ].Value = FormField.Design.Mandatory;
+      cmdParms [ 13 ].Value = FormField.Design.AiDataPoint;
+      cmdParms [ 14 ].Value = FormField.Design.AnalyticsDataPont;
+      cmdParms [ 15 ].Value = FormField.Design.HideField;
+      cmdParms [ 16 ].Value = FormField.Design.ExSelectionListId;
+      cmdParms [ 17 ].Value = FormField.Design.ExSelectionListCategory;
+      cmdParms [ 18 ].Value = FormField.Design.DefaultValue;
+      cmdParms [ 19 ].Value = FormField.Design.Unit;
 
-      cmdParms [ 20 ].Value = DateTime.Now;
-      cmdParms [ 21 ].Value = FormField.Design.cDashMetadata;
-      cmdParms [ 22 ].Value = FormField.Design.UnitScaling;
-      cmdParms [ 23 ].Value = FormField.Design.ExSelectionListId;
-      cmdParms [ 24 ].Value = FormField.Design.ExSelectionListCategory;
-      cmdParms [ 25 ].Value = FormField.Design.FieldCategory;
-      cmdParms [ 26 ].Value = FormField.Design.DefaultValue;
-      cmdParms [ 27 ].Value = true;
-      cmdParms [ 28 ].Value = FormField.Design.SummaryField;
-      cmdParms [ 29 ].Value = FormField.Design.MultiLineTextField;
+      cmdParms [ 20 ].Value = FormField.Design.UnitScaling;
+      cmdParms [ 21 ].Value = FormField.Design.ValidationLowerLimit;
+      cmdParms [ 22 ].Value = FormField.Design.ValidationUpperLimit;
+      cmdParms [ 23 ].Value = FormField.Design.AlertLowerLimit;
+      cmdParms [ 24 ].Value = FormField.Design.AlertUpperLimit;
+      cmdParms [ 25 ].Value = FormField.Design.NormalRangeLowerLimit;
+      cmdParms [ 26 ].Value = FormField.Design.NormalRangeUpperLimit;
+      cmdParms [ 27 ].Value = FormField.Design.FieldCategory;
+      cmdParms [ 28 ].Value = FormField.Design.AnalogueLegendStart;
+      cmdParms [ 29 ].Value = FormField.Design.AnalogueLegendFinish;
 
-      cmdParms [ 30 ].Value = false;
-      cmdParms [ 31 ].Value = String.Empty;
+      cmdParms [ 30 ].Value = FormField.Design.JavaScript;
+      cmdParms [ 31 ].Value = serialisedTableStructure;
       cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
       cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
-      cmdParms [ 34 ].Value = FormField.Design.Options;
-      cmdParms [ 35 ].Value = FormField.Design.Section;
-      cmdParms [ 36 ].Value = FormField.Design.ValidationLowerLimit;
-      cmdParms [ 37 ].Value = FormField.Design.ValidationUpperLimit;
-      cmdParms [ 38 ].Value = FormField.Design.AlertLowerLimit;
-      cmdParms [ 39 ].Value = FormField.Design.AlertUpperLimit;
 
-      cmdParms [ 40 ].Value = EvcStatics.CONST_NUMERIC_MINIMUM;
-      cmdParms [ 41 ].Value = EvcStatics.CONST_NUMERIC_MAXIMUM;
-      cmdParms [ 42 ].Value = false;
-      cmdParms [ 43 ].Value = false;
-      cmdParms [ 44 ].Value = false;
-      cmdParms [ 45 ].Value = false;
-      cmdParms [ 46 ].Value = false;
-      cmdParms [ 47 ].Value = false;
-      cmdParms [ 48 ].Value = FormField.Design.NormalRangeLowerLimit;
-      cmdParms [ 49 ].Value = FormField.Design.NormalRangeUpperLimit;
-
-      cmdParms [ 50 ].Value = 99;
-      cmdParms [ 51 ].Value = 999;
-      cmdParms [ 52 ].Value = String.Empty;
-      cmdParms [ 53 ].Value = FormField.Design.AnalogueLegendStart;
-      cmdParms [ 54 ].Value = FormField.Design.AnalogueLegendFinish;
-      cmdParms [ 55 ].Value = FormField.Design.JavaScript;
-      cmdParms [ 56 ].Value = this.ClassParameters.CustomerGuid;
-
-      }//END setParameters class.
+    }//END setParameters class.
     #endregion
 
     #region Read FormField data
@@ -613,7 +364,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     private EdRecordField getRowData ( DataRow Row )
-      {
+    {
       // 
       // Initialise xmltable string and a return formfield object. 
       // 
@@ -623,72 +374,49 @@ namespace Evado.Dal.Clinical
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.CustomerGuid = EvSqlMethods.getGuid ( Row, DB_CUSTOMER_GUID );
-      formField.Guid = EvSqlMethods.getGuid ( Row, "TCI_Guid" );
-      formField.FormGuid = EvSqlMethods.getGuid ( Row, "TC_Guid" );
-
-      formField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
-      String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
+      formField.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayoutFields.DB_GUID );
+      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, DB_LAYOUT_GUID );
+      formField.LayoutId = EvSqlMethods.getString ( Row, DB_LAYOUT_ID );
+      formField.FieldId = EvSqlMethods.getString ( Row, DB_FIELD_ID );
+      String value = EvSqlMethods.getString ( Row, DB_TYPE_ID );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      xmlTable = EvSqlMethods.getString ( Row, "TCI_Table" );
+      formField.Design.Title = EvSqlMethods.getString ( Row, DB_TITLE );
+      formField.Design.Instructions = EvSqlMethods.getString ( Row, DB_INSTRUCTIONS );
+      formField.Design.HttpReference = EvSqlMethods.getString ( Row, DB_HTTP_REFERENCE );
+      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, DB_SECTION_ID );
+      formField.Design.Options = EvSqlMethods.getString ( Row, DB_OPTIONS );
+      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, DB_SUMMARY_FIELD );
+      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, DB_MANDATORY );
+      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, DB_AI_DATA_POINT );
+      formField.Design.HideField = EvSqlMethods.getBool ( Row, DB_HIDDEN );
+      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, DB_EX_SELECTION_LIST_ID );
+      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, DB_EX_SELECTION_LIST_CATEGORY );
+      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, DB_DEFAULT_VALUE );
+      formField.Design.Unit = EvSqlMethods.getString ( Row, DB_UNIT );
+      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, DB_UNIT_SCALING );
 
-      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationLowerLimit" );
-      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_ValidationUpperLimit" );
-      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_AlertLowerLimit" );
-      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_LOWER_LIMIT" );
-      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, "TCI_NUM_NORM_UPPER_LIMIT" );
+      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, DB_VALIDATION_LOWER_LIMIT );
+      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, DB_VALIDATION_UPPER_LIMIT );
+      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, DB_ALERT_LOWER_LIMIT );
+      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, DB_ALERT_UPPER_LIMIT );
+      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, DB_NORMAL_LOWER_LIMITD );
+      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, DB_NORMAL_UPPER_LIMIT );
 
-      string xmlDesign = EvSqlMethods.getString ( Row, "TCI_XmlData" );
-      if ( xmlDesign != String.Empty )
-        {
-        xmlDesign = xmlDesign.Replace ( "<TypeId />", "<TypeId>" + formField.TypeId + "</TypeId>" );
-        xmlDesign = xmlDesign.Replace ( "Check_Button_List", "Check_Box_List" );
-        xmlDesign = xmlDesign.Replace ( "Subject_Demographics", "Special_Subject_Demographics" );
-        xmlDesign = xmlDesign.Replace ( "Medication_Summary", "Special_Medication_Summary" );
-        xmlDesign = xmlDesign.Replace ( "Matrix", "Special_Matrix" );
-
-        formField.Design = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordFieldDesign> ( xmlDesign );
-        }
-      else
-        {
-        formField.Design.UnitScaling = EvSqlMethods.getString ( Row, "TCI_UNIT_SCALING" );
-        formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, "TCI_EX_SELECTION_LIST_ID" );
-        formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, "TCI_EX_SELECTION_LIST_CATEGORY" );
-        formField.Design.FieldCategory = EvSqlMethods.getString ( Row, "TCI_FIELD_CATEGORY" );
-        formField.Design.DefaultValue = EvSqlMethods.getString ( Row, "TCI_DEFAULT_VALUE" );
-        formField.Design.SummaryField = EvSqlMethods.getBool ( Row, "TCI_SUMMARY_FIELD" );
-        formField.Design.MultiLineTextField = EvSqlMethods.getBool ( Row, "TCI_MULTI_LINE_TEXT_FIELD" );
-        formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, "TCI_INITIAL_OPTION_LIST" );
-        formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, "TCI_INITIALVERSION" );
-        formField.Design.Options = EvSqlMethods.getString ( Row, "TCI_OPTIONS" );
-        formField.Design.Section = EvSqlMethods.getString ( Row, "TCI_SECTION" );
-        formField.Design.Instructions = EvSqlMethods.getString ( Row, "TCI_INSTRUCTIONS" );
-        formField.Design.HttpReference = EvSqlMethods.getString ( Row, "TCI_Reference" );
-        formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_START" );
-        formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, "TCI_ANALOGUE_LEGEND_FINISH" );
-        }
-
-      formField.Design.JavaScript = EvSqlMethods.getString ( Row, "TCI_JAVA_SCRIPT" );
-
-      formField.Design.Title = EvSqlMethods.getString ( Row, "TCI_Subject" );
-      formField.Design.Unit = EvSqlMethods.getString ( Row, "TCI_Unit" );
-      formField.Design.Order = EvSqlMethods.getInteger ( Row, "TCI_Order" );
-      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, "TCI_Mandatory" );
-      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, "TCI_DataPoint" );
-      formField.Design.HideField = EvSqlMethods.getBool ( Row, "TCI_HideField" );
-      formField.UpdatedByUserId = EvSqlMethods.getString ( Row, "TCI_UpdatedByUserId" );
-      formField.Updated = EvSqlMethods.getString ( Row, "TCI_UpdatedBy" );
-      formField.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TCI_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );
-      formField.Design.cDashMetadata = EvSqlMethods.getString ( Row, "TCI_CDASH_METADATA" );
+      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, DB_FIELD_CATEGORY );
+      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, DB_ANALOGUE_LEGEND_START );
+      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, DB_ANALOGUE_LEGEND_FINISH );
+      formField.Design.JavaScript = EvSqlMethods.getString ( Row, DB_JAVA_SCRIPT );
+      xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
+      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, DB_INITIAL_OPTION_LIST );
+      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, DB_INITIAL_VERSION );
 
       //
       // if the data type is a table then deseriallise the formfield data table.
       //
       if ( formField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
         || formField.TypeId == Evado.Model.EvDataTypes.Table )
-        {
+      {
         this.LogValue ( "Table Length: " + xmlTable.Length.ToString ( ) );
         //
         // Initialise the table objects.
@@ -699,46 +427,42 @@ namespace Evado.Dal.Clinical
         // Validate whehter the Table has data.
         //
         if ( xmlTable != String.Empty )
-          {
+        {
           formField.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
 
           // 
           // Iterate through the table and set the validation rules
           // 
           for ( int i = 0; i < formField.Table.ColumnCount; i++ )
-            {
+          {
             //
             // Addressing the 'NA' to negative infinity issue for non-numeric fields.
             //
             // Iterate through the table data converting the relevant cell values to NA.
             //
             for ( int j = 0; j < formField.Table.Rows.Count; j++ )
-              {
+            {
               String cell = formField.Table.Rows [ j ].Column [ i ];
 
               if ( cell == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
                 && formField.Table.Header [ i ].TypeId != EdRecordTableHeader.ItemTypeNumeric )
-                {
+              {
                 cell = "NA";
-                }
-              }//END column iteration loop
+              }
+            }//END column iteration loop
 
-            }//END newField iteration loop
+          }//END newField iteration loop
 
-          }// Table has data.
+        }// Table has data.
 
-        }//END Table newField.
+      }//END Table newField.
 
-      if ( formField.Table != null )
-        {
-        this.LogValue ( "Column 1 header text: " + formField.Table.Header [ 0 ].Text );
-        }
 
       // 
       // If it is an external selection list, add the relevant coding visitSchedule items.
       // 
       if ( formField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
-        {
+      {
         this.LogValue ( "External ListId: " + formField.Design.ExSelectionListId
           + " Category: " + formField.Design.ExSelectionListCategory );
 
@@ -750,40 +474,32 @@ namespace Evado.Dal.Clinical
 
         this.LogValue ( " " + externalCodingLists.Log );
 
-        }
+      }
 
       //
       // Resolve the numeric 'NA' to negative infinity issue.
       //
       if ( formField.ItemValue == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
         && formField.TypeId != Evado.Model.EvDataTypes.Numeric )
-        {
+      {
         formField.ItemValue = "NA";
-        }
-
-      // 
-      // Update the formfield type to current enumeration.
-      // 
-      if ( ( int ) formField.TypeId < 0 )
-        {
-        formField.TypeId = ( Evado.Model.EvDataTypes ) Math.Abs ( ( int ) formField.TypeId );
-        }
+      }
 
       //
       // If formfield typeId is either analogue scale or horizontal radio buttons, select the design by coding value
       //
 
       if ( formField.Design.ValidationLowerLimit >= formField.Design.ValidationUpperLimit )
-        {
-          formField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-          formField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
-        }
+      {
+        formField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        formField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+      }
 
       if ( formField.Design.AlertLowerLimit >= formField.Design.AlertUpperLimit )
-        {
-          formField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-          formField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
-        }
+      {
+        formField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        formField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+      }
 
       if ( formField.Design.NormalRangeLowerLimit >= formField.Design.NormalRangeUpperLimit )
       {
@@ -796,7 +512,7 @@ namespace Evado.Dal.Clinical
       // 
       return formField;
 
-      }//END getRowData method.
+    }//END getRowData method.
 
     // =====================================================================================
     /// <summary>
@@ -806,7 +522,7 @@ namespace Evado.Dal.Clinical
     /// <returns>EvFormField: a form field object</returns>
     // -------------------------------------------------------------------------------------
     private EdRecordField getChartOptionRowData ( DataRow Row )
-      {
+    {
       // 
       // Initialise xmltable string and a return formfield object. 
       // 
@@ -816,18 +532,18 @@ namespace Evado.Dal.Clinical
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
-      formField.Design.Title = EvSqlMethods.getString ( Row, "TCI_Subject" );
-      String value = EvSqlMethods.getString ( Row, "TCI_TypeId" );
+      formField.FieldId = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_FIELD_ID );
+      formField.Design.Title = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_TITLE );
+      String value = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_TYPE_ID );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
-      formField.Design.Options = EvSqlMethods.getString ( Row, "TCI_OPTIONS" );
+      formField.Design.Options = EvSqlMethods.getString ( Row, EdRecordLayoutFields.DB_OPTIONS );
 
       // 
       // Return the formfield object.
       // 
       return formField;
 
-      }//END getRowData method.
+    }//END getRowData method.
     #endregion
 
     #region Form Field Queries
@@ -853,7 +569,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EdRecordField> GetView ( Guid FormGuid )
-      {
+    {
       this.LogMethod ( "GetView" );
       this.LogValue ( "FormGuid: " + FormGuid );
       //
@@ -868,16 +584,17 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(PARM_FormGuid, SqlDbType.UniqueIdentifier),
+        new SqlParameter(EdRecordLayoutFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = FormGuid;
 
       // 
       // Define the query string.
       // 
-      _sqlQueryString = _sqlQueryView + " WHERE (TC_Guid = @FormGuid) ";
+      _sqlQueryString = SQL_FIELD_QUERY_VIEW 
+        + " WHERE (" + EdRecordLayoutFields.DB_LAYOUT_GUID + "="+ EdRecordLayoutFields.PARM_LAYOUT_GUID + ") ";
 
-      _sqlQueryString += " ORDER BY TCI_Order";
+      _sqlQueryString += " ORDER BY "+EdRecordLayoutFields.PARM_ORDER+";";
 
       //_Status += "\r\n" + sqlQueryString;
 
@@ -885,12 +602,12 @@ namespace Evado.Dal.Clinical
       // Scroll through the results
       // 
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
+      {
         // 
         // Iterate through the results extracting the role information.
         // 
         for ( int count = 0; count < table.Rows.Count; count++ )
-          {
+        {
           // 
           // Extract the table row
           // 
@@ -900,8 +617,8 @@ namespace Evado.Dal.Clinical
           formField = this.getRowData ( row );
 
           view.Add ( formField );
-          }
         }
+      }
       this.LogValue ( "Count: " + view.Count.ToString ( ) );
 
 
@@ -910,13 +627,13 @@ namespace Evado.Dal.Clinical
       // 
       return view;
 
-      }//END GetView method.
+    }//END GetView method.
 
     // =====================================================================================
     /// <summary>
     /// This class returns a list of options using Guid and OrderBy
     /// </summary>
-    /// <param name="FormGuid">Guid: a form global unique identifeir</param>
+    /// <param name="LayoutGuid">Guid: a form global unique identifeir</param>
     /// <param name="OrderBy">string: an OrderBy string.</param>
     /// <returns>List of EvOption: a list of options</returns>
     /// <remarks>
@@ -933,92 +650,61 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Options list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> GetList ( Guid FormGuid, string OrderBy )
-      {
+    public List<EvOption> GetList ( Guid LayoutGuid )
+    {
       //
       // Initialize the debug log, a return option list and an option object. 
       //
       this.LogMethod ( "GetList" );
-      this.LogValue ( "FormGuid: " + FormGuid );
+      this.LogValue ( "LayoutGuid: " + LayoutGuid );
 
       List<EvOption> list = new List<EvOption> ( );
       EvOption option = new EvOption ( );
       list.Add ( option );
 
-      // 
-      // Define the SQL query parameters.
-      // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ]
-      {
-        new SqlParameter(PARM_FormGuid, SqlDbType.UniqueIdentifier),
-      };
-      cmdParms [ 0 ].Value = FormGuid;
-
-      // 
-      // Define the query string.
-      // 
-      _sqlQueryString = _sqlQueryView + " WHERE (TC_Guid = @FormGuid) ";
-
-      if ( OrderBy.Length == 0 )
-        {
-        _sqlQueryString += " ORDER BY TCI_Order";
-        }
-      else
-        {
-        _sqlQueryString += "ORDER BY " + OrderBy;
-        }
-
-      this.LogValue ( "\r\n" + _sqlQueryString );
+      var FieldList = this.GetView ( LayoutGuid );
 
       // 
       // Execute the query against the database.
       // 
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      // 
+      // Iterate through the results extracting the role information.
+      // 
+      foreach ( EdRecordField field in FieldList )
+      {
+
+        // 
+        // Process the results into the newField.
+        // 
+        option = new EvOption ( field.Guid,
+            field.FieldId + " - " + field.Title );
+
+        if ( option.Description.Length > 80 )
         {
+          option.Description = option.Description.Substring ( 0, 80 ) + " ...";
+        }
+
         // 
-        // Iterate through the results extracting the role information.
+        // Append the new FormField object to the array.
         // 
-        for ( int Count = 0; Count < table.Rows.Count; Count++ )
-          {
-          // 
-          // Extract the table row
-          // 
-          DataRow row = table.Rows [ Count ];
+        list.Add ( option );
 
-          // 
-          // Process the results into the newField.
-          // 
-          option = new EvOption (
-              EvSqlMethods.getString ( row, "TC_Guid" ),
-              EvSqlMethods.getString ( row, "FieldId" ) + " - " + EvSqlMethods.getString ( row, "TCI_Subject" ) );
+      }//END iteration loop
 
-          if ( option.Description.Length > 80 )
-            {
-            option.Description = option.Description.Substring ( 0, 80 ) + " ...";
-            }
-
-          // 
-          // Append the new FormField object to the array.
-          // 
-          list.Add ( option );
-
-          }//END iteration loop
-
-        }//END Using method
       // 
       // Pass back the result arrray.
       // 
       return list;
 
-      }//END GetList method.
+    }//END GetList method.
 
     // =====================================================================================
     /// <summary>
     /// This class returns a list of options using VisitId and a FormId
     /// </summary>
-    /// <param name="TrialId">string: a trial identifeir</param>
-    /// <param name="FormId">string: a form identifier</param>
-    /// <param name="OnlySingleFields">bool: select only single value fields.</param>
+    /// <param name="ApplicationId">string: a trial identifeir</param>
+    /// <param name="LayoutId">string: a form identifier</param>
+    /// <param name="OnlySingleValueFields">bool: select only single value fields.</param>
     /// <returns>List of EvOption: a list of options</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1035,16 +721,16 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> GetOptionList (
-      String TrialId,
-      String FormId,
-      bool OnlySingleFields )
-      {
+      String ApplicationId,
+      String LayoutId,
+      bool OnlySingleValueFields )
+    {
       //
       // Initialize the debug log, a return list of options and an option object
       //
       this.LogMethod ( "GetOptionList. " );
-      this.LogValue ( "TrialId: " + TrialId );
-      this.LogValue ( "FormId: " + FormId );
+      this.LogValue ( "ApplicationId: " + ApplicationId );
+      this.LogValue ( "LayoutId: " + LayoutId );
 
       List<EvOption> list = new List<EvOption> ( );
       EvOption option = new EvOption ( );
@@ -1056,36 +742,38 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar,10 ),
-        new SqlParameter( PARM_FormId, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = TrialId;
-      cmdParms [ 2 ].Value = FormId;
+      cmdParms [ 1 ].Value = ApplicationId;
+      cmdParms [ 2 ].Value = LayoutId;
 
       // 
       // Define the query string.
       // 
-      if ( OnlySingleFields == false )
-        {
-        _sqlQueryString = _sqlQueryView + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-          + "\r\n AND (TrialId = @TrialId) "
-          + " AND (FormId = @FormId) "
-          + " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
-          + " ORDER BY TCI_Order";
-        }
+      if ( OnlySingleValueFields == false )
+      {
+        _sqlQueryString = SQL_FIELD_QUERY_VIEW
+          + "WHERE (" + EdRecordLayoutFields.DB_APPLICATION_ID + "=" + EdRecordLayoutFields.PARM_APPLICATION_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+      }
       else
-        {
-        _sqlQueryString = _sqlQueryView + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-          + "\r\n AND (TrialId = @TrialId) "
-          + " AND (FormId = @FormId) "
-          + " AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
-          + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
-          + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Table + "') "
-          + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
-          + " AND (TCI_TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
-          + " ORDER BY TCI_Order";
-        }
+      {
+        _sqlQueryString = SQL_FIELD_QUERY_VIEW
+          + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
+          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Table + "') "
+          + " AND (" + EdRecordLayoutFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
+          + " AND (TCI_" + EdRecordLayoutFields.DB_TYPE_ID + "TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
+          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
+      }
 
       this.LogValue ( _sqlQueryString );
 
@@ -1093,12 +781,12 @@ namespace Evado.Dal.Clinical
       // Execute the query against the database.
       //  
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
+      {
         // 
         // Iterate through the results extracting the role information.
         // 
         for ( int Count = 0; Count < table.Rows.Count; Count++ )
-          {
+        {
           // 
           // Extract the table row
           // 
@@ -1108,35 +796,36 @@ namespace Evado.Dal.Clinical
           // Process the results into the newField.
           // 
           option = new EvOption (
-              EvSqlMethods.getString ( row, "FieldId" ),
-              EvSqlMethods.getString ( row, "FieldId" ) + " - " + EvSqlMethods.getString ( row, "TCI_Subject" ) );
+              EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_FIELD_ID ),
+              EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_FIELD_ID )
+              + " - " + EvSqlMethods.getString ( row, EdRecordLayoutFields.DB_TITLE ) );
 
           if ( option.Description.Length > 80 )
-            {
+          {
             option.Description = option.Description.Substring ( 0, 80 ) + " ...";
-            }
+          }
 
           // 
           // Append the new FormField object to the array.
           // 
           list.Add ( option );
 
-          }//END iteration loop
+        }//END iteration loop
 
-        }//END Using method
+      }//END Using method
 
       // 
       // Pass back the result arrray.
       // 
       return list;
 
-      }//END GetOptionList method.
+    }//END GetOptionList method.
 
     // =====================================================================================
     /// <summary>
     /// This class returns a list of options using ProjectId and a safety report value.
     /// </summary>
-    /// <param name="TrialId">string: (Mandatory) The trial identifier.</param>
+    /// <param name="LayoutId">string: (Mandatory) The trial identifier.</param>
     /// <returns>List of EvOption: a list of options</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1155,13 +844,13 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getChartOptionList (
-      String TrialId )
-      {
+      String LayoutId )
+    {
       //
       // Initialize the debug log, a return list and an option object. 
       //
       this.LogMethod ( "getChartOptionList " );
-      this.LogValue ( "TrialId: " + TrialId );
+      this.LogValue ( "LayoutId: " + LayoutId );
 
       List<EvOption> list = new List<EvOption> ( );
       EvOption option = new EvOption ( );
@@ -1173,17 +862,18 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = TrialId;
+      cmdParms [ 1 ].Value = LayoutId;
 
       // 
       // Define the query string.
       // 
       _sqlQueryString = _sqlDataAnalysisQuery_List
-        + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-          + "\r\n AND  WHERE (TrialId = @TrialId) ;";
+          + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
+          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
 
       this.LogDebug ( _sqlQueryString );
 
@@ -1191,12 +881,12 @@ namespace Evado.Dal.Clinical
       // Execute the query against the database.
       // 
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
+      {
         // 
         // Iterate through the results extracting the role information.
         // 
         for ( int Count = 0; Count < table.Rows.Count; Count++ )
-          {
+        {
           // 
           // Extract the table row
           // 
@@ -1209,41 +899,39 @@ namespace Evado.Dal.Clinical
           //
           // if it is a non numeric field the continue to the next field.
           //
-            /*
-            if ( field.Design.hasNumericValues == false )
-              {
-              this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a non numeric field",
-                field.FormId, field.FieldId, field.TypeId );
-              continue;
-              }
-            this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a numeric field",
-                field.FormId, field.FieldId, field.TypeId );
+          if ( field.Design.hasNumericValues == false )
+            {
+            this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a non numeric field",
+              field.LayoutId, field.FieldId, field.TypeId );
+            continue;
+            }
+          this.LogDebug ( "Form: {0}, Field: {1}, type: {2} is a numeric field",
+              field.LayoutId, field.FieldId, field.TypeId );
 
 
-            option = new EvOption (
-                field.FormId + EvChart.CONST_SOURCE_DELIMITER + field.FieldId,
-                field.FormId + " : " + field.FieldId + " - " + field.Title );
+          option = new EvOption (
+              LayoutId + EvChart.CONST_SOURCE_DELIMITER + field.FieldId,
+              LayoutId + " : " + field.FieldId + " - " + field.Title );
 
-            if ( option.Description.Length > 80 )
-              {
-              option.Description = option.Description.Substring ( 0, 80 ) + " ...";
-              }
-            // 
-            // Append the new FormField object to the array.
-            // 
-            list.Add ( option );
-            */
+          if ( option.Description.Length > 80 )
+            {
+            option.Description = option.Description.Substring ( 0, 80 ) + " ...";
+            }
+          // 
+          // Append the new FormField object to the array.
+          // 
+          list.Add ( option );
 
-          }//END iteration loop
+        }//END iteration loop
 
-        }//END Using method
+      }//END Using method
 
       // 
       // Pass back the result arrray.
       // 
       return list;
 
-      }//END GetList method.
+    }//END GetList method.
     #endregion
 
     #region Form Field Report methods.
@@ -1277,7 +965,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvReport getReport ( EvReport Report )
-      {
+    {
       //
       // Initialize the debug log
       //
@@ -1288,9 +976,9 @@ namespace Evado.Dal.Clinical
       this.LogValue ( "Parameters: " );
 
       for ( int i = 0; i < Report.Queries.Length; i++ )
-        {
+      {
         this.LogValue ( Report.Queries [ i ].SelectionSource + " = " + Report.Queries [ i ].Value );
-        }
+      }
 
       // 
       // Initialize a list of report rows, a formfield object and the number of report columns
@@ -1383,9 +1071,9 @@ namespace Evado.Dal.Clinical
       this.LogValue ( "Report.Column.count: " + Report.Columns.Count );
 
       foreach ( EvReportColumn col in Report.Columns )
-        {
+      {
         this.LogValue ( "HeaderText: " + col.HeaderText );
-        }
+      }
 
       // 
       // Define the query parameters.
@@ -1393,8 +1081,8 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar,10 ),
-        new SqlParameter( PARM_FormId, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
 
@@ -1402,26 +1090,26 @@ namespace Evado.Dal.Clinical
       // Extract the parameters from the parameter list.
       //
       for ( int i = 0; i < Report.Queries.Length; i++ )
+      {
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Application )
         {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Trial )
-          {
           cmdParms [ 1 ].Value = Report.Queries [ i ].Value;
-          }
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Id )
-          {
+        }
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
+        {
           cmdParms [ 2 ].Value = Report.Queries [ i ].Value;
-          }
-        }//END parameter iteration loop.
+        }
+      }//END parameter iteration loop.
 
       //
       // Generate the SQL query string.
       //
-      _sqlQueryString = _sqlQueryView
-        + "WHERE (" + EdRecordLayoutFields.DB_CUSTOMER_GUID + "=" + EdRecordLayoutFields.PARM_CUSTOMER_GUID + ") "
-        + "\r\n AND(TrialId = @TrialId) "
-        + "\r\n AND (FormId = @FormId) "
-        + "\r\n AND (TC_State = '" + EdRecordObjectStates.Form_Issued + "') "
-        + " ORDER BY TCI_Order";
+      _sqlQueryString = SQL_FIELD_QUERY_VIEW
+          + "WHERE (" + EdRecordLayoutFields.DB_APPLICATION_ID + "=" + EdRecordLayoutFields.PARM_APPLICATION_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_ID + "=" + EdRecordLayoutFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_FIELD_ID + "=" + EdRecordLayoutFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdRecordLayoutFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdRecordLayoutFields.DB_ORDER + ";";
 
       this.LogValue ( "SQL QUERY: " + _sqlQueryString );
 
@@ -1429,14 +1117,14 @@ namespace Evado.Dal.Clinical
       // Execute the query against the database.
       //
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
+      {
         this.LogValue ( "Returned Records: " + table.Rows.Count );
 
         // 
         // Iterate through the results extracting the role information.
         // 
         for ( int count = 0; count < table.Rows.Count; count++ )
-          {
+        {
           // 
           // Extract the table row to formfield object. 
           // 
@@ -1455,46 +1143,46 @@ namespace Evado.Dal.Clinical
           //
           reportRow.ColumnValues [ 0 ] = formField.FieldId;
           reportRow.ColumnValues [ 1 ] = formField.Title;
-          reportRow.ColumnValues [ 2 ] = EvStatics.getEnumStringValue(formField.TypeId);
+          reportRow.ColumnValues [ 2 ] = EvStatics.getEnumStringValue ( formField.TypeId );
 
           //
           // Switch formfield typeId and update the third column value
           //
           switch ( formField.TypeId )
-            {
+          {
             case Evado.Model.EvDataTypes.Check_Box_List:
             case Evado.Model.EvDataTypes.Radio_Button_List:
             case Evado.Model.EvDataTypes.Selection_List:
             case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:
-                {
+              {
                 reportRow.ColumnValues [ 3 ] = "Options: " + formField.Design.Options;
                 break;
-                }
+              }
             case Evado.Model.EvDataTypes.Numeric:
-                {
+              {
                 reportRow.ColumnValues [ 3 ] = "Val. Min: " + formField.Design.ValidationLowerLimit
                   + " Val. Max: " + formField.Design.ValidationUpperLimit
                   + " Alert. Min: " + formField.Design.AlertLowerLimit
                   + " Alert. Max: " + formField.Design.AlertUpperLimit;
                 if ( formField.Design.Unit != String.Empty )
-                  {
+                {
                   reportRow.ColumnValues [ 3 ] += " Unit: " + formField.Design.UnitHtml;
-                  }
-                break;
                 }
+                break;
+              }
             case Evado.Model.EvDataTypes.Table:
             case Evado.Model.EvDataTypes.Special_Matrix:
-                {
+              {
                 reportRow.ColumnValues [ 3 ] = String.Empty;
                 foreach ( EdRecordTableHeader header in formField.Table.Header )
-                  {
+                {
                   reportRow.ColumnValues [ 3 ] += "Col: " + header.No
                     + " Title: " + header.Text
                     + " Type: " + header.TypeId + " ";
-                  }
-                break;
                 }
-            }
+                break;
+              }
+          }
           reportRow.ColumnValues [ 4 ] = formField.Design.HideField.ToString ( );
 
           //
@@ -1502,9 +1190,9 @@ namespace Evado.Dal.Clinical
           //
           Report.DataRecords.Add ( reportRow );
 
-          }//END record interation loop.
+        }//END record interation loop.
 
-        }//END using statement.
+      }//END using statement.
 
       this.LogValue ( "Report row count: " + reportRows.Count );
 
@@ -1512,107 +1200,26 @@ namespace Evado.Dal.Clinical
       // If the report data record is empty, add new report row with four columns. 
       //
       if ( Report.DataRecords.Count == 0 )
-        {
+      {
         EvReportRow reportRow = new EvReportRow ( Report.Columns.Count );
 
         for ( int i = 0; i < Report.Columns.Count; i++ )
-          {
+        {
           reportRow.ColumnValues [ i ] = String.Empty;
-          }
+        }
         Report.DataRecords.Add ( reportRow );
 
-        }//END ADD EMPTY ROW
+      }//END ADD EMPTY ROW
 
       // 
       // Return the result array.
       // 
       return Report;
-      }
+    }
 
     #endregion
 
     #region Retrieval Queries
-
-    // ==================================================================================
-    /// <summary>
-    /// This class gets FormField data object by its unique object identifier.
-    /// </summary>
-    /// <param name="Uid">Long: a unique identifier</param>
-    /// <returns>EvFormField: a FormField data object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Validate whether the unique identifier is not empty. 
-    /// 
-    /// 2. Define the sql query parameters and the sql query string. 
-    /// 
-    /// 3. Execute the sql query string with parameters and store the results on the datatable. 
-    /// 
-    /// 4. Extract the first datarow to the formfield object. 
-    /// 
-    /// 5. Return the Formfield data object. 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public EdRecordField getField ( long Uid )
-      {
-      //
-      // Initialize the debug log and a return formfield object. 
-      //
-      this.LogMethod ( "getField" );
-      this.LogValue ( "Uid: " + Uid );
-
-      EdRecordField formField = new EdRecordField ( );
-
-      // 
-      // Validate whether the Unique identifier is not zero
-      // 
-      if ( Uid == 0 )
-        {
-        return formField;
-        }
-
-      // 
-      // Define the query parameters.
-      // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_Guid, SqlDbType.UniqueIdentifier );
-      cmdParms.Value = Uid;
-
-      // 
-      // Define the query string.
-      // 
-      _sqlQueryString = _sqlQueryView + " WHERE (TCI_Guid = @Guid ); ";
-
-      // 
-      // Execute the query against the database.
-      // 
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
-        // 
-        // If not rows the return
-        // 
-        if ( table.Rows.Count == 0 )
-          {
-          return formField;
-          }
-
-        // 
-        // Extract the table row
-        // 
-        DataRow row = table.Rows [ 0 ];
-
-        // 
-        // Fill the role object.
-        // 
-        formField = this.getRowData ( row );
-
-        }//END Using method
-
-      // 
-      // Pass back the data object.
-      // 
-      return formField;
-
-      }//END getField method
 
     // ==================================================================================
     /// <summary>
@@ -1635,7 +1242,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public EdRecordField getField ( Guid FieldGuid )
-      {
+    {
       //
       // Initialize the debug log and a return formfield object.
       //
@@ -1648,33 +1255,33 @@ namespace Evado.Dal.Clinical
       // Validate whether the field Guid is not empty.
       // 
       if ( FieldGuid == Guid.Empty )
-        {
+      {
         return formField;
-        }
+      }
 
       // 
       // Define the query parameters.
       // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_Guid, SqlDbType.UniqueIdentifier );
+      SqlParameter cmdParms = new SqlParameter ( EdRecordLayoutFields.PARM_GUID, SqlDbType.UniqueIdentifier );
       cmdParms.Value = FieldGuid;
 
       // 
       // Define the query string.
       // 
-      _sqlQueryString = _sqlQueryView + " WHERE (TCI_Guid = @Guid ); ";
+      _sqlQueryString = SQL_FIELD_QUERY_VIEW + " WHERE (" + EdRecordLayoutFields.DB_GUID + " = " + EdRecordLayoutFields.PARM_GUID + "); ";
 
       // 
       // Execute the query against the database.
       // 
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
+      {
         // 
         // If not rows the return
         // 
         if ( table.Rows.Count == 0 )
-          {
+        {
           return formField;
-          }
+        }
 
         // 
         // Extract the table row
@@ -1686,130 +1293,14 @@ namespace Evado.Dal.Clinical
         // 
         formField = this.getRowData ( row );
 
-        }//END Using method
+      }//END Using method
 
       // 
       // Pass back the data object.
       // 
       return formField;
 
-      }// END getField method
-
-    // ==================================================================================
-    /// <summary>
-    /// This class gets FormField data object using TrialId, FormUid and FieldId
-    /// </summary>
-    /// <param name="ProjectId">string: a trial identifier</param>
-    /// <param name="FormGuid">Integer: a form unique identifier</param>
-    /// <param name="FieldId">string: a field identifier</param>
-    /// <returns>EvFormField: a FormField data object</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Return an empty formfield object if the TrialId and FieldId are empty
-    /// 
-    /// 2. Define sql query parameters and sql query string. 
-    /// 
-    /// 3. Execute the sql query string with parameters and store the results on data table. 
-    /// 
-    /// 4. Extract the first data row to the formfield object. 
-    /// 
-    /// 5. If formfield type is external selection list, add the relevant coding visitSchedule items.
-    /// 
-    /// 6. Return a formfield object. 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public EdRecordField getField ( string ProjectId, Guid FormGuid, string FieldId )
-      {
-      //
-      // Initialize the debug log and a return formfield object
-      //
-      this.LogMethod ( "getField" );
-      this.LogValue ( "ProjectId: " + ProjectId
-        + " FormGuid: " + FormGuid
-        + " FieldId: " + FieldId );
-
-      EdRecordField formField = new EdRecordField ( );
-
-      // 
-      // Validate whether the VisitId and FieldId are not empty
-      // 
-      if ( ProjectId == String.Empty && FieldId == String.Empty )
-        {
-        return formField;
-        }
-
-      // 
-      // Define the query parameters.
-      // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ]
-      {
-        new SqlParameter( PARM_TrialId, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_FormGuid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_FieldId, SqlDbType.NVarChar, 20),
-      };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = FormGuid;
-      cmdParms [ 2 ].Value = FieldId;
-
-      // 
-      // Define the query string.
-      // 
-      if ( FormGuid == Guid.Empty )
-        {
-        _sqlQueryString = _sqlQueryView + " WHERE (TrialId = @TrialId ) "
-          + " AND (FieldId = @FieldId )  ";
-        }
-      else
-        {
-        _sqlQueryString = _sqlQueryView + " WHERE (TrialId = @TrialId ) "
-         + " AND (TC_Guid = @FormGuid )  "
-         + " AND (FieldId = @FieldId )  ";
-        }
-
-      // 
-      // Execute the query against the database.
-      // 
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
-        {
-        // 
-        // If not rows the return
-        // 
-        if ( table.Rows.Count == 0 )
-          {
-          return formField;
-          }
-
-        // 
-        // Extract the table row
-        // 
-        DataRow row = table.Rows [ 0 ];
-
-        // 
-        // Fill the role object.
-        // 
-        formField = this.getRowData ( row );
-
-        }//END Using method
-
-      // 
-      // If formfield type is external selection list, add the relevant coding visitSchedule items.
-      // 
-      if ( formField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
-        {
-        EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
-
-        formField.Design.Options = externalCodingLists.getItemCodingList (
-          formField.Design.ExSelectionListId,
-          formField.Design.ExSelectionListCategory );
-        }
-
-      // 
-      // Pass back the data object.
-      // 
-      return formField;
-
-      }// END getField method
+    }// END getField method
 
     #endregion
 
@@ -1835,8 +1326,52 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for updating items. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EdRecordField FormField )
+    public EvEventCodes UpdateFields ( EdRecord Layout )
+    {
+      this.LogMethod ( "UpdateFields method. " );
+      this.LogValue ( "Layout.Fields.Count: " + Layout.Fields.Count );
+      //
+      // Initialize debug log and the old formfield object
+      //
+
+      foreach ( EdRecordField field in Layout.Fields )
       {
+        field.LayoutGuid = Layout.Guid;
+
+        var result = UpdateItem ( field );
+        if ( result != EvEventCodes.Ok )
+        {
+          return result;
+        }
+      }
+
+      this.LogMethod ( "UpdateFields" );
+      return EvEventCodes.Ok;
+
+    }//END UpdateFields method
+
+    // ==================================================================================
+    /// <summary>
+    /// This class update items on formfield table using retrieving formfield items values. 
+    /// </summary>
+    /// <param name="FormField">EvFormField: a formfield object</param>
+    /// <returns>EvEventCodes: an event code for updating items on formfield object</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Exit, if the Old formfield's Uid is not defined. 
+    /// 
+    /// 2. Add items to datachange object if they do not exist. 
+    /// 
+    /// 3. Define sql query parameters and execute the storeprocedure for updating items on formfield table. 
+    /// 
+    /// 4. Add datachange object values to the backup datachanges object. 
+    /// 
+    /// 5. Return the event code for updating items. 
+    /// </remarks>
+    // ----------------------------------------------------------------------------------
+    public EvEventCodes UpdateItem ( EdRecordField FormField )
+    {
       this.LogMethod ( "updateItem method. " );
       this.LogValue ( "FieldId: " + FormField.FieldId );
       //
@@ -1849,11 +1384,11 @@ namespace Evado.Dal.Clinical
       //
       EdRecordField oldItem = this.getField ( FormField.Guid );
       if ( oldItem.Guid == Guid.Empty )
-        {
+      {
         this.LogValue ( "FormId not returned." );
 
         return EvEventCodes.Identifier_Form_Id_Error;
-        }
+      }
 
       //
       // Create the data change object.
@@ -1869,10 +1404,10 @@ namespace Evado.Dal.Clinical
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _storedProcedureUpdateItem, _cmdParms ) == 0 )
-        {
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_UPDATE_ITEM, _cmdParms ) == 0 )
+      {
         return EvEventCodes.Database_Record_Update_Error;
-        }
+      }
       // 
       // Add the change record
       // 
@@ -1880,7 +1415,7 @@ namespace Evado.Dal.Clinical
 
       return EvEventCodes.Ok;
 
-      }//END UpdateItem method
+    }//END UpdateItem method
 
     // =====================================================================================
     /// <summary>
@@ -1899,7 +1434,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private EvDataChange SetDataChange ( EdRecordField OldField, EdRecordField NewField )
-      {
+    {
       this.LogMethod ( "SetDataChange method. " );
       // 
       // Initialise the methods variables and objects.
@@ -1915,7 +1450,7 @@ namespace Evado.Dal.Clinical
       dataChange.TableName = EvDataChange.DataChangeTableNames.EvFormFields;
       //dataChange.RecordUid = 1;
       dataChange.RecordGuid = NewField.Guid;
-      dataChange.UserId = NewField.UpdatedByUserId;
+      dataChange.UserId = this.ClassParameters.UserProfile.UserId;
       dataChange.DateStamp = DateTime.Now;
 
       //
@@ -1936,43 +1471,43 @@ namespace Evado.Dal.Clinical
       dataChange.AddItem ( "Unit", OldField.Design.Unit, NewField.Design.Unit );
 
 
-        dataChange.AddItem ( "Design_JavaScript",
-          OldField.Design.JavaScript,
-          NewField.Design.JavaScript );
+      dataChange.AddItem ( "Design_JavaScript",
+        OldField.Design.JavaScript,
+        NewField.Design.JavaScript );
 
 
 
 
 
-        dataChange.AddItem ( "Validation_AlertLowerLimit",
-          OldField.Design.AlertLowerLimit,
-          NewField.Design.AlertLowerLimit );
+      dataChange.AddItem ( "Validation_AlertLowerLimit",
+        OldField.Design.AlertLowerLimit,
+        NewField.Design.AlertLowerLimit );
 
-        dataChange.AddItem ( "Validation_AlertUpperLimit",
-          OldField.Design.AlertUpperLimit,
-          NewField.Design.AlertUpperLimit );
+      dataChange.AddItem ( "Validation_AlertUpperLimit",
+        OldField.Design.AlertUpperLimit,
+        NewField.Design.AlertUpperLimit );
 
-        dataChange.AddItem ( "Validation_NormaRangeLowerLimit",
-          OldField.Design.NormalRangeLowerLimit,
-          NewField.Design.NormalRangeLowerLimit );
+      dataChange.AddItem ( "Validation_NormaRangeLowerLimit",
+        OldField.Design.NormalRangeLowerLimit,
+        NewField.Design.NormalRangeLowerLimit );
 
-        dataChange.AddItem ( "Validation_NormaRangeUpperLimit",
-          OldField.Design.NormalRangeUpperLimit,
-          NewField.Design.NormalRangeUpperLimit );
+      dataChange.AddItem ( "Validation_NormaRangeUpperLimit",
+        OldField.Design.NormalRangeUpperLimit,
+        NewField.Design.NormalRangeUpperLimit );
 
-        dataChange.AddItem ( "Validation_ValidationLowerLimit",
-          OldField.Design.ValidationLowerLimit,
-          NewField.Design.ValidationLowerLimit );
+      dataChange.AddItem ( "Validation_ValidationLowerLimit",
+        OldField.Design.ValidationLowerLimit,
+        NewField.Design.ValidationLowerLimit );
 
-        dataChange.AddItem ( "Validation_SafetyUpperLimit",
-          OldField.Design.ValidationUpperLimit,
-          NewField.Design.ValidationUpperLimit );
+      dataChange.AddItem ( "Validation_SafetyUpperLimit",
+        OldField.Design.ValidationUpperLimit,
+        NewField.Design.ValidationUpperLimit );
 
       if ( OldField.Table != null
         && NewField.Table != null )
-        {
+      {
         for ( int index = 0; index < NewField.Table.Header.Length; index++ )
-          {
+        {
           EdRecordTableHeader oldHeader = OldField.Table.Header [ index ];
           EdRecordTableHeader newHeader = NewField.Table.Header [ index ];
 
@@ -1987,41 +1522,41 @@ namespace Evado.Dal.Clinical
           dataChange.AddItem ( "Field_Table_Header_ColumnId_" + index, oldHeader.ColumnId, newHeader.ColumnId );
 
           dataChange.AddItem ( "Field_Table_Header_OptionsOrUnit_" + index, oldHeader.OptionsOrUnit, newHeader.OptionsOrUnit );
-          }
+        }
 
         if ( NewField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
           && NewField.Table.Rows.Count > 0 )
-          {
+        {
           for ( int count = 0; count < NewField.Table.Rows.Count; count++ )
-            {
+          {
             if ( OldField.Table.Rows.Count <= count )
-              {
+            {
               for ( int index = 0; index < NewField.Table.Header.Length; index++ )
-                {
+              {
                 dataChange.AddItem (
                   "Field_Matrix_R" + count + "C" + index,
                   "",
                   NewField.Table.Rows [ count ].Column [ index ] );
-                }
               }
+            }
             else
-              {
+            {
               for ( int index = 0; index < NewField.Table.Header.Length; index++ )
-                {
+              {
                 dataChange.AddItem (
                   "Field_Matrix_R" + count + "C" + index,
                   OldField.Table.Rows [ count ].Column [ index ],
                   NewField.Table.Rows [ count ].Column [ index ] );
-                }
               }
             }
           }
+        }
 
-        }//END Table difference block
+      }//END Table difference block
 
       if ( NewField.Design != null
         && OldField.Design != null )
-        {
+      {
         dataChange.AddItem (
           "Field_Design_AnalogueLegendFinish",
           OldField.Design.AnalogueLegendFinish,
@@ -2085,11 +1620,6 @@ namespace Evado.Dal.Clinical
           NewField.Design.Mandatory );
 
         dataChange.AddItem (
-          "Field_Design_MultiLineTextField",
-          OldField.Design.MultiLineTextField,
-          NewField.Design.MultiLineTextField );
-
-        dataChange.AddItem (
           "Field_Design_Options",
           OldField.Design.Options,
           NewField.Design.Options );
@@ -2107,8 +1637,8 @@ namespace Evado.Dal.Clinical
 
         dataChange.AddItem (
           "Field_Design_Section",
-          OldField.Design.Section,
-          NewField.Design.Section );
+          OldField.Design.SectionNo,
+          NewField.Design.SectionNo );
 
         dataChange.AddItem (
           "Field_Design_Subject,",
@@ -2130,11 +1660,11 @@ namespace Evado.Dal.Clinical
           OldField.Design.UnitScaling,
           NewField.Design.UnitScaling );
 
-        }//END field design difference block.
+      }//END field design difference block.
 
       return dataChange;
 
-      }//END SetDataChange method
+    }//END SetDataChange method
 
     // ==================================================================================
     /// <summary>
@@ -2153,12 +1683,12 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes AddItem ( EdRecordField FormField )
-      {
+    {
       //
       // Initialize the debug log, a local sql query string and a new formfield object. 
       //
       this.LogMethod ( "AddItem method. " );
-      this.LogValue ( "FormGuid: " + FormField.FormGuid );
+      this.LogValue ( "FormGuid: " + FormField.LayoutGuid );
       this.LogValue ( "FieldId: " + FormField.FieldId );
 
       string _sqlQueryString = String.Empty;
@@ -2168,17 +1698,17 @@ namespace Evado.Dal.Clinical
       //
       // Validate whether the formUid and Uid do not exist. 
       //
-      if ( newField.FormGuid != Guid.Empty )
-        {
+      if ( newField.LayoutGuid != Guid.Empty )
+      {
         return EvEventCodes.Data_Duplicate_Field_Error;
-        }//END  FormUid
+      }//END  FormUid
 
       if ( newField.Guid != Guid.Empty
         && ( newField.Title != FormField.Title
          || newField.TypeId != FormField.TypeId ) )
-        {
+      {
         return EvEventCodes.Data_Duplicate_Field_Error;
-        }//END Uid
+      }//END Uid
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -2189,14 +1719,14 @@ namespace Evado.Dal.Clinical
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _storedProcedureAddItem, _cmdParms ) == 0 )
-        {
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ADD_ITEM, _cmdParms ) == 0 )
+      {
         return EvEventCodes.Database_Record_Update_Error;
-        }
+      }
 
       return EvEventCodes.Ok;
 
-      }//END AddItem class. 
+    }//END AddItem class. 
 
     // =====================================================================================
     /// <summary>
@@ -2215,7 +1745,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes DeleteItem ( EdRecordField Field )
-      {
+    {
       //
       // Initialize the debug log
       //
@@ -2226,38 +1756,32 @@ namespace Evado.Dal.Clinical
       // Validate whether the VisitId and Usercommon name exist. 
       // 
       if ( Field.Guid == Guid.Empty )
-        {
+      {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
-        }
+      }
 
       // 
       // Define the query parameters.
       // 
       SqlParameter [ ] _cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter(PARM_UpdatedByUserId, SqlDbType.NVarChar,100),
-        new SqlParameter(PARM_UpdatedBy, SqlDbType.NVarChar,30),
-        new SqlParameter(PARM_UpdateDate, SqlDbType.DateTime)
+        new SqlParameter(PARM_GUID, SqlDbType.UniqueIdentifier),
       };
       _cmdParms [ 0 ].Value = Field.Guid;
-      _cmdParms [ 1 ].Value = Field.UpdatedByUserId;
-      _cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
-      _cmdParms [ 3 ].Value = DateTime.Now;
 
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( _storedProcedureDeleteItem, _cmdParms ) == 0 )
-        {
+      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_DELTE_ITEM, _cmdParms ) == 0 )
+      {
         return EvEventCodes.Database_Record_Update_Error;
-        }
+      }
 
       return EvEventCodes.Ok;
 
-      }//END DeleteItem method
+    }//END DeleteItem method
     #endregion
 
-    }//END EvFormFields class
+  }//END EvFormFields class
 
-  }//END namespace Evado.Dal.Clinical
+}//END namespace Evado.Dal.Clinical

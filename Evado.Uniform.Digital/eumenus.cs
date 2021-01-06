@@ -246,7 +246,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Get the selected pageMenuGroup identifier.
         // 
-        if ( PageCommand.hasParameter ( EvMenuItem.MenuFieldNames.Platform.ToString() ) == true )
+        if ( PageCommand.hasParameter ( EvMenuItem.MenuFieldNames.Platform.ToString ( ) ) == true )
         {
           this.Session.MenuPlatformId = PageCommand.GetParameter ( EvMenuItem.MenuFieldNames.Platform.ToString ( ) );
         }
@@ -325,7 +325,7 @@ namespace Evado.UniForm.Clinical
       {
         EvMenus _Bll_Menus = new EvMenus ( this.ClassParameters );
 
-        if ( this.ApplicationObjects.MenuList.Count > 0)
+        if ( this.ApplicationObjects.MenuList.Count > 0 )
         {
           this.LogMethodEnd ( "loadGlobalMenu" );
           return;
@@ -403,7 +403,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Menu_Selection,
         Evado.Model.UniForm.EditAccess.Enabled );
-        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       //
       // Add the platform selection list
@@ -412,13 +412,13 @@ namespace Evado.UniForm.Clinical
       optionList.Add ( new EvOption ( EuMenus.CONST_PRODUCTION_APPLICATION_IDENTIFIER, "Production Platform" ) );
 
       pageField = pageGroup.createSelectionListField (
-        EvMenuItem.MenuFieldNames.Platform.ToString(),
+        EvMenuItem.MenuFieldNames.Platform.ToString ( ),
         "Platform identifier: ",
         this.Session.MenuPlatformId,
         optionList );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-      
+
       // 
       // Create the pageMenuGroup selection list.
       // 
@@ -430,7 +430,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Menu_Group_ID,
         this.Session.MenuGroupIdentifier,
         groupList );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -487,7 +487,7 @@ namespace Evado.UniForm.Clinical
         //
         if ( GroupId == String.Empty )
         {
-          pageGroup.Description = EvLabels.Menu_List_Group_Not_Selected_Message ;
+          pageGroup.Description = EvLabels.Menu_List_Group_Not_Selected_Message;
 
           return;
         }
@@ -532,32 +532,8 @@ namespace Evado.UniForm.Clinical
 
           int startIndex = sbTitle.ToString ( ).Length;
 
-          if ( menuItem.hasModule ( EvModuleCodes.All_Modules ) == true )
-          {
-            sbTitle.Append ( EvLabels.Menu_List_All_Modules_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
-          }
-          else
-          {
-            if ( menuItem.hasModule ( EvModuleCodes.Clinical_Module ) == true )
-            {
-              sbTitle.Append ( EvLabels.Menu_List_Clinical_Modules_Label );
-              sbTitle.Append ( EvLabels.Space_Coma );
-            }
-
-            if ( menuItem.hasModule ( EvModuleCodes.Registry_Module ) == true )
-            {
-              sbTitle.Append ( EvLabels.Menu_List_Registry_Modules_Label );
-              sbTitle.Append ( EvLabels.Space_Coma );
-            }
-
-            if ( menuItem.hasModule ( EvModuleCodes.Patient_Module ) == true
-              || menuItem.hasModule ( EvModuleCodes.Patient_Recorded_Outcomes ) == true )
-            {
-              sbTitle.Append ( EvLabels.Menu_List_Patient_Modules_Label );
-              sbTitle.Append ( EvLabels.Space_Coma );
-            }
-          }
+          sbTitle.Append ( EvLabels.Menu_List_All_Modules_Label );
+          sbTitle.Append ( EvLabels.Space_Coma );
 
           sbTitle.Append ( EvLabels.Space_Arrow_Right
           + EvLabels.Menu_List_Role_Label );
@@ -569,35 +545,15 @@ namespace Evado.UniForm.Clinical
             sbTitle.Append ( EvLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvRoleList.Trial_Manager ) == true )
+          if ( menuItem.hasRole ( EvRoleList.Manager ) == true )
           {
             sbTitle.Append ( EvLabels.Menu_List_Project_Manager_Label );
             sbTitle.Append ( EvLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvRoleList.Trial_Coordinator ) == true )
+          if ( menuItem.hasRole ( EvRoleList.Coordinator ) == true )
           {
             sbTitle.Append ( EvLabels.Menu_List_Project_Coordinator_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
-          }
-
-          if ( menuItem.hasRole ( EvRoleList.Site_User ) == true
-            || menuItem.hasRole ( EvRoleList.Investigator ) == true )
-          {
-            sbTitle.Append ( EvLabels.Menu_List_Record_Author_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
-          }
-
-          if ( menuItem.hasRole ( EvRoleList.Monitor ) == true
-            || menuItem.hasRole ( EvRoleList.Data_Manager ) == true )
-          {
-            sbTitle.Append ( EvLabels.Menu_List_Monitor_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
-          }
-
-          if ( menuItem.hasRole ( EvRoleList.Sponsor ) == true )
-          {
-            sbTitle.Append ( EvLabels.Menu_List_Sponsor_Label );
             sbTitle.Append ( EvLabels.Space_Coma );
           }
 
@@ -660,7 +616,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
       Guid menuGuid = Guid.Empty;
-  
+
       try
       {
         //
@@ -791,7 +747,7 @@ namespace Evado.UniForm.Clinical
       // Add the platform selection list
       //
 
-      optionList.Add ( new EvOption ( 
+      optionList.Add ( new EvOption (
         EuMenus.CONST_ADMIN_APPLICATION_IDENTIFIER,
         EvLabels.Menu_Admin_Platform_Option_Description ) );
 
@@ -820,7 +776,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Menu_Page_Id_Field_Label,
         this.Session.MenuItem.PageId.ToString ( ),
         optionList );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer name object
@@ -831,7 +787,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         this.Session.MenuItem.Title,
         20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer name object
@@ -842,7 +798,7 @@ namespace Evado.UniForm.Clinical
         this.Session.MenuItem.Order,
         0,
         200 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the modules the item is associated with
@@ -854,7 +810,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Menu_Modules_Field_Label,
         this.Session.MenuItem.Modules,
         loadedModulesList );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.Description = EvLabels.Menu_Modules_Field_Description;
 
       // 
@@ -871,9 +827,9 @@ namespace Evado.UniForm.Clinical
         roles,
         roleList );
 
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-      pageField.Description = EvLabels.Menu_Role_List_Field_Description ;
+      pageField.Description = EvLabels.Menu_Role_List_Field_Description;
 
       // 
       // Add the save groupCommand
@@ -1005,7 +961,7 @@ namespace Evado.UniForm.Clinical
         this.LogDebug ( "Guid: " + this.Session.MenuItem.Guid );
         this.LogDebug ( "PageId: " + this.Session.MenuItem.PageId );
         this.LogDebug ( "Title: " + this.Session.MenuItem.Title );
-        this.LogDebug ( "Platform: " + this.Session.MenuItem.Platform ); 
+        this.LogDebug ( "Platform: " + this.Session.MenuItem.Platform );
 
 
         //

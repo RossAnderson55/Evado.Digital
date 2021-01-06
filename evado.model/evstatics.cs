@@ -1298,8 +1298,7 @@ namespace Evado.Model
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public static List<Evado.Model.EvOption> getStringAsOptionList (
-      String StringOptions,
-      bool UseValueCode )
+      String StringOptions )
     {
       //
       // Initialise a return option list
@@ -1338,8 +1337,7 @@ namespace Evado.Model
         // If the use Code Value is true and the option does not have a coded value
         // use the option list index generate one.
         //
-        if ( UseValueCode == true
-          && option.Value == stringOption )
+        if ( option.Value == stringOption )
         {
           option.Value = ( i + 1 ).ToString ( );
         }

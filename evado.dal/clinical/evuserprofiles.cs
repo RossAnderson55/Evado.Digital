@@ -231,14 +231,6 @@ namespace Evado.Dal.Clinical
       SqlParameter[] parms,
       Evado.Model.Digital.EvUserProfile UserProfile)
     {
-      //
-      // If the user role is not patient empty the patient GUID
-      //
-      if (UserProfile.RoleId != EvRoleList.Patient)
-      {
-        UserProfile.PatientGuid = Guid.Empty;
-      }
-
       parms[0].Value = UserProfile.Guid;
       parms[1].Value = UserProfile.CustomerGuid;
       parms[2].Value = UserProfile.PatientGuid;
@@ -266,21 +258,6 @@ namespace Evado.Dal.Clinical
       parms[24].Value = UserProfile.UserCommonName;
       parms[25].Value = DateTime.Now;
 
-      if (UserProfile.RoleId == Evado.Model.Digital.EvRoleList.Patient)
-      {
-        parms[6].Value = String.Empty;
-        parms[7].Value = String.Empty;
-        parms[8].Value = String.Empty;
-        parms[9].Value = String.Empty;
-        parms[10].Value = String.Empty;
-        parms[11].Value = String.Empty;
-        parms[12].Value = String.Empty;
-        parms[13].Value = String.Empty;
-        parms[14].Value = String.Empty;
-        parms[15].Value = String.Empty;
-        parms[16].Value = String.Empty;
-        parms[17].Value = String.Empty;
-      }
 
     }//END setUsersParameters class.
 

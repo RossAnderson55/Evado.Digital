@@ -62,7 +62,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._dalRecordItems = new Evado.Dal.Clinical.EdRecordFields ( Settings );
+      this._dalRecordItems = new Evado.Dal.Clinical.EdRecordValues ( Settings );
     }
     #endregion
 
@@ -70,7 +70,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordFields _dalRecordItems = new Evado.Dal.Clinical.EdRecordFields( );
+    private Evado.Dal.Clinical.EdRecordValues _dalRecordItems = new Evado.Dal.Clinical.EdRecordValues( );
 
     #endregion
 

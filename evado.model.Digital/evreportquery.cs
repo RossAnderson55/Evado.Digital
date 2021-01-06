@@ -189,7 +189,7 @@ namespace Evado.Model.Digital
             }
           case EvReport.SelectionListTypes.Current_Project:
             {
-              this._SelectionSource = EvReport.SelectionListTypes.Current_Trial;
+              this._SelectionSource = EvReport.SelectionListTypes.Current_Application;
               break;
             }
           case EvReport.SelectionListTypes.Project_Id:

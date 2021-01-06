@@ -386,24 +386,6 @@ namespace Evado.Model.Digital
 
     #region EVADO environment configuration
 
-    /// <summary>
-    /// This property indicates whether the site profile access is depersonalised.
-    /// </summary>
-    public bool DepersonalisedAccess
-    {
-      get
-      {
-        if ( this.hasModule ( EvModuleCodes.Patient_Module ) == true
-          || this.hasModule ( EvModuleCodes.Patient_Recorded_Outcomes ) == true
-          || this.hasModule ( EvModuleCodes.Patient_Recorded_Observation ) == true )
-        {
-          return false;
-        }
-
-        return true;
-      }
-    }
-
     private List<EvModuleCodes> _LoadedModuleList = new List<EvModuleCodes> ( );
     /// <summary>
     /// This property contains loaded modules of site profile
@@ -447,7 +429,7 @@ namespace Evado.Model.Digital
 
           if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
           {
-            arModuules [ i ]= "Clinical_Outcome_Assessments";
+            arModuules [ i ] = "Clinical_Outcome_Assessments";
           }
 
           if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
@@ -1000,7 +982,7 @@ namespace Evado.Model.Digital
           }
         case EdPlatform.SettingFieldNames.DemoRegistrationVideoUrl:
           {
-            this.DemoRegistrationVideoUrl =  Value;
+            this.DemoRegistrationVideoUrl = Value;
             return;
           }
 
@@ -1241,33 +1223,26 @@ namespace Evado.Model.Digital
     /// <param name="DisplayAllModules">Bool: True display all selection.</param>
     /// <returns>List of EvOption: a list of data types.</returns>
     //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getModuleList ( bool DisplayAllModules )
+    public static List<EvOption> getModuleList ( )
     {
       //
       // Initialize a return list and an option object.
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      if ( DisplayAllModules == true )
-      {
-        list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.All_Modules ) );
-      }
+      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.All_Modules ) );
 
       list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Administration_Module ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Trial_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Registry_Module ) );
-
       list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Management_Module ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Patient_Module ) );
+      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Design_Module ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Patient_Recorded_Outcomes ) );
+      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Entity_Module ) );
+
+      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Record_Module ) );
 
       list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Imaging_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Informed_Consent ) );
 
       list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Integration_Module ) );
 

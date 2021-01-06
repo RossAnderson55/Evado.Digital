@@ -268,16 +268,6 @@ namespace Evado.Model
     External_Image = 43,
 
     /// <summary>
-    /// This options defines a quiz question field data type.
-    /// </summary>
-    Special_Quiz_Radio_Buttons = 44,
-
-    /// <summary>
-    /// Redundent data type.
-    /// </summary>
-    Quiz_Radio_Buttons = 44,
-
-    /// <summary>
     /// This enumeration define a User endorsement display field. 
     /// </summary>
     User_Endorsement = 45,
@@ -293,31 +283,9 @@ namespace Evado.Model
     Special_Matrix = 100,
 
     /// <summary>
-    /// This enumeration define a special medication summary data type.
-    /// </summary>
-    Special_Medication_Summary = 101,
-
-    /// <summary>
-    /// This enumeration define a special demographics summary data type.
-    /// </summary>
-    Special_Subject_Demographics = 102,
-
-    /// <summary>
     /// This enumeration define a special site name data type.
     /// </summary>
     Special_Subsitute_Data = 103,
-
-    /// <summary>
-    /// This enumeration define a special checokbox to query the field instruction content for 
-    /// consent forms.
-    /// </summary>
-    Special_Query_Checkbox = 104,
-
-    /// <summary>
-    /// This enumeration define a special checokbox to YesNo the field instruction content for 
-    /// consent forms.
-    /// </summary>
-    Special_Query_YesNo = 105,
 
     /// <summary>
     /// This enumeration define a special site document data type.

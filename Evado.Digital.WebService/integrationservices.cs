@@ -480,21 +480,15 @@ namespace Evado.UniForm
         // define the licensed modules for this installation.
         //
         String licensedModules = Evado.Model.Digital.EvModuleCodes.Administration_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Clinical_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Registry_Module + ";"
          + Evado.Model.Digital.EvModuleCodes.Management_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Patient_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Patient_Recorded_Outcomes + ";"
-         + Evado.Model.Digital.EvModuleCodes.Patient_Recorded_Observation + ";"
          + Evado.Model.Digital.EvModuleCodes.Imaging_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Integration_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Informed_Consent;
+         + Evado.Model.Digital.EvModuleCodes.Integration_Module;
 
         this._ApplicationAdapter.LicensedModules = licensedModules;
 
         this._ApplicationAdapter.LoggingLevel = this.LoggingLevel;
 
-        this.LogValue ( "_ApplicationAdapter.LoggingLevel: " + this._ApplicationAdapter.LoggingLevel );
+        this.LogValue ( "ApplicationAdapter.LoggingLevel: " + this._ApplicationAdapter.LoggingLevel );
 
         this.LogValue ( "PageCommand.Method: " + PageCommand.Method );
         //

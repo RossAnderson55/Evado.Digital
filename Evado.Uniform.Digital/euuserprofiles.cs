@@ -497,7 +497,7 @@ namespace Evado.UniForm.Clinical
         //
         // if the form template filename is empty display the selection field.
         //
-        if ( PageCommand.hasParameter ( EuForms.CONST_TEMPLATE_FIELD_ID ) == false )
+        if ( PageCommand.hasParameter ( EuRecordLayouts.CONST_TEMPLATE_FIELD_ID ) == false )
         {
           this.LogValue ( "UploadFileName is empty" );
 
@@ -561,11 +561,11 @@ namespace Evado.UniForm.Clinical
         Model.UniForm.Background_Colours.Red );
 
       groupField = pageGroup.createBinaryFileField (
-        EuForms.CONST_TEMPLATE_FIELD_ID,
+        EuRecordLayouts.CONST_TEMPLATE_FIELD_ID,
         EvLabels.UserProfile_Upload_Field_Title,
         String.Empty,
         this.Session.UploadFileName );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
 
@@ -595,7 +595,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       // 
       EvEventCodes result = EvEventCodes.Ok;
-      string fileName = PageCommand.GetParameter ( EuForms.CONST_TEMPLATE_FIELD_ID );
+      string fileName = PageCommand.GetParameter ( EuRecordLayouts.CONST_TEMPLATE_FIELD_ID );
       this.LogValue ( "fileName: " + fileName );
 
       String uploadFileName = this.UniForm_BinaryFilePath +
@@ -798,7 +798,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.AdminOrganisation.OrgId,
         orgList );
-      organisationSelectionField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      organisationSelectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       organisationSelectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -874,15 +874,6 @@ namespace Evado.UniForm.Clinical
         // 
         foreach (  Evado.Model.Digital.EvUserProfile userProfile in this.Session.AdminUserProfileList )
         {
-          //
-          // skip all patients as central users are not permitted to see them.
-          //
-          //  && this.Session.UserProfile.RoleId != EvRoleList.Evado_Administrator 
-          if ( userProfile.RoleId == EvRoleList.Patient)
-          {
-            continue;
-          }
-
           Evado.Model.UniForm.Command command = PageGroup.addCommand (
             userProfile.LinkText,
             EuAdapter.APPLICATION_ID,
@@ -1173,7 +1164,7 @@ namespace Evado.UniForm.Clinical
            EvCustomerLabels.Customer_No_Name_Format,
            this.Session.AdminUserProfile.Customer.CustomerNo,
            this.Session.AdminUserProfile.Customer.Name ) );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       //
@@ -1184,7 +1175,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Organisation_Field_Label,
         this.Session.AdminUserProfile.OrgId,
         orgList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1198,7 +1189,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1243,7 +1234,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Given_Name,
         EvLabels.UserProfile_GivenName_Field_Label,
         this.Session.AdminUserProfile.GivenName, 50 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1253,7 +1244,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Family_Name,
         EvLabels.UserProfile_FamilyName_Field_Label,
         this.Session.AdminUserProfile.FamilyName, 50 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1268,7 +1259,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         this.Session.AdminUserProfile.CommonName,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1297,7 +1288,7 @@ namespace Evado.UniForm.Clinical
           this.Session.UserProfile.AddressState,
           this.Session.UserProfile.AddressPostCode,
           this.Session.UserProfile.AddressCountry );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         this.LogDebug ( "AddresS:" + groupField.Value );
       }
@@ -1309,7 +1300,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EvLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the user role id object
@@ -1340,7 +1331,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserProfile_Role_Field_Description,
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminUserProfile.RoleId ),
         roleList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1355,7 +1346,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.UserProfile_Expiry_Date_Field_Label,
           EvStatics.getDateAsString( this.Session.AdminUserProfile.ExpiryDate ),
           15 );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
     }//END getDataObject_FieldGroup Method
@@ -1443,7 +1434,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+        if ( this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "createObject",
@@ -1806,7 +1797,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+        if ( this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "updateObject",

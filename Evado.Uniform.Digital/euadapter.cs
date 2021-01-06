@@ -169,7 +169,7 @@ namespace Evado.UniForm.Clinical
         this.LogInitValue ( "-UserId: " + ClassParameters.UserProfile.UserId );
         this.LogInitValue ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
 
-        this.LogInitValue ( "ProjectSelectionList.Count: " + this.Session.TrialSelectionList.Count );
+        this.LogInitValue ( "ProjectSelectionList.Count: " + this.Session.ApplicationSelectionList.Count );
         this.LogInitValue ( "ClientDataObject.Page.Title: " + this.ClientDataObject.Page.Title );
 
         if ( this.Session.AdminUserProfile != null )
@@ -246,7 +246,7 @@ namespace Evado.UniForm.Clinical
 
     #region Class local objects.
 
-    public static readonly string CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn + ";" + EdRecordObjectStates.Queried_Record_Copy;
+    public static readonly string CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn.ToString();
 
     private EuApplicationObjects _ApplicationObjects = new EuApplicationObjects ( );
 
@@ -279,15 +279,8 @@ namespace Evado.UniForm.Clinical
     private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
 
     private String _LicensedModules = EvModuleCodes.Administration_Module + ";"
-      + EvModuleCodes.Clinical_Module + ";"
-      + EvModuleCodes.Registry_Module + ";"
       + EvModuleCodes.Management_Module + ";"
-      + EvModuleCodes.Patient_Module + ";"
-      + EvModuleCodes.Patient_Recorded_Outcomes + ";"
-      + EvModuleCodes.Patient_Recorded_Observation + ";"
-      + EvModuleCodes.Imaging_Module + ";"
-      + EvModuleCodes.Integration_Module + ";"
-      + EvModuleCodes.Informed_Consent;
+      + EvModuleCodes.Integration_Module;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -440,11 +433,6 @@ namespace Evado.UniForm.Clinical
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 
         this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.RoleId );
-
-        if ( PageCommand.Object == "Questionnaire" )
-        {
-          PageCommand.Object = EuAdapterClasses.Patient_Outcomes.ToString ( );
-        }
 
         //
         // get the customer object if it not already selected.
@@ -648,7 +636,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
       this.ErrorMessage = String.Empty;
 
-      EuFormRecords formRecords = new EuFormRecords (
+      EuRecords formRecords = new EuRecords (
               this._ApplicationObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -895,7 +883,7 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case EuAdapterClasses.Projects:
+        case EuAdapterClasses.Applications:
           {
             this.LogDebug ( "PROJECT CLASS SELECTED." );
 
@@ -930,7 +918,7 @@ namespace Evado.UniForm.Clinical
             //
             if ( PageCommand.Method == Model.UniForm.ApplicationMethods.Save_Object )
             {
-              this.Session.TrialList = new List<Model.Digital.EdApplication> ( );
+              this.Session.ApplicationList = new List<Model.Digital.EdApplication> ( );
             }
 
 
@@ -1002,7 +990,7 @@ namespace Evado.UniForm.Clinical
 
             break;
           }
-        case EuAdapterClasses.Project_Forms:
+        case EuAdapterClasses.Record_Layouts:
           {
             this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
 
@@ -1017,7 +1005,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuForms forms = new EuForms ( this._ApplicationObjects,
+            EuRecordLayouts forms = new EuRecordLayouts ( this._ApplicationObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1032,7 +1020,7 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case EuAdapterClasses.Project_Form_Fields:
+        case EuAdapterClasses.Record_Layout_Fields:
           {
             this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
 
@@ -1047,7 +1035,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuFormFields formFields = new EuFormFields ( this._ApplicationObjects,
+            EuRecordLayoutFields formFields = new EuRecordLayoutFields ( this._ApplicationObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1240,7 +1228,7 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case EuAdapterClasses.Scheduled_Record:
+        case EuAdapterClasses.Record:
           {
             this.LogDebug ( "PROJECT RECORDS CLASS SELECTED." );
 
@@ -1250,16 +1238,6 @@ namespace Evado.UniForm.Clinical
             if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
             {
               return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            //
-            // IF the exit command is pointing to subject milestone object to create a new instance
-            // set the method to get and the subject milestone is already created.
-            //
-            if ( this.ExitCommand.Object == EuAdapterClasses.Subject_Milestone.ToString ( )
-              && this.ExitCommand.Method == Model.UniForm.ApplicationMethods.Create_Object )
-            {
-              this.ExitCommand.Method = Model.UniForm.ApplicationMethods.Get_Object;
             }
 
             // 

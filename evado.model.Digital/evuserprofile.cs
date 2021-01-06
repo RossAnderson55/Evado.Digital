@@ -41,7 +41,6 @@ namespace Evado.Model.Digital
     {
     }
 
-
     //==================================================================================
     /// <summary>
     /// This method creates a user profile from a BaseUserProfile.
@@ -52,6 +51,7 @@ namespace Evado.Model.Digital
     {
       this.ImportBaseUserProfile ( BaseUserProfile );
     }
+
     #endregion
 
     #region Enumerated classes
@@ -246,10 +246,6 @@ namespace Evado.Model.Digital
       {
         this._RoleId = value;
 
-        if ( this._RoleId == EvRoleList.Principal_Investigator )
-        {
-          this._RoleId = EvRoleList.Investigator;
-        }
       }
     }
 
@@ -335,18 +331,6 @@ namespace Evado.Model.Digital
 
     #region Class User Access methods and properties
 
-    private EvOrganisation _TrialSite = new EvOrganisation ( );
-
-    /// <summary>
-    /// This property sets and get the current trial site object.
-    /// </summary>
-    public EvOrganisation TrialSite
-    {
-      get { return this._TrialSite; }
-      set { this._TrialSite = value; }
-    }
-
-
     /// <summary>
     /// this propety indicated if the user has administration access.
     /// </summary>
@@ -355,6 +339,39 @@ namespace Evado.Model.Digital
       get
       {
         if ( this._RoleId == EvRoleList.Evado_Administrator )
+        {
+          return true;
+        }
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// this propety indicated if the user has administration access.
+    /// </summary>
+    public bool hasEvadoManagementAccess
+    {
+      get
+      {
+        if ( this._RoleId == EvRoleList.Evado_Administrator
+          || this._RoleId == EvRoleList.Evado_Manager )
+        {
+          return true;
+        }
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// this propety indicated if the user has administration access.
+    /// </summary>
+    public bool hasEvadoAccess
+    {
+      get
+      {
+        if ( this._RoleId == EvRoleList.Evado_Administrator
+          || this._RoleId == EvRoleList.Evado_Manager
+          || this._RoleId == EvRoleList.Evado_Staff )
         {
           return true;
         }
@@ -381,7 +398,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// this propety indicated if the user has configuration read access.
     /// </summary>
-    public bool hasTrialManagementAccess
+    public bool hasManagementAccess
     {
       get
       {
@@ -389,8 +406,7 @@ namespace Evado.Model.Digital
           || this._RoleId == EvRoleList.Evado_Manager
           || this._RoleId == EvRoleList.Evado_Staff
           || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Trial_Manager
-          || this._RoleId == EvRoleList.Data_Manager )
+          || this._RoleId == EvRoleList.Manager )
         {
           return true;
         }
@@ -402,69 +418,17 @@ namespace Evado.Model.Digital
     /// <summary>
     /// this propety indicated if the user has configuration read access.
     /// </summary>
-    public bool hasConfigrationEditAccess
+    public bool hasManagementEditAccess
     {
       get
       {
         if ( this._RoleId == EvRoleList.Evado_Administrator
           || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Trial_Manager )
+          || this._RoleId == EvRoleList.Manager )
         {
           return true;
         }
 
-        return false;
-      }
-    }
-    /*
-    /// <summary>
-    /// this propety indicated if the user has configuration read access.
-    /// </summary>
-    public bool hasBudgetEditAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Customer_Administrator
-          || this._RoleId == EvRoleList.Project_Budget
-          || this._RoleId == EvRoleList.Project_Finance )
-        {
-          return true;
-        }
-
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has configuration read access.
-    /// </summary>
-    public bool hasFinanceEditAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Customer_Administrator
-          || this._RoleId == EvRoleList.Project_Finance )
-        {
-          return true;
-        }
-
-        return false;
-      }
-    }
-    */
-    /// <summary>
-    /// this propety indicated if the user has configuration read access.
-    /// </summary>
-    public bool hasSponsorAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Sponsor )
-        {
-          return true;
-        }
         return false;
       }
     }
@@ -483,11 +447,8 @@ namespace Evado.Model.Digital
           || this._RoleId == EvRoleList.Evado_Manager
           || this._RoleId == EvRoleList.Evado_Staff
           || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Trial_Manager
-          || this._RoleId == EvRoleList.Trial_Coordinator
-          || this._RoleId == EvRoleList.Data_Manager
-          || this._RoleId == EvRoleList.Monitor
-          || this._RoleId == EvRoleList.Sponsor )
+          || this._RoleId == EvRoleList.Manager
+          || this._RoleId == EvRoleList.Coordinator )
         {
           return true;
         }
@@ -505,14 +466,26 @@ namespace Evado.Model.Digital
         if ( this._RoleId == EvRoleList.Evado_Administrator
           || this._RoleId == EvRoleList.Evado_Manager
           || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Trial_Manager
-          || this._RoleId == EvRoleList.Trial_Coordinator
-          || this._RoleId == EvRoleList.Data_Manager
-          || this._RoleId == EvRoleList.Sponsor
-          || this._RoleId == EvRoleList.Monitor
-          || this._RoleId == EvRoleList.Site_User
-          || this._RoleId == EvRoleList.Investigator
-          || this._RoleId == EvRoleList.Principal_Investigator )
+          || this._RoleId == EvRoleList.Manager
+          || this._RoleId == EvRoleList.Coordinator
+          || this._RoleId == EvRoleList.Application_User )
+        {
+          return true;
+        }
+        return false;
+      }
+    }
+    /// <summary>
+    /// this propety indicated if the user has data edit access.
+    /// </summary>
+    public bool hasRecordEditAccess
+    {
+      get
+      {
+        if (  this._RoleId == EvRoleList.Administrator
+          || this._RoleId == EvRoleList.Manager
+          || this._RoleId == EvRoleList.Coordinator
+          || this._RoleId == EvRoleList.Application_User )
         {
           return true;
         }
@@ -523,142 +496,17 @@ namespace Evado.Model.Digital
     /// <summary>
     /// this propety indicated if the user is a site only user.
     /// </summary>
-    public bool IsSiteUer
+    public bool hasApplicationUserAccess
     {
       get
       {
         //
         // If the user is a record author or principal investigator they have record edit access.
         //
-        if ( this._RoleId == EvRoleList.Site_User
-          || this._RoleId == EvRoleList.Investigator
-          || this._RoleId == EvRoleList.Principal_Investigator
-          || this._RoleId == EvRoleList.Patient
-          || this._RoleId == EvRoleList.Patient_Doctor )
+        if ( this._RoleId == EvRoleList.Application_User)
         {
           return true;
         }
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data edit access.
-    /// </summary>
-    public bool hasRecordEditAccess
-    {
-      get
-      {
-        //
-        // If the user is a record author or principal investigator they have record edit access.
-        //
-        if ( this._RoleId == EvRoleList.Site_User
-          || this._RoleId == EvRoleList.Investigator
-          || this._RoleId == EvRoleList.Principal_Investigator)
-        {
-          return true;
-        }
-
-        //
-        // If the user is part of a coordinating organisation and
-        // the user role is project coordinator they could have record edit access.
-        //
-        if ( this._RoleId != EvRoleList.Trial_Coordinator )
-        {
-          return false;
-        }
-
-        if ( this._TrialSite.Guid == Guid.Empty )
-        {
-          return false;
-        }
-
-        //
-        // If the project organisation coordinating user is empty or matches
-        // the user ID the user has record access to the project organisastions records.
-        //
-        if ( this._TrialSite.CoordinatorUserId == String.Empty )
-        {
-          return true;
-        }
-
-        //
-        // If the project organisation coordinating user is empty or matches
-        // the user ID the user has record access to the project organisastions records.
-        //
-        if ( this._TrialSite.CoordinatorUserId == this.UserId )
-        {
-          return true;
-        }
-
-
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data edit access.
-    /// </summary>
-    public bool hasPatientAccess
-    {
-      get
-      {
-        //
-        // If the user is a patient or patient's doctor.
-        //
-        if ( this._RoleId == EvRoleList.Patient
-          || this._RoleId == EvRoleList.Patient_Doctor )
-        {
-          return true;
-        }
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data edit access.
-    /// </summary>
-    public bool hasInvestigatorAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Investigator )
-        {
-          return true;
-        }
-
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data monitor edit access.
-    /// </summary>
-    public bool hasMonitorAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Monitor )
-        {
-          return true;
-        }
-
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data management edit access.
-    /// </summary>
-    public bool hasDataManagerAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Data_Manager )
-        {
-          return true;
-        }
-
         return false;
       }
     }
@@ -666,99 +514,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Class General Methods
-
-    //====================================================================================
-    /// <summary>
-    /// This method imports the values from the base user profile.
-    /// </summary>
-    /// <param name="BaseUserProfile"></param>
-    //------------------------------------------------------------------------------------
-    public void ImportBaseUserProfile ( EvUserProfileBase BaseUserProfile )
-    {
-      this.UserId = BaseUserProfile.UserId;
-      this.ActiveDirectoryUserId = BaseUserProfile.ActiveDirectoryUserId;
-      this.Prefix = BaseUserProfile.Prefix;
-      this.GivenName = BaseUserProfile.GivenName;
-      this.Suffix = BaseUserProfile.Suffix;
-      this.CommonName = BaseUserProfile.CommonName;
-      this.OrgId = BaseUserProfile.OrgId;
-      this.EmailAddress = BaseUserProfile.EmailAddress;
-      this.Address_1 = BaseUserProfile.Address_1;
-      this.Address_2 = BaseUserProfile.Address_2;
-      this.AddressCity = BaseUserProfile.AddressCity;
-      this.AddressPostCode = BaseUserProfile.AddressPostCode;
-      this.AddressState = BaseUserProfile.AddressState;
-      this.AddressCountry = BaseUserProfile.AddressCountry;
-      this.Telephone = BaseUserProfile.Telephone;
-      this.Title = BaseUserProfile.Title;
-      this.DomainGroups = BaseUserProfile.DomainGroups;
-
-      foreach ( string group in this.DomainGroups )
-      {
-        string value = group.ToUpper ( );
-        if ( value.Contains ( "ADMINISTRATOR" ) == true
-          || value == "ROL_ADMINISTRATOR" )
-        {
-          this.RoleId = EvRoleList.Administrator;
-          break;
-        }
-        if ( value == "ROL_PROJECT_MANAGER" )
-        {
-          this.RoleId = EvRoleList.Trial_Manager;
-          break;
-        }
-        /*
-        if ( value == "ROL_PROJECT_DESIGNER" )
-        {
-          this.RoleId = EvRoleList.Project_Designer;
-          break;
-        }
-        if ( value == "ROL_PROJECT_BUDGET" )
-        {
-          this.RoleId = EvRoleList.Project_Budget;
-          break;
-        }
-         */
-        if ( value == "ROL_PROJECT_COORDINATOR" )
-        {
-          this.RoleId = EvRoleList.Trial_Coordinator;
-          break;
-        }
-        /*
-        if ( value == "ROL_PROJECT_FINANCE" )
-        {
-          this.RoleId = EvRoleList.Project_Finance;
-          break;
-        }
-         */
-        if ( value == "ROL_MONITOR" )
-        {
-          this.RoleId = EvRoleList.Monitor;
-          break;
-        }
-        if ( value == "ROL_DATA_MANAGER" )
-        {
-          this.RoleId = EvRoleList.Data_Manager;
-          break;
-        }
-        if ( value == "ROL_INVESTIGATOR" )
-        {
-          this.RoleId = EvRoleList.Investigator;
-          break;
-        }
-        if ( value == "ROL_SPONSOR" )
-        {
-          this.RoleId = EvRoleList.Sponsor;
-          break;
-        }
-        if ( value == "ROL_RECORD_AUTHOR" )
-        {
-          this.RoleId = EvRoleList.Site_User;
-          break;
-        }
-        this.RoleId = EvRoleList.Null;
-      }
-    }
 
     // =====================================================================================
     /// <summary>
@@ -797,10 +552,6 @@ namespace Evado.Model.Digital
         sbText.AppendLine ( "Customer Name : " + this.Customer.Name );
       }
 
-      if ( this._TrialSite.Name != String.Empty )
-      {
-        sbText.AppendLine ( "Organisation: " + this._TrialSite.Name );
-      }
       if ( this.DomainGroupNames != String.Empty )
       {
         sbText.AppendLine ( "DomainGroupNames: " + this.DomainGroupNames );
@@ -819,15 +570,11 @@ namespace Evado.Model.Digital
       if ( Roles == true )
       {
         sbText.AppendLine ( "hasAdministrationAccess: " + this.hasAdministrationAccess );
-        sbText.AppendLine ( "hasConfigrationAccess: " + this.hasTrialManagementAccess );
-        sbText.AppendLine ( "hasConfigrationEditAccess: " + this.hasConfigrationEditAccess );
-        sbText.AppendLine ( "hasDataManagerAccess: " + this.hasDataManagerAccess );
-        sbText.AppendLine ( "hasMonitorAccess: " + this.hasMonitorAccess );
+        sbText.AppendLine ( "hasConfigrationAccess: " + this.hasManagementAccess );
+        sbText.AppendLine ( "hasConfigrationEditAccess: " + this.hasManagementEditAccess );
         sbText.AppendLine ( "hasMultiSiteAccess: " + this.hasMultiSiteAccess );
-        sbText.AppendLine ( "hasPrincipalInvestigatorAccess: " + this.hasInvestigatorAccess );
         sbText.AppendLine ( "hasRecordAccess: " + this.hasRecordAccess );
         sbText.AppendLine ( "hasRecordEditAccess: " + this.hasRecordEditAccess );
-        sbText.AppendLine ( "hasSponsorAccess: " + this.hasSponsorAccess );
       }
 
       // 
@@ -837,6 +584,34 @@ namespace Evado.Model.Digital
     }//END getUserProfile class
 
     #region Class General Methods
+    //====================================================================================
+    /// <summary>
+    /// This method imports the values from the base user profile.
+    /// </summary>
+    /// <param name="BaseUserProfile"></param>
+    //------------------------------------------------------------------------------------
+    public void ImportBaseUserProfile ( EvUserProfileBase BaseUserProfile )
+    {
+      this.UserId = BaseUserProfile.UserId;
+      this.ActiveDirectoryUserId = BaseUserProfile.ActiveDirectoryUserId;
+      this.Prefix = BaseUserProfile.Prefix;
+      this.GivenName = BaseUserProfile.GivenName;
+      this.Suffix = BaseUserProfile.Suffix;
+      this.CommonName = BaseUserProfile.CommonName;
+      this.OrgId = BaseUserProfile.OrgId;
+      this.EmailAddress = BaseUserProfile.EmailAddress;
+      this.Address_1 = BaseUserProfile.Address_1;
+      this.Address_2 = BaseUserProfile.Address_2;
+      this.AddressCity = BaseUserProfile.AddressCity;
+      this.AddressPostCode = BaseUserProfile.AddressPostCode;
+      this.AddressState = BaseUserProfile.AddressState;
+      this.AddressCountry = BaseUserProfile.AddressCountry;
+      this.Telephone = BaseUserProfile.Telephone;
+      this.Title = BaseUserProfile.Title;
+      this.DomainGroups = BaseUserProfile.DomainGroups;
+
+
+    }
 
     //===================================================================================
     /// <summary>
@@ -1031,58 +806,32 @@ namespace Evado.Model.Digital
             optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Administrator ) );
             optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Manager ) );
             optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Staff ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Designer ) );
             break;
           }
         case EvOrganisation.OrganisationTypes.Customer:
           {
             optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Administrator ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Manager ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Budget ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Finance ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Designer ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
             break;
           }
-        case EvOrganisation.OrganisationTypes.Project_Management:
+        case EvOrganisation.OrganisationTypes.Management:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Manager ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Budget ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Finance ) );
-            //optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Designer ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Data_Manager ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Monitor ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
             break;
           }
-        case EvOrganisation.OrganisationTypes.Project_Coordinator:
+        case EvOrganisation.OrganisationTypes.Coordinator:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Coordinator ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Data_Management:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Data_Manager ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Coordinator ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Sponsor:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Sponsor ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Monitor:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Monitor ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Coordinator ) );
             break;
           }
         case EvOrganisation.OrganisationTypes.Data_Collection:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Site_User ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Investigator ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Application_User ) );
             break;
           }
         case EvOrganisation.OrganisationTypes.External:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Site_User ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Application_User ) );
             break;
           }
 

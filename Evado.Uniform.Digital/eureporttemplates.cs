@@ -138,7 +138,7 @@ namespace Evado.UniForm.Clinical
         // Determine if the user has access to this page and log and error if they do not.
         //
         if ( this.Session.UserProfile.hasAdministrationAccess == false
-          && this.Session.UserProfile.hasConfigrationEditAccess == false)
+          && this.Session.UserProfile.hasManagementEditAccess == false)
         {
           this.LogIllegalAccess (
             "Evado.UniForm.Clinical.ReportTemplates",
@@ -181,10 +181,6 @@ namespace Evado.UniForm.Clinical
         if ( this.Session.ReportDesignTemplateList == null )
         {
           this.Session.ReportDesignTemplateList = new List<EvReport> ( );
-        }
-        if ( this.Session.ApplicationList == null )
-        {
-          this.Session.ApplicationList = new List<EvOption> ( );
         }
         if ( this.Session.ReportTemplateList_All == null )
         {
@@ -488,7 +484,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Upload_Field_Title,
         this.Session.ReportFileName );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Add the normal save.
@@ -710,21 +706,6 @@ namespace Evado.UniForm.Clinical
       Evado.Bll.Clinical.EdApplications bll_applications = new Bll.Clinical.EdApplications ( this.ClassParameters );
       List<EvOption> optionList = new List<EvOption> ( );
 
-      this.Session.ApplicationList = bll_applications.getList (
-        Model.Digital.EdApplication.ApplicationStates.All,
-        false );
-
-      if ( this.Session.ApplicationList.Count == 0 )
-      {
-        this.Session.ApplicationList.Add ( new EvOption ( "GLOBAL", "Global" ) );
-      }
-
-      if ( this.Session.ApplicationList.Count > 0 )
-      {
-        this.Session.ApplicationList [ 0 ].Value = "GLOBAL";
-        this.Session.ApplicationList [ 0 ].Description = "Global";
-      }
-
       // 
       // Create the new pageMenuGroup.
       // 
@@ -740,10 +721,10 @@ namespace Evado.UniForm.Clinical
       groupField = pageGroup.createSelectionListField (
         EuReportTemplates.CONST_REPORT_PROJECT_ID,
         EvLabels.Label_Project_Id,
-        this.Session.ReportStudyId,
-        this.Session.ApplicationList );
+        this.Session.ReportStudyId,        
+        this.Session.ReportApplicationList );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -775,7 +756,7 @@ namespace Evado.UniForm.Clinical
         this.Session.ReportScope.ToString ( ),
         optionList );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -1125,13 +1106,6 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getReportProjectList" );
 
-      //
-      // Get the project full option list 
-      //
-      if ( this.Session.ApplicationList == null )
-      {
-        this.Session.ApplicationList = new List<EvOption> ( );
-      }
 
       if ( this.Session.ApplicationList.Count > 0 )
       {
@@ -1143,7 +1117,8 @@ namespace Evado.UniForm.Clinical
       //
       Bll.Clinical.EdApplications applications = new Bll.Clinical.EdApplications ( );
 
-      this.Session.ApplicationList = applications.getList ( Model.Digital.EdApplication.ApplicationStates.Null, false );
+      this.Session.ApplicationList = applications.GetApplicationList ( 
+        Model.Digital.EdApplication.ApplicationStates.Null );
 
       if ( this.Session.ApplicationList.Count == 0 )
       {
@@ -1324,7 +1299,7 @@ namespace Evado.UniForm.Clinical
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true
-        || this.Session.UserProfile.hasConfigrationEditAccess == true )
+        || this.Session.UserProfile.hasManagementEditAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
         if ( this.Session.ReportTemplate.Columns.Count == 0 )
@@ -1542,7 +1517,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
 
       if ( this.Session.UserProfile.hasAdministrationAccess == false
-        && this.Session.UserProfile.hasConfigrationEditAccess == false )
+        && this.Session.UserProfile.hasManagementEditAccess == false )
       {
         return;
       }
@@ -1690,7 +1665,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         fieldTitle,
         linkUrl );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.Description = EvLabels.ReportTemplate_Project_ID_Description ;
 
@@ -1735,8 +1710,8 @@ namespace Evado.UniForm.Clinical
         EvReport.ReportClassFieldNames.ProjectId.ToString ( ),
         EvLabels.ReportTemplate_Project_ID_Field_Title,
         this.Session.ReportTemplate.TrialId,
-        this.Session.ApplicationList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+       this.Session.ReportApplicationList );
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.Description = EvLabels.ReportTemplate_Project_ID_Description ;
 
@@ -1764,7 +1739,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Source_ID_Field_Title,
         this.Session.ReportTemplate.SourceId,
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.Description = EvLabels.ReportTemplate_Source_ID_Description ;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
@@ -1779,7 +1754,7 @@ namespace Evado.UniForm.Clinical
         groupField = pageGroup.createReadOnlyTextField (
           EvLabels.ReportTemplate_Source_Description_Field_Title,
           this.Session.ReportSource.Description );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       //
@@ -1790,7 +1765,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Report_ID_Field_Title,
         this.Session.ReportTemplate.ReportId,
         20 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Add the report title field.
@@ -1800,7 +1775,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Report_Title_Field_Title,
         this.Session.ReportTemplate.ReportTitle,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Add the report sub title field.
@@ -1810,7 +1785,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Report_Sub_Title_Field_Title,
         this.Session.ReportTemplate.ReportSubTitle,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Layout options.
@@ -1824,7 +1799,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Layout_Field_Title,
         this.Session.ReportTemplate.LayoutTypeId,
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Define the report type options.
@@ -1859,7 +1834,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Scope_Field_Title,
         this.Session.ReportTemplate.ReportScope,
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.Description = 
         EvLabels.ReportTemplate_Scope_Field_Description ;
@@ -1871,7 +1846,7 @@ namespace Evado.UniForm.Clinical
         EvReport.ReportClassFieldNames.IsAggregated,
         EvLabels.ReportTemplate_IsAgregated_Field_Title,
         this.Session.ReportTemplate.IsAggregated );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // A refresh command to update the report source Id.
@@ -2098,7 +2073,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ReportTemplate_Column_Selection_Field_Title,
         currentSelection,
         columnOptionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // A refresh command to update the report source Id.

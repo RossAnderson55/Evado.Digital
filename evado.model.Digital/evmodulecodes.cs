@@ -36,78 +36,47 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration selects administration module.
     /// </summary>
-    Administration_Module = 1,
-
-    /// <summary>
-    /// This enumeration selects the trial module.
-    /// </summary>
-    Trial_Module = 2,
-
-    /// <summary>
-    /// This enumeration selects the registry module.
-    /// </summary>
-    Registry_Module = 3,
+    Administration_Module,
 
     /// <summary>
     /// This enumeration selects the Management module.
     /// </summary>
-    Management_Module = 4,
+    Management_Module,
 
     /// <summary>
-    /// This enumeration selects the Patient module.
+    /// This enumeration selects the trial module.
     /// </summary>
-    Patient_Module = 5,
+    Design_Module,
 
     /// <summary>
-    /// The Clinical Outcome Assessment module enumeration
+    /// This enumeration selects the trial module.
     /// </summary>
-    Clinical_Outcome_Assessments = 6,
+    Entity_Module,
+
+    /// <summary>
+    /// This enumeration selects the trial module.
+    /// </summary>
+    Record_Module,
 
     /// <summary>
     /// This enumeration selects the imaging module.
     /// </summary>
-    Imaging_Module = 7,
+    Imaging_Module ,
 
     /// <summary>
     /// This enumeration selects the integration module.
     /// </summary>
-    Integration_Module = 8,
-
-    /// <summary>
-    /// This enumeration selects the Electronic Consent module.
-    /// </summary>
-    Informed_Consent = 9,
+    Integration_Module,
 
     /// <summary>
     /// This enumeration selects the Auxiliary subject data module.
     /// </summary>
-    Auxiliary_Subject_Data = 10,
-
-    //
-    // dreciated enumeration options.
-    //
-    /// <summary>
-    /// This enumeration selects the depreciated clinical module.
-    /// </summary>
-    Clinical_Module = 2,
+    Auxiliary_Subject_Data,
 
     /// <summary>
     /// This enumeration defines the null selectoin 
     /// </summary>
     Null = 99,
-
-    // ******************************************************
-    // Decpresicated values.
-
-    /// <summary>
-    /// The Patient Recorded Outcomes module enumeration
-    /// </summary>
-    Patient_Recorded_Outcomes = 6,
-
-    /// <summary>
-    /// The Patient Recorded Observation module enumeration
-    /// </summary>
-    Patient_Recorded_Observation = 11,
   }
 
 }//END Namespace Evado.Model

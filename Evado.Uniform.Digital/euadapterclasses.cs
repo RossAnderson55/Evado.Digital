@@ -69,37 +69,7 @@ namespace Evado.UniForm.Clinical
       /// <summary>
       /// This option identifies the project class object.
       /// </summary>
-      Projects,
-
-      /// <summary>
-      /// This option identifies the Global Project class object.
-      /// </summary>
-      Global_Project,
-
-      /// <summary>
-      /// This option identifies the Global Forms class object.
-      /// </summary>
-      Global_Forms,
-
-      /// <summary>
-      /// This option identifies the Global form fields class object.
-      /// </summary>
-      Global_Form_Fields,
-
-      /// <summary>
-      /// This option identifies the global common forms class object.
-      /// </summary>
-      Global_Common_Forms,
-
-      /// <summary>
-      /// This option identifies the global common firm fields class object.
-      /// </summary>
-      Global_Common_Form_Fields,
-
-      /// <summary>
-      /// This option identifies the global schedule class object.
-      /// </summary>
-      Global_Schedules,
+      Applications,
 
       /// <summary>
       /// This option identifies the schedule class object.
@@ -119,27 +89,12 @@ namespace Evado.UniForm.Clinical
       /// <summary>
       /// This option identifies the project forms class object.
       /// </summary>
-      Project_Forms,
+      Record_Layouts,
 
       /// <summary>
       /// This option identifies the project form fields class object.
       /// </summary>
-      Project_Form_Fields,
-
-      /// <summary>
-      /// This option identifies the Common form class object.
-      /// </summary>
-      Common_Forms,
-
-      /// <summary>
-      /// This option identifies the Common Form field class object.
-      /// </summary>
-      Common_Form_Fields,
-
-      /// <summary>
-      /// This option identifies the project organisation (Site) class object.
-      /// </summary>
-      Project_Organisation,
+      Record_Layout_Fields,
 
       /// <summary>
       /// This option identifies the project alert class object.
@@ -162,42 +117,6 @@ namespace Evado.UniForm.Clinical
       Reports,
 
       /// <summary>
-      /// This option identifies the patients class object.
-      /// </summary>
-      Patients,
-
-      /// <summary>
-      /// This option identifies the patient recorded observation class object.
-      /// This object acts as a separate home and environment for patients.
-      /// </summary>
-      Patient_Recorded_Observations,
-
-      /// <summary>
-      /// This option identifies the informed consent class object.
-      /// </summary>
-      Informed_Consent,
-
-      /// <summary>
-      /// This option identifies the informed consent remote class object.
-      /// </summary>
-      Informed_Consent_Remote,
-
-      /// <summary>
-      /// This option identifies the patient recorded outcomes (questionnaire) class object.
-      /// </summary>
-      Patient_Outcomes,
-
-      /// <summary>
-      /// This option identifies the milestone class object.
-      /// </summary>
-      Subjects,
-
-      /// <summary>
-      /// This option identifies the FirstSubject Visit class object.
-      /// </summary>
-      Subject_Milestone,
-
-      /// <summary>
       /// This option identifies the project record class object.
       /// </summary>
       Ancillary_Record,
@@ -205,12 +124,7 @@ namespace Evado.UniForm.Clinical
       /// <summary>
       /// This option identifies the project record class object.
       /// </summary>
-      Scheduled_Record,
-
-      /// <summary>
-      /// This option identifies the common record class object.
-      /// </summary>
-      Common_Record,
+      Record,
 
       /// <summary>
       /// This option identifies the binary files class object.
@@ -231,16 +145,6 @@ namespace Evado.UniForm.Clinical
       /// This option identifies the Account profile class object.
       /// </summary>
       Account_Profile,
-
-      /// <summary>
-      /// This option identifies the Budgets class object.
-      /// </summary>
-      Budgets,
-
-      /// <summary>
-      /// This option identifies the billing class object.
-      /// </summary>
-      Billing_Records,
     }
 
 }///END NAMESPACE

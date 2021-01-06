@@ -138,15 +138,9 @@ namespace Evado.UniForm.Clinical
     }
 
     private String _LicensedModules = EvModuleCodes.Administration_Module + ";"
-      + EvModuleCodes.Clinical_Module + ";"
-      + EvModuleCodes.Registry_Module + ";"
       + EvModuleCodes.Management_Module + ";"
-      + EvModuleCodes.Patient_Module + ";"
-      + EvModuleCodes.Patient_Recorded_Outcomes + ";"
-      + EvModuleCodes.Patient_Recorded_Observation + ";"
       + EvModuleCodes.Imaging_Module + ";"
-      + EvModuleCodes.Integration_Module + ";"
-      + EvModuleCodes.Informed_Consent;
+      + EvModuleCodes.Integration_Module ;
     /// <summary>
     /// This property contains an encoded ';' list of licenced modules for this instance.
     /// </summary>
@@ -429,8 +423,8 @@ namespace Evado.UniForm.Clinical
 
       if ( this.PlatformSettings.LoadedModules.Contains ( "Null" ) == true )
       {
-        this.PlatformSettings.LoadedModules = "Administration_Module;Trial_Module;Registry_Module"
-          + " Patient_Module;Clinical_Outcome_Assessments;Imaging_Module;Integration_Module:Auxiliary_Subject_Data";
+        this.PlatformSettings.LoadedModules = "Administration_Module;Trial_Module;Record_Module"
+          + " Design_Module;Imaging_Module;Integration_Module:Auxiliary_Subject_Data";
       }
 
       try
@@ -456,6 +450,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Process menu items.
         // 
+        /*
         for ( int count = 0; count < this.MenuList.Count; count++ )
         {
           EvMenuItem menuItem = this.MenuList [ count ];
@@ -476,7 +471,7 @@ namespace Evado.UniForm.Clinical
           }
 
         }//END menuitem iteration loop.
-
+        */
       }
       catch ( Exception Ex )
       {

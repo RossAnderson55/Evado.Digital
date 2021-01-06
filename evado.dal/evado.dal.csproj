@@ -137,7 +137,7 @@
     <Compile Include="EvApplicationEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EdRecordFields.cs">
+    <Compile Include="Clinical\EdRecordValues.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvMilestoneActivities.cs" />

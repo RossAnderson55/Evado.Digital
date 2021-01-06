@@ -52,22 +52,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines a trial manager organization
       /// </summary>
-      Project_Management,
+      Management,
 
       /// <summary>
       /// This enumeration defines a trial manager organization
       /// </summary>
-      Project_Coordinator,
-
-      /// <summary>
-      /// This enumeration defines a trial monitor organization
-      /// </summary>
-      Monitor,
-
-      /// <summary>
-      /// This enumeration defines a trial data management organization
-      /// </summary>
-      Data_Management,
+      Coordinator,
 
       /// <summary>
       /// This enumeration defines a trial site organization
@@ -78,11 +68,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines a lab site organization
       /// </summary>
       External,
-
-      /// <summary>
-      /// This enumeration defines a sponsor organization
-      /// </summary>
-      Sponsor,
     }
 
     /// <summary>

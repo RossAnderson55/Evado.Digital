@@ -420,14 +420,6 @@ namespace Evado.Model.Digital
     public bool hasRole ( EvRoleList Role )
     {
       //
-      // PI and record authors have the same menu options.
-      //
-      if ( Role == EvRoleList.Principal_Investigator )
-      {
-        Role = EvRoleList.Investigator;
-      }
-
-      //
       // Get the string value of the selected module
       // 
       string stRole = Role.ToString ( );
@@ -616,14 +608,8 @@ namespace Evado.Model.Digital
       //Administration, Clinical, Management, Mobile, Registry, Surveillance
       //
       loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Administration_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Clinical_Module ) );
       loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Auxiliary_Subject_Data ) );
       loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Management_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Registry_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Informed_Consent ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Patient_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Patient_Recorded_Outcomes ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Patient_Recorded_Observation ) );
       loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Imaging_Module ) );
       loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Integration_Module ) );
 
@@ -661,7 +647,7 @@ namespace Evado.Model.Digital
 
       optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Administrator ) );
       optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Administrator ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Manager ) );
+      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
      
       if ( Modules.Contains ( EvModuleCodes.Management_Module.ToString ( ) ) == true )
       {
@@ -670,17 +656,7 @@ namespace Evado.Model.Digital
       }
       
       //optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Designer ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Trial_Coordinator ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Data_Manager ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Monitor ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Site_User ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Sponsor ) );
-
-      if ( Modules.Contains( EvModuleCodes.Patient_Recorded_Outcomes.ToString() ) == true )
-      {
-        optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Patient ) );
-        optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Patient_Doctor) );
-      }
+      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Coordinator ) );
 
 
       return optionlist;

@@ -131,10 +131,7 @@ namespace Evado.Bll.Clinical
       // Set the bNotification and userCommonName to default values,
       // if the role is ProjectManager or Monitor or Sponsor. 
       //
-      if ( CurrentUser.hasConfigrationEditAccess == true
-        || CurrentUser.hasMonitorAccess == true
-        || CurrentUser.hasSponsorAccess == true
-        || CurrentUser.hasDataManagerAccess == true )
+      if ( CurrentUser.hasManagementEditAccess == true)
       {
         bNotification = true;
         orgId = String.Empty;
@@ -291,34 +288,23 @@ namespace Evado.Bll.Clinical
       // 
       for ( int iCount = 0; iCount < View.Count; iCount++ )
       {
-        if ( CurrentUser.hasTrialManagementAccess == false )
+        if ( CurrentUser.hasManagementAccess == false )
         {
           string sProjectId = ( (EvAlert) View [ iCount ] ).ProjectId;
           this.LogDebug( "ProjectId: " + sProjectId );
 
           //CurrentUser.setProjectRole ( Project );
 
-          if ( CurrentUser.hasConfigrationEditAccess == true
-        || CurrentUser.hasMonitorAccess == true
-        || CurrentUser.hasSponsorAccess == true
-        || CurrentUser.hasDataManagerAccess == true )
+          if ( CurrentUser.hasManagementEditAccess == true )
           {
             continue;
           }
 
-          if ( CurrentUser.hasRecordEditAccess == true
-            || CurrentUser.hasInvestigatorAccess == true )
+          if ( CurrentUser.hasRecordEditAccess == true )
           {
             continue;
           }
 
-          if ( CurrentUser.hasMonitorAccess == true
-            || CurrentUser.hasDataManagerAccess == true )
-          {
-            this.LogDebug ( " DELETED" );
-            View.RemoveAt ( iCount );
-            iCount--;
-          }
         }
       }
       

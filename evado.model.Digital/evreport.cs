@@ -414,12 +414,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines a current trial type of selection list
       /// </summary>
-      Current_Trial = 8,
+      Current_Application = 8,
 
       /// <summary>
       /// This enumeration defines a form identifier type of selection list
       /// </summary>
-      Form_Id = 9,
+      LayoutId = 9,
 
       /// <summary>
       /// This enumeration defines a common form identifier type of selection list

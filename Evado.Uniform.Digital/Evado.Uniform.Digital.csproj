@@ -98,19 +98,19 @@
     <Compile Include="EuMilestones.cs" />
     <Compile Include="EuOrganisations.cs" />
     <Compile Include="EuSchedules.cs" />
-    <Compile Include="EuFormFields.cs">
+    <Compile Include="EuRecordLayoutFields.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EuForms.cs" />
+    <Compile Include="EuRecordLayouts.cs" />
     <Compile Include="EuApplicationObjects.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuMenus.cs" />
-    <Compile Include="EuFormGenerator.cs" />
+    <Compile Include="EuRecordGenerator.cs" />
     <Compile Include="EuSession.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EuFormRecords.cs" />
+    <Compile Include="EuRecords.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EdApplicationSettings.cs">
       <SubType>Code</SubType>

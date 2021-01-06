@@ -213,7 +213,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+        if ( this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getObject",
@@ -299,7 +299,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
 
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogMethodEnd ( "getList_PageCommands" );
 
@@ -558,7 +558,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = PageGroup.createReadOnlyTextField (
         String.Empty, "Filename: ", UploadFilename );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // display the process log.
@@ -570,7 +570,7 @@ namespace Evado.UniForm.Clinical
         90,
         10 );
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Reset the activity list to ensure a refreshed list is generated.
@@ -614,7 +614,7 @@ namespace Evado.UniForm.Clinical
       listGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       listGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementEditAccess == true )
       {
         // 
         // Add create new milestone groupCommand
@@ -689,7 +689,7 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
           this.ClassNameSpace + "getObject",
@@ -792,7 +792,7 @@ namespace Evado.UniForm.Clinical
       //
       // If the user has edit access enable the page for the user.
       //
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true
+      if ( this.Session.UserProfile.hasManagementEditAccess == true
       && ( this.Session.Schedule.State == EvSchedule.ScheduleStates.Draft
         || this.Session.Schedule.State == EvSchedule.ScheduleStates.Reviewed ) )
       {
@@ -926,7 +926,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Application.ApplicationId
         + EvLabels.Space_Hypen
         + this.Session.Application.Title );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the activity id object
@@ -936,7 +936,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Activity_Page_ActivityId_Field_Label,
         this.Session.Activity.ActivityId,
         10 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       if ( newActivity == false )
       {
@@ -951,7 +951,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Activity_Page_Title_Field_Label,
         this.Session.Activity.Title,
         50 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the activity desription object
@@ -962,7 +962,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Activity.Description,
         50,
         4 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
       // 
@@ -974,7 +974,7 @@ namespace Evado.UniForm.Clinical
           String.Empty,
           EvLabels.Activity_Initial_Version_Field_Label,
           this.Session.Activity.InitialVersion.ToString ( ) );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       this.LogMethodEnd ( "getPage_GeneralGroup" );

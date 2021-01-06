@@ -349,7 +349,7 @@ namespace Evado.UniForm.Clinical
         EuAdapterClasses.Activities.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogMethodEnd ( "getList_PageCommands" );
 
@@ -428,7 +428,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Schedule_ID_Field_Label,
         this.Session.ScheduleId.ToString ( "##" ),
         optionlist );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -439,7 +439,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Schedule_State_Field_Label,
         this.Session.ScheduleState.ToString ( ),
         optionlist );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       groupCommand = pageGroup.addCommand (
@@ -676,7 +676,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = PageGroup.createReadOnlyTextField (
           String.Empty, "Filename: ", UploadFilename );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // display the process log.
@@ -688,7 +688,7 @@ namespace Evado.UniForm.Clinical
           90,
           10 );
         groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // Reset the activity list to ensure a refreshed list is generated.
@@ -783,21 +783,21 @@ namespace Evado.UniForm.Clinical
                 {
                   groupCommand.AddParameter (
                    Model.UniForm.CommandParameters.Image_Url,
-                   EuForms.ICON_FORM_DRAFT );
+                   EuRecordLayouts.ICON_FORM_DRAFT );
                   break;
                 }
               case EvSchedule.ScheduleStates.Reviewed:
                 {
                   groupCommand.AddParameter (
                    Model.UniForm.CommandParameters.Image_Url,
-                   EuForms.ICON_FORM_REVIEWED );
+                   EuRecordLayouts.ICON_FORM_REVIEWED );
                   break;
                 }
               case EvSchedule.ScheduleStates.Issued:
                 {
                   groupCommand.AddParameter (
                    Model.UniForm.CommandParameters.Image_Url,
-                   EuForms.ICON_FORM_ISSUED );
+                   EuRecordLayouts.ICON_FORM_ISSUED );
                   break;
                 }
             }//END state switch.
@@ -1000,7 +1000,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.AppData ClientDataObject )
     {
       this.LogMethod ( "getClientDataObject" );
-      this.LogDebug ( "Edit Access: " + this.Session.UserProfile.hasConfigrationEditAccess );
+      this.LogDebug ( "Edit Access: " + this.Session.UserProfile.hasManagementEditAccess );
       //
       // Initialise the client data object.
       //
@@ -1014,7 +1014,7 @@ namespace Evado.UniForm.Clinical
       //
       // If the user has edit access enable the page for the user.
       //
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true
+      if ( this.Session.UserProfile.hasManagementEditAccess == true
         && ( this.Session.Schedule.State == EvSchedule.ScheduleStates.Draft
           || this.Session.Schedule.State == EvSchedule.ScheduleStates.Reviewed ) )
       {
@@ -1074,7 +1074,7 @@ namespace Evado.UniForm.Clinical
         EuAdapterClasses.Activities.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogMethodEnd ( "getList_PageCommands" );
 
@@ -1114,7 +1114,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Add page commands if the user has edit access to them.
       // 
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementEditAccess == true )
       {
         this.LogValue ( "User has edit access" );
 
@@ -1339,7 +1339,7 @@ namespace Evado.UniForm.Clinical
         EvSchedule.ScheduleClassFieldNames.ScheduleId.ToString ( ),
         EvLabels.Schedule_ID_Field_Label,
         this.Session.Schedule.ScheduleId.ToString ( "00" ) );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the schedule title object
@@ -1350,7 +1350,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Schedule_Title_Field_Label,
         this.Session.Schedule.Title,
         100 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the description object
@@ -1361,7 +1361,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Schedule.Description,
         50,
         4 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         this.Session.Schedule.Type = EvSchedule.ScheduleTypes.Clinical;
 
@@ -1376,7 +1376,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Schedule.MilestonePeriodIncrement.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer id object
@@ -1385,7 +1385,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Schedule_State_Field_Label,
         this.Session.Schedule.StateDesc );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Add the groups commands
@@ -1412,7 +1412,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Add page commands if the user has edit access to them.
       // 
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementEditAccess == true )
       {
         this.LogValue ( "User has edit access" );
 
@@ -1638,7 +1638,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Label_Signoff_Log_Field_Title,
         String.Empty,
         EvUserSignoff.getSignoffLog ( this.Session.Schedule.Signoffs, false ) );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END getClientClientDataObjectObject Method
 

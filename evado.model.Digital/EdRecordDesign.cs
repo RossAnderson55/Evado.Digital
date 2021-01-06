@@ -58,19 +58,19 @@ namespace Evado.Model.Digital
       }
     }
 
-    private string _Reference = String.Empty;
+    private string _HttpReference = String.Empty;
     /// <summary>
     /// This property contains a reference of a form design.
     /// </summary>
-    public string Reference
+    public string HttpReference
     {
       get
       {
-        return this._Reference;
+        return this._HttpReference;
       }
       set
       {
-        this._Reference = value;
+        this._HttpReference = value;
       }
     }
     private string _Instructions = String.Empty;
@@ -130,6 +130,11 @@ namespace Evado.Model.Digital
         this._UpdateReason = value;
       }
     }
+
+    /// <summary>
+    /// This property contains a form approval for display on records.
+    /// </summary>
+    public string Approval { get; set; }
     
     private string _RecordCategory = String.Empty;
     /// <summary>
@@ -149,11 +154,11 @@ namespace Evado.Model.Digital
     
 
 
-    private EvFormRecordTypes _TypeId = EvFormRecordTypes.Null;
+    private EdRecordTypes _TypeId = EdRecordTypes.Null;
     /// <summary>
     /// This property contains a type identifier of a form design.
     /// </summary>
-    public EvFormRecordTypes TypeId
+    public EdRecordTypes TypeId
     {
       get
       {
@@ -166,7 +171,7 @@ namespace Evado.Model.Digital
         if ( ( int ) value < 0 )
         {
           int typeId = ( int ) value;
-          this._TypeId = ( EvFormRecordTypes ) ( -typeId );
+          this._TypeId = ( EdRecordTypes ) ( -typeId );
         }
       }
     }
@@ -217,7 +222,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a java validation script of a form design.
     /// </summary>
-    public string JavaValidationScript
+    public string JavaScript
     {
       get
       {
@@ -247,19 +252,19 @@ namespace Evado.Model.Digital
     }
 
 
-    String _FormLanguage = "en";
+    String _Language = "en";
     /// <summary>
     /// This property contains a form language setting the default is en (English).
     /// </summary>
-    public string FormLanguage
+    public string Language
     {
       get
       {
-        return this._FormLanguage;
+        return this._Language;
       }
       set
       {
-        this._FormLanguage = value;
+        this._Language = value;
       }
     }
 

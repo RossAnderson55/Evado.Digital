@@ -288,7 +288,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
              MenuItem.Title,
              EuAdapter.APPLICATION_ID,
-             EuAdapterClasses.Projects.ToString ( ),
+             EuAdapterClasses.Applications.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -300,7 +300,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Projects.ToString ( ),
+              EuAdapterClasses.Applications.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -337,7 +337,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Projects.ToString ( ),
+              EuAdapterClasses.Applications.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -371,7 +371,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Project_Forms.ToString ( ),
+              EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -569,7 +569,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -586,7 +586,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -603,7 +603,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -620,7 +620,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -638,7 +638,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Scheduled_Record.ToString ( ),
+              EuAdapterClasses.Record.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -650,95 +650,6 @@ namespace Evado.UniForm.Clinical
               pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
                 this.Session.CommonRecord.TypeId );
             }
-            return pageCommand;
-          }
-
-        //  ------------------------------------------------------------------------------
-        // Subject common record admin pages.
-        // 
-        case EvPageIds.Common_Record_Admin_Page:
-          {
-            pageCommand = new Model.UniForm.Command (
-              MenuItem.Title,
-              EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Common_Record.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
-
-            pageCommand.SetPageId ( MenuItem.PageId );
-
-            pageCommand.AddParameter (
-              EdApplication.ApplicationFieldNames.ApplicationId.ToString ( ),
-              this.Session.Application.ApplicationId );
-
-            if ( this.Session.CommonRecord != null )
-            {
-              pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
-                this.Session.CommonRecord.TypeId );
-            }
-
-            return pageCommand;
-          }
-
-        //  ------------------------------------------------------------------------------
-        // Common Record View pages
-        // 
-        case EvPageIds.Common_Record_View:
-          {
-            pageCommand = new Model.UniForm.Command (
-              MenuItem.Title,
-              EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Common_Record.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
-
-            pageCommand.SetPageId ( MenuItem.PageId );
-
-            if ( this.Session.CommonRecord != null )
-            {
-              pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
-                this.Session.CommonRecord.TypeId );
-            }
-
-            return pageCommand;
-          }
-
-        //  ------------------------------------------------------------------------------
-        // Common Record export pages.
-        // 
-        case EvPageIds.Common_Record_Export_Page:
-          {
-            pageCommand = new Model.UniForm.Command (
-              MenuItem.Title,
-              EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Common_Record.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
-
-            pageCommand.SetPageId ( MenuItem.PageId );
-
-            if ( this.Session.CommonRecord != null )
-            {
-              pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
-                this.Session.CommonRecord.TypeId );
-            }
-
-            return pageCommand;
-          }
-
-
-        //  ------------------------------------------------------------------------------
-        // Common Record pages.
-        // 
-        case EvPageIds.Common_Record_Page:
-          {
-            pageCommand = new Model.UniForm.Command (
-              MenuItem.Title,
-              EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Common_Record.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Get_Object );
-
-            pageCommand.SetPageId ( MenuItem.PageId );
-
-            pageCommand.SetGuid ( this.Session.CommonRecord.Guid );
-
             return pageCommand;
           }
 

@@ -68,6 +68,10 @@ namespace Evado.UniForm.Clinical
         {
           parameterGuid = new Guid ( value );
         }
+        else
+        {
+          parameterGuid = Guid.Empty;
+        }
       }
       this.LogDebug ( "PARAMETER: Guid: '" + parameterGuid + "'" );
 
@@ -118,7 +122,7 @@ namespace Evado.UniForm.Clinical
       //
       // Reset the Study List.
       //
-      this.Session.TrialList = new List<Model.Digital.EdApplication> ( );
+      this.Session.ApplicationList = new List<Model.Digital.EdApplication> ( );
       this.Session.Application = new Model.Digital.EdApplication ( );
       this.LogMethodEnd ( "getCustomer" );
 
@@ -168,7 +172,7 @@ namespace Evado.UniForm.Clinical
     private void GetTrialList ( )
     {
       this.LogMethod ( "GetTrialList" );
-      this.LogDebug ( "TrialList.Count: " + this.Session.TrialList.Count );
+      this.LogDebug ( "TrialList.Count: " + this.Session.ApplicationList.Count );
 
       //
       // If the Customer object has not been set then don't create the list.
@@ -184,7 +188,7 @@ namespace Evado.UniForm.Clinical
       // 
       // If the user had a list of trials then they do not need to be regenerated.
       // 
-      if ( this.Session.TrialSelectionList.Count > 1
+      if ( this.Session.ApplicationSelectionList.Count > 1
         && this.ServiceUserProfile.NewAuthentication == false )
       {
         this.LogDebug ( "EXIT: Project list exists and does not need to be updated." );
@@ -201,12 +205,12 @@ namespace Evado.UniForm.Clinical
       // 
       // get the list of studies.
       // 
-      this.Session.TrialList = bll_Studies.GetApplicationList (
+      this.Session.ApplicationList = bll_Studies.GetApplicationList (
         Model.Digital.EdApplication.ApplicationStates.Null);
 
       this.LogDebugClass ( bll_Studies.Log );
 
-      this.LogDebug ( "TrialList.Count: " + this.Session.TrialList.Count );
+      this.LogDebug ( "TrialList.Count: " + this.Session.ApplicationList.Count );
 
       this.LogMethodEnd ( "GetTrialList" );
       return;
@@ -245,10 +249,10 @@ namespace Evado.UniForm.Clinical
       //
       // If there is only one trial in the trial list the load that trial.
       //
-      if ( this.Session.TrialList.Count == 1
-        && this.Session.Application.ApplicationId != this.Session.TrialList [ 0 ].ApplicationId )
+      if ( this.Session.ApplicationList.Count == 1
+        && this.Session.Application.ApplicationId != this.Session.ApplicationList [ 0 ].ApplicationId )
       {
-        this.Session.Application = this.Session.TrialList [ 0 ];
+        this.Session.Application = this.Session.ApplicationList [ 0 ];
 
         this.LogMethodEnd ( "GetTrial" );
         return;
@@ -272,6 +276,7 @@ namespace Evado.UniForm.Clinical
         // set the trial object to empty.
         // 
         this.Session.Application = new Model.Digital.EdApplication ( );
+
 
         this.LogDebug ( "Parameter ProjectId is 'Null' set selection trial object to empty" );
         this.LogMethodEnd ( "GetTrial" );
@@ -329,7 +334,7 @@ namespace Evado.UniForm.Clinical
       //
       // if the list is empty exit with an empty study object.
       //
-      if ( this.Session.TrialList.Count == 0 )
+      if ( this.Session.ApplicationList.Count == 0 )
       {
         this.Session.Application = new Model.Digital.EdApplication ( );
 
@@ -349,7 +354,7 @@ namespace Evado.UniForm.Clinical
       //
       // Iterate through the list of studies and return the matching studyId
       //
-      foreach ( Model.Digital.EdApplication trial in this.Session.TrialList )
+      foreach ( Model.Digital.EdApplication trial in this.Session.ApplicationList )
       {
         //this.LogDebugFormat ( "Interation StudyId {0}. ", study.StudyId );
 
@@ -390,7 +395,7 @@ namespace Evado.UniForm.Clinical
       //
       // Iterate through the list of projects and return true if the current project is in that list.
       //
-      foreach ( Model.Digital.EdApplication trial in this.Session.TrialList )
+      foreach ( Model.Digital.EdApplication trial in this.Session.ApplicationList )
       {
         if ( trial.ApplicationId == TrialId )
         {
@@ -435,7 +440,7 @@ namespace Evado.UniForm.Clinical
         this.Session.UserProfile = new EvUserProfile ( );
         this.Session.UserProfile.UserId = this.ServiceUserProfile.UserId;
         this.Session.UserProfile.CommonName = this.ServiceUserProfile.UserId;
-        this.Session.UserProfile.RoleId = EvRoleList.Patient;
+        this.Session.UserProfile.RoleId = EvRoleList.Null;
 
         this.ClassParameters.UserProfile = this.Session.UserProfile;
 
@@ -545,7 +550,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the methods variables and object.
       //
       EvForms bll_Forms = new EvForms ( this.ClassParameters );
-      this.Session.FormType = EvFormRecordTypes.Null;
+      this.Session.FormType = EdRecordTypes.Null;
       this.Session.FormState = EdRecordObjectStates.Form_Issued;
       this.Session.FormsAdaperLoaded = true;
 
@@ -557,7 +562,7 @@ namespace Evado.UniForm.Clinical
         this.Session.FormType,
         this.Session.FormState );
 
-      //this.LogDebugClass ( bll_Forms.Log );
+      this.LogDebugClass ( bll_Forms.Log );
 
       this.LogDebug ( " list count: " + this.Session.FormList.Count );
 

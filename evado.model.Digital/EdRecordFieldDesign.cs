@@ -47,7 +47,7 @@ namespace Evado.Model.Digital
 
     private Guid _DictionaryGuid = Guid.Empty;
     private int _Order = 0;
-    private string _Section = String.Empty;
+    private int _SectionNo = -1;
     private string _Title = String.Empty;
     private string _Instructions = String.Empty;
     private string _HttpReference = String.Empty;
@@ -60,6 +60,7 @@ namespace Evado.Model.Digital
     private string _FieldCategory = String.Empty;
     private bool _SelectByCodingValue = true;
     private bool _Mandatory = false;
+    private bool _AnalysticsDataPoint = false;
     private bool _HideField = false;
     private bool _SummaryField = false;
     private bool _AiDataPoint = true;
@@ -127,15 +128,15 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a section of form field design
     /// </summary>
-    public string Section
+    public int SectionNo
     {
       get
       {
-        return this._Section;
+        return this._SectionNo;
       }
       set
       {
-        this._Section = value.Trim ( );
+        this._SectionNo = value;
       }
     }
 
@@ -190,22 +191,6 @@ namespace Evado.Model.Digital
       set
       {
         this._HttpReference = value.Trim ( );
-      }
-    }
-
-
-    /// <summary>
-    /// This property indicates whether the form field design contains multi line text field.
-    /// </summary>
-    public bool MultiLineTextField
-    {
-      get
-      {
-        return _MultiLineTextField;
-      }
-      set
-      {
-        _MultiLineTextField = value;
       }
     }
 
@@ -305,7 +290,7 @@ namespace Evado.Model.Digital
           this._SelectByCodingValue = true;
         }
 
-        return EvcStatics.getStringAsOptionList ( this._Options, this._SelectByCodingValue );
+        return EvcStatics.getStringAsOptionList ( this._Options);
       }
     }
 
@@ -484,7 +469,6 @@ namespace Evado.Model.Digital
       }
     }
 
-
     /// <summary>
     /// This property indicates whether a form field design is manadatory.
     /// </summary>
@@ -530,14 +514,26 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
           case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
-          case Evado.Model.EvDataTypes.Special_Medication_Summary:
-          case Evado.Model.EvDataTypes.Special_Subject_Demographics:
           case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
               this._AiDataPoint = false;
               break;
             }
         }
+      }
+    }
+    /// <summary>
+    /// This property indicates whether a form field design is analytics data point.
+    /// </summary>
+    public bool AnalyticsDataPont
+    {
+      get
+      {
+        return this._AnalysticsDataPoint;
+      }
+      set
+      {
+        this._AnalysticsDataPoint = value;
       }
     }
 

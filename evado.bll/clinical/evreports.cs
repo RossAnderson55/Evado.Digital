@@ -137,7 +137,7 @@ namespace Evado.Bll.Clinical
           }
         case EvReport.ReportSourceCode.Field_Monitoring_Query:
           {
-            Evado.Dal.Clinical.EdRecordFields DAL_formRecordField = new Evado.Dal.Clinical.EdRecordFields ( this.ClassParameter );
+            Evado.Dal.Clinical.EdRecordValues DAL_formRecordField = new Evado.Dal.Clinical.EdRecordValues ( this.ClassParameter );
 
             report = DAL_formRecordField.getMonitoringReport ( Report );
 

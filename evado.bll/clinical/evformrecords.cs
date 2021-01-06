@@ -371,7 +371,6 @@ namespace Evado.Bll.Clinical
       this.LogValue ( "- State: " + QueryParameters.State );
       this.LogValue ( "- SubjectState: " + QueryParameters.SubjectState );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogValue ( "- QueryState: " + QueryParameters.QueryState );
       this.LogValue ( "- StartDate: " + QueryParameters.stStartDate );
       this.LogValue ( "- FinishDate: " + QueryParameters.stFinishDate );
       this.LogValue ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
@@ -425,7 +424,6 @@ namespace Evado.Bll.Clinical
       this.LogDebug ( "- SubjectState: " + QueryParameters.SubjectState );
       this.LogDebug ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
       this.LogDebug ( "- IncludeTestSites: " + QueryParameters.IncludeTestSites );
-      this.LogDebug ( "- QueryState: " + QueryParameters.QueryState );
       this.LogDebug ( "- StartDate: " + QueryParameters.stStartDate );
       this.LogDebug ( "- FinishDate: " + QueryParameters.stFinishDate );
       this.LogDebug ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
@@ -537,7 +535,7 @@ namespace Evado.Bll.Clinical
       query.ApplicationId = TrialId;
       query.SubjectId = SubjectId;
       query.MilestoneId = MilestoneId;
-      query.State = EdRecordObjectStates.Withdrawn + ";" + EdRecordObjectStates.Queried_Record_Copy;
+      query.State = EdRecordObjectStates.Withdrawn.ToString() ;
       query.NotSelectedState = true;
       query.OrderBy = "FormId, TR_RecordDate; ";
       String FormIdList = String.Empty;
@@ -1067,16 +1065,11 @@ namespace Evado.Bll.Clinical
         //
         newFormRecord = new EdRecord ( );
         newFormRecord.ApplicationId = SubectMilestone.ProjectId;
-        newFormRecord.OrgId = SubectMilestone.OrgId;
-        newFormRecord.SubjectId = SubectMilestone.SubjectId;
-        newFormRecord.VisitId = SubectMilestone.VisitId;
         newFormRecord.MilestoneId = SubectMilestone.MilestoneId;
         newFormRecord.ActivityId = mandatoryActivity.ActivityId;
         newFormRecord.IsMandatoryActivity = mandatoryActivity.IsMandatory;
         newFormRecord.LayoutId = activityRecord.FormId;
         newFormRecord.IsMandatory = activityRecord.Mandatory;
-        newFormRecord.UpdatedByUserId = UserProfile.UserId;
-        newFormRecord.UserCommonName = UserProfile.CommonName;
 
         //
         // Submit the initialised record to be created.
@@ -1196,12 +1189,9 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod ( "createRecord method." );
       this.LogDebug ( "ProjectId: " + Record.ApplicationId );
-      this.LogDebug ( "OrgId: " + Record.OrgId );
       this.LogDebug ( "MilestoneId: " + Record.MilestoneId );
       this.LogDebug ( "ActivityId: " + Record.ActivityId );
-      this.LogDebug ( "SubjectId: " + Record.SubjectId );
-      this.LogDebug ( "VisitId: " + Record.VisitId );
-      this.LogDebug ( "FormId: " + Record.LayoutId );
+      this.LogDebug ( "LayoutId: " + Record.LayoutId );
 
       // 
       // Instantiate the local variables
@@ -1216,12 +1206,6 @@ namespace Evado.Bll.Clinical
         this.LogValue ( " Trial Empty " );
         Record.EventCode = EvEventCodes.Identifier_Project_Id_Error;
         this.LogMethodEnd ( "createRecord" );
-        return Record;
-      }
-      if ( Record.OrgId == String.Empty )
-      {
-        this.LogValue ( " OrgId Empty " );
-        Record.EventCode = EvEventCodes.Identifier_Org_Id_Error;
         return Record;
       }
 
@@ -1249,14 +1233,6 @@ namespace Evado.Bll.Clinical
         return formRecord;
       }
 
-      if ( Record.SubjectId == String.Empty )
-      {
-        this.LogValue ( " SubjectId Empty " );
-        Record.EventCode = EvEventCodes.Identifier_Subject_Id_Error;
-        this.LogMethodEnd ( "createRecord" );
-        return Record;
-      }
-
       //
       // Retrieve the specified form to determine the form QueryType.
       //
@@ -1272,7 +1248,7 @@ namespace Evado.Bll.Clinical
       // If the form QueryType is 'Updateable' then create a new copy of the record.
       // else create a new empty record.
       //
-      if ( form.Design.TypeId == EvFormRecordTypes.Updatable_Record )
+      if ( form.Design.TypeId == EdRecordTypes.Updatable_Record )
       {
         // 
         // Create a new copy of the record.
@@ -1335,11 +1311,9 @@ namespace Evado.Bll.Clinical
       this.LogMethod ( "saveItem method. " );
       this.LogValue ( "FormRecord.Guid: " + FormRecord.Guid );
       this.LogValue ( "FormGuid: " + FormRecord.LayoutGuid );
-      this.LogValue ( "TrialId: " + FormRecord.ApplicationId );
-      this.LogValue ( "SubjectId: " + FormRecord.SubjectId );
+      this.LogValue ( "ApplicationId: " + FormRecord.ApplicationId );
       this.LogValue ( "Action: " + FormRecord.SaveAction );
       this.LogValue ( "UserRole.Edit: " + HadEditAccess );
-      this.LogValue ( "hasQueredItems: " + FormRecord.hasQueredItems );
       // 
       // Define the local variables.
       // 
@@ -1363,31 +1337,6 @@ namespace Evado.Bll.Clinical
         this.LogValue ( "Project ID is empty" );
         return EvEventCodes.Identifier_Project_Id_Error;
       }
-      if ( FormRecord.OrgId == String.Empty )
-      {
-        this.LogValue ( "Org ID is empty" );
-        return EvEventCodes.Identifier_Org_Id_Error;
-      }
-      if ( FormRecord.SubjectId == String.Empty )
-      {
-        this.LogValue ( "Subject ID is empty" );
-        return EvEventCodes.Identifier_Subject_Id_Error;
-      }
-
-
-      // 
-      // If a review query has been raised then process the query.
-      // 
-      if ( FormRecord.hasQueredItems == true
-        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
-          || FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
-          || FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save ) )
-      {
-        this.LogValue ( "Processing a queried record." );
-
-        return this.queryRecord ( FormRecord, HadEditAccess );
-
-      }//END query processing
 
       // 
       // Update the state information in the trial Report.
@@ -1395,15 +1344,6 @@ namespace Evado.Bll.Clinical
       this.updateFormState ( FormRecord, HadEditAccess );
 
       this.LogValue ( "Status: " + FormRecord.State );
-
-      // 
-      // Update the trial record.
-      // 
-      iReturn = this.closeAlert ( FormRecord );
-      if ( iReturn < EvEventCodes.Ok )
-      {
-        return iReturn;
-      }
 
       // 
       // Update the instrument newField states.
@@ -1431,346 +1371,7 @@ namespace Evado.Bll.Clinical
       return iReturn;
 
     }//END saveRecord method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class processes a review query.  By saving the currentMonth record as queried record and 
-    /// add a new copy for the author to update.
-    /// </summary>
-    /// <param name="FormRecord">EvForm: a form object</param>
-    /// <param name="HadEditAccess">EvRole: a user role object</param>
-    /// <returns>EvEventCodes: an event code for processing query records</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the methods for processing the query message, updating form state and processing formfields. 
-    /// 
-    /// 2. Execute the method for updating the form object to database. 
-    /// 
-    /// 3. Execute the methods for copying the queries form records and sending form alert message. 
-    /// 
-    /// 4. Return an event code of method execution.
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private EvEventCodes queryRecord (
-      EdRecord FormRecord,
-      bool HadEditAccess )
-    {
-      this.LogMethod ( "queryRecord method." );
-      this.LogValue ( "RecordId: " + FormRecord.RecordId );
-
-      // 
-      // Define local variables.
-      // 
-      EvFormRecordFields recordFields = new EvFormRecordFields ( this.ClassParameter );
-      EvEventCodes iReturn = EvEventCodes.Ok;
-      string authoredBy = FormRecord.AuthoredBy;
-      DateTime authoredByDate = FormRecord.AuthoredDate;
-      string sMessage = String.Empty;
-
-      // 
-      // Extract the items that have been queried and add a comment to the 
-      // annotation newField.
-      // 
-      sMessage = this.queryMessage ( FormRecord );
-      this.LogValue ( "Message: " + sMessage );
-
-      // 
-      // Update the status.
-      // 
-      this.updateFormState ( FormRecord, HadEditAccess );
-
-      // 
-      // Update the instrument newField states.
-      // 
-      this.processFormFields ( FormRecord );
-
-      // 
-      // Save the record.
-      // 
-      this.LogValue ( " Updating the current record" );
-
-      iReturn = this._DalRecords.updateRecord ( FormRecord );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      if ( iReturn < EvEventCodes.Ok )
-      {
-        this.LogValue ( "Errors Saving RecordId: " + FormRecord.RecordId );
-        return iReturn;
-      }
-
-      // 
-      // copy the record .
-      // 
-      iReturn = this._DalRecords.copyQueriedRecord ( FormRecord );
-      this.LogClass ( this._DalRecords.Log );
-
-      // 
-      // Process error event outcome
-      // 
-      if ( iReturn < EvEventCodes.Ok )
-      {
-        return iReturn;
-      }
-
-      // 
-      // Indicate the copy process is finished.
-      // 
-      this.LogValue ( "Finished Copying Items" );
-
-      // 
-      // Raise an alert to the author role.
-      // 
-      iReturn = this.sendAlert ( FormRecord, sMessage, EvAlert.AlertTypes.Trial_Record );
-
-      // 
-      // Return the update status.
-      // 
-      return iReturn;
-
-    }//END queryRecord method.
-
-    //  =============================================================================== 
-    /// <summary>
-    /// This method identifies the items that have been queried and builds a query 
-    /// message for inclusion in the annotation instrument newField.
-    /// </summary>
-    /// <param name="FormRecord">EvForm: a form object.</param>
-    /// <returns>string: a query message string</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Set the comment author. 
-    /// 
-    /// 2. Loop through the formRecord object's fields and add the queries state fields to the query message. 
-    /// 
-    /// 3. Return the query message. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private string queryMessage ( EdRecord FormRecord )
-    {
-      this.LogMethod ( "queryMessage method " );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      bool queriedFields = false;
-
-      String stMessage = "Record reviewed by " +FormRecord.UserCommonName+ " on " + DateTime.Now.ToString ( "dd MMM yyyy" )
-        + "\r\nThe following items values have been queried:";
-
-      //
-      // Set the comment author value.
-      //
-      EvFormRecordComment.AuthorTypeCodes authorType = EvFormRecordComment.AuthorTypeCodes.Monitor;
-
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save )
-      {
-        authorType = EvFormRecordComment.AuthorTypeCodes.Data_Manager;
-      }
-
-      // 
-      // Iterate through the items append those items that have been queried.
-      // 
-      foreach ( EdRecordField field in FormRecord.Fields )
-      {
-        string fieldMessage = String.Empty;
-        //
-        // Select queried fields.
-        //
-        if ( field.State == EdRecordField.FieldStates.Queried )
-        {
-          queriedFields = true;
-          //
-          // Output field title and value for non-tabular or freetext fields.
-          //
-          if ( field.TypeId != EvDataTypes.Table
-            && field.TypeId != EvDataTypes.Special_Matrix
-            && field.TypeId != EvDataTypes.Free_Text )
-          {
-            fieldMessage = "\r\n" + field.Design.Title + " = " + field.ItemValue;
-          }
-          else
-          {
-            fieldMessage = "\r\n" + field.Design.Title;
-
-          }//END field output
-
-          stMessage += fieldMessage;
-
-        }//END select queried fields.
-
-      }//END field iteration loop
-
-      // 
-      // Does the message have a value if so process the field.
-      //
-      if ( queriedFields == true )
-      {
-        //
-        // Create the comment object.
-        //
-        EvFormRecordComment comment = new EvFormRecordComment (
-          FormRecord.Guid,
-          authorType,
-          FormRecord.UpdatedByUserId,
-          FormRecord.UserCommonName,
-          stMessage );
-
-        //
-        // append the comment object to the commentlist.
-        //
-        FormRecord.CommentList.Add ( comment );
-
-      } //END value has content
-
-      // 
-      // Place footer on the message
-      // 
-      stMessage += "\r\n\r\n" + EvLabels.Record_Resubmit_Text;
-
-      // 
-      // Return the message.
-      // 
-      return stMessage;
-
-    }//END queryMessage method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class creates an alert when a query is raised.
-    /// </summary>
-    /// <param name="FormRecord">EvForm: a form object</param>
-    /// <param name="Message">string: a query message string</param>
-    /// <param name="Alert">EvAlert.AlertTypes: an alert QueryType object</param>
-    /// <returns>EvEventCodes: an event code for sending alert message</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Update the form object's values to the alert object.
-    /// 
-    /// 2. Execute the method for saving the alert object to database. 
-    /// 
-    /// 3. Return an event code for saving alert object to database.
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private EvEventCodes sendAlert (
-      EdRecord FormRecord,
-      String Message,
-      EvAlert.AlertTypes Alert )
-    {
-      this.LogMethod ( "sendAlert method. " );
-      this.LogValue ( "RecordId: " + FormRecord.RecordId );
-      this.LogValue ( "UserName: " + FormRecord.UserCommonName );
-
-      // 
-      // Define local variables.
-      // 
-      EvEventCodes iReturn = EvEventCodes.Ok;
-      EvAlert trialAlert = new EvAlert ( );
-
-      // 
-      // Initialise the alert object properties
-      // 
-      trialAlert.ProjectId = FormRecord.ApplicationId;
-      trialAlert.ToOrgId = FormRecord.OrgId;
-      trialAlert.RecordId = FormRecord.RecordId;
-
-      trialAlert.Subject = String.Format (
-        EvLabels.Alert_Record_Queried_Subject_Text,
-        FormRecord.RecordId,
-        FormRecord.SubjectId,
-        trialAlert.FromUser,
-        DateTime.Now.ToString ( "dd MMM yyyy" ) );
-      trialAlert.NewMessage = Message;
-      trialAlert.UserCommonName = FormRecord.UserCommonName;
-      trialAlert.ToUser = FormRecord.AuthoredBy;
-      trialAlert.FromUser = FormRecord.UserCommonName;
-      trialAlert.Action = EvAlert.AlertSaveActionCodes.Raise_Alert;
-      trialAlert.TypeId = Alert;
-
-      // 
-      // Save the alert to the database.
-      // 
-      iReturn = this._BllTrialAlerts.saveAlert ( trialAlert );
-      this.LogValue ( ( this._BllTrialAlerts.Log ) );
-
-      // 
-      // Process the errer exceptions
-      // 
-      if ( iReturn < EvEventCodes.Ok )
-      {
-        return iReturn;
-      }
-
-      this.LogValue ( "Completed Send Alert Processing" );
-
-      // 
-      // Return the update status.
-      // 
-      return iReturn;
-
-    }//END sendAlert method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class closes the event alert for this record if it exists. 
-    /// </summary>
-    /// <param name="FormRecord">EvForm: a form object</param>
-    /// <returns>EvEventCodes: an event code for closing alert message</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. if the form action is "Submit", execute the method for closing alert message. 
-    /// 
-    /// 2. Return an event code for closing alert message.
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private EvEventCodes closeAlert ( EdRecord FormRecord )
-    {
-      this.LogMethod ( "closeAlert method. " );
-      this.LogValue ( "RecordId: " + FormRecord.RecordId );
-      this.LogValue ( "UserName: " + FormRecord.UserCommonName );
-      this.LogValue ( "Action: " + FormRecord.SaveAction );
-
-      // 
-      // Initialise local variables
-      // 
-      EvEventCodes iReturn = EvEventCodes.Ok;
-
-      // 
-      // Close alert if record being signed be authoredBy. 
-      // 
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Submit_Record )
-      {
-        this.LogValue ( " Closing alerts. " );
-        iReturn = this._BllTrialAlerts.CloseAlert (
-           FormRecord.RecordId,
-           FormRecord.UserCommonName );
-
-        this.LogValue ( "" + this._BllTrialAlerts.Log );
-
-        // 
-        // Process the exception events
-        // 
-        if ( iReturn != EvEventCodes.Ok )
-        {
-          return iReturn;
-        }
-      }
-
-      // 
-      // Add the status message for completing the close event process.
-      // 
-      this.LogValue ( "Completed Close Alert Processing" );
-
-      // 
-      // Return the update status.
-      // 
-      return iReturn;
-
-    }//END closeAlert method.
-
+  
     #endregion
 
     #region Form Record state update
@@ -1803,30 +1404,6 @@ namespace Evado.Bll.Clinical
       // Initialise the methods variables and objects.
       //
 
-      // 
-      // If the instrument has an authenticated signoff pass the user id to the 
-      // to the DAL layer and DB.
-      // 
-      string AuthenticatedUserId = String.Empty;
-      if ( FormRecord.IsAuthenticatedSignature == true )
-      {
-        AuthenticatedUserId = FormRecord.UpdatedByUserId;
-      }
-      this.LogValue ( " AuthenticatedUserId: " + AuthenticatedUserId );
-
-      // 
-      // Set the query state if not defined in the database reset if correctly.
-      // 
-      if ( FormRecord.QueryState == EdRecord.QueryStates.Null
-        && FormRecord.QueriedBy != String.Empty )
-      {
-        FormRecord.QueryState = EdRecord.QueryStates.Open;
-
-        if ( FormRecord.State != EdRecordObjectStates.Queried_Record )
-        {
-          FormRecord.QueryState = EdRecord.QueryStates.Closed;
-        }
-      }//END query state not set correctly.
 
       // 
       // Save the trial record to the database.
@@ -1843,8 +1420,7 @@ namespace Evado.Bll.Clinical
       // 
       if ( ( HadEditAccess == true )
         && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Save_Record )
-        && ( FormRecord.State == EdRecordObjectStates.Submitted_Record
-          || FormRecord.State == EdRecordObjectStates.Source_Data_Verified ) )
+        && ( FormRecord.State == EdRecordObjectStates.Submitted_Record ) )
       {
         this.setDraftRecordStatus ( FormRecord );
 
@@ -1860,72 +1436,8 @@ namespace Evado.Bll.Clinical
       {
         this.LogValue ( "Author submitting a record." );
 
-        this.submitRecordSignoff ( FormRecord, AuthenticatedUserId );
+        this.submitRecordSignoff ( FormRecord );
 
-        // 
-        // Close the query state if the record is signed off by the author.
-        // 
-        if ( FormRecord.QueryState == EdRecord.QueryStates.Open )
-        {
-          FormRecord.QueryState = EdRecord.QueryStates.Closed;
-        }
-      }
-
-      // 
-      // trial record has been queried, set the state to queried and save the 
-      // record to the database.  
-      // A new copy will be created of the record for followup action.
-      // 
-      if ( ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
-          || FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
-          || FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save )
-        && ( FormRecord.hasQueredItems == true ) )
-      {
-        this.LogValue ( "Reviewer query signoff" );
-
-        this.queryRecordAction ( FormRecord, AuthenticatedUserId );
-
-        return;
-      }
-
-
-      // 
-      // Perform the monitor signoff and save the record to the database.
-      // 
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Monitor_Save
-        && FormRecord.Monitor == String.Empty )
-      {
-        this.LogValue ( "Monitor signoff" );
-
-        this.montorSubmitAction ( FormRecord, AuthenticatedUserId );
-
-        return;
-      }
-
-      // 
-      // Perform the reviewer signoff and save the record to the database.
-      // 
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Review_Save
-        && FormRecord.ReviewedBy == String.Empty )
-      {
-        this.LogValue ( "Reviewer signoff" );
-
-        this.reviewSubmitAction ( FormRecord, AuthenticatedUserId );
-
-        return;
-      }
-
-      // 
-      // Perform the final approval signoff and save the record to the database.
-      // 
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.DataManager_Save
-        && FormRecord.ApprovedBy == String.Empty )
-      {
-        this.LogValue ( "Data manager signoff" );
-
-        this.dataManagerSubmitAction ( FormRecord, AuthenticatedUserId );
-
-        return;
       }
 
       // 
@@ -1959,19 +1471,6 @@ namespace Evado.Bll.Clinical
     {
 
       this.LogMethod ( "setDraftRecordStatus method." );
-      Record.AuthoredBy = String.Empty;
-      Record.AuthoredByUserId = String.Empty;
-      Record.AuthoredDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.ReviewedBy = String.Empty;
-      Record.ReviewedByUserId = String.Empty;
-      Record.ReviewedDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.Monitor = String.Empty;
-      Record.MonitorUserId = String.Empty;
-      Record.MonitorDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.ApprovedBy = String.Empty;
-      Record.ApprovedByUserId = String.Empty;
-      Record.ApprovalDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.SignoffStatement = String.Empty;
 
       Record.State = EdRecordObjectStates.Draft_Record;
 
@@ -1991,9 +1490,7 @@ namespace Evado.Bll.Clinical
     /// 2. Update the form object's values to the sign off object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private void submitRecordSignoff ( 
-      EdRecord Record, 
-      String AuthenticatedUserId )
+    private void submitRecordSignoff ( EdRecord Record )
     {
       this.LogMethod ( "submitRecordSignoff method." );
       // 
@@ -2002,209 +1499,18 @@ namespace Evado.Bll.Clinical
       EvUserSignoff userSignoff = new EvUserSignoff ( );
 
       Record.State = EdRecordObjectStates.Submitted_Record;
-      Record.AuthoredByUserId = AuthenticatedUserId;
-      Record.AuthoredBy = Record.UserCommonName;
-      Record.AuthoredDate = DateTime.Now;
-      Record.RecordDate = Record.AuthoredDate;
-      Record.ReviewedBy = String.Empty;
-      Record.ReviewedByUserId = String.Empty;
-      Record.ReviewedDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.Monitor = String.Empty;
-      Record.MonitorUserId = String.Empty;
-      Record.MonitorDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.ApprovedBy = String.Empty;
-      Record.ApprovedByUserId = String.Empty;
-      Record.ApprovalDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.SignoffStatement = String.Empty;
-      Record.SignoffStatement = String.Empty;
 
       // 
       // Append the signoff object.
       // 
       userSignoff.Type = EvUserSignoff.TypeCode.Record_Submitted_Signoff;
-      userSignoff.SignedOffUserId = AuthenticatedUserId;
-      userSignoff.SignedOffBy = Record.UserCommonName;
-      userSignoff.SignOffDate = Record.AuthoredDate;
+      userSignoff.SignedOffUserId = this.ClassParameter.UserProfile.UserId;
+      userSignoff.SignedOffBy = this.ClassParameter.UserProfile.CommonName;
+      userSignoff.SignOffDate = DateTime.Now;
 
-      Record.RecordContent.Signoffs.Add ( userSignoff );
+      Record.Signoffs.Add ( userSignoff );
 
     }//END createSignoff method 
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates the queried sign off object.
-    /// </summary>
-    /// <param name="Record">EvForm: a form object.</param>
-    /// <param name="AuthenticatedUserId">String: the users authenticated identifier.</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Update the form object to the queried ResultData. 
-    /// 
-    /// 2. Update the form object's values to the sign off object. 
-    /// 
-    /// 3. Reset the sign off ResultData. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void queryRecordAction (
-      EdRecord Record,
-      String AuthenticatedUserId )
-    {
-      this.LogMethod ( "queryRecordAction method." );
-      // 
-      // Initialise the local variables
-      // 
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
-
-      Record.State = EdRecordObjectStates.Queried_Record;
-      Record.QueriedByUserId = AuthenticatedUserId;
-      Record.QueriedBy = Record.UserCommonName;
-      Record.QueriedDate = DateTime.Now;
-      Record.QueryState = EdRecord.QueryStates.Open;
-
-      // 
-      // Append the signoff object.
-      // 
-      userSignoff.Type = EvUserSignoff.TypeCode.Record_Reviewer_Query_Signoff;
-      userSignoff.SignedOffUserId = AuthenticatedUserId;
-      userSignoff.SignedOffBy = Record.UserCommonName;
-      userSignoff.SignOffDate = Record.QueriedDate;
-
-      Record.RecordContent.Signoffs.Add ( userSignoff );
-
-      // 
-      // Reset the signoff ResultData
-      // 
-      Record.ReviewedBy = String.Empty;
-      Record.ReviewedByUserId = String.Empty;
-      Record.ReviewedDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.ApprovedBy = String.Empty;
-      Record.ApprovedByUserId = String.Empty;
-      Record.ApprovalDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      Record.SignoffStatement = String.Empty;
-
-
-    }//END querySignoff method 
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates the reviewed sign off object.
-    /// </summary>
-    /// <param name="Record">EvForm: a form object.</param>
-    /// <param name="AuthenticatedUserId">String: the users authenticated identifier.</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Update the form object with the review ResultData
-    /// 
-    /// 2. Update the form object's values to the sign off object. 
-    /// 
-    /// 3. Reset the sign off ResultData. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void reviewSubmitAction ( EdRecord Record, string AuthenticatedUserId )
-    {
-      this.LogMethod ( "reviewSubmitAction method." );
-      // 
-      // Initialise the local variables
-      // 
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
-
-      Record.ReviewedByUserId = AuthenticatedUserId;
-      Record.ReviewedBy = Record.UserCommonName;
-      Record.ReviewedDate = DateTime.Now;
-      Record.SignoffStatement = String.Empty;
-
-      // 
-      // Append the signoff object.
-      // 
-      userSignoff.Type = EvUserSignoff.TypeCode.Record_Source_Data_Verified;
-      userSignoff.SignedOffUserId = AuthenticatedUserId;
-      userSignoff.SignedOffBy = Record.UserCommonName;
-      userSignoff.SignOffDate = Record.ReviewedDate;
-
-      Record.RecordContent.Signoffs.Add ( userSignoff );
-
-    }//END reviewSignoff method 
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates the monitored sign off object.
-    /// </summary>
-    /// <param name="Record">EvForm: a form object.</param>
-    /// <param name="AuthenticatedUserId">String: the users authenticated identifier.</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Update the form object with the monitored ResultData
-    /// 
-    /// 2. Update the form object's values to the sign off object. 
-    /// 
-    /// 3. Reset the sign off ResultData. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void montorSubmitAction ( EdRecord Record, string AuthenticatedUserId )
-    {
-      this.LogMethod ( "montorSubmitAction method." );
-      // 
-      // Initialise the local variables
-      // 
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
-
-      Record.State = EdRecordObjectStates.Source_Data_Verified;
-      Record.MonitorUserId = AuthenticatedUserId;
-      Record.Monitor = Record.UserCommonName;
-      Record.MonitorDate = DateTime.Now;
-
-      // 
-      // Append the signoff object.
-      // 
-      userSignoff.Type = EvUserSignoff.TypeCode.Record_Monitor_Signoff;
-      userSignoff.SignedOffUserId = AuthenticatedUserId;
-      userSignoff.SignedOffBy = Record.UserCommonName;
-      userSignoff.SignOffDate = Record.MonitorDate;
-      Record.RecordContent.Signoffs.Add ( userSignoff );
-
-    }//END monitorSignoff method 
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates the completed sign off object.
-    /// </summary>
-    /// <param name="Record">EvForm: a form object.</param>
-    /// <param name="AuthenticatedUserId">String: the users authenticated identifier.</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Update the form object with the completed ResultData
-    /// 
-    /// 2. Update the form object's values to the sign off object. 
-    /// 
-    /// 3. Reset the sign off ResultData. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private void dataManagerSubmitAction ( EdRecord Record, string AuthenticatedUserId )
-    {
-      this.LogMethod ( "dataManagerSubmitAction method." );
-      // 
-      // Initialise the local variables
-      // 
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
-      Record.State = EdRecordObjectStates.Locked_Record;
-      Record.ApprovedByUserId = AuthenticatedUserId;
-      Record.ApprovedBy = Record.UserCommonName;
-      Record.ApprovalDate = DateTime.Now;
-
-      // 
-      // Append the signoff object.
-      // 
-      userSignoff.Type = EvUserSignoff.TypeCode.Record_DataManager_Signoff;
-      userSignoff.SignedOffUserId = AuthenticatedUserId;
-      userSignoff.SignedOffBy = Record.UserCommonName;
-      userSignoff.SignOffDate = Record.ApprovalDate;
-      Record.RecordContent.Signoffs.Add ( userSignoff );
-
-    }//END approvalSignoff method 
 
     #endregion
 
@@ -2243,65 +1549,9 @@ namespace Evado.Bll.Clinical
       for ( int count = 0; count < Record.Fields.Count; count++ )
       {
         EdRecordField field = Record.Fields [ count ];
-        field.UpdatedByUserId = Record.UpdatedByUserId;
-        field.UserCommonName = Record.UserCommonName;
-
-        if ( field.State == EdRecordField.FieldStates.Empty
-          || field.State == EdRecordField.FieldStates.With_Value )
-        {
-          this.LogValue ( " Field Action: ActionSaveItem. " );
-          field.Action = EvFormRecordFields.ActionSaveItem;
-        }
-
-        if ( field.State == EdRecordField.FieldStates.With_Value
-          && Record.State == EdRecordObjectStates.Source_Data_Verified )
-        {
-          this.LogValue ( " Field Action: ActionConfirmItem. " );
-          field.Action = EvFormRecordFields.ActionConfirmItem;
-        }
-
-        if ( field.State == EdRecordField.FieldStates.Queried )
-        {
-          this.LogValue ( " Field Action: ActionQueryItem. " );
-          field.Action = EvFormRecordFields.ActionQueryItem;
-        }
-
-        if ( Record.SaveAction == EdRecord.SaveActionCodes.Submit_Record
-          && ( field.State == EdRecordField.FieldStates.Confirmed
-            || field.State == EdRecordField.FieldStates.Queried ) )
-        {
-          this.LogValue ( " Form Action: signoff query. " );
-          field.State = EdRecordField.FieldStates.With_Value;
-          field.Action = EvFormRecordFields.ActionSaveItem;
-        }
-
-        if ( Record.SaveAction == EdRecord.SaveActionCodes.Save_Record
-          && ( field.State == EdRecordField.FieldStates.Confirmed
-            || field.State == EdRecordField.FieldStates.Queried ) )
-        {
-          this.LogValue ( " Form Action: save item. " );
-          field.State = EdRecordField.FieldStates.With_Value;
-          field.Action = EvFormRecordFields.ActionSaveItem;
-        }
-
-        if ( Record.SaveAction == EdRecord.SaveActionCodes.DataManager_Save
-          && ( field.State == EdRecordField.FieldStates.Confirmed
-            || field.State == EdRecordField.FieldStates.With_Value ) )
-        {
-          this.LogValue ( " Form Action: save item. " );
-          field.State = EdRecordField.FieldStates.Confirmed;
-          field.Action = EvFormRecordFields.ActionSaveItem;
-        }
 
         this.LogValue ( " >> Field ID: " + field.FieldId + ", Subject: '" + field.Design.Title
-          + "', Value: '" + field.ItemValue
-          + "', State: '" + field.State
-          + "', Action: '" + field.Action + "' " );
-
-        // 
-        // Update the newField state.
-        // 
-        this.updateFieldState ( field );
+          + "', Value: '" + field.ItemValue );
 
         // 
         // Update the newField currentSchedule value
@@ -2316,76 +1566,6 @@ namespace Evado.Bll.Clinical
       return Record.Fields;
 
     }//END processFormFields method
-
-    // =====================================================================================
-    /// <summary>
-    /// This Update the newField state and approve newField state.
-    /// </summary>
-    /// <param name="Field">EvFormField: a form field object</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Switch the form field action and update the state. 
-    /// 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private void updateFieldState ( EdRecordField Field )
-    {
-      this.LogMethod ( "updateFieldStatemethod " );
-
-      if ( Field.Guid == Guid.Empty )
-      {
-        this.LogDebug ( "Action: " + Field.Action + " >> ADD New record" );
-        Field.Action = EvFormRecordFields.ActionSaveItem;
-        Field.State = EdRecordField.FieldStates.Empty;
-        Field.AuthoredBy = Field.UserCommonName;
-        Field.AuthoredDate = DateTime.Now;
-      }
-
-      switch ( Field.Action )
-      {
-        case EvFormRecordFields.ActionDataCleansing:
-          {
-
-            return;
-          }
-        case EvFormRecordFields.ActionQueryItem:
-          {
-            this.LogDebug ( "Action: " + Field.Action + " >> Field Queried. " );
-            Field.State = EdRecordField.FieldStates.Queried;
-            Field.ReviewedByUserId = Field.UpdatedByUserId;
-            Field.ReviewedBy = Field.UserCommonName;
-            Field.ReviewedDate = DateTime.Now;
-
-            return;
-          }
-        case EvFormRecordFields.ActionConfirmItem:
-          {
-            this.LogDebug ( "Action: " + Field.Action + " >> Field Confirmed by Reviewer." );
-            Field.State = EdRecordField.FieldStates.Confirmed;
-            Field.ReviewedByUserId = Field.UpdatedByUserId;
-            Field.ReviewedBy = Field.UserCommonName;
-            Field.ReviewedDate = DateTime.Now;
-
-            return;
-          }
-        default:
-          {
-            this.LogDebug ( "Action: " + Field.Action + " >> Data Entered/Updated " );
-            if ( Field.ItemValue != String.Empty
-                || Field.ItemText != String.Empty )
-            {
-              Field.State = EdRecordField.FieldStates.With_Value;
-            }
-            Field.AuthoredByUserId = Field.UpdatedByUserId;
-            Field.AuthoredBy = Field.UserCommonName;
-            Field.AuthoredDate = DateTime.Now;
-
-            return;
-          }
-      }
-
-    }//END updateFieldState method.
 
     #endregion
 

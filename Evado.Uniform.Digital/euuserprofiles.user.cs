@@ -169,7 +169,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.Organisation_Name,
           this.Session.UserProfile.OrgId,
           this.Session.UserProfile.OrganisationName ), 80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       // 
@@ -180,7 +180,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.User_Profile_Identifier_Field_Label,
         this.Session.UserProfile.UserId,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       //
@@ -190,7 +190,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.User_Profile_Role_Label,
          EvStatics.enumValueToString ( this.Session.UserProfile.RoleId ),
         30 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
 
@@ -240,13 +240,13 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Prefix,
         EvLabels.UserProfile_Prefix_Field_Label,
         this.Session.UserProfile.Prefix, 10 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Given_Name,
         EvLabels.UserProfile_GivenName_Field_Label,
         this.Session.UserProfile.GivenName, 50 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -256,7 +256,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Family_Name,
         EvLabels.UserProfile_FamilyName_Field_Label,
         this.Session.UserProfile.FamilyName, 50 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -285,7 +285,7 @@ namespace Evado.UniForm.Clinical
           this.Session.UserProfile.AddressState,
           this.Session.UserProfile.AddressPostCode,
           this.Session.UserProfile.AddressCountry );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         this.LogDebug ( "AddresS:" + groupField.Value );
       }
@@ -296,7 +296,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
         EvLabels.UserProfile_Telephone_Field_Label,
         this.Session.UserProfile.Telephone );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer telephone number object
@@ -305,7 +305,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Mobile_Phone.ToString ( ),
         EvLabels.UserProfile_Mobilephone_Field_Label,
         this.Session.UserProfile.MobilePhone );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the customer fax number object
@@ -314,7 +314,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EvLabels.UserProfile_Email_Field_Label,
         this.Session.UserProfile.EmailAddress );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "getDataObject_UserDetailsGroup" );
 
@@ -337,17 +337,6 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       List<EvOption> optionList = new List<EvOption> ( );
-
-      //
-      // These roles to see project dashboards.
-      //
-      if ( this.Session.UserProfile.RoleId == EvRoleList.Patient_Doctor
-        || this.Session.UserProfile.RoleId == EvRoleList.Patient
-        || this.Session.UserProfile.RoleId == EvRoleList.Patient_Registration )
-      {
-        this.LogMethodEnd ( "getDataObject_DashboardGroup" );
-        return;
-      }
 
       // 
       // create the page pageMenuGroup

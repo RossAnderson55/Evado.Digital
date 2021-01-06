@@ -205,7 +205,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a form global unique identifier of a form field.
     /// </summary>
-    public Guid FormGuid { get; set; }
+    public Guid LayoutGuid { get; set; }
 
     /// <summary>
     /// This property contains a form field global unique identifier of a form field.
@@ -231,6 +231,11 @@ namespace Evado.Model.Digital
         this.Design.Order = value;
       }
     }
+
+    /// <summary>
+    /// This property contains a field identifier of a form field.
+    /// </summary>
+    public string LayoutId { get; set; }
 
     /// <summary>
     /// This property contains a field identifier of a form field.
@@ -269,22 +274,6 @@ namespace Evado.Model.Digital
         if ( this.isDataPoint == true )
         {
         }
-      }
-    }
-
-    private string _RecordId = String.Empty;
-    /// <summary>
-    /// This property contains a record identifier of a form field.
-    /// </summary>
-    public string RecordId
-    {
-      get
-      {
-        return this._RecordId;
-      }
-      set
-      {
-        this._RecordId = value;
       }
     }
 
@@ -399,9 +388,6 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
           case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
-          case Evado.Model.EvDataTypes.Special_Medication_Summary:
-          case Evado.Model.EvDataTypes.Special_Subject_Demographics:
-          case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
               this._Design.Mandatory = false;
               return true;
@@ -432,8 +418,6 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
           case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
-          case Evado.Model.EvDataTypes.Special_Medication_Summary:
-          case Evado.Model.EvDataTypes.Special_Subject_Demographics:
           case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
               this._Design.AiDataPoint = false;
@@ -577,22 +561,6 @@ namespace Evado.Model.Digital
       set
       {
         this._UpdatedBy = value;
-      }
-    }
-
-    private string _UpdatedByUserId = String.Empty;
-    /// <summary>
-    /// This property contains a user identifier who updates a form field.
-    /// </summary>
-    public string UpdatedByUserId
-    {
-      get
-      {
-        return this._UpdatedByUserId;
-      }
-      set
-      {
-        this._UpdatedByUserId = value;
       }
     }
     /// <summary>
@@ -832,7 +800,7 @@ namespace Evado.Model.Digital
 
         case FieldClassFieldNames.FormSection:
           {
-            this._Design.Section = Value;
+            this._Design.SectionNo = EvStatics.getInteger( Value );
             break;
           }
 
@@ -920,7 +888,7 @@ namespace Evado.Model.Digital
     /// 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getDataTypes ( EvFormRecordTypes FormType )
+    public static List<EvOption> getDataTypes ( EdRecordTypes FormType )
     {
       //
       // Initialize a return list and an option object.
@@ -928,49 +896,6 @@ namespace Evado.Model.Digital
       List<EvOption> list = new List<EvOption> ( );
 
       list.Add ( new EvOption ( EvDataTypes.Null.ToString ( ), String.Empty ) );
-
-      //
-      // Add data types for the eConsent form type
-      //
-      /*
-      if ( FormType == EvFormRecordTypes.Informed_Consent
-        || FormType == EvFormRecordTypes.Informed_Consent_1
-        || FormType == EvFormRecordTypes.Informed_Consent_2
-        || FormType == EvFormRecordTypes.Informed_Consent_3
-        || FormType == EvFormRecordTypes.Informed_Consent_4 )
-       */
-      if ( FormType == EvFormRecordTypes.Informed_Consent )
-      {
-        //list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Boolean ) );
-
-        list.Add ( EvStatics.Enumerations.getOption ( EvDataTypes.Yes_No ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Read_Only_Text ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Check_Box_List ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Radio_Button_List ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Quiz_Radio_Buttons ) );
-
-        list.Add ( new EvOption ( EvDataTypes.Special_Query_Checkbox, EvLabels.Special_Query_Checkbox_Field_Type_Label ) );
-
-        list.Add ( new EvOption ( EvDataTypes.Special_Query_YesNo, EvLabels.Special_Query_YesNo_Field_Type_Label ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Html_Link ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Streamed_Video ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.External_Image ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Subsitute_Data ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Signature ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.User_Endorsement ) );
-
-        return list;
-      }
 
       //
       // Add the data types for normal forms.
@@ -1020,14 +945,6 @@ namespace Evado.Model.Digital
       list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Matrix ) );
 
       list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Subsitute_Data ) );
-
-      if ( FormType == EvFormRecordTypes.Serious_Adverse_Event_Report
-        || FormType == EvFormRecordTypes.Adverse_Event_Report )
-      {
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Subject_Demographics ) );
-
-        list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Medication_Summary ) );
-      }
 
       list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Streamed_Video ) );
 

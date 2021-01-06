@@ -51,24 +51,9 @@ namespace Evado.UniForm.Clinical
     /// <returns>ApplicationService.ApplicationObjects objects.</returns>
     // ---------------------------------------------------------------------------------
     public static EuAdapterClasses convertRecordType (
-       Evado.Model.Digital.EvFormRecordTypes RecordType )
+       Evado.Model.Digital.EdRecordTypes RecordType )
     {
-      switch ( RecordType )
-      {
-        case Evado.Model.Digital.EvFormRecordTypes.Adverse_Event_Report:
-        case Evado.Model.Digital.EvFormRecordTypes.Serious_Adverse_Event_Report:
-        case Evado.Model.Digital.EvFormRecordTypes.Concomitant_Medication:
-        case Evado.Model.Digital.EvFormRecordTypes.Informed_Consent:
-        //case Evado.Model.Digital.EvFormRecordTypes.Informed_Consent_1:
-        //case Evado.Model.Digital.EvFormRecordTypes.Informed_Consent_2:
-        //case Evado.Model.Digital.EvFormRecordTypes.Informed_Consent_3:
-        //case Evado.Model.Digital.EvFormRecordTypes.Informed_Consent_4: 
-          {
-            return EuAdapterClasses.Common_Record;
-          }
-      }
-
-      return EuAdapterClasses.Scheduled_Record;
+      return EuAdapterClasses.Record;
     }
 
     // ===============================================================================
@@ -186,7 +171,7 @@ namespace Evado.UniForm.Clinical
       // 
       foreach (  Evado.Model.Digital.EdRecordField field in FormRecordFields )
       {
-        EuConversions._Status += "\r\nField: " + field.FieldId + ", Sectn: " + field.Design.Section;
+        EuConversions._Status += "\r\nField: " + field.FieldId + ", Sectn: " + field.Design.SectionNo;
 
         // 
         // IF the section is empty then there are no sections.
@@ -208,8 +193,7 @@ namespace Evado.UniForm.Clinical
           // 
           // generate page fields for the fields in the selected section.
           // 
-          if ( field.Design.Section == Section.No.ToString ( )
-            || field.Design.Section == Section.Title )
+          if ( field.Design.SectionNo == Section.No )
           {
             EuConversions._Status = " >> SECTION SELECTED";
             Evado.Model.UniForm.Field pageField = convertEvFormfield ( field );
@@ -249,9 +233,9 @@ namespace Evado.UniForm.Clinical
         Evado.Model.EvDataTypes.Null );
       pageField.Layout = Evado.Model.UniForm.FieldLayoutCodes.Left_Justified;
 
-      if ( FormField.Design.htmInstructions != String.Empty )
+      if ( FormField.Design.Instructions != String.Empty )
       {
-        pageField.Description =  FormField.Design.htmInstructions ;
+        pageField.Description =  FormField.Design.Instructions ;
       }
 
       switch ( FormField.TypeId )
@@ -292,11 +276,11 @@ namespace Evado.UniForm.Clinical
 
             pageField.AddParameter ( 
               Evado.Model.UniForm.FieldParameterList.Min_Value, 
-              FormField.ValidationRules.ValidationLowerLimit.ToString ( ) );
+              FormField.Design.ValidationLowerLimit.ToString ( ) );
 
             pageField.AddParameter ( 
               Evado.Model.UniForm.FieldParameterList.Max_Value, 
-              FormField.ValidationRules.ValidationUpperLimit.ToString ( ) );
+              FormField.Design.ValidationUpperLimit.ToString ( ) );
 
             pageField.AddParameter ( 
               Evado.Model.UniForm.FieldParameterList.Width, "10" );
@@ -386,9 +370,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Initialise the field object.
       // 
-      if ( FormField.Design.htmInstructions != String.Empty )
+      if ( FormField.Design.Instructions != String.Empty )
       {
-        groupField.Description =  FormField.Design.htmInstructions ;
+        groupField.Description =  FormField.Design.Instructions ;
       }
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, "100" );
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited_Access;
@@ -418,7 +402,7 @@ namespace Evado.UniForm.Clinical
             || groupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList )
           {
             groupField.Table.Header [ column ].OptionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
-              FormField.Table.Header [ column ].OptionsOrUnit, false );
+              FormField.Table.Header [ column ].OptionsOrUnit );
           }
 
         }//END Column interation loop

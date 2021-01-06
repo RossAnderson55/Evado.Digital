@@ -136,10 +136,6 @@ namespace Evado.UniForm.Clinical
         {
           this.Session.ReportTemplateList = new List<EvReport> ( );
         }
-        if ( this.Session.ApplicationList == null )
-        {
-          this.Session.ApplicationList = new List<EvOption> ( );
-        }
 
         // 
         // Set the page type to control the DB query type.
@@ -244,10 +240,9 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasDataManagerAccess == false
-          && this.Session.UserProfile.hasMultiSiteAccess == false
+        if ( this.Session.UserProfile.hasMultiSiteAccess == false
           && this.Session.UserProfile.hasRecordAccess == false
-          && this.Session.UserProfile.hasTrialManagementAccess == false )
+          && this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
            this.ClassNameSpace + "getReports_ListObject",
@@ -408,30 +403,14 @@ namespace Evado.UniForm.Clinical
       //
       if ( this.Session.ApplicationList == null )
       {
-        this.Session.ApplicationList = new List<EvOption> ( );
+        this.Session.ApplicationList = new List<EdApplication> ( );
       }
       if ( this.Session.ApplicationList.Count == 0 )
       {
         Evado.Bll.Clinical.EdApplications bllTrials = new Bll.Clinical.EdApplications ( this.ClassParameters );
 
-        this.Session.ApplicationList = bllTrials.getList ( Model.Digital.EdApplication.ApplicationStates.Null,  false );
-      }
-
-      //
-      // If the list is empty add the global project
-      //
-      //this.SessionObjects.ReportProjectList.Add ( new EvOption ( EvcStatics.CONST_GLOBAL_PROJECT, "Global" ) );
-      
-      //
-      // Set the first selection to global 
-      //
-      if ( this.Session.ApplicationList.Count > 0 )
-      {
-        if ( this.Session.ApplicationList [ 0 ].Value == EvcStatics.CONST_GLOBAL_PROJECT
-          || this.Session.ApplicationList [ 0 ].Value == String.Empty )
-        {
-          this.Session.ApplicationList.RemoveAt( 0 );
-        }
+        this.Session.ApplicationList = bllTrials.GetApplicationList (
+          Model.Digital.EdApplication.ApplicationStates.Null );
       }
 
       // 
@@ -450,9 +429,9 @@ namespace Evado.UniForm.Clinical
         EuReportTemplates.CONST_REPORT_PROJECT_ID,
         EvLabels.Label_Project_Id,
         this.Session.ReportStudyId,
-        this.Session.ApplicationList );
+        this.Session.ReportApplicationList );
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
     }//END getReports_List_Selection_Group method
@@ -564,9 +543,8 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasDataManagerAccess == false
-        && this.Session.UserProfile.hasMultiSiteAccess == false
-        && this.Session.UserProfile.hasTrialManagementAccess == false )
+      if (  this.Session.UserProfile.hasMultiSiteAccess == false
+        && this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
          this.ClassNameSpace + "getObject",
@@ -733,7 +711,7 @@ namespace Evado.UniForm.Clinical
           parametersChanged = true;
         }
 
-        if ( query.SelectionSource == EvReport.SelectionListTypes.Current_Trial )
+        if ( query.SelectionSource == EvReport.SelectionListTypes.Current_Application )
         {
           if ( query.Value != this.Session.Application.ApplicationId )
           {

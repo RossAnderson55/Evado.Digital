@@ -127,7 +127,7 @@
     <Compile Include="EdRecordObjectStates.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EvFormRecordTypes.cs" />
+    <Compile Include="EdRecordTypes.cs" />
     <Compile Include="EvStaticContentTemplates.cs" />
     <Compile Include="EvReportSource.cs" />
     <Compile Include="EvModuleCodes.cs" />

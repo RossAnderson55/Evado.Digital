@@ -471,16 +471,16 @@ namespace Evado.Bll.Clinical
             break;
           }
 
-        case EvReport.SelectionListTypes.Form_Id:
+        case EvReport.SelectionListTypes.LayoutId:
           {
             this.LogValue ( "Form source selected." );
             EvForms formsBll = new EvForms ( this.ClassParameter );
-            returnList = formsBll.getList ( Project.ApplicationId, EvFormRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
+            returnList = formsBll.getList ( Project.ApplicationId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
             break;
           }
 
         //AFC 1 July 2010: Create a filter only with the current trial
-        case EvReport.SelectionListTypes.Current_Trial:
+        case EvReport.SelectionListTypes.Current_Application:
           {
             this.LogValue ( "Current Project." );
             returnList = new List<EvOption> ( );

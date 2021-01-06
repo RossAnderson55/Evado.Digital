@@ -393,7 +393,7 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false
+      if ( this.Session.UserProfile.hasManagementAccess == false
         && this.Session.UserProfile.hasRecordAccess == false )
       {
         this.LogIllegalAccess (
@@ -517,7 +517,7 @@ namespace Evado.UniForm.Clinical
       // Set the user edit access to the objects.
       //
       if ( this.Session.UserProfile.hasAdministrationAccess == true
-        || this.Session.UserProfile.hasConfigrationEditAccess == true )
+        || this.Session.UserProfile.hasManagementEditAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -655,7 +655,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         this.Session.AdminOrganisation.OrgId, 10 );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -679,7 +679,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminOrganisation.OrgType ),
         typeList );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.Mandatory = true;
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true )
@@ -699,7 +699,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Organisation_Name_Field_Label,
         this.Session.AdminOrganisation.Name,
         50 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.Mandatory = true;
 
       pageField.setBackgroundColor (
@@ -713,7 +713,7 @@ namespace Evado.UniForm.Clinical
         EvOrganisation.OrganisationFieldNames.Address,
         EvLabels.Organisation_Address_Field_Label,
         this.Session.AdminOrganisation.Address );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the organisation telephone number object
@@ -722,7 +722,7 @@ namespace Evado.UniForm.Clinical
         EvOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
         EvLabels.Organisation_Telephone_Field_Label,
         this.Session.AdminOrganisation.Telephone );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -731,7 +731,7 @@ namespace Evado.UniForm.Clinical
         EvOrganisation.OrganisationFieldNames.Fax_Phone.ToString ( ),
         EvLabels.Organisation_Fax_Number_Field_Label,
         this.Session.AdminOrganisation.FaxPhone );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -740,7 +740,7 @@ namespace Evado.UniForm.Clinical
         EvOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
         EvLabels.Organisation_Email_Field_Label,
         this.Session.AdminOrganisation.EmailAddress );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the organisation current object
@@ -749,7 +749,7 @@ namespace Evado.UniForm.Clinical
         EuOrganisations.CONST_CURRENT_FIELD_ID,
         EvLabels.Organisation_Current_Field_Label,
         this.Session.AdminOrganisation.Current );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "getDataObject_DetailsGroup" );
 
@@ -843,7 +843,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false
+        if ( this.Session.UserProfile.hasManagementAccess == false
           && this.Session.UserProfile.hasRecordAccess == false )
         {
           this.LogIllegalAccess (

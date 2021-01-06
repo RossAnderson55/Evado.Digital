@@ -245,20 +245,20 @@ namespace Evado.UniForm.Clinical
       set { _ExportParameters = value; }
     }
 
-    List<Evado.Model.Digital.EdApplication> _TrialList = new List<Evado.Model.Digital.EdApplication> ( );
+    List<Evado.Model.Digital.EdApplication> _ApplicationList = new List<Evado.Model.Digital.EdApplication> ( );
     /// <summary>
     /// This property contains the list of trials as option objects.
     /// </summary>
-    public List<Evado.Model.Digital.EdApplication> TrialList
+    public List<Evado.Model.Digital.EdApplication> ApplicationList
     {
-      get { return this._TrialList; }
-      set { this._TrialList = value; }
+      get { return this._ApplicationList; }
+      set { this._ApplicationList = value; }
     }
 
     /// <summary>
     /// This property contains the list of studies as option objects.
     /// </summary>
-    public List<EvOption> TrialSelectionList
+    public List<EvOption> ApplicationSelectionList
     {
       get
       {
@@ -269,7 +269,7 @@ namespace Evado.UniForm.Clinical
         optionList.Add (
             new Evado.Model.EvOption ( "Null", String.Empty ) );
 
-        if ( this.TrialList == null )
+        if ( this.ApplicationList == null )
         {
           return optionList;
         }
@@ -277,10 +277,10 @@ namespace Evado.UniForm.Clinical
         //
         // Iterate through the study list generate the selection list.
         //
-        foreach ( Model.Digital.EdApplication study in this.TrialList )
+        foreach ( Model.Digital.EdApplication app in this.ApplicationList )
         {
-          optionList.Add ( new EvOption ( study.ApplicationId,
-            string.Format ( "{0} - {1}", study.ApplicationId, study.Title ) ) );
+          optionList.Add ( new EvOption ( app.ApplicationId,
+            string.Format ( "{0} - {1}", app.ApplicationId, app.Title ) ) );
         }
 
         return optionList;
@@ -326,7 +326,7 @@ namespace Evado.UniForm.Clinical
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Study properties
+    #region Application properties
 
     Evado.Model.Digital.EdApplication _Trial = new Evado.Model.Digital.EdApplication ( );
     /// <summary>
@@ -544,6 +544,37 @@ namespace Evado.UniForm.Clinical
     public List<EvReport> ReportTemplateList { get; set; }
 
     /// <summary>
+    /// This property contains the list of studies as option objects.
+    /// </summary>
+    public List<EvOption> ReportApplicationList
+    {
+      get
+      {
+        //
+        // Initialise the properties objects and variables.
+        //
+        List<EvOption> optionList = new List<EvOption> ( );
+        optionList.Add (
+            new Evado.Model.EvOption ( EvcStatics.CONST_GLOBAL_PROJECT, "Global" ) );
+
+        if ( this.ApplicationList == null )
+        {
+          return optionList;
+        }
+
+        //
+        // Iterate through the study list generate the selection list.
+        //
+        foreach ( Model.Digital.EdApplication app in this.ApplicationList )
+        {
+          optionList.Add ( new EvOption ( app.ApplicationId,
+            string.Format ( "{0} - {1}", app.ApplicationId, app.Title ) ) );
+        }
+
+        return optionList;
+      }
+    }
+    /// <summary>
     /// This property contains the current report template object.
     /// </summary>
     public EvReport ReportTemplate { get; set; }
@@ -552,12 +583,6 @@ namespace Evado.UniForm.Clinical
     /// This property contains the current report object.
     /// </summary>
     public EvReport Report { get; set; }
-
-    /// <summary>
-    /// This property contains a list of report projects.
-    /// </summary>
-    public List<EvOption> ApplicationList { get; set; }
-
 
     private String _ReportStudyId = "GLOBAL";
     /// <summary>
@@ -641,12 +666,11 @@ namespace Evado.UniForm.Clinical
 
     public String RecordSelectionState = String.Empty;
 
-    public EvFormRecordTypes FormRecordType { get; set; }
-    public EvFormRecordTypes CommonRecordType { get; set; }
+    public EdRecordTypes FormRecordType { get; set; }
 
     public List<EdRecord> AdminRecordList { get; set; }
-    public List<EdRecord> ProjectRecordList { get; set; }
-    public List<EdRecord> CommonRecordList { get; set; }
+
+    public List<EdRecord> RecordList { get; set; }
 
     String _FormRecords_Selected_FormId = String.Empty;
     /// <summary>
@@ -688,11 +712,11 @@ namespace Evado.UniForm.Clinical
       set { _FormRecords_IncludeFreeTextData = value; }
     }
 
-    EvFormRecordTypes _FormType = EvFormRecordTypes.Null;
+    EdRecordTypes _FormType = EdRecordTypes.Null;
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public EvFormRecordTypes FormType
+    public EdRecordTypes FormType
     {
       get { return _FormType; }
       set { _FormType = value; }
@@ -722,14 +746,14 @@ namespace Evado.UniForm.Clinical
     //-----------------------------------------------------------------------------------
     public void setFormType ( String FormType )
     {
-      EvFormRecordTypes recordType = EvFormRecordTypes.Null;
+      EdRecordTypes recordType = EdRecordTypes.Null;
 
-      if ( EvStatics.Enumerations.tryParseEnumValue<EvFormRecordTypes> ( FormType, out recordType ) == true )
+      if ( EvStatics.Enumerations.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
       {
         this.FormType = recordType;
       }
 
-      this.FormType = EvFormRecordTypes.Null;
+      this.FormType = EdRecordTypes.Null;
     }
 
     EdRecordObjectStates _FormState = EdRecordObjectStates.Null;
@@ -797,11 +821,11 @@ namespace Evado.UniForm.Clinical
       set { _CommonFormField = value; }
     }
 
-    EvFormRecordTypes _CommonFormType = EvFormRecordTypes.Null;
+    EdRecordTypes _CommonFormType = EdRecordTypes.Null;
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public EvFormRecordTypes CommonFormType
+    public EdRecordTypes CommonFormType
     {
       get { return _CommonFormType; }
       set { _CommonFormType = value; }
@@ -815,14 +839,14 @@ namespace Evado.UniForm.Clinical
     //-----------------------------------------------------------------------------------
     public void setCommonFormType ( String FormType )
     {
-      EvFormRecordTypes recordType = EvFormRecordTypes.Null;
+      EdRecordTypes recordType = EdRecordTypes.Null;
 
-      if ( EvStatics.Enumerations.tryParseEnumValue<EvFormRecordTypes> ( FormType, out recordType ) == true )
+      if ( EvStatics.Enumerations.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
       {
         this._CommonFormType = recordType;
       }
 
-      this._CommonFormType = EvFormRecordTypes.Null;
+      this._CommonFormType = EdRecordTypes.Null;
     }
 
     EdRecordObjectStates _CommonFormState = EdRecordObjectStates.Null;
@@ -1196,7 +1220,7 @@ namespace Evado.UniForm.Clinical
     private void resetCustomerObjects ( )
     {
       this.Application = new Evado.Model.Digital.EdApplication ( );
-      this.TrialList = new List<Model.Digital.EdApplication> ( );
+      this.ApplicationList = new List<Model.Digital.EdApplication> ( );
       this.OrganisationList = new List<EvOrganisation> ( );
     }
 

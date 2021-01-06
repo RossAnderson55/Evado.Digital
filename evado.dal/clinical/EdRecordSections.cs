@@ -69,28 +69,24 @@ namespace Evado.Dal.Clinical
      * Defines the classes constansts and global variables
      * 
      * *********************************************************************************/
-    /// 
-    /// Define the log source file
-    /// 
-    private static string _eventLogSource = ConfigurationManager.AppSettings [ "EventLogSource" ];
 
     /// <summary>
     /// This constant defines a sql query string for selecting all items from form field view. 
     /// </summary>
-    private const string _sqlQueryView = "Select * FROM EV_FORM_SECTIONS ";
+    private const string _sqlQueryView = "Select * FROM ED_ENTITY_LAYOUT_SECTIONS ";
 
-    private const string DB_FORM_SECTION_GUID = "TCS_Guid";
-    private const string DB_FORM_GUID = "TC_Guid";
-    private const string DB_NUMBER = "TCS_NUMBER";
-    private const string DB_ORDER = "TCS_ORDER";
-    private const string DB_NAME = "TCS_NAME";
-    private const string DB_INSTRUCTIONS = "TCS_INSTRUCTIONS";
-    private const string DB_FIELD_NAME = "TCS_FIELD_NAME";
-    private const string DB_FIELD_VALUE = "TCS_FIELD_VALUE";
-    private const string DB_ON_MATCH_VISIBLE = "TCS_ON_MATCH_VISIBLE";
-    private const string DB_VISIBLE = "TCS_VISIBLE";
-    private const string DB_DEFAULT_DISPLAY_ROLES = "TCS_DEFAULT_DISPLAY_ROLES";
-    private const string DB_DEFAULT_EDIT_ROLES = "TCS_DEFAULT_EDIT_ROLES";
+    private const string DB_LAYOUT_SECTION_GUID = "EDELS_Guid";
+    private const string DB_LAYOUT_GUID = "EDEL_Guid";
+    private const string DB_NUMBER = "EDELS_NUMBER";
+    private const string DB_ORDER = "EDELS_ORDER";
+    private const string DB_NAME = "EDELS_NAME";
+    private const string DB_INSTRUCTIONS = "EDELS_INSTRUCTIONS";
+    private const string DB_FIELD_NAME = "EDELS_FIELD_NAME";
+    private const string DB_FIELD_VALUE = "EDELS_FIELD_VALUE";
+    private const string DB_ON_MATCH_VISIBLE = "EDELS_ON_MATCH_VISIBLE";
+    private const string DB_VISIBLE = "EDELS_VISIBLE";
+    private const string DB_DEFAULT_DISPLAY_ROLES = "EDELS_DEFAULT_DISPLAY_ROLES";
+    private const string DB_DEFAULT_EDIT_ROLES = "EDELS_DEFAULT_EDIT_ROLES";
 
 
     //
@@ -102,8 +98,8 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This constant defines the parameter for form global unique identifier of the formfield object
     /// </summary>
-    private const string PARM_FORM_GUID = "@FormGuid";
-    private const string PARM_FORM_SECTION_GUID = "@Guid";
+    private const string PARM_FORM_GUID = "@LAYOUT_GUID";
+    private const string PARM_FORM_SECTION_GUID = "@GUID";
     private const string PARM_NUMBER = "@NUMBER";
     private const string PARM_ORDER = "@ORDER";
     private const string PARM_NAME = "@NAME";
@@ -156,19 +152,18 @@ namespace Evado.Dal.Clinical
       //
       // Update formfield object with the compatible data row items. 
       //
-      formSection.Guid = EvSqlMethods.getGuid ( Row, DB_FORM_SECTION_GUID );
-      formSection.FormGuid = EvSqlMethods.getGuid ( Row, DB_FORM_GUID );
-      formSection.No = EvSqlMethods.getInteger ( Row, DB_NUMBER );
-      formSection.Order = EvSqlMethods.getInteger ( Row, DB_ORDER );
-      formSection.FieldId = EvSqlMethods.getString ( Row, DB_FIELD_NAME );
-      formSection.Instructions = EvSqlMethods.getString ( Row, DB_INSTRUCTIONS );
-      formSection.FieldValue = EvSqlMethods.getString ( Row, DB_FIELD_VALUE );
-      formSection.OnMatchVisible = EvSqlMethods.getBool ( Row, DB_ON_MATCH_VISIBLE );
-      formSection.OnOpenVisible = EvSqlMethods.getBool ( Row, DB_VISIBLE );
-      formSection.UserDisplayRoles = EvSqlMethods.getString ( Row, DB_DEFAULT_DISPLAY_ROLES );
-      formSection.UserEditRoles = EvSqlMethods.getString ( Row, DB_DEFAULT_EDIT_ROLES );
-      formSection.Title = EvSqlMethods.getString ( Row, DB_NAME );
-      //  formSection.DefaultEditRoles = EvSqlMethods.getString ( Row, DB_DEFAULT_EDIT_ROLES );
+      formSection.Guid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_SECTION_GUID );
+      formSection.FormGuid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_GUID );
+      formSection.No = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_NUMBER );
+      formSection.Order = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_ORDER );
+      formSection.FieldId = EvSqlMethods.getString ( Row, EdRecordSections.DB_FIELD_NAME );
+      formSection.Instructions = EvSqlMethods.getString ( Row, EdRecordSections.DB_INSTRUCTIONS );
+      formSection.FieldValue = EvSqlMethods.getString ( Row, EdRecordSections.DB_FIELD_VALUE );
+      formSection.OnMatchVisible = EvSqlMethods.getBool ( Row, EdRecordSections.DB_ON_MATCH_VISIBLE );
+      formSection.OnOpenVisible = EvSqlMethods.getBool ( Row, EdRecordSections.DB_VISIBLE );
+      formSection.UserDisplayRoles = EvSqlMethods.getString ( Row, EdRecordSections.DB_DEFAULT_DISPLAY_ROLES );
+      formSection.UserEditRoles = EvSqlMethods.getString ( Row, EdRecordSections.DB_DEFAULT_EDIT_ROLES );
+      formSection.Title = EvSqlMethods.getString ( Row, EdRecordSections.DB_NAME );
 
       return formSection;
 
@@ -219,11 +214,11 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query string.
       // 
-      _sqlQueryString = _sqlQueryView + " WHERE ( " + DB_FORM_GUID + "  = " + PARM_FORM_GUID + ") "
+      _sqlQueryString = _sqlQueryView + " WHERE ( " + DB_LAYOUT_GUID + "  = " + PARM_FORM_GUID + ") "
         + "ORDER BY " + DB_ORDER + "; ";
 
 
-       this.LogDebug ( _sqlQueryString );
+      this.LogDebug ( _sqlQueryString );
 
       // 
       // Scroll through the results
@@ -247,7 +242,7 @@ namespace Evado.Dal.Clinical
           sectionList.Add ( section );
         }
       }
-       this.LogDebug ( "Count: " + sectionList.Count.ToString ( ) );
+      this.LogDebug ( "Count: " + sectionList.Count.ToString ( ) );
 
       // 
       // Pass back the result arrray.
@@ -277,7 +272,7 @@ namespace Evado.Dal.Clinical
     public EvEventCodes UpdateItem ( EdRecord Form )
     {
       this.LogMethod ( "updateItem method. " );
-       this.LogDebug ( "Section Count: " + Form.Design.FormSections.Count );
+      this.LogDebug ( "Section Count: " + Form.Design.FormSections.Count );
 
       //
       // Initialize the debug status and the local variables
@@ -289,7 +284,7 @@ namespace Evado.Dal.Clinical
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
-      
+
       //
       // if sections doe not exist exit.
       //
@@ -301,8 +296,8 @@ namespace Evado.Dal.Clinical
       //
       // Delete the sections
       //
-      sbSQL_AddQuery.AppendLine ( "DELETE FROM EV_FORM_SECTIONS "
-      + "WHERE TC_GUID= '" + Form.Guid + "';  \r\n\r\n" );
+      sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_ENTITY_LAYOUT_SECTIONS "
+      + "WHERE " + EdRecordSections.DB_LAYOUT_GUID + "= '" + Form.Guid + "';  \r\n\r\n" );
 
       for ( int count = 0; count < Form.Design.FormSections.Count; count++ )
       {
@@ -373,8 +368,8 @@ namespace Evado.Dal.Clinical
         // Create the add query .
         //
         sbSQL_AddQuery.AppendLine ( " INSERT INTO EV_FORM_SECTIONS "
-        + "(" + DB_FORM_SECTION_GUID
-        + ", " + DB_FORM_GUID
+        + "(" + DB_LAYOUT_SECTION_GUID
+        + ", " + DB_LAYOUT_GUID
         + ", " + DB_NUMBER
         + ", " + DB_ORDER
         + ", " + DB_NAME
@@ -415,14 +410,14 @@ namespace Evado.Dal.Clinical
       // 
       // Extract the parameters
       //
-       this.LogDebug ( "Parameters:" );
+      this.LogDebug ( "Parameters:" );
       foreach ( SqlParameter prm in parms )
       {
-         this.LogDebug ( "Typ: " + prm.DbType
-           + ", Parm: " + prm.ParameterName
-           + ", Val: " + prm.Value );
+        this.LogDebug ( "Typ: " + prm.DbType
+          + ", Parm: " + prm.ParameterName
+          + ", Val: " + prm.Value );
       }
-       this.LogDebug ( sbSQL_AddQuery.ToString ( ) );
+      this.LogDebug ( sbSQL_AddQuery.ToString ( ) );
 
       //
       // Execute the update command.
@@ -436,7 +431,7 @@ namespace Evado.Dal.Clinical
       }
       catch ( Exception Ex )
       {
-         this.LogDebug ( Evado.Model.EvStatics.getException ( Ex ) );
+        this.LogDebug ( Evado.Model.EvStatics.getException ( Ex ) );
       }
 
       return EvEventCodes.Ok;

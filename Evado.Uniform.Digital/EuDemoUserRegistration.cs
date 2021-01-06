@@ -237,7 +237,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
-        this.Session.AdminUserProfile.RoleId = EvRoleList.Site_User;
+        this.Session.AdminUserProfile.RoleId = EvRoleList.Application_User;
 
         this.LogDebug ( "AdminUserProfile.UserId: {0} ", this.Session.AdminUserProfile.UserId );
         this.LogDebug ( "AdminUserProfile.ExpiryDate: {0} ", this.Session.AdminUserProfile.ExpiryDate );
@@ -516,7 +516,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
 
@@ -528,7 +528,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Dem_Registration_CommonName_Field_Label,
         this.Session.AdminUserProfile.CommonName,
         80 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
 
       // 
@@ -538,7 +538,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
         EvLabels.UserProfile_Telephone_Field_Label,
         this.Session.AdminUserProfile.Telephone );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
 
       // 
@@ -548,7 +548,7 @@ namespace Evado.UniForm.Clinical
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EvLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,

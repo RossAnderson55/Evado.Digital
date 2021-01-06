@@ -243,7 +243,7 @@ namespace Evado.Dal.Clinical
 
       cmdParms [ 15 ].Value = ApplicationSettings.RegulatoryReports;
       cmdParms [ 16 ].Value = false;
-      cmdParms [ 17 ].Value = ApplicationSettings.DepersonalisedAccess;
+      cmdParms [ 17 ].Value = true;
       cmdParms [ 18 ].Value = ApplicationSettings.LoadedModules;
       cmdParms [ 19 ].Value = ApplicationSettings.MaximumSelectionListLength;
 
@@ -324,8 +324,6 @@ namespace Evado.Dal.Clinical
 
       applicationSettings.LoadedModules = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_LOADED_MODULES ) ;
 
-      applicationSettings.LoadedModules.Replace ( "Patient_Consent", EvModuleCodes.Informed_Consent.ToString ( ) );
-
       if ( applicationSettings.DemoAccountExpiryDays == 0 )
       {
         applicationSettings.DemoAccountExpiryDays = 28;
@@ -366,7 +364,7 @@ namespace Evado.Dal.Clinical
       {
         ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
           "Clinical_Module",
-          Evado.Model.Digital.EvModuleCodes.Trial_Module.ToString ( ) );
+          Evado.Model.Digital.EvModuleCodes.Design_Module.ToString ( ) );
       }
 
       if ( ApplicationProfile.LoadedModules.Contains ( "Management_Module" ) == false
@@ -375,14 +373,6 @@ namespace Evado.Dal.Clinical
         ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
           "Management",
           Evado.Model.Digital.EvModuleCodes.Management_Module.ToString ( ) );
-      }
-
-      if ( ApplicationProfile.LoadedModules.Contains ( "Registry_Module" ) == false
-        && ApplicationProfile.LoadedModules.Contains ( "Registry" ) == true )
-      {
-        ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
-          "Registry",
-          Evado.Model.Digital.EvModuleCodes.Registry_Module.ToString ( ) );
       }
 
       ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace ( ";;", ";" );
@@ -473,23 +463,6 @@ namespace Evado.Dal.Clinical
       SettingObject.Parameters = this.LoadObjectParameters ( SettingObject.Guid );  
 
       this.LogDebug ( "Parameter list count: " + SettingObject.Parameters.Count );
-      //
-      // Ensure that the clinical module is when registry of patient modules are loaded 
-      //
-      if ( SettingObject.hasModule ( EvModuleCodes.Registry_Module ) == true )
-      {
-        SettingObject.addModule ( EvModuleCodes.Clinical_Module );
-      }
-
-      //
-      // If the PRO module selected ensure that the patient and clinical modules are also loaded.
-      //
-      if ( SettingObject.hasModule ( EvModuleCodes.Patient_Recorded_Outcomes ) == true )
-      {
-        SettingObject.addModule ( EvModuleCodes.Patient_Module );
-
-        SettingObject.addModule ( EvModuleCodes.Clinical_Module );
-      }
 
       //
       // Return an object containing an EvSiteProfile data object.
@@ -555,7 +528,7 @@ namespace Evado.Dal.Clinical
         + " '" + ApplicatonSettings.LoadedModules + "', \r\n"
         + " 100, \r\n"
         + " '" + ApplicatonSettings.OverRideConfig + "', \r\n"
-        + " '" + ApplicatonSettings.DepersonalisedAccess + "', \r\n"
+        + " '" + true + "', \r\n"
         + " 'cpanel1.cloudplus.com', \r\n"
         + " 587, \r\n"
         + " 'noreply@evado.com', \r\n"

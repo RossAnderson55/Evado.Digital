@@ -438,7 +438,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.UserAdmin_Email_Title_Field_Label,
         Title );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home page title
@@ -447,7 +447,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.UserAdmin_Email_Body_Field_Label,
         Body );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END create_Display_Group method
 
@@ -498,7 +498,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Title,
         80 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home page title
@@ -507,7 +507,7 @@ namespace Evado.UniForm.Clinical
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Body,
         EvLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Body, 80, 30 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = EvLabels.UserAdmin_Email_Body_Description_Field_Label ;
 
@@ -559,7 +559,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Title,
         80 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home page title
@@ -568,7 +568,7 @@ namespace Evado.UniForm.Clinical
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Body,
         EvLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Body, 80, 20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
         EvLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
@@ -621,7 +621,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Title,
         80 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home page title
@@ -630,7 +630,7 @@ namespace Evado.UniForm.Clinical
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Body,
         EvLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Body, 80, 40 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
         EvLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
@@ -684,7 +684,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Title,
         80 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the home page title
@@ -693,7 +693,7 @@ namespace Evado.UniForm.Clinical
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Body,
         EvLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Body, 80, 20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
         EvLabels.UserAdmin_PasswordChange_Body_Description_Field_Label ;
@@ -737,7 +737,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Demo_Registration_Instructions_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationInstuctions,
         80, 20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create instructions field
@@ -747,7 +747,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Demo_Registration_Confirmation_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationConfirmation,
         80, 20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create instructions field
@@ -757,7 +757,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.UserAdmin_Demo_Registration_Error_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationError,
         80, 20 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END create_PasswordChangeEmail_Group Method
 
@@ -860,7 +860,7 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false
+        if ( this.Session.UserProfile.hasManagementAccess == false
           && this.Session.UserProfile.hasRecordAccess == false )
         {
           this.LogIllegalAccess (

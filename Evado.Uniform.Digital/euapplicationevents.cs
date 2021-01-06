@@ -362,7 +362,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ApplicationEvent_Event_Id_Selection_Field_Label,
         this.Session.EventId.ToString ( ),
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -379,7 +379,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ApplicationEvent_Type_Selection_Field_Label,
         this.Session.EventType,
         optionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -391,7 +391,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.ApplicationEvent_UserName_Selection_Field_Label,
         this.Session.EventUserName,
         this.Session.EventUserSelectionList );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -404,7 +404,7 @@ namespace Evado.UniForm.Clinical
         this.Session.EventStartDate ,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -417,7 +417,7 @@ namespace Evado.UniForm.Clinical
         this.Session.EventFinishDate,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -528,7 +528,7 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false
+      if ( this.Session.UserProfile.hasManagementAccess == false
         && this.Session.UserProfile.hasRecordAccess == false )
       {
         this.LogIllegalAccess (
@@ -647,7 +647,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.ApplicationEvent_Date_Time_Field_Label,
         this._ApplicationEvent.DateTime.ToString ( "dd MMM yyyy HH:mm:ss" ) );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the event id object
@@ -668,7 +668,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.ApplicationEvent_Event_Id_Field_Label,
         content );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the type id object
@@ -677,7 +677,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.ApplicationEvent_Type_Field_Label,
          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this._ApplicationEvent.Type ) );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the Category id object
@@ -686,7 +686,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.ApplicationEvent_Category_Field_Label,
         this._ApplicationEvent.Category );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the description object
@@ -697,7 +697,7 @@ namespace Evado.UniForm.Clinical
         this._ApplicationEvent.Description,
         80,
         40 );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the user object
@@ -706,7 +706,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.ApplicationEvent_UserName_Field_Label,
         this._ApplicationEvent.UserName );
-      pageField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END Method
 

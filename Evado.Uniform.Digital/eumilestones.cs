@@ -351,7 +351,7 @@ namespace Evado.UniForm.Clinical
       // 
       // If the user does not have monitor or ResultData manager roles exit the page.
       // 
-      if ( this.Session.UserProfile.hasTrialManagementAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
          this.ClassNameSpace + "getObject",
@@ -504,7 +504,7 @@ namespace Evado.UniForm.Clinical
       //
       // If the user has edit access enable the page for the user.
       //
-      if ( this.Session.UserProfile.hasConfigrationEditAccess == true
+      if ( this.Session.UserProfile.hasManagementEditAccess == true
         && ( this.Session.Schedule.State == EvSchedule.ScheduleStates.Draft
           || this.Session.Schedule.State == EvSchedule.ScheduleStates.Reviewed ) )
       {
@@ -711,7 +711,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Schedule_Title_Field_Label,
         this.Session.Schedule.ScheduleId + EvLabels.Space_Hypen
         + this.Session.Schedule.Title );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the trial object
@@ -722,7 +722,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Application.ApplicationId
         + EvLabels.Space_Hypen
         + this.Session.Application.Title );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the activity id object
@@ -732,7 +732,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Milestone_Page_MilestoneId_Field_Label,
         this.Session.Milestone.MilestoneId,
         10 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
 
       if ( isInitialVersion == false )
@@ -748,7 +748,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Milestone.Title,
         50 );
       groupField.Mandatory = true;
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the activity desription object
@@ -759,7 +759,7 @@ namespace Evado.UniForm.Clinical
         this.Session.Milestone.Description,
         50,
         4 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Define the milestone order field.
@@ -768,7 +768,7 @@ namespace Evado.UniForm.Clinical
         EvMilestone.MilestoneClassFieldNames.Order.ToString ( ),
         EvLabels.Milestone_Page_Order_Field_Label,
         this.Session.Milestone.Order, 0, 200 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the activity title object
@@ -784,7 +784,7 @@ namespace Evado.UniForm.Clinical
           String.Empty,
           EvLabels.Milestone_Initial_Version_Field_Label,
           this.Session.Milestone.Data.InitialScheduleVersion.ToString ( ) );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       //
@@ -802,7 +802,7 @@ namespace Evado.UniForm.Clinical
         optionList );
 
       groupField.Mandatory = true;
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       if ( isInitialVersion == false )
       {
@@ -880,7 +880,7 @@ namespace Evado.UniForm.Clinical
         EvMilestone.MilestoneClassFieldNames.Consent_Validation.ToString ( ),
         EvLabels.Milestone_Page_Consent_Validation_Field_Label,
         this.Session.Milestone.MilestoneLaterThanConsentDate );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create inter visit period field.
@@ -934,7 +934,7 @@ namespace Evado.UniForm.Clinical
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Max_Alert, maxPeriodValue );
       groupField.Description =  stDescription ;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Unit, stUnit );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create visit date range field.
@@ -944,7 +944,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.MIlestone_Page_Range_In_Days_Field_Label,
         this.Session.Milestone.MilestoneRange,
         0, maxRangeValue );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField.Description =  stDescription ;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Unit, stUnit );
@@ -958,7 +958,7 @@ namespace Evado.UniForm.Clinical
         EvLabels.Milestone_Page_Automatic_Scheduling_Field_Label,
         EvLabels.Milestone_Page_Automatic_Scheduling_Description,
         this.Session.Milestone.EnableAutomaticScheduling );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create no of repeat visits if a repeating milestone.
@@ -974,7 +974,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.Milestone_Repeat_No_Times_Field_Description,
           this.Session.Milestone.RepeatNoTimes,
           0, 99 );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       this.LogMethodEnd ( "getClientData_SchedulingGroup" );
@@ -1038,7 +1038,7 @@ namespace Evado.UniForm.Clinical
         groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
 
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the optional activity selection list if the milestone is a clinical or implant visit. 
@@ -1062,7 +1062,7 @@ namespace Evado.UniForm.Clinical
           groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
         }
 
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       // 
@@ -1075,7 +1075,7 @@ namespace Evado.UniForm.Clinical
           EvLabels.Milestone_Page_Ctms_Activity_Field_Label,
           stActivityId,
           this.getActivitySelectionList ( false, false ) );
-        groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
 
     }//END getPage_GeneralGroup Method

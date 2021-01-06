@@ -129,11 +129,6 @@ namespace Evado.UniForm.Clinical
       //
       this.getSelectedGroupItem ( PageCommand );
 
-      //
-      // if the selection command has been executed refresh the subject list.
-      //
-      this.resetSubjectList ( PageCommand );
-
       String pageTitle = EvLabels.HomePage_Page_Title;
       if ( this.Session.Customer.HomePageHeader != String.Empty )
       {
@@ -353,7 +348,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getHomePage_SelectedGroup method" );
       this.LogValue ( "Customer.Name: " + this.Session.Customer.Name );
-      this.LogValue ( "TrialList.Count: " + this.Session.TrialList.Count );
+      this.LogValue ( "ApplicationList.Count: " + this.Session.ApplicationList.Count );
       this.LogValue ( "hasEvadoAdministrationAccess: " +
         this.Session.UserProfile.hasEvadoAdministrationAccess );
       //
@@ -398,18 +393,18 @@ namespace Evado.UniForm.Clinical
       // Display the selection lists if the customer object is loaded.
       //
       if ( this.Session.Customer.Guid != Guid.Empty
-        && this.Session.TrialList.Count > 0 )
+        && this.Session.ApplicationList.Count > 0 )
       {
         //
         // Display the project selection list for the projects. 
         //
-        if ( this.Session.TrialList.Count > 1 )
+        if ( this.Session.ApplicationList.Count > 1 )
         {
           groupField = pageGroup.createSelectionListField (
            EvIdentifiers.TRIAL_ID,
            EvLabels.Label_Project_Id,
            this.Session.Application.ApplicationId,
-           this.Session.TrialSelectionList );
+           this.Session.ApplicationSelectionList );
 
           // 
           // selection field parameters.
@@ -447,26 +442,6 @@ namespace Evado.UniForm.Clinical
       this.LogMethodEnd ( "getHomePage_SelectedGroup" );
 
     }//END getHomePage_ProjectSelectedGroup method.
-
-    //==================================================================================
-    /// <summary>
-    /// This method updates the pageMenuGroup menu option.
-    /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object</param>
-    //-----------------------------------------------------------------------------------
-    private void resetSubjectList (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "resetSubjectList" );
-
-      if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
-      {
-        this.LogValue ( "Selection lists are reset." );
-        this.Session.CommonRecordList = new List<EdRecord> ( );
-      }
-
-      this.LogMethodEnd ( "resetSubjectList" );
-    }//END getSelectedGroupItem method
 
     //==================================================================================
     /// <summary>
@@ -982,7 +957,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getApplicationDashboard" );
-      this.LogDebug ( "Configration Access: " + this.Session.UserProfile.hasTrialManagementAccess );
+      this.LogDebug ( "Configration Access: " + this.Session.UserProfile.hasManagementAccess );
       this.LogDebug ( "ProjectDashboardComponents: " + this.Session.UserProfile.ProjectDashboardComponents );
       // 
       // Initialise the methods variables and objects.
@@ -999,7 +974,7 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.UserProfile.RoleId != EvRoleList.Evado_Administrator
         && this.Session.UserProfile.RoleId != EvRoleList.Evado_Manager
         && this.Session.UserProfile.RoleId != EvRoleList.Administrator
-        && this.Session.UserProfile.RoleId != EvRoleList.Trial_Manager )
+        && this.Session.UserProfile.RoleId != EvRoleList.Manager )
       {
         return;
       }
@@ -1034,7 +1009,7 @@ namespace Evado.UniForm.Clinical
         // if the user does not have config access or is not group is not
         // project dashboard continue.
         //
-        if ( this.Session.UserProfile.hasTrialManagementAccess == false
+        if ( this.Session.UserProfile.hasManagementAccess == false
           || item.Group != EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP )
         {
           continue;
