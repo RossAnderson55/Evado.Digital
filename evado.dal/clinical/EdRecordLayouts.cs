@@ -88,26 +88,26 @@ namespace Evado.Dal.Clinical
     //
     // The field and parameter values for the SQl customer filter 
     //
-    private const string DB_CUSTOMER_GUID = "CU_GUID";
-    private const string DB_LAYOUT_GUID = "EDRL_GUID";
-    private const string DB_APPLICATION_ID = "APPLICATION_ID";
-    private const string DB_LAYOUT_ID = "LAYOUT_ID";
-    private const string DB_STATE = "EDRL_STATE";
-    private const string DB_TITLE = "EDRL_TITLE";
-    private const string DB_HTTP_REFERENCE = "EDRL_HTTP_REFERENCE";
-    private const string DB_INSTRUCTIONS = "EDRL_INSTRUCTIONS";
-    private const string DB_DESCRIPTION = "EDRL_DESCRIPTION";
-    private const string DB_UPDATE_REASON = "EDRL_UPDATE_REASON";
-    private const string DB_RECORD_CATEGORY = "EDRL_RECORD_CATEGORY";
-    private const string DB_TYPE_ID = "EDRL_TYPE_ID";
-    private const string DB_VERSION = "EDRL_VERSION";
-    private const string DB_JAVA_SCRIPT = "EDRL_JAVA_SCRIPT";
-    private const string DB_HAS_CS_SCRIPT = "EDRL_HAS_CS_SCRIPT";
-    private const string DB_LANGUAGE = "EDRL_LANGUAGE";
-    private const string DB_CDASH_METADATA = "EDRL_CDASH_METADATA";
-    private const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
-    private const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
-    private const string DB_UPDATED_DATE = "EDRL_UPDATED_DATE";
+    public const string DB_CUSTOMER_GUID = "CU_GUID";
+    public const string DB_LAYOUT_GUID = "EDRL_GUID";
+    public const string DB_APPLICATION_ID = "APPLICATION_ID";
+    public const string DB_LAYOUT_ID = "LAYOUT_ID";
+    public const string DB_STATE = "EDRL_STATE";
+    public const string DB_TITLE = "EDRL_TITLE";
+    public const string DB_HTTP_REFERENCE = "EDRL_HTTP_REFERENCE";
+    public const string DB_INSTRUCTIONS = "EDRL_INSTRUCTIONS";
+    public const string DB_DESCRIPTION = "EDRL_DESCRIPTION";
+    public const string DB_UPDATE_REASON = "EDRL_UPDATE_REASON";
+    public const string DB_RECORD_CATEGORY = "EDRL_RECORD_CATEGORY";
+    public const string DB_TYPE_ID = "EDRL_TYPE_ID";
+    public const string DB_VERSION = "EDRL_VERSION";
+    public const string DB_JAVA_SCRIPT = "EDRL_JAVA_SCRIPT";
+    public const string DB_HAS_CS_SCRIPT = "EDRL_HAS_CS_SCRIPT";
+    public const string DB_LANGUAGE = "EDRL_LANGUAGE";
+    public const string DB_CDASH_METADATA = "EDRL_CDASH_METADATA";
+    public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
+    public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
+    public const string DB_UPDATED_DATE = "EDRL_UPDATED_DATE";
 
     /// <summary>
     /// Define the query parameter names.
@@ -275,29 +275,29 @@ namespace Evado.Dal.Clinical
       // 
       layout.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_CUSTOMER_GUID );
       layout.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      layout.ApplicationId = EvSqlMethods.getString ( Row, DB_APPLICATION_ID );
-      layout.LayoutId = EvSqlMethods.getString ( Row, DB_LAYOUT_ID );
+      layout.ApplicationId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_APPLICATION_ID );
+      layout.LayoutId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LAYOUT_ID );
       layout.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, DB_STATE ) );
-      layout.Design.Title = EvSqlMethods.getString ( Row, DB_TITLE );
-      layout.Design.HttpReference = EvSqlMethods.getString ( Row, DB_HTTP_REFERENCE );
-      layout.Design.Instructions = EvSqlMethods.getString ( Row, DB_INSTRUCTIONS );
-      layout.Design.Description = EvSqlMethods.getString ( Row, DB_DESCRIPTION );
+      layout.Design.Title = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_TITLE );
+      layout.Design.HttpReference = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_HTTP_REFERENCE );
+      layout.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_INSTRUCTIONS );
+      layout.Design.Description = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_DESCRIPTION );
       layout.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
-        EvSqlMethods.getString ( Row, DB_UPDATE_REASON ) );
-      layout.Design.RecordCategory = EvSqlMethods.getString ( Row, DB_RECORD_CATEGORY );
+        EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATE_REASON ) );
+      layout.Design.RecordCategory = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_CATEGORY );
 
       layout.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> (
-         EvSqlMethods.getString ( Row, DB_TYPE_ID ) );
-      layout.Design.Version = EvSqlMethods.getFloat ( Row, DB_VERSION );
+         EvSqlMethods.getString ( Row, EdRecordLayouts.DB_TYPE_ID ) );
+      layout.Design.Version = EvSqlMethods.getFloat ( Row, EdRecordLayouts.DB_VERSION );
 
-      layout.Design.JavaScript = EvSqlMethods.getString ( Row, DB_JAVA_SCRIPT );
-      layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, DB_HAS_CS_SCRIPT );
-      layout.Design.Language = EvSqlMethods.getString ( Row, DB_LANGUAGE );
-      layout.cDashMetadata = EvSqlMethods.getString ( Row, DB_CDASH_METADATA );
+      layout.Design.JavaScript = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_JAVA_SCRIPT );
+      layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_HAS_CS_SCRIPT );
+      layout.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
+      layout.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
 
-      layout.Updated = EvSqlMethods.getString ( Row, DB_UPDATED_BY );
-      layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
+      layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );
+      layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdRecordLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
 
       //
       // get layout sections.

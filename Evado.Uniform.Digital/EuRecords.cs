@@ -754,7 +754,7 @@ namespace Evado.UniForm.Clinical
       // 
       queryParameters.UserVisitDate = false;
       queryParameters.IncludeTestSites = false;
-      queryParameters.FormId = this.Session.RecordSelectionFormId;
+      queryParameters.LayoutId = this.Session.RecordSelectionFormId;
 
       // 
       // Initialise the query state selection.
@@ -769,7 +769,7 @@ namespace Evado.UniForm.Clinical
       }
 
       this.LogValue ( "TrialId: '" + queryParameters.ApplicationId + "'" );
-      this.LogValue ( "FormId: '" + queryParameters.FormId + "'" );
+      this.LogValue ( "FormId: '" + queryParameters.LayoutId + "'" );
       this.LogValue ( "State: '" + queryParameters.State + "'" );
       this.LogValue ( "UserCommonName: '" + queryParameters.UserCommonName + "'" );
 
@@ -777,7 +777,7 @@ namespace Evado.UniForm.Clinical
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
       if ( queryParameters.ApplicationId != String.Empty
-        && queryParameters.FormId != String.Empty )
+        && queryParameters.LayoutId != String.Empty )
       {
         this.LogValue ( "FormRecordType: " + this.Session.FormRecordType );
 
@@ -1324,7 +1324,7 @@ namespace Evado.UniForm.Clinical
       exportParameters.IncludeDraftRecords = this.Session.FormRecords_IncludeDraftRecords;
 
       queryParameters = new EvQueryParameters ( this.Session.Application.ApplicationId );
-      queryParameters.FormId = this.Session.RecordSelectionFormId;
+      queryParameters.LayoutId = this.Session.RecordSelectionFormId;
       queryParameters.UserVisitDate = true;
 
       queryParameters.State = EdRecordObjectStates.Withdrawn + ";"
@@ -1340,7 +1340,7 @@ namespace Evado.UniForm.Clinical
       queryParameters.IncludeTestSites = exportParameters.IncludeTestSites;
       queryParameters.NotSelectedState = true;
       queryParameters.IncludeSummary = true;
-      queryParameters.IncludeRecordFields = false;
+      queryParameters.IncludeRecordValues = false;
       queryParameters.IncludeComments = false;
       queryParameters.IncludeSaeFields = false;
 

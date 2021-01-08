@@ -433,6 +433,35 @@ namespace Evado.Model.Digital
       }
     }
 
+    private EdRecordObjectStates _State = EdRecordObjectStates.Null;
+    /// <summary>
+    /// This property contains a state of a form. 
+    /// </summary>
+    public EdRecordObjectStates State
+    {
+      get
+      {
+
+        return this._State;
+      }
+      set
+      {
+        this._State = value;
+      }
+    }
+
+    /// <summary>
+    /// This property contains a state description of a form. 
+    /// </summary>
+    public string StateDesc
+    {
+      get
+      {
+        return EvcStatics.Enumerations.enumValueToString ( this._State );
+      }
+    }
+
+
     private EdRecordDesign _Design = new EdRecordDesign ( );
     /// <summary>
     /// This property contains a design object of a form. 
@@ -465,6 +494,22 @@ namespace Evado.Model.Digital
       }
     }
 
+    private List<EdRecordEntity> _Entities = new List<EdRecordEntity> ( );
+    /// <summary>
+    /// This property contains a list of related entities
+    /// </summary>
+    public List<EdRecordEntity> Entities
+    {
+      get
+      {
+        return this._Entities;
+      }
+      set
+      {
+        this._Entities = value;
+      }
+    }
+
     private string _LinkText = String.Empty;
     /// <summary>
     /// This property contains a link text of a form. 
@@ -480,6 +525,7 @@ namespace Evado.Model.Digital
         this._LinkText = value;
       }
     }
+
 
 
     private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff> ( );
@@ -498,7 +544,18 @@ namespace Evado.Model.Digital
         this._Signoffs = value;
       }
     }
-
+    //
+    // These are record filters, containing a record's field identifiers
+    //
+    private string [ ] _RecordFilterFieldIds = new String [ 5 ];
+    /// <summary>
+    /// This property contains the record filter values.
+    /// </summary>
+    public string [ ] RecordFilterFieldIds
+    {
+      get { return _RecordFilterFieldIds; }
+      set { _RecordFilterFieldIds = value; }
+    }
 
     int _ScheduleId = 0;
 
@@ -540,6 +597,22 @@ namespace Evado.Model.Digital
       set
       {
         this._ActivityId = value;
+      }
+    }
+
+    private string _DataCollectEventId = String.Empty;
+    /// <summary>
+    /// This property contains data collection event identifier for the record. 
+    /// </summary>
+    public string DataCollectEventId
+    {
+      get
+      {
+        return this._DataCollectEventId;
+      }
+      set
+      {
+        this._DataCollectEventId = value;
       }
     }
 
@@ -616,39 +689,6 @@ namespace Evado.Model.Digital
       set { _FormAccessRole = value; }
     }
 
-
-
-    private EdRecordObjectStates _State = EdRecordObjectStates.Null;
-    /// <summary>
-    /// This property contains a state of a form. 
-    /// </summary>
-    public EdRecordObjectStates State
-    {
-      get
-      {
-
-        return this._State;
-      }
-      set
-      {
-        this._State = value;
-      }
-    }
-
-    /// <summary>
-    /// This property contains a state description of a form. 
-    /// </summary>
-    public string StateDesc
-    {
-      get
-      {
-        return EvcStatics.Enumerations.enumValueToString ( this._State );
-      }
-      set
-      {
-        string NUll = value;
-      }
-    }
 
     private DateTime _RecordDate = EvcStatics.CONST_DATE_NULL;
     /// <summary>

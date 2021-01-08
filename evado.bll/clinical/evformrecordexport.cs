@@ -228,9 +228,9 @@ namespace Evado.Bll.Clinical
 
       queryParameters.IncludeTestSites = ExportParameters.IncludeTestSites;
       queryParameters.NotSelectedState = true;
-      queryParameters.IncludeRecordFields = true;
+      queryParameters.IncludeRecordValues = true;
       queryParameters.IncludeSummary = false;
-      queryParameters.FormId = ExportParameters.FormId;
+      queryParameters.LayoutId = ExportParameters.FormId;
       queryParameters.OrderBy = "Subjectid, SM_StartDate, RecordId";
 
       recordList = formRecords.getRecordList ( queryParameters );

@@ -259,10 +259,10 @@ namespace Evado.Bll.Clinical
       // 
       EvQueryParameters query = new EvQueryParameters ( TrialId );
       query.SubjectId = SubjectId;
-      query.FormId = FormId;
+      query.LayoutId = FormId;
       query.State = RecordState;
       query.NotSelectedState = NotSelectedState;
-      query.IncludeRecordFields = IncludeRecordFields;
+      query.IncludeRecordValues = IncludeRecordFields;
 
       // 
       // Execute the query.
@@ -361,12 +361,12 @@ namespace Evado.Bll.Clinical
       this.LogMethod ( "getRecordCount method. " );
       this.LogValue ( "EvQueryParameters parameters." );
       this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
-      this.LogValue ( "- FormId: " + QueryParameters.FormId );
+      this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- OrgId: " + QueryParameters.OrgId );
       this.LogValue ( "- MilestoneId: " + QueryParameters.MilestoneId );
       this.LogValue ( "- SubjectId: " + QueryParameters.SubjectId );
       this.LogValue ( "- VisitId: " + QueryParameters.VisitId );
-      this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordFields );
+      this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- UserCommonName: " + QueryParameters.UserCommonName );
       this.LogValue ( "- State: " + QueryParameters.State );
       this.LogValue ( "- SubjectState: " + QueryParameters.SubjectState );
@@ -412,13 +412,13 @@ namespace Evado.Bll.Clinical
       this.LogMethod ( "getRecordList method. " ); 
       this.LogDebug ( "EvQueryParameters parameters." );
       this.LogDebug ( "- ApplicationId: " + QueryParameters.ApplicationId );
-      this.LogDebug ( "- FormId: " + QueryParameters.FormId );
+      this.LogDebug ( "- FormId: " + QueryParameters.LayoutId );
       this.LogDebug ( "- OrgId: " + QueryParameters.OrgId );
       this.LogDebug ( "- MilestoneId: " + QueryParameters.MilestoneId );
       this.LogDebug ( "- SubjectId: " + QueryParameters.SubjectId );
       this.LogDebug ( "- PatientId: " + QueryParameters.PatientId );
       this.LogDebug ( "- VisitId: " + QueryParameters.VisitId );
-      this.LogDebug ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordFields );
+      this.LogDebug ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogDebug ( "- UserCommonName: " + QueryParameters.UserCommonName );
       this.LogDebug ( "- State: " + QueryParameters.State );
       this.LogDebug ( "- SubjectState: " + QueryParameters.SubjectState );

@@ -2849,22 +2849,6 @@ namespace Evado.UniForm.Clinical
         }
 
 
-        String prefix = this.Session.RecordLayout.LayoutId.Substring ( 0, 2 );
-
-        //
-        // IF the prefix exists then remove it from the form id
-        //
-        if ( prefix == EvcStatics.CONST_GLOBAL_FORM_PREFIX )
-        {
-          Char [ ] cFormId = this.Session.RecordLayout.LayoutId.ToCharArray ( );
-
-          cFormId [ 0 ] = ' ';
-          cFormId [ 1 ] = ' ';
-
-          this.Session.RecordLayout.LayoutId = cFormId.ToString ( ).Trim ( );
-        }
-
-
         // 
         // Get the save action message value.
         // 

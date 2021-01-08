@@ -463,8 +463,8 @@ namespace Evado.Dal.Clinical
       // Fill the evForm object.l
       //
       recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_RECORD_FIELDS_GUID );
-      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORDS_GUID );
-      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_FORMS_GUID );
+      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
+      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_LAYOUT_GUID );
       recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FORM_FIELDS_GUID );
 
       recordField.FieldId = EvSqlMethods.getString ( Row, "FieldId" );
@@ -1198,12 +1198,10 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EdRecordField> getRecordFieldList (
-      EdRecord Record,
-      bool IncludeComments )
+      EdRecord Record )
     {
       this.LogMethod ( "getRecordFieldList method. " );
       this.LogDebug ( "Record.Guid: " + Record.Guid );
-      this.LogDebug ( "IncludeComments: " + IncludeComments );
       //
       // Initialise the methods variables and objects.
       //

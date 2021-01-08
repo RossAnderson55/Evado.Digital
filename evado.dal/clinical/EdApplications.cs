@@ -133,20 +133,6 @@ namespace Evado.Dal.Clinical
     // -------------------------------------------------------------------------------------
     private static SqlParameter [ ] GetParameters ( )
     {
-      /*
-        @Guid uniqueidentifier,
-	      @CUSTOMER_GUID uniqueidentifier,
-	      @STATE varchar(20),
-	      @TITLE nvarchar(50),
-	      @HTTP_REFERENCE nvarchar(250),
-	      @DESCRIPTION ntext,
-	      @CONFIRMATION_EMAIL_TITLE nvarchar(100),
-	      @CONFIRMATION_EMAIL_BODY ntext,
-	      @SIGN_OFFS ntext,
-	      @UPDATE_USER_ID nvarchar(100),
-	      @UPDATE_USER nvarchar(100),
-	      @UPDATE_DATE datetime
-       */
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
