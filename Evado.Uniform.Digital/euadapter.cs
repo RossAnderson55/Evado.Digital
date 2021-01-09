@@ -246,7 +246,7 @@ namespace Evado.UniForm.Clinical
 
     #region Class local objects.
 
-    public static readonly string CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn.ToString();
+    public static readonly EdRecordObjectStates CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn;
 
     private EuApplicationObjects _ApplicationObjects = new EuApplicationObjects ( );
 

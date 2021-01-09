@@ -155,8 +155,8 @@ namespace Evado.Bll.Clinical
           {
             Evado.Dal.Clinical.EdRecords dalRecords = new Evado.Dal.Clinical.EdRecords ( this.ClassParameter );
 
-            report = dalRecords.getRecordStatusReport ( Report );
-            this.LogDebug(  dalRecords.Log );
+            report = Report; // new dalRecords.getRecordStatusReport ( Report );
+            //this.LogDebug(  dalRecords.Log );
 
             break;
           }

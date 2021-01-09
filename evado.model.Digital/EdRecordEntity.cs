@@ -33,8 +33,23 @@ namespace Evado.Model.Digital
 
     /// <summary>
     /// This property contains a global unique identifier of a Customer . 
-    /// </summary>
-    public Guid CustomerGuid { get; set; }
+      /// </summary>
+
+      private Guid _RecordLayoutGuid = Guid.Empty;
+      /// <summary>
+      /// This property contains the record GUID
+      /// </summary>
+      public Guid RecordLayoutGuid
+      {
+        get
+        {
+          return this._RecordLayoutGuid;
+        }
+        set
+        {
+          this._RecordLayoutGuid = value;
+        }
+      }
 
     private Guid _RecordGuid = Guid.Empty;
     /// <summary>

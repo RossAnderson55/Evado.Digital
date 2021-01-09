@@ -91,7 +91,7 @@ namespace Evado.Dal.Clinical
     public const string DB_CUSTOMER_GUID = "CU_GUID";
     public const string DB_LAYOUT_GUID = "EDRL_GUID";
     public const string DB_APPLICATION_ID = "APPLICATION_ID";
-    public const string DB_LAYOUT_ID = "LAYOUT_ID";
+    public const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
     public const string DB_STATE = "EDRL_STATE";
     public const string DB_TITLE = "EDRL_TITLE";
     public const string DB_HTTP_REFERENCE = "EDRL_HTTP_REFERENCE";
@@ -489,6 +489,26 @@ namespace Evado.Dal.Clinical
       // 
       Layout.Fields = dal_FormFields.GetFieldList ( Layout.Guid );
       this.LogClass ( dal_FormFields.Log );
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method retrieves the layout's field objects.
+    /// </summary>
+    /// <param name="Layout">EdRecord object</param>
+    //  ---------------------------------------------------------------------------------
+    private void getEntities ( EdRecord Layout )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
+
+      // 
+      // Retrieve the instrument items.
+      // 
+      Layout.Entities = dal_RecordEntities.getEntityList( Layout );
+      this.LogClass ( dal_RecordEntities.Log );
     }
 
     // =====================================================================================

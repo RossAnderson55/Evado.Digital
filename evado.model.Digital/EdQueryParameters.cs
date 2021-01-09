@@ -18,7 +18,8 @@
  ****************************************************************************************/
 
 using System;
-using System.Collections; using System.Collections.Generic;
+using System.Collections; 
+using System.Collections.Generic;
 
 namespace Evado.Model.Digital
 {
@@ -27,20 +28,20 @@ namespace Evado.Model.Digital
   /// Business entity used to model Therapy query object.
   /// </summary>
   [Serializable]
-  public class EvQueryParameters
+  public class EdQueryParameters
   {
     #region Initialization
     /// <summary>
     /// This method initialise object
     /// </summary>
-    public EvQueryParameters( )
+    public EdQueryParameters( )
     { }
 
     /// <summary>
     /// This method initialise teh query parameter object with defined values.
     /// </summary>
     /// <param name="ApplicationId">String Project identifier</param>
-    public EvQueryParameters( String ApplicationId )
+    public EdQueryParameters( String ApplicationId )
     {
       this.ApplicationId = ApplicationId;
     }
@@ -51,7 +52,13 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This field defines the subject's screening identifier.
     /// </summary>
-    public List<EdRecordObjectStates> States = new List<EdRecordObjectStates> ( );
+    private List<EdRecordObjectStates> _States = new List<EdRecordObjectStates> ( );
+
+    public List<EdRecordObjectStates> States
+    {
+      get { return _States; }
+      set { _States = value; }
+    }
 
     /// <summary>
     /// This field defines the project identifier

@@ -163,7 +163,7 @@ namespace Evado.UniForm.Clinical
         pageGroup = new Evado.Model.UniForm.Group (
           Section.Title,
           Section.Instructions,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       }
       // 
@@ -375,7 +375,7 @@ namespace Evado.UniForm.Clinical
         groupField.Description =  FormField.Design.Instructions ;
       }
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, "100" );
-      groupField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited_Access;
+      groupField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
       groupField.Type = Evado.Model.EvDataTypes.Table;
       groupField.Table = new Evado.Model.UniForm.Table ( );
 

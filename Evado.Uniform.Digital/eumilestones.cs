@@ -272,7 +272,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.Group listGroup = Page.AddGroup (
           EvLabels.Milestone_List_Group_Title,
           String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         listGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         listGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -693,7 +693,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Milestone_Page_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -863,7 +863,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Milestone_Page_Scheduling_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1011,7 +1011,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Milestone_Page_Activity_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.EditAccess = PageObject.EditAccess;

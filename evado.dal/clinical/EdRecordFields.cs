@@ -99,7 +99,7 @@ namespace Evado.Dal.Clinical
     // database fields/columns.
     private const string DB_GUID = "EDRLF_GUID";
     private const string DB_LAYOUT_GUID = "EDRL_GUID";
-    private const string DB_LAYOUT_ID = "LAYOUT_ID";
+    private const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
     private const string DB_FIELD_ID = "FIELD_ID";
     private const string DB_TYPE_ID = "EDRLF_TYPE_ID";
     private const string DB_ORDER = "EDRLF_ORDER";

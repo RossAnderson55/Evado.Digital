@@ -634,7 +634,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of record options objects. 
     /// </summary>
-    /// <param name="ProjectId">string: a Project identifier</param>
+    /// <param name="ApplicationId">string: a Project identifier</param>
     /// <param name="SubjectId">string: a FirstSubject identifier</param>
     /// <returns>List of EvOption: a list of record options objects</returns>
     /// <remarks>
@@ -645,14 +645,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of record objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetRecordList ( string ProjectId, string SubjectId )
+    private List<EvOption> GetRecordList ( string ApplicationId, string EntityId )
     {
       //
       // Initialise the method variables and objects.
       // 
       EdRecords trialRecords = new EdRecords ( );
-      EvQueryParameters query = new EvQueryParameters ( ProjectId );
-      query.SubjectId = SubjectId;
+      EdQueryParameters query = new EdQueryParameters ( ApplicationId );
+      query.EntityId = EntityId;
 
       List<EvOption> list = trialRecords.getOptionList ( query, true );
 

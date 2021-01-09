@@ -664,7 +664,7 @@ namespace Evado.UniForm.Clinical
       set { _FormField = value; }
     }
 
-    public String RecordSelectionState = String.Empty;
+    public EdRecordObjectStates RecordSelectionState = EdRecordObjectStates.Null;
 
     public EdRecordTypes FormRecordType { get; set; }
 

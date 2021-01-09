@@ -375,14 +375,6 @@ namespace Evado.Bll.Clinical
       //  
       if ( Layout.State == EdRecordObjectStates.Withdrawn )
       {
-        // 
-        // Query the database to identify the
-        // 
-        if ( records.CheckIfFormUsed ( Layout.ApplicationId, Layout.LayoutId ) == true )
-        {
-          return EvEventCodes.Business_Logic_Form_Used_Error;
-
-        }//END trial is un use.
 
       }//END trial state is withdrawn.
 

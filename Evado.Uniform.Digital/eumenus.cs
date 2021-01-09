@@ -476,7 +476,7 @@ namespace Evado.UniForm.Clinical
         //
         Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
          EvLabels.Menu_Item_List,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
 
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -740,7 +740,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = ClientDataObject.Page.AddGroup (
         EvLabels.Menu_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //

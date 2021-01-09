@@ -799,7 +799,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
           EvLabels.Reports_List_Group_Title,
           String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 

@@ -495,7 +495,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageGroup = Page.AddGroup (
          String.Empty,
-         Evado.Model.UniForm.EditAccess.Inherited_Access );
+         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 

@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EdRecordEntity.cs" />
     <Compile Include="EvCustomerLabels.Designer.cs">
       <DependentUpon>EvCustomerLabels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -163,7 +164,7 @@
     <Compile Include="EvcStatics.cs" />
     <Compile Include="EvClassParameters.cs" />
     <Compile Include="evorganisation.cs" />
-    <Compile Include="evqueryparameters.cs" />
+    <Compile Include="EdQueryParameters.cs" />
     <Compile Include="evreport.cs" />
     <Compile Include="evreportcolumn.cs" />
     <Compile Include="evreportcsv.cs" />

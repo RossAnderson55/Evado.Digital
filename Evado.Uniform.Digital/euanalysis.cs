@@ -946,7 +946,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
         EvLabels.Analysis_Chart_Export_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createHtmlLinkField (
@@ -1230,11 +1230,13 @@ namespace Evado.UniForm.Clinical
         // 
         // Execute the query.
         // 
-        this.Session.AnalysisRecordlist = trialRecords.GetItemQuery (
+        this.Session.AnalysisRecordlist = new List<EdRecord> ( ); 
+        /*trialRecords.GetItemQuery (
           this.Session.Application.ApplicationId,
           this.Session.AnalysisQueryFormId,
           this.Session.AnalysisQueryFormFieldId,
-          this.Session.AnalysisQueryFormFieldValue );
+          this.Session.AnalysisQueryFormFieldValue ); 
+         */
       }
       else
       {
@@ -1501,7 +1503,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Retrieve the records
         // 
-        record = trialRecords.getRecordNoFieldComments ( rec.Guid );
+        record = trialRecords.getRecord ( rec.Guid );
 
         this.LogValue ( "RecordId: " + record.RecordId );
         //
@@ -1543,7 +1545,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
         EvLabels.Analysis_Chart_Export_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createHtmlLinkField (

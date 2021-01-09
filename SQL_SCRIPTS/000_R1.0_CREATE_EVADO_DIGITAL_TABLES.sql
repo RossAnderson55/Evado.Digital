@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[ED_RECORD_LAYOUTS](
 	[CU_GUID] [uniqueidentifier] NOT NULL,
 	[EDRL_GUID] [uniqueidentifier] NOT NULL,
 	[APPLICATION_ID] [nvarchar](20) NULL,
-	[LAYOUT_ID] [nvarchar](20) NULL,
+	[EDR_LAYOUT_ID] [nvarchar](20) NULL,
 	[EDRL_STATE] [varchar](50) NULL,
 	[EDRL_TYPE_ID] [varchar](30) NOT NULL,
 	[EDRL_TITLE] [nvarchar](100) NULL,
@@ -42,7 +42,11 @@ CREATE TABLE [dbo].[ED_RECORD_LAYOUTS](
 	[EDRL_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
 	[EDRL_UPDATED_BY] [nvarchar](100) NULL,
 	[EDRL_UPDATED_DATE] [datetime] NULL,
-	[EDRL_DELETED] [bit] NULL
+	[EDRL_DELETED] [bit] NULL,
+ CONSTRAINT [PK_RECORD_LAYOUTS] PRIMARY KEY CLUSTERED 
+(
+	[EDRL_GUID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
@@ -71,7 +75,7 @@ GO
 CREATE TABLE [dbo].[ED_RECORD_LAYOUT_FIELDS](
 	[EDRL_GUID] [uniqueidentifier] NOT NULL,
 	[EDRLF_GUID] [uniqueidentifier] NOT NULL,
-	[LAYOUT_ID] [nvarchar](20) NULL,
+	[EDR_LAYOUT_ID] [nvarchar](20) NULL,
 	[FIELD_ID] [nvarchar](20) NOT NULL,
 	[EDRLF_TYPE_ID] [varchar](30) NULL,
 	[EDRLF_ORDER] [smallint] NULL,
@@ -130,6 +134,12 @@ CREATE TABLE [dbo].[ED_RECORD_VALUES](
 
 GO
 
+/****** Object:  Table [dbo].[ED_RECORDS]    Script Date: 01/08/2021 10:47:30 ******/
+/*
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ED_RECORDS]') AND type in (N'U'))
+DROP TABLE [dbo].[ED_RECORDS]
+GO
+*/
 /****** Object:  Table [dbo].[ED_RECORDS]    Script Date: 12/24/2020 10:45:30 ******/
 
 CREATE TABLE [dbo].[ED_RECORDS](
@@ -143,11 +153,6 @@ CREATE TABLE [dbo].[ED_RECORDS](
 	[EDR_COMMENTS] [ntext] NULL,
 	[EDR_SIGN_OFFS] [ntext] NULL,
 	[EDR_SERIAL_ID] [int] NULL,
-	[EDR_FILTER_VALUE_0] nvarchar(100) NULL,
-	[EDR_FILTER_VALUE_1] nvarchar(100) NULL,
-	[EDR_FILTER_VALUE_2] nvarchar(100) NULL,
-	[EDR_FILTER_VALUE_3] nvarchar(100) NULL,
-	[EDR_FILTER_VALUE_4] nvarchar(100) NULL,
 	[EDR_BOOKED_OUT_USER_ID] nvarchar(100) NULL,
 	[EDR_BOOKED_OUT] [nvarchar](100) NULL,
 	[EDR_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
@@ -169,7 +174,7 @@ CREATE TABLE [dbo].[ED_ENTITY_LAYOUTS](
 	[CU_GUID] [uniqueidentifier] NOT NULL,
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
 	[APPLICATION_ID] [nvarchar](20) NULL,
-	[LAYOUT_ID] [nvarchar](20) NULL,
+	[EDE_LAYOUT_ID] [nvarchar](20) NULL,
 	[EDEL_STATE] [varchar](50) NULL,
 	[EDEL_TITLE] [nvarchar](100) NULL,
 	[EDEL_HTTP_REFERENCE] [nvarchar](100)  NULL,
@@ -192,7 +197,12 @@ CREATE TABLE [dbo].[ED_ENTITY_LAYOUTS](
 	[EDEL_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
 	[EDEL_UPDATED_BY] [nvarchar](100) NULL,
 	[EDEL_UPDATED_DATE] [datetime] NULL,
-	[EDEL_DELETED] [bit] NULL
+	[EDEL_DELETED] [bit] NULL,
+ CONSTRAINT [PK_ENTITY_LAYOUTS] PRIMARY KEY CLUSTERED 
+(
+	[EDEL_GUID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON, FILLFACTOR = 90) ON [PRIMARY]
+
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
@@ -221,8 +231,8 @@ GO
 CREATE TABLE [dbo].[ED_ENTITY_LAYOUT_FIELDS](
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
 	[EDELF_GUID] [uniqueidentifier] NOT NULL,
-	[LAYOUT_ID] [nvarchar](20) NULL,
-	[FIELD_ID] [nvarchar](20) NOT NULL,
+	[EDE_LAYOUT_ID] [nvarchar](20) NULL,
+	[EDELF_FIELD_ID] [nvarchar](20) NOT NULL,
 	[EDELF_TYPE_ID] [varchar](30) NULL,
 	[EDELF_ORDER] [smallint] NULL,
 	[EDELF_TITLE] [nvarchar](150) NULL,
@@ -257,17 +267,23 @@ CREATE TABLE [dbo].[ED_ENTITY_LAYOUT_FIELDS](
   ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
+
+/****** Object:  Table [dbo].[ED_ENTITIES]    Script Date: 01/08/2021 10:47:30 ******/
+/* IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ED_ENTITIES]') AND type in (N'U'))
+DROP TABLE [dbo].[ED_ENTITIES]
+GO*/
+
 /****** Object:  Table [dbo].[ED_ENTITIES]    Script Date: 12/24/2020 10:45:30 ******/
 CREATE TABLE [dbo].[ED_ENTITIES](
 	[EDE_GUID] [uniqueidentifier] NOT NULL,
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
 	[EDE_STATE] [varchar](30) NOT NULL,
-	[RECORD_ID] [nvarchar](20) NULL,
-	[EDE_DATE] [datetime] NULL,
+	[ENTITY_ID] [nvarchar](20) NULL,
+	[EDE_SOURCE_ID] [varchar](20) NULL,
+	[EDE_COLLECTION_EVENT_ID] [varchar](20) NULL,
+	[EDE_RECORD_DATE] [datetime] NULL,
 	[EDE_COMMENTS] [ntext] NULL,
 	[EDE_SERIAL_ID] [int] NULL,
-	[EDE_IS_MANDATORY] [bit] NULL,
-	[EDR_SOURCE_ID] [varchar](20) NULL,
 	[EDE_SIGN_OFFS] [ntext] NULL,
 	[EDE_BOOKED_OUT_USER_ID] [nvarchar](100) NULL,
 	[EDE_BOOKED_OUT] [nvarchar](100) NULL,
@@ -304,6 +320,16 @@ CREATE TABLE [dbo].[ED_ENTITY_VALUES](
 
 GO
 
+/****** Object:  Table [dbo].[ED_ENTITIES]    Script Date: 12/24/2020 10:45:30 ******/
+CREATE TABLE [dbo].[ED_ENTITY_RECORD_JOIN](
+	[EDRL_GUID] [uniqueidentifier] NOT NULL,
+	[EDR_GUID] [uniqueidentifier] NOT NULL,
+	[EDE_GUID] [uniqueidentifier] NULL,
+	[EDE_LAYOUT_ID] [nvarchar](20) NULL,
+	[EDEL_TITLE] [nvarchar](100) NULL
+	)
+	
+GO
 
 PRINT N'FINISH: 000_R1.0_CREATE_EVADO_DIGITAL_TABLES.'; 
 GO

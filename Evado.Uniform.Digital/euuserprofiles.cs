@@ -610,7 +610,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       this.LogValue ( "uploadFileName: " + uploadFileName );
@@ -663,7 +663,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       List<EvUserProfile> userProfileList = this._Bll_UserProfiles.GetView (
@@ -1140,7 +1140,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageGroup = Page.AddGroup (
          String.Empty,
-         Evado.Model.UniForm.EditAccess.Inherited_Access );
+         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 

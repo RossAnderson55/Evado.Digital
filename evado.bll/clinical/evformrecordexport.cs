@@ -205,33 +205,24 @@ namespace Evado.Bll.Clinical
       List<EdRecord> recordList = new List<EdRecord> ( );
       EdRecords formRecords = new EdRecords ( this.ClassParameter );
 
-      EvQueryParameters queryParameters = new EvQueryParameters ( ExportParameters.Project.ApplicationId );
-      queryParameters.StartDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      queryParameters.FinishDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
-      queryParameters.UserVisitDate = true;
+      EdQueryParameters queryParameters = new EdQueryParameters ( ExportParameters.Project.ApplicationId );
 
       //
       // Set the start and end date filters.
       //
-      queryParameters.StartDate = ExportParameters.RangeStartDate;
-      queryParameters.FinishDate = ExportParameters.RangeFinishDate;
-      queryParameters.RecordRangeStart = ExportParameters.RecordRangeStart;
-      queryParameters.RecordRangeFinish = ExportParameters.RecordRangeFinish;
 
-      queryParameters.State = EdRecordObjectStates.Withdrawn
-        + ";" + EdRecordObjectStates.Draft_Record;
+      queryParameters.States.Add( EdRecordObjectStates.Withdrawn );
+       queryParameters.States.Add( EdRecordObjectStates.Draft_Record );
 
       if ( ExportParameters.IncludeDraftRecords == true )
       {
-        queryParameters.State = EdRecordObjectStates.Withdrawn.ToString();
+        queryParameters.States.Add(  EdRecordObjectStates.Withdrawn );
       }
 
-      queryParameters.IncludeTestSites = ExportParameters.IncludeTestSites;
       queryParameters.NotSelectedState = true;
       queryParameters.IncludeRecordValues = true;
       queryParameters.IncludeSummary = false;
-      queryParameters.LayoutId = ExportParameters.FormId;
-      queryParameters.OrderBy = "Subjectid, SM_StartDate, RecordId";
+      queryParameters.LayoutId = ExportParameters.LayoutId;
 
       recordList = formRecords.getRecordList ( queryParameters );
 

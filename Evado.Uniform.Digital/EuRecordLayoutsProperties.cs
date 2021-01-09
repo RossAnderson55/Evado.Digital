@@ -219,7 +219,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = Page.AddGroup (
         EvLabels.Form_Properties_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -393,7 +393,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = Page.AddGroup (
         EvLabels.Form_Properties_Sections_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -581,7 +581,7 @@ namespace Evado.UniForm.Clinical
 
       pageGroup = ClientDataObject.Page.AddGroup (
         EvLabels.FormProperties_Section_Group_Text,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -604,7 +604,7 @@ namespace Evado.UniForm.Clinical
         this.Session.FormSection.Title,
         50 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited_Access;
+      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
 
       //
       // Form Instructions
@@ -674,7 +674,7 @@ namespace Evado.UniForm.Clinical
         this.SessionObjects.FormSection.FieldValue,
         50 );
       pageField.Layout = EuPageGenerator.ApplicationFieldLayout;
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited_Access;
+      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
 
       //
       // form secton on open display section.

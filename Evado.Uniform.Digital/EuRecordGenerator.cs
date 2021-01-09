@@ -330,7 +330,7 @@ namespace Evado.UniForm.Clinical
       formHeaderGroup = PageObject.AddGroup (
         String.Empty,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       formHeaderGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       formHeaderGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
@@ -412,7 +412,7 @@ namespace Evado.UniForm.Clinical
         formHeaderGroup = PageObject.AddGroup (
           String.Empty,
           String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         formHeaderGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
         formHeaderGroup.Description = Form.Design.Instructions;
@@ -638,7 +638,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.Group pageGroup = ClientDataObject.AddGroup (
           String.Empty,
           String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
@@ -2148,7 +2148,7 @@ namespace Evado.UniForm.Clinical
       // 
       GroupField.Table = new Evado.Model.UniForm.Table ( );
       GroupField.Type = Evado.Model.EvDataTypes.Table;
-      GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited_Access;
+      GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
       GroupField.Layout = Evado.Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       // 

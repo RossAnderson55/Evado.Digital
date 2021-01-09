@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clinical\EdRecordEntities.cs" />
     <Compile Include="Clinical\EvAncillaryRecords.cs">
       <SubType>Code</SubType>
     </Compile>

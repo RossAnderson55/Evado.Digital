@@ -2083,7 +2083,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.ApplicationProfile_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -2162,7 +2162,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.ApplicationProfile_Configuration_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -2287,7 +2287,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Application_Profile_Email_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -2360,7 +2360,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.ApplicationProfile_Pro_Configuration_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //F
@@ -2393,7 +2393,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.ApplicationProfile_Selection_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //

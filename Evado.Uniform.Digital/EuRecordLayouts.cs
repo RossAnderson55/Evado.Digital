@@ -1046,7 +1046,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = clientDataObject.Page.AddGroup (
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createHtmlLinkField (
@@ -1194,7 +1194,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = ClientDataObject.Page.AddGroup (
         EvLabels.Form_Template_Upload_Log_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -1375,7 +1375,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = Page.AddGroup (
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -2538,7 +2538,7 @@ namespace Evado.UniForm.Clinical
       pageGroup = PageObject.AddGroup (
         FormSection.Title,
         FormSection.Instructions,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -2619,7 +2619,7 @@ namespace Evado.UniForm.Clinical
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_No_Section_Field_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 

@@ -521,7 +521,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public int getRecordCount (
-      EvQueryParameters QueryParameters )
+      EdQueryParameters QueryParameters )
     {
       //
       // Initialize the method debug log, a return form list and a number of result count. 
@@ -595,7 +595,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public List<EdRecord> getRecordList (
-      EvQueryParameters QueryParameters )
+      EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getRecordList method." );
       //
@@ -663,6 +663,16 @@ namespace Evado.Dal.Clinical
             this.getRecordData ( record );
 
             //
+            // Attach the entity list.
+            //
+            this.getEntities ( record );
+
+            //
+            // attach the record sections.
+            //
+            this.GetRecordSections ( record );
+
+            //
             // Increment the result count.
             //
             inResultCount++;
@@ -712,7 +722,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private String createSqlQueryStatement (
-      EvQueryParameters QueryParameters )
+      EdQueryParameters QueryParameters )
     {
       //
       // Initialize the local sql query string. 
@@ -813,7 +823,6 @@ namespace Evado.Dal.Clinical
     /// This class returns a list of form object based on VisitId, VisitId, FormId and state
     /// </summary>
     /// <param name="ApplicationId">string: (Mandatory) a trial identifier.</param>
-    /// <param name="VisitId">string: (Optional) a visit identifier.</param>
     /// <param name="LayoutId">string: (Optional) a form identifier.</param>
     /// <param name="State">EvForm.FormObjecStates: (Optional) a form state.</param>
     /// <returns>List of EvForm: a list of form object</returns>
@@ -905,6 +914,16 @@ namespace Evado.Dal.Clinical
           // 
           this.getRecordData ( record );
 
+          //
+          // Attach the entity list.
+          //
+          this.getEntities ( record );
+
+          //
+          // attach the record sections.
+          //
+          this.GetRecordSections ( record );
+
           // 
           // Add the result to the arraylist.
           // 
@@ -952,7 +971,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getOptionList (
-      EvQueryParameters Query,
+      EdQueryParameters Query,
       bool useGuid )
     {
       this.LogMethod ( "getOptionList method. " );
@@ -1028,7 +1047,6 @@ namespace Evado.Dal.Clinical
     /// This method retrieves a form object based on Guid
     /// </summary>
     /// <param name="RecordGuid">Guid: (Mandatory) Global Unique object identifier (long integer).</param>
-    /// <param name="IncludeComments">bool: true = include field comments.</param>
     /// <returns>EvForm: a form data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1105,6 +1123,11 @@ namespace Evado.Dal.Clinical
       // Attach fields and other trial data.
       // 
       this.getRecordData ( record );
+
+      //
+      // Attache the entity list.
+      //
+      this.getEntities ( record );
 
       //
       // Update the form record section references.
@@ -1196,6 +1219,11 @@ namespace Evado.Dal.Clinical
       // Attach fields and other trial data.
       // 
       this.getRecordData ( record );
+
+      //
+      // Attache the entity list.
+      //
+      this.getEntities ( record );
 
       //
       // Update the form record section references.
@@ -1292,6 +1320,11 @@ namespace Evado.Dal.Clinical
       this.getRecordData ( record );
 
       //
+      // Attache the entity list.
+      //
+      this.getEntities ( record );
+
+      //
       // Update the form record section references.
       //
       this.GetRecordSections ( record );
@@ -1365,6 +1398,26 @@ namespace Evado.Dal.Clinical
       this.LogMethodEnd ( "getRecordData" );
 
     }//END getRecordData method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method retrieves the layout's field objects.
+    /// </summary>
+    /// <param name="Layout">EdRecord object</param>
+    //  ---------------------------------------------------------------------------------
+    private void getEntities ( EdRecord Layout )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
+
+      // 
+      // Retrieve the instrument items.
+      // 
+      Layout.Entities = dal_RecordEntities.getEntityList ( Layout );
+      this.LogClass ( dal_RecordEntities.Log );
+    }
 
     #endregion
 

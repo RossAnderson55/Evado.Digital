@@ -594,7 +594,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -698,7 +698,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Properties_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
 
@@ -1000,7 +1000,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Custom_Validation_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
       //
@@ -1052,7 +1052,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Computed_Field_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1119,7 +1119,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Sex_Validation_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
 
@@ -1163,7 +1163,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Numeric_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
 
@@ -1324,7 +1324,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Table_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
 
@@ -1444,7 +1444,7 @@ namespace Evado.UniForm.Clinical
       //
       pageGroup = PageObject.AddGroup (
         EvLabels.Form_Field_Matrix_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
 

@@ -110,8 +110,8 @@ namespace Evado.Bll.Integration
       // Initialise the methods variables and objects.
       //
       Evado.Model.Integration.EiData resultData = new Model.Integration.EiData ( );
-      Evado.Model.Digital.EvQueryParameters queryParameters =
-        new Evado.Model.Digital.EvQueryParameters ( );
+      Evado.Model.Digital.EdQueryParameters queryParameters =
+        new Evado.Model.Digital.EdQueryParameters ( );
       List<String> CsvOutput = new List<string> ( );
 
       //
@@ -162,8 +162,8 @@ namespace Evado.Bll.Integration
       // Initialise the methods variables and objects.
       //
       Evado.Model.Integration.EiData resultData = new Model.Integration.EiData ( );
-      Evado.Model.Digital.EvQueryParameters queryParameters =
-        new Evado.Model.Digital.EvQueryParameters ( );
+      Evado.Model.Digital.EdQueryParameters queryParameters =
+        new Evado.Model.Digital.EdQueryParameters ( );
 
       //
       // Get extract the data from the CSV file.

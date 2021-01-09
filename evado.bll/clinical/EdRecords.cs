@@ -92,259 +92,6 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of form objects. 
     /// </summary>
-    /// <param name="TrialId">string: (Mandatory) Project identifier.</param>
-    /// <param name="OrgId">string: (Optional) Organization identifier.</param>
-    /// <param name="SubjectId">string: (Optional) FirstSubject identifier.</param>
-    /// <param name="VisitId">string: (Optional) A visit identifier.</param>
-    /// <param name="State">string: (Optional) the form state.</param>
-    /// <param name="NotSelectedState">Boolean: True, do not select these states, False: select states.</param>
-    /// <param name="HideTestSites">Boolean: True, hide test sites, False: select all sites.</param>
-    /// <param name="OrderBy">string: (Optional) the sorting order of the result set.</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Return the list of form objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      string TrialId,
-      string OrgId,
-      string SubjectId,
-      string VisitId,
-      string State,
-      bool NotSelectedState,
-      bool HideTestSites,
-      string OrderBy )
-    {
-      this.LogValue ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START
-        + "Evado.Bll.Clinical.EvRecords.getView method. "
-      + ", TrialId: " + TrialId
-      + ", OrgId: " + OrgId
-      + ", SubjectId: " + SubjectId
-      + ", VisitId: " + VisitId
-      + ", State: " + State
-      + ", NotSelectedState: " + NotSelectedState
-      + ", HideTestSites: " + HideTestSites );
-
-      // 
-      // Initialise the query object
-      // 
-      EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.SubjectId = SubjectId;
-      query.VisitId = VisitId;
-      query.OrgId = OrgId;
-      query.State = State;
-      query.NotSelectedState = NotSelectedState;
-      query.IncludeTestSites = HideTestSites;
-      query.OrderBy = OrderBy;
-      query.HasBeenMonitored = true;
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( query );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      //
-      // Return selectionList to UI
-      //
-      return view;
-
-    }//END getRecordList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of form objects. 
-    /// </summary>
-    /// <param name="TrialId">string: (Mandatory) Project identifier.</param>
-    /// <param name="SubjectId">string: (Optional) FirstSubject identifier.</param>
-    /// <param name="VisitId">string: (Optional) A visit identifier.</param>
-    /// <param name="State">string: (Optional) the form state.</param>
-    /// <param name="NotSelectedState">Boolean: True, do not select these states, False: select states.</param>
-    /// <param name="HideTestSites">Boolean: True, hide test sites, False: select all sites.</param>
-    /// <param name="OrderBy">string: (Optional) the sorting order of the result set.</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Return the list of form objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      string TrialId,
-      string SubjectId,
-      string VisitId,
-      string State,
-      bool NotSelectedState,
-      bool HideTestSites,
-      string OrderBy )
-    {
-      this.LogValue ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START
-        + "Evado.Bll.Clinical.EvFormRecords.getView method. " );
-      this.LogValue ( ", TrialId: " + TrialId
-      + ", SubjectId: " + SubjectId
-      + ", VisitId: " + VisitId
-      + ", State: " + State
-      + ", NotSelectedState: " + NotSelectedState
-      + ", HideTestSites: " + HideTestSites );
-
-      // 
-      // Initialise the query object
-      // 
-      EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.ApplicationId = TrialId;
-      query.SubjectId = SubjectId;
-      query.VisitId = VisitId;
-      query.State = State;
-      query.NotSelectedState = NotSelectedState;
-      query.IncludeTestSites = HideTestSites;
-      query.OrderBy = OrderBy;
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( query );
-
-      this.LogClass ( this._DalRecords.Log );
-      //
-      // Return selectionList to UI
-      //
-      return view;
-
-    }//END getRecordList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of form objects. 
-    /// </summary>
-    /// <param name="TrialId">String: (Mandatory) Project identifier.</param>
-    /// <param name="SubjectId">String: (Optional) FirstSubject identifier.</param>
-    /// <param name="FormId">String: a form identifier</param>
-    /// <param name="RecordState">string: (Optional) the form state.</param>
-    /// <param name="NotSelectedState">Boolean: True, do not select these states, False: select states.</param>
-    /// <param name="IncludeRecordFields">Boolean: true, if the record fields are included</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Return the list of form objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      String TrialId,
-      String SubjectId,
-      String FormId,
-      String RecordState,
-      bool NotSelectedState,
-      bool IncludeRecordFields )
-    {
-      this.LogValue ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START
-        + "Evado.Bll.Clinical.EvFormRecords.getView method. " );
-      this.LogValue ( "TrialId: " + TrialId
-      + ", SubjectId: " + SubjectId
-      + ", FormId: " + FormId
-      + ", NotSelectedState: " + NotSelectedState
-      + ", IncludeRecordFields: " + IncludeRecordFields );
-
-      // 
-      // Initialise the query object
-      // 
-      EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.SubjectId = SubjectId;
-      query.LayoutId = FormId;
-      query.State = RecordState;
-      query.NotSelectedState = NotSelectedState;
-      query.IncludeRecordValues = IncludeRecordFields;
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( query );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      //
-      // Return selectionList to UI
-      //
-      return view;
-
-    }//END getRecordList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of form objects. 
-    /// </summary>
-    /// <param name="TrialId">string: (Mandatory) Project identifier.</param>
-    /// <param name="OrgId">string: an organization identifier</param>
-    /// <param name="State">string: the form state</param>
-    /// <param name="NotSelectedState">Boolean: True, do not select these states, False: select states.</param>
-    /// <param name="HideTestSites">Boolean: true, if the test sites are hiden</param>
-    /// <param name="OrderBy">string: a sorting query string</param>
-    /// <param name="UserCommonName">string: a user common name</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Return the list of form objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      string TrialId,
-      string OrgId,
-      string State,
-      bool NotSelectedState,
-      bool HideTestSites,
-      string OrderBy,
-      string UserCommonName )
-    {
-      this.LogValue ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START
-        + "Evado.Bll.Clinical.EvFormRecords.getView method. " );
-      this.LogValue ( "TrialId: " + TrialId
-      + ", OrgId: " + OrgId
-      + ", State: " + State
-      + ", NotSelectedState: " + NotSelectedState
-      + ", HideTestSites: " + HideTestSites
-      + ", UserCommonName: " + UserCommonName );
-      // 
-      // Initialise the query object
-      // 
-      EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.UserCommonName = UserCommonName;
-      query.ApplicationId = TrialId;
-      query.OrgId = OrgId;
-      query.State = State;
-      query.NotSelectedState = NotSelectedState;
-      query.IncludeTestSites = HideTestSites;
-      query.OrderBy = OrderBy;
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( query );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      //
-      // Return selectionList to UI
-      //
-      return view;
-
-    }//END getRecordList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of form objects. 
-    /// </summary>
     /// <param name="QueryParameters">EvQueryParameters: a query parameters object</param>
     /// <returns>List of EvForm: a list of form objects</returns>
     /// <remarks>
@@ -356,27 +103,17 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public int getRecordCount (
-      EvQueryParameters QueryParameters )
+      EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getRecordCount method. " );
       this.LogValue ( "EvQueryParameters parameters." );
       this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
-      this.LogValue ( "- OrgId: " + QueryParameters.OrgId );
-      this.LogValue ( "- MilestoneId: " + QueryParameters.MilestoneId );
-      this.LogValue ( "- SubjectId: " + QueryParameters.SubjectId );
-      this.LogValue ( "- VisitId: " + QueryParameters.VisitId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
-      this.LogValue ( "- UserCommonName: " + QueryParameters.UserCommonName );
-      this.LogValue ( "- State: " + QueryParameters.State );
-      this.LogValue ( "- SubjectState: " + QueryParameters.SubjectState );
+      this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogValue ( "- StartDate: " + QueryParameters.stStartDate );
-      this.LogValue ( "- FinishDate: " + QueryParameters.stFinishDate );
-      this.LogValue ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
       this.LogValue ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
       this.LogValue ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
-      this.LogValue ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
       // 
       // Execute the query.
       // 
@@ -407,29 +144,17 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public List<EdRecord> getRecordList (
-      EvQueryParameters QueryParameters )
+      EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordList method. " ); 
+      this.LogMethod ( "getRecordList method. " );
       this.LogDebug ( "EvQueryParameters parameters." );
-      this.LogDebug ( "- ApplicationId: " + QueryParameters.ApplicationId );
-      this.LogDebug ( "- FormId: " + QueryParameters.LayoutId );
-      this.LogDebug ( "- OrgId: " + QueryParameters.OrgId );
-      this.LogDebug ( "- MilestoneId: " + QueryParameters.MilestoneId );
-      this.LogDebug ( "- SubjectId: " + QueryParameters.SubjectId );
-      this.LogDebug ( "- PatientId: " + QueryParameters.PatientId );
-      this.LogDebug ( "- VisitId: " + QueryParameters.VisitId );
-      this.LogDebug ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
-      this.LogDebug ( "- UserCommonName: " + QueryParameters.UserCommonName );
-      this.LogDebug ( "- State: " + QueryParameters.State );
-      this.LogDebug ( "- SubjectState: " + QueryParameters.SubjectState );
-      this.LogDebug ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogDebug ( "- IncludeTestSites: " + QueryParameters.IncludeTestSites );
-      this.LogDebug ( "- StartDate: " + QueryParameters.stStartDate );
-      this.LogDebug ( "- FinishDate: " + QueryParameters.stFinishDate );
-      this.LogDebug ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
-      this.LogDebug ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
-      this.LogDebug ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
-      this.LogDebug ( "- UserVisitDate: " + QueryParameters.UserVisitDate );
+      this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
+      this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
+      this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
+      this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
+      this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
+      this.LogValue ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
+      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
       // 
       // Execute the query.
       // 
@@ -447,176 +172,6 @@ namespace Evado.Bll.Clinical
 
     // =====================================================================================
     /// <summary>
-    /// This class returns a list of current form objects. 
-    /// </summary>
-    /// <param name="TrialId">string: (Mandatory) Project identifier.</param>
-    /// <param name="OrgId">string: an organization identifier</param>
-    /// <param name="SubjectId">string: a milestone identifier</param>
-    /// <param name="VisitId">string: a visit identifier</param>
-    /// <param name="IncludeRecordFields">bool: true = include form field ResultData</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Return the list of form objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> GetCurrentRecordsView (
-      string TrialId,
-      string OrgId,
-      string SubjectId,
-      string VisitId,
-      bool IncludeRecordFields )
-    {
-      this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.getView method. " );
-      this.LogValue ( "TrialId: " + TrialId );
-      this.LogValue ( "VisitId: " + VisitId );
-      this.LogValue ( "OrgId: " + OrgId );
-      this.LogValue ( "SubjectId: " + SubjectId );
-      this.LogValue ( "IncludeRecordFields: " + IncludeRecordFields );
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getCurrentRecordList (
-        TrialId,
-        OrgId,
-        SubjectId,
-        VisitId,
-        IncludeRecordFields );
-
-      this.LogClass ( this._DalRecords.Log );
-      this.LogValue ( "Count: " + view.Count );
-
-      //
-      // Return selectionList to UI
-      //
-      return view;
-    }//END GetCurrentRecordsView method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of last instance form objects. 
-    /// </summary>
-    /// <param name="TrialId">string: (Mandatory) Project identifier.</param>
-    /// <param name="SubjectId">string: a milestone identifier</param>
-    /// <param name="MilestoneId">string: a milestone identifier</param>
-    /// <returns>List of EvForm: a list of form objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form objects. 
-    /// 
-    /// 2. Loop through the list and add the formIds to the formIdlist string with a ";" character. 
-    /// 
-    /// 3. Loop through the formIdlist string array and add the matching formId to the lastRecord object
-    /// 
-    /// 4. Add the LastRecord object to the Last records list. 
-    /// 
-    /// 5. Return the last records list. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> GetLastInstanceView (
-      string TrialId,
-      string SubjectId,
-      string MilestoneId )
-    {
-      this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.GetLastInstanceView method. " );
-      this.LogValue ( "TrialId: " + TrialId
-      + ", SubjectId: " + SubjectId
-      + ", MilestoneId: " + MilestoneId );
-
-      // 
-      // Initialise the query object
-      // 
-      EvQueryParameters query = new EvQueryParameters ( TrialId );
-      query.ApplicationId = TrialId;
-      query.SubjectId = SubjectId;
-      query.MilestoneId = MilestoneId;
-      query.State = EdRecordObjectStates.Withdrawn.ToString() ;
-      query.NotSelectedState = true;
-      query.OrderBy = "FormId, TR_RecordDate; ";
-      String FormIdList = String.Empty;
-      List<EdRecord> recordList = new List<EdRecord> ( );
-      EdRecord lastRecord = new EdRecord ( );
-
-      // 
-      // Execute the query.
-      // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( query );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      //
-      // Identify the forms in the list.
-      //
-      foreach ( EdRecord record in view )
-      {
-        if ( FormIdList.Contains ( record.LayoutId ) == false )
-        {
-          FormIdList += ";" + record.LayoutId;
-        }
-      }
-
-      this.LogValue ( "List of Forms: " + FormIdList + "\r\n" );
-
-      //
-      // if the form list exists.
-      //
-      if ( FormIdList != String.Empty )
-      {
-        //
-        // Iterate through the list of records to find the last record for
-        // formID QueryType in the list.
-        //
-        String [ ] arrFormIdList = FormIdList.Split ( ';' );
-
-        for ( int i = 0; i < FormIdList.Length; i++ )
-        {
-          //
-          // reset the record for a new formId.
-          //
-          lastRecord = new EdRecord ( );
-
-          foreach ( EdRecord record in view )
-          {
-            //
-            // Process the records that match the form id.
-            //
-            if ( arrFormIdList [ i ] == record.LayoutId )
-            {
-              if ( lastRecord.RecordDate < record.RecordDate )
-              {
-                lastRecord = record;
-              }
-            }
-
-          }//Record iteration loop
-
-          //
-          // Add the last record to the record list.
-          //
-          if ( lastRecord.RecordId != String.Empty )
-          {
-            this.LogValue ( " RecordId: " + lastRecord.RecordId );
-
-            recordList.Add ( lastRecord );
-          }
-
-        }//END form iteration loop
-      }
-
-      //
-      // Return selectionList to UI
-      //
-      return recordList;
-
-    }//END GetLastInstanceView method.
-
-    // =====================================================================================
-    /// <summary>
     /// This class returns a list of option for selected form objects based on query object and ByUid condition. 
     /// </summary>
     /// <param name="Query">EvQueryParameters: a query parameter object</param>
@@ -631,17 +186,11 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getOptionList (
-      EvQueryParameters Query,
+      EdQueryParameters Query,
       bool ByUid )
     {
-      this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.GetList method. " );
-      this.LogValue ( "TrialId: " + Query.ApplicationId
-      + ", OrgId: " + Query.OrgId
-      + ", VisitId: " + Query.VisitId
-      + ", State: " + Query.State
-      + ", NotSelectedState: " + Query.NotSelectedState
-      + ", HideTestSites: " + Query.IncludeTestSites
-      + ", UserCommonName: " + Query.UserCommonName );
+      this.LogMethod ( "getOptionList" );
+      this.LogValue ( "ApplicationId: " + Query.ApplicationId);
 
       List<EvOption> List = this._DalRecords.getOptionList ( Query, ByUid );
 
@@ -649,98 +198,6 @@ namespace Evado.Bll.Clinical
 
       return List;
     }//END GetList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of option for selected form objects based 
-    /// on TrialId, SubjectId and ByUid condition
-    /// </summary>
-    /// <param name="TrialId">string: the trial identifier</param>
-    /// <param name="SubjectId">string: the milestone identifier</param>
-    /// <param name="ByUid">Boolean: true, if the list is selected by Uid</param>
-    /// <returns>List of EvOption: a list of option objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of option objects based 
-    /// on TrialId, SubjectId and ByUid condition. 
-    /// 
-    /// 2. Return the list of option objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EvOption> getOptionList (
-      string TrialId,
-      string SubjectId,
-      bool ByUid )
-    {
-      List<EvOption> List = this._DalRecords.getOptionList ( TrialId, SubjectId, ByUid );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      return List;
-
-    }//END GetList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class checks whether the form is used.
-    /// </summary>
-    /// <param name="TrialId">string: a trial identifier</param>
-    /// <param name="FormId">string: a form identifier</param>
-    /// <returns>Boolean: true, if the form is used</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for checking whether the form is used. 
-    /// 
-    /// 2. Return true, if the form is used. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public bool CheckIfFormUsed (
-      string TrialId,
-      string FormId )
-    {
-      bool bReturn = this._DalRecords.checkIfFormUsed ( TrialId, FormId );
-
-      this.LogClass ( this._DalRecords.Log );
-
-      return bReturn;
-
-    }//END CheckIfFormUsed method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class retrieves an arraylist of form record objects
-    /// </summary>
-    /// <param name="ProjectId">string: a Project identifier</param>
-    /// <param name="FormId">string: a form identifier</param>
-    /// <param name="ItemId">string: an item identifier</param>
-    /// <param name="Value">string: an item value</param>
-    /// <returns>ArrayList: an arraylist of form record objects</returns>
-    /// <remarks>
-    /// This class contains the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving an arraylist of form record objects
-    /// 
-    /// 2. Return an arraylist of form record objects.
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecord> GetItemQuery ( string ProjectId, string FormId, string ItemId, string Value )
-    {
-      this.LogValue ( "Evado.Bll.Clinical.EvFormRecords.getItemQuery method" );
-      this.LogValue ( "ProjectId: " + ProjectId +
-        ", ChecklistId: " + FormId +
-        ", ItemId: " + ItemId +
-        ", Value: " + Value );
-      // 
-      // Initialise the method variables and objects.
-      //
-      List<EdRecord> recordList = this._DalRecords.getRecordByFieldValue ( ProjectId, FormId, ItemId, Value );
-      this.LogClass ( this._DalRecords.Log );
-
-      return recordList;
-
-    }//END GetItemQuery method.
 
     #endregion
 
@@ -773,41 +230,7 @@ namespace Evado.Bll.Clinical
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecord ( RecordGuid, true );
-      this.LogClass ( this._DalRecords.Log );
-
-      return record;
-
-    }//END getRecord method
-
-    // =====================================================================================
-    /// <summary>
-    /// This class retrieves a form object based on Guid
-    /// </summary>
-    /// <param name="RecordGuid">Guid: a form's Global unique identifier</param>
-    /// <returns>EvForm: a form object</returns>
-    /// <remarks>
-    /// This class consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the form object based on Guid
-    /// 
-    /// 2. Return a form object. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public EdRecord getRecordNoFieldComments ( Guid RecordGuid )
-    {
-      this.LogValue ( "DAL:EvRecord:getRecord method. " );
-      this.LogValue ( "RecordGuid: " + RecordGuid );
-
-      // 
-      // Initialise the method variables and objects.
-      // 
-      EdRecord record = new EdRecord ( );
-
-      //
-      // Execute the query
-      //
-      record = this._DalRecords.getRecord ( RecordGuid, false );
+      record = this._DalRecords.getRecord ( RecordGuid );
       this.LogClass ( this._DalRecords.Log );
 
       return record;
@@ -840,44 +263,7 @@ namespace Evado.Bll.Clinical
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecord ( RecordId, true );
-      this.LogClass ( this._DalRecords.Log );
-
-      this.LogMethodEnd ( "etRecord" );
-      return record;
-
-    }//END getRecord method
-
-    // =====================================================================================
-    /// <summary>
-    /// This class retrieves a form object based on RecordId
-    /// </summary>
-    /// <param name="RecordId">String record identfier</param>
-    /// <param name="IncludeComments">Boolean True = Include comments in output.</param>
-    /// <returns>EvForm: a form object</returns>
-    /// <remarks>
-    /// This class consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the form object based on RecordId
-    /// 
-    /// 2. Return a form object. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public EdRecord getRecord ( 
-      String RecordId,
-      bool IncludeComments )
-    {
-      this.LogMethod ( "GetRecord method. " );
-      this.LogValue ( "RecordId: " + RecordId );
-      // 
-      // Initialise the method variables and objects.
-      // 
-      EdRecord record = new EdRecord ( );
-
-      //
-      // Execute the query
-      //
-      record = this._DalRecords.getRecord ( RecordId, IncludeComments );
+      record = this._DalRecords.getRecord ( RecordId );
       this.LogClass ( this._DalRecords.Log );
 
       this.LogMethodEnd ( "etRecord" );
@@ -901,8 +287,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public EdRecord getRecordBySource (
-      String SourceId,
-      bool IncludeComments )
+      String SourceId )
     {
       this.LogValue ( "DAL:EvRecord:getRecord method. " );
       this.LogValue ( "RecordId: " + SourceId );
@@ -914,7 +299,7 @@ namespace Evado.Bll.Clinical
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecordBySource ( SourceId, IncludeComments );
+      record = this._DalRecords.getRecordBySource ( SourceId);
       this.LogClass ( this._DalRecords.Log );
 
       return record;

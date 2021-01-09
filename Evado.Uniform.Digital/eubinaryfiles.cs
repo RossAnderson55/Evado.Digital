@@ -1086,7 +1086,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
        EvLabels.Project_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createTableField (

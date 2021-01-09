@@ -146,8 +146,8 @@ namespace Evado.Bll.Integration
       // Initialise the methods variables and objects.
       //
       Evado.Model.Integration.EiData resultData = new Model.Integration.EiData ( );
-      Evado.Model.Digital.EvQueryParameters queryParameters =
-        new Evado.Model.Digital.EvQueryParameters ( );
+      Evado.Model.Digital.EdQueryParameters queryParameters =
+        new Evado.Model.Digital.EdQueryParameters ( );
 
       //
       // Validate that the query data has parameters.

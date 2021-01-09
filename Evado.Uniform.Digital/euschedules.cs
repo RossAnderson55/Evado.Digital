@@ -526,7 +526,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Schedule_List_Download_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -584,7 +584,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Schedule_List_Upload_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -738,7 +738,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
           EvLabels.Schedule_List_Group_Title,
           String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited_Access );
+          Evado.Model.UniForm.EditAccess.Inherited );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -1305,7 +1305,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Schedule_Page_Header_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -1552,7 +1552,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.Schedule_Page_Milestones_Group_Title,
         String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;

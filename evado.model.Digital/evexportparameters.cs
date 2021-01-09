@@ -54,7 +54,7 @@ namespace Evado.Model.Digital
     {
       this._Project = Project;
       this._ExportDataSource = ExportDataSource;
-      this._FormId = FormId;
+      this._LayoutId = FormId;
     }
 
     //===================================================================================
@@ -240,71 +240,22 @@ namespace Evado.Model.Digital
     #region Record Export parameters.
 
 
-    string _FormId = String.Empty;
+    string _LayoutId = String.Empty;
     /// <summary>
     /// This property contains a field identifier of the data item
     /// </summary>
-    public string FormId
+    public string LayoutId
     {
       get
       {
-        return _FormId;
+        return _LayoutId;
       }
       set
       {
-        this._FormId = value;
+        this._LayoutId = value;
       }
     }
 
-
-    string _OrgId = String.Empty;
-    /// <summary>
-    /// This property contains a field identifier of the data item
-    /// </summary>
-    public string OrgId
-    {
-      get
-      {
-        return _OrgId;
-      }
-      set
-      {
-        this._OrgId = value;
-      }
-    }
-
-    DateTime _RangeStartDate = EvcStatics.CONST_DATE_NULL;
-    /// <summary>
-    /// This property defines the start data of the export record range.
-    /// </summary>
-    public DateTime RangeStartDate
-    {
-      get
-      {
-        return _RangeStartDate;
-      }
-      set
-      {
-        this._RangeStartDate = value;
-      }
-    }
-
-    DateTime _RangeFinishDate = EvcStatics.CONST_DATE_MAX_RANGE;
-
-    /// <summary>
-    /// This property contains a data point of the data item
-    /// </summary>
-    public DateTime RangeFinishDate
-    {
-      get
-      {
-        return _RangeFinishDate;
-      }
-      set
-      {
-        this._RangeFinishDate = value;
-      }
-    }
 
     bool _IncludeFreeTextData = false;
     /// <summary>
@@ -322,25 +273,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    private int _RecordRangeStart = 0;
-    /// <summary>
-    /// This property defines the start of the record range.
-    /// </summary>
-    public int RecordRangeStart
-    {
-      get { return _RecordRangeStart; }
-      set { _RecordRangeStart = value; }
-    }
-
-    private int _RecordRangeFinish = 300;
-    /// <summary>
-    /// this property defines the end of the record range.
-    /// </summary>
-    public int RecordRangeFinish
-    {
-      get { return _RecordRangeFinish; }
-      set { _RecordRangeFinish = value; }
-    }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -560,11 +492,8 @@ namespace Evado.Model.Digital
       String stExportParameters = "Record Export Parameters:"
         + "\r\n -ProjectId: " + this.Project
         + "\r\n -ExportDataSource: " + this.ExportDataSource
-        + "\r\n -FormId: " + this.FormId
-        + "\r\n -Range Start Date: " + this.RangeStartDate
-        + "\r\n -Range Finish Date: " + this.RangeFinishDate
+        + "\r\n -FormId: " + this.LayoutId
         + "\r\n -Include Free Text: " + this.IncludeFreeTextData
-        + "\r\n -HideTestSites: " + this.IncludeTestSites
         + "\r\n -Include Draft Records: " + this.IncludeDraftRecords;
 
       return stExportParameters;

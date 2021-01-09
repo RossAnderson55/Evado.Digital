@@ -473,7 +473,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.UserAdmin_Introductory_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -534,7 +534,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.UserAdmin_Reset_Password_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -596,7 +596,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.UserAdmin_UpdatePassword_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -658,7 +658,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.UserAdmin_Password_Confirmation_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
@@ -721,7 +721,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EvLabels.UserAdmin_Demo_Registration_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited_Access );
+        Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
