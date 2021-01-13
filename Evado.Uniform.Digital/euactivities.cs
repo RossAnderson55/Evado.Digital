@@ -921,7 +921,7 @@ namespace Evado.UniForm.Clinical
       // Create the trial id object
       // 
       groupField = pageGroup.createReadOnlyTextField (
-        EvIdentifiers.TRIAL_ID,
+        EvIdentifiers.APPLICATION_ID,
         EvLabels.Label_Project_Id,
         this.Session.Application.ApplicationId
         + EvLabels.Space_Hypen

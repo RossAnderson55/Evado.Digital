@@ -569,7 +569,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -586,7 +586,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -603,7 +603,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -620,7 +620,7 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
@@ -638,17 +638,17 @@ namespace Evado.UniForm.Clinical
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
             pageCommand.SetPageId ( MenuItem.PageId );
 
             pageCommand.SetGuid ( this.Session.Record.Guid );
 
-            if ( this.Session.CommonRecord != null )
+            if ( this.Session.Entity != null )
             {
               pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
-                this.Session.CommonRecord.TypeId );
+                this.Session.Entity.TypeId );
             }
             return pageCommand;
           }

@@ -53,7 +53,7 @@ namespace Evado.UniForm.Clinical
     public static EuAdapterClasses convertRecordType (
        Evado.Model.Digital.EdRecordTypes RecordType )
     {
-      return EuAdapterClasses.Record;
+      return EuAdapterClasses.Records;
     }
 
     // ===============================================================================

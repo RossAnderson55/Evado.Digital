@@ -278,7 +278,7 @@ namespace Evado.UniForm.Clinical
       // if the parameter value exists then set the customerId
       // 
       parameterProjectGuid = PageCommand.GetGuid ( );
-      parameterProjectId = PageCommand.GetParameter ( EvIdentifiers.TRIAL_ID );
+      parameterProjectId = PageCommand.GetParameter ( EvIdentifiers.APPLICATION_ID );
 
       this.LogValue ( "Project GUID: " + parameterProjectGuid + ", ID: " + parameterProjectId );
 
@@ -432,7 +432,7 @@ namespace Evado.UniForm.Clinical
             project.Guid );
 
           command.AddParameter (
-            EvIdentifiers.TRIAL_ID,
+            EvIdentifiers.APPLICATION_ID,
             project.ApplicationId );
         }
 
@@ -698,7 +698,7 @@ namespace Evado.UniForm.Clinical
       // Create the customer id object
       // 
       pageField = pageGroup.createTextField (
-        EvIdentifiers.TRIAL_ID,
+        EvIdentifiers.APPLICATION_ID,
         EvLabels.Label_Project_Id,
         this.Session.Application.ApplicationId, 10 );
 

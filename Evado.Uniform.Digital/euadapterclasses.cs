@@ -124,7 +124,7 @@ namespace Evado.UniForm.Clinical
       /// <summary>
       /// This option identifies the project record class object.
       /// </summary>
-      Record,
+      Records,
 
       /// <summary>
       /// This option identifies the binary files class object.

@@ -134,7 +134,7 @@ namespace Evado.Dal
     /// 5. Catch - Extract parameters and write error log  
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public static String getParameters ( SqlParameter [ ] CommandParameters )
+    public static String ListParameters ( SqlParameter [ ] CommandParameters )
     {
       // 
       // Initialise the local variables and objects

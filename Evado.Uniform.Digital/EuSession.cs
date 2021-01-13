@@ -666,7 +666,7 @@ namespace Evado.UniForm.Clinical
 
     public EdRecordObjectStates RecordSelectionState = EdRecordObjectStates.Null;
 
-    public EdRecordTypes FormRecordType { get; set; }
+    public EdRecordTypes RecordType { get; set; }
 
     public List<EdRecord> AdminRecordList { get; set; }
 
@@ -676,7 +676,7 @@ namespace Evado.UniForm.Clinical
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public String RecordSelectionFormId
+    public String RecordSelectionLayoutId
     {
       get { return _FormRecords_Selected_FormId; }
       set { _FormRecords_Selected_FormId = value; }
@@ -1208,7 +1208,7 @@ namespace Evado.UniForm.Clinical
 
     public EdRecord Record { get; set; }
 
-    public EdRecord CommonRecord { get; set; }
+    public EdRecord Entity { get; set; }
 
     public EvAncillaryRecord AncillaryRecord = new EvAncillaryRecord ( );
 

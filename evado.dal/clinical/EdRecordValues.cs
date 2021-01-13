@@ -69,37 +69,10 @@ namespace Evado.Dal.Clinical
      * Defines the classes constansts and global variables
      * 
      * *********************************************************************************/
-    // The log file source. 
-    private static string _eventLogSource = ConfigurationManager.AppSettings [ "EventLogSource" ];
     // 
     // selectionList query string.
     // 
-    private const string SQL_QUERY = "Select * \r\nFROM EvRecordField_View \r\n";
-
-    // 
-    // selectionList query string.
-    // 
-    private const string SQL_DATA_POINT_QUERY = "Select * \r\nFROM EvRecordField_DataPoints \r\n";
-
-    /// <summary>
-    /// This constant defines the data point index order for creating the index and 
-    /// retrieving the fields.
-    /// </summary>
-    public const string SQL_UNSCHEDULED_DATA_POINT_INDEX = "SCHEDULE_ID, VisitId, M_Order, MilestoneId, MA_Order, "
-      + " MA_IsMandatory, ActivityId, ACF_Order, ACF_Mandatory, FormId, TCI_Order, FieldId";
-
-    // 
-    // selectionList query string.
-    // 
-    private const string SQL_MONITORING_REPORT_QUERY = "Select * FROM EvRpt_FIELD_MONITOR_QUERY ";
-
-    // 
-    // Data Value Selection visitSchedule query string
-    //  
-    private const string SQL_QUERY_VALUE_LIST = "Select TRI_TextValue "
-      + " FROM EvRecordField_ValueSelection ";
-
-    private const string SQL_RECORD_FIELD_VALUE_LIST = "Select * FROM EV_RECORD_FIELD_VALUES ";
+    private const string SQL_QUERY_VALUES_VIEW = "Select *  FROM ED_RECORD_VALUE_VIEW ";
 
     #region Define the stored procedure names.
     /// <summary>
@@ -208,7 +181,7 @@ namespace Evado.Dal.Clinical
       //
       recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_VALUES_GUID );
       recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
-      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_LAYOUT_GUID );
+      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
       recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
 
 
@@ -531,7 +504,7 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query string.
       // 
-      _Sql_QueryString = SQL_QUERY + " WHERE ( " + EdRecordValues.DB_RECORD_GUID + " =" + EdRecordValues.PARM_RECORD_GUID + ") "
+      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE ( " + EdRecordValues.DB_RECORD_GUID + " =" + EdRecordValues.PARM_RECORD_GUID + ") "
         + "ORDER BY " + EdRecordFields.DB_ORDER + "; ";
 
       this.LogDebug ( _Sql_QueryString );
@@ -798,243 +771,7 @@ namespace Evado.Dal.Clinical
 
     #endregion
 
-    #region Form Field Report methods.
-
-    // =====================================================================================
-    /// <summary>
-    /// This method should be overriden by all of the classes that want to provide data for the reports.
-    /// </summary>
-    /// <param name="Report">EvReport: a Report data object</param>
-    /// <returns>EvReport: a Report data object</returns>
-    /// <remarks>
-    /// 
-    /// 1. Set the report title, datasource and date.
-    /// 
-    /// 2. Add six report headers
-    /// 
-    /// 3. Define the sql query parameters and sql query string. 
-    /// 
-    /// 4. Execute the sql query string and store the results on data table. 
-    /// 
-    /// 5. Loop through the table and extract the data row to the data row object. 
-    /// 
-    /// 6. If data row has no value, create new data row object. 
-    /// 
-    /// 7. Add data row object values to the Report object. 
-    /// 
-    /// 8. Return the Report data object. 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    public EvReport getMonitoringReport ( EvReport Report )
-    {
-      this.LogMethod ( "getReport method. " );
-      this.LogDebug ( "Query count: " + Report.Queries.Length );
-      this.LogDebug ( "Columns count: " + Report.Columns.Count );
-
-      return Report;
-
-      this.LogDebug ( "Parameters: " );
-      for ( int i = 0; i < Report.Queries.Length; i++ )
-      {
-        this.LogDebug ( Report.Queries [ i ].SelectionSource + " = " + Report.Queries [ i ].Value );
-      }
-
-
-      //
-      // Initialize the Method debug log, a report rows list and a formfield object
-      //
-      List<EvReportRow> reportRows = new List<EvReportRow> ( );
-      EdRecordField formField = new EdRecordField ( );
-      int inNoColumns = Report.Columns.Count;
-
-      //
-      // Set the report title, datasource and date.
-      //
-      Report.ReportTitle = "Form Field Properties";
-      Report.DataSourceId = EvReport.ReportSourceCode.FormFields;
-      Report.ReportDate = DateTime.Now;
-
-      //
-      // Add six report headers
-      //
-      if ( inNoColumns < 7 )
-      {
-        Report.Columns = new List<EvReportColumn> ( );
-
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-        Report.Columns.Add ( new EvReportColumn ( ) );
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 0 ].HeaderText = "MilestoneId";
-        Report.Columns [ 0 ].SectionLvl = 0;
-        Report.Columns [ 0 ].GroupingIndex = false;
-        Report.Columns [ 0 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 0 ].SourceField = "MilestoneId";
-        Report.Columns [ 0 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 0 ].StyleWidth = "120px";
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 1 ].HeaderText = "VisitId";
-        Report.Columns [ 1 ].SectionLvl = 0;
-        Report.Columns [ 1 ].GroupingIndex = false;
-        Report.Columns [ 1 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 1 ].SourceField = "VisitId";
-        Report.Columns [ 1 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 1 ].StyleWidth = "120px";
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 2 ].HeaderText = "ActivityId";
-        Report.Columns [ 2 ].SectionLvl = 0;
-        Report.Columns [ 2 ].GroupingIndex = false;
-        Report.Columns [ 2 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 2 ].SourceField = "ActivityId";
-        Report.Columns [ 2 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 2 ].StyleWidth = "120px";
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 3 ].HeaderText = "RecordId";
-        Report.Columns [ 3 ].SectionLvl = 0;
-        Report.Columns [ 3 ].GroupingIndex = false;
-        Report.Columns [ 3 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 3 ].SourceField = "RecordId";
-        Report.Columns [ 3 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 3 ].StyleWidth = "120px";
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 4 ].HeaderText = "Instance";
-        Report.Columns [ 4 ].SectionLvl = 0;
-        Report.Columns [ 4 ].GroupingIndex = false;
-        Report.Columns [ 4 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 4 ].SourceField = "Instance";
-        Report.Columns [ 4 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 4 ].StyleWidth = "60px";
-
-        // 
-        // Set the trial column
-        // 
-        Report.Columns [ 5 ].HeaderText = "Value";
-        Report.Columns [ 5 ].SectionLvl = 0;
-        Report.Columns [ 5 ].GroupingIndex = false;
-        Report.Columns [ 5 ].DataType = EvReport.DataTypes.Text;
-        Report.Columns [ 5 ].SourceField = "Value";
-        Report.Columns [ 5 ].GroupingType = EvReport.GroupingTypes.None;
-        Report.Columns [ 5 ].StyleWidth = "200px";
-      }
-
-      // 
-      // Define the query parameters.
-      // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
-      {
-        new SqlParameter( EdRecords.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10 ),
-        new SqlParameter( EdRecords.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10 ),
-        new SqlParameter( EdRecordFields.PARM_FIELD_ID, SqlDbType.NVarChar, 10 ),
-      };
-
-      //
-      // Extract the parameters from the parameter list.
-      //
-      for ( int i = 0; i < Report.Queries.Length; i++ )
-      {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Application )
-        {
-          cmdParms [ 0 ].Value = Report.Queries [ i ].Value;
-        }
-
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Subject_Id )
-        {
-          cmdParms [ 1 ].Value = Report.Queries [ i ].Value;
-        }
-
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
-        {
-          cmdParms [ 2 ].Value = Report.Queries [ i ].Value;
-        }
-
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.None
-          && Report.Queries [ i ].QueryParameters == "FieldId" )
-        {
-          cmdParms [ 3 ].Value = Report.Queries [ i ].Value;
-        }
-      }//END parameter iteration loop.
-
-      //
-      // Generate the SQL query string.
-      //
-      _Sql_QueryString = SQL_MONITORING_REPORT_QUERY
-        + " WHERE (TrialId = @TrialId) AND (SubjectId = @SubjectId) AND (FormId = @FormId) AND (FieldId = @FieldId) "
-        + " ORDER BY TCI_Order";
-
-      this.LogDebug ( "SQL QUERY: " + _Sql_QueryString );
-
-      //
-      // Execute the query against the database.
-      //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _Sql_QueryString, cmdParms ) )
-      {
-        this.LogDebug ( "EvSqlMethods Debug: " + EvSqlMethods.Log );
-
-        this.LogDebug ( "Returned Records: " + table.Rows.Count );
-
-        // 
-        // Iterate through the results extracting the row information.
-        // 
-        for ( int count = 0; count < table.Rows.Count; count++ )
-        {
-          // 
-          // Extract the table row
-          // 
-          DataRow row = table.Rows [ count ];
-
-         //this.getMonitorQueryRowData ( Report, row );
-
-        }//END record interation loop.
-
-      }//END using statement.
-
-      this.LogDebug ( "Field count: " + reportRows.Count );
-
-      //
-      // Add new report row if there is no report data
-      //
-      if ( Report.DataRecords.Count == 0 )
-      {
-        EvReportRow reportRow = new EvReportRow ( Report.Columns.Count );
-
-        reportRow.ColumnValues [ 0 ] = formField.FieldId;
-        reportRow.ColumnValues [ 1 ] = formField.Title;
-        reportRow.ColumnValues [ 2 ] = EvStatics.getEnumStringValue ( formField.TypeId );
-        reportRow.ColumnValues [ 3 ] = String.Empty;
-
-        Report.DataRecords.Add ( reportRow );
-
-      }//END ADD EMPTY ROW
-
-      // 
-      // Return the result array.
-      // 
-      return Report;
-    }
-
-    #endregion
-
-    #region Retrieval Queries
+    #region Get Record values Queries
 
     // =====================================================================================
     /// <summary>
@@ -1083,7 +820,7 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query string.
       // 
-      _Sql_QueryString = SQL_QUERY + " WHERE (TRI_Guid = @Guid); ";
+      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE (TRI_Guid = @Guid); ";
 
       // 
       // Execute the query against the database.
@@ -1123,7 +860,6 @@ namespace Evado.Dal.Clinical
     //
     // Store the record state to control when to output record values.
     //
-    EdRecordObjectStates _RecordState = EdRecordObjectStates.Null;
     int _ValueCount = 0;
 
     // =====================================================================================
@@ -1151,13 +887,12 @@ namespace Evado.Dal.Clinical
       // 
       // Initialize the method debug log and the return event code. 
       // 
-      EvEventCodes iReturn = EvEventCodes.Ok;
-
       List<SqlParameter> ParmList = new List<SqlParameter> ( );
       StringBuilder SqlUpdateStatement = new StringBuilder ( );
-      this._RecordState = FormRecord.State;
 
-
+      //
+      // Define the record Guid value for the update queies
+      //
       SqlParameter prm = new SqlParameter ( EdRecordValues.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier );
       prm.Value = FormRecord.Guid;
       ParmList.Add ( prm );
@@ -1167,8 +902,6 @@ namespace Evado.Dal.Clinical
       //
       SqlUpdateStatement.AppendLine ( "DELETE FROM ED_ENTITY_LAYOUT_SECTIONS "
       + "WHERE " + EdRecordValues.DB_RECORD_GUID + "= " + EdRecordValues.PARM_RECORD_GUID + ";  \r\n\r\n" );
-
-
 
       // 
       // Iterate through the formfields object. 
@@ -1192,10 +925,10 @@ namespace Evado.Dal.Clinical
         //
         // Create the list of update queries and parameters.
         //
-        this.createUpdateQueryAndParameters (
-          SqlUpdateStatement,
-       ParmList,
-       field );
+        this.GenerateUpdateQueryStatements (
+           SqlUpdateStatement,
+           ParmList,
+           field );
 
       }//END FormField Update Iteration.
 
@@ -1240,7 +973,7 @@ namespace Evado.Dal.Clinical
     /// <param name="RecordField">EvFormField: a formfield data object</param>
     /// <returns>EvEventCodes: an event code for updating fields</returns>
     // -------------------------------------------------------------------------------------
-    private void createUpdateQueryAndParameters (
+    private void GenerateUpdateQueryStatements (
       StringBuilder SqlUpdateStatement,
       List<SqlParameter> ParmList,
       EdRecordField RecordField )
@@ -1322,31 +1055,57 @@ namespace Evado.Dal.Clinical
         case EvDataTypes.Numeric:
           {
             prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = RecordField.FormFieldGuid;
+            prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
-
+            /*
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = EvStatics.CONST_DATE_NULL;
+            ParmList.Add ( prm );
+            */
             break;
           }
         case EvDataTypes.Date:
           {
             prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = RecordField.FormFieldGuid;
+            prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
-
+            /*
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = 0;
+            ParmList.Add ( prm );
+            */
             break;
           }
         case EvDataTypes.Free_Text:
           {
             prm = new SqlParameter ( EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = RecordField.FormFieldGuid;
+            prm.Value = RecordField.ItemText;
             ParmList.Add ( prm );
+            /*
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = 0;
+            ParmList.Add ( prm );
+
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = EvStatics.CONST_DATE_NULL;
+            ParmList.Add ( prm );
+             */
             break;
           }
         default:
           {
             prm = new SqlParameter ( EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = RecordField.FormFieldGuid;
+            prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
+            /*
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = 0;
+            ParmList.Add ( prm );
+
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm.Value = EvStatics.CONST_DATE_NULL;
+            ParmList.Add ( prm );
+            */
             break;
           }
       }//End switch statement

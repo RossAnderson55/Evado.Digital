@@ -139,7 +139,7 @@ namespace Evado.Bll.Clinical
           {
             Evado.Dal.Clinical.EdRecordValues DAL_formRecordField = new Evado.Dal.Clinical.EdRecordValues ( this.ClassParameter );
 
-            report = DAL_formRecordField.getMonitoringReport ( Report );
+            report = Report; // DAL_formRecordField.getMonitoringReport ( Report );
 
             this.LogClass ( "Form Record Fields Status: " + DAL_formRecordField.Log );
 

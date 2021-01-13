@@ -138,8 +138,8 @@
       <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
       <Name>evado.model.integration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Evado.Uniform\evado.model.uniform\evado.model.uniform.csproj">
-      <Project>{eb6a905c-2e28-4a70-b791-dc807165bcd7}</Project>
+    <ProjectReference Include="..\evado.model.uniform\evado.model.uniform.csproj">
+      <Project>{EB6A905C-2E28-4A70-B791-DC807165BCD7}</Project>
       <Name>evado.model.uniform</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model\evado.model.csproj">

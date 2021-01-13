@@ -348,7 +348,7 @@ namespace Evado.UniForm.Clinical
         if ( Form.Design.HttpReference != String.Empty )
         {
           groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.FORM_TITLE,
+            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.LAYOUT_TITLE,
             Form.RecordId
             + EvLabels.Space_Arrow_Right
             + Form.LayoutId
@@ -380,7 +380,7 @@ namespace Evado.UniForm.Clinical
         if ( Form.Design.HttpReference != String.Empty )
         {
           groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.FORM_TITLE,
+            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.LAYOUT_TITLE,
             Form.LayoutId
             + EvLabels.Space_Hypen
             + Form.Title,

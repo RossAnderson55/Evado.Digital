@@ -239,7 +239,7 @@ namespace Evado.UniForm.Clinical
             groupCommand = new Model.UniForm.Command (
               EvLabels.Label_Record,
               EuAdapter.APPLICATION_ID,
-              EuAdapterClasses.Record.ToString ( ),
+              EuAdapterClasses.Records.ToString ( ),
               Model.UniForm.ApplicationMethods.Get_Object );
 
             groupCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
@@ -903,7 +903,7 @@ namespace Evado.UniForm.Clinical
           {
             recordCommand.Title = String.Format ( EvLabels.Alert_Page_Open_Record_Command_Title,
               this.Session.Alert.RecordId );
-            recordCommand.Object = EuAdapterClasses.Record.ToString ( );
+            recordCommand.Object = EuAdapterClasses.Records.ToString ( );
 
             recordCommand.AddParameter ( EvIdentifiers.RECORD_ID, this.Session.Alert.RecordId );
 

@@ -150,8 +150,6 @@
     <Compile Include="EdRecordTable.cs" />
     <Compile Include="EdRecordTableHeader.cs" />
     <Compile Include="EdRecordTableRow.cs" />
-    <Compile Include="evformfieldvalidationnotvalid.cs" />
-    <Compile Include="evformfieldvalidationrules.cs" />
     <Compile Include="evformrecordcomment.cs" />
     <Compile Include="evformrecordsummary.cs" />
     <Compile Include="EvFormSection.cs" />

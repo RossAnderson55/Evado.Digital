@@ -791,7 +791,7 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = GetParameters ( );
       SetParameters ( cmdParms, Application );
 
-      this.LogDebug ( EvSqlMethods.getParameters ( cmdParms ) );
+      this.LogDebug ( EvSqlMethods.ListParameters ( cmdParms ) );
       //
       // Execute the update command.
       //

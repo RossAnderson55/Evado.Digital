@@ -65,6 +65,7 @@ namespace Evado.Bll.Clinical
       this._Dal_FormRecordFields = new Evado.Dal.Clinical.EdRecordValues ( Settings );
     }
     #endregion
+
     #region Class constants
     /// <summary>
     /// This constant defines the save item action for form record fields
@@ -126,35 +127,6 @@ namespace Evado.Bll.Clinical
 
     #endregion
 
-    #region trial FirstSubject trial selectionList Methods
-
-    // =================================================================================
-    /// <summary>
-    /// This method retrieves a report object. 
-    /// </summary>
-    /// <param name="Report">EvReport: a report object containing the selection criteria</param>
-    /// <returns>EvReport: a report object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the report object. 
-    /// 
-    /// 2. Return the report object. 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public EvReport getReport(EvReport Report)
-    {
-      this.LogMethod ( "getReport method." );
-
-      Report = this._Dal_FormRecordFields.getMonitoringReport(Report);
-      this.LogClass ( this._Dal_FormRecordFields.Log );
-
-      this.LogMethodEnd ( "getReport" );
-
-      return Report;
-    }//END getReport class.
-
-    #endregion
 
   }//END EvFormRecordFields Class.
 

@@ -153,8 +153,14 @@ namespace Evado.Bll.Clinical
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogValue ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
-      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
+
+      if ( QueryParameters.States != null )
+      {
+        foreach ( EdRecordObjectStates state in QueryParameters.States )
+        {
+          this.LogValue ( "- State: " + state );
+        }
+      }
       // 
       // Execute the query.
       // 
@@ -573,15 +579,13 @@ namespace Evado.Bll.Clinical
     public EdRecord createRecord ( EdRecord Record )
     {
       this.LogMethod ( "createRecord method." );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
-      this.LogDebug ( "MilestoneId: " + Record.MilestoneId );
-      this.LogDebug ( "ActivityId: " + Record.ActivityId );
+      this.LogDebug ( "ApplicationId: " + Record.ApplicationId );
       this.LogDebug ( "LayoutId: " + Record.LayoutId );
 
       // 
       // Instantiate the local variables
       //
-      EdRecord formRecord = new EdRecord ( );
+      EdRecord record = new EdRecord ( );
 
       // 
       // Check that the ResultData object has valid identifiers to add it to the database.
@@ -594,28 +598,12 @@ namespace Evado.Bll.Clinical
         return Record;
       }
 
-      if ( Record.MilestoneId == String.Empty )
-      {
-        this.LogValue ( " MilestoneId Empty " );
-        Record.EventCode = EvEventCodes.Identifier_Milestone_Id_Error;
-        this.LogMethodEnd ( "createRecord" );
-        return Record;
-      }
-
-      if ( Record.ActivityId == String.Empty )
-      {
-        this.LogValue ( " ActivityId Empty " );
-        Record.EventCode = EvEventCodes.Identifier_Activity_Id_Error;
-        this.LogMethodEnd ( "createRecord" );
-        return Record;
-      }
-
       if ( Record.LayoutId == String.Empty )
       {
         this.LogValue ( " FormId Empty " );
-        formRecord.EventCode = EvEventCodes.Identifier_Form_Id_Error;
+        record.EventCode = EvEventCodes.Identifier_Form_Id_Error;
         this.LogMethodEnd ( "createRecord" );
-        return formRecord;
+        return record;
       }
 
       //
@@ -639,17 +627,17 @@ namespace Evado.Bll.Clinical
         // Create a new copy of the record.
         // 
         this.LogDebug ( "UPDATEABLE RECORD: Create New Record." );
-        formRecord = this._DalRecords.createNewUpdateableRecord ( Record );
+        record = this._DalRecords.createNewUpdateableRecord ( Record );
         this.LogClass ( this._DalRecords.Log );
 
-        this.LogDebug ( "Record Event Code: " + formRecord.EventCode
-          + " > " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( formRecord.EventCode ) );
+        this.LogDebug ( "Record Event Code: " + record.EventCode
+          + " > " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
 
         // 
         // Return the new record.
         // 
         this.LogMethodEnd ( "createRecord" );
-        return formRecord;
+        return record;
 
       }//END Updateable form QueryType. 
 
@@ -657,16 +645,16 @@ namespace Evado.Bll.Clinical
       // Create a new trial Report to the database
       // 
       this.LogDebug ( "Create New Record." );
-      formRecord = this._DalRecords.createRecord ( Record );
+      record = this._DalRecords.createRecord ( Record );
       this.LogClass ( this._DalRecords.Log );
 
-      this.LogDebug ( "Record Event Code: " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( formRecord.EventCode ) );
+      this.LogDebug ( "Record Event Code: " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
 
       // 
       // Return the new record.
       // 
       this.LogMethodEnd ( "createRecord" );
-      return formRecord;
+      return record;
 
     }//END createRecord method
 

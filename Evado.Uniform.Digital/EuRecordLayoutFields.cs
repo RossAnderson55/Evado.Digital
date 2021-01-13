@@ -1560,7 +1560,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Initialise the methods variables and objects.
         //    
-        string FormId = PageCommand.GetParameter ( EvIdentifiers.FORM_ID );
+        string FormId = PageCommand.GetParameter ( EvIdentifiers.LAYOUT_ID );
         string stCount = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT );
         string stSectionNo = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FORM_SECTION );
 

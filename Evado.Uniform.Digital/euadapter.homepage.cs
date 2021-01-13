@@ -401,7 +401,7 @@ namespace Evado.UniForm.Clinical
         if ( this.Session.ApplicationList.Count > 1 )
         {
           groupField = pageGroup.createSelectionListField (
-           EvIdentifiers.TRIAL_ID,
+           EvIdentifiers.APPLICATION_ID,
            EvLabels.Label_Project_Id,
            this.Session.Application.ApplicationId,
            this.Session.ApplicationSelectionList );

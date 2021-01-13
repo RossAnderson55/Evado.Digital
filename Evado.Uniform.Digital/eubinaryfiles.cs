@@ -473,7 +473,7 @@ namespace Evado.UniForm.Clinical
            Model.UniForm.ApplicationMethods.Get_Object );
 
         command.AddParameter (
-          EvIdentifiers.TRIAL_ID,
+          EvIdentifiers.APPLICATION_ID,
           file.TrialId );
 
         command.AddParameter (
@@ -837,7 +837,7 @@ namespace Evado.UniForm.Clinical
       {
         if ( parameter.Name == Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          || parameter.Name == EvIdentifiers.TRIAL_ID
+          || parameter.Name == EvIdentifiers.APPLICATION_ID
           || parameter.Name == EvIdentifiers.ORGANISATION_ID
           || parameter.Name == EuBinaryFiles.CONST_UPLOAD_PARM_ID )
         {

@@ -112,10 +112,10 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// Define the query parameter names.
     /// </summary>
-    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
+    public const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
     private const string PARM_LAYOUT_GUID = "@GUID";
-    private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
-    private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
+    public const string PARM_APPLICATION_ID = "@APPLICATION_ID";
+    public const string PARM_LAYOUT_ID = "@LAYOUT_ID";
     private const string PARM_STATE = "@STATE";
     private const string PARM_TITLE = "@TITLE";
     private const string PARM_HTTP_REFERENCE = "@HTTP_REFERENCE";

@@ -1447,7 +1447,7 @@ namespace Evado.UniForm.Clinical
           + formRecord.StateDesc + EvLabels.Space_Close_Bracket;
 
         EuAdapterClasses appObject =
-          EuConversions.convertRecordType ( this.Session.FormRecordType );
+          EuConversions.convertRecordType ( this.Session.RecordType );
 
         groupCommand = pageGroup.addCommand (
           stTitle,

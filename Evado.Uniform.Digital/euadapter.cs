@@ -1228,7 +1228,7 @@ namespace Evado.UniForm.Clinical
             break;
           }
 
-        case EuAdapterClasses.Record:
+        case EuAdapterClasses.Records:
           {
             this.LogDebug ( "PROJECT RECORDS CLASS SELECTED." );
 

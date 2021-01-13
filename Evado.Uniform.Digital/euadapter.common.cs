@@ -261,9 +261,9 @@ namespace Evado.UniForm.Clinical
       //
       // if the trial id parameter does not exist exit.
       //
-      if ( PageCommand.hasParameter ( EvIdentifiers.TRIAL_ID ) == true )
+      if ( PageCommand.hasParameter ( EvIdentifiers.APPLICATION_ID ) == true )
       {
-        stParameterTrialId = PageCommand.GetParameter ( EvIdentifiers.TRIAL_ID );
+        stParameterTrialId = PageCommand.GetParameter ( EvIdentifiers.APPLICATION_ID );
       }
       this.LogDebug ( "PARAMETER: TrialId: '" + stParameterTrialId + "'" );
 
