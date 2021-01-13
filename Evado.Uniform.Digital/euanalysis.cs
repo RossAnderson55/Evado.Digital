@@ -790,7 +790,7 @@ namespace Evado.UniForm.Clinical
       if ( this._RunQuery == true )
       {
         this.Session.Chart.Series = new List<EvChartSeries> ( );
-        this.Session.Chart = this._Bll_DataAnalysis.runQuery ( this.Session.Chart );
+        //this.Session.Chart = this._Bll_DataAnalysis.runQuery ( this.Session.Chart );
 
         this.LogValue ( this._Bll_DataAnalysis.Log );
       }
@@ -856,13 +856,13 @@ namespace Evado.UniForm.Clinical
       // reinitialise the table column tableColumn.
       //
       groupField.Table.Header [ 0 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_0_Label;
-      groupField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 0 ].Width = "10";
       groupField.Table.Header [ 1 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_1_Label;
-      groupField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 1 ].Width = "20";
       groupField.Table.Header [ 2 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_2_Label;
-      groupField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 2 ].Width = "10";
 
       // 
@@ -871,7 +871,7 @@ namespace Evado.UniForm.Clinical
       for ( int index = 3; index < tableCategoryLength; index++ )
       {
         groupField.Table.Header [ index ].Text = this.Session.Chart.Categories [ index ];
-        groupField.Table.Header [ index ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        groupField.Table.Header [ index ].TypeId = EvDataTypes.Read_Only_Text;
         groupField.Table.Header [ index ].Width = "10";
       }
 
@@ -1187,12 +1187,12 @@ namespace Evado.UniForm.Clinical
       // get the form field selection list.
       //
       if ( this.Session.AnalysisQueryFormFieldId != String.Empty )
-      {
+      {/*
         this.Session.AnalysisFormFieldValueSelectionList = trialRecordFields.GetItemValueList (
           this.Session.Application.ApplicationId,
           this.Session.AnalysisQueryFormId,
           this.Session.AnalysisQueryFormFieldId );
-
+        */
         this.LogValue ( "Value selection list count: " + this.Session.AnalysisFormFieldValueSelectionList.Count );
       }
       else

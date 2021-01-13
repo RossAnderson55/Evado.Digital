@@ -91,7 +91,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// THis varaible _TypeId conntains an empty string.
     /// </summary>
-    private string _TypeId = String.Empty;
+    private EvDataTypes _TypeId = EvDataTypes.Text;
     /// <summary>
     /// This variable _OptionOrUnit contains an empty string.
     /// </summary>
@@ -133,12 +133,12 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This property contains a TypeId value for Table Col Header object.
     /// </summary>
-    public string TypeId
+    public EvDataTypes TypeId
     {
       get { return _TypeId; }
       set
       {
-        _TypeId = value.ToUpper( );
+        _TypeId = value;
       }
     }
     /// <summary>

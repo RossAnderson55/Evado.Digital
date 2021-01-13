@@ -33,46 +33,6 @@ namespace Evado.Model.Digital
     #region Define the Object ScheduleStates as Constants.
 
     /// <summary>
-    /// This contant defines an item type which is read only type.
-    /// </summary>
-    public const string ItemTypeReadOnly = "RO";
-
-    /// <summary>
-    /// This constant defines item type yes no for form field in table column 
-    /// </summary>
-    public const string ItemTypeYesNo = "YN";
-
-    /// <summary>
-    /// This constant defines item type text for form field in table column 
-    /// </summary>
-    public const string ItemTypeText = "TXT";
-
-    /// <summary>
-    /// This constant defines item type numeric for form field in table column 
-    /// </summary>
-    public const string ItemTypeNumeric = "NUM";
-
-    /// <summary>
-    /// This constant defines item type date for form field in table column 
-    /// </summary>
-    public const string ItemTypeDate = "DT";
-
-    /// <summary>
-    /// This constant defines item type matrix for form field in table column 
-    /// </summary>
-    public const string ItemTypeMatrix = "MAT";
-
-    /// <summary>
-    /// This constant defines item type radio button for form field in table column 
-    /// </summary>
-    public const string ItemTypeRadioButton = "RBL";
-
-    /// <summary>
-    /// This constant defines item type selection list for form field in table column 
-    /// </summary>
-    public const string ItemTypeSelectionList = "SL";
-
-    /// <summary>
     /// This constant defines a number of columns for form field in table column 
     /// </summary>
     public const int COLUMNS = 10;
@@ -96,7 +56,18 @@ namespace Evado.Model.Digital
     /// </summary>
     public string ColumnId
     {
-      get { return _ColumnId; }
+      get
+      {
+        //
+        // if column id is empty the use the colunn text as the identifier.
+        //
+        if ( this._ColumnId == String.Empty )
+        {
+          this._ColumnId = _No.ToString( "00" ) ;
+        }
+
+        return _ColumnId;
+      }
       set { _ColumnId = value; }
     }
 
@@ -120,21 +91,16 @@ namespace Evado.Model.Digital
       set { _Width = value; }
     }
 
-    private string _TypeId = String.Empty;
+    private Evado.Model.EvDataTypes _TypeId = Evado.Model.EvDataTypes.Text;
     /// <summary>
     /// This property contains the header column type identifier of table.
     /// </summary>
-    public string TypeId
+    public Evado.Model.EvDataTypes TypeId
     {
       get { return this._TypeId; }
       set
       {
-        this._TypeId = value.ToUpper ( );
-
-        if ( this._TypeId == ItemTypeMatrix )
-        {
-          this._TypeId = ItemTypeReadOnly;
-        }
+        this._TypeId = value;
       }
     }
 
@@ -146,16 +112,6 @@ namespace Evado.Model.Digital
     {
       get { return _OptionsOrUnit; }
       set { _OptionsOrUnit = value; }
-    }
-
-    private EvFormFieldValidationRules _ValidationRules = new EvFormFieldValidationRules ( );
-    /// <summary>
-    /// This property contains the header column validation rule object of table.
-    /// </summary>
-    public EvFormFieldValidationRules ValidationRules
-    {
-      get { return _ValidationRules; }
-      set { _ValidationRules = value; }
     }
 
     String _cDashMetadata = String.Empty;
@@ -171,23 +127,6 @@ namespace Evado.Model.Digital
       set
       {
         this._cDashMetadata = value;
-      }
-    }
-
-    /// <summary>
-    /// This property contains the header column xml text of table.
-    /// </summary>
-    public string xmlTh
-    {
-      get
-      {
-        string _xmlTh = "<th>";
-        _xmlTh += "<Text>" + _Text + "</Text>";
-        _xmlTh += "<Width>" + _Width + "</Width>";
-        _xmlTh += "<TypeId>" + _TypeId + "</TypeId>";
-        _xmlTh += "</th>\r\n";
-
-        return _xmlTh;
       }
     }
 

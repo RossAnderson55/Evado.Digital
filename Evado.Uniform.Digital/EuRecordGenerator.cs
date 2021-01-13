@@ -1768,57 +1768,6 @@ namespace Evado.UniForm.Clinical
     //  =================================================================================
     /// <summary>
     /// Description:
-    ///   This method determines whether the option value is in the validation disable rule list.
-    /// 
-    /// </summary>
-    /// <param name="OptionDisableRules">  Evado.Model.Digital.EvFormFieldValidationNotValid object containing the validation rules.</param>
-    /// <param name="Option">The option to be searched for.</param>
-    /// <returns>True: found, False: not found.</returns>
-    //  ---------------------------------------------------------------------------------
-    private bool isDisableOption (
-        Evado.Model.Digital.EvFormFieldValidationNotValid OptionDisableRules,
-      String Option )
-    {
-      this.LogMethod ( "isDisableOption method.  Option: " + Option );
-
-      // 
-      // If rules are null then exit true
-      // 
-      if ( OptionDisableRules == null )
-      {
-        // this._DebugLog.Append( " > Rules Null" );
-
-        return false;
-      }
-
-      // 
-      // Iteration through the fields looking for a match.
-      // 
-      foreach ( Evado.Model.Digital.EdRecordField field in this._Fields )
-      {
-        string fieldName = field.FieldId;
-
-        // 
-        // If the values match then return true
-        // 
-        if ( OptionDisableRules.hasRule ( fieldName, field.ItemValue, Option ) == true )
-        {
-          // this._DebugLog.Append( " > Disable Option" );
-
-          return true;
-        }
-
-      }//END interation loop
-
-      // this._DebugLog.Append( " > Enable Option" );
-
-      return false;
-
-    }//END isDisableOption method
-
-    //  =================================================================================
-    /// <summary>
-    /// Description:
     ///   This method generates the radio button list form field object as html markup.
     /// 
     /// </summary>
@@ -2174,18 +2123,18 @@ namespace Evado.UniForm.Clinical
         // 
         // Proces the Options or Unit field value.
         // 
-        if ( Field.Table.Header [ column ].TypeId == Evado.Model.Digital.EdRecordTableHeader.ItemTypeMatrix )
+        if ( Field.Table.Header [ column ].TypeId ==  EvDataTypes.Special_Matrix )
         {
-          GroupField.Table.Header [ column ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+          GroupField.Table.Header [ column ].TypeId = EvDataTypes.Read_Only_Text;
         }
 
-        if ( GroupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeNumeric )
+        if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Numeric )
         {
           GroupField.Table.Header [ column ].OptionsOrUnit = Field.Table.Header [ column ].OptionsOrUnit;
         }
 
-        if ( GroupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeRadioButton
-          || GroupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList )
+        if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Radio_Button_List
+          || GroupField.Table.Header [ column ].TypeId == EvDataTypes .Selection_List)
         {
           GroupField.Table.Header [ column ].OptionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
             Field.Table.Header [ column ].OptionsOrUnit );
@@ -2766,7 +2715,7 @@ namespace Evado.UniForm.Clinical
               // 
               // If NA is entered set to numeric null.
               // 
-              if ( FormField.Table.Header [ inCol ].TypeId == Evado.Model.Digital.EdRecordTableHeader.ItemTypeNumeric )
+              if ( FormField.Table.Header [ inCol ].TypeId == EvDataTypes.Numeric )
               {
                 if ( stValue.ToLower ( ) == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NOT_AVAILABLE.ToLower ( ) )
                 {

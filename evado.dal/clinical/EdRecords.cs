@@ -127,9 +127,9 @@ namespace Evado.Dal.Clinical
     private const string PARM_STATE = "@STATE";
     private const string PARM_RECORD_ID = "@RECORD_ID";
     private const string PARM_SOURCE_ID = "@SOURCE_ID";
-    private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
+    public const string PARM_LAYOUT_ID = "@LAYOUT_ID";
     private const string PARM_RECORD_DATE = "@DATE";
-    private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
+    public const string PARM_APPLICATION_ID = "@APPLICATION_ID";
     private const string PARM_COMMENTS = "@COMMENTS";
     private const string PARM_FILTER_VALUE_0 = "@FILTER_VALUE_0";
     private const string PARM_FILTER_VALUE_1 = "@FILTER_VALUE_1";
@@ -546,7 +546,7 @@ namespace Evado.Dal.Clinical
       // Generate the SQL query string.
       //
       _sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
-      this.LogValue (  _sqlQueryString );
+      this.LogValue ( _sqlQueryString );
 
       this.LogValue ( " Execute Query" );
       //
@@ -796,7 +796,7 @@ namespace Evado.Dal.Clinical
                 + "OR " + EdRecords.DB_STATE + " = '" + EdRecordObjectStates.Completed_Record + "') " );
             }
             else
-            { 
+            {
               sqlQueryString.AppendLine ( " ( " + EdRecords.DB_STATE + " = '" + state + "') " );
             }
 
@@ -804,7 +804,7 @@ namespace Evado.Dal.Clinical
           // 
           // Add the multi state query verbs
           // 
-          sqlQueryString.AppendLine ( ") ");
+          sqlQueryString.AppendLine ( ") " );
 
         }//END multiple state selection
 
@@ -1037,7 +1037,7 @@ namespace Evado.Dal.Clinical
       return list;
 
     }//END geList method
- 
+
     #endregion
 
     #region Retrieval methods
@@ -1448,11 +1448,6 @@ namespace Evado.Dal.Clinical
       this.LogDebug ( "IsMandatory: " + Record.IsMandatoryActivity );
       this.LogDebug ( "FormId: " + Record.LayoutId );
 
-      //
-      // Initialize the debug log and return form object. 
-      //
-      EdRecord newRecord = new EdRecord ( );
-
       // 
       // Create the GUID for the database
       // 
@@ -1477,10 +1472,44 @@ namespace Evado.Dal.Clinical
       // 
       var record = this.getRecord ( Record.Guid );
 
+      //
+      // Get the empty field objects for the new record.
+      //
+      this.getLayoutFields ( record );
+
       this.LogMethodEnd ( "createRecord" );
 
       return record;
     } //END createRecord method.
+
+    // =====================================================================================
+    /// <summary>
+    /// This method attaches the record field objects to the empty record.
+    /// </summary>
+    /// <param name="Record">EdRecord:  object.</param>
+    //  ----------------------------------------------------------------------------------
+    private void getLayoutFields (
+      EdRecord Record )
+    {
+      this.LogMethod ( "getLayoutFields." );
+      this.LogDebug ( "State: " + Record.StateDesc );
+      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      EdRecordFields dal_RecordFields = new EdRecordFields ( this.ClassParameters );
+
+      // 
+      // Get the record fields
+      // 
+      Record.Fields = dal_RecordFields.GetFieldList ( Record.LayoutGuid );
+      this.LogDebugClass ( dal_RecordFields.Log );
+
+      this.LogDebug ( "Field count: " + Record.Fields.Count );
+      this.LogMethodEnd ( "getLayoutFields" );
+
+    }//END getLayoutFields method
 
     // =====================================================================================
     /// <summary>
@@ -1923,6 +1952,11 @@ namespace Evado.Dal.Clinical
       // 
       var result = dal_RecordValues.UpdateFields ( Record );
       this.LogClass ( dal_RecordValues.Log );
+
+      if ( result != EvEventCodes.Ok )
+      {
+        this.LogEvent ( "Record value update error encountered, error value '" + result + "'" );
+      }
 
       this.LogMethodEnd ( "updateRecordData" );
       return result;

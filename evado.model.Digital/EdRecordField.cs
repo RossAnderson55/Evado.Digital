@@ -449,7 +449,7 @@ namespace Evado.Model.Digital
           {
             for ( int i = 0; i < 10; i++ )
             {
-              if ( this.Table.Header [ i ].TypeId == EdRecordTableHeader.ItemTypeMatrix
+              if ( this.Table.Header [ i ].TypeId == EvDataTypes.Special_Matrix
                 || ( this._TypeId == EvDataTypes.Special_Matrix && i == 0 ) )
               {
                 continue;

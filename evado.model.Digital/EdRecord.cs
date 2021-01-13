@@ -856,7 +856,7 @@ namespace Evado.Model.Digital
             {
               for ( int col = 0; col < tableRow.Column.Length; col++ )
               {
-                if ( field.Table.Header [ col ].TypeId != EdRecordTableHeader.ItemTypeMatrix
+                if ( field.Table.Header [ col ].TypeId != EvDataTypes.Special_Matrix
                   && tableRow.Column [ col ] != String.Empty )
                 {
                   return false;
@@ -905,7 +905,7 @@ namespace Evado.Model.Digital
               {
                 for ( int col = 0; col < tableRow.Column.Length; col++ )
                 {
-                  if ( field.Table.Header [ col ].TypeId != EdRecordTableHeader.ItemTypeMatrix
+                  if ( field.Table.Header [ col ].TypeId != EvDataTypes.Special_Matrix
                     && tableRow.Column [ col ] != String.Empty )
                   {
                     bValue = true;

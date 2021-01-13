@@ -115,12 +115,13 @@ CREATE TABLE [dbo].[ED_RECORD_LAYOUT_FIELDS](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
+
 /****** Object:  Table [dbo].[ED_RECORD_VALUES]    Script Date: 12/24/2020 10:45:30 ******/
 CREATE TABLE [dbo].[ED_RECORD_VALUES](
 	[EDR_GUID] [uniqueidentifier] NOT NULL,
 	[EDRLF_GUID] [uniqueidentifier] NOT NULL,
 	[EDRV_GUID] [uniqueidentifier] NOT NULL,
-	[EDRV_COLUMN] [smallint] NULL,
+	[EDRV_COLUMN_ID] [nvarchar](10) NULL,
 	[EDRV_ROW] [smallint] NULL,
 	[EDRV_STRING] [nvarchar](100) NULL,
 	[EDRV_NUMERIC] [float] NULL,

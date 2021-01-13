@@ -1355,25 +1355,25 @@ namespace Evado.UniForm.Clinical
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       groupField.Table.Header [ 0 ].Text = "No";
-      groupField.Table.Header [ 0 ].TypeId = Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 0 ].Width = "50px";
 
       groupField.Table.Header [ 1 ].Text = "Header text";
-      groupField.Table.Header [ 1 ].TypeId = Model.UniForm.TableColHeader.ItemTypeText;
+      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Text;
       groupField.Table.Header [ 2 ].Width = "250px";
 
       groupField.Table.Header [ 2 ].Text = "Width";
-      groupField.Table.Header [ 2 ].TypeId = Model.UniForm.TableColHeader.ItemTypeSelectionList;
+      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 2 ].OptionList =
          Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "5;10;12;15;20;25;30;35;40;45;50" );
 
       groupField.Table.Header [ 3 ].Text = "Data Type";
-      groupField.Table.Header [ 3 ].TypeId = Model.UniForm.TableColHeader.ItemTypeSelectionList;
+      groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 3 ].OptionList = EdRecordTableHeader.getTypeList (
         this.Session.FormField.TypeId );
 
       groupField.Table.Header [ 4 ].Text = "Option or Unit";
-      groupField.Table.Header [ 4 ].TypeId = Model.UniForm.TableColHeader.ItemTypeText;
+      groupField.Table.Header [ 4 ].TypeId = EvDataTypes.Text;
 
       //
       // Output the table rows.
@@ -1388,14 +1388,14 @@ namespace Evado.UniForm.Clinical
         //
         if ( this.Session.FormField.Table.PreFilledColumnList.Contains ( indexCol ) == true )
         {
-          header.TypeId = EdRecordTableHeader.ItemTypeReadOnly;
+          header.TypeId = EvDataTypes.Read_Only_Text;
         }
         this.LogValue ( "Col: " + iCol + " T: " + header.Text + ", TYP: " + header.TypeId );
 
         row.Column [ 0 ] = header.No.ToString ( );
         row.Column [ 1 ] = header.Text.ToString ( );
         row.Column [ 2 ] = header.Width;
-        row.Column [ 3 ] = header.TypeId;
+        row.Column [ 3 ] = header.TypeId.ToString();
         row.Column [ 4 ] = header.OptionsOrUnit.ToString ( );
 
         groupField.Table.Rows.Add ( row );
@@ -1475,13 +1475,13 @@ namespace Evado.UniForm.Clinical
 
           var typeId = header.TypeId;
 
-          if ( typeId == EdRecordTableHeader.ItemTypeReadOnly )
+          if ( typeId == EvDataTypes.Read_Only_Text )
           {
-            typeId = EdRecordTableHeader.ItemTypeText;
+            typeId = EvDataTypes.Text;
           }
           else
           {
-            typeId = EdRecordTableHeader.ItemTypeReadOnly;
+            typeId = EvDataTypes.Read_Only_Text;
           }
           this.LogDebug ( "typeId {0}." + typeId );
 
@@ -1490,16 +1490,16 @@ namespace Evado.UniForm.Clinical
           groupField.Table.Header [ iCol ].Width = header.Width;  
 
 
-          if ( groupField.Table.Header [ iCol ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeRadioButton
-            || groupField.Table.Header [ iCol ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList )
+          if ( groupField.Table.Header [ iCol ].TypeId ==  EvDataTypes.Radio_Button_List
+            || groupField.Table.Header [ iCol ].TypeId == EvDataTypes.Selection_List )
           {
             groupField.Table.Header [ iCol ].OptionList =
                Evado.Model.Digital.EvcStatics.getStringAsOptionList ( this.Session.FormField.Table.Header [ iCol ].OptionsOrUnit );
           }
 
-          if ( groupField.Table.Header [ iCol ].TypeId == EdRecordTableHeader.ItemTypeMatrix )
+          if ( groupField.Table.Header [ iCol ].TypeId == EvDataTypes.Special_Matrix)
           {
-            groupField.Table.Header [ iCol ].TypeId = EdRecordTableHeader.ItemTypeText;
+            groupField.Table.Header [ iCol ].TypeId = EvDataTypes.Text;
           }
         }
       }
@@ -1955,7 +1955,7 @@ namespace Evado.UniForm.Clinical
         // Set the column date type.
         //
         this.Session.FormField.Table.Header [ iCol ].TypeId =
-          PageCommand.GetParameter ( stParameterName + "_4" );
+          PageCommand.GetParameter<EvDataTypes> ( stParameterName + "_4" ); 
 
         this.LogValue ( "Text: " + this.Session.FormField.Table.Header [ iCol ].Text );
 
@@ -2017,7 +2017,7 @@ namespace Evado.UniForm.Clinical
           // if the column is included in the prefil list add the value to the table.
           //
           if ( this.Session.FormField.Table.PreFilledColumnList.Contains ( indexCol ) == true
-            || this.Session.FormField.Table.Header [ iCol ].TypeId == EdRecordTableHeader.ItemTypeMatrix )
+            || this.Session.FormField.Table.Header [ iCol ].TypeId == EvDataTypes.Special_Matrix)
           {
             String stValue = PageCommand.GetParameter ( stParmeterName );
 

@@ -336,7 +336,7 @@ namespace Evado.Model.UniForm
                   for ( int i = 0; i < row.Column.Length && i < Table.Header.Length; i++ )
                   {
                     if ( row.Column [ i ] != String.Empty
-                      && Table.Header [ i ].TypeId != TableColHeader.ItemTypeReadOnly )
+                      && Table.Header [ i ].TypeId !=  EvDataTypes.Read_Only_Text )
                     {
                       isEmpty = false;
                     }

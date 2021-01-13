@@ -471,23 +471,23 @@ namespace Evado.UniForm.Clinical
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       groupField.Table.Header [ 0 ].Text = EvLabels.Database_Update_Table_Column_0;
-      groupField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       //groupField.Table.Header [ 0 ].Width = "4";
 
       groupField.Table.Header [ 1 ].Text = EvLabels.Database_Update_Table_Column_1;
-      groupField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 1 ].Width = "12";
 
       groupField.Table.Header [ 2 ].Text = EvLabels.Database_Update_Table_Column_2;
-      groupField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
       //groupField.Table.Header [ 2 ].Width = "5";
 
       groupField.Table.Header [ 3 ].Text = EvLabels.Database_Update_Table_Column_3;
-      groupField.Table.Header [ 3 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 3 ].Width = "20";
 
       groupField.Table.Header [ 4 ].Text = EvLabels.Database_Update_Table_Column_4;
-      groupField.Table.Header [ 4 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 4 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 4 ].Width = "40";
 
       foreach ( EvDataBaseUpdate update in updateList )
@@ -956,16 +956,16 @@ namespace Evado.UniForm.Clinical
         groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
         groupField.Table.Header [ 0 ].Text = EvLabels.Audit_Data_Table_Column_0;
-        groupField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
 
         groupField.Table.Header [ 1 ].Text = EvLabels.Audit_Data_Table_Column_1;
-        groupField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
 
         groupField.Table.Header [ 2 ].Text = EvLabels.Audit_Data_Table_Column_2;
-        groupField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
 
         groupField.Table.Header [ 3 ].Text = EvLabels.Audit_Data_Table_Column_3;
-        groupField.Table.Header [ 3 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Read_Only_Text;
 
         for ( int count = 0; count < dataChange.Items.Count; count++ )
         {

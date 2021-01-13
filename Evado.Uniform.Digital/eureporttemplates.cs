@@ -1978,17 +1978,17 @@ namespace Evado.UniForm.Clinical
 
       groupField.Table.Header [ 0 ].No = 1;
       groupField.Table.Header [ 0 ].Text = EvLabels.ReportTemplate_Query_Column_1_Text;
-      groupField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 0 ].OptionList = sourceOptionList;
 
       groupField.Table.Header [ 1 ].No = 2;
       groupField.Table.Header [ 1 ].Text = EvLabels.ReportTemplate_Query_Column_2_Text;
-      groupField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 1 ].OptionList = mandatoryOptionList;
 
       groupField.Table.Header [ 2 ].No = 3;
       groupField.Table.Header [ 2 ].Text = EvLabels.ReportTemplate_Query_Column_3_Text;
-      groupField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 2 ].OptionList = operationOptionList;
 
       //
@@ -2153,13 +2153,13 @@ namespace Evado.UniForm.Clinical
       groupField.Table.Header [ 0 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 0 ].No = 1;
       groupField.Table.Header [ 0 ].Text = EvLabels.ReportTemplate_Column_1_Text;
-      groupField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 0 ].Width = "40";
 
       groupField.Table.Header [ 1 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 1 ].No = 2;
       groupField.Table.Header [ 1 ].Text = EvLabels.ReportTemplate_Column_2_Text;
-      groupField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeNumeric;
+      groupField.Table.Header [ 1 ].TypeId =  EvDataTypes.Numeric;
       groupField.Table.Header [ 1 ].Width = "10";
 
       //
@@ -2188,21 +2188,21 @@ namespace Evado.UniForm.Clinical
         groupField.Table.Header [ 2 ] = new Model.UniForm.TableColHeader ( );
         groupField.Table.Header [ 2 ].No = 3;
         groupField.Table.Header [ 2 ].Text = EvLabels.ReportTemplate_Column_3_Text;
-        groupField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+        groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Selection_List;
         groupField.Table.Header [ 2 ].OptionList = groupHeaderOptionList;
         groupField.Table.Header [ 2 ].Width = "15";
 
         groupField.Table.Header [ 3 ] = new Model.UniForm.TableColHeader ( );
         groupField.Table.Header [ 3 ].No = 4;
         groupField.Table.Header [ 3 ].Text = EvLabels.ReportTemplate_Column_4_Text;
-        groupField.Table.Header [ 3 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+        groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Selection_List;
         groupField.Table.Header [ 3 ].OptionList = groupingTypeOptionList;
         groupField.Table.Header [ 3 ].Width = "15";
 
         groupField.Table.Header [ 4 ] = new Model.UniForm.TableColHeader ( );
         groupField.Table.Header [ 4 ].No = 5;
         groupField.Table.Header [ 4 ].Text = EvLabels.ReportTemplate_Column_5_Text;
-        groupField.Table.Header [ 4 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList;
+        groupField.Table.Header [ 4 ].TypeId = EvDataTypes.Selection_List;
         groupField.Table.Header [ 4 ].OptionList = sectionLevelOptionList;
         groupField.Table.Header [ 4 ].Width = "10";
 

@@ -1068,41 +1068,41 @@ namespace Evado.UniForm.Clinical
 
       pageField.Table.Header [ 0 ].No = 1;
       pageField.Table.Header [ 0 ].Text = EvLabels.Activity_Page_Form_ID_Column_Title;
-      pageField.Table.Header [ 0 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      pageField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       pageField.Table.Header [ 0 ].Width = "20";
 
       pageField.Table.Header [ 1 ].No = 2;
       pageField.Table.Header [ 1 ].Text = EvLabels.Activity_Page_Form_Title_Column_Title;
-      pageField.Table.Header [ 1 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+      pageField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
       pageField.Table.Header [ 1 ].Width = "40";
 
       if ( PageObject.EditAccess == Evado.Model.UniForm.EditAccess.Disabled )
       {
         pageField.Table.Header [ 2 ].No = 3;
         pageField.Table.Header [ 2 ].Text = EvLabels.Activity_Page_Form_Mandatory_Column_Title;
-        pageField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        pageField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
         pageField.Table.Header [ 2 ].Width = "10";
 
         pageField.Table.Header [ 3 ].No = 4;
         pageField.Table.Header [ 3 ].Text = EvLabels.Activity_Page_Form_Selected_Column_Title;
-        pageField.Table.Header [ 3 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeReadOnly;
+        pageField.Table.Header [ 3 ].TypeId = EvDataTypes.Read_Only_Text;
         pageField.Table.Header [ 3 ].Width = "10";
       }
       else
       {
         pageField.Table.Header [ 2 ].No = 3;
         pageField.Table.Header [ 2 ].Text = EvLabels.Activity_Page_Form_Mandatory_Column_Title;
-        pageField.Table.Header [ 2 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeYesNo;
+        pageField.Table.Header [ 2 ].TypeId =  EvDataTypes.Yes_No;
         pageField.Table.Header [ 2 ].Width = "10";
 
         pageField.Table.Header [ 3 ].No = 4;
         pageField.Table.Header [ 3 ].Text = EvLabels.Activity_Page_Form_Selected_Column_Title;
-        pageField.Table.Header [ 3 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeYesNo;
+        pageField.Table.Header [ 3 ].TypeId = EvDataTypes.Yes_No;
         pageField.Table.Header [ 3 ].Width = "10";
 
         pageField.Table.Header [ 4 ].No = 5;
         pageField.Table.Header [ 4 ].Text = EvLabels.Activity_Page_Form_Order_Column_Title;
-        pageField.Table.Header [ 4 ].TypeId = Evado.Model.UniForm.TableColHeader.ItemTypeText;
+        pageField.Table.Header [ 4 ].TypeId = EvDataTypes.Text;
         pageField.Table.Header [ 4 ].Width = "10";
 
       }

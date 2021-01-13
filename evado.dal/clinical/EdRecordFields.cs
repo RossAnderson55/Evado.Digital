@@ -97,41 +97,41 @@ namespace Evado.Dal.Clinical
     private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
 
     // database fields/columns.
-    private const string DB_GUID = "EDRLF_GUID";
-    private const string DB_LAYOUT_GUID = "EDRL_GUID";
-    private const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
-    private const string DB_FIELD_ID = "FIELD_ID";
-    private const string DB_TYPE_ID = "EDRLF_TYPE_ID";
-    private const string DB_ORDER = "EDRLF_ORDER";
-    private const string DB_TITLE = "EDRLF_TITLE";
-    private const string DB_INSTRUCTIONS = "EDRLF_INSTRUCTIONS";
-    private const string DB_HTTP_REFERENCE = "EDRLF_HTTP_REFERENCE";
-    private const string DB_SECTION_ID = "EDRLF_SECTION_ID";
-    private const string DB_OPTIONS = "EDRLF_OPTIONS";
-    private const string DB_SUMMARY_FIELD = "EDRLF_SUMMARY_FIELD";
-    private const string DB_MANDATORY = "EDRLF_MANDATORY";
-    private const string DB_AI_DATA_POINT = "EDRLF_AI_DATA_POINT";
-    private const string DB_ANALYTICS_DATA_POINT = "EDRLF_ANALYTICS_DATA_POINT";
-    private const string DB_HIDDEN = "EDRLF_HIDDEN";
-    private const string DB_EX_SELECTION_LIST_ID = "EDRLF_EX_SELECTION_LIST_ID";
-    private const string DB_EX_SELECTION_LIST_CATEGORY = "EDRLF_EX_SELECTION_LIST_CATEGORY";
-    private const string DB_DEFAULT_VALUE = "EDRLF_DEFAULT_VALUE";
-    private const string DB_UNIT = "EDRLF_UNIT";
-    private const string DB_UNIT_SCALING = "EDRLF_UNIT_SCALING";
-    private const string DB_VALIDATION_LOWER_LIMIT = "EDRLF_VALIDATION_LOWER_LIMIT";
-    private const string DB_VALIDATION_UPPER_LIMIT = "EDRLF_VALIDATION_UPPER_LIMIT";
-    private const string DB_ALERT_LOWER_LIMIT = "EDRLF_ALERT_LOWER_LIMIT";
-    private const string DB_ALERT_UPPER_LIMIT = "EDRLF_ALERT_UPPER_LIMIT";
-    private const string DB_NORMAL_LOWER_LIMITD = "EDRLF_NORMAL_LOWER_LIMIT";
-    private const string DB_NORMAL_UPPER_LIMIT = "EDRLF_NORMAL_UPPER_LIMIT";
-    private const string DB_FIELD_CATEGORY = "EDRLF_FIELD_CATEGORY";
-    private const string DB_ANALOGUE_LEGEND_START = "EDRLF_ANALOGUE_LEGEND_START";
-    private const string DB_ANALOGUE_LEGEND_FINISH = "EDRLF_ANALOGUE_LEGEND_FINISH";
-    private const string DB_JAVA_SCRIPT = "EDRLF_JAVA_SCRIPT";
-    private const string DB_TABLE = "EDRLF_TABLE";
-    private const string DB_INITIAL_OPTION_LIST = "EDRLF_INITIAL_OPTION_LIST";
-    private const string DB_INITIAL_VERSION = "EDRLF_INITIAL_VERSION";
-    private const string DB_DELETED = "EDRLF_DELETED";
+    public const string DB_GUID = "EDRLF_GUID";
+    public const string DB_LAYOUT_GUID = "EDRL_GUID";
+    public const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
+    public const string DB_FIELD_ID = "FIELD_ID";
+    public const string DB_TYPE_ID = "EDRLF_TYPE_ID";
+    public const string DB_ORDER = "EDRLF_ORDER";
+    public const string DB_TITLE = "EDRLF_TITLE";
+    public const string DB_INSTRUCTIONS = "EDRLF_INSTRUCTIONS";
+    public const string DB_HTTP_REFERENCE = "EDRLF_HTTP_REFERENCE";
+    public const string DB_SECTION_ID = "EDRLF_SECTION_ID";
+    public const string DB_OPTIONS = "EDRLF_OPTIONS";
+    public const string DB_SUMMARY_FIELD = "EDRLF_SUMMARY_FIELD";
+    public const string DB_MANDATORY = "EDRLF_MANDATORY";
+    public const string DB_AI_DATA_POINT = "EDRLF_AI_DATA_POINT";
+    public const string DB_ANALYTICS_DATA_POINT = "EDRLF_ANALYTICS_DATA_POINT";
+    public const string DB_HIDDEN = "EDRLF_HIDDEN";
+    public const string DB_EX_SELECTION_LIST_ID = "EDRLF_EX_SELECTION_LIST_ID";
+    public const string DB_EX_SELECTION_LIST_CATEGORY = "EDRLF_EX_SELECTION_LIST_CATEGORY";
+    public const string DB_DEFAULT_VALUE = "EDRLF_DEFAULT_VALUE";
+    public const string DB_UNIT = "EDRLF_UNIT";
+    public const string DB_UNIT_SCALING = "EDRLF_UNIT_SCALING";
+    public const string DB_VALIDATION_LOWER_LIMIT = "EDRLF_VALIDATION_LOWER_LIMIT";
+    public const string DB_VALIDATION_UPPER_LIMIT = "EDRLF_VALIDATION_UPPER_LIMIT";
+    public const string DB_ALERT_LOWER_LIMIT = "EDRLF_ALERT_LOWER_LIMIT";
+    public const string DB_ALERT_UPPER_LIMIT = "EDRLF_ALERT_UPPER_LIMIT";
+    public const string DB_NORMAL_LOWER_LIMITD = "EDRLF_NORMAL_LOWER_LIMIT";
+    public const string DB_NORMAL_UPPER_LIMIT = "EDRLF_NORMAL_UPPER_LIMIT";
+    public const string DB_FIELD_CATEGORY = "EDRLF_FIELD_CATEGORY";
+    public const string DB_ANALOGUE_LEGEND_START = "EDRLF_ANALOGUE_LEGEND_START";
+    public const string DB_ANALOGUE_LEGEND_FINISH = "EDRLF_ANALOGUE_LEGEND_FINISH";
+    public const string DB_JAVA_SCRIPT = "EDRLF_JAVA_SCRIPT";
+    public const string DB_TABLE = "EDRLF_TABLE";
+    public const string DB_INITIAL_OPTION_LIST = "EDRLF_INITIAL_OPTION_LIST";
+    public const string DB_INITIAL_VERSION = "EDRLF_INITIAL_VERSION";
+    public const string DB_DELETED = "EDRLF_DELETED";
 
     private const string DB_APPLICATION_ID = "APPLICATION_ID";
     private const string DB_LAYOUT_STATE = "EDRL_STATE";
@@ -140,11 +140,11 @@ namespace Evado.Dal.Clinical
     private const string PARM_APPLICATION_ID = "@APPLICATION_ID";
     private const string PARM_GUID = "@GUID";
     private const string PARM_LAYOUT_GUID = "@LAYOUT_GUID";
-    private const string PARM_LAYOUT_ID = "@LAYOUT_ID";
-    private const string PARM_FIELD_ID = "@FIELD_ID";
-    private const string PARM_TYPE_ID = "@TYPE_ID";
+    public const string PARM_LAYOUT_ID = "@LAYOUT_ID";
+    public const string PARM_FIELD_ID = "@FIELD_ID";
+    public const string PARM_TYPE_ID = "@TYPE_ID";
     private const string PARM_ORDER = "@ORDER";
-    private const string PARM_TITLE = "@TITLE";
+    public const string PARM_TITLE = "@TITLE";
     private const string PARM_INSTRUCTIONS = "@INSTRUCTIONS";
     private const string PARM_HTTP_REFERENCE = "@HTTP_REFERENCE";
     private const string PARM_SECTION_ID = "@SECTION_ID";
@@ -375,41 +375,41 @@ namespace Evado.Dal.Clinical
       // Update formfield object with the compatible data row items. 
       //
       formField.Guid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_GUID );
-      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, DB_LAYOUT_GUID );
-      formField.LayoutId = EvSqlMethods.getString ( Row, DB_LAYOUT_ID );
-      formField.FieldId = EvSqlMethods.getString ( Row, DB_FIELD_ID );
-      String value = EvSqlMethods.getString ( Row, DB_TYPE_ID );
+      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_LAYOUT_GUID );
+      formField.LayoutId = EvSqlMethods.getString ( Row, EdRecordFields.DB_LAYOUT_ID );
+      formField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
+      String value = EvSqlMethods.getString ( Row, EdRecordFields.DB_TYPE_ID );
       formField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      formField.Design.Title = EvSqlMethods.getString ( Row, DB_TITLE );
-      formField.Design.Instructions = EvSqlMethods.getString ( Row, DB_INSTRUCTIONS );
-      formField.Design.HttpReference = EvSqlMethods.getString ( Row, DB_HTTP_REFERENCE );
-      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, DB_SECTION_ID );
-      formField.Design.Options = EvSqlMethods.getString ( Row, DB_OPTIONS );
-      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, DB_SUMMARY_FIELD );
-      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, DB_MANDATORY );
-      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, DB_AI_DATA_POINT );
-      formField.Design.HideField = EvSqlMethods.getBool ( Row, DB_HIDDEN );
-      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, DB_EX_SELECTION_LIST_ID );
-      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, DB_EX_SELECTION_LIST_CATEGORY );
-      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, DB_DEFAULT_VALUE );
-      formField.Design.Unit = EvSqlMethods.getString ( Row, DB_UNIT );
-      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, DB_UNIT_SCALING );
+      formField.Design.Title = EvSqlMethods.getString ( Row, EdRecordFields.DB_TITLE );
+      formField.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordFields.DB_INSTRUCTIONS );
+      formField.Design.HttpReference = EvSqlMethods.getString ( Row, EdRecordFields.DB_HTTP_REFERENCE );
+      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_SECTION_ID );
+      formField.Design.Options = EvSqlMethods.getString ( Row, EdRecordFields.DB_OPTIONS );
+      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_SUMMARY_FIELD );
+      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdRecordFields.DB_MANDATORY );
+      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdRecordFields.DB_AI_DATA_POINT );
+      formField.Design.HideField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_HIDDEN );
+      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdRecordFields.DB_EX_SELECTION_LIST_ID );
+      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdRecordFields.DB_EX_SELECTION_LIST_CATEGORY );
+      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdRecordFields.DB_DEFAULT_VALUE );
+      formField.Design.Unit = EvSqlMethods.getString ( Row, EdRecordFields.DB_UNIT );
+      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdRecordFields.DB_UNIT_SCALING );
 
-      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, DB_VALIDATION_LOWER_LIMIT );
-      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, DB_VALIDATION_UPPER_LIMIT );
-      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, DB_ALERT_LOWER_LIMIT );
-      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, DB_ALERT_UPPER_LIMIT );
-      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, DB_NORMAL_LOWER_LIMITD );
-      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, DB_NORMAL_UPPER_LIMIT );
+      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_VALIDATION_LOWER_LIMIT );
+      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_VALIDATION_UPPER_LIMIT );
+      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_ALERT_LOWER_LIMIT );
+      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_ALERT_UPPER_LIMIT );
+      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_NORMAL_LOWER_LIMITD );
+      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_NORMAL_UPPER_LIMIT );
 
-      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, DB_FIELD_CATEGORY );
-      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, DB_ANALOGUE_LEGEND_START );
-      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, DB_ANALOGUE_LEGEND_FINISH );
-      formField.Design.JavaScript = EvSqlMethods.getString ( Row, DB_JAVA_SCRIPT );
+      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_CATEGORY );
+      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdRecordFields.DB_ANALOGUE_LEGEND_START );
+      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdRecordFields.DB_ANALOGUE_LEGEND_FINISH );
+      formField.Design.JavaScript = EvSqlMethods.getString ( Row, EdRecordFields.DB_JAVA_SCRIPT );
       xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
-      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, DB_INITIAL_OPTION_LIST );
-      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, DB_INITIAL_VERSION );
+      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdRecordFields.DB_INITIAL_OPTION_LIST );
+      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_INITIAL_VERSION );
 
       //
       // if the data type is a table then deseriallise the formfield data table.
@@ -444,11 +444,11 @@ namespace Evado.Dal.Clinical
             {
               String cell = formField.Table.Rows [ j ].Column [ i ];
 
-              if ( cell == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
-                && formField.Table.Header [ i ].TypeId != EdRecordTableHeader.ItemTypeNumeric )
+              if ( formField.Table.Header [ i ].TypeId != EvDataTypes.Numeric )
               {
-                cell = "NA";
+                formField.Table.Rows [ j ].Column [ i ] = Evado.Model.EvStatics.convertNumNullToTextNull ( cell );
               }
+
             }//END column iteration loop
 
           }//END newField iteration loop
@@ -456,7 +456,6 @@ namespace Evado.Dal.Clinical
         }// Table has data.
 
       }//END Table newField.
-
 
       // 
       // If it is an external selection list, add the relevant coding visitSchedule items.

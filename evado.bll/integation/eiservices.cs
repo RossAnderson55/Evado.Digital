@@ -616,17 +616,18 @@ namespace Evado.Bll.Integration
 
           switch (Field.Table.Header [ tableColumn ].TypeId)
           {
-            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeNumeric:
+            case  Model.EvDataTypes.Numeric:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Floating_Point;
               break;
             }
-            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeDate:
+            case  Model.EvDataTypes.Date:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Date;
               break;
             }
-            case Evado.Model.Digital.EdRecordTableHeader.ItemTypeYesNo:
+            case  Model.EvDataTypes.Yes_No:
+            case  Model.EvDataTypes.Boolean:
             {
               parameter.DataType = Model.Integration.EiDataTypes.Boolean;
               break;
@@ -704,7 +705,8 @@ namespace Evado.Bll.Integration
             //
             switch (Field.Table.Header [ tableColumn ].TypeId)
             {
-              case Evado.Model.Digital.EdRecordTableHeader.ItemTypeYesNo:
+              case Model.EvDataTypes.Yes_No:
+              case Model.EvDataTypes.Boolean:
               {
                 if (value == "yes" || value == "1" || value == "true")
                 {

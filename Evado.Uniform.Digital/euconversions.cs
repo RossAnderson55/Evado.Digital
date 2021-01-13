@@ -394,12 +394,12 @@ namespace Evado.UniForm.Clinical
           // 
           // Proces the Options or Unit field value.
           // 
-          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeNumeric )
+          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Numeric )
           {
             groupField.Table.Header [ column ].OptionsOrUnit = FormField.Table.Header [ column ].OptionsOrUnit;
           }
-          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeRadioButton
-            || groupField.Table.Header [ column ].TypeId == Evado.Model.UniForm.TableColHeader.ItemTypeSelectionList )
+          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Radio_Button_List
+            || groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Selection_List )
           {
             groupField.Table.Header [ column ].OptionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
               FormField.Table.Header [ column ].OptionsOrUnit );
