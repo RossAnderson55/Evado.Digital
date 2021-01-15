@@ -154,7 +154,6 @@ namespace Evado.Model.Integration
       this.Name = Name;
       this.EvadoFieldId = EvadoFieldId;
       this.Index = Index;
-      this.MetaData = MetaData;
     }
 
     // ===================================================================================
@@ -172,14 +171,12 @@ namespace Evado.Model.Integration
       EiDataTypes Datatype,
       String Name,
       object EvadoFieldId,
-      bool Index,
-      String MetaData )
+      bool Index )
     {
       this._DataType = Datatype;
       this.Name = Name;
       this.EvadoFieldId = EvadoFieldId.ToString ( );
       this.Index = Index;
-      this.MetaData = MetaData;
     }
 
     EiDataTypes _DataType = EiDataTypes.Text;
@@ -187,12 +184,7 @@ namespace Evado.Model.Integration
     /// <summary>
     /// This property defines the column data QueryType for data validation
     /// </summary>
-    public EiDataTypes DataType
-    {
-      get { return _DataType; }
-      set { _DataType = value; }
-    }
-
+    public EiDataTypes DataType { get; set; }
     /// <summary>
     /// This property defines the column name (external identifier)
     /// </summary>
@@ -202,41 +194,6 @@ namespace Evado.Model.Integration
     /// This property defines the columns Evado field identifier.
     /// </summary>
     public String EvadoFieldId { get; set; }
-
-    /// <summary>
-    /// This property defines the columns Evado field identifier.
-    /// </summary>
-    public String MetaData { get; set; }
-
-    /// <summary>
-    /// This property defines the columns SQL data type for the column.
-    /// </summary>
-    public System.Data.SqlDbType SqlDbType { get; set; }
-
-    /// <summary>
-    /// This property defines the columns SQL data type for the column.
-    /// </summary>
-    public int SqlLegnth { get; set; }
-
-    /// <summary>
-    /// This property defines the Sql name for the column.
-    /// </summary>
-    public String SqlName { get; set; }
-
-    /// <summary>
-    /// This property defines the Sql Parameter for the column.
-    /// </summary>
-    public String SqlParameter
-    {
-      get
-      {
-        if ( this.SqlName != null )
-        {
-          return "@" + SqlName;
-        }
-        return String.Empty;
-      }
-    }
 
     /// <summary>
     /// This property indicates that the column is an Evado index identifier.

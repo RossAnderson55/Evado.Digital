@@ -112,7 +112,7 @@ namespace Evado.Dal.Clinical
     private const string PARM_STATE = "@STATE";
     private const string PARM_RECORD_ID = "@RECORD_ID";
     private const string PARM_SOURCE_ID = "@SOURCE_ID";
-    private const string PARM_RECORD_DATE = "@DATE";
+    private const string PARM_RECORD_DATE = "@RECORD_DATE";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
     private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
@@ -1428,7 +1428,17 @@ namespace Evado.Dal.Clinical
       // 
       // Get the record fields
       // 
-      Record.Fields = dal_RecordFields.GetFieldList ( Record.LayoutGuid );
+      var fieldlist = dal_RecordFields.GetFieldList ( Record.LayoutGuid );
+
+      for ( int i = 0; i < fieldlist.Count; i++ )
+      {
+        EdRecordField field = fieldlist [ i ];
+        field.FormFieldGuid = field.Guid;
+        field.Guid = Guid.NewGuid ( );
+
+        Record.Fields.Add ( field );
+      }
+
       this.LogClass ( dal_RecordFields.Log );
       this.LogValue ( "Field count: " + Record.Fields.Count );
       this.LogMethodEnd ( "getLayoutFields" );
@@ -1878,11 +1888,11 @@ namespace Evado.Dal.Clinical
       // Initialize the method debug log, internal variables and objects. 
       //
       this.LogMethod ( "updateRecord, " );
-      this.LogDebug ( "Settings.UserProfile.RoleId: " + this.ClassParameters.UserProfile.RoleId );
+      this.LogDebug ( "UserProfile.RoleId: " + this.ClassParameters.UserProfile.RoleId );
       this.LogDebug ( "Guid: " + Record.Guid );
       this.LogDebug ( "RecordId: " + Record.RecordId );
       this.LogDebug ( "FormGuid: " + Record.LayoutGuid );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId ); ;
+      this.LogDebug ( "ApplicationId: " + Record.ApplicationId ); 
       this.LogDebug ( "State: " + Record.State );
 
       int databaseRecordAffected = 0;
@@ -1898,8 +1908,9 @@ namespace Evado.Dal.Clinical
       // 
       // Validate whether the record object exists.
       // 
-      EdRecord oldRecord = this.getRecord ( Record.RecordId );
-      if ( oldRecord.Guid == Guid.Empty )
+      this.LogDebug ( "Get previous record" );
+      EdRecord previousRecord = this.getRecord ( Record.RecordId );
+      if ( previousRecord.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Record_Id_Error;
       }
@@ -1907,7 +1918,7 @@ namespace Evado.Dal.Clinical
       // 
       // Set the data change object values.
       // 
-      EvDataChange dataChange = this.setChangeRecord ( Record, oldRecord );
+      EvDataChange dataChange = this.setChangeRecord ( Record, previousRecord );
 
       // 
       // Define the SQL query parameters and load the query values.

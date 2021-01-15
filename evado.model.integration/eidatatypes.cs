@@ -29,20 +29,16 @@ namespace Evado.Model.Integration
   [Serializable]
   public enum EiDataTypes
   {
+    Null = 0, 
     /// <summary>
-    /// This enumeration defines a null value of unset query QueryType.
+    /// This enumeration defines string text data QueryType.
     /// </summary>
-    Null = 0,
+    Text = 1,
 
     /// <summary>
     /// This enumeration defines the boolean data QueryType.
     /// </summary>
-    Boolean = 1,
-
-    /// <summary>
-    /// This enumeration defines string text data QueryType.
-    /// </summary>
-    Text = 2,
+    Boolean = 2,
 
     /// <summary>
     /// This enumeration defines floating point data QueryType.

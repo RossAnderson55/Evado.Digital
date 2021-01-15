@@ -2258,6 +2258,8 @@ namespace Evado.UniForm.Clinical
 
       this.LogClass ( this._Bll_FormRecords.Log );
 
+      this.LogDebug ( "There are {0} of fields in the record.", this.Session.Record.Fields.Count );
+
       //
       // return a retrieval error message if the resulting common record guid is empty.
       //
@@ -2966,7 +2968,7 @@ namespace Evado.UniForm.Clinical
       //
       // Iterate through the record fields to process the signature values.
       //
-      foreach ( EdRecordField field in this.Session.Entity.Fields )
+      foreach ( EdRecordField field in this.Session.Record.Fields )
       {
         if ( field.TypeId == EvDataTypes.Signature
           && field.ItemText != String.Empty )

@@ -304,8 +304,7 @@ namespace Evado.Bll.Integration
             if ( csvRowArray [ 0 ] == EiData.CONST_COLUMN_FIELD_ID
               || csvRowArray [ 0 ] == EiData.CONST_COLUMN_NAME
               || csvRowArray [ 0 ] == EiData.CONST_COLUMN_DATA_TYPE
-              || csvRowArray [ 0 ] == EiData.CONST_COLUMN_INDEX
-              || csvRowArray [ 0 ] == EiData.CONST_COLUMN_METADATA )
+              || csvRowArray [ 0 ] == EiData.CONST_COLUMN_INDEX )
             {
               this.processDataParameters (
                  dataObject,
@@ -578,20 +577,17 @@ namespace Evado.Bll.Integration
       //
       String fieldId = EiData.CONST_COLUMN_FIELD_ID;
       String dataType = EiData.CONST_COLUMN_DATA_TYPE;
-      String metaData = EiData.CONST_COLUMN_METADATA;
       String indexData = EiData.CONST_COLUMN_INDEX;
 
       foreach ( EiColumnParameters parameters in ExportData.Columns )
       {
         fieldId += ",\"" + parameters.EvadoFieldId + "\"";
         dataType += ",\"" + parameters.DataType + "\"";
-        metaData += ",\"" + parameters.MetaData + "\"";
         indexData += ",\"" + parameters.Index + "\"";
       }//END iteration loop
 
       csvOutput.Add ( fieldId );
       csvOutput.Add ( dataType );
-      csvOutput.Add ( metaData );
       csvOutput.Add ( indexData );
 
       //

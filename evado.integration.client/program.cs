@@ -1208,8 +1208,7 @@ namespace Evado.IntegrationClient
           if ( csvRowArray [ 0 ] == EiData.CONST_COLUMN_FIELD_ID
             || csvRowArray [ 0 ] == EiData.CONST_COLUMN_NAME
             || csvRowArray [ 0 ] == EiData.CONST_COLUMN_DATA_TYPE
-            || csvRowArray [ 0 ] == EiData.CONST_COLUMN_INDEX
-            || csvRowArray [ 0 ] == EiData.CONST_COLUMN_METADATA )
+            || csvRowArray [ 0 ] == EiData.CONST_COLUMN_INDEX )
           {
             //
             // Add the colum object if is missing.
@@ -1273,15 +1272,6 @@ namespace Evado.IntegrationClient
                   //
                   dataObject.Columns [ dataIndex ].Index = Evado.Model.EvStatics.getBool ( csvRowArray [ columnCount ] );
 
-                  break;
-                }
-              case EiData.CONST_COLUMN_METADATA:
-                {
-                  //Program.writeDebugLog ( "COLUMN METADATA ROW FOUND: " );
-                  //
-                  // Add column index
-                  //
-                  dataObject.Columns [ dataIndex ].MetaData = csvRowArray [ columnCount ];
                   break;
                 }
             }//END Colum header switch

@@ -900,7 +900,7 @@ namespace Evado.Dal.Clinical
       //
       // Delete the sections
       //
-      SqlUpdateStatement.AppendLine ( "DELETE FROM ED_ENTITY_LAYOUT_SECTIONS "
+      SqlUpdateStatement.AppendLine ( "DELETE FROM ED_RECORD_VALUES "
       + "WHERE " + EdRecordValues.DB_RECORD_GUID + "= " + EdRecordValues.PARM_RECORD_GUID + ";  \r\n\r\n" );
 
       // 
@@ -921,6 +921,8 @@ namespace Evado.Dal.Clinical
         {
           field.Guid = Guid.NewGuid ( );
         }
+        this.LogDebug ( "field.FormFieldGuid: " + field.FormFieldGuid );
+        this.LogDebug ( "field.Guid: " + field.Guid );
 
         //
         // Create the list of update queries and parameters.
@@ -930,7 +932,11 @@ namespace Evado.Dal.Clinical
            ParmList,
            field );
 
+        this._ValueCount++;
+
       }//END FormField Update Iteration.
+
+      this.LogDebug ( SqlUpdateStatement.ToString ( ) );
 
       //
       // Convert the list to an array of SqlPararmeters.
@@ -941,6 +947,8 @@ namespace Evado.Dal.Clinical
       {
         parms [ i ] = ParmList [ i ];
       }
+
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( parms ) );
 
       //
       // Execute the update command.
@@ -959,10 +967,6 @@ namespace Evado.Dal.Clinical
 
       return EvEventCodes.Ok;
 
-      // 
-      // Return Ok 
-      // 
-      return EvEventCodes.Ok;
 
     }//END UpdateFields method 
 
@@ -970,6 +974,8 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class update fields on formfield table using formfield object. 
     /// </summary>
+    /// <param name="SqlUpdateStatement">StringBuilder: containing the SQL update statemenet</param>
+    /// <param name="ParmList">list of SqlParameter objects</param>
     /// <param name="RecordField">EvFormField: a formfield data object</param>
     /// <returns>EvEventCodes: an event code for updating fields</returns>
     // -------------------------------------------------------------------------------------
@@ -993,7 +999,11 @@ namespace Evado.Dal.Clinical
 
         default:
           {
-            this.updateSingleValueField ( SqlUpdateStatement, ParmList, RecordField );
+            this.updateSingleValueField ( 
+              SqlUpdateStatement, 
+              ParmList, 
+              RecordField,
+              "", 0);
             break;
           }
       }
@@ -1004,13 +1014,18 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class update fields on formfield table using formfield object. 
     /// </summary>
+    /// <param name="SqlUpdateStatement">StringBuilder: containing the SQL update statemenet</param>
+    /// <param name="ParmList">list of SqlParameter objects</param>
     /// <param name="RecordField">EvFormField: a formfield data object</param>
-    /// <returns>EvEventCodes: an event code for updating fields</returns>
+    /// <param name="ColumnId">String: column identifier</param>
+    /// <param name="Row">Row: row index</param>
     // -------------------------------------------------------------------------------------
     private void updateSingleValueField (
       StringBuilder SqlUpdateStatement,
       List<SqlParameter> ParmList,
-      EdRecordField RecordField )
+      EdRecordField RecordField,
+      String ColumnId,
+      int Row  )
     {
       this.LogMethod ( "updateField method. " );
       this.LogDebug ( "ValueCount: " + _ValueCount );
@@ -1028,114 +1043,169 @@ namespace Evado.Dal.Clinical
       prm = new SqlParameter ( EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
       prm.Value = RecordField.Guid;
       ParmList.Add ( prm );
-
-      // 
-      // Define the record field Guid
-      // 
-      prm = new SqlParameter ( EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = RecordField.FormFieldGuid;
-      ParmList.Add ( prm );
       // 
       // Define the record column identifier
       // 
-      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = "0";
+      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
+      prm.Value = ColumnId;
       ParmList.Add ( prm );
 
       // 
       // Define the record field Guid
       // 
-      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = 0;
+      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount, SqlDbType.SmallInt );
+      prm.Value = Row;
       ParmList.Add ( prm );
 
 
       switch ( RecordField.TypeId )
       {
+        case EvDataTypes.Yes_No:
+        case EvDataTypes.Boolean:
+          {
+            string value = "0";
+            bool bValue = EvStatics.getBool (RecordField.ItemValue);
+            if ( bValue == true )
+            {
+              value = "1";
+            }
+
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
+            prm.Value = value;
+            ParmList.Add ( prm );
+            //
+            // Create the add query .
+            //
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
+            + "(" + EdRecordValues.DB_RECORD_GUID
+            + ", " + EdRecordValues.DB_FIELD_GUID
+            + ", " + EdRecordValues.DB_VALUES_GUID
+            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
+            + ", " + EdRecordValues.DB_VALUES_ROW
+            + ", " + EdRecordValues.DB_VALUES_NUMERIC
+            + "  ) " );
+            SqlUpdateStatement.AppendLine ( "VALUES (" );
+            SqlUpdateStatement.AppendLine (
+              " " + EdRecordValues.PARM_RECORD_GUID
+             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
+            break;
+          }
         case EvDataTypes.Numeric:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
-            /*
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = EvStatics.CONST_DATE_NULL;
-            ParmList.Add ( prm );
-            */
+            //
+            // Create the add query .
+            //
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
+            + "(" + EdRecordValues.DB_RECORD_GUID
+            + ", " + EdRecordValues.DB_FIELD_GUID
+            + ", " + EdRecordValues.DB_VALUES_GUID
+            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
+            + ", " + EdRecordValues.DB_VALUES_ROW
+            + ", " + EdRecordValues.DB_VALUES_NUMERIC
+            + "  ) " );
+            SqlUpdateStatement.AppendLine ( "VALUES (" );
+            SqlUpdateStatement.AppendLine (
+              " " + EdRecordValues.PARM_RECORD_GUID
+             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
             break;
           }
         case EvDataTypes.Date:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            if ( RecordField.ItemValue == String.Empty )
+            {
+              RecordField.ItemValue = EvStatics.CONST_DATE_NULL.ToString( "dd-MMM-yyyy" );
+            }
+
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.DateTime );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
-            /*
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = 0;
-            ParmList.Add ( prm );
-            */
+            //
+            // Create the add query .
+            //
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
+            + "(" + EdRecordValues.DB_RECORD_GUID
+            + ", " + EdRecordValues.DB_FIELD_GUID
+            + ", " + EdRecordValues.DB_VALUES_GUID
+            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
+            + ", " + EdRecordValues.DB_VALUES_ROW
+            + ", " + EdRecordValues.DB_VALUES_DATE
+            + "  ) " );
+            SqlUpdateStatement.AppendLine ( "VALUES (" );
+            SqlUpdateStatement.AppendLine (
+              " " + EdRecordValues.PARM_RECORD_GUID
+             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount + " );\r\n" );
+
             break;
           }
         case EvDataTypes.Free_Text:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount, SqlDbType.NText );
             prm.Value = RecordField.ItemText;
             ParmList.Add ( prm );
-            /*
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = 0;
-            ParmList.Add ( prm );
+            //
+            // Create the add query .
+            //
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
+            + "(" + EdRecordValues.DB_RECORD_GUID
+            + ", " + EdRecordValues.DB_FIELD_GUID
+            + ", " + EdRecordValues.DB_VALUES_GUID
+            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
+            + ", " + EdRecordValues.DB_VALUES_ROW
+            + ", " + EdRecordValues.DB_VALUES_TEXT
+            + "  ) " );
+            SqlUpdateStatement.AppendLine ( "VALUES (" );
+            SqlUpdateStatement.AppendLine (
+              " " + EdRecordValues.PARM_RECORD_GUID
+             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount + " );\r\n" );
 
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = EvStatics.CONST_DATE_NULL;
-            ParmList.Add ( prm );
-             */
             break;
           }
         default:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount, SqlDbType.NVarChar, 100 );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
-            /*
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = 0;
-            ParmList.Add ( prm );
-
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-            prm.Value = EvStatics.CONST_DATE_NULL;
-            ParmList.Add ( prm );
-            */
+            //
+            // Create the add query .
+            //
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
+            + "(" + EdRecordValues.DB_RECORD_GUID
+            + ", " + EdRecordValues.DB_FIELD_GUID
+            + ", " + EdRecordValues.DB_VALUES_GUID
+            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
+            + ", " + EdRecordValues.DB_VALUES_ROW
+            + ", " + EdRecordValues.DB_VALUES_STRING
+            + "  ) " );
+            SqlUpdateStatement.AppendLine ( "VALUES (" );
+            SqlUpdateStatement.AppendLine (
+              " " + EdRecordValues.PARM_RECORD_GUID
+             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount + " );\r\n" );
             break;
           }
       }//End switch statement
-
-
-      //
-      // Create the add query .
-      //
-      SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-      + "(" + EdRecordValues.DB_RECORD_GUID
-      + ", " + EdRecordValues.DB_FIELD_GUID
-      + ", " + EdRecordValues.DB_VALUES_GUID
-      + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-      + ", " + EdRecordValues.DB_VALUES_ROW
-      + ", " + EdRecordValues.DB_VALUES_STRING
-      + ", " + EdRecordValues.DB_VALUES_NUMERIC
-      + ", " + EdRecordValues.DB_VALUES_DATE
-      + ", " + EdRecordValues.DB_VALUES_TEXT
-      + "  ) " );
-      SqlUpdateStatement.AppendLine ( "VALUES (" );
-      SqlUpdateStatement.AppendLine (
-        " " + EdRecordValues.PARM_RECORD_GUID
-       + ", " + EdRecordValues.PARM_FIELD_GUID + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_GUID + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_ROW + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_STRING + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_DATE + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_NUMERIC + this._ValueCount
-       + ", " + EdRecordValues.PARM_VALUE_TEXT + this._ValueCount + " );\r\n" );
 
     }//END method.
 

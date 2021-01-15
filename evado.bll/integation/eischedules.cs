@@ -366,15 +366,6 @@ namespace Evado.Bll.Integration
         false );
 
       //
-      // Add column for milestone period increment
-      //
-      column = ResultData.AddColumn (
-        EiDataTypes.Text,
-        EiSchedules.CONST_SCHEDULE_PREFIX + Evado.Model.Digital.EvSchedule.ScheduleClassFieldNames.Milestone_Period_Increment,
-        false );
-      column.MetaData = "Enumeration:  Days;Weeks;Months;";
-
-      //
       // Add column for Milestone identifier
       //
       ResultData.AddColumn (

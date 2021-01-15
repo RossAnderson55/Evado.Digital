@@ -1218,6 +1218,7 @@ namespace Evado.Model.Digital
       //
       switch ( UserProfile.RoleId )
       {
+        case EvRoleList.Evado_Administrator:
         case EvRoleList.Application_User:
         case EvRoleList.Coordinator:
           {

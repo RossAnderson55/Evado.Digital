@@ -371,24 +371,6 @@ namespace Evado.Bll.Integration
         false );
 
       //
-      // Add column for Activity type
-      //
-      column = ResultData.AddColumn (
-        EiDataTypes.Text,
-        Evado.Model.Digital.EvActivity.ActivityClassFieldNames.Type,
-        false );
-      column.MetaData = "Enumeration:  Clinical;Non_Clinical;";
-
-      //
-      // Add column for Activity type
-      //
-      column = ResultData.AddColumn (
-        EiDataTypes.Text,
-        Evado.Model.Digital.EvActivity.ActivityClassFieldNames.ValidationRule,
-        false );
-      column.MetaData = "Enumeration:  Null;Male_Subject_Only;Female_Subject_Only";
-
-      //
       // Add column for form list
       //
       /*      

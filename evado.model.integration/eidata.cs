@@ -139,10 +139,6 @@ namespace Evado.Model.Integration
     /// </summary>
     public const String CONST_COLUMN_INDEX = "ColumnIndex:";
     /// <summary>
-    /// This constant defines the column metadata CSV row identifier
-    /// </summary>
-    public const String CONST_COLUMN_METADATA = "ColumnMetaData:";
-    /// <summary>
     /// This constant defines the data row CSV row identifier
     /// </summary>
     public const String CONST_DATA_ROW = "RowData:";
@@ -662,13 +658,6 @@ namespace Evado.Model.Integration
 
           columnIndex.Append ( ",\"" + parameter.Index.ToString ( ) + "\"" );
 
-          value = String.Empty;
-          if ( parameter.MetaData != null )
-          {
-            value = parameter.MetaData;
-          }
-          columnMetaData.Append ( ",\"" + value + "\"" );
-
         }//END columns iteration loop
 
       }//END Columns exist.
@@ -696,11 +685,6 @@ namespace Evado.Model.Integration
       {
         csvContent.Append ( "\"" + CONST_COLUMN_INDEX + "\"" );
         csvContent.AppendLine ( columnIndex.ToString ( ) );
-      }
-      if ( columnField.Length > 0 )
-      {
-        csvContent.Append ( "\"" + CONST_COLUMN_METADATA + "\"" );
-        csvContent.AppendLine ( columnMetaData.ToString ( ) );
       }
 
       //
@@ -809,10 +793,6 @@ namespace Evado.Model.Integration
 
           columnIndex.Append ( parameter.Index.ToString ( ) + "," );
 
-          if ( parameter.MetaData != null )
-          {
-            columnMetaData.Append ( parameter.MetaData + "," );
-          }
         }//END columns iteration loop
 
         csvContent.AppendLine ( columnField.ToString ( ) );

@@ -482,7 +482,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if (  this._RoleId == EvRoleList.Administrator
+        if ( this._RoleId == EvRoleList.Evado_Administrator
+          || this._RoleId == EvRoleList.Administrator
           || this._RoleId == EvRoleList.Manager
           || this._RoleId == EvRoleList.Coordinator
           || this._RoleId == EvRoleList.Application_User )
