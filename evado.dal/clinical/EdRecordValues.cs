@@ -169,7 +169,7 @@ namespace Evado.Dal.Clinical
     private EdRecordField getRowData (
       DataRow Row )
     {
-      //this.LogMethod ( "getRowData method" );
+      this.LogMethod ( "getRowData method" );
       // 
       // Initialise method template table string, a return formfield object and an annotation string. 
       // 
@@ -251,6 +251,7 @@ namespace Evado.Dal.Clinical
       //
       // Return the formfield object. 
       //
+      this.LogMethodEnd ( "getRowData" );
       return recordField;
 
     }//END getRowData method.
@@ -447,7 +448,7 @@ namespace Evado.Dal.Clinical
 
     #endregion
 
-    #region Recor field list Queries
+    #region Record field list Queries
 
     // =====================================================================================
     /// <summary>
@@ -482,7 +483,7 @@ namespace Evado.Dal.Clinical
       //
       List<EdRecordField> recordFieldList = new List<EdRecordField> ( );
       EdRecordField recordField = new EdRecordField ( );
-      Guid lastRecordFieldGuid = Guid.Empty;
+      Guid previousValueGuid = Guid.Empty;
 
       // 
       // Validate whether the record Guid is not empty. 
@@ -531,24 +532,29 @@ namespace Evado.Dal.Clinical
 
           Guid recordValueGuid = EvSqlMethods.getGuid ( row, EdRecordValues.DB_VALUES_GUID );
 
+          this.LogDebug ( "previousValueGuid: {0}, recordValueGuid: {1}.", previousValueGuid, recordValueGuid );
+
           //
           // Empty fields are skipped.
           //
           if ( recordValueGuid == Guid.Empty )
           {
+            this.LogDebug ( "Skip the value Guid is empty." );
             continue;
           }
+
           // If the field guid has changed then it is a new field.
           // So add the previous field then get the data for the new field.
           //
-          if ( lastRecordFieldGuid != recordValueGuid )
+          if ( previousValueGuid != recordValueGuid )
           {
-            this.LogDebug ( "Add field to record field list." );
+            this.LogDebug ( "Change of recordValueGuid." );
             //
             // Add the last field to the list.
             //
             if ( recordField.Guid != Guid.Empty )
             {
+              this.LogDebug ( "Add field to record field list." );
               recordFieldList.Add ( recordField );
             }
 
@@ -560,30 +566,70 @@ namespace Evado.Dal.Clinical
             //
             // Update the lst field guid to enable the other field values to be collected.
             //
-            lastRecordFieldGuid = recordField.Guid;
+            previousValueGuid = recordField.Guid;
 
           }//END create new field object.
 
-          else
+          this.LogDebug ( "Read in value data." );
+
+          switch ( recordField.TypeId )
           {
-
-            this.LogDebug ( "Secondary field value." );
-
-            switch ( recordField.TypeId )
-            {
-              case Evado.Model.EvDataTypes.Special_Matrix:
-              case Evado.Model.EvDataTypes.Table:
+            case Evado.Model.EvDataTypes.Special_Matrix:
+            case Evado.Model.EvDataTypes.Table:
+              {
+                this.getTableCellValue ( row, recordField );
+                break;
+              }
+            case Evado.Model.EvDataTypes.Check_Box_List:
+              {
+                this.getCheckBoxValue ( row, recordField );
+                break;
+              }
+            case Evado.Model.EvDataTypes.Numeric:
+              {
+                recordField.ItemValue = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_NUMERIC );
+                this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
+                break;
+              }
+            case Evado.Model.EvDataTypes.Boolean:
+            case Evado.Model.EvDataTypes.Yes_No:
+              {
+                bool bValue = EvSqlMethods.getBool ( row, EdRecordValues.DB_VALUES_NUMERIC);
+                this.LogDebug ( "bValue: {0}.", bValue );
+                recordField.ItemValue = "No";
+                if ( bValue == true )
                 {
-                  this.getTableCellValue ( row, recordField );
+                  recordField.ItemValue = "Yes";
+                }
+
+                this.LogDebug ( "recordField.ItemValue: {0} bool.", recordField.ItemValue );
+                break;
+              }
+            case Evado.Model.EvDataTypes.Date:
+              {
+                var dtValue = EvSqlMethods.getDateTime ( row, EdRecordValues.DB_VALUES_DATE );
+                recordField.ItemValue = EvStatics.getDateAsString ( dtValue );
+                this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
+                break;
+              }
+            case Evado.Model.EvDataTypes.Free_Text:
+              {
+                recordField.ItemText = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_TEXT );
+                this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemText );
+                break;
+              }
+            default:
+              {
+                if ( recordField.isReadOnly == true )
+                {
                   break;
                 }
-              case Evado.Model.EvDataTypes.Check_Box_List:
-                {
-                  this.getCheckBoxValue ( row, recordField );
-                  break;
-                }
-            }
-          }//END value records that need to update the current field.
+                recordField.ItemValue = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_STRING );
+                this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
+                break;
+              }
+          }
+
 
         }//ENR record iteration loop.
 
@@ -771,90 +817,6 @@ namespace Evado.Dal.Clinical
 
     #endregion
 
-    #region Get Record values Queries
-
-    // =====================================================================================
-    /// <summary>
-    /// This class retrieves the formfield table based on Guid
-    /// </summary>
-    /// <param name="Guid">Guid: a formfield global unique identifier</param>
-    /// <returns>EvFormField: a formfield object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Return an empty formfield object if the Guid is empty. 
-    /// 
-    /// 2. Define the sql query parameters and sql query string. 
-    /// 
-    /// 3. Execute the sql query string and store the results on data table. 
-    /// 
-    /// 4. Extract the first data row to the formfield object. 
-    /// 
-    /// 5. Return the formfield data object. 
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private EdRecordField GetItem (
-      Guid Guid )
-    {
-      this.LogMethod ( "GetItem method" );
-      this.LogDebug ( "Guid: " + Guid );
-      // 
-      // Initialize the debug log and a return formfield object. 
-      // 
-      EdRecordField field = new EdRecordField ( );
-
-      // 
-      // Validate the Guid is not empty. 
-      // 
-      if ( Guid == Guid.Empty )
-      {
-        return field;
-      }
-
-      // 
-      // Define the query parameters.
-      // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_VALUE_GUID, SqlDbType.UniqueIdentifier );
-      cmdParms.Value = Guid;
-
-      // 
-      // Define the query string.
-      // 
-      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE (TRI_Guid = @Guid); ";
-
-      // 
-      // Execute the query against the database.
-      // 
-      using ( DataTable table = EvSqlMethods.RunQuery ( _Sql_QueryString, cmdParms ) )
-      {
-        // 
-        // If not rows the return
-        // 
-        if ( table.Rows.Count == 0 )
-        {
-          return field;
-        }
-
-        // 
-        // Extract the table row
-        // 
-        DataRow row = table.Rows [ 0 ];
-
-        // 
-        // Process the results.
-        // 
-        field = this.getRowData ( row );
-
-      }//EMD using statement.
-
-      // 
-      // Pass back the data object.
-      // 
-      return field;
-
-    }//END GetItem method
-    #endregion
-
     #region EvRecordField Update queries
 
     //
@@ -999,11 +961,11 @@ namespace Evado.Dal.Clinical
 
         default:
           {
-            this.updateSingleValueField ( 
-              SqlUpdateStatement, 
-              ParmList, 
+            this.updateSingleValueField (
+              SqlUpdateStatement,
+              ParmList,
               RecordField,
-              "", 0);
+              "", 0 );
             break;
           }
       }
@@ -1025,7 +987,7 @@ namespace Evado.Dal.Clinical
       List<SqlParameter> ParmList,
       EdRecordField RecordField,
       String ColumnId,
-      int Row  )
+      int Row )
     {
       this.LogMethod ( "updateField method. " );
       this.LogDebug ( "ValueCount: " + _ValueCount );
@@ -1064,7 +1026,7 @@ namespace Evado.Dal.Clinical
         case EvDataTypes.Boolean:
           {
             string value = "0";
-            bool bValue = EvStatics.getBool (RecordField.ItemValue);
+            bool bValue = EvStatics.getBool ( RecordField.ItemValue );
             if ( bValue == true )
             {
               value = "1";
@@ -1124,7 +1086,7 @@ namespace Evado.Dal.Clinical
           {
             if ( RecordField.ItemValue == String.Empty )
             {
-              RecordField.ItemValue = EvStatics.CONST_DATE_NULL.ToString( "dd-MMM-yyyy" );
+              RecordField.ItemValue = EvStatics.CONST_DATE_NULL.ToString ( "dd-MMM-yyyy" );
             }
 
             prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.DateTime );

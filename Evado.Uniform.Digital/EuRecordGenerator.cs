@@ -1726,6 +1726,7 @@ namespace Evado.UniForm.Clinical
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
+      this.LogMethodEnd ( "getYesNoField" );
     }//END getYesNoField method.
 
     //  =================================================================================

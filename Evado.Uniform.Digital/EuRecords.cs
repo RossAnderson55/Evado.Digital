@@ -660,6 +660,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getListObject" );
       this.LogValue ( "RecordSelectionState: " + this.Session.RecordSelectionState );
+      this.LogValue ( "RecordSelectionLayoutId: " + this.Session.RecordSelectionLayoutId );
       try
       {
         // 
@@ -911,11 +912,14 @@ namespace Evado.UniForm.Clinical
       //
       // Add a create record command.
       //
-      groupCommand = pageGroup.addCommand (
-        "New Record",
-        EuAdapter.APPLICATION_ID,
-        EuAdapterClasses.Records, Model.UniForm.ApplicationMethods.Create_Object );
-      groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
+      if ( this.Session.RecordSelectionLayoutId != String.Empty )
+      {
+        groupCommand = pageGroup.addCommand (
+          "New Record",
+          EuAdapter.APPLICATION_ID,
+          EuAdapterClasses.Records, Model.UniForm.ApplicationMethods.Create_Object );
+        groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
+      }
 
       // 
       // Iterate through the record list generating a groupCommand to access each record
