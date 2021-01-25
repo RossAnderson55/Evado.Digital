@@ -37,7 +37,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the application profile data object.
   /// </summary>
-  public class EdPlatforms : EvDalBase
+  public class EdAdapterSettings : EvDalBase
   {
     #region class initailisation methods.
     // ==================================================================================
@@ -45,7 +45,7 @@ namespace Evado.Dal.Clinical
     /// This is the class initialisation method.
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdPlatforms ( )
+    public EdAdapterSettings ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
     }
@@ -56,7 +56,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdPlatforms ( EvClassParameters Settings )
+    public EdAdapterSettings ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
@@ -76,78 +76,54 @@ namespace Evado.Dal.Clinical
      * *********************************************************************************/
     // The log file source. 
  
-    private const string SQL_APPLICATION_PROFILE_QUERY = "Select * "
-      + "FROM ED_PLATFORM_SETTINGS";
+    private const string SQL_ADAPTER_SETTINGS_QUERY = "Select * FROM ED_ADAPTER_SETTINGS";
 
-    const string DB_FIELD_GUID = "APS_GUID";
-    const string DB_FIELD_APPLICATION_ID = "APS_APPLICATION_ID";
-    const string DB_FIELD_HOME_PAGE_HEADER = "APS_HOME_PAGE_HEADER";
-    const string DB_FIELD_LICENSE_NO = "APS_LICENSE_NO";
-    const string DB_FIELD_SITE_ORG_ID = "APS_SITE_ORG_ID";
-    const string DB_FIELD_EARLY_WITHDRAWAL_OPTIONS = "APS_EARLY_WITHDRAWAL_OPTIONS";
-    const string DB_FIELD_DISEASE_TYPE_OPTIONS = "APS_DISEASE_TYPE_OPTIONS";
-    const string DB_FIELD_PATIENT_DISEASE_OPTIONS = "APS_PATIENT_DISEASE_OPTIONS";
-    const string DB_FIELD_PATIENT_CATEGORY_OPTIONS = "APS_PATIENT_CATEGORY_OPTIONS";
-    const string DB_FIELD_HIDDEN_DEMOGRAPHIC_FIELDS = "APS_HIDDEN_DEMOGRAPHIC_FIELDS";
-    const string DB_FIELD_PI_SIGNOFF_STATEMENT = "APS_PI_SIGNOFF_STATEMENT";
-    const string DB_FIELD_DISPLAY_VISIT_RESOURCES = "APS_DISPLAY_VISIT_RESOURCES";
-    const string DB_FIELD_DEFAULT_TRIAL_ID = "APS_DEFAULT_TRIAL_ID";
-    const string DB_FIELD_DB_ERROR_MESSAGE = "APS_DB_ERROR_MESSAGE";
-    const string DB_FIELD_ERROR_MESSAGE = "APS_ERROR_MESSAGE";
-    const string DB_FIELD_HELP_URL = "APS_HELP_URL";
-    const string DB_FIELD_REGULATOR_REPORTS = "APS_REGULATOR_REPORTS";
-    const string DB_FIELD_DISPLAY_HISTORY = "APS_DISPLAY_HISTORY";
-    const string DB_FIELD_DEPERSONALISED_ACCESS = "APS_DEPERSONALISED_ACCESS";
-    const string DB_FIELD_LOADED_MODULES = "APS_LOADED_MODULES";
-    const string DB_FIELD_MAX_SELECTION_LENGTH = "APS_MAX_SELECTION_LENGTH";
-    const string DB_FIELD_OVERRIDE_CONFIG_FILE = "APS_OVERRIDE_CONFIG_FILE";
-    const string DB_FIELD_SMTP_SERVER = "APS_SMTP_SERVER";
-    const string DB_FIELD_SMTP_PORT = "APS_SMTP_PORT";
-    const string DB_FIELD_SMTP_USER_ID = "APS_SMTP_USER_ID";
-    const string DB_FIELD_SMTP_PASSWORD = "APS_SMTP_PASSWORD";
-    const string DB_FIELD_ALERT_EMAIL_ADDRESS = "APS_ALERT_EMAIL_ADDRESS";
-    const string DB_FIELD_UPDATE_LOG = "APS_UPDATE_LOG";
+    const string DB_FIELD_GUID = "AS_GUID";
+    const string DB_FIELD_APPLICATION_ID = "AS_APPLICATION_ID";
+    const string DB_FIELD_HOME_PAGE_HEADER = "AS_HOME_PAGE_HEADER";
+    const string DB_FIELD_HELP_URL = "AS_HELP_URL";
+    const string DB_FIELD_MAX_SELECTION_LENGTH = "AS_MAX_SELECTION_LENGTH";
+    const string DB_FIELD_SMTP_SERVER = "AS_SMTP_SERVER";
+    const string DB_FIELD_SMTP_PORT = "AS_SMTP_PORT";
+    const string DB_FIELD_SMTP_USER_ID = "AS_SMTP_USER_ID";
+    const string DB_FIELD_SMTP_PASSWORD = "AS_SMTP_PASSWORD";
+    const string DB_FIELD_ALERT_EMAIL_ADDRESS = "AS_ALERT_EMAIL_ADDRESS";
+    const string DB_FIELD_APPLICATION_URL = "AS_APPLICATION_URL";
+    const string DB_FIELD_STATE = "AS_STATE";
+    const string DB_FIELD_TITLE = "AS_TITLE";
+    const string DB_FIELD_HTTP_REFERENCE = "AS_HTTP_REFERENCE";
+    const string DB_FIELD_DESCRIPTION = "AS_DESCRIPTION";
+    const string DB_FIELD_ROLES = "AS_ROLES";
+    const string DB_FIELD_UPDATE_USER_ID = "AS_UPDATE_USER_ID";
+    const string DB_FIELD_UPDATE_USER = "AS_UPDATE_USER";
+    const string DB_FIELD_UPDATE_DATE = "AS_UPDATE_DATE";
 
     // 
     // Define the stored procedure names.
     // 
-    private const string SQL_PROCEDURE_UPATE_ITEM = "USR_APPLICATION_PROFILE_UPDATE";
+    private const string SQL_PROCEDURE_UPATE_ITEM = "USR_ADAPTER_SETTINGS_UPDATE";
     // 
     // Define the class constants
     // 
     const string PARM_GUID = "@GUID";
     const string PARM_APPLICATION_ID = "@APPLICATION_ID";
-    const string PARM_SITE_ORG_ID = "@SITE_ORG_ID";
     const string PARM_HOME_PAGE_HEADER = "@HOME_PAGE_HEADER";
-    const string PARM_LICENSE_NO = "@LICENSE_NO";
-    const string PARM_EARLY_WITHDRAWAL_OPTIONS = "@EARLY_WITHDRAWAL_OPTIONS";
-    const string PARM_DISEASE_TYPE_OPTIONS = "@DISEASE_TYPE_OPTIONS";
-    const string PARM_PATIENT_DISEASE_OPTIONS = "@PATIENT_DISEASE_OPTIONS";
-    const string PARM_PATIENT_CATEGORY_OPTIONS = "@PATIENT_CATEGORY_OPTIONS";
-    const string PARM_HIDDEN_DEMOGRAPHIC_FIELDS = "@HIDDEN_DEMOGRAPHIC_FIELDS";
-    const string PARM_PI_SIGNOFF_STATEMENT = "@PI_SIGNOFF_STATEMENT";
-    const string PARM_DISPLAY_VISIT_RESOURCES = "@DISPLAY_VISIT_RESOURCES";
-    const string PARM_DEFAULT_TRIAL_ID = "@DEFAULT_TRIAL_ID";
-    const string PARM_DB_ERROR_MESSAGE = "@DB_ERROR_MESSAGE";
-    const string PARM_ERROR_MESSAGE = "@ERROR_MESSAGE";
     const string PARM_HELP_URL = "@HELP_URL";
-    const string PARM_REGULATOR_REPORTS = "@REGULATOR_REPORTS";
-    const string PARM_DISPLAY_HISTORY = "@DISPLAY_HISTORY";
-    const string PARM_DEPERSONALISED_ACCESS = "@DEPERSONALISED_ACCESS";
-    const string PARM_LOADED_MODULES = "@LOADED_MODULES";
     const string PARM_MAX_SELECTION_LENGTH = "@MAX_SELECTION_LENGTH";
-    const string PARM_OVERRIDE_CONFIG_FILE = "@OVERRIDE_CONFIG_FILE";
     const string PARM_SMTP_SERVER = "@SMTP_SERVER";
     const string PARM_SMTP_PORT = "@SMTP_PORT";
     const string PARM_SMTP_USER_ID = "@SMTP_USER_ID";
     const string PARM_SMTP_PASSWORD = "@SMTP_PASSWORD";
     const string PARM_ALERT_EMAIL_ADDRESS = "@ALERT_EMAIL_ADDRESS";
-    const string PARM_UPDATE_LOG = "@UPDATE_LOG";
-
-    private const string PARM_SITE_ID = "@SiteId";
-    private const string PARM_SITE_GUID = "@SiteGuid";
-    private const string PARM_SITE_XML_DATA = "@XmlData";
-    private const string PARM_SITE_UPDATE_LOG = "@UpdateLog";
+    const string PARM_APPLICATION_URL = "@APPLICATION_URL";
+    const string PARM_STATE = "@STATE";
+    const string PARM_TITLE = "@TITLE";
+    const string PARM_HTTP_REFERENCE = "@HTTP_REFERENCE";
+    const string PARM_DESCRIPTION = "@DESCRIPTION";
+    const string PARM_ROLES = "@ROLES";
+    const string PARM_UPDATE_USER_ID = "@UPDATE_USER_ID";
+    const string PARM_UPDATE_USER = "@UPDATE_USER";
+    const string PARM_UPDATE_DATE = "@UPDATE_DATE";
 
     #endregion
 
@@ -170,38 +146,27 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-	      new SqlParameter( EdPlatforms.PARM_APPLICATION_ID, SqlDbType.Char, 1  ),
-	      new SqlParameter( EdPlatforms.PARM_SITE_ORG_ID, SqlDbType.NVarChar, 10 ),
-	      new SqlParameter( EdPlatforms.PARM_HOME_PAGE_HEADER, SqlDbType.NVarChar, 100 ),
-	      new SqlParameter( EdPlatforms.PARM_LICENSE_NO, SqlDbType.UniqueIdentifier ),
-	      new SqlParameter( EdPlatforms.PARM_EARLY_WITHDRAWAL_OPTIONS, SqlDbType.NText ),
+	      new SqlParameter( EdAdapterSettings.PARM_APPLICATION_ID, SqlDbType.Char, 1  ),
+	      new SqlParameter( EdAdapterSettings.PARM_HOME_PAGE_HEADER, SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdAdapterSettings.PARM_HELP_URL, SqlDbType.NVarChar, 50 ),
+        new SqlParameter( EdAdapterSettings.PARM_MAX_SELECTION_LENGTH, SqlDbType.Int ),
+	      new SqlParameter( EdAdapterSettings.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
 
-	      new SqlParameter( EdPlatforms.PARM_DISEASE_TYPE_OPTIONS, SqlDbType.NText ),
-	      new SqlParameter( EdPlatforms.PARM_PATIENT_DISEASE_OPTIONS, SqlDbType.NText ),
-	      new SqlParameter( EdPlatforms.PARM_PATIENT_CATEGORY_OPTIONS, SqlDbType.NText ),
-        new SqlParameter( EdPlatforms.PARM_HIDDEN_DEMOGRAPHIC_FIELDS, SqlDbType.NVarChar, 250 ),
-	      new SqlParameter( EdPlatforms.PARM_PI_SIGNOFF_STATEMENT, SqlDbType.NText ),
-        
-        new SqlParameter( EdPlatforms.PARM_DISPLAY_VISIT_RESOURCES, SqlDbType.Bit ),
-	      new SqlParameter( EdPlatforms.PARM_DEFAULT_TRIAL_ID, SqlDbType.VarChar, 10 ),
-	      new SqlParameter( EdPlatforms.PARM_DB_ERROR_MESSAGE, SqlDbType.NVarChar, 100 ),
-	      new SqlParameter( EdPlatforms.PARM_ERROR_MESSAGE, SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdPlatforms.PARM_HELP_URL, SqlDbType.NVarChar, 50 ),
+	      new SqlParameter( EdAdapterSettings.PARM_SMTP_PORT, SqlDbType.Int ),
+	      new SqlParameter( EdAdapterSettings.PARM_SMTP_USER_ID, SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdAdapterSettings.PARM_SMTP_PASSWORD, SqlDbType.NVarChar, 50 ),
+	      new SqlParameter( EdAdapterSettings.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ),        
+	      new SqlParameter( EdAdapterSettings.PARM_APPLICATION_URL, SqlDbType.NVarChar, 250 ), 
 
-	      new SqlParameter( EdPlatforms.PARM_REGULATOR_REPORTS, SqlDbType.NText ),
-	      new SqlParameter( EdPlatforms.PARM_DISPLAY_HISTORY, SqlDbType.Bit ),
-	      new SqlParameter( EdPlatforms.PARM_DEPERSONALISED_ACCESS, SqlDbType.Bit ),
-	      new SqlParameter( EdPlatforms.PARM_LOADED_MODULES, SqlDbType.VarChar, 250 ),
-        new SqlParameter( EdPlatforms.PARM_MAX_SELECTION_LENGTH, SqlDbType.Int ),
+	      new SqlParameter( EdAdapterSettings.PARM_STATE, SqlDbType.NVarChar, 50 ), 
+	      new SqlParameter( EdAdapterSettings.PARM_TITLE, SqlDbType.NVarChar, 50 ), 
+	      new SqlParameter( EdAdapterSettings.PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250 ), 
+	      new SqlParameter( EdAdapterSettings.PARM_DESCRIPTION, SqlDbType.NText ), 
+	      new SqlParameter( EdAdapterSettings.PARM_ROLES, SqlDbType.NVarChar, 500 ), 
 
-	      new SqlParameter( EdPlatforms.PARM_OVERRIDE_CONFIG_FILE, SqlDbType.Bit ),
-	      new SqlParameter( EdPlatforms.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
-	      new SqlParameter( EdPlatforms.PARM_SMTP_PORT, SqlDbType.Int ),
-	      new SqlParameter( EdPlatforms.PARM_SMTP_USER_ID, SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdPlatforms.PARM_SMTP_PASSWORD, SqlDbType.NVarChar, 50 ),
-	      new SqlParameter( EdPlatforms.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ), 
-
-	      new SqlParameter( EdPlatforms.PARM_UPDATE_LOG, SqlDbType.NText  ),
+	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_USER_ID, SqlDbType.NVarChar,100 ), 
+	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_USER, SqlDbType.NVarChar, 100 ), 
+	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_DATE, SqlDbType.DateTime ),  
       };
 
       return cmdParms;
@@ -212,7 +177,7 @@ namespace Evado.Dal.Clinical
     /// This method assigns the SiteProfile object's values to the arrray of sql parameters. 
     /// </summary>
     /// <param name="cmdParms">SqlParameter: An array of sql query parameters.</param>
-    /// <param name="ApplicationSettings">EvSiteProfile: A Site profile object.</param>
+    /// <param name="AdapterSettings">EvSiteProfile: A Site profile object.</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -221,40 +186,29 @@ namespace Evado.Dal.Clinical
     //  ------------------------------------------------------------------------------------
     private void SetParameters ( 
       SqlParameter [ ] cmdParms, 
-      Evado.Model.Digital.EdPlatform ApplicationSettings )
+      Evado.Model.Digital.EdAdapterParameters AdapterSettings )
     {
       cmdParms [ 0 ].Value = "A";
-      cmdParms [ 1 ].Value = String.Empty;
-      cmdParms [ 2 ].Value = String.Empty;
-      cmdParms [ 3 ].Value = Guid.Empty;
-      cmdParms [ 4 ].Value = String.Empty;
+      cmdParms [ 1 ].Value = AdapterSettings.HomePageHeaderText;
+      cmdParms [ 2 ].Value = AdapterSettings.HelpUrl;
+      cmdParms [ 3 ].Value = AdapterSettings.MaximumSelectionListLength;
+      cmdParms [ 4 ].Value = AdapterSettings.SmtpServer;
 
-      cmdParms [ 5 ].Value = String.Empty;
-      cmdParms [ 6 ].Value = String.Empty;
-      cmdParms [ 7 ].Value = String.Empty;
-      cmdParms [ 8 ].Value = false;
+      cmdParms [ 5 ].Value = AdapterSettings.SmtpServerPort;
+      cmdParms [ 6 ].Value = AdapterSettings.SmtpUserId;
+      cmdParms [ 7 ].Value = AdapterSettings.SmtpPassword;
+      cmdParms [ 8 ].Value = AdapterSettings.EmailAlertTestAddress;
       cmdParms [ 9 ].Value = String.Empty;
 
-      cmdParms [ 10 ].Value = false;
-      cmdParms [ 11 ].Value = String.Empty;
-      cmdParms [ 12 ].Value = String.Empty;
-      cmdParms [ 13 ].Value = String.Empty;
-      cmdParms [ 14 ].Value = ApplicationSettings.HelpUrl;
+      cmdParms [ 10 ].Value = AdapterSettings.State;
+      cmdParms [ 11 ].Value = AdapterSettings.Title;
+      cmdParms [ 12 ].Value = AdapterSettings.HttpReference;
+      cmdParms [ 13 ].Value = AdapterSettings.Description;
+      cmdParms [ 14 ].Value = AdapterSettings.Roles;
 
-      cmdParms [ 15 ].Value = String.Empty;
-      cmdParms [ 16 ].Value = false;
-      cmdParms [ 17 ].Value = true;
-      cmdParms [ 18 ].Value = String.Empty;
-      cmdParms [ 19 ].Value = ApplicationSettings.MaximumSelectionListLength;
-
-      cmdParms [ 20 ].Value = ApplicationSettings.OverRideConfig;
-      cmdParms [ 21 ].Value = ApplicationSettings.SmtpServer;
-      cmdParms [ 22 ].Value = ApplicationSettings.SmtpServerPort;
-      cmdParms [ 23 ].Value = ApplicationSettings.SmtpUserId;
-      cmdParms [ 24 ].Value = ApplicationSettings.SmtpPassword;
-      cmdParms [ 25 ].Value = ApplicationSettings.EmailAlertTestAddress;
-
-      cmdParms [ 26 ].Value = ApplicationSettings.UpdateLog;
+      cmdParms [ 15 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 16 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 17 ].Value = DateTime.Now;
 
     }//END SetParameters method
 
@@ -277,52 +231,52 @@ namespace Evado.Dal.Clinical
     /// 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public Model.Digital.EdPlatform getReaderData ( DataRow Row )
+    public Model.Digital.EdAdapterParameters getReaderData ( DataRow Row )
     {
       //this.LogMethod ( "getReaderData method. " );
       // 
       // Initialise method variables and objects.
       // 
-      Evado.Model.Digital.EdPlatform applicationSettings = new Evado.Model.Digital.EdPlatform ( );
+      Evado.Model.Digital.EdAdapterParameters applicationSettings = new Evado.Model.Digital.EdAdapterParameters ( );
 
       // 
       // Load the query results into the EvProfile object.
       //
-      applicationSettings.Guid = EvSqlMethods.getGuid ( Row, EdPlatforms.DB_FIELD_GUID );
+      applicationSettings.Guid = EvSqlMethods.getGuid ( Row, EdAdapterSettings.DB_FIELD_GUID );
 
-      applicationSettings.ApplicationId = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_APPLICATION_ID );
+      applicationSettings.ApplicationId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_APPLICATION_ID );
 
-      //applicationSettings.EarlyWithdrawalOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_EARLY_WITHDRAWAL_OPTIONS );
+      applicationSettings.HomePageHeaderText = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HOME_PAGE_HEADER);
 
-      //applicationSettings.DiseaseTypeListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_DISEASE_TYPE_OPTIONS );
+      applicationSettings.HelpUrl = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HELP_URL );
 
-      //applicationSettings.DiseaseListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_DISEASE_OPTIONS );
+      applicationSettings.MaximumSelectionListLength = EvSqlMethods.getInteger ( Row, EdAdapterSettings.DB_FIELD_MAX_SELECTION_LENGTH );
 
-     // applicationSettings.CategoryListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_CATEGORY_OPTIONS );
+      applicationSettings.SmtpServer = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_SERVER );
 
-      //applicationSettings.HideSubjectFields = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_HIDDEN_DEMOGRAPHIC_FIELDS );
+      applicationSettings.SmtpServerPort = EvSqlMethods.getInteger ( Row, EdAdapterSettings.DB_FIELD_SMTP_PORT );
 
-      //applicationSettings.SignoffStatement = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PI_SIGNOFF_STATEMENT );
+      applicationSettings.SmtpUserId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_USER_ID );
 
-      applicationSettings.HelpUrl = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_HELP_URL );
+      applicationSettings.SmtpPassword = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_PASSWORD );
 
-      applicationSettings.MaximumSelectionListLength = EvSqlMethods.getInteger ( Row, EdPlatforms.DB_FIELD_MAX_SELECTION_LENGTH );
+      applicationSettings.EmailAlertTestAddress = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_ALERT_EMAIL_ADDRESS );
 
-      applicationSettings.OverRideConfig = EvSqlMethods.getBool ( Row, EdPlatforms.DB_FIELD_OVERRIDE_CONFIG_FILE );
+      //applicationSettings.ap = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_APPLICATION_URL );
 
-      applicationSettings.SmtpServer = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_SMTP_SERVER );
+      applicationSettings.State = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_STATE );
 
-      applicationSettings.SmtpServerPort = EvSqlMethods.getInteger ( Row, EdPlatforms.DB_FIELD_SMTP_PORT );
+      applicationSettings.Title = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_TITLE );
 
-      applicationSettings.SmtpUserId = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_SMTP_USER_ID );
+      applicationSettings.HttpReference = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HTTP_REFERENCE );
 
-      applicationSettings.SmtpPassword = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_SMTP_PASSWORD );
+      applicationSettings.Description = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_DESCRIPTION );
 
-      applicationSettings.EmailAlertTestAddress = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_ALERT_EMAIL_ADDRESS );
+      applicationSettings.Roles = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_ROLES );
 
-      applicationSettings.UpdateLog = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_UPDATE_LOG );
+      applicationSettings.UpdatedBy = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_UPDATE_USER );
 
-      //applicationSettings.LoadedModules = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_LOADED_MODULES ) ;
+      applicationSettings.UpdatedByUserId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_UPDATE_USER_ID );
 
       if ( applicationSettings.DemoAccountExpiryDays == 0 )
       {
@@ -363,14 +317,14 @@ namespace Evado.Dal.Clinical
     /// 6. Return a SiteProfile Object. 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EdPlatform getItem ( string ApplicationId )
+    public Evado.Model.Digital.EdAdapterParameters getItem ( string ApplicationId )
     {
       this.LogMethod ( "getItem method. " );
 
       // 
       // Define the local variables and objects.
       // 
-      Evado.Model.Digital.EdPlatform SettingObject = new Evado.Model.Digital.EdPlatform ( );
+      Evado.Model.Digital.EdAdapterParameters adapterParameters = new Evado.Model.Digital.EdAdapterParameters ( );
       String sqlQueryString = String.Empty;
 
       // 
@@ -378,20 +332,20 @@ namespace Evado.Dal.Clinical
       // 
       if ( ApplicationId == String.Empty )
       {
-        return SettingObject;
+        return adapterParameters;
       }
 
       // 
       // Define the query parameters.
       // 
-      SqlParameter cmdParms = new SqlParameter ( EdPlatforms.PARM_APPLICATION_ID, SqlDbType.NVarChar, 1 );
+      SqlParameter cmdParms = new SqlParameter ( EdAdapterSettings.PARM_APPLICATION_ID, SqlDbType.NVarChar, 1 );
       cmdParms.Value = ApplicationId;
 
       // 
       // Generate the query string.
       // 
-      sqlQueryString = EdPlatforms.SQL_APPLICATION_PROFILE_QUERY
-        + " WHERE (" + EdPlatforms.DB_FIELD_APPLICATION_ID + " = " + EdPlatforms.PARM_APPLICATION_ID + " ); ";
+      sqlQueryString = EdAdapterSettings.SQL_ADAPTER_SETTINGS_QUERY
+        + " WHERE (" + EdAdapterSettings.DB_FIELD_APPLICATION_ID + " = " + EdAdapterSettings.PARM_APPLICATION_ID + " ); ";
 
       this.LogDebug ( sqlQueryString );
 
@@ -405,9 +359,9 @@ namespace Evado.Dal.Clinical
         // and add record to the application profile table.
         if ( table.Rows.Count == 0 )
         {
-          SettingObject = this.getReaderData ( table.Rows [ 0 ] );
+          adapterParameters = this.getReaderData ( table.Rows [ 0 ] );
 
-          return SettingObject;
+          return adapterParameters;
         }
 
         // 
@@ -415,18 +369,18 @@ namespace Evado.Dal.Clinical
         // 
         DataRow row = table.Rows [ 0 ];
 
-        SettingObject = this.getReaderData ( row );
+        adapterParameters = this.getReaderData ( row );
       }
 
-      SettingObject.Parameters = this.LoadObjectParameters ( SettingObject.Guid );  
+      adapterParameters.Parameters = this.LoadObjectParameters ( adapterParameters.Guid );  
 
-      this.LogDebug ( "Parameter list count: " + SettingObject.Parameters.Count );
+      this.LogDebug ( "Parameter list count: " + adapterParameters.Parameters.Count );
 
       //
       // Return an object containing an EvSiteProfile data object.
       //
       this.LogMethodEnd ( "getItem" );
-      return SettingObject;
+      return adapterParameters;
 
     }//END getItemById method.
 
@@ -436,90 +390,9 @@ namespace Evado.Dal.Clinical
 
     // =====================================================================================
     /// <summary>
-    /// This method adds an application profile object to the database.
-    /// </summary>
-    /// <param name="ApplicatonSettings">EvApplicationProfile object</param>
-    /// <returns>EvEventCodes enumeration.</returns>
-    //  ------------------------------------------------------------------------------------
-    private EvEventCodes AddItem ( Evado.Model.Digital.EdPlatform ApplicatonSettings )
-    {
-      this.LogMethod ( "AddItem method. " );
-      EvObjectParameters dbbObjectParameters = new EvObjectParameters ( this.ClassParameters );
-      //
-      // Create the update query string.
-      //
-      String SqlUpdateQuery = "Insert Into EV_APPLICATION_PROFILES \r\n"
-        + " ( "
-        + " APS_APPLICATION_ID, \r\n"
-        + " APS_EARLY_WITHDRAWAL_OPTIONS, \r\n"
-        + " APS_DISEASE_TYPE_OPTIONS, \r\n"
-        + " APS_PATIENT_DISEASE_OPTIONS, \r\n"
-        + " APS_PATIENT_CATEGORY_OPTIONS, \r\n"
-        + " APS_HIDDEN_DEMOGRAPHIC_FIELDS, \r\n"
-        + " APS_PI_SIGNOFF_STATEMENT, \r\n"
-        + " APS_DB_ERROR_MESSAGE, \r\n"
-        + " APS_ERROR_MESSAGE, \r\n"
-        + " APS_HELP_URL, \r\n"
-        + " APS_REGULATOR_REPORTS, \r\n"
-        + " APS_LOADED_MODULES, \r\n"
-        + " APS_MAX_SELECTION_LENGTH, \r\n"
-        + " APS_OVERRIDE_CONFIG_FILE, \r\n"
-        + " APS_DEPERSONALISED_ACCESS, \r\n"
-        + " APS_SMTP_SERVER, \r\n"
-        + " APS_SMTP_PORT, \r\n"
-        + " APS_SMTP_USER_ID, \r\n"
-        + " APS_SMTP_PASSWORD, \r\n"
-        + " APS_ALERT_EMAIL_ADDRESS, \r\n"
-        + " APS_UPDATE_LOG ) "
-        + "values ( \r\n"
-        + " 'A', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " '" + ApplicatonSettings.HelpUrl + "', \r\n"
-        + " '', \r\n"
-        + " '', \r\n"
-        + " 100, \r\n"
-        + " '" + ApplicatonSettings.OverRideConfig + "', \r\n"
-        + " '" + true + "', \r\n"
-        + " 'cpanel1.cloudplus.com', \r\n"
-        + " 587, \r\n"
-        + " 'noreply@evado.com', \r\n"
-        + " '140-William-27', \r\n"
-        + " '',  \r\n"
-        + " '" + ApplicatonSettings.UpdateLog + "'); ";
-
-      //
-      // Execute the update command.
-      //
-      if ( EvSqlMethods.QueryUpdate ( SqlUpdateQuery, null ) == 0 )
-      {
-        return EvEventCodes.Database_Record_Update_Error;
-      }
-
-      //
-      // Save the application parameters.
-      //
-      this.UpdateObjectParameters ( ApplicatonSettings.Parameters, ApplicatonSettings.Guid );
-
-      //
-      // Return an enumerated value EventCode status.
-      //
-      this.LogMethodEnd ( "AddItem" );
-      return EvEventCodes.Ok;
-
-    }//END AddItem method
-
-    // =====================================================================================
-    /// <summary>
     /// This method updates items to the SiteProfile data table.
     /// </summary>
-    /// <param name="ApplicationSettings">EvSiteProfile: A site Profile data object.</param>
+    /// <param name="AdapterParameters">EvSiteProfile: A site Profile data object.</param>
     /// <returns>EvEventCodes: an event code for updating items.</returns>
     /// <remarks>
     /// This method consists of following steps. 
@@ -535,14 +408,14 @@ namespace Evado.Dal.Clinical
     /// 5. Else, return an event code for updating items. 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( Evado.Model.Digital.EdPlatform ApplicationSettings )
+    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterParameters AdapterParameters )
     {
       this.LogMethod ( "updateItem method " );
       //
       // Create the data change object.
       //
       EvDataChanges dataChanges = new EvDataChanges ( );
-      EvDataChange dataChange = this.createDataChange ( ApplicationSettings );
+      EvDataChange dataChange = this.createDataChange ( AdapterParameters );
       /*
       foreach ( EvObjectParameter prm in ApplicationSettings.Parameters )
       {
@@ -554,7 +427,7 @@ namespace Evado.Dal.Clinical
       // Define the SQL query parameters and load the query values.
       // 
       SqlParameter [ ] cmdParms = GetParameters ( );
-      SetParameters ( cmdParms, ApplicationSettings );
+      SetParameters ( cmdParms, AdapterParameters );
       /*
       this.LogDebugValue ( "Parameters:" );
       foreach ( SqlParameter prm in cmdParms )
@@ -590,7 +463,7 @@ namespace Evado.Dal.Clinical
       //
       // Save the application parameters.
       //
-      this.UpdateObjectParameters ( ApplicationSettings.Parameters, ApplicationSettings.Guid );
+      this.UpdateObjectParameters ( AdapterParameters.Parameters, AdapterParameters.Guid );
 
       //
       // Return an enumerated value EventCode status.
@@ -608,7 +481,7 @@ namespace Evado.Dal.Clinical
     /// <param name="ApplicationProperties">EvApplicationProfile Object.</param>
     /// <returns>EvDataChange</returns>
     //-----------------------------------------------------------------------------------
-    private EvDataChange createDataChange ( Evado.Model.Digital.EdPlatform ApplicationProperties )
+    private EvDataChange createDataChange ( Evado.Model.Digital.EdAdapterParameters ApplicationProperties )
     {
       // 
       // Initialise the methods variables and objects.
@@ -618,16 +491,16 @@ namespace Evado.Dal.Clinical
       // 
       // Get an item to be updated.
       // 
-      Evado.Model.Digital.EdPlatform oldItem = this.getItem ( ApplicationProperties.ApplicationId );
+      Evado.Model.Digital.EdAdapterParameters oldItem = this.getItem ( ApplicationProperties.ApplicationId );
 
       // 
       // Compare the changes.
       // 
       EvDataChanges dataChanges = new EvDataChanges ( );
-      dataChange.TableName = EvDataChange.DataChangeTableNames.EdmPlatformSettings;
+      dataChange.TableName = EvDataChange.DataChangeTableNames.EdAdapterSettings;
       dataChange.RecordUid = 1;
       dataChange.RecordGuid = ApplicationProperties.Guid;
-      dataChange.UserId = ApplicationProperties.UserId;
+      dataChange.UserId = this.ClassParameters.UserProfile.UserId;
       dataChange.DateStamp = DateTime.Now;
 
       //

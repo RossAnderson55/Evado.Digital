@@ -22,7 +22,7 @@ namespace evado.model.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace evado.model.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("evado.model.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace evado.model.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,54 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An incorrect UserId or Password was entered. Please re-enter your credentials. .
+        /// </summary>
+        public static string AUTHENTICATION_ERROR_MESSAGE {
+            get {
+                return ResourceManager.GetString("AUTHENTICATION_ERROR_MESSAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have exceeded the maximum number of login attempts..
+        /// </summary>
+        public static string AUTHENTICATION_EXCEEDED_MAX_LOGIN_ATTEMPTS {
+            get {
+                return ResourceManager.GetString("AUTHENTICATION_EXCEEDED_MAX_LOGIN_ATTEMPTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login .
+        /// </summary>
+        public static string AUTHENTICATION_LOGIN_CMD_TITLE {
+            get {
+                return ResourceManager.GetString("AUTHENTICATION_LOGIN_CMD_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Request..
+        /// </summary>
+        public static string AUTHENTICATION_REQUEST_LOGIN {
+            get {
+                return ResourceManager.GetString("AUTHENTICATION_REQUEST_LOGIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Page.
+        /// </summary>
+        public static string HomePage_Command_Title {
+            get {
+                return ResourceManager.GetString("HomePage_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JSON deserialisation failure:.
         /// </summary>
-        internal static string JSON_DESERIALISATION_ERROR {
+        public static string JSON_DESERIALISATION_ERROR {
             get {
                 return ResourceManager.GetString("JSON_DESERIALISATION_ERROR", resourceCulture);
             }
@@ -72,7 +117,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ActivityId:.
         /// </summary>
-        internal static string Label_Activity_Id {
+        public static string Label_Activity_Id {
             get {
                 return ResourceManager.GetString("Label_Activity_Id", resourceCulture);
             }
@@ -81,7 +126,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string Label_No {
+        public static string Label_No {
             get {
                 return ResourceManager.GetString("Label_No", resourceCulture);
             }
@@ -90,7 +135,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string Label_Yes {
+        public static string Label_Yes {
             get {
                 return ResourceManager.GetString("Label_Yes", resourceCulture);
             }
@@ -99,7 +144,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yes/No.
         /// </summary>
-        internal static string Label_Yes_No {
+        public static string Label_Yes_No {
             get {
                 return ResourceManager.GetString("Label_Yes_No", resourceCulture);
             }
@@ -108,7 +153,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  &gt; .
         /// </summary>
-        internal static string Space_Arrow_Right {
+        public static string Space_Arrow_Right {
             get {
                 return ResourceManager.GetString("Space_Arrow_Right", resourceCulture);
             }
@@ -117,7 +162,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  ) .
         /// </summary>
-        internal static string Space_Close_Bracket {
+        public static string Space_Close_Bracket {
             get {
                 return ResourceManager.GetString("Space_Close_Bracket", resourceCulture);
             }
@@ -126,7 +171,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to , .
         /// </summary>
-        internal static string Space_Coma {
+        public static string Space_Coma {
             get {
                 return ResourceManager.GetString("Space_Coma", resourceCulture);
             }
@@ -135,7 +180,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to : .
         /// </summary>
-        internal static string Space_Full_Colon {
+        public static string Space_Full_Colon {
             get {
                 return ResourceManager.GetString("Space_Full_Colon", resourceCulture);
             }
@@ -144,7 +189,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  - .
         /// </summary>
-        internal static string Space_Hypen {
+        public static string Space_Hypen {
             get {
                 return ResourceManager.GetString("Space_Hypen", resourceCulture);
             }
@@ -153,7 +198,7 @@ namespace evado.model.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  ( .
         /// </summary>
-        internal static string Space_Open_Bracket {
+        public static string Space_Open_Bracket {
             get {
                 return ResourceManager.GetString("Space_Open_Bracket", resourceCulture);
             }

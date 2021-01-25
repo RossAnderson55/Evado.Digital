@@ -440,16 +440,6 @@ namespace Evado.UniForm.Clinical
         this.getCustomer ( PageCommand );
 
         //
-        // Create the project selection list field.
-        //
-        this.getApplicationList ( );
-
-        //
-        // set the current project
-        //
-        this.GetApplication ( PageCommand );
-
-        //
         // set the current project
         //
         this.loadTrialFormList ( );
@@ -515,7 +505,6 @@ namespace Evado.UniForm.Clinical
       // Initialise the methods variables and objects.
       //
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-      EvCustomers bll_Customer = new EvCustomers ( this.ClassParameters );
       String description = String.Empty;
 
       clientDataObject.Id = Guid.NewGuid ( );
@@ -532,17 +521,6 @@ namespace Evado.UniForm.Clinical
 
       description = PageCommand.getAsString ( false, true );
 
-      //
-      // get the customer object.
-      //
-      if ( customerGuid != Guid.Empty
-        && this.Session.Customer.Guid != customerGuid )
-      {
-        this.LogDebug ( "Loading new customer object." );
-
-        this.Session.Customer = bll_Customer.getItem ( customerGuid );
-        this._Settings.CustomerGuid = this.Session.Customer.Guid;
-      }
 
       this.LogDebug ( "{0} - {1}.", this.Session.Customer.CustomerNo, this.Session.Customer.Name );
 
@@ -671,7 +649,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EdPlatformSettings applicationProfiles = new EdPlatformSettings (
+            EdAdapterSettings applicationProfiles = new EdAdapterSettings (
               this._ApplicationObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -683,37 +661,6 @@ namespace Evado.UniForm.Clinical
             clientDataObject = applicationProfiles.getClientDataObject ( PageCommand );
             this.ErrorMessage = applicationProfiles.ErrorMessage;
             this.LogAdapter ( applicationProfiles.Log );
-
-            break;
-
-          }
-        case EuAdapterClasses.Customers:
-          {
-            this.LogDebug ( " CUSTOMERS CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuCustomers customers = new EuCustomers (
-              this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            customers.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = customers.getClientDataObject ( PageCommand );
-            this.ErrorMessage = customers.ErrorMessage;
-            this.LogAdapter ( customers.Log );
 
             break;
 
@@ -840,48 +787,6 @@ namespace Evado.UniForm.Clinical
 
             this.ErrorMessage = menus.ErrorMessage;
             this.LogAdapter ( menus.Log );
-
-            break;
-          }
-
-        case EuAdapterClasses.Applications:
-          {
-            this.LogDebug ( "PROJECT CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EdApplicationSettings studies = new EdApplicationSettings (
-              this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.UniForm_BinaryServiceUrl,
-              this.ClassParameters );
-
-            studies.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = studies.getDataObject ( PageCommand );
-            this.ErrorMessage = studies.ErrorMessage;
-            this.LogAdapter ( studies.Log );
-
-            //
-            // If the project has been saved then refresh the selection list by setting it empty.
-            //
-            if ( PageCommand.Method == Model.UniForm.ApplicationMethods.Save_Object )
-            {
-              this.Session.ApplicationList = new List<Model.Digital.EdApplication> ( );
-            }
-
 
             break;
           }

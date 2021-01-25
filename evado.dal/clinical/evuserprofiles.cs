@@ -859,11 +859,6 @@ namespace Evado.Dal.Clinical
       //
       userProfile.Parameters = this.LoadObjectParameters ( userProfile.Guid );
 
-      //
-      // Attach the customer object to the user.
-
-      this.GetCustomer ( userProfile );
-
       // 
       // Return the userProfile data object.
       // 
@@ -959,11 +954,6 @@ namespace Evado.Dal.Clinical
       // load the user parmeter list.
       //
       userProfile.Parameters = this.LoadObjectParameters ( userProfile.Guid );
-
-      //
-      // Attach the customer object to the user.
-
-      this.GetCustomer ( userProfile );
 
       // 
       // Return the userProfile data object.
@@ -1068,11 +1058,6 @@ namespace Evado.Dal.Clinical
       // add the user parmeter list.
       //
       userProfile.Parameters = this.LoadObjectParameters ( userProfile.Guid );
-
-      //
-      // Attach the customer object to the user.
-
-      this.GetCustomer ( userProfile );
 
       // 
       // Return the EvUserProfile data object.
@@ -1191,55 +1176,6 @@ namespace Evado.Dal.Clinical
 
     }//END GetItem method
 
-
-    // =====================================================================================
-    /// <summary>
-    /// This method retrieved the Customer the user is associated with using the CustomerGuid 
-    /// </summary>
-    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile object</param>
-    // -------------------------------------------------------------------------------------
-    public EvEventCodes GetCustomer ( Evado.Model.Digital.EvUserProfile UserProfile )
-    {
-      this.LogMethod ( "GetCustomer method " );
-      this.LogValue ( "UserProfile.CustomerGuid: " + UserProfile.CustomerGuid );
-
-      // 
-      // If a UserProfileid is equal to an empty GUID, return userProfile object. 
-      // 
-      if ( UserProfile.CustomerGuid == Guid.Empty )
-      {
-        return EvEventCodes.Ok;
-      }
-
-      // 
-      // Define local variables
-      // 
-      EvCustomers dal_Customers = new EvCustomers ( this.ClassParameters );
-
-      //
-      // Retrieve the customer object.
-      //
-      var customer = dal_Customers.getItem ( UserProfile.CustomerGuid );
-
-      this.LogDebug ( "Customer.Guid {0}.", customer.Guid );
-
-      //
-      // if the guids match add the customer object to the UserProfile.
-      //
-      if ( customer.Guid == UserProfile.CustomerGuid )
-      {
-        UserProfile.Customer = customer;
-
-        this.LogDebug ( "UserProfile.Customer.Name {0}.", UserProfile.Customer.Name );
-        this.LogMethodEnd ( "GetCustomer" );
-        return EvEventCodes.Ok;
-      }
-
-      this.LogDebugClass ( "Customer GUID did not match the user profile" );
-
-      this.LogMethodEnd ( "GetCustomer" );
-      return EvEventCodes.Identifier_Customer_Id_Error;
-    }//END GetCustomer method
 
     #endregion
 

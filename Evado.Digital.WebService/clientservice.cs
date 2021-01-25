@@ -229,7 +229,7 @@ namespace Evado.Digital.WebService
         }
         catch ( Exception Ex )
         {
-          String EventMessage = EvLabels.JSON_DESERIALISATION_ERROR + "\r\n" + EvStatics.getException ( Ex );
+          String EventMessage = evado.model.Properties.Resources.JSON_DESERIALISATION_ERROR + "\r\n" + EvStatics.getException ( Ex );
 
           this.LogEvent( EventMessage );
 
@@ -387,7 +387,7 @@ namespace Evado.Digital.WebService
             //
             // Initiate requesting a login from the user.
             //
-            this._AppDataObject = this.requestUserLogin ( EvLabels.AUTHENTICATION_ERROR_MESSAGE );
+            this._AppDataObject = this.requestUserLogin ( evado.model.Properties.Resources.AUTHENTICATION_ERROR_MESSAGE );
 
             //
             //  send the web service response to the device app.
@@ -408,7 +408,7 @@ namespace Evado.Digital.WebService
             //
             // Initiate requesting a login from the user.
             //
-            this._AppDataObject = this.requestUserLogin ( EvLabels.AUTHENTICATION_ERROR_MESSAGE );
+            this._AppDataObject = this.requestUserLogin ( evado.model.Properties.Resources.AUTHENTICATION_ERROR_MESSAGE );
 
             //
             //  send the web service response to the device app.
@@ -420,7 +420,7 @@ namespace Evado.Digital.WebService
 
         if ( PageCommand.Type == CommandTypes.Login_Command )
         {
-          PageCommand.Title = EvLabels.HomePage_Command_Title;
+          PageCommand.Title = evado.model.Properties.Resources.HomePage_Command_Title;
           PageCommand.Type = CommandTypes.Normal_Command;
           PageCommand.Method = ApplicationMethods.Get_Object;
         }
@@ -1194,12 +1194,12 @@ namespace Evado.Digital.WebService
       //
       // define the data object properties.
       //
-      dataObject.Title = EvLabels.AUTHENTICATION_REQUEST_LOGIN;
+      dataObject.Title = evado.model.Properties.Resources.AUTHENTICATION_REQUEST_LOGIN;
       dataObject.Status = AppData.StatusCodes.Login_Request;
       dataObject.Message = ErrorMessage;
       dataObject.LogoFilename = Global.LogoFilename;
 
-      dataObject.Page.Exit = new Command ( EvLabels.AUTHENTICATION_LOGIN_CMD_TITLE,
+      dataObject.Page.Exit = new Command ( evado.model.Properties.Resources.AUTHENTICATION_LOGIN_CMD_TITLE,
               CommandTypes.Login_Command,
               Evado.Model.UniForm.EuStatics.CONST_DEFAULT,
               Evado.Model.UniForm.EuStatics.CONST_DEFAULT,
@@ -1210,7 +1210,7 @@ namespace Evado.Digital.WebService
       //
       if ( this._ServiceUserProfile.UserLoginFailureCount >= Global.MaxLoginAttempts )
       {
-        dataObject.Message = EvLabels.AUTHENTICATION_EXCEEDED_MAX_LOGIN_ATTEMPTS;
+        dataObject.Message = evado.model.Properties.Resources.AUTHENTICATION_EXCEEDED_MAX_LOGIN_ATTEMPTS;
         dataObject.Status = AppData.StatusCodes.Login_Count_Exceeded;
       }
 

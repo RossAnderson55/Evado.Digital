@@ -89,8 +89,6 @@ namespace Evado.UniForm.Clinical
 
       this.loadApplicationProperties ( );
 
-      this.getCustomerList ( );
-
       this.loadGlobalMenu ( );
 
       this.LoadEmailTemplates ( );
@@ -337,11 +335,11 @@ namespace Evado.UniForm.Clinical
       }
     }
 
-    private Model.Digital.EdPlatform _PlatformSettings = new Model.Digital.EdPlatform ( );
+    private Model.Digital.EdAdapterParameters _PlatformSettings = new Model.Digital.EdAdapterParameters ( );
     /// <summary>
     /// This property object contains the platform settings object.
     /// </summary>
-    public Model.Digital.EdPlatform PlatformSettings
+    public Model.Digital.EdAdapterParameters PlatformSettings
     {
       get { return _PlatformSettings; }
       set { _PlatformSettings = value; }
@@ -372,43 +370,6 @@ namespace Evado.UniForm.Clinical
 
     #region class methods
 
-
-    // ==================================================================================
-    /// <summary>
-    /// This method creates the trial selection list field.
-    /// 
-    /// </summary>
-    // ----------------------------------------------------------------------------------
-    private void getCustomerList ( )
-    {
-      this.LogMethod ( "getCustomerList" );
-      this.LogDebugValue ( "CustomerList.Count: " + this.CustomerList.Count );
-      // 
-      // initialise the methods variables and objects.
-      // 
-      EvCustomers bll_Customers = new EvCustomers ( this.Settings );
-
-      // 
-      // If the user had a list of trials then they do not need to be regenerated.
-      // 
-      if ( this.CustomerList.Count > 0 )
-      {
-        this.LogDebugValue ( "EXIT: Customer list is loaded.." );
-
-        this.LogMethodEnd ( "getCustomerList" );
-        return;
-      }
-
-      // 
-      // get the list of customers.
-      // 
-      this.CustomerList = bll_Customers.getView ( EvCustomer.CustomerStates.Null );
-      this.LogDebug ( bll_Customers.Log );
-
-      this.LogDebugValue ( "Loaded CustomerList.Count: " + this.CustomerList.Count );
-      this.LogMethodEnd ( "getCustomerList" );
-
-    }///END getCustomerList method.
      ///
     ///  =======================================================================================
     /// <summary>
@@ -518,11 +479,11 @@ namespace Evado.UniForm.Clinical
       // 
       // Load the Web Site Properties
       // 
-      Bll.Clinical.EdPlatforms applicationProfiles = new Bll.Clinical.EdPlatforms (  );
+      Bll.Clinical.EdAdapterSettings applicationProfiles = new Bll.Clinical.EdAdapterSettings (  );
 
       if ( this.Settings != null )
       {
-        applicationProfiles = new Bll.Clinical.EdPlatforms ( this.Settings );
+        applicationProfiles = new Bll.Clinical.EdAdapterSettings ( this.Settings );
       }
 
       //

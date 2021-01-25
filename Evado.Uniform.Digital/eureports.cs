@@ -403,13 +403,6 @@ namespace Evado.UniForm.Clinical
       {
         this.Session.ApplicationList = new List<EdApplication> ( );
       }
-      if ( this.Session.ApplicationList.Count == 0 )
-      {
-        Evado.Bll.Clinical.EdApplications bllTrials = new Bll.Clinical.EdApplications ( this.ClassParameters );
-
-        this.Session.ApplicationList = bllTrials.GetApplicationList (
-          Model.Digital.EdApplication.ApplicationStates.Null );
-      }
 
       // 
       // Create the new pageMenuGroup.

@@ -170,7 +170,7 @@
     <Compile Include="evreportquery.cs" />
     <Compile Include="evreportrow.cs" />
     <Compile Include="evreportsection.cs" />
-    <Compile Include="EdPlatform.cs" />
+    <Compile Include="EdAdapterParameters.cs" />
     <Compile Include="EvAncillaryRecord.cs" />
     <Compile Include="EdApplication.cs" />
     <Compile Include="evuserprofile.cs" />
@@ -178,10 +178,11 @@
     <Compile Include="Properties\assemblyinfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EdLabels.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <None Include="Resources\evlabels.resx" />
+    <None Include="EdLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EdLabels.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </None>
     <EmbeddedResource Include="EvCustomerLabels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EvCustomerLabels.Designer.cs</LastGenOutput>

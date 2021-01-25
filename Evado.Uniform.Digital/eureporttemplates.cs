@@ -702,7 +702,6 @@ namespace Evado.UniForm.Clinical
       // Initialise method variables and objects.
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      Evado.Bll.Clinical.EdApplications bll_applications = new Bll.Clinical.EdApplications ( this.ClassParameters );
       List<EvOption> optionList = new List<EvOption> ( );
 
       // 
@@ -1108,11 +1107,7 @@ namespace Evado.UniForm.Clinical
       {
         return true;
       }
-
-      //
-      // Initialise the meethods variables and objects.'
-      //
-      Bll.Clinical.EdApplications applications = new Bll.Clinical.EdApplications ( );
+      /*
 
       this.Session.ApplicationList = applications.GetApplicationList ( 
         Model.Digital.EdApplication.ApplicationStates.Null );
@@ -1121,6 +1116,7 @@ namespace Evado.UniForm.Clinical
       {
         return false;
       }
+       */ 
       return true;
     }//END getReportProjectList method
 

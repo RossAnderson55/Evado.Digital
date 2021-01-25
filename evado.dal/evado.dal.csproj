@@ -122,12 +122,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clinical\EdApplicationRoles.cs" />
     <Compile Include="Clinical\EdRecordEntities.cs" />
     <Compile Include="Clinical\EvAncillaryRecords.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvCustomers.cs" />
     <Compile Include="Clinical\EdRecordFieldSelectionLists.cs" />
     <Compile Include="EvObjectParameters.cs" />
     <Compile Include="Clinical\EdRecordSections.cs" />
@@ -152,7 +150,7 @@
     <Compile Include="Clinical\EdRecordLayouts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EdPlatforms.cs" />
+    <Compile Include="Clinical\EdAdapterSettings.cs" />
     <Compile Include="Clinical\EvDataChanges.cs" />
     <Compile Include="Clinical\EvMenus.cs">
       <SubType>Code</SubType>
@@ -164,9 +162,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EdRecords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EdApplications.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvUserProfiles.cs">

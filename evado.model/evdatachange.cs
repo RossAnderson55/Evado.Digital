@@ -85,7 +85,7 @@ namespace Evado.Model
       /// <summary>
       /// This enumeration value defines Data Change on site profile table
       /// </summary>
-      EdmPlatformSettings,
+      EdAdapterSettings,
 
       /// <summary>
       /// This enumeration value defines Data Change on userprofiles table

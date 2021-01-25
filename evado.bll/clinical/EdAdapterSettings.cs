@@ -32,7 +32,7 @@ namespace Evado.Bll.Clinical
   /// The m_xfs.Model.Process is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EdPlatforms : EvBllBase
+  public class EdAdapterSettings : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -40,9 +40,9 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdPlatforms ( )
+    public EdAdapterSettings ( )
     {
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdPlatformSettings.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdAdapterSettings.";
     }
 
     // ==================================================================================
@@ -51,17 +51,12 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdPlatforms ( EvClassParameters Settings )
+    public EdAdapterSettings ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdPlatformSettings.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdAdapterSettings.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
-      {
-        this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
-
-      this._Dll_ApplicationSettings = new Evado.Dal.Clinical.EdPlatforms ( Settings );
+      this._dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterSettings ( Settings );
     }
     #endregion
 
@@ -69,7 +64,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class containing the datbase access functions for the class.
     // 
-    private Evado.Dal.Clinical.EdPlatforms _Dll_ApplicationSettings = new Evado.Dal.Clinical.EdPlatforms();
+    private Evado.Dal.Clinical.EdAdapterSettings _dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterSettings();
 
     #endregion 
 
@@ -89,17 +84,17 @@ namespace Evado.Bll.Clinical
     /// 2. Return a Site Properties object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EdPlatform getItem ( string ApplicationId )
+    public Evado.Model.Digital.EdAdapterParameters getItem ( string ApplicationId )
     {
       this.LogMethod ( "getItem Method." );
       this.LogDebug ( "ApplicationId: " + ApplicationId );
 
-      Evado.Model.Digital.EdPlatform platformSettings = this._Dll_ApplicationSettings.getItem ( ApplicationId );
+      Evado.Model.Digital.EdAdapterParameters adapterSettings = this._dll_AdapterSettings.getItem ( ApplicationId );
 
-      this.LogDebugClass ( this._Dll_ApplicationSettings.Log );
+      this.LogDebugClass ( this._dll_AdapterSettings.Log );
 
       this.LogMethodEnd ( "getItem" );
-      return platformSettings;
+      return adapterSettings;
 
     }//END getItemById class
 
@@ -117,20 +112,17 @@ namespace Evado.Bll.Clinical
     /// 2. Return an event code for updating items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( Evado.Model.Digital.EdPlatform Properties )
+    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterParameters Properties )
     {
       this.LogMethod ( "Saving Record method" );
       EvEventCodes iReturn = EvEventCodes.Ok;
-      Properties.UpdateLog = "Updated by: " + Properties.UserCommonName
-       + " at " + DateTime.Now.ToString("dd MMM yyyy HH:mm")
-       + "\r\n" + Properties.UpdateLog;
 
       //
       // Update the _SiteProperties record.
       // 
-      iReturn = this._Dll_ApplicationSettings.updateItem ( Properties );
+      iReturn = this._dll_AdapterSettings.updateItem ( Properties );
 
-      this.LogDebugClass ( this._Dll_ApplicationSettings.Log );
+      this.LogDebugClass ( this._dll_AdapterSettings.Log );
 
       return iReturn;
 

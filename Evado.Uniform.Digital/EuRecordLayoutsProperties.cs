@@ -209,7 +209,6 @@ namespace Evado.UniForm.Clinical
       // 
       // Initialise the methods variables and objects.
       // 
-      Bll.Clinical.EdApplications trials = new Bll.Clinical.EdApplications ( );
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
@@ -525,7 +524,6 @@ namespace Evado.UniForm.Clinical
       // 
       // Initialise the methods variables and objects.
       // 
-      Bll.Clinical.EdApplications projects = new Bll.Clinical.EdApplications ( );
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
