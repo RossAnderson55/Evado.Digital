@@ -298,7 +298,7 @@ namespace Evado.UniForm.Clinical
            this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return null;
         }
@@ -320,7 +320,7 @@ namespace Evado.UniForm.Clinical
         //
         clientDataObject.Title =
           String.Format (
-          EvLabels.Binary_File_List_Of_Files_Page_Label,
+          EdLabels.Binary_File_List_Of_Files_Page_Label,
           this.Session.Application.ApplicationId,
           this.Session.Application.Title );
         clientDataObject.Page.Title = clientDataObject.Title;
@@ -357,7 +357,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Binary_Files_Get_List_Error_Message;
+        this.ErrorMessage = EdLabels.Binary_Files_Get_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -391,7 +391,7 @@ namespace Evado.UniForm.Clinical
       // create the list page selection group
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EvLabels.Binary_File_List_Selection_Group_Title,
+       EdLabels.Binary_File_List_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -399,7 +399,7 @@ namespace Evado.UniForm.Clinical
       // Create a custom groupCommand to process the selection.
       // 
       groupCommand = pageGroup.addCommand (
-        EvLabels.HomePage_Select_Project,
+        EdLabels.HomePage_Select_Project,
         EuAdapter.APPLICATION_ID,
          EuAdapterClasses.Binary_File.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -430,7 +430,7 @@ namespace Evado.UniForm.Clinical
       // Create the new list group.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Project_List_Of_Projects_Group_Label,
+        EdLabels.Project_List_Of_Projects_Group_Label,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -439,7 +439,7 @@ namespace Evado.UniForm.Clinical
       // Add the new trial groupCommand list.
       // 
       Evado.Model.UniForm.Command newFileCommand = pageGroup.addCommand (
-      EvLabels.Binary_File_Create_Command_Title,
+      EdLabels.Binary_File_Create_Command_Title,
       EuAdapter.APPLICATION_ID,
       EuAdapterClasses.Binary_File.ToString ( ),
       Evado.Model.UniForm.ApplicationMethods.Create_Object );
@@ -463,7 +463,7 @@ namespace Evado.UniForm.Clinical
         }
 
         Evado.Model.UniForm.Command command = pageGroup.addCommand (
-          String.Format ( EvLabels.Binary_File_List_Command_Title,
+          String.Format ( EdLabels.Binary_File_List_Command_Title,
            file.FileId,
            file.Title,
            file.Version,
@@ -473,11 +473,11 @@ namespace Evado.UniForm.Clinical
            Model.UniForm.ApplicationMethods.Get_Object );
 
         command.AddParameter (
-          EvIdentifiers.APPLICATION_ID,
+          EdApplication.ApplicationFieldNames.ApplicationId,
           file.TrialId );
 
         command.AddParameter (
-          EvIdentifiers.ORGANISATION_ID,
+          EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
           file.GroupId );
 
         command.AddParameter ( EuBinaryFiles.CONST_BINARY_FILE_ID,
@@ -521,7 +521,7 @@ namespace Evado.UniForm.Clinical
           "hasConfigrationAccess",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return this.Session.LastPage;
       }
@@ -570,7 +570,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Binary_Get_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Binary_Get_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -597,9 +597,9 @@ namespace Evado.UniForm.Clinical
       //
       // if the org Id parameter exists update the setting.
       //
-      if ( PageCommand.hasParameter ( EvIdentifiers.ORGANISATION_ID ) == true )
+      if ( PageCommand.hasParameter ( EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
       {
-        value = PageCommand.GetParameter ( EvIdentifiers.ORGANISATION_ID );
+        value = PageCommand.GetParameter ( EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString() );
 
 
         if ( this.Session.BinaryFileOrgId != value )
@@ -792,12 +792,12 @@ namespace Evado.UniForm.Clinical
         {
           case EvEventCodes.File_Directory_Path_Empty:
             {
-              this.ErrorMessage = EvLabels.Binary_File_Upload_Failed_Error_Message;
+              this.ErrorMessage = EdLabels.Binary_File_Upload_Failed_Error_Message;
               break;
             }
           default:
             {
-              this.ErrorMessage = EvLabels.Binary_File_Upload_Failed_Error_Message; 
+              this.ErrorMessage = EdLabels.Binary_File_Upload_Failed_Error_Message; 
               break;
             }
         }
@@ -837,8 +837,8 @@ namespace Evado.UniForm.Clinical
       {
         if ( parameter.Name == Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          || parameter.Name == EvIdentifiers.APPLICATION_ID
-          || parameter.Name == EvIdentifiers.ORGANISATION_ID
+          || parameter.Name == EdApplication.ApplicationFieldNames.ApplicationId.ToString()
+          || parameter.Name == EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString()
           || parameter.Name == EuBinaryFiles.CONST_UPLOAD_PARM_ID )
         {
           continue;
@@ -883,14 +883,14 @@ namespace Evado.UniForm.Clinical
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Title =
         String.Format (
-          EvLabels.Binary_File_Metadata_Page_Title,
+          EdLabels.Binary_File_Metadata_Page_Title,
           this.Session.BinaryFile.FileId,
           this.Session.BinaryFile.Title );
       ClientDataObject.Page.Title = ClientDataObject.Title;
 
       if ( this.Session.BinaryFile.FileId == String.Empty )
       {
-        ClientDataObject.Title = EvLabels.Binary_File_Empty_Page_Title;
+        ClientDataObject.Title = EdLabels.Binary_File_Empty_Page_Title;
       }
       //
       // If the trial object is empty, index.e. new create a client ResultData id 
@@ -907,7 +907,7 @@ namespace Evado.UniForm.Clinical
       //
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -959,7 +959,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EvLabels.Binary_File_Metadata_Group_Title,
+       EdLabels.Binary_File_Metadata_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -968,7 +968,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Label_Project_Id,
+        EdLabels.Label_Project_Id,
         this.Session.BinaryFile.TrialId );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -977,39 +977,40 @@ namespace Evado.UniForm.Clinical
       // 
       if ( this.Session.BinaryFile.GroupId != String.Empty )
       {
+        /*
         groupField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Label_Organisation_Id,
+          EdLabels.Label_Organisation_Id,
           this.Session.BinaryFile.GroupId );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      }
+      */}
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Id_Field_Title,
+        EdLabels.Binary_File_Id_Field_Title,
         this.Session.BinaryFile.FileId );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Title_Field_Title,
+        EdLabels.Binary_File_Title_Field_Title,
         this.Session.BinaryFile.Title );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Comment_Field_Title,
+        EdLabels.Binary_File_Comment_Field_Title,
         this.Session.BinaryFile.Comments );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Version_Field_Title,
+        EdLabels.Binary_File_Version_Field_Title,
         this.Session.BinaryFile.Version.ToString ( "##" ) );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Status_Field_Title,
+        EdLabels.Binary_File_Status_Field_Title,
          EvStatics.Enumerations.enumValueToString ( this.Session.BinaryFile.Status ) );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1017,7 +1018,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-          EvLabels.Binary_File_Upload_Date_Field_Title,
+          EdLabels.Binary_File_Upload_Date_Field_Title,
           this.Session.BinaryFile.UploadDate.ToString ( "dd MMM yyyy" ) );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -1026,7 +1027,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-          EvLabels.Binary_File_Release_Date_Field_Title,
+          EdLabels.Binary_File_Release_Date_Field_Title,
           this.Session.BinaryFile.ReleaseDate.ToString ( "dd MMM yyyy" ) );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -1035,20 +1036,20 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-          EvLabels.Binary_File_Superseded_Date_Field_Title,
+          EdLabels.Binary_File_Superseded_Date_Field_Title,
           this.Session.BinaryFile.SupersededDate.ToString ( "dd MMM yyyy" ) );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_Name_Field_Title,
+        EdLabels.Binary_File_Name_Field_Title,
         this.Session.BinaryFile.FileName );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Binary_File_MineType_Field_Title,
+        EdLabels.Binary_File_MineType_Field_Title,
         this.Session.BinaryFile.MimeType );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1085,34 +1086,34 @@ namespace Evado.UniForm.Clinical
       // create the page versioned file group.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EvLabels.Project_General_Group_Title,
+       EdLabels.Project_General_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createTableField (
         String.Empty,
-        EvLabels.Binary_File_Versioned_List_Field_Title, 3 );
+        EdLabels.Binary_File_Versioned_List_Field_Title, 3 );
 
       groupField.Table.Header = new Model.UniForm.TableColHeader [ 4 ];
 
       groupField.Table.Header [ 0 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 0 ].No = 1;
-      groupField.Table.Header [ 0 ].Text = EvLabels.Binary_File_Version_Column_0_Text; // Version
+      groupField.Table.Header [ 0 ].Text = EdLabels.Binary_File_Version_Column_0_Text; // Version
       groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Text;
 
       groupField.Table.Header [ 1 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 1 ].No = 2;
-      groupField.Table.Header [ 1 ].Text = EvLabels.Binary_File_Version_Column_1_Text;  // Status
+      groupField.Table.Header [ 1 ].Text = EdLabels.Binary_File_Version_Column_1_Text;  // Status
       groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Text;
 
       groupField.Table.Header [ 2 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 2 ].No = 3;
-      groupField.Table.Header [ 2 ].Text = EvLabels.Binary_File_Version_Column_2_Text; // Comments
+      groupField.Table.Header [ 2 ].Text = EdLabels.Binary_File_Version_Column_2_Text; // Comments
       groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Text;
 
       groupField.Table.Header [ 3 ] = new Model.UniForm.TableColHeader ( );
       groupField.Table.Header [ 3 ].No = 4;
-      groupField.Table.Header [ 3 ].Text = EvLabels.Binary_File_Version_Column_3_Text; // update date
+      groupField.Table.Header [ 3 ].Text = EdLabels.Binary_File_Version_Column_3_Text; // update date
       groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Text;
 
       //
@@ -1152,7 +1153,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EvLabels.Binary_File_Upload_Group_Title,
+       EdLabels.Binary_File_Upload_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1161,7 +1162,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EvBinaryFileMetaData.ClassFieldNames.FileId.ToString ( ),
-        EvLabels.Binary_File_Id_Field_Title,
+        EdLabels.Binary_File_Id_Field_Title,
         this.Session.BinaryFile.FileId, 20 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1170,7 +1171,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EvBinaryFileMetaData.ClassFieldNames.Title.ToString ( ),
-        EvLabels.Binary_File_Title_Field_Title,
+        EdLabels.Binary_File_Title_Field_Title,
         this.Session.BinaryFile.Title, 100 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1179,7 +1180,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EvBinaryFileMetaData.ClassFieldNames.Comments.ToString ( ),
-        EvLabels.Binary_File_Comment_Field_Title,
+        EdLabels.Binary_File_Comment_Field_Title,
         String.Empty, 100 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1188,7 +1189,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createBinaryFileField (
         EvBinaryFileMetaData.ClassFieldNames.FileName.ToString ( ),
-        EvLabels.Binary_File_Name_Field_Title,
+        EdLabels.Binary_File_Name_Field_Title,
         this.Session.BinaryFile.FileName );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1196,7 +1197,7 @@ namespace Evado.UniForm.Clinical
       //Add the group UPLOAD command.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.Binary_File_Upload_Command_Title,
+        EdLabels.Binary_File_Upload_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Binary_File,
         Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1237,7 +1238,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "createObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -1277,7 +1278,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Binary_File_Creation_Error_Message;
+        this.ErrorMessage = EdLabels.Binary_File_Creation_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1324,8 +1325,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this._FileRepositoryPath == String.Empty )
         {
-          this.ErrorMessage = EvLabels.Binary_Files_Respository_Error_Message;
-          this.LogValue ( EvLabels.Binary_Files_Respository_Error_Message );
+          this.ErrorMessage = EdLabels.Binary_Files_Respository_Error_Message;
+          this.LogValue ( EdLabels.Binary_Files_Respository_Error_Message );
 
           return null;
         }
@@ -1335,8 +1336,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.UniForm_BinaryFilePath == String.Empty )
         {
-          this.ErrorMessage = EvLabels.UniForm_Binary_Path_Error_Message;
-          this.LogValue ( EvLabels.UniForm_Binary_Path_Error_Message );
+          this.ErrorMessage = EdLabels.UniForm_Binary_Path_Error_Message;
+          this.LogValue ( EdLabels.UniForm_Binary_Path_Error_Message );
 
           return null;
         }
@@ -1346,8 +1347,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.UniForm_BinaryServiceUrl == String.Empty )
         {
-          this.ErrorMessage = EvLabels.UniForm_Binary_Service_Url_Error_Message;
-          this.LogValue ( EvLabels.UniForm_Binary_Service_Url_Error_Message );
+          this.ErrorMessage = EdLabels.UniForm_Binary_Service_Url_Error_Message;
+          this.LogValue ( EdLabels.UniForm_Binary_Service_Url_Error_Message );
 
           return null;
         }
@@ -1357,7 +1358,7 @@ namespace Evado.UniForm.Clinical
         // retrieved binary files.
         // 
         Evado.Model.UniForm.Group fileListGroup = new Model.UniForm.Group (
-          EvLabels.Binary_Files_Project_List_Group_Title,
+          EdLabels.Binary_Files_Project_List_Group_Title,
           Evado.Model.UniForm.EditAccess.Enabled );
         fileListGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         fileListGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -1377,7 +1378,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( binaryFileList.Count == 0 )
         {
-          fileListGroup.Description = EvLabels.Binary_File_List_Group_Empty_Message;
+          fileListGroup.Description = EdLabels.Binary_File_List_Group_Empty_Message;
           this.LogValue ( "No file references returned." );
 
           return fileListGroup;
@@ -1433,7 +1434,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Alert_List_Error_Message;
+        this.ErrorMessage = EdLabels.Alert_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1467,7 +1468,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Field field = new Model.UniForm.Field ( );
 
-      string title = String.Format ( EvLabels.Binary_File_List_Command_Title,
+      string title = String.Format ( EdLabels.Binary_File_List_Command_Title,
            BinaryFile.FileId,
            BinaryFile.Title,
            BinaryFile.Version,
@@ -1522,8 +1523,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this._FileRepositoryPath == String.Empty )
         {
-          this.ErrorMessage = EvLabels.Binary_Files_Respository_Error_Message;
-          this.LogValue ( EvLabels.Binary_Files_Respository_Error_Message );
+          this.ErrorMessage = EdLabels.Binary_Files_Respository_Error_Message;
+          this.LogValue ( EdLabels.Binary_Files_Respository_Error_Message );
 
           return null;
         }
@@ -1533,8 +1534,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.UniForm_BinaryFilePath == String.Empty )
         {
-          this.ErrorMessage = EvLabels.UniForm_Binary_Path_Error_Message;
-          this.LogValue ( EvLabels.UniForm_Binary_Path_Error_Message );
+          this.ErrorMessage = EdLabels.UniForm_Binary_Path_Error_Message;
+          this.LogValue ( EdLabels.UniForm_Binary_Path_Error_Message );
 
           return null;
         }
@@ -1544,8 +1545,8 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.UniForm_BinaryServiceUrl == String.Empty )
         {
-          this.ErrorMessage = EvLabels.UniForm_Binary_Service_Url_Error_Message;
-          this.LogValue ( EvLabels.UniForm_Binary_Service_Url_Error_Message );
+          this.ErrorMessage = EdLabels.UniForm_Binary_Service_Url_Error_Message;
+          this.LogValue ( EdLabels.UniForm_Binary_Service_Url_Error_Message );
 
           return null;
         }
@@ -1555,7 +1556,7 @@ namespace Evado.UniForm.Clinical
         // retrieved binary files.
         // 
         Evado.Model.UniForm.Group fileListGroup = new Model.UniForm.Group (
-          EvLabels.Binary_Files_List_Group_Title,
+          EdLabels.Binary_Files_List_Group_Title,
           Evado.Model.UniForm.EditAccess.Enabled );
         fileListGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         fileListGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -1606,7 +1607,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( binaryFileList.Count == 0 )
         {
-          fileListGroup.Description = EvLabels.Binary_File_List_Group_Empty_Message;
+          fileListGroup.Description = EdLabels.Binary_File_List_Group_Empty_Message;
           this.LogValue ( "No file references returned." );
 
           return fileListGroup;
@@ -1662,7 +1663,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Alert_List_Error_Message;
+        this.ErrorMessage = EdLabels.Alert_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1809,13 +1810,13 @@ namespace Evado.UniForm.Clinical
         // retrieved binary files.
         // 
         Evado.Model.UniForm.Group imageFileGroup = new Model.UniForm.Group (
-          EvLabels.Binary_Files_Upload_Group_Title,
+          EdLabels.Binary_Files_Upload_Group_Title,
           Evado.Model.UniForm.EditAccess.Enabled );
         imageFileGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         imageFileGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
         imageFileGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
-        imageFileGroup.Description = EvLabels.Binary_Files_Description_Text;
+        imageFileGroup.Description = EdLabels.Binary_Files_Description_Text;
 
         //
         // Iterate generating the file upload fields in the group.
@@ -1825,8 +1826,8 @@ namespace Evado.UniForm.Clinical
           int uploadIndex = i + 1;
           string uploadTitleFieldId = EuBinaryFiles.CONST_BINARY_TITLE_PREFIX + uploadIndex;
           string uploadFieldId = EuBinaryFiles.CONST_BINARY_FILE_PREFIX + uploadIndex;
-          string fieldTitleLabel = String.Format ( EvLabels.Binary_Files_Upload_Field_Title, uploadIndex );
-          string fieldUploadLabel = String.Format ( EvLabels.Binary_Files_Upload_Field_Title, uploadIndex );
+          string fieldTitleLabel = String.Format ( EdLabels.Binary_Files_Upload_Field_Title, uploadIndex );
+          string fieldUploadLabel = String.Format ( EdLabels.Binary_Files_Upload_Field_Title, uploadIndex );
           // 
           // Add the image upload title.
           // 
@@ -1861,7 +1862,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Alert_List_Error_Message;
+        this.ErrorMessage = EdLabels.Alert_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1924,13 +1925,13 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasRecordAccess == false )
+        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "addBinaryData",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return false;
         }
@@ -1994,7 +1995,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Binary_Files_Save_Error_Message;
+        this.ErrorMessage = EdLabels.Binary_Files_Save_Error_Message;
 
         // 
         // Generate the log the error event.

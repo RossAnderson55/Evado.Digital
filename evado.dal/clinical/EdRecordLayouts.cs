@@ -105,9 +105,12 @@ namespace Evado.Dal.Clinical
     public const string DB_HAS_CS_SCRIPT = "EDRL_HAS_CS_SCRIPT";
     public const string DB_LANGUAGE = "EDRL_LANGUAGE";
     public const string DB_CDASH_METADATA = "EDRL_CDASH_METADATA";
+    public const string DB_READ_ACCESS_ROLES = "EDRL_READ_ACCESS_ROLES";
+    public const string DB_EDIT_ACCESS_ROLES = "EDRL_EDIT_ACCESS_ROLES";
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
     public const string DB_UPDATED_DATE = "EDRL_UPDATED_DATE";
+
 
     /// <summary>
     /// Define the query parameter names.
@@ -129,6 +132,8 @@ namespace Evado.Dal.Clinical
     private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
     private const string PARM_LANGUAGE = "@LANGUAGE";
     private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
+    private const string PARM_READ_ACCESS_ROLES = "@READ_ACCESS_ROLES";
+    private const string PARM_EDIT_ACCESS_ROLES = "@EDIT_ACCESS_ROLES";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
     private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
@@ -180,6 +185,8 @@ namespace Evado.Dal.Clinical
         new SqlParameter( EdRecordLayouts.PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_LANGUAGE, SqlDbType.VarChar, 5),
         new SqlParameter( EdRecordLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayouts.PARM_READ_ACCESS_ROLES, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdRecordLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -233,9 +240,11 @@ namespace Evado.Dal.Clinical
       cmdParms [ 14 ].Value = Form.Design.hasCsScript;
       cmdParms [ 15 ].Value = Form.Design.Language;
       cmdParms [ 16 ].Value = Form.cDashMetadata;
-      cmdParms [ 17 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 18 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 19 ].Value = DateTime.Now;
+      cmdParms [ 17 ].Value = Form.Design.ReadAccessRoles;
+      cmdParms [ 18 ].Value = Form.Design.EditAccessRoles;
+      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 20 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 21 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -295,6 +304,8 @@ namespace Evado.Dal.Clinical
       layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_HAS_CS_SCRIPT );
       layout.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
       layout.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
+      layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES);
+      layout.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdRecordLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
@@ -325,7 +336,7 @@ namespace Evado.Dal.Clinical
       //
       // Retrieve the form selection list.
       //
-      List<EvFormSection> sectionList = dal_FormSections.getSectionList ( Layout.Guid );
+      List<EdRecordSection> sectionList = dal_FormSections.getSectionList ( Layout.Guid );
       if ( sectionList.Count > 0 )
       {
         this.LogValue ( "Form section exist and have been read in." );
@@ -1336,8 +1347,8 @@ namespace Evado.Dal.Clinical
 
         for ( int count = 0; count < RecordForm.Design.FormSections.Count; count++ )
         {
-          EvFormSection oldSection = new EvFormSection ( );
-          EvFormSection newSection = RecordForm.Design.FormSections [ count ];
+          EdRecordSection oldSection = new EdRecordSection ( );
+          EdRecordSection newSection = RecordForm.Design.FormSections [ count ];
 
           if ( count < OldRecordForm.Design.FormSections.Count )
           {

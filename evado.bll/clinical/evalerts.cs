@@ -101,7 +101,6 @@ namespace Evado.Bll.Clinical
     // -------------------------------------------------------------------------------------
     public List<EvAlert> getView (
        Evado.Model.Digital.EdApplication Project,
-      Evado.Model.Digital.EvOrganisation ProjectOrganisation,
       Evado.Model.Digital.EvUserProfile CurrentUser,
       EvAlert.AlertStates AlertState,
       EvAlert.AlertTypes AlertType )

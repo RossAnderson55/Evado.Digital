@@ -227,13 +227,13 @@ namespace Evado.Dal.Clinical
       cmdParms [ 1 ].Value = String.Empty;
       cmdParms [ 2 ].Value = String.Empty;
       cmdParms [ 3 ].Value = Guid.Empty;
-      cmdParms [ 4 ].Value = ApplicationSettings.EarlyWithdrawalOptions;
+      cmdParms [ 4 ].Value = String.Empty;
 
-      cmdParms [ 5 ].Value = ApplicationSettings.DiseaseTypeListOptions;
-      cmdParms [ 6 ].Value = ApplicationSettings.DiseaseListOptions;
-      cmdParms [ 7 ].Value = ApplicationSettings.CategoryListOptions;
-      cmdParms [ 8 ].Value = ApplicationSettings.HideSubjectFields;
-      cmdParms [ 9 ].Value = ApplicationSettings.SignoffStatement;
+      cmdParms [ 5 ].Value = String.Empty;
+      cmdParms [ 6 ].Value = String.Empty;
+      cmdParms [ 7 ].Value = String.Empty;
+      cmdParms [ 8 ].Value = false;
+      cmdParms [ 9 ].Value = String.Empty;
 
       cmdParms [ 10 ].Value = false;
       cmdParms [ 11 ].Value = String.Empty;
@@ -241,10 +241,10 @@ namespace Evado.Dal.Clinical
       cmdParms [ 13 ].Value = String.Empty;
       cmdParms [ 14 ].Value = ApplicationSettings.HelpUrl;
 
-      cmdParms [ 15 ].Value = ApplicationSettings.RegulatoryReports;
+      cmdParms [ 15 ].Value = String.Empty;
       cmdParms [ 16 ].Value = false;
       cmdParms [ 17 ].Value = true;
-      cmdParms [ 18 ].Value = ApplicationSettings.LoadedModules;
+      cmdParms [ 18 ].Value = String.Empty;
       cmdParms [ 19 ].Value = ApplicationSettings.MaximumSelectionListLength;
 
       cmdParms [ 20 ].Value = ApplicationSettings.OverRideConfig;
@@ -292,17 +292,17 @@ namespace Evado.Dal.Clinical
 
       applicationSettings.ApplicationId = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_APPLICATION_ID );
 
-      applicationSettings.EarlyWithdrawalOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_EARLY_WITHDRAWAL_OPTIONS );
+      //applicationSettings.EarlyWithdrawalOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_EARLY_WITHDRAWAL_OPTIONS );
 
-      applicationSettings.DiseaseTypeListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_DISEASE_TYPE_OPTIONS );
+      //applicationSettings.DiseaseTypeListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_DISEASE_TYPE_OPTIONS );
 
-      applicationSettings.DiseaseListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_DISEASE_OPTIONS );
+      //applicationSettings.DiseaseListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_DISEASE_OPTIONS );
 
-      applicationSettings.CategoryListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_CATEGORY_OPTIONS );
+     // applicationSettings.CategoryListOptions = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PATIENT_CATEGORY_OPTIONS );
 
-      applicationSettings.HideSubjectFields = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_HIDDEN_DEMOGRAPHIC_FIELDS );
+      //applicationSettings.HideSubjectFields = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_HIDDEN_DEMOGRAPHIC_FIELDS );
 
-      applicationSettings.SignoffStatement = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PI_SIGNOFF_STATEMENT );
+      //applicationSettings.SignoffStatement = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_PI_SIGNOFF_STATEMENT );
 
       applicationSettings.HelpUrl = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_HELP_URL );
 
@@ -322,7 +322,7 @@ namespace Evado.Dal.Clinical
 
       applicationSettings.UpdateLog = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_UPDATE_LOG );
 
-      applicationSettings.LoadedModules = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_LOADED_MODULES ) ;
+      //applicationSettings.LoadedModules = EvSqlMethods.getString ( Row, EdPlatforms.DB_FIELD_LOADED_MODULES ) ;
 
       if ( applicationSettings.DemoAccountExpiryDays == 0 )
       {
@@ -336,48 +336,6 @@ namespace Evado.Dal.Clinical
 
     }//END getReaderData method
 
-    // ==================================================================================
-    /// <summary>
-    /// This method updates the Menu role management to align it with the EvRoleList 
-    /// enumerated list values.
-    /// </summary>
-    /// <param name="ApplicationProfile">EvMenuItem class object</param>
-    // ----------------------------------------------------------------------------------
-    private void updatModuleManagement ( Evado.Model.Digital.EdPlatform ApplicationProfile )
-    {
-      if ( ApplicationProfile.LoadedModules.Contains ( "Mobile" ) == true )
-      {
-        ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
-          "Mobile",
-          String.Empty );
-      }
-
-      if ( ApplicationProfile.LoadedModules.Contains ( "Administration_Module" ) == false
-        && ApplicationProfile.LoadedModules.Contains ( "Administration" ) == true )
-      {
-        ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
-          "Administration",
-          Evado.Model.Digital.EvModuleCodes.Administration_Module.ToString ( ) );
-      }
-
-      if ( ApplicationProfile.LoadedModules.Contains ( "Clinical_Module" ) == true )
-      {
-        ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
-          "Clinical_Module",
-          Evado.Model.Digital.EvModuleCodes.Design_Module.ToString ( ) );
-      }
-
-      if ( ApplicationProfile.LoadedModules.Contains ( "Management_Module" ) == false
-        && ApplicationProfile.LoadedModules.Contains ( "Management" ) == true )
-      {
-        ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace (
-          "Management",
-          Evado.Model.Digital.EvModuleCodes.Management_Module.ToString ( ) );
-      }
-
-      ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace ( ";;", ";" );
-      ApplicationProfile.LoadedModules = ApplicationProfile.LoadedModules.Replace ( " ", String.Empty );
-    }
 
     #endregion
 
@@ -515,17 +473,17 @@ namespace Evado.Dal.Clinical
         + " APS_UPDATE_LOG ) "
         + "values ( \r\n"
         + " 'A', \r\n"
-        + " '" + ApplicatonSettings.EarlyWithdrawalOptions + "', \r\n"
-        + " '" + ApplicatonSettings.DiseaseTypeListOptions + "', \r\n"
-        + " '" + ApplicatonSettings.DiseaseListOptions + "', \r\n"
-        + " '" + ApplicatonSettings.CategoryListOptions + "', \r\n"
-        + " '" + ApplicatonSettings.HideSubjectFields + "', \r\n"
-        + " '" + ApplicatonSettings.SignoffStatement + "', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
         + " '', \r\n"
         + " '', \r\n"
         + " '" + ApplicatonSettings.HelpUrl + "', \r\n"
-        + " '" + ApplicatonSettings.RegulatoryReports + "', \r\n"
-        + " '" + ApplicatonSettings.LoadedModules + "', \r\n"
+        + " '', \r\n"
+        + " '', \r\n"
         + " 100, \r\n"
         + " '" + ApplicatonSettings.OverRideConfig + "', \r\n"
         + " '" + true + "', \r\n"
@@ -685,41 +643,12 @@ namespace Evado.Dal.Clinical
       //
       // Add new items to datachanges if they do not exist in the Old Site Profile object. 
       //
-      dataChange.AddItem ( "EarlyWithdrawalOptions",
-        oldItem.EarlyWithdrawalOptions,
-        ApplicationProperties.EarlyWithdrawalOptions );
 
-      dataChange.AddItem ( "DiseaseTypeListOptions",
-        oldItem.DiseaseTypeListOptions,
-        ApplicationProperties.DiseaseTypeListOptions );
-
-      dataChange.AddItem ( "DiseaseListOptions",
-        oldItem.DiseaseListOptions,
-        ApplicationProperties.DiseaseListOptions );
-
-      dataChange.AddItem ( "CategoryListOptions",
-        oldItem.CategoryListOptions,
-        ApplicationProperties.CategoryListOptions );
-
-      dataChange.AddItem ( "SignoffStatement",
-        oldItem.SignoffStatement,
-        ApplicationProperties.SignoffStatement );
-
-      dataChange.AddItem ( "RegulatoryReports",
-        oldItem.RegulatoryReports,
-        ApplicationProperties.RegulatoryReports );
-
-      dataChange.AddItem ( "LoadedModules",
-        oldItem.LoadedModules,
-        ApplicationProperties.LoadedModules );
 
       dataChange.AddItem ( "MaximumSelectionListLength",
         oldItem.MaximumSelectionListLength,
         ApplicationProperties.MaximumSelectionListLength );
 
-      dataChange.AddItem ( "HideSubjectFields",
-        oldItem.HideSubjectFields,
-        ApplicationProperties.HideSubjectFields );
 
       dataChange.AddItem ( "SmtpServer",
         oldItem.SmtpServer,

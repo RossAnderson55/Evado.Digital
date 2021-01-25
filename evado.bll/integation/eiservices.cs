@@ -173,111 +173,12 @@ namespace Evado.Bll.Integration
 
       string projectid = QueryData.GetQueryParameterValue ( Model.Integration.EiQueryParameterNames.Project_Id );
 
-      if ( QueryData.QueryType != EiQueryTypes.Patients_Export 
-        && QueryData.QueryType != EiQueryTypes.Patients_Import 
-        && projectid == String.Empty )
-      {
-        this.LogDebug ( "ProjectId is empty." );
-        this.writeProcessLog ( "Integration Service - Project identifier not provided." );
-
-        resultData.EventCode = Model.Integration.EiEventCodes.Integration_Import_Parameter_Error;
-        resultData.ErrorMessage = "Integration Service - Parameter list is empty.";
-
-        return resultData;
-      }
 
       //
       // select the query QueryType
       //
       switch ( QueryData.QueryType )
       {
-        case Model.Integration.EiQueryTypes.Activities_Export: //Subjects
-          {
-            Evado.Bll.Integration.EiActivities EI_Activities = new EiActivities ( this.ClassParameter );
-            this.LogDebug ( "Activity Data Export " );
-            this.writeProcessLog ( "Activity Data Export " );
-            resultData = EI_Activities.exportData ( QueryData );
-
-            this.LogClass ( EI_Activities.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Activity_Template:
-          {
-            Evado.Bll.Integration.EiActivities EI_Activities = new EiActivities ( this.ClassParameter );
-            this.LogDebug ( "Activity tempalate " );
-            this.writeProcessLog ( "Activity tempalate " );
-            resultData = EI_Activities.getTemplateData ( QueryData );
-
-            this.LogClass ( EI_Activities.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Activities_Import:
-          {
-            Evado.Bll.Integration.EiActivities EI_Activities = new EiActivities ( this.ClassParameter );
-            this.writeProcessLog ( "Activity Data import " );
-            resultData = EI_Activities.ImportData ( QueryData );
-
-            this.LogClass ( EI_Activities.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Schedule_Export: //Subjects
-          {
-            Evado.Bll.Integration.EiSchedules EI_Schedules = new EiSchedules ( this.ClassParameter );
-            this.LogDebug ( "Schedule Data Export " );
-            this.writeProcessLog ( "Schedule Data Export " );
-            resultData = EI_Schedules.ExportData ( QueryData );
-
-            this.LogClass ( EI_Schedules.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Schedule_Template:
-          {
-            Evado.Bll.Integration.EiSchedules EI_Schedules = new EiSchedules ( this.ClassParameter );
-            this.LogDebug ( "Schedule tempalate " );
-            this.writeProcessLog ( "Schedule tempalate " );
-            resultData = EI_Schedules.getTemplateData ( QueryData );
-
-            this.LogClass ( EI_Schedules.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Schedule_Import:
-          {
-            Evado.Bll.Integration.EiSchedules EI_Schedules = new EiSchedules ( this.ClassParameter );
-            this.LogDebug ( "Schedule Data import " );
-            this.writeProcessLog ( "Schedule Data import " );
-            resultData = EI_Schedules.ImportData ( QueryData );
-
-            this.LogClass ( EI_Schedules.Log );
-
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Adverse_Events_Export:
-        case Model.Integration.EiQueryTypes.Serious_Adverse_Events_Export:
-        case Model.Integration.EiQueryTypes.Comcomitant_Medications_Export:
-        case Model.Integration.EiQueryTypes.Patient_Consent_Export:
-          {
-            this.LogDebug ( "Export Common Records" );
-            this.writeProcessLog ( "Export Common Records" );
-            break;
-          }
-
-        case Model.Integration.EiQueryTypes.Common_Records_Import:
-          {
-            this.LogDebug ( "Import Common Records" );
-            this.writeProcessLog ( "Import Common Records" );
-            break;
-          }
         default:
           {
             resultData.EventCode = EiEventCodes.Integration_Import_Type_Id_Error;

@@ -78,7 +78,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the organization idenfier in user profile
       /// </summary>
-      OrgId,
+      User_Type_Id,
 
       /// <summary>
       /// This enumeration defines Active Directory based on user identifier
@@ -190,28 +190,69 @@ namespace Evado.Model.Digital
       /// </summary>
       Expiry_Date,
     }
+
+
+    /// <summary>
+    /// This enumeration list user type code .
+    /// These codes control the use access to the platform
+    /// </summary>
+    public enum UserTypesList
+    {
+      /// <summary>
+      /// This enumeration defines the null or not selection state
+      /// </summary>
+      Null,
+
+      /// <summary>
+      /// This enumeration defines the Evado users on the platform
+      /// </summary>
+      Evado,
+
+      /// <summary>
+      /// This enumeration defines the Customers users on the platform
+      /// </summary>
+      Customer,
+
+      /// <summary>
+      /// This enumeration defines the End users on the platform
+      /// </summary>
+      End_User,
+    }
+    #endregion
+
+    #region Class contants
+
+    public const string CONST_ADMINISTRATOR_ROLE = "ADMIN";
+    public const string CONST_MANAGER_ROLE = "MGT";
+    public const string CONST_DESIGNER_ROLE = "DSGN";
+    public const string CONST_STAFF_ROLE = "STFF";
+
+    public const String CONT_STATIC_ROLES = CONST_ADMINISTRATOR_ROLE + ":"
+      + CONST_MANAGER_ROLE + ":"
+      + CONST_DESIGNER_ROLE + ":"
+      + CONST_STAFF_ROLE; 
     #endregion
 
     #region Class Properties
+
+    UserTypesList _TypeId = UserTypesList.Customer;
+    /// <summary>
+    /// This property defines the user type and used to control user access to the platform.
+    /// </summary>
+    public UserTypesList TypeId
+    {
+      get { return this._TypeId; }
+      set
+      {
+        this._TypeId = value;
+      }
+    }
 
     /// <summary>
     /// This property contains an customer global unique identifier of an organization
     /// This foreign key links the organisation to the customer object.
     /// </summary>
     public Guid CustomerGuid { get; set; }
-
-   // public string debug = String.Empty;
-
-    private Guid _PatientGuid = Guid.Empty;
-
-    /// <summary>
-    /// This property contains the patient objects guid as a foreign key.
-    /// </summary>
-    public Guid PatientGuid
-    {
-      get { return _PatientGuid; }
-      set { this._PatientGuid = value; }
-    }
 
     /// <summary>
     /// This property contains the customer no for the user is associated with.
@@ -225,27 +266,16 @@ namespace Evado.Model.Digital
     /// </summary>
     public EvCustomer Customer { get; set; }
 
-    private string _SignoffAnnotation = String.Empty;
-    /// <summary>
-    /// This property contains the signoff annotation for the user.
-    /// </summary>
-    public string SignoffAnnotation
-    {
-      get { return _SignoffAnnotation; }
-      set { _SignoffAnnotation = value; }
-    }
-
-    private EvRoleList _RoleId = EvRoleList.Null;
+    private String _Roles = String.Empty;
     /// <summary>
     /// This property defines the user's role 
     /// </summary>
-    public EvRoleList RoleId
+    public String Roles
     {
-      get { return this._RoleId; }
+      get { return this._Roles; }
       set
       {
-        this._RoleId = value;
-
+        this._Roles = value;
       }
     }
 
@@ -256,18 +286,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return "ROL_" + this._RoleId.ToString ( ).ToUpper ( );
+        return "ROL_" + this._Roles.ToString ( ).ToUpper ( );
       }
-    }
-
-    private bool _DisplayQueryStatus = false;
-    /// <summary>
-    /// This property indicates if the user wants the record views to display query status.
-    /// </summary>
-    public bool DisplayQueryStatus
-    {
-      get { return this._DisplayQueryStatus; }
-      set { this._DisplayQueryStatus = value; }
     }
 
     /// <summary>
@@ -281,9 +301,9 @@ namespace Evado.Model.Digital
       }
       set
       {
-       var debug = this.setParameter ( EvUserProfile.UserProfileFieldNames.Project_Dashboard_Components, value );
+        var debug = this.setParameter ( EvUserProfile.UserProfileFieldNames.Project_Dashboard_Components, value );
 
-       //this.debug += "\r\n"+ debug;
+        //this.debug += "\r\n"+ debug;
       }
     }
 
@@ -311,16 +331,8 @@ namespace Evado.Model.Digital
       get
       {
         String stLinkText = this.UserId
-          + EvLabels.Space_Hypen
+          + Evado.Model.Digital.EdLabels.Space_Hypen
           + this.CommonName;
-
-        if ( this._RoleId != EvRoleList.Null )
-        {
-          stLinkText += EvLabels.Space_Open_Bracket
-            + EvLabels.User_Profile_Role_Label
-            + this._RoleId
-            + EvLabels.Space_Close_Bracket;
-        }
 
         return stLinkText;
       }
@@ -338,7 +350,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator )
+        if ( ( this.TypeId == UserTypesList.Evado )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
         }
@@ -353,8 +366,10 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Evado_Manager )
+        if ( ( this.TypeId == UserTypesList.Evado )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
           return true;
         }
@@ -369,9 +384,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Evado_Manager
-          || this._RoleId == EvRoleList.Evado_Staff )
+        if ( ( this.TypeId == UserTypesList.Evado )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+             || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
+             || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true
+             || this._Roles.Contains ( EvUserProfile.CONST_STAFF_ROLE ) == true ) )
         {
           return true;
         }
@@ -386,11 +403,31 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Administrator )
+        if ( ( this.TypeId == UserTypesList.Evado
+            || this.TypeId == UserTypesList.Customer )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
         }
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// this propety indicated if the user has configuration read access.
+    /// </summary>
+    public bool hasDesignAccess
+    {
+      get
+      {
+        if ( ( this.TypeId == UserTypesList.Evado
+            || this.TypeId == UserTypesList.Customer )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true ) )
+        {
+          return true;
+        }
+
         return false;
       }
     }
@@ -402,11 +439,10 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Evado_Manager
-          || this._RoleId == EvRoleList.Evado_Staff
-          || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Manager )
+        if ( ( this.TypeId == UserTypesList.Evado
+            || this.TypeId == UserTypesList.Customer )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
           return true;
         }
@@ -418,13 +454,16 @@ namespace Evado.Model.Digital
     /// <summary>
     /// this propety indicated if the user has configuration read access.
     /// </summary>
-    public bool hasManagementEditAccess
+    public bool hasStaffAccess
     {
       get
       {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Manager )
+        if (  ( this.TypeId == UserTypesList.Evado
+            || this.TypeId == UserTypesList.Customer )
+          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
+            || this._Roles.Contains ( EvUserProfile.CONST_STAFF_ROLE ) == true ) )
         {
           return true;
         }
@@ -434,80 +473,17 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// this propety indicated if the user has multi site  data read access.
+    /// this propety indicated if the user has configuration read access.
     /// </summary>
-    public bool hasMultiSiteAccess
+    public bool hasEndUserAccess
     {
       get
-      { 
-         // || this._RoleId == EvRoleList.Project_Budget
-         // || this._RoleId == EvRoleList.Project_Finance
+      {
+        if ( this.TypeId == UserTypesList.End_User )
+        {
+          return true;
+        }
 
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Evado_Manager
-          || this._RoleId == EvRoleList.Evado_Staff
-          || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Manager
-          || this._RoleId == EvRoleList.Coordinator )
-        {
-          return true;
-        }
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// this propety indicated if the user has data read access.
-    /// </summary>
-    public bool hasRecordAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Evado_Manager
-          || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Manager
-          || this._RoleId == EvRoleList.Coordinator
-          || this._RoleId == EvRoleList.Application_User )
-        {
-          return true;
-        }
-        return false;
-      }
-    }
-    /// <summary>
-    /// this propety indicated if the user has data edit access.
-    /// </summary>
-    public bool hasRecordEditAccess
-    {
-      get
-      {
-        if ( this._RoleId == EvRoleList.Evado_Administrator
-          || this._RoleId == EvRoleList.Administrator
-          || this._RoleId == EvRoleList.Manager
-          || this._RoleId == EvRoleList.Coordinator
-          || this._RoleId == EvRoleList.Application_User )
-        {
-          return true;
-        }
-        return false;
-      }
-    }
-    
-    /// <summary>
-    /// this propety indicated if the user is a site only user.
-    /// </summary>
-    public bool hasApplicationUserAccess
-    {
-      get
-      {
-        //
-        // If the user is a record author or principal investigator they have record edit access.
-        //
-        if ( this._RoleId == EvRoleList.Application_User)
-        {
-          return true;
-        }
         return false;
       }
     }
@@ -515,6 +491,28 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Class General Methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method test to see if the user has a role contain in the roles delimited list.
+    /// </summary>
+    /// <param name="Roles">';' delimted string of roles</param>
+    /// <returns>True: if the role exists.</returns>
+    // -------------------------------------------------------------------------------------
+    public bool hasEndUserRole ( String Roles )
+    {
+      foreach ( String role in Roles.Split ( ';' ) )
+      {
+        foreach ( String role1 in this._Roles.Split ( ';' ) )
+        {
+          if ( role1.ToLower ( ) == role.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }//END method
 
     // =====================================================================================
     /// <summary>
@@ -533,7 +531,6 @@ namespace Evado.Model.Digital
       // Append user profile elements to the return text
       //
       sbText.AppendLine ( "User Profile for UserId: " + this.UserId );
-      sbText.AppendLine ( "OrgId: " + this.OrgId );
       if ( this.Password != String.Empty )
       {
         sbText.AppendLine ( "Password: " + this.Password );
@@ -544,7 +541,7 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "CommonName: " + this.CommonName );
       sbText.AppendLine ( "Title: " + this.Title );
       sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
-      sbText.AppendLine ( "RoleId: " + this.RoleId );
+      sbText.AppendLine ( "RoleId: " + this.Roles );
 
 
       if ( this.Customer != null )
@@ -572,10 +569,6 @@ namespace Evado.Model.Digital
       {
         sbText.AppendLine ( "hasAdministrationAccess: " + this.hasAdministrationAccess );
         sbText.AppendLine ( "hasConfigrationAccess: " + this.hasManagementAccess );
-        sbText.AppendLine ( "hasConfigrationEditAccess: " + this.hasManagementEditAccess );
-        sbText.AppendLine ( "hasMultiSiteAccess: " + this.hasMultiSiteAccess );
-        sbText.AppendLine ( "hasRecordAccess: " + this.hasRecordAccess );
-        sbText.AppendLine ( "hasRecordEditAccess: " + this.hasRecordEditAccess );
       }
 
       // 
@@ -599,7 +592,6 @@ namespace Evado.Model.Digital
       this.GivenName = BaseUserProfile.GivenName;
       this.Suffix = BaseUserProfile.Suffix;
       this.CommonName = BaseUserProfile.CommonName;
-      this.OrgId = BaseUserProfile.OrgId;
       this.EmailAddress = BaseUserProfile.EmailAddress;
       this.Address_1 = BaseUserProfile.Address_1;
       this.Address_2 = BaseUserProfile.Address_2;
@@ -631,7 +623,7 @@ namespace Evado.Model.Digital
     //-----------------------------------------------------------------------------------
     public EvEventCodes setValue ( UserProfileFieldNames fieldName, String value )
     {
-     // this.debug = String.Empty;
+      // this.debug = String.Empty;
       //
       // Update the value of user profile's field name based retrieving fieldname
       //
@@ -647,9 +639,9 @@ namespace Evado.Model.Digital
             this.Password = value;
             break;
           }
-        case UserProfileFieldNames.OrgId:
+        case UserProfileFieldNames.User_Type_Id:
           {
-            this.OrgId = value;
+            this.TypeId  = EvStatics.Enumerations.parseEnumValue<UserTypesList>(  value );
             break;
           }
         case UserProfileFieldNames.ActiveDirectoryUserId:
@@ -739,22 +731,17 @@ namespace Evado.Model.Digital
           }
         case UserProfileFieldNames.RoleId:
           {
-            if ( value == String.Empty )
-            {
-              this.RoleId = EvRoleList.Null;
-              break;
-            }
-            this.RoleId = EvcStatics.Enumerations.parseEnumValue<EvRoleList> ( value );
+            this.Roles = value;
             break;
           }
         case UserProfileFieldNames.Customer_No:
           {
-            this.CustomerNo = EvStatics.getInteger (value);
+            this.CustomerNo = EvStatics.getInteger ( value );
             break;
           }
         case UserProfileFieldNames.Expiry_Date:
           {
-            this.ExpiryDate = EvStatics.getDateTime (value);
+            this.ExpiryDate = EvStatics.getDateTime ( value );
             break;
           }
       }//End switch field name
@@ -768,6 +755,45 @@ namespace Evado.Model.Digital
 
     #region static Methods
 
+    //  ==================================================================================
+    /// <summary>
+    /// This methods listgs the static user roles.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    public static List<EvOption> GetUserTypeOptionList( bool IsSelectionList)
+    {
+        List<EvOption> optionList = new List<EvOption> ( );
+        if ( IsSelectionList == true )
+        {
+          optionList.Add ( new EvOption ( ) );
+        }
+
+        optionList.Add ( new EvOption ( UserTypesList.End_User, UserTypesList.End_User.ToString().Replace( "_","") ) );
+        optionList.Add ( new EvOption ( UserTypesList.Customer,  UserTypesList.Customer.ToString()) );
+        optionList.Add ( new EvOption ( UserTypesList.Evado, UserTypesList.Evado.ToString()) );
+
+        return optionList;
+    }
+
+    //  ==================================================================================
+    /// <summary>
+    /// This methods listgs the static user roles.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    public static List<EdRole> StaticRoles
+    {
+      get
+      {
+        List<EdRole> staticRoles = new List<EdRole> ( );
+
+        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_ADMINISTRATOR_ROLE, "Administrator" ) );
+        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_MANAGER_ROLE, "Manager" ) );
+        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_DESIGNER_ROLE, "Designer" ) );
+        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_STAFF_ROLE, "Staff" ) );
+
+        return staticRoles;
+      }
+    }
     //  ==================================================================================	
     /// <summary>
     ///  This method removes the domain name from a use id.
@@ -783,8 +809,8 @@ namespace Evado.Model.Digital
     /// 2. Return the role option list.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getRoleList (
-      EvOrganisation.OrganisationTypes OrganisationType,
+    public static List<EvOption> getRoleOptionList (
+      List<EdRole> ApplicationRoles,
       bool IsSelectionList )
     {
       // 
@@ -797,46 +823,23 @@ namespace Evado.Model.Digital
       //
       if ( IsSelectionList == true )
       {
-        optionList.Add ( new EvOption ( EvRoleList.Null.ToString ( ), String.Empty ) );
+        optionList.Add ( new EvOption ( ) );
       }
 
-      switch ( OrganisationType )
+      foreach ( EdRole role in EvUserProfile.StaticRoles )
       {
-        case EvOrganisation.OrganisationTypes.Evado:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Administrator ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Manager ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Staff ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Customer:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Administrator ) );
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Management:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Coordinator:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Coordinator ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.Data_Collection:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Application_User ) );
-            break;
-          }
-        case EvOrganisation.OrganisationTypes.External:
-          {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Application_User ) );
-            break;
-          }
+        optionList.Add ( new EvOption ( role.RoleId, role.Description ) );
+      }
 
-      }//END switch statement
+      foreach ( EdRole role in ApplicationRoles )
+      {
+        var option = new EvOption ( role.RoleId, role.Description );
+
+        if ( optionList.Contains ( option ) == false )
+        {
+          optionList.Add ( option );
+        }
+      }
 
       //
       // If there is no domain exists, return the domain user identifier

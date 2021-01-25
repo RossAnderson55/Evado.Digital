@@ -193,7 +193,7 @@ namespace Evado.Dal.Clinical
     /// 1. Update the items from comment object to the array of sql query parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] parms, EvFormRecordComment Comment )
+    private void SetParameters ( SqlParameter [ ] parms, EdFormRecordComment Comment )
     {
       parms [ 0 ].Value = Comment.RecordGuid;
       parms [ 1 ].Value = Comment.RecordFieldGuid;
@@ -225,12 +225,12 @@ namespace Evado.Dal.Clinical
     /// 2. Return the form record comment object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvFormRecordComment readDataRow ( DataRow Row )
+    public EdFormRecordComment readDataRow ( DataRow Row )
     {
       // 
       // Initialise the comment object. 
       // 
-      EvFormRecordComment comment = new EvFormRecordComment ( );
+      EdFormRecordComment comment = new EdFormRecordComment ( );
 
       // 
       // Extract the data object values.
@@ -239,7 +239,7 @@ namespace Evado.Dal.Clinical
       comment.RecordFieldGuid = EvSqlMethods.getGuid ( Row, "FRC_RECORD_FIELD_GUID" );
 
       comment.AuthorType =
-        Evado.Model.EvStatics.Enumerations.parseEnumValue<EvFormRecordComment.AuthorTypeCodes> (
+        Evado.Model.EvStatics.Enumerations.parseEnumValue<EdFormRecordComment.AuthorTypeCodes> (
         EvSqlMethods.getString ( Row, "FRC_AUTHOR_TYPE" ) );
 
       comment.Content = EvSqlMethods.getString( Row, "FRC_Content" );
@@ -285,11 +285,11 @@ namespace Evado.Dal.Clinical
     /// 6. Return the Form Record Comment List. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormRecordComment> getCommentList (
+    public List<EdFormRecordComment> getCommentList (
       Guid RecordGuid,
       Guid RecordFieldGuid,
-      EvFormRecordComment.CommentTypeCodes CommentType,
-      EvFormRecordComment.AuthorTypeCodes AuthorType )
+      EdFormRecordComment.CommentTypeCodes CommentType,
+      EdFormRecordComment.AuthorTypeCodes AuthorType )
     {
       this.LogMethod( "getCommentList method. " );
       //this.LogDebugValue ( "RecordGuid: " + RecordGuid );
@@ -301,13 +301,13 @@ namespace Evado.Dal.Clinical
       //
 
       string sqlQueryString;
-      List<EvFormRecordComment> view = new List<EvFormRecordComment> ( );
+      List<EdFormRecordComment> view = new List<EdFormRecordComment> ( );
 
       //
       // Reset the record field guid to empty for all form coments.
       //
-      if ( CommentType == EvFormRecordComment.CommentTypeCodes.Form
-        || CommentType == EvFormRecordComment.CommentTypeCodes.Subject )
+      if ( CommentType == EdFormRecordComment.CommentTypeCodes.Form
+        || CommentType == EdFormRecordComment.CommentTypeCodes.Subject )
       {
         RecordFieldGuid = Guid.Empty;
       }
@@ -337,12 +337,12 @@ namespace Evado.Dal.Clinical
         sqlQueryString += " AND FRC_RECORD_FIELD_GUID = " + _parmRecordFieldGuid;
       }
 
-      if ( CommentType != EvFormRecordComment.CommentTypeCodes.Not_Set )
+      if ( CommentType != EdFormRecordComment.CommentTypeCodes.Not_Set )
       {
         sqlQueryString += " AND FRC_COMMENT_TYPE = " + _parmCommentType;
       }
 
-      if ( AuthorType != EvFormRecordComment.AuthorTypeCodes.Not_Set )
+      if ( AuthorType != EdFormRecordComment.AuthorTypeCodes.Not_Set )
       {
         sqlQueryString += " AND FRC_AUTHOR_TYPE = " + _parmAuthorType;
       }
@@ -366,7 +366,7 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ Count ];
 
-          EvFormRecordComment BinaryFile = this.readDataRow ( row );
+          EdFormRecordComment BinaryFile = this.readDataRow ( row );
 
           view.Add ( BinaryFile );
 
@@ -408,7 +408,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for adding new commetns. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes  addNewComments ( List<EvFormRecordComment> CommentList )
+    public EvEventCodes  addNewComments ( List<EdFormRecordComment> CommentList )
     {
       //
       // Initialzie the method debug log and the return event code. 
@@ -421,7 +421,7 @@ namespace Evado.Dal.Clinical
       //
       // Iterate through the list of comments to add new comments to the database
       //
-      foreach ( EvFormRecordComment comment in CommentList )
+      foreach ( EdFormRecordComment comment in CommentList )
       {
         this.LogDebug ( "Content: " + comment.Content +", NewComment" + comment.NewComment );
 
@@ -484,7 +484,7 @@ namespace Evado.Dal.Clinical
     /// 4. Catch write out error message log. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes  addItem ( EvFormRecordComment Comment )
+    public EvEventCodes  addItem ( EdFormRecordComment Comment )
     {
       //
       // Initialzie the debug log

@@ -3250,7 +3250,7 @@ namespace Evado.Model.UniForm
       groupField.Table = new Table ( );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-      groupField.EditAccess = EditAccess.Inherited;
+      groupField.EditAccess = this.EditAccess;
 
       //
       // Initialise the table header.

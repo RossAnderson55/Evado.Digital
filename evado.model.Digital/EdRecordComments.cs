@@ -28,20 +28,20 @@ namespace Evado.Model.Digital
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvFormRecordComment
+  public class EdFormRecordComment
   {
 
     #region Public Methods
     /// <summary>
     /// The class initiation.
     /// </summary>
-    public EvFormRecordComment ( )
+    public EdFormRecordComment ( )
     {
     }
     /// <summary>
     /// The class initiation.
     /// </summary>
-    public EvFormRecordComment (
+    public EdFormRecordComment (
       Guid RecordGuid,
       AuthorTypeCodes AuthorType,
       String UserId,
@@ -68,7 +68,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// The class initiation.
     /// </summary>
-    public EvFormRecordComment (
+    public EdFormRecordComment (
       Guid RecordGuid,
       AuthorTypeCodes AuthorType,
       String UserId,
@@ -98,7 +98,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// The class initiation.
     /// </summary>
-    public EvFormRecordComment (
+    public EdFormRecordComment (
       Guid RecordGuid,
       Guid RecordFieldGuid,
       AuthorTypeCodes AuthorType,
@@ -134,7 +134,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// The class initiation.
     /// </summary>
-    public EvFormRecordComment (
+    public EdFormRecordComment (
       Guid RecordGuid,
       Guid RecordFieldGuid,
       AuthorTypeCodes AuthorType,
@@ -478,18 +478,18 @@ namespace Evado.Model.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public static String getCommentHtml (
-      List<EvFormRecordComment> CommentList, bool withHeader )
+      List<EdFormRecordComment> CommentList, bool withHeader )
     {
       //
       // Validate whether the commentlist is null and empty
       //
       if ( CommentList == null )
       {
-        return EvLabels.Label_No_Comments;
+        return Evado.Model.Digital.EdLabels.Label_No_Comments;
       }
       if ( CommentList.Count == 0 )
       {
-        return EvLabels.Label_No_Comments;
+        return Evado.Model.Digital.EdLabels.Label_No_Comments;
       }
 
       // 
@@ -499,13 +499,13 @@ namespace Evado.Model.Digital
 
       if ( withHeader == true )
       {
-        sbHtml.AppendLine ( "<strong>" + EvLabels.Label_Comments_Log + "</strong><br/>" );
+        sbHtml.AppendLine ( "<strong>" + Evado.Model.Digital.EdLabels.Label_Comments_Log + "</strong><br/>" );
       }
       
       // 
       // Iterate through the current adding items to the new list.
       // 
-      foreach ( EvFormRecordComment comment in CommentList )
+      foreach ( EdFormRecordComment comment in CommentList )
       {
         // 
         // Skip all null items
@@ -562,18 +562,18 @@ namespace Evado.Model.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public static String getCommentMD ( 
-      List<EvFormRecordComment> CommentList, bool withHeader )
+      List<EdFormRecordComment> CommentList, bool withHeader )
     {
       //
       // Validate whether the commentlist is null and empty
       //
       if ( CommentList == null )
       {
-        return EvLabels.Label_No_Comments;
+        return Evado.Model.Digital.EdLabels.Label_No_Comments;
       }
       if ( CommentList.Count == 0 )
       {
-        return EvLabels.Label_No_Comments;
+        return Evado.Model.Digital.EdLabels.Label_No_Comments;
       }
 
       // 
@@ -583,13 +583,13 @@ namespace Evado.Model.Digital
 
       if ( withHeader == true )
       {
-        sbMarkDown.Append ( "__" + EvLabels.Label_Comments_Log + "__" );
+        sbMarkDown.Append ( "__" + Evado.Model.Digital.EdLabels.Label_Comments_Log + "__" );
       }
 
       // 
       // Iterate through the current adding items to the new list.
       // 
-      foreach ( EvFormRecordComment comment in CommentList )
+      foreach ( EdFormRecordComment comment in CommentList )
       {
         // 
         // Skip all null items
@@ -650,7 +650,7 @@ namespace Evado.Model.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public static String getFieldAnnotationHtml (
-      List<EvFormRecordComment> CommentList )
+      List<EdFormRecordComment> CommentList )
     {
       //
       // Validate whether the commentlist is null and empty
@@ -672,7 +672,7 @@ namespace Evado.Model.Digital
       // 
       // Iterate through the current adding items to the new list.
       // 
-      foreach ( EvFormRecordComment comment in CommentList )
+      foreach ( EdFormRecordComment comment in CommentList )
       {
         // 
         // Skip all null items
@@ -755,7 +755,7 @@ namespace Evado.Model.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public static String getFieldAnnotationMD ( 
-      List<EvFormRecordComment> CommentList )
+      List<EdFormRecordComment> CommentList )
     {
       // 
       // Initialise the local variables.
@@ -777,7 +777,7 @@ namespace Evado.Model.Digital
       // 
       // Iterate through the current adding items to the new list.
       // 
-      foreach ( EvFormRecordComment comment in CommentList )
+      foreach ( EdFormRecordComment comment in CommentList )
       {
         // 
         // Process the item if exists.

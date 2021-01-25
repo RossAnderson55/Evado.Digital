@@ -205,7 +205,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage; ;
         }
@@ -224,7 +224,7 @@ namespace Evado.UniForm.Clinical
         if ( this.ApplicationObjects.HelpUrl != String.Empty )
         {/**/
           Evado.Model.UniForm.Command helpCommand = clientDataObject.Page.addCommand (
-           EvLabels.Label_Help_Command_Title,
+           EdLabels.Label_Help_Command_Title,
            EuAdapter.APPLICATION_ID,
            EuAdapterClasses.Customers.ToString ( ),
            Model.UniForm.ApplicationMethods.Get_Object );
@@ -385,13 +385,13 @@ namespace Evado.UniForm.Clinical
       // Determine if the user has access to this page and log and error if they do not.
       //
       if ( this.Session.UserProfile.hasManagementAccess == false
-        && this.Session.UserProfile.hasRecordAccess == false )
+        && this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
       {
         this.LogIllegalAccess (
           this.ClassNameSpace + "getListObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return this.Session.LastPage; ;
       }
@@ -507,7 +507,7 @@ namespace Evado.UniForm.Clinical
       // Set the user edit access to the objects.
       //
       if ( this.Session.UserProfile.hasAdministrationAccess == true
-        || this.Session.UserProfile.hasManagementEditAccess == true )
+        || this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -557,7 +557,7 @@ namespace Evado.UniForm.Clinical
       if ( this.ApplicationObjects.HelpUrl != String.Empty )
       {
         pageCommand = PageObject.addCommand (
-         EvLabels.Label_Help_Command_Title,
+         EdLabels.Label_Help_Command_Title,
          EuAdapter.APPLICATION_ID,
          EuAdapterClasses.Customers.ToString ( ),
          Model.UniForm.ApplicationMethods.Get_Object );
@@ -971,7 +971,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage; ;
         }

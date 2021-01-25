@@ -137,6 +137,11 @@ namespace Evado.Model.Digital
       /// </summary>
       Confirmation_Email_Body,
 
+      /// <summary>
+      /// this enumeration defiens the roles in the application.
+      /// </summary>
+      Roles,
+
     }
     #endregion
 
@@ -350,6 +355,111 @@ namespace Evado.Model.Digital
 
     #endregion
 
+    #region Role Group
+
+    private List<EdRole> _RoleList = new List<EdRole> ( );
+
+    /// <summary>
+    /// This property contains the list of roles for this application.
+    /// Static roles will be automatically added to the last on creation.
+    /// </summary>
+    public List<EdRole> RoleList
+    {
+      get { return _RoleList; }
+      set { _RoleList = value; }
+    }
+
+
+
+    private String _DefaultRoles = String.Empty;
+
+    /// <summary>
+    /// This property contains the list of roles for this application.
+    /// Static roles will be automatically added to the last on creation.
+    /// </summary>
+    public String DefaultRoles
+    {
+      get { return _DefaultRoles; }
+      set { _DefaultRoles = value; }
+    }
+
+
+    /// <summary>
+    /// This property contains the name of the person who last updated the trial object.
+    /// </summary>
+    public string Roles
+    {
+      get
+      {
+        String roles = String.Empty;
+        foreach ( EdRole role in this._RoleList )
+        {
+          roles += role.RoleId +":"+ role.Description + ";\r\n";
+        }
+
+        return roles;
+      }
+      set
+      {
+        this._RoleList = new List<EdRole> ( );
+        EdRole role = new EdRole ( );
+        String roles = value;
+        String [ ] arRoles = roles.Split ( ';' );
+
+        foreach ( string str in arRoles )
+        {
+          if ( str.Contains ( ":" ) == true )
+          {
+            string [ ] arStr = str.Split ( ':' );
+
+            role = new EdRole( arStr [ 0 ], arStr [ 1 ] );
+          }
+          else
+          {
+            role = new EdRole ( str, str );
+          }
+
+          this._RoleList.Add ( role );
+        }
+      }
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a selected list of application roles based on the delimited
+    /// list of selected roles that are passed to the method.
+    /// </summary>
+    /// <param name="SelectedRoleIds">Delimited string of role identifiers</param>
+    /// <returns>List of EdRole objects</returns>
+    // ----------------------------------------------------------------------------------
+    public List<EdRole> filteredRoleList ( String SelectedRoleIds )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EdRole> roleList = new List<EdRole> ( );
+
+      //
+      // Iterate through the application roles and select those roles
+      // that are in the selected role list.
+      //
+      foreach ( EdRole role in this._RoleList )
+      {
+        if ( SelectedRoleIds.Contains ( role.RoleId ) == true )
+        {
+          roleList.Add ( role );
+        }
+      }
+
+      //
+      // return the list of selected roles
+      //
+      return roleList;
+    }//END method
+
+    #endregion
+
+
     private string _Updated = String.Empty;
     /// <summary>
     /// This property contains the name of the person who last updated the trial object.
@@ -465,13 +575,13 @@ namespace Evado.Model.Digital
     } //
 
 
-    List<EvUserSignoff> _Signoffs = new List<EvUserSignoff> ( );
+    List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );
     // ==================================================================================
     /// <summary>
     /// This property contains a user signoff list of the trial.
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public List<EvUserSignoff> Signoffs
+    public List<EdUserSignoff> Signoffs
     {
       get
       { return _Signoffs; }
@@ -557,6 +667,12 @@ namespace Evado.Model.Digital
         case ApplicationFieldNames.Enable_Binary_Data:
           {
             this.EnableBinaryData = EvcStatics.getBool ( Value );
+            return;
+          }
+
+        case ApplicationFieldNames.Roles:
+          {
+            this.Roles = Value ;
             return;
           }
         default:

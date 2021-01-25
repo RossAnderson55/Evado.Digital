@@ -107,7 +107,7 @@ namespace Evado.Model.Digital
     private EdRecordObjectStates _State = EdRecordObjectStates.Null;
     private DateTime _UpdatedDate = EvcStatics.CONST_DATE_NULL;
     private string _BookedOutBy = String.Empty;
-    private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff>();
+    private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff>();
     // 
     // Display fields
     // 
@@ -414,7 +414,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a signoffs list of subject record
     /// </summary>
-    public List<EvUserSignoff> Signoffs
+    public List<EdUserSignoff> Signoffs
     {
       get { return this._Signoffs; }
       set { this._Signoffs = value; }

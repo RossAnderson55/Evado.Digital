@@ -54,7 +54,7 @@ namespace Evado.Model.Digital
     {
       this._LoggingLevel = Logginglevel;
       this.CustomerGuid = CustomerGuid;
-      this.ApplicationGuid = ApplicationGuid;
+      this.PlatformGuid = ApplicationGuid;
       this.UserProfile = UserProfile;
 
       String CustomerGroup = UserProfile.AdsCustomerGroup;
@@ -109,22 +109,22 @@ namespace Evado.Model.Digital
 
     #region Application identifier property
 
-    private Guid _ApplicationGuid = Guid.Empty;
+    private Guid _PlatformGuid = Guid.Empty;
 
     // ================================================================================
     /// <summary>
     /// This property contains the site guid 
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public Guid ApplicationGuid
+    public Guid PlatformGuid
     {
       get
       {
-        return this._ApplicationGuid;
+        return this._PlatformGuid;
       }
       set
       {
-        this._ApplicationGuid = value;
+        this._PlatformGuid = value;
       }
     }
 
@@ -224,8 +224,7 @@ namespace Evado.Model.Digital
         value.AppendLine ( "ApplicationGuid: " + this._CustomerGuid );
         value.AppendLine ( "UserId: " + this.UserProfile.UserId );
         value.AppendLine ( "UserProfile.CommonName: " + this.UserProfile.CommonName);
-        value.AppendLine ( "UserProfile.RoleId: " + this.UserProfile.RoleId );
-        value.AppendLine ( "UserProfile.OrgId: " + this.UserProfile.OrgId );
+        value.AppendLine ( "UserProfile.RoleId: " + this.UserProfile.Roles );
         value.AppendLine ( "CustomerId: " + this.CustomerId );
         value.AppendLine ( "PlatformId: " + this._PlatformId );
       }

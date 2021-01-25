@@ -56,6 +56,11 @@
     <Compile Include="dataobj.cs" />
     <Compile Include="device.cs" />
     <Compile Include="editaccess.cs" />
+    <Compile Include="EuLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EuLabels.resx</DependentUpon>
+    </Compile>
     <Compile Include="eustatics.cs" />
     <Compile Include="field.cs" />
     <Compile Include="fieldhtmltargets.cs" />
@@ -84,6 +89,12 @@
       <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EuLabels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EuLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -94,7 +94,7 @@ namespace Evado.UniForm.Clinical
           string StEvent = this._Bll_UserProfiles.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
 
-          this.ErrorMessage = EvLabels.User_Profile_Save_Error_Message;
+          this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
 
           this.LogMethodEnd ( "saveUserProfile" );
           return result;
@@ -121,7 +121,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( result != EvEventCodes.Ok )
         {
-          this.ErrorMessage = EvLabels.UserProfile_AD_Error_Message;
+          this.ErrorMessage = EdLabels.UserProfile_AD_Error_Message;
 
           string stEvent = " returned error message: "
             + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
@@ -168,18 +168,18 @@ namespace Evado.UniForm.Clinical
           {
             case EvEmail.EmailStatus.No_Reciever_Addresses:
               {
-                this.ErrorMessage = EvLabels.EmailNotification_Receive_Address_Error_Message;
+                this.ErrorMessage = EdLabels.EmailNotification_Receive_Address_Error_Message;
                 break;
               }
             case EvEmail.EmailStatus.No_SMTP_Url:
               {
-                this.ErrorMessage = EvLabels.EmailNotification_Configurtion_Error_Message;
+                this.ErrorMessage = EdLabels.EmailNotification_Configurtion_Error_Message;
                 break;
               }
             case EvEmail.EmailStatus.Email_Send_Request_Failed:
             default:
               {
-                this.ErrorMessage = EvLabels.EmailNotification_Send_Failure_Error_Message;
+                this.ErrorMessage = EdLabels.EmailNotification_Send_Failure_Error_Message;
                 break;
               }
           }
@@ -202,7 +202,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.User_Profile_Save_Error_Message;
+        this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -427,8 +427,8 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.AdminUserProfile.GivenName.Length > 1
         && this.Session.AdminUserProfile.FamilyName.Length > 1 )
       {
-        password = this.Session.AdminUserProfile.OrgId [ 0 ].ToString ( ).ToUpper ( );
-        password += this.Session.AdminUserProfile.OrgId [ 1 ].ToString ( ).ToLower ( );
+        password = this.Session.SelectedUserType.ToString() [ 0 ].ToString ( ).ToUpper ( );
+        password += this.Session.SelectedUserType.ToString() [ 1 ].ToString ( ).ToLower ( );
 
         password += this.Session.AdminUserProfile.GivenName [ 0 ].ToString ( ).ToUpper ( );
         password += this.Session.AdminUserProfile.FamilyName [ 0 ].ToString ( ).ToLower ( );
@@ -438,8 +438,8 @@ namespace Evado.UniForm.Clinical
       {
         if ( this.Session.AdminUserProfile.FamilyName.Length > 2 )
         {
-          password = this.Session.AdminUserProfile.OrgId [ 0 ].ToString ( ).ToUpper ( );
-          password += this.Session.AdminUserProfile.OrgId [ 1 ].ToString ( ).ToLower ( );
+          password = this.Session.SelectedUserType.ToString() [ 0 ].ToString ( ).ToUpper ( );
+          password += this.Session.SelectedUserType.ToString() [ 1 ].ToString ( ).ToLower ( );
 
           password = this.Session.AdminUserProfile.FamilyName [ 0 ].ToString ( ).ToUpper ( );
           password += this.Session.AdminUserProfile.FamilyName [ 1 ].ToString ( ).ToLower ( );
@@ -447,10 +447,10 @@ namespace Evado.UniForm.Clinical
         }
         else
         {
-          password = this.Session.AdminUserProfile.OrgId [ 0 ].ToString ( ).ToUpper ( );
-          password += this.Session.AdminUserProfile.OrgId [ 1 ].ToString ( ).ToLower ( );
-          password += this.Session.AdminUserProfile.OrgId [ 2 ].ToString ( ).ToLower ( );
-          password += this.Session.AdminUserProfile.OrgId [ 3 ].ToString ( ).ToLower ( );
+          password = this.Session.SelectedUserType.ToString() [ 0 ].ToString ( ).ToUpper ( );
+          password += this.Session.SelectedUserType.ToString() [ 1 ].ToString ( ).ToLower ( );
+          password += this.Session.SelectedUserType.ToString() [ 2 ].ToString ( ).ToLower ( );
+          password += this.Session.SelectedUserType.ToString() [ 3 ].ToString ( ).ToLower ( );
           password += "-" + DateTime.Now.ToString ( "yyMMdd" );
         }
       }
@@ -532,7 +532,6 @@ namespace Evado.UniForm.Clinical
       // 
       string EmailTitle = String.Empty;
       string EmailBody = String.Empty;
-      EvOrganisations bll_Organisations = new EvOrganisations ( );
       EvEmail email = new EvEmail ( );
       EvEmail.EmailStatus emailStatus = EvEmail.EmailStatus.Null;
 
@@ -603,7 +602,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AdminUserProfile.Password );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ORG_ID,
-        this.Session.AdminUserProfile.OrgId );
+        this.Session.SelectedUserType.ToString() );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ORG_NAME,
         this.Session.AdminUserProfile.OrganisationName );

@@ -123,7 +123,7 @@ namespace Evado.Dal.Clinical
     //
     private string _Sql_QueryString = String.Empty;
 
-    private List<EvFormRecordComment> _FieldCommandList = new List<EvFormRecordComment> ( );
+    private List<EdFormRecordComment> _FieldCommandList = new List<EdFormRecordComment> ( );
 
     //
     // This variable is used to skip retrieving comments when updating the form record.
@@ -223,7 +223,7 @@ namespace Evado.Dal.Clinical
       if ( recordField.TypeId == EvDataTypes.Signature )
       {
         this.LogDebug ( "Encrypted Signature string" );
-        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.ApplicationGuid, recordField.Guid );
+        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.PlatformGuid, recordField.Guid );
         encrypt.ClassParameters = this.ClassParameters;
 
         value = encrypt.decryptString ( recordField.ItemText );

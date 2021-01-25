@@ -29,11 +29,11 @@ namespace Evado.Model.Digital
     public class EvFormStaticField
     {
       #region Class property
-      List<EvFormRecordComment> _CommentList = new List<EvFormRecordComment>( );
+      List<EdFormRecordComment> _CommentList = new List<EdFormRecordComment>( );
       /// <summary>
       /// THis property contains a comment list of the form static field
       /// </summary>
-      public List<EvFormRecordComment> CommentList
+      public List<EdFormRecordComment> CommentList
       {
         get { return _CommentList; }
         set { _CommentList = value; }

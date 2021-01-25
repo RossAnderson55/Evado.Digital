@@ -98,6 +98,11 @@ namespace Evado.Model.Digital
       Null,
 
       /// <summary>
+      /// This enumeration defines an customer Guid identifier field name of an customer
+      /// </summary>
+      Customer_Guid,
+
+      /// <summary>
       /// This enumeration defines an customer identifier field name of an customer
       /// </summary>
       Customer_No,
@@ -547,96 +552,6 @@ namespace Evado.Model.Digital
     /// If this value is null or zero, the customner is using the default rate.
     /// </summary>
     public float CustomEnhancedServiceRate { get; set; }
-    private List<EvModuleCodes> _LoadedModuleList = new List<EvModuleCodes> ( );
-
-    /// <summary>
-    /// This property contains used by this customer.
-    /// </summary>
-    public string LoadedModules
-    {
-      get
-      {
-        string loadedModules = String.Empty;
-
-        //
-        // Iterate through the list of modules to ensure that they are all processes.
-        //
-        foreach ( EvModuleCodes code in this._LoadedModuleList )
-        {
-          if ( loadedModules.Contains ( code.ToString ( ) ) == false )
-          {
-            if ( loadedModules != String.Empty )
-            {
-              loadedModules += ";";
-            }
-            loadedModules += code.ToString ( );
-          }
-        }//END moduleList iteration loop
-        return loadedModules;
-      }
-      set
-      {
-        //
-        // Initialise the methods variable and objects.
-        //
-        string [ ] arModuules = value.Split ( ';' );
-        this._LoadedModuleList = new List<EvModuleCodes> ( );
-
-        //
-        // Iterate through the list of modules enumerations.
-        //
-        for ( int i = 0; i < arModuules.Length; i++ )
-        {
-          EvModuleCodes name = EvModuleCodes.Null;
-
-          if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
-          {
-            arModuules [ i ] = "Clinical_Outcome_Assessments";
-          }
-
-          if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
-          {
-            arModuules [ i ] = "Patient_Recorded_Observation";
-          }
-
-          if ( EvcStatics.Enumerations.tryParseEnumValue<EvModuleCodes> ( arModuules [ i ], out name ) == true )
-          {
-            this.addModule ( name );
-          }
-        }
-      }
-    }
-
-    /// <summary>
-    /// This property returns the modules as an array of string objects.
-    /// </summary>
-    public List<EvModuleCodes> LoadedModuleList
-    {
-      get
-      {
-        return this._LoadedModuleList;
-      }
-      set
-      {
-        this._LoadedModuleList = value;
-      }
-    }
-
-    private string _HideSubjectFields = String.Empty;
-    /// <summary>
-    /// This property contains hide subject fields of site profile
-    /// </summary>
-    public string HideSubjectFields
-    {
-      get
-      {
-        return this._HideSubjectFields;
-      }
-      set
-      {
-        this._HideSubjectFields = value;
-      }
-    }
 
     /// <summary>
     /// This property contains a summary of an customer
@@ -646,20 +561,20 @@ namespace Evado.Model.Digital
       get
       {
         String stLinkText = this.CustomerNo
-          + EvLabels.Space_Hypen
+          + Evado.Model.Digital.EdLabels.Space_Hypen
           + this.Name;
 
         if ( this._ServiceType !=  ServiceTypes.Null )
         {
-          stLinkText += EvLabels.Space_Coma
-            + EvLabels.Customer_Service_Text
+          stLinkText += Evado.Model.Digital.EdLabels.Space_Coma
+            + Evado.Model.Digital.EdLabels.Customer_Service_Text
             + this.ServiceType;
         }
 
         if ( this._State != CustomerStates.Null )
         {
-          stLinkText += EvLabels.Space_Coma
-            + EvLabels.Label_Status
+          stLinkText += Evado.Model.Digital.EdLabels.Space_Coma
+            + Evado.Model.Digital.EdLabels.Label_Status
             + this.StateDesc;
         }
 
@@ -773,11 +688,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff> ( );
+    private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );
     /// <summary>
     /// This property contains a user sign off object list of an customer
     /// </summary>
-    public List<EvUserSignoff> Signoffs
+    public List<EdUserSignoff> Signoffs
     {
       get
       {
@@ -869,95 +784,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region public methods
-
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="Module"></param>
-    /// <returns></returns>
-    //  ---------------------------------------------------------------------------------
-    public void addModule ( EvModuleCodes Module )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( EvModuleCodes module in this.LoadedModuleList )
-      {
-        if ( module == Module
-          || Module == EvModuleCodes.Null )
-        {
-          return;
-        }
-      }
-
-      this.LoadedModuleList.Add ( Module );
-
-    }//END hadModule method.
-
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="Module"></param>
-    /// <returns></returns>
-    //  ---------------------------------------------------------------------------------
-    public bool hasModule ( EvModuleCodes Module )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( EvModuleCodes module in this.LoadedModuleList )
-      {
-        if ( module == Module )
-        {
-          return true;
-        }
-      }
-
-      return false;
-
-    }//END hadModule method.
-
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="ModuleList">Array of string containing module enumerated values.</param>
-    /// <returns>Bool: True module exists in both lists.</returns>
-    //  ---------------------------------------------------------------------------------
-    public bool hasModule ( String [ ] ModuleList )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( string module1 in ModuleList )
-      {
-        string module = module1.Trim ( );
-
-        if ( module == EvModuleCodes.All_Modules.ToString ( ) )
-        {
-          return true;
-        }
-
-        foreach ( EvModuleCodes module2 in this.LoadedModuleList )
-        {
-          if ( module == module2.ToString ( ) )
-          {
-            return true;
-          }
-        }
-      }
-
-      return false;
-
-    }//END hadModule method.
 
     // ==================================================================================
     /// <summary>

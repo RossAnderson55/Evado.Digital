@@ -130,7 +130,7 @@ namespace Evado.UniForm.Clinical
            this.ClassNameSpace + "getClientDataObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -220,22 +220,14 @@ namespace Evado.UniForm.Clinical
         EvUserProfiles userProfiles = new EvUserProfiles ( );
         String value = String.Empty;
 
-        //
-        // get the list of event ids.
-        //
-        if ( this.Session.EventUserSelectionList == null )
-        {
-          this.Session.EventUserSelectionList = userProfiles.GetEventUserList ( );
-        }
-
-        clientDataObject.Title = EvLabels.ApplicationEvent_List_Page_Title;
+        clientDataObject.Title = EdLabels.ApplicationEvent_List_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
         if ( this.ApplicationObjects.HelpUrl != String.Empty )
         {
           Evado.Model.UniForm.Command helpCommand = clientDataObject.Page.addCommand (
-           EvLabels.Label_Help_Command_Title,
+           EdLabels.Label_Help_Command_Title,
            EuAdapter.APPLICATION_ID,
            EuAdapterClasses.Events.ToString ( ),
            Model.UniForm.ApplicationMethods.Get_Object );
@@ -307,7 +299,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationEvent_List_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationEvent_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -343,7 +335,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
 
       Evado.Model.UniForm.Group selectionGroup = PageObject.AddGroup (
-        EvLabels.ApplicationEvent_Selection_Group_Title,
+        EdLabels.ApplicationEvent_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       selectionGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -359,7 +351,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = selectionGroup.createSelectionListField (
         EuApplicationEvents.CONST_EVENT_FIELD_ID,
-        EvLabels.ApplicationEvent_Event_Id_Selection_Field_Label,
+        EdLabels.ApplicationEvent_Event_Id_Selection_Field_Label,
         this.Session.EventId.ToString ( ),
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -376,7 +368,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = selectionGroup.createSelectionListField (
         EuApplicationEvents.CONST_TYPE_FIELD_ID,
-        EvLabels.ApplicationEvent_Type_Selection_Field_Label,
+        EdLabels.ApplicationEvent_Type_Selection_Field_Label,
         this.Session.EventType,
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -388,7 +380,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = selectionGroup.createSelectionListField (
         EuApplicationEvents.CONST_USER_FIELD_ID,
-        EvLabels.ApplicationEvent_UserName_Selection_Field_Label,
+        EdLabels.ApplicationEvent_UserName_Selection_Field_Label,
         this.Session.EventUserName,
         this.Session.EventUserSelectionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -400,7 +392,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = selectionGroup.createDateField (
         EuApplicationEvents.CONST_START_DATE_FIELD_ID,
-        EvLabels.ApplicationEvent_Start_Date_Selection_Field_Label,
+        EdLabels.ApplicationEvent_Start_Date_Selection_Field_Label,
         this.Session.EventStartDate ,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
@@ -413,7 +405,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = selectionGroup.createDateField (
         EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID,
-        EvLabels.ApplicationEvent_Finish_Date_Selection_Field_Label,
+        EdLabels.ApplicationEvent_Finish_Date_Selection_Field_Label,
         this.Session.EventFinishDate,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
@@ -426,7 +418,7 @@ namespace Evado.UniForm.Clinical
       // Create a custom groupCommand to process the selection.
       // 
       Evado.Model.UniForm.Command customCommand = selectionGroup.addCommand (
-        EvLabels.ApplicationEvent_Selection_Command_Title,
+        EdLabels.ApplicationEvent_Selection_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Events.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -455,7 +447,7 @@ namespace Evado.UniForm.Clinical
         // Create the new pageMenuGroup.
         // 
         Evado.Model.UniForm.Group listGroup = PageObject.AddGroup (
-          EvLabels.ApplicationEvent_List_Group_Title,
+          EdLabels.ApplicationEvent_List_Group_Title,
           Evado.Model.UniForm.EditAccess.Inherited );
         listGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         listGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -499,7 +491,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationEvent_List_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationEvent_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -528,14 +520,13 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasManagementAccess == false
-        && this.Session.UserProfile.hasRecordAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
           "Evado.UniForm.Clinical.ApplicationEvents.getListObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -575,7 +566,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationEvent_Page_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationEvent_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -605,7 +596,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
       ClientDataObject.Id = this._ApplicationEvent.Guid;
-      ClientDataObject.Title = EvLabels.ApplicationEvent_Page_Title;
+      ClientDataObject.Title = EdLabels.ApplicationEvent_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -617,7 +608,7 @@ namespace Evado.UniForm.Clinical
       if ( this.ApplicationObjects.HelpUrl != String.Empty )
       {
         Evado.Model.UniForm.Command helpCommand = ClientDataObject.Page.addCommand (
-         EvLabels.Label_Help_Command_Title,
+         EdLabels.Label_Help_Command_Title,
          EuAdapter.APPLICATION_ID,
          EuAdapterClasses.Events.ToString ( ),
          Model.UniForm.ApplicationMethods.Get_Object );
@@ -645,7 +636,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_Date_Time_Field_Label,
+        EdLabels.ApplicationEvent_Date_Time_Field_Label,
         this._ApplicationEvent.DateTime.ToString ( "dd MMM yyyy HH:mm:ss" ) );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -666,7 +657,7 @@ namespace Evado.UniForm.Clinical
 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_Event_Id_Field_Label,
+        EdLabels.ApplicationEvent_Event_Id_Field_Label,
         content );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -675,7 +666,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_Type_Field_Label,
+        EdLabels.ApplicationEvent_Type_Field_Label,
          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this._ApplicationEvent.Type ) );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -684,7 +675,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_Category_Field_Label,
+        EdLabels.ApplicationEvent_Category_Field_Label,
         this._ApplicationEvent.Category );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -693,7 +684,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_Description_Field_Label,
+        EdLabels.ApplicationEvent_Description_Field_Label,
         this._ApplicationEvent.Description,
         80,
         40 );
@@ -704,7 +695,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.ApplicationEvent_UserName_Field_Label,
+        EdLabels.ApplicationEvent_UserName_Field_Label,
         this._ApplicationEvent.UserName );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 

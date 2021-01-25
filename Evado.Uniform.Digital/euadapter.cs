@@ -146,7 +146,7 @@ namespace Evado.UniForm.Clinical
         //
         // Define the application Guid
         //
-        this.ClassParameters.ApplicationGuid = this._ApplicationObjects.PlatformSettings.Guid;
+        this.ClassParameters.PlatformGuid = this._ApplicationObjects.PlatformSettings.Guid;
         this.ClassParameters.PlatformId = this._ApplicationObjects.PlatformId;
 
         //
@@ -164,7 +164,7 @@ namespace Evado.UniForm.Clinical
         this.LogInitValue ( "Settings:" );
         this.LogInitValue ( "-PlatformId: " + this.ClassParameters.PlatformId );
         this.LogInitValue ( "-CustomerGuid: " + this.ClassParameters.CustomerGuid );
-        this.LogInitValue ( "-ApplicationGuid: " + this.ClassParameters.ApplicationGuid );
+        this.LogInitValue ( "-ApplicationGuid: " + this.ClassParameters.PlatformGuid );
         this.LogInitValue ( "-LoggingLevel: " + ClassParameters.LoggingLevel );
         this.LogInitValue ( "-UserId: " + ClassParameters.UserProfile.UserId );
         this.LogInitValue ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
@@ -278,9 +278,9 @@ namespace Evado.UniForm.Clinical
 
     private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
 
-    private String _LicensedModules = EvModuleCodes.Administration_Module + ";"
-      + EvModuleCodes.Management_Module + ";"
-      + EvModuleCodes.Integration_Module;
+    private String _LicensedModules = EdModuleCodes.Administration_Module + ";"
+      + EdModuleCodes.Management_Module + ";"
+      + EdModuleCodes.Integration_Module;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -432,7 +432,7 @@ namespace Evado.UniForm.Clinical
 
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 
-        this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.RoleId );
+        this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
 
         //
         // get the customer object if it not already selected.
@@ -442,12 +442,12 @@ namespace Evado.UniForm.Clinical
         //
         // Create the project selection list field.
         //
-        this.GetTrialList ( );
+        this.getApplicationList ( );
 
         //
         // set the current project
         //
-        this.GetTrial ( PageCommand );
+        this.GetApplication ( PageCommand );
 
         //
         // set the current project
@@ -516,7 +516,6 @@ namespace Evado.UniForm.Clinical
       //
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
       EvCustomers bll_Customer = new EvCustomers ( this.ClassParameters );
-      EvOrganisations bll_organisations = new EvOrganisations ( this.ClassParameters );
       String description = String.Empty;
 
       clientDataObject.Id = Guid.NewGuid ( );
@@ -550,15 +549,8 @@ namespace Evado.UniForm.Clinical
       description += "\r\n Customer No: " + this.Session.Customer.CustomerNo
         + ", Name: " + this.Session.Customer.Name;
 
-      //
-      // get the organisation object.
-      //  
-      this.Session.AdminOrganisation = bll_organisations.getItem ( EuDemoUserRegistration.CONST_DEMO_ORGANISATION );
 
-      this.LogDebug ( "{0} - {1}.", this.Session.AdminOrganisation.OrgId, this.Session.AdminOrganisation.Name );
-
-      description += "\r\n Organisation OrgId: " + this.Session.AdminOrganisation.OrgId
-        + ", Name: " + this.Session.AdminOrganisation.Name;
+      description += "\r\n User Type: " + EvUserProfile.UserTypesList.End_User;
 
       this.LogValue ( "Group Description:\r\n " + description );
       pageGroup.Description = description;
@@ -627,9 +619,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getApplicationObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
-      this.LogDebug ( "Settings.UserProfile.RoleId: " + this.ClassParameters.UserProfile.RoleId );
-      this.LogDebug ( "Settings.UserProfile.OrgId: " + this.ClassParameters.UserProfile.OrgId );
-      //this.LogDebug ( "EvStaticSetting.ConnectionStringKey: " + Bll.EvStaticSetting.ConnectionStringKey );
+      this.LogDebug ( "Settings.UserProfile.RoleId: " + this.ClassParameters.UserProfile.Roles );
       //
       // Initialise the methods variables and objects.
       //
@@ -788,35 +778,6 @@ namespace Evado.UniForm.Clinical
 
             break;
           }
-        case EuAdapterClasses.Organisations:
-          {
-            this.LogDebug ( " ORGANISATION CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuOrganisations organisations = new EuOrganisations ( this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            organisations.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = organisations.getClientDataObject ( PageCommand );
-            this.ErrorMessage = organisations.ErrorMessage;
-            this.LogAdapter ( organisations.Log );
-
-            break;
-          }
         case EuAdapterClasses.Users:
           {
             this.LogDebug ( " USERS CLASS SELECTED." );
@@ -959,7 +920,7 @@ namespace Evado.UniForm.Clinical
               clientDataObject.Page.GroupList.Count );
             break;
           }
-
+          /*
         case EuAdapterClasses.Alert:
           {
             this.LogDebug ( "ALERT CLASS SELECTED." );
@@ -990,6 +951,7 @@ namespace Evado.UniForm.Clinical
 
             break;
           }
+           */ 
         case EuAdapterClasses.Record_Layouts:
           {
             this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
@@ -1049,7 +1011,7 @@ namespace Evado.UniForm.Clinical
 
             break;
           }
-
+          /*
         case EuAdapterClasses.Activities:
           {
             this.LogDebug ( "ACTIVITIES CLASS SELECTED." );
@@ -1137,6 +1099,7 @@ namespace Evado.UniForm.Clinical
 
             break;
           }
+           */ 
         case EuAdapterClasses.ReportTemplates:
           {
             this.LogDebug ( "REPORT TEMPLATESS CLASS SELECTED." );
@@ -1605,7 +1568,7 @@ namespace Evado.UniForm.Clinical
     private Evado.Model.UniForm.AppData IllegalAnonymousAccessAttempt (
       EuAdapterClasses applicationObject )
     {
-      this.ErrorMessage = EvLabels.Security_Illegal_Anonymoous_Access_Message;
+      this.ErrorMessage = EdLabels.Security_Illegal_Anonymoous_Access_Message;
       //
       // log an user access event.
       //
@@ -1630,7 +1593,7 @@ namespace Evado.UniForm.Clinical
       get
       {
         Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command (
-          EvLabels.Default_Home_Page_Command_Title,
+          EdLabels.Default_Home_Page_Command_Title,
           EuAdapter.APPLICATION_ID,
            Evado.Model.Digital.EvcStatics.CONST_DEFAULT,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );

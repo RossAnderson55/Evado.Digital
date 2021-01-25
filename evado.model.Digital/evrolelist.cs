@@ -39,6 +39,11 @@ namespace Evado.Model.Digital
       Evado_Administrator,
 
       /// <summary>
+      /// This enumeration defines an Evado Evado_Designer role
+      /// </summary>
+      Evado_Designer,
+
+      /// <summary>
       /// This enumeration defines an Evado Manager role
       /// </summary>
       Evado_Manager,
@@ -56,7 +61,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the manager role
       /// </summary>
-      Manager,
+      Designer,
 
       /// <summary>
       /// This enumeration defines the  coordinator role

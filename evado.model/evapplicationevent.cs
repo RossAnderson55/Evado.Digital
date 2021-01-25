@@ -378,9 +378,9 @@ namespace Evado.Model
         if ( this._UserName != String.Empty
           && stContent.Contains ( this._UserName ) == false )
         {
-          stContent += EvLabels.Space_Open_Bracket
+          stContent += evado.model.Properties.Resources.Space_Open_Bracket
           + this._UserName
-          + EvLabels.Space_Close_Bracket;
+          + evado.model.Properties.Resources.Space_Close_Bracket;
         }
 
         stContent = stContent.Replace ( "\r\n", " " );

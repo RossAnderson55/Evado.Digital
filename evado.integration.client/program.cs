@@ -150,10 +150,8 @@ namespace Evado.IntegrationClient
         // Send the query to the web service.
         switch ( Program.QueryType )
         {
-          case EiQueryTypes.Common_Records_Import:
-          case EiQueryTypes.Visit_Records_Import:
-          case EiQueryTypes.Subjects_Import:
-          case EiQueryTypes.Activities_Import:
+          
+          case EiQueryTypes.Records_Import:
             {
               Program.importQuery ( );
               break;
@@ -789,7 +787,7 @@ namespace Evado.IntegrationClient
 
       switch ( Program.QueryType )
       {
-        case EiQueryTypes.Visit_Record_Template:
+        case EiQueryTypes.Record_Template:
           {
             Program.CsvFileName = Program.ProjectId + "-" + Program.FormId + "-" + Program.QueryType + ".csv";
             Program.CsvFileName = Program.CsvFileName.ToLower ( );
@@ -797,43 +795,6 @@ namespace Evado.IntegrationClient
             break;
           }
 
-        case EiQueryTypes.Common_Record_Template:
-          {
-            Program.CsvFileName = Program.ProjectId + "-" + Program.FormId + "-" + Program.QueryType + ".csv";
-            Program.CsvFileName = Program.CsvFileName.ToLower ( );
-            Program.LogFileName = Program.CsvFileName.Replace ( "-data.csv", "-log.txt" );
-            break;
-          }
-
-        case EiQueryTypes.Visit_Records_Import:
-        case EiQueryTypes.Common_Records_Import:
-        case EiQueryTypes.Visit_Records_Export:
-        case EiQueryTypes.Adverse_Events_Export:
-        case EiQueryTypes.Serious_Adverse_Events_Export:
-        case EiQueryTypes.Comcomitant_Medications_Export:
-          {
-            Program.CsvFileName = Program.ProjectId;
-
-            if ( Program.FormId != String.Empty )
-            {
-              Program.CsvFileName += "-" + Program.FormId;
-            }
-
-            if ( Program.OrgId != String.Empty )
-            {
-              Program.CsvFileName += "-" + Program.OrgId;
-            }
-
-            if ( Program.SubjectId != String.Empty )
-            {
-              Program.CsvFileName += "-" + Program.SubjectId;
-            }
-
-            Program.CsvFileName += "-" + Program.QueryType + "-data.csv";
-            Program.CsvFileName = Program.CsvFileName.ToLower ( );
-            Program.LogFileName = Program.CsvFileName.Replace ( "-data.csv", "-log.txt" );
-            break;
-          }
         default:
           {
 
@@ -874,16 +835,6 @@ namespace Evado.IntegrationClient
       filename = filename.ToLower ( );
       Program.writeDebugLog ( "filename: " + filename );
 
-      if ( Program._ImportData.QueryType == EiQueryTypes.Activities_Export )
-      {
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Form_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Subject_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Sponsor_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Sponsor_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.External_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Randomised_Id );
-        Program._ImportData.DeleteQueryParameter ( EiQueryParameterNames.Record_Id );
-      }
 
       //
       // send the query to the REST service.

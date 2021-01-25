@@ -203,11 +203,11 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of form record queryState objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvFormRecordSummary> getRecordSummary ( string TrialId, string SubjectId )
+    public List<EdRecordSummary> getRecordSummary ( string TrialId, string SubjectId )
     {
       this._DebugLog.AppendLine ( "Evado.Bll.AncillaryRecords.getRecordSummary method. " );
 
-      List<EvFormRecordSummary> View = this._dalSubjectRecords.getRecordSummary ( TrialId, SubjectId );
+      List<EdRecordSummary> View = this._dalSubjectRecords.getRecordSummary ( TrialId, SubjectId );
 
       this._DebugLog.AppendLine ( this._dalSubjectRecords.Log );
 
@@ -528,14 +528,14 @@ namespace Evado.Bll.Clinical
       // Define the local variables.
       // 
       string dt = DateTime.Now.ToString ( "MMM dd yyyy" );
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
+      EdUserSignoff userSignoff = new EdUserSignoff ( );
 
       //
       // IF the signoff object is null then initialise it.
       //
       if ( AncillaryRecord.Signoffs == null )
       {
-        AncillaryRecord.Signoffs = new List<EvUserSignoff> ( );
+        AncillaryRecord.Signoffs = new List<EdUserSignoff> ( );
       }
 
       // 
@@ -580,7 +580,7 @@ namespace Evado.Bll.Clinical
         AncillaryRecord.ResearcherUserId = AuthenticatedUserId;
         AncillaryRecord.ResearcherDate = DateTime.Now;
 
-        userSignoff.Type = EvUserSignoff.TypeCode.Record_Author_Signoff;
+        userSignoff.Type = EdUserSignoff.TypeCode.Record_Author_Signoff;
         userSignoff.SignedOffUserId = AuthenticatedUserId;
         userSignoff.SignedOffBy = AncillaryRecord.UserCommonName;
         userSignoff.SignOffDate = AncillaryRecord.ResearcherDate;

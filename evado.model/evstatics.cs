@@ -22,6 +22,8 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
+using evado.model.Properties;
+
 namespace Evado.Model
 {
   /// <summary>
@@ -373,7 +375,6 @@ namespace Evado.Model
       return JulianDay;
     }
 
-
     // =====================================================================================
     /// <summary>
     /// This method deserialises an Xml object into a generic type.
@@ -527,7 +528,7 @@ namespace Evado.Model
       //
       // Return a string with a blank character
       //
-      return name ;
+      return name;
 
     }//END getEnumStringValue method
 
@@ -787,10 +788,10 @@ namespace Evado.Model
       //
       if ( BoolValue == true )
       {
-        return EvLabels.Label_Yes;
+        return evado.model.Properties.Resources.Label_Yes;
       }
 
-      return EvLabels.Label_No;
+      return evado.model.Properties.Resources.Label_No;
 
     }//END getBool method
 
@@ -1608,14 +1609,14 @@ namespace Evado.Model
       //
       // Create a floatValue and upperBoundary
       //
-      string name = String.Empty ;
+      string name = String.Empty;
       EmailAddress = EmailAddress.Replace ( "<", "(" );
       int index = EmailAddress.IndexOf ( "(" );
       if ( index >= 0 )
       {
         name = EmailAddress.Substring ( 0, index );
       }
-      return name.Trim();
+      return name.Trim ( );
 
     }//END getNameFromEmailAddress method
 
@@ -1639,7 +1640,7 @@ namespace Evado.Model
       EmailAddress = EmailAddress.Replace ( "<", "(" );
       EmailAddress = EmailAddress.Replace ( ">", ")" );
       int index = EmailAddress.IndexOf ( "(" );
-      
+
       if ( index < 0 )
       {
         return EmailAddress;
@@ -1676,7 +1677,7 @@ namespace Evado.Model
       //
       if ( TextValue == EvStatics.CONST_NUMERIC_NULL.ToString ( ) )
       {
-          return EvStatics.CONST_NUMERIC_NOT_AVAILABLE;
+        return EvStatics.CONST_NUMERIC_NOT_AVAILABLE;
       }
 
       return TextValue;
@@ -2724,40 +2725,65 @@ namespace Evado.Model
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Static test site methods methods.
+    #region Static Comparision methods methods.
 
-    //  ===================================================================================
+    //  ==================================================================================	
     /// <summary>
-    ///  This method tests whether an organisation identifer is a test site.
-    ///  A test site is an organisation with 'test' in it organisation identifier.
+    ///  This method removes the domain name from a use id.
     /// </summary>
-    /// <param name="SiteId">String: site identifier</param>
-    /// <returns>Boolean: True, is a test site.</returns>
+    /// <param name="DomainUserId">String: a domain user identifier</param>
+    /// <returns>Strign: A string containing the domain user identifier.</returns>
     /// <remarks>
-    /// This method consists of the following: 
+    /// This method consists of the following steps:
     /// 
-    /// 1. Pass a lowcast SiteId into an organization identifier
+    /// 1. Create an array of domain name for the activity.
     /// 
-    /// 2. Return true, if the organization identifier is test
+    /// 2. Check to see if the user is an administrator, returns Administrator.
+    /// 
+    /// 3. If there is no domain exists, return the domain user identifier
     /// </remarks>
-    //  -----------------------------------------------------------------------------------
-    public static bool isTestSite ( String SiteId )
+    //  ---------------------------------------------------------------------------------
+    public static bool CompareDelimtedStrings ( String FullDelimitedString, String SumDelimitedString )
     {
-      //
-      // Pass a lowcast SiteId into an organization identifier
-      //
-      string orgId = SiteId.ToLower ( );
+      // 
+      // initialise the methods variables and objects.
+      // 
+      string [ ] arrFullDelimitedString = FullDelimitedString.Split ( ';' );
+      string [ ] arrSubDelimitedString = SumDelimitedString.Split ( ';' );
 
       //
-      // Return true, if the organization identifier is test
+      // Iterate through the full delimited array.
       //
-      if ( orgId.Contains ( "test" ) == true )
+      for ( int i = 0; i < arrFullDelimitedString.Length; i++ )
       {
-        return true;
-      }
-      return false;
+        var str1 = arrFullDelimitedString [ i ].Trim ( );
 
-    }//END isTestSite method
+        //
+        // Iterate through the sub delimited array.
+        //
+        for ( int j = 0; j < arrSubDelimitedString.Length; j++ )
+        {
+          var str2 = arrSubDelimitedString [ j ].Trim ( );
+
+          //
+          // return true on the first match.
+          //
+          if ( str1.ToLower ( ) == str2.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+
+      //
+      // return false result
+      //
+      return false;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+    #region Static DomainName methods methods.
 
     //  ==================================================================================	
     /// <summary>
@@ -2803,7 +2829,7 @@ namespace Evado.Model
     /// <param name="strIn">String imput string</param>
     /// <returns>String: cleaned text</returns>
     //------------------------------------------------------------------------------------
-    public static string CleanSamUserId ( string strIn  )
+    public static string CleanSamUserId ( string strIn )
     {
       // Replace invalid characters with empty strings.
       try
@@ -3136,7 +3162,7 @@ namespace Evado.Model
     //  ---------------------------------------------------------------------------------
     public static float CalculateBmi ( int Height, int Weight )
     {
-      return StandardFormula ( Height,  Weight );
+      return StandardFormula ( Height, Weight );
 
     }//END BmiCalculator method
 

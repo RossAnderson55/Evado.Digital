@@ -133,7 +133,7 @@ namespace Evado.UniForm.Clinical
           this.LogIllegalAccess ( this.ClassNameSpace + "getDataObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           this.Session.LastPage.Message = this.ErrorMessage;
 
@@ -372,7 +372,7 @@ namespace Evado.UniForm.Clinical
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -403,7 +403,7 @@ namespace Evado.UniForm.Clinical
       // Add the page refresh groupCommand.
       //
       groupCommand = PageGroup.addCommand (
-        EvLabels.Form_Field_Refresh_Command_Title,
+        EdLabels.Form_Field_Refresh_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Record_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
@@ -432,7 +432,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             groupCommand = PageGroup.addCommand (
-              EvLabels.Form_Field_Save_Command_Title,
+              EdLabels.Form_Field_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layout_Fields.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -453,7 +453,7 @@ namespace Evado.UniForm.Clinical
             if ( this.Session.FormField.Design.InitialVersion == majorVersion )
             {
               groupCommand = PageGroup.addCommand (
-                EvLabels.Form_Field_Delete_Command_Title,
+                EdLabels.Form_Field_Delete_Command_Title,
                 EuAdapter.APPLICATION_ID,
                 EuAdapterClasses.Record_Layout_Fields.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -495,9 +495,9 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       // 
       ClientDataObject.Id = this.Session.FormField.Guid;
-      ClientDataObject.Title = EvLabels.Form_Field_Page_Title_Prefix
+      ClientDataObject.Title = EdLabels.Form_Field_Page_Title_Prefix
         + this.Session.FormField.FieldId
-        + EvLabels.Space_Hypen
+        + EdLabels.Space_Hypen
         + this.Session.FormField.Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -508,9 +508,9 @@ namespace Evado.UniForm.Clinical
       //
       // Set the user's edit access if they have configuration edit access.
       //
-      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementEditAccess );
+      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
 
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -593,7 +593,7 @@ namespace Evado.UniForm.Clinical
       // Define the general properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_General_Group_Title,
+        EdLabels.Form_Field_General_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -613,7 +613,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Form_Title_Field_Label,
+        EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Title );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -623,7 +623,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.FieldId.ToString ( ),
-        EvLabels.Form_Field_Identifier_Field_Label,
+        EdLabels.Form_Field_Identifier_Field_Label,
         this.Session.FormField.FieldId,
         20 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -641,7 +641,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
-        EvLabels.Form_Field_Type_Field_Label,
+        EdLabels.Form_Field_Type_Field_Label,
         this.Session.FormField.TypeId.ToString ( ),
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -660,7 +660,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Subject.ToString ( ),
-        EvLabels.Form_Field_Subject_Field_Label,
+        EdLabels.Form_Field_Subject_Field_Label,
         this.Session.FormField.Design.Title,
         150 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -671,7 +671,7 @@ namespace Evado.UniForm.Clinical
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
 
-      foreach ( EvFormSection section in this.Session.RecordLayout.Design.FormSections )
+      foreach ( EdRecordSection section in this.Session.RecordLayout.Design.FormSections )
       {
         if ( section.Title != String.Empty )
         {
@@ -687,7 +687,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createSelectionListField (
           EdRecordField.FieldClassFieldNames.FormSection.ToString ( ),
-          EvLabels.Form_Field_Section_Field_Label,
+          EdLabels.Form_Field_Section_Field_Label,
           this.Session.FormField.Design.SectionNo,
           optionList );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -697,7 +697,7 @@ namespace Evado.UniForm.Clinical
       // Define the general properties pageMenuGroup.
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Properties_Group_Title,
+        EdLabels.Form_Field_Properties_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -707,7 +707,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.Order.ToString ( ),
-        EvLabels.Form_Field_Order_Field_Label,
+        EdLabels.Form_Field_Order_Field_Label,
         this.Session.FormField.Order,
         0,
         200 );
@@ -720,12 +720,12 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createFreeTextField (
           EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
-          EvLabels.Form_Field_Read_Only_Text_Field_Label,
+          EdLabels.Form_Field_Read_Only_Text_Field_Label,
           this.Session.FormField.Design.Instructions,
           150, 20 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-        String instructions = EvLabels.Form_Field_Instruction_Field_Description;
+        String instructions = EdLabels.Form_Field_Instruction_Field_Description;
 
         groupField.Description =  instructions ;
         this.Session.FormField.Design.AiDataPoint = false;
@@ -737,7 +737,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
-          EvLabels.Form_Field_Hide_Field_Label,
+          EdLabels.Form_Field_Hide_Field_Label,
           this.Session.FormField.Design.HideField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -752,7 +752,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
-          EvLabels.Form_Field_External_URL_Field_Label,
+          EdLabels.Form_Field_External_URL_Field_Label,
           this.Session.FormField.Design.Instructions,
           100 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -782,7 +782,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createNumericField (
           EuRecordLayoutFields.CONST_VIDEO_IMAGE_WIDTH,
-          EvLabels.Form_Field_Image_Video_Width_Field_Label,
+          EdLabels.Form_Field_Image_Video_Width_Field_Label,
           iWidth,
           0,
           1000 );
@@ -792,7 +792,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createNumericField (
           EuRecordLayoutFields.CONST_VIDEO_IMAGE_HEIGHT,
-          EvLabels.Form_Field_Image_Video_Height_Field_Label,
+          EdLabels.Form_Field_Image_Video_Height_Field_Label,
           iHeight,
           0,
           1000 );
@@ -803,7 +803,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
-          EvLabels.Form_Field_Hide_Field_Label,
+          EdLabels.Form_Field_Hide_Field_Label,
           this.Session.FormField.Design.HideField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -818,7 +818,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createFreeTextField (
         EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
-        EvLabels.Form_Field_Instructions_Field_Label,
+        EdLabels.Form_Field_Instructions_Field_Label,
         this.Session.FormField.Design.Instructions,
         150, 5 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -828,7 +828,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Reference.ToString ( ),
-        EvLabels.Form_Field_Reference_Field_Label,
+        EdLabels.Form_Field_Reference_Field_Label,
         this.Session.FormField.Design.HttpReference,
         50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -841,7 +841,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.FieldCategory.ToString ( ),
-          EvLabels.Form_Field_Category_Field_Title,
+          EdLabels.Form_Field_Category_Field_Title,
           this.Session.FormField.Design.FieldCategory,
           20 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -856,7 +856,7 @@ namespace Evado.UniForm.Clinical
 
         groupField = pageGroup.createSelectionListField (
           EvFormField.FormFieldClassFieldNames.ExSelectionListId.ToString ( ),
-          EvLabels.Form_Field_External_Selection_Field_Label,
+          EdLabels.Form_Field_External_Selection_Field_Label,
           this.SessionObjects.FormField.Design.ExSelectionListId,
           optionList );
         groupField.Layout = PageGenerator.ApplicationFieldLayout;
@@ -865,7 +865,7 @@ namespace Evado.UniForm.Clinical
 
         groupField = pageGroup.createSelectionListField (
           EvFormField.FormFieldClassFieldNames.ExSelectionListCategory.ToString ( ),
-          EvLabels.Form_Field_External_Selection_Category_Field_Label,
+          EdLabels.Form_Field_External_Selection_Category_Field_Label,
           this.SessionObjects.FormField.Design.ExSelectionListCategory,
           optionList );
         groupField.Layout = PageGenerator.ApplicationFieldLayout;
@@ -879,14 +879,14 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.AnalogueLegendStart.ToString ( ),
-          EvLabels.Form_Field_Analogue_Legend_Start_Field_Label,
+          EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.FormField.Design.AnalogueLegendStart,
           50 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.AnalogueLegendFinish.ToString ( ),
-          EvLabels.Form_Field_Analogue_Legend_Start_Field_Label,
+          EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.FormField.Design.AnalogueLegendFinish,
           50 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -904,8 +904,8 @@ namespace Evado.UniForm.Clinical
 
         groupField = pageGroup.createFreeTextField (
           EdRecordField.FieldClassFieldNames.Selection_Options.ToString ( ),
-          EvLabels.Form_Field_Selection_Options_Field_Title,
-          EvLabels.Form_Field_Selection_Options_Field_Description,
+          EdLabels.Form_Field_Selection_Options_Field_Title,
+          EdLabels.Form_Field_Selection_Options_Field_Description,
           stOptions,
           90,
           10 );
@@ -925,7 +925,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
-          EvLabels.Form_Field_Summary_Field_Label,
+          EdLabels.Form_Field_Summary_Field_Label,
           this.Session.FormField.Design.SummaryField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -937,7 +937,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Mandatory.ToString ( ),
-          EvLabels.Form_Field_Mandatory_Field_Label,
+          EdLabels.Form_Field_Mandatory_Field_Label,
           this.Session.FormField.Design.Mandatory );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -950,7 +950,7 @@ namespace Evado.UniForm.Clinical
         {
           groupField = pageGroup.createBooleanField (
             EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
-            EvLabels.Form_Field_Date_Point_Field_Label,
+            EdLabels.Form_Field_Date_Point_Field_Label,
             this.Session.FormField.Design.AiDataPoint );
           groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         }
@@ -960,7 +960,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createBooleanField (
         EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
-        EvLabels.Form_Field_Hide_Field_Label,
+        EdLabels.Form_Field_Hide_Field_Label,
         this.Session.FormField.Design.HideField );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -999,7 +999,7 @@ namespace Evado.UniForm.Clinical
       // Define the general properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Custom_Validation_Group_Title,
+        EdLabels.Form_Field_Custom_Validation_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1009,7 +1009,7 @@ namespace Evado.UniForm.Clinical
       this.getGroupCommands ( pageGroup );
 
 
-      pageGroup.Description = EvLabels.Form_Field_CustomValidation_Field_Description ;
+      pageGroup.Description = EdLabels.Form_Field_CustomValidation_Field_Description ;
 
       //
       // Form Instructions
@@ -1051,7 +1051,7 @@ namespace Evado.UniForm.Clinical
       // Define the general properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Computed_Field_Group_Title,
+        EdLabels.Form_Field_Computed_Field_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1118,7 +1118,7 @@ namespace Evado.UniForm.Clinical
       // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Sex_Validation_Group_Title,
+        EdLabels.Form_Field_Sex_Validation_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1162,7 +1162,7 @@ namespace Evado.UniForm.Clinical
       // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Numeric_Group_Title,
+        EdLabels.Form_Field_Numeric_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1179,7 +1179,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.Unit_Scaling.ToString ( ),
-        EvLabels.Form_Field_Unit_Scale_Field_Label,
+        EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.FormField.Design.UnitScaling,
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1189,7 +1189,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Unit.ToString ( ),
-        EvLabels.Form_Field_Unit_Scale_Field_Label,
+        EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.FormField.Design.Unit,
         10 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1199,7 +1199,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.DefaultNumericValue.ToString ( ),
-        EvLabels.Form_Field_Default_Value_Field_Label,
+        EdLabels.Form_Field_Default_Value_Field_Label,
         0,
         -1000000,
         1000000 );
@@ -1217,7 +1217,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.ValidationLowerLimit.ToString ( ),
-        EvLabels.Form_Field_Lower_Validation_Field_Label,
+        EdLabels.Form_Field_Lower_Validation_Field_Label,
         this.Session.FormField.Design.ValidationLowerLimit,
         -1000000,
         1000000 );
@@ -1228,7 +1228,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.ValidationUpperLimit.ToString ( ),
-        EvLabels.Form_Field_Upper_Validation_Field_Label,
+        EdLabels.Form_Field_Upper_Validation_Field_Label,
         this.Session.FormField.Design.ValidationUpperLimit,
         -1000000,
         1000000 );
@@ -1239,7 +1239,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.AlertLowerLimit.ToString ( ),
-        EvLabels.Form_Field_Lower_Alert_Field_Label,
+        EdLabels.Form_Field_Lower_Alert_Field_Label,
         this.Session.FormField.Design.AlertLowerLimit,
         -1000000,
         1000000 );
@@ -1250,7 +1250,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.AlertUpperLimit.ToString ( ),
-        EvLabels.Form_Field_Upper_Alert_Field_Label,
+        EdLabels.Form_Field_Upper_Alert_Field_Label,
         this.Session.FormField.Design.AlertUpperLimit,
         -1000000,
         1000000 );
@@ -1261,7 +1261,7 @@ namespace Evado.UniForm.Clinical
       //
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.NormalRangeLowerLimit.ToString ( ),
-          EvLabels.Form_Field_Lower_Normal_Range_Field_Label,
+          EdLabels.Form_Field_Lower_Normal_Range_Field_Label,
           this.Session.FormField.Design.NormalRangeLowerLimit,
           -1000000,
           1000000 );
@@ -1272,7 +1272,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.NormalRangeUpperLimit.ToString ( ),
-          EvLabels.Form_Field_Upper_Normal_Range_Field_Label,
+          EdLabels.Form_Field_Upper_Normal_Range_Field_Label,
           this.Session.FormField.Design.NormalRangeUpperLimit,
           -1000000,
           1000000 );
@@ -1323,7 +1323,7 @@ namespace Evado.UniForm.Clinical
       // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Table_Group_Title,
+        EdLabels.Form_Field_Table_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1340,7 +1340,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EuRecordLayoutFields.CONST_TABLE_ROW_FIELD,
-        EvLabels.Form_Field_Table_Row_Field_Label,
+        EdLabels.Form_Field_Table_Row_Field_Label,
         this.Session.FormField.Table.Rows.Count.ToString ( ),
         optionList );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
@@ -1443,7 +1443,7 @@ namespace Evado.UniForm.Clinical
       // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Field_Matrix_Group_Title,
+        EdLabels.Form_Field_Matrix_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = PageObject.EditAccess;
@@ -1560,7 +1560,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Initialise the methods variables and objects.
         //    
-        string FormId = PageCommand.GetParameter ( EvIdentifiers.LAYOUT_ID );
+        string FormId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
         string stCount = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT );
         string stSectionNo = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FORM_SECTION );
 
@@ -1619,7 +1619,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Create_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Create_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1717,7 +1717,7 @@ namespace Evado.UniForm.Clinical
         {
           if ( result == EvEventCodes.Data_Duplicate_Field_Error )
           {
-            this.ErrorMessage = String.Format ( EvLabels.Form_Field_Duplicate_ID_Error_Message,
+            this.ErrorMessage = String.Format ( EdLabels.Form_Field_Duplicate_ID_Error_Message,
               this.Session.FormField.FieldId );
           }
           string StEvent = this._Bll_FormFields.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
@@ -1727,17 +1727,17 @@ namespace Evado.UniForm.Clinical
           {
             case EvEventCodes.Data_Duplicate_Id_Error:
               {
-                this.ErrorMessage = EvLabels.Form_Field_Duplicate_ID_Error_Message;
+                this.ErrorMessage = EdLabels.Form_Field_Duplicate_ID_Error_Message;
                 break;
               }
             case EvEventCodes.Identifier_Project_Id_Error:
               {
-                this.ErrorMessage = EvLabels.Project_Identifier_Empty_Error_Message;
+                this.ErrorMessage = EdLabels.Project_Identifier_Empty_Error_Message;
                 break;
               }
             default:
               {
-                this.ErrorMessage = EvLabels.Form_Field_Update_Error_Message;
+                this.ErrorMessage = EdLabels.Form_Field_Update_Error_Message;
                 break;
               }
           }
@@ -1752,7 +1752,7 @@ namespace Evado.UniForm.Clinical
         // 
         // If an exception is raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Form_Field_Update_Error_Message;
+        this.ErrorMessage = EdLabels.Form_Field_Update_Error_Message;
 
         // 
         // Log the error event to the server log and DB event log.
@@ -1792,7 +1792,7 @@ namespace Evado.UniForm.Clinical
         if ( field.FieldId == this.Session.FormField.FieldId
           && this.Session.FormField.Guid != field.Guid )
         {
-          this.ErrorMessage = String.Format ( EvLabels.Form_Field_Duplicate_ID_Error_Message,
+          this.ErrorMessage = String.Format ( EdLabels.Form_Field_Duplicate_ID_Error_Message,
             this.Session.FormField.FieldId );
 
           this.LogValue ( this.ErrorMessage );

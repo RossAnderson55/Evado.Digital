@@ -58,13 +58,13 @@ namespace Evado.UniForm.Clinical
       clientDataObject.Id = Guid.NewGuid ( );
       String stHeaderDescription = String.Empty;
 
-      stHeaderDescription += "##" + EvLabels.Home_Page_Access_Denied_Header + "##"
-        + " \r\n" + EvLabels.Home_Page_Access_Denied_Message + "\r\n";
+      stHeaderDescription += "##" + EdLabels.Home_Page_Access_Denied_Header + "##"
+        + " \r\n" + EdLabels.Home_Page_Access_Denied_Message + "\r\n";
 
       Evado.Model.UniForm.Page page = new Evado.Model.UniForm.Page ( );
 
       Evado.Model.UniForm.Group group = clientDataObject.Page.AddGroup (
-        EvLabels.HomePage_Page_Title,
+        EdLabels.Default_Home_Page_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
       group.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -72,7 +72,7 @@ namespace Evado.UniForm.Clinical
 
       this.LogIllegalAccess (
         this.ClassNameSpace + "generateNoProfilePage",
-        this.Session.UserProfile.RoleId.ToString ( ) );
+        this.Session.UserProfile.Roles.ToString ( ) );
 
       // 
       // add the exit page.
@@ -129,7 +129,7 @@ namespace Evado.UniForm.Clinical
       //
       this.getSelectedGroupItem ( PageCommand );
 
-      String pageTitle = EvLabels.HomePage_Page_Title;
+      String pageTitle = EdLabels.Default_Home_Page_Title;
       if ( this.Session.Customer.HomePageHeader != String.Empty )
       {
         pageTitle = this.Session.Customer.HomePageHeader;
@@ -199,7 +199,7 @@ namespace Evado.UniForm.Clinical
           // 
           // Generate the alert list.
           // 
-          this.generateAlertList ( clientDataObject );
+          //this.generateAlertList ( clientDataObject );
 
           this.LogDebugClass ( this._MenuUtility.Log );
           //
@@ -278,28 +278,28 @@ namespace Evado.UniForm.Clinical
       //
       // If the page groupCommand title is close old alert then run close alerts.
       //
-      if ( PageCommand.Title == EvLabels.HomePage_Close_Old_Alerts_Command_Title )
+      /*
+    if ( PageCommand.Title == EdLabels.HomePage_Close_Old_Alerts_Command_Title )
+    {
+      this.LogValue ( "Page Command is close old alerts." );
+     EvEventCodes returnCode = this.closeOldAlerts ( );
+
+      if ( returnCode != EvEventCodes.Ok )
       {
-        this.LogValue ( "Page Command is close old alerts." );
-
-        EvEventCodes returnCode = this.closeOldAlerts ( );
-
-        if ( returnCode != EvEventCodes.Ok )
-        {
-          ClientDataObject.Message = EvLabels.HomePage_Close_Alert_Update_Error;
-        }
-
-      }//END execute close old alerts.
+        ClientDataObject.Message = EdLabels.HomePage_Close_Alert_Update_Error;
+      }
+    }//END execute close old alerts.
+      */
 
       // 
       // include an error message if a missing page reference is countered.
       // 
       if ( PageCommand.Object != EuAdapterClasses.Home_Page.ToString ( ) )
       {
-        this.LogDebug ( EvLabels.HomePage_Missing_Page_Error + PageCommand.Title );
+        this.LogDebug ( EdLabels.HomePage_Missing_Page_Error + PageCommand.Title );
         this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
-        ClientDataObject.Message = EvLabels.HomePage_Missing_Page_Error + PageCommand.Title;
+        ClientDataObject.Message = EdLabels.HomePage_Missing_Page_Error + PageCommand.Title;
       }
 
       this.LogMethodEnd ( "addHomePageErrorMessages" );
@@ -322,7 +322,7 @@ namespace Evado.UniForm.Clinical
         // display the consent record export page.
         //
         var pageCommand = PageObject.addCommand (
-          EvLabels.UserProfile_Update_Profile_Command_Title,
+          EdLabels.UserProfile_Update_Profile_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Users.ToString ( ),
           Model.UniForm.ApplicationMethods.Get_Object );
@@ -364,7 +364,7 @@ namespace Evado.UniForm.Clinical
       // Create the trial selection pageMenuGroup
       // 
       pageGroup = new Model.UniForm.Group (
-        EvLabels.HomePage_Project_Selection,
+        EdLabels.HomePage_Selection_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
 
@@ -376,7 +376,7 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.UserProfile.hasEvadoAdministrationAccess == true )
       {
         groupField = pageGroup.createSelectionListField (
-         EvIdentifiers.CUSTOMER_GUID,
+         EvCustomer.CustomerFieldNames.Customer_Guid,
          EvCustomerLabels.Customer_Name_Field_Label,
          this.Session.Customer.Guid.ToString ( ),
          this._ApplicationObjects.CustomerSelectionList );
@@ -401,8 +401,8 @@ namespace Evado.UniForm.Clinical
         if ( this.Session.ApplicationList.Count > 1 )
         {
           groupField = pageGroup.createSelectionListField (
-           EvIdentifiers.APPLICATION_ID,
-           EvLabels.Label_Project_Id,
+           EdApplication.ApplicationFieldNames.ApplicationId,
+           EdLabels.Label_Project_Id,
            this.Session.Application.ApplicationId,
            this.Session.ApplicationSelectionList );
 
@@ -421,7 +421,7 @@ namespace Evado.UniForm.Clinical
       // Create a custom groupCommand to process the selection.
       // 
       groupCommand = pageGroup.addCommand (
-        EvLabels.HomePage_Select_Project,
+        EdLabels.HomePage_Select_Project,
         EuAdapter.APPLICATION_ID,
          EuAdapterClasses.Home_Page.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -497,7 +497,7 @@ namespace Evado.UniForm.Clinical
       this.LogValue ( "TrialType: " + this.Session.Application.Type );
       this.LogValue ( "OnlyAdministrationMenu: " + OnlyAdministrationMenu );
       this.LogValue ( "selectedMenuGroup : " + this.Session.MenuGroupItem.Group );
-      this.LogDebug ( "User Role: " + this.Session.UserProfile.RoleId );
+      this.LogDebug ( "User Role: " + this.Session.UserProfile.Roles );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -557,9 +557,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu item
         //
         if ( groupHeader.SelectMenuHeader (
-          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
-          this.Session.Application,
-          this.Session.UserProfile.RoleId ) == false )
+          this.Session.UserProfile.Roles ) == false )
         {
           //this.LogDebugValue ( "SKIPPED HEADER" );
           continue;
@@ -575,8 +573,7 @@ namespace Evado.UniForm.Clinical
       // Create the menu pageheaders MenuGroup object
       // 
       pageHeaderMenuGroup = new Model.UniForm.Group (
-          EvLabels.HomePage_Menu_Header_Group_Title,
-          String.Empty,
+          EdLabels.HomePage_Menu_Header_Group_Title,
           Evado.Model.UniForm.EditAccess.Enabled );
       pageHeaderMenuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
       pageHeaderMenuGroup.Layout = Model.UniForm.GroupLayouts.Dynamic;
@@ -663,7 +660,7 @@ namespace Evado.UniForm.Clinical
       // Create the menu pageheaders MenuGroup object
       // 
       Evado.Model.UniForm.Group pageHeaderMenuGroup = new Model.UniForm.Group (
-         EvLabels.HomePage_Menu_Header_Group_Title,
+         EdLabels.HomePage_Menu_Header_Group_Title,
          String.Empty,
          Evado.Model.UniForm.EditAccess.Enabled );
       pageHeaderMenuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -696,9 +693,7 @@ namespace Evado.UniForm.Clinical
         // Validate the menu EDC components should be displayed.
         //
         if ( groupHeader.SelectMenuHeader (
-          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
-          this.Session.Application,
-          this.Session.UserProfile.RoleId ) == false )
+          this.Session.UserProfile.Roles ) == false )
         {
           continue;
         }
@@ -771,8 +766,7 @@ namespace Evado.UniForm.Clinical
           // Validate the menu item
           //
           if ( item.SelectMenuItem (
-            this._ApplicationObjects.PlatformSettings.LoadedModuleList,
-            this.Session.UserProfile.RoleId ) == false )
+            this.Session.UserProfile.Roles ) == false )
           {
             continue;
           }
@@ -849,15 +843,14 @@ namespace Evado.UniForm.Clinical
 
         this.LogDebug ( "PageId: {0}, User Role: {1}, Item Roles: {2}",
           item.PageId,
-          this.Session.UserProfile.RoleId,
+          this.Session.UserProfile.Roles,
           item.RoleList );
 
         //
         // Validate the menu item
         //
         if ( item.SelectMenuItem (
-          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
-          this.Session.UserProfile.RoleId ) == false )
+          this.Session.UserProfile.Roles ) == false )
         {
           this.LogDebug ( "SKIPPED item not selected." );
           continue;
@@ -918,9 +911,8 @@ namespace Evado.UniForm.Clinical
       // Define the pageMenuGroup.
       // 
       Evado.Model.UniForm.Group group = PageObject.AddGroup (
-        EvLabels.HomePage_Welcome_Message
-        + this.Session.UserProfile.CommonName,
-        Evado.Model.UniForm.EditAccess.Enabled );
+        EdLabels.HomePage_Welcome_Message
+        + this.Session.UserProfile.CommonName );
       group.AddParameter ( Evado.Model.UniForm.GroupParameterList.Pixel_Width, 300 );
 
       String profile = String.Empty;
@@ -936,11 +928,11 @@ namespace Evado.UniForm.Clinical
            this.Session.UserProfile.Customer.CustomerNo, 
            this.Session.UserProfile.Customer.Name );
       }
-      */
       profile += String.Format (
-         EvLabels.HomePage_User_Role_Message,
-          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this.Session.UserProfile.RoleId ) );
-
+         EdLabels.HomePage_User_Role_Message,
+          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this.Session.UserProfile.Roles ) );
+      
+      */
       group.Description = profile ;
 
 
@@ -971,16 +963,13 @@ namespace Evado.UniForm.Clinical
       string [ ] displayOptions = this.Session.UserProfile.ProjectDashboardComponents.Split ( ';' );
 
 
-      if ( this.Session.UserProfile.RoleId != EvRoleList.Evado_Administrator
-        && this.Session.UserProfile.RoleId != EvRoleList.Evado_Manager
-        && this.Session.UserProfile.RoleId != EvRoleList.Administrator
-        && this.Session.UserProfile.RoleId != EvRoleList.Manager )
+      if ( this.Session.UserProfile.hasManagementAccess )
       {
         return;
       }
 
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group (
-        EvLabels.HomePage_Project_Dashboard,
+        EdLabels.HomePage_Application_Dashboard,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Horizontal_Orientation;
@@ -991,7 +980,7 @@ namespace Evado.UniForm.Clinical
       // Define the group description containing the project and it's status.
       //
       pageGroup.Description = String.Format (
-        EvLabels.HomePage_Project_Dashboard_Description,
+        EdLabels.HomePage_Application_Dashboard_Description,
         this.Session.Application.ApplicationId,
         this.Session.Application.Title,
         this.Session.Application.StateDesc ) ;
@@ -1014,14 +1003,12 @@ namespace Evado.UniForm.Clinical
         {
           continue;
         }
-        this.LogDebug ( "Item {0} - {1}, Mod: {2} ", item.PageId, item.Title, item.Modules);
 
         //
         // Validate the menu item
         //
         if ( item.SelectMenuItem (
-          this._ApplicationObjects.PlatformSettings.LoadedModuleList,
-          this.Session.UserProfile.RoleId ) == false )
+          this.Session.UserProfile.Roles ) == false )
         {
           continue;
         }
@@ -1073,7 +1060,7 @@ namespace Evado.UniForm.Clinical
       // 
       // if the project organisation is not a data collection site reset the organisation object.
       // 
-      if ( this.Session.UserProfile.RoleId != EvRoleList.Evado_Administrator )
+      if ( this.Session.UserProfile.hasAdministrationAccess == false)
       {
         this.LogValue ( "The user does not have adminstrator role." );
 
@@ -1096,7 +1083,7 @@ namespace Evado.UniForm.Clinical
       // Define the group object.
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Admin_User_Session_Group_Title,
+        EdLabels.Admin_User_Session_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1169,7 +1156,7 @@ namespace Evado.UniForm.Clinical
 
     }//END deleteGlobalObjectEntries method
 
-
+    /*
     // ===============================================================================
     /// <summary>
     /// Description:
@@ -1195,7 +1182,7 @@ namespace Evado.UniForm.Clinical
         // Define the alert pageMenuGroup.
         // 
         Evado.Model.UniForm.Group group = new Evado.Model.UniForm.Group (
-          EvLabels.HomePage_Alert_List,
+          EdLabels.HomePage_Alert_List,
           String.Empty,
           Evado.Model.UniForm.EditAccess.Enabled );
         group.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
@@ -1220,7 +1207,7 @@ namespace Evado.UniForm.Clinical
         {
           
             alertSelect = ApplicationData.Page.addCommand (
-              EvLabels.HomePage_Alert_SAE_Select_Title,
+              EdLabels.HomePage_Alert_SAE_Select_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Home_Page.ToString ( ),
               Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1242,7 +1229,7 @@ namespace Evado.UniForm.Clinical
           if ( alertView.Count > 50 )
           {
            alertSelect = ApplicationData.Page.addCommand (
-              EvLabels.HomePage_Close_Old_Alerts_Command_Title,
+              EdLabels.HomePage_Close_Old_Alerts_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Home_Page.ToString ( ),
               Model.UniForm.ApplicationMethods.Save_Object );
@@ -1281,12 +1268,13 @@ namespace Evado.UniForm.Clinical
       {
         this.LogException ( Ex );
 
-        ApplicationData.Message = EvLabels.HomePage_Alert_List_Error;
+        ApplicationData.Message = EdLabels.HomePage_Alert_List_Error;
       }  // End catch.  
       this.LogMethodEnd ( "generateAlertList" );
 
     }  // End generateAlertList method
-
+    */
+    /*
     // ===============================================================================
     /// <summary>
     /// Description:
@@ -1351,7 +1339,7 @@ namespace Evado.UniForm.Clinical
       return EvEventCodes.Ok;
 
     }  // End generateAlertList method
-
+    */
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 

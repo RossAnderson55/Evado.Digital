@@ -182,19 +182,9 @@ namespace Evado.Model.Digital
 
         switch ( this._SelectionSource )
         {
-          case EvReport.SelectionListTypes.All_Project_Sites:
-            {
-              this._SelectionSource = EvReport.SelectionListTypes.All_Trial_Sites;
-              break;
-            }
           case EvReport.SelectionListTypes.Current_Project:
             {
               this._SelectionSource = EvReport.SelectionListTypes.Current_Application;
-              break;
-            }
-          case EvReport.SelectionListTypes.Project_Id:
-            {
-              this._SelectionSource = EvReport.SelectionListTypes.Trial_Id;
               break;
             }
         }

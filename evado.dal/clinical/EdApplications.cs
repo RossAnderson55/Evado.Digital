@@ -45,7 +45,7 @@ namespace Evado.Dal.Clinical
     // ----------------------------------------------------------------------------------
     public EdApplications ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvTrials.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdApplications.";
     }
 
     // ==================================================================================
@@ -57,7 +57,7 @@ namespace Evado.Dal.Clinical
     public EdApplications ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvTrials.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EdApplications.";
 
       this.LogDebug ( "CustomerGuid: " + this.ClassParameters.CustomerGuid );
     }
@@ -177,7 +177,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 5 ].Value = Application.Description;
       cmdParms [ 6 ].Value = Application.ConfirmationEmailSubject;
       cmdParms [ 7 ].Value = Application.ConfirmationEmailBody;
-      cmdParms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Application.Signoffs );
+      cmdParms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Application.Signoffs );
       cmdParms [ 9 ].Value = Application.UpdatedByUserId;
       cmdParms [ 10 ].Value = Application.UserCommonName;
       cmdParms [ 11 ].Value = DateTime.Now; //Update Date
@@ -223,12 +223,12 @@ namespace Evado.Dal.Clinical
       if ( value != String.Empty
         && value.Length > 41 )
       {
-        applicationSetting.Signoffs = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EvUserSignoff>> ( value );
+        applicationSetting.Signoffs = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdUserSignoff>> ( value );
       }
 
       if ( applicationSetting.Signoffs == null )
       {
-        applicationSetting.Signoffs = new List<EvUserSignoff> ( );
+        applicationSetting.Signoffs = new List<EdUserSignoff> ( );
       }
       applicationSetting.State =
           Evado.Model.EvStatics.Enumerations.parseEnumValue<EdApplication.ApplicationStates> ( EvSqlMethods.getString ( Row, "AS_State" ) );
@@ -254,9 +254,9 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This method returns a list of Project object based on the passed parameters.
     /// </summary>
-    /// <param name="State">EvTrial.TrialStates: A Project State.</param>
+    /// <param name="State">EdApplication.ApplicationStates enumeration.</param>
     /// <param name="StateValueNotSelected">Boolean: true, if the state value is not selected.</param>
-    /// <returns>List of EvTrial: A list containing EvTrial objects</returns>
+    /// <returns>List of EdApplication: A list containing EvTrial objects</returns>
     /// <remarks>
     /// This method consists of following steps. 
     /// 
@@ -276,7 +276,7 @@ namespace Evado.Dal.Clinical
       EdApplication.ApplicationStates State,
       bool StateValueNotSelected )
     {
-      this.LogMethod ( "GetTrialList method. " );
+      this.LogMethod ( "GetApplicationList method. " );
       this.LogDebug ( "CustomerGuid: " + this.ClassParameters.CustomerGuid );
       this.LogDebug ( "State: " + State );
       this.LogDebug ( "NotSelect: " + StateValueNotSelected );
@@ -336,6 +336,11 @@ namespace Evado.Dal.Clinical
             EdApplication application = this.getRowData ( row );
 
             //
+            // load the application roles.
+            //
+            this.LoadRoles ( application );
+
+            //
             // load the application parameters.
             //
             application.Parameters = this.LoadObjectParameters ( application.Guid );
@@ -356,16 +361,16 @@ namespace Evado.Dal.Clinical
       //
       // Return a list of EvTrial object. 
       //
-      this.LogMethodEnd ( "GetTrialList" );
+      this.LogMethodEnd ( "GetApplicationList" );
       return view;
 
     }//END GetTrialList method.
 
     // =====================================================================================
     /// <summary>
-    /// This method returns a list of selected options for queried Project object. 
+    /// This method returns a list of selction options for queried Project object. 
     /// </summary>
-    /// <param name="State">EvTrial.TrialStates: A Project State.</param>
+    /// <param name="State">EdApplication.ApplicationStates enumeration.</param>
     /// <param name="StateValueNotSelected">Boolean: true, if the state value is not selected.</param>
     /// <param name="WithGuidValue">Boolean: true, if the Project is selected with Guid value</param>
     /// <returns>List of EvTrial: A list containing EvTrial objects</returns>
@@ -534,11 +539,17 @@ namespace Evado.Dal.Clinical
       }//END Using 
 
       //
+      // load the application roles.
+      //
+      this.LoadRoles ( application );
+      
+      //
       // load the application parameters.
       //
       application.Parameters = this.LoadObjectParameters ( application.Guid );
 
       this.LogDebug ( "State: " + application.State );
+
       // 
       // Return the EvStudy data object.
       // 
@@ -579,7 +590,6 @@ namespace Evado.Dal.Clinical
       // 
       // Define the local variables.
       // 
-      EvSchedules schedules = new EvSchedules ( );
       EdApplication application = new EdApplication ( );
 
       // 
@@ -635,6 +645,11 @@ namespace Evado.Dal.Clinical
       }//END Using 
 
       //
+      // load the application roles.
+      //
+      this.LoadRoles ( application );
+
+      //
       // load the application parameters.
       //
       application.Parameters = this.LoadObjectParameters ( application.Guid );
@@ -647,6 +662,66 @@ namespace Evado.Dal.Clinical
 
     }//END GetStudy method
 
+    #endregion
+
+    #region Roles Methods
+
+    //===================================================================================
+    /// <summary>
+    /// This method returns a list of application roles
+    /// </summary>
+    /// <param name="Application">EdApplication object</param>
+    //-----------------------------------------------------------------------------------
+    public void LoadRoles ( EdApplication Application )
+    {
+      this.LogMethod ( "LoadRoles " );
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdApplicationRoles dal_roles = new EdApplicationRoles ( ClassParameters );
+
+      //
+      // Retrieve the list of parameters
+      //
+      Application.RoleList = dal_roles.getRoleList ( Application );
+
+      this.LogDebugClass ( dal_roles.Log );
+
+      //
+      // Return the list of parameters.
+      //
+      this.LogMethodEnd ( "LoadRoles " );
+    }//END LoadRoles method
+
+    //===================================================================================
+    /// <summary>
+    /// This method updates the list of application roles
+    /// </summary>
+    /// <param name="Application">EdApplication object</param>
+    //-----------------------------------------------------------------------------------
+    public void UpdateRoles ( EdApplication Application )
+    {
+      this.LogMethod ( "UpdateRoles " );
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdApplicationRoles dal_roles = new EdApplicationRoles ( ClassParameters );
+
+      if ( Application.RoleList.Count == 0 )
+      {
+        this.LogMethodEnd ( "UpdateRoles " );
+        return;
+      }
+      //
+      // update the list of parameters
+      //
+      dal_roles.updateItems ( Application );
+
+      this.LogDebugClass ( dal_roles.Log );
+
+      this.LogMethodEnd ( "UpdateRoles " );
+    }//END UpdateRoles method
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region Data Object Update Section
@@ -720,6 +795,14 @@ namespace Evado.Dal.Clinical
         return EvEventCodes.Database_Record_Update_Error;
       }
 
+      //
+      // Update the application roles.
+      //
+      this.UpdateRoles ( Application );
+
+      //
+      // Update the applicaiton parameter (properties)
+      //
       this.UpdateObjectParameters ( Application.Parameters, Application.Guid );
 
       // 

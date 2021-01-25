@@ -204,47 +204,6 @@ namespace Evado.Model.Digital
       set { _Platform = value; }
     }
 
-    private string _modules = String.Empty;
-    /// <summary>
-    /// This property contains the delimited list of modules this menu item belongs to.
-    /// </summary>
-    public string Modules
-    {
-      get { return _modules; }
-      set
-      {
-        _modules = value;
-        if ( _modules == String.Empty )
-        {
-          this._modules = EvModuleCodes.All_Modules.ToString ( );
-        }
-        _modules = _modules.Replace ( ",", EvcStatics.CONST_STRING_SEPARATOR );
-      }
-    }
-
-    /// <summary>
-    /// This property returns the modules as an array of string objects.
-    /// </summary>
-    public string [ ] ModuleList
-    {
-      get
-      {
-        return this._modules.Split ( EvcStatics.CONST_CHAR_SEPARATOR );
-      }
-      set
-      {
-        this._modules = String.Empty;
-        foreach(  string str in value )
-        {
-          if ( this._modules != String.Empty )
-          {
-            this._modules +=  EvcStatics.CONST_CHAR_SEPARATOR;
-          }
-          this._modules += str;
-        }
-      }
-    }
-
     private string _RoleList = String.Empty;
     /// <summary>
     /// This property contains an encoded list of the roles for this menu item.
@@ -275,14 +234,12 @@ namespace Evado.Model.Digital
     ///   This method validates the items selection
     /// </summary>
     /// <param name="LoadedModuleList">List of EvModuleCodes: list of enabled modules</param>
-    /// <param name="Project">EvProject object</param>
+    /// <param name="Application">EvProject object</param>
     /// <param name="UserRole">EvMenuItem.RoleCodes: enumeration user role</param>
     /// <returns>bool: is the role in the list</returns>
     //  ---------------------------------------------------------------------------------
     public bool SelectMenuHeader (
-      List<EvModuleCodes> LoadedModuleList,
-      EdApplication Project,
-      EvRoleList UserRole )
+      String UserRole )
     {
       if ( this._groupHeader == false )
       {
@@ -296,79 +253,40 @@ namespace Evado.Model.Digital
       {
         return false;
       }
-      //
-      // Skip all global menuitems if 
-      //
-      if ( this.hasModule ( EvModuleCodes.All_Modules ) == true )
-      {
-        return true;
-      }
 
       return true;
 
     }//END addRole method.
-
     //  =================================================================================
     /// <summary>
     ///   This method validates the items selection
     /// </summary>
     /// <param name="LoadedModuleList">List of EvModuleCodes: list of enabled modules</param>
-    /// <param name="Project">EvProject object</param>
-    /// <param name="Organisation">EvOrganisation object</param>
+    /// <param name="Application">EvProject object</param>
     /// <param name="UserRole">EvMenuItem.RoleCodes: enumeration user role</param>
     /// <returns>bool: is the role in the list</returns>
     //  ---------------------------------------------------------------------------------
     public bool SelectMenuItem (
-      List<EvModuleCodes> LoadedModuleList,
-      EvRoleList UserRole )
+      String UserRole )
     {
+      if ( this._groupHeader == true )
+      {
+        return false;
+      }
+
       //
       // only select items that have the correct role. 
       //
       if ( this.hasRole ( UserRole ) == false )
       {
-        //return false;
-      }
-
-      if ( this.hasModule( EvModuleCodes.All_Modules ) == true )
-      {
-        return true;
+        return false;
       }
 
       return true;
 
     }//END addRole method.
-    
-    //  =================================================================================
-    /// <summary>
-    ///   This method adds new role to the enumeration list of menu roles
-    /// </summary>
-    /// <param name="LoadedModuleList">List of EvModuleCodes enumerations</param>
-    /// <param name="Module">EvModuleCodes enumeration </param>
-    /// <returns>bool: is the role in the list</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Convert a role object into string format
-    /// 
-    /// 2. Retrun true, if new role is added
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    private bool hasLoadedModule ( 
-      List<EvModuleCodes> LoadedModuleList, 
-      EvModuleCodes Module )
-    {
-      foreach( EvModuleCodes module in LoadedModuleList )
-      {
-        if ( module == Module )
-        {
-          return true;
-        }
-      }
-      return false;
-    }//ENd hasLoadedModule module.
 
-    //  =================================================================================
+     //  =================================================================================
     /// <summary>
     ///   This method adds new role to the enumeration list of menu roles
     /// </summary>
@@ -382,7 +300,7 @@ namespace Evado.Model.Digital
     /// 2. Retrun true, if new role is added
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public bool addRole ( EvRoleList Role )
+    public bool addRole ( String Role )
     {
       //
       // Get the string value of the selected module
@@ -407,7 +325,7 @@ namespace Evado.Model.Digital
     /// <summary>
     ///   This method indicates if the role value is in the enumeration list of menu roles
     /// </summary>
-    /// <param name="Role">EvMenuItem.RoleCodes: the enumeration list of menu roles</param>
+    /// <param name="Roles">EvMenuItem.RoleCodes: the enumeration list of menu roles</param>
     /// <returns>bool: is the role is in the enumeration list of menu roles</returns>
     /// <remarks>
     /// This method consists of the following steps:
@@ -417,68 +335,27 @@ namespace Evado.Model.Digital
     /// 2. Return true, if the Role exists
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public bool hasRole ( EvRoleList Role )
+    public bool hasRole ( String Roles )
     {
       //
       // Get the string value of the selected module
       // 
-      string stRole = Role.ToString ( );
+      string [] arRoles = Roles.Split( ';' );
 
       string [] arRoleList = this._RoleList.Split ( ';' );
 
       foreach ( String role in arRoleList )
       {
+      foreach ( String role1 in arRoles )
+      {
         // 
         // Test for administration module
         // 
-        if ( role.Trim() == stRole.Trim() )
+        if ( role.ToLower ( ) == role1.ToLower ( ) )
         {
           return true;
         }
       }
-
-      return false;
-
-    }//END hasRole method.
-
-    //  =================================================================================
-    /// <summary>
-    ///   This method indicates if the role value is in the enumeration list of menu roles
-    /// </summary>
-    /// <param name="Module">EvModuleCodes </param>
-    /// <returns>bool: is the role is in the enumeration list of menu roles</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Convert Role object item into a string
-    /// 
-    /// 2. Return true, if the Role exists
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    public bool hasModule ( EvModuleCodes  Module )
-    {
-      //
-      // Get the string value of the selected module
-      // 
-      string stModule = Module.ToString ( );
-      string [ ] arModuleList = this._modules.Split ( ';' );
-
-      //
-      // Iterate thought the modules for a match.
-      //
-      foreach ( String module in arModuleList )
-      {
-        if ( module.Trim ( ) == stModule.Trim ( ) )
-        {
-          return true;
-        }
-      }
-      // 
-      // Test for administration module
-      // 
-      if ( this._modules.Contains ( stModule ) == true )
-      {
-        return true;
       }
 
       return false;
@@ -548,17 +425,6 @@ namespace Evado.Model.Digital
             this.Platform = value;
             break;
           }
-        case MenuFieldNames.Modules:
-          {
-            this.Modules = value;
-
-            if ( this.Modules.Contains ( EvModuleCodes.All_Modules.ToString ( ) ) == true )
-            {
-              this.Modules = EvModuleCodes.All_Modules.ToString ( ) ;
-            }
-
-            break;
-          }
         case MenuFieldNames.Role_List:
           {
             this.RoleList = value;
@@ -570,98 +436,6 @@ namespace Evado.Model.Digital
 
     }//End setValue method.
 
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region public static methods
-
-    //  =================================================================================
-    /// <summary>
-    ///   This method adds new role to the enumeration list of menu roles
-    /// </summary>
-    /// <param name="SelectionList">boolean to get the module list.</param>
-    /// <returns>List of EvOption </returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Convert a role object into string format
-    /// 
-    /// 2. Retrun true, if new role is added
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getModuleList (  bool SelectionList )
-    {
-      //
-      // Get the string value of the selected module
-      // 
-      List<EvOption> loadedModulesList = new List<EvOption> ( );
-
-      if ( SelectionList == true )
-      {
-        loadedModulesList.Add ( new EvOption ( ) );
-      }
-
-      //
-      // Create the Loaded modules list
-      //
-      //Administration, Clinical, Management, Mobile, Registry, Surveillance
-      //
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Administration_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Auxiliary_Subject_Data ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Management_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Imaging_Module ) );
-      loadedModulesList.Add ( EvcStatics.Enumerations.getOption ( EvModuleCodes.Integration_Module ) );
-
-
-      return loadedModulesList;
-
-    }//END addRole method.
-
-    //  =================================================================================
-    /// <summary>
-    ///   This method adds new role to the enumeration list of menu roles
-    /// </summary>
-    /// <param name="Modules">String delimited list of modules.</param>
-    /// <param name="SelectionList">boolen add option list if true.</param>
-    /// <returns>List of EvOption </returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Convert a role object into string format
-    /// 
-    /// 2. Retrun true, if new role is added
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    public static List<EvOption>  getRoleList ( String Modules, bool SelectionList )
-    {
-      //
-      // Get the string value of the selected module
-      // 
-      List<EvOption> optionlist = new List<EvOption>();
-
-      if ( SelectionList == true )
-      {
-        optionlist.Add ( new EvOption ( ) );
-      }
-
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Administrator ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Evado_Administrator ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Manager ) );
-     
-      if ( Modules.Contains ( EvModuleCodes.Management_Module.ToString ( ) ) == true )
-      {
-        //optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Finance ) );
-        //optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Budget ) );
-      }
-      
-      //optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Project_Designer ) );
-      optionlist.Add ( EvcStatics.Enumerations.getOption ( EvRoleList.Coordinator ) );
-
-
-      return optionlist;
-
-    }//END addRole method.
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

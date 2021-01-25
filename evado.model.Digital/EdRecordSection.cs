@@ -28,14 +28,14 @@ namespace Evado.Model.Digital
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvFormSection
+  public class EdRecordSection
   {
     #region Class initialisation
 
     /// <summary>
     /// This method initialises the class.
     /// </summary>
-    public EvFormSection ( )
+    public EdRecordSection ( )
     {
     }
 
@@ -45,7 +45,7 @@ namespace Evado.Model.Digital
     /// <param name="No"> int object number</param>
     /// <param name="Order"> int section order.</param>
     /// <param name="Title"> String section title.</param>
-    public EvFormSection ( int No, int Order, String Title )
+    public EdRecordSection ( int No, int Order, String Title )
     {
       this._No = No;
       this._Order = Order;
@@ -199,7 +199,7 @@ namespace Evado.Model.Digital
     {
       get {
         String linkText = this._No
-          + EvLabels.Space_Hypen + this._Title
+          + Evado.Model.Digital.EdLabels.Space_Hypen + this._Title
           + ", Order: " + this._Order;
 
         return linkText;

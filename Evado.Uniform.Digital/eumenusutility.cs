@@ -647,7 +647,7 @@ namespace Evado.UniForm.Clinical
 
             if ( this.Session.Entity != null )
             {
-              pageCommand.AddParameter ( EvIdentifiers.RECORD_TYPE,
+              pageCommand.AddParameter ( EdRecord.RecordFieldNames.TypeId,
                 this.Session.Entity.TypeId );
             }
             return pageCommand;

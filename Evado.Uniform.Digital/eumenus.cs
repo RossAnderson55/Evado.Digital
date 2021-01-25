@@ -214,7 +214,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -260,7 +260,7 @@ namespace Evado.UniForm.Clinical
         //
         // Initialise the ResultData object.
         //
-        clientDataObject.Title = EvLabels.Menu_Item_List;
+        clientDataObject.Title = EdLabels.Menu_Item_List;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
@@ -268,7 +268,7 @@ namespace Evado.UniForm.Clinical
         // Add the save groupCommand
         // 
         clientDataObject.Page.addCommand (
-          EvLabels.Menu_New_Item_Command_Title,
+          EdLabels.Menu_New_Item_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Menu.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
@@ -299,7 +299,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Menu_List_Error_Message;
+        this.ErrorMessage = EdLabels.Menu_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -330,13 +330,6 @@ namespace Evado.UniForm.Clinical
           this.LogMethodEnd ( "loadGlobalMenu" );
           return;
         }
-        // 
-        // Initialse the methods objects and variables.
-        // 
-        foreach ( EvModuleCodes str in this.ApplicationObjects.PlatformSettings.LoadedModuleList )
-        {
-          this.LogDebug ( "- " + str );
-        }
 
         // 
         // Get the site setMenu.
@@ -345,30 +338,6 @@ namespace Evado.UniForm.Clinical
 
         this.LogDebugClass ( "menus.DebugLog: " + _Bll_Menus.Log );
         this.LogValue ( "GlobalMenuList.Count: " + this.ApplicationObjects.MenuList.Count );
-
-        // 
-        // Process menu items.
-        // 
-        for ( int count = 0; count < this.ApplicationObjects.MenuList.Count; count++ )
-        {
-          EvMenuItem menuItem = this.ApplicationObjects.MenuList [ count ];
-
-          this.LogDebug ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
-          //
-          // Load the menu items that are associated with the loaded modules.
-          //
-          if ( this.ApplicationObjects.PlatformSettings.hasModule ( menuItem.ModuleList ) == false )
-          {
-            this.LogDebug ( "REMOVE: Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
-            //
-            // Remove the menu item from the list.
-            //
-            this.ApplicationObjects.MenuList.RemoveAt ( count );
-            count--;
-            continue;
-          }
-
-        }//END menuitem iteration loop.
 
       }
       catch ( Exception Ex )
@@ -401,7 +370,7 @@ namespace Evado.UniForm.Clinical
       // Define the selection group object.
       //
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Menu_Selection,
+        EdLabels.Menu_Selection,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -427,7 +396,7 @@ namespace Evado.UniForm.Clinical
 
       pageField = pageGroup.createSelectionListField (
         EuSession.CONST_MENU_GROUP_ID,
-        EvLabels.Menu_Group_ID,
+        EdLabels.Menu_Group_ID,
         this.Session.MenuGroupIdentifier,
         groupList );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -437,7 +406,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection command
       //
       Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
-        EvLabels.Menu_Selection_Menu,
+        EdLabels.Menu_Selection_Menu,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Menu.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
@@ -475,19 +444,19 @@ namespace Evado.UniForm.Clinical
         // Create the list pageMenuGroup object.
         //
         Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-         EvLabels.Menu_Item_List,
+         EdLabels.Menu_Item_List,
           Evado.Model.UniForm.EditAccess.Inherited );
 
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-        pageGroup.Title = EvLabels.Menu_Item_List;
+        pageGroup.Title = EdLabels.Menu_Item_List;
 
         //
         // Display a message if the pageMenuGroup has not been selected.
         //
         if ( GroupId == String.Empty )
         {
-          pageGroup.Description = EvLabels.Menu_List_Group_Not_Selected_Message;
+          pageGroup.Description = EdLabels.Menu_List_Group_Not_Selected_Message;
 
           return;
         }
@@ -496,7 +465,7 @@ namespace Evado.UniForm.Clinical
         // Add the save groupCommand
         // 
         groupCommand = pageGroup.addCommand (
-          EvLabels.Menu_New_Item_Command_Title,
+          EdLabels.Menu_New_Item_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Menu.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
@@ -519,42 +488,42 @@ namespace Evado.UniForm.Clinical
         // 
         foreach ( EvMenuItem menuItem in menuList )
         {
-          this.LogValue ( "P: " + menuItem.PageId + ", N: " + menuItem.Title + ", M: " + menuItem.Modules + ", R: " + menuItem.RoleList );
+          this.LogValue ( "P: " + menuItem.PageId + ", N: " + menuItem.Title + ", R: " + menuItem.RoleList );
 
           System.Text.StringBuilder sbTitle = new StringBuilder ( );
           sbTitle.Append ( Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( menuItem.PageId )
-           + EvLabels.Space_Hypen + menuItem.Title
-           + EvLabels.Space_Arrow_Right
-           + EvLabels.Menu_List_Order_Label
+           + EdLabels.Space_Hypen + menuItem.Title
+           + EdLabels.Space_Arrow_Right
+           + EdLabels.Menu_List_Order_Label
            + menuItem.Order
-           + EvLabels.Space_Arrow_Right
-           + EvLabels.Menu_List_Modules_Label );
+           + EdLabels.Space_Arrow_Right
+           + EdLabels.Menu_List_Modules_Label );
 
           int startIndex = sbTitle.ToString ( ).Length;
 
-          sbTitle.Append ( EvLabels.Menu_List_All_Modules_Label );
-          sbTitle.Append ( EvLabels.Space_Coma );
+          sbTitle.Append ( EdLabels.Menu_List_All_Modules_Label );
+          sbTitle.Append ( EdLabels.Space_Coma );
 
-          sbTitle.Append ( EvLabels.Space_Arrow_Right
-          + EvLabels.Menu_List_Role_Label );
+          sbTitle.Append ( EdLabels.Space_Arrow_Right
+          + EdLabels.Menu_List_Role_Label );
 
 
-          if ( menuItem.hasRole ( EvRoleList.Administrator ) == true )
+          if ( menuItem.hasRole ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true )
           {
-            sbTitle.Append ( EvLabels.Menu_List_Administrator_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
+            sbTitle.Append ( EdLabels.Menu_List_Administrator_Label );
+            sbTitle.Append ( EdLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvRoleList.Manager ) == true )
+          if ( menuItem.hasRole ( EvUserProfile.CONST_DESIGNER_ROLE ) == true )
           {
-            sbTitle.Append ( EvLabels.Menu_List_Project_Manager_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
+            sbTitle.Append ( EdLabels.Menu_List_Project_Manager_Label );
+            sbTitle.Append ( EdLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvRoleList.Coordinator ) == true )
+          if ( menuItem.hasRole ( EvUserProfile.CONST_MANAGER_ROLE ) == true )
           {
-            sbTitle.Append ( EvLabels.Menu_List_Project_Coordinator_Label );
-            sbTitle.Append ( EvLabels.Space_Coma );
+            sbTitle.Append ( EdLabels.Menu_List_Project_Coordinator_Label );
+            sbTitle.Append ( EdLabels.Space_Coma );
           }
 
           String stTitle = sbTitle.ToString ( );
@@ -628,7 +597,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -651,7 +620,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( menuGuid == Guid.Empty )
         {
-          this.ErrorMessage = EvLabels.MenuItem_Guid_Empty_Message;
+          this.ErrorMessage = EdLabels.MenuItem_Guid_Empty_Message;
 
           return this.Session.LastPage;
         }
@@ -674,7 +643,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.MenuItem_Load_Page_Error_Message;
+        this.ErrorMessage = EdLabels.MenuItem_Load_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -729,7 +698,7 @@ namespace Evado.UniForm.Clinical
       EvOption option = new EvOption ( );
 
       ClientDataObject.Id = this.Session.MenuItem.Guid;
-      ClientDataObject.Title = EvLabels.Menu_Item;
+      ClientDataObject.Title = EdLabels.Menu_Item;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -739,7 +708,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = ClientDataObject.Page.AddGroup (
-        EvLabels.Menu_General_Group_Title,
+        EdLabels.Menu_General_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -749,15 +718,15 @@ namespace Evado.UniForm.Clinical
 
       optionList.Add ( new EvOption (
         EuMenus.CONST_ADMIN_APPLICATION_IDENTIFIER,
-        EvLabels.Menu_Admin_Platform_Option_Description ) );
+        EdLabels.Menu_Admin_Platform_Option_Description ) );
 
       optionList.Add ( new EvOption (
         EuMenus.CONST_PRODUCTION_APPLICATION_IDENTIFIER,
-        EvLabels.Menu_Production_Platform_Option_Description ) );
+        EdLabels.Menu_Production_Platform_Option_Description ) );
 
       pageField = pageGroup.createSelectionListField (
         String.Empty,
-        EvLabels.Menu_Platform_Field_Label,
+        EdLabels.Menu_Platform_Field_Label,
         this.Session.MenuPlatformId,
         optionList );
       pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
@@ -773,7 +742,7 @@ namespace Evado.UniForm.Clinical
 
       pageField = pageGroup.createSelectionListField (
         EvMenuItem.MenuFieldNames.Page_Id.ToString ( ),
-        EvLabels.Menu_Page_Id_Field_Label,
+        EdLabels.Menu_Page_Id_Field_Label,
         this.Session.MenuItem.PageId.ToString ( ),
         optionList );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -783,7 +752,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         EvMenuItem.MenuFieldNames.Title.ToString ( ),
-        EvLabels.Menu_Title_Field_Label,
+        EdLabels.Menu_Title_Field_Label,
         String.Empty,
         this.Session.MenuItem.Title,
         20 );
@@ -794,48 +763,35 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createNumericField (
         EvMenuItem.MenuFieldNames.Order.ToString ( ),
-        EvLabels.Menu_Order_Field_Label,
+        EdLabels.Menu_Order_Field_Label,
         this.Session.MenuItem.Order,
         0,
         200 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
-      // Create the modules the item is associated with
-      // 
-      List<EvOption> loadedModulesList = this.ApplicationObjects.getModuleList ( true );
-
-      pageField = pageGroup.createCheckBoxListField (
-        EvMenuItem.MenuFieldNames.Modules.ToString ( ),
-        EvLabels.Menu_Modules_Field_Label,
-        this.Session.MenuItem.Modules,
-        loadedModulesList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      pageField.Description = EvLabels.Menu_Modules_Field_Description;
-
-      // 
       // Create the customer name object
       // 
-      List<EvOption> roleList = EvMenuItem.getRoleList (
-        this.ApplicationObjects.PlatformSettings.LoadedModules,
+      List<EvOption> roleList = EvUserProfile.getRoleOptionList( 
+        this.Session.Application.RoleList,
         false );
       string roles = this.Session.MenuItem.RoleList;
 
       pageField = pageGroup.createCheckBoxListField (
         EvMenuItem.MenuFieldNames.Role_List.ToString ( ),
-        EvLabels.Menu_Role_List_Field_Label,
+        EdLabels.Menu_Role_List_Field_Label,
         roles,
         roleList );
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-      pageField.Description = EvLabels.Menu_Role_List_Field_Description;
+      pageField.Description = EdLabels.Menu_Role_List_Field_Description;
 
       // 
       // Add the save groupCommand
       // 
       pageCommand = pageGroup.addCommand (
-        EvLabels.Menu_Save_Command_Title,
+        EdLabels.Menu_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Menu.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -849,7 +805,7 @@ namespace Evado.UniForm.Clinical
       // Add the delete groupCommand object.
       //
       pageCommand = pageGroup.addCommand (
-         EvLabels.Menu_Delete_Command_Title,
+         EdLabels.Menu_Delete_Command_Title,
          EuAdapter.APPLICATION_ID,
          EuAdapterClasses.Menu.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -890,7 +846,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "createObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -925,7 +881,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.MenuItem_Load_Page_Error_Message;
+        this.ErrorMessage = EdLabels.MenuItem_Load_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -973,7 +929,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "updateObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -1043,7 +999,7 @@ namespace Evado.UniForm.Clinical
           string StEvent = this._Bll_Menus.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
 
-          this.ErrorMessage = EvLabels.MenuItem_Update_Error_Message;
+          this.ErrorMessage = EdLabels.MenuItem_Update_Error_Message;
 
           this.LogMethodEnd ( "updateObject" );
           return this.Session.LastPage;
@@ -1060,7 +1016,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.MenuItem_Update_Error_Message;
+        this.ErrorMessage = EdLabels.MenuItem_Update_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1090,7 +1046,7 @@ namespace Evado.UniForm.Clinical
         {
           this.ErrorMessage += "\r\n";
         }
-        this.ErrorMessage += EvLabels.Menu_Group_Empty_Error_Message;
+        this.ErrorMessage += EdLabels.Menu_Group_Empty_Error_Message;
       }
 
       if ( this.Session.MenuItem.PageId == EvPageIds.Null )
@@ -1099,7 +1055,7 @@ namespace Evado.UniForm.Clinical
         {
           this.ErrorMessage += "\r\n";
         }
-        this.ErrorMessage += EvLabels.Menu_PageId_Empty_Error_Message;
+        this.ErrorMessage += EdLabels.Menu_PageId_Empty_Error_Message;
       }
 
       if ( this.Session.MenuItem.Title == String.Empty )
@@ -1108,7 +1064,7 @@ namespace Evado.UniForm.Clinical
         {
           this.ErrorMessage += "\r\n";
         }
-        this.ErrorMessage += EvLabels.Menu_Title_Empty_Error_Message;
+        this.ErrorMessage += EdLabels.Menu_Title_Empty_Error_Message;
       }
 
       if ( this.ErrorMessage != String.Empty )

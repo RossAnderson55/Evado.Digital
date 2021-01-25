@@ -417,6 +417,36 @@ namespace Evado.Model.UniForm
     /// <param name="Name">String: The name of the parameter.</param>
     /// <param name="Value">String: The value of the parameter.</param>
     //  ---------------------------------------------------------------------------------
+    public void AddParameter ( object Name, object Value )
+    {
+      //
+      // get the string value of the parameter list.
+      //
+      String name = Name.ToString ( );
+      name = name.Trim ( );
+      String value = Value.ToString ( );
+
+      foreach ( Parameter parameter in this._ParameterList )
+      {
+        if ( parameter.Name == name )
+        {
+          parameter.Value = value;
+
+          return;
+        }
+      }
+
+      this._ParameterList.Add ( new Parameter ( name, value ) );
+
+    }//END AddParameter method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method adds a parameter to the command's parameter list..
+    /// </summary>
+    /// <param name="Name">String: The name of the parameter.</param>
+    /// <param name="Value">String: The value of the parameter.</param>
+    //  ---------------------------------------------------------------------------------
     public void AddParameter ( String Name, object Value )
     {
       //
@@ -538,6 +568,39 @@ namespace Evado.Model.UniForm
 
     // ==================================================================================
     /// <summary>
+    /// This method test to see if the parameter is in the list.
+    /// </summary>
+    /// <param name="Name">String: the name of the parameter.</param>
+    /// <returns>True: parameter exists</returns>
+    // ---------------------------------------------------------------------------------
+    public bool hasParameter ( object Name )
+    {
+      //
+      // get the string value of the parameter list.
+      //
+      String name = Name.ToString ( );
+      name = name.Trim ( );
+
+      //
+      // Iterate through the parameters to get the selectev value.
+      //
+      foreach ( Parameter parameter in this._ParameterList )
+      {
+        if ( parameter.Name == name )
+        {
+          return true;
+        }
+      }
+
+      //
+      // Return result
+      //
+      return false;
+
+    }//END hasParameter method
+
+    // ==================================================================================
+    /// <summary>
     /// This method adds a parameter to the command's parameter list..
     /// </summary>
     /// <param name="Name">String: The name of the parameter.</param>
@@ -616,7 +679,37 @@ namespace Evado.Model.UniForm
 
       return string.Empty;
 
-    }//END GetParameterValue method
+    }//END GetParameter method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method gets a parameter value.
+    /// </summary>
+    /// <param name="Name">String: the name of the parameter.</param>
+    /// <returns> String value of the header element</returns>
+    // ---------------------------------------------------------------------------------
+    public String GetParameter ( object Name )
+    {
+      //
+      // get the string value of the parameter list.
+      //
+      String name = Name.ToString ( );
+      name = name.Trim ( );
+
+      //
+      // Iterate through the parameters to get the selectev value.
+      //
+      foreach ( Parameter parameter in this._ParameterList )
+      {
+        if ( parameter.Name == name )
+        {
+          return parameter.Value;
+        }
+      }
+
+      return string.Empty;
+
+    }//END GetParameter method
 
     // ==================================================================================
     /// <summary>
@@ -832,7 +925,7 @@ namespace Evado.Model.UniForm
         value = this._Object.Replace ( "_", " " );
         if ( this._Method == ApplicationMethods.List_of_Objects )
         {
-          value += EvLabels.Label_Command_List;
+          value += EuLabels.Label_Command_List;
         }
       }
 
@@ -1286,7 +1379,7 @@ namespace Evado.Model.UniForm
     public static Evado.Model.UniForm.Command getLogoutCommand ( )
     {
       Command pageCommand = new Command (
-        EvLabels.Default_Logout_Command_Title,
+        EuLabels.Default_Logout_Command_Title,
         EuStatics.CONST_DEFAULT,
         EuStatics.CONST_DEFAULT,
         ApplicationMethods.Get_Object );
@@ -1304,7 +1397,7 @@ namespace Evado.Model.UniForm
     public static Evado.Model.UniForm.Command getDefaultCommand ( )
     {
       Command pageCommand = new Command (
-        EvLabels.Default_Home_Page_Command_Title,
+        EuLabels.Default_Home_Page_Command_Title,
         EuStatics.CONST_DEFAULT,
         EuStatics.CONST_DEFAULT,
         ApplicationMethods.Get_Object );

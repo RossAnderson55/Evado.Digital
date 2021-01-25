@@ -211,7 +211,7 @@ namespace Evado.UniForm.Clinical
               {
                 case EvPageIds.Form_Properties_Page:
                   {
-                    clientDataObject = this.getFormPropertiesObject ( PageCommand );
+                    clientDataObject = this.GetLayoutPropoerties_Object ( PageCommand );
                     break;
                   }
                 case EvPageIds.Form_Properties_Section_Page:
@@ -420,7 +420,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return this.Session.LastPage;
         }
@@ -440,7 +440,7 @@ namespace Evado.UniForm.Clinical
         clientDataObject.Id = Guid.NewGuid ( );
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EvLabels.Form_Selection_Page_Title;
+        clientDataObject.Title = EdLabels.Form_Selection_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EvPageIds.Form_View.ToString ( );
 
@@ -491,7 +491,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
+        this.ErrorMessage = EdLabels.Record_View_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -594,7 +594,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return;
         }
@@ -658,7 +658,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
+        this.ErrorMessage = EdLabels.Record_View_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -690,7 +690,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup for query selection.
       // 
       pageGroup = ClientPage.AddGroup (
-        EvLabels.Form_Selection_Group_Title,
+        EdLabels.Form_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
 
       pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
@@ -704,8 +704,8 @@ namespace Evado.UniForm.Clinical
       optionList [ 0 ].Value = EdRecordTypes.Null.ToString ( );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.FormClassFieldNames.TypeId.ToString ( ),
-       EvLabels.Form_Type_Selection_Label,
+        EdRecord.RecordFieldNames.TypeId.ToString ( ),
+       EdLabels.Form_Type_Selection_Label,
        this.Session.FormType.ToString ( ),
        optionList );
 
@@ -719,8 +719,8 @@ namespace Evado.UniForm.Clinical
       optionList [ 0 ].Value = EdRecordTypes.Null.ToString ( );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.FormClassFieldNames.Status.ToString ( ),
-        EvLabels.Form_State_Selection_Label,
+        EdRecord.RecordFieldNames.Status.ToString ( ),
+        EdLabels.Form_State_Selection_Label,
         this.Session.FormState.ToString ( ),
         optionList );
 
@@ -731,7 +731,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Add the selection groupCommand
       // 
-      command = pageGroup.addCommand ( EvLabels.Select_Records_Command_Title,
+      command = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Record_Layouts.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -757,9 +757,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Get the form record type parameter value
       // 
-      if ( PageCommand.hasParameter ( EdRecord.FormClassFieldNames.TypeId.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.TypeId.ToString ( ) ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdRecord.FormClassFieldNames.TypeId.ToString ( ) );
+        parameterValue = PageCommand.GetParameter ( EdRecord.RecordFieldNames.TypeId.ToString ( ) );
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
@@ -771,9 +771,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Get the form record type parameter value
       // 
-      if ( PageCommand.hasParameter ( EdRecord.FormClassFieldNames.Status.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdRecord.FormClassFieldNames.Status.ToString ( ) );
+        parameterValue = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) );
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
@@ -805,7 +805,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Command pageCommand = new Model.UniForm.Command ( );
 
       pageCommand = Page.addCommand (
-        EvLabels.Form_Template_Upload_Command_Title,
+        EdLabels.Form_Template_Upload_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -840,24 +840,24 @@ namespace Evado.UniForm.Clinical
       // Create the record display pageMenuGroup.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Form_List_Label,
+        EdLabels.Form_List_Label,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EvLabels.List_Count_Label + FormList.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + FormList.Count;
 
       //
       // Add new form button if the user has configuration write access.
       //
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         //
         // Add the create new form page groupCommand.
         //
         groupCommand = pageGroup.addCommand (
-          EvLabels.Form_List_New_Form_Command_Title,
+          EdLabels.Form_List_New_Form_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
@@ -916,12 +916,12 @@ namespace Evado.UniForm.Clinical
         }//END state switch.
 
         groupCommand.Title += form.LayoutId
-          + EvLabels.Space_Hypen
+          + EdLabels.Space_Hypen
           + form.Title
-          + EvLabels.Space_Open_Bracket
-          + EvLabels.Label_Version
+          + EdLabels.Space_Open_Bracket
+          + EdLabels.Label_Version
           + form.Version
-          + EvLabels.Space_Close_Bracket;
+          + EdLabels.Space_Close_Bracket;
 
       }//END iteration loop
 
@@ -967,7 +967,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + "getFormTemplateDownloadPage",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1037,7 +1037,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       // 
       clientDataObject.Id = Guid.NewGuid ( );
-      clientDataObject.Title = EvLabels.Form_Template_Page_Title;
+      clientDataObject.Title = EdLabels.Form_Template_Page_Title;
       clientDataObject.Page.Id = clientDataObject.Id;
       clientDataObject.Page.PageDataGuid = clientDataObject.Id;
 
@@ -1098,7 +1098,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + "getFormTemplateUpload",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1129,7 +1129,7 @@ namespace Evado.UniForm.Clinical
         // Initialise the client ResultData object.
         // 
         clientDataObject.Id = Guid.NewGuid ( );
-        clientDataObject.Title = EvLabels.Form_Template_Page_Title;
+        clientDataObject.Title = EdLabels.Form_Template_Page_Title;
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
 
@@ -1159,7 +1159,7 @@ namespace Evado.UniForm.Clinical
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1193,7 +1193,7 @@ namespace Evado.UniForm.Clinical
       // Define the general properties pageMenuGroup..
       //
       pageGroup = ClientDataObject.Page.AddGroup (
-        EvLabels.Form_Template_Upload_Log_Group_Title,
+        EdLabels.Form_Template_Upload_Log_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1339,7 +1339,7 @@ namespace Evado.UniForm.Clinical
       // set the page edit access.
       //
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -1384,7 +1384,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createBinaryFileField (
         EuRecordLayouts.CONST_TEMPLATE_FIELD_ID,
-        EvLabels.Form_Template_File_Selection_Field_Title,
+        EdLabels.Form_Template_File_Selection_Field_Title,
         String.Empty,
         this.Session.UploadFileName );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1392,7 +1392,7 @@ namespace Evado.UniForm.Clinical
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
 
       groupCommand = pageGroup.addCommand (
-        EvLabels.Form_Template_Upload_Command_Title,
+        EdLabels.Form_Template_Upload_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Record_Layouts.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1510,7 +1510,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1585,7 +1585,7 @@ namespace Evado.UniForm.Clinical
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1624,7 +1624,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + "getFormDraftLayoutObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1664,7 +1664,7 @@ namespace Evado.UniForm.Clinical
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1696,7 +1696,7 @@ namespace Evado.UniForm.Clinical
       // IF the user does not have edit access only display the annotation and full 
       // layout commands
       //
-      if ( this.Session.UserProfile.hasManagementEditAccess == false )
+      if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.setFormPageLayoutCommands ( PageObject, false );
 
@@ -1716,7 +1716,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Save_Command_Title,
+              EdLabels.Form_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1744,7 +1744,7 @@ namespace Evado.UniForm.Clinical
               // Add the same groupCommand.
               //
               pageCommand = PageObject.addCommand (
-                EvLabels.Form_Delete_Command_Title,
+                EdLabels.Form_Delete_Command_Title,
                 EuAdapter.APPLICATION_ID,
                 EuAdapterClasses.Record_Layouts.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1775,7 +1775,7 @@ namespace Evado.UniForm.Clinical
                 // Add the same groupCommand.
                 //
                 pageCommand = PageObject.addCommand (
-                  EvLabels.Form_Review_Command_Title,
+                  EdLabels.Form_Review_Command_Title,
                   EuAdapter.APPLICATION_ID,
                   EuAdapterClasses.Record_Layouts.ToString ( ),
                   Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1807,7 +1807,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Save_Command_Title,
+              EdLabels.Form_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1838,7 +1838,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Approved_Command_Title,
+              EdLabels.Form_Approved_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1868,7 +1868,7 @@ namespace Evado.UniForm.Clinical
             //
             /*
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Withdrawn_Command_Title,
+              EdLabels.Form_Withdrawn_Command_Title,
               Adapter.ApplicationId,
               Adapter.ApplicationObjects.Project_Forms.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -1892,7 +1892,7 @@ namespace Evado.UniForm.Clinical
             // Add the form template save command.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Template_Download_Command_Title,
+              EdLabels.Form_Template_Download_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -1908,7 +1908,7 @@ namespace Evado.UniForm.Clinical
             // Add the copy groupCommand.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Copy_Form_Command_Title,
+              EdLabels.Form_Copy_Form_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -1926,7 +1926,7 @@ namespace Evado.UniForm.Clinical
             // Add the review groupCommand.
             //
             pageCommand = PageObject.addCommand (
-              EvLabels.Form_Revise_Form_Command_Title,
+              EdLabels.Form_Revise_Form_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -1977,7 +1977,7 @@ namespace Evado.UniForm.Clinical
         && EditAccess == true )
       {
         pageCommand = PageObject.addCommand (
-          EvLabels.Form_Properties_Command_Title,
+          EdLabels.Form_Properties_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Model.UniForm.ApplicationMethods.Get_Object );
@@ -1998,7 +1998,7 @@ namespace Evado.UniForm.Clinical
         // The full layout button.
         //
         pageCommand = PageObject.addCommand (
-          EvLabels.Form_Full_Layout_Command_Title,
+          EdLabels.Form_Full_Layout_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -2019,7 +2019,7 @@ namespace Evado.UniForm.Clinical
         // The annotated layout button.
         //
         pageCommand = PageObject.addCommand (
-          EvLabels.Form_Annotated_Layout_Command_Title,
+          EdLabels.Form_Annotated_Layout_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -2038,7 +2038,7 @@ namespace Evado.UniForm.Clinical
         && EditAccess == true )
       {
         pageCommand = PageObject.addCommand (
-          EvLabels.Form_Draft_Layout_Command_Title,
+          EdLabels.Form_Draft_Layout_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -2089,7 +2089,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Save_Command_Title,
+              EdLabels.Form_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2120,7 +2120,7 @@ namespace Evado.UniForm.Clinical
               // Add the same groupCommand.
               //
               pageCommand = PageGroup.addCommand (
-                EvLabels.Form_Delete_Command_Title,
+                EdLabels.Form_Delete_Command_Title,
                 EuAdapter.APPLICATION_ID,
                 EuAdapterClasses.Record_Layouts.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2138,7 +2138,7 @@ namespace Evado.UniForm.Clinical
               // Add the same groupCommand.
               //
               pageCommand = PageGroup.addCommand (
-                EvLabels.Form_Review_Command_Title,
+                EdLabels.Form_Review_Command_Title,
                 EuAdapter.APPLICATION_ID,
                 EuAdapterClasses.Record_Layouts.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2162,7 +2162,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Save_Command_Title,
+              EdLabels.Form_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2181,7 +2181,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Approved_Command_Title,
+              EdLabels.Form_Approved_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2204,7 +2204,7 @@ namespace Evado.UniForm.Clinical
             // Add the same groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Withdrawn_Command_Title,
+              EdLabels.Form_Withdrawn_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2222,7 +2222,7 @@ namespace Evado.UniForm.Clinical
             // Add the copy groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Copy_Form_Command_Title,
+              EdLabels.Form_Copy_Form_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -2240,7 +2240,7 @@ namespace Evado.UniForm.Clinical
             // Add the review groupCommand.
             //
             pageCommand = PageGroup.addCommand (
-              EvLabels.Form_Revise_Form_Command_Title,
+              EdLabels.Form_Revise_Form_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -2290,7 +2290,7 @@ namespace Evado.UniForm.Clinical
       // 
       ClientDataObject.Id = this.Session.RecordLayout.Guid;
       ClientDataObject.Title =
-        String.Format ( EvLabels.Form_Page_Title,
+        String.Format ( EdLabels.Form_Page_Title,
           this.Session.RecordLayout.LayoutId,
           this.Session.RecordLayout.Title );
 
@@ -2302,9 +2302,9 @@ namespace Evado.UniForm.Clinical
       //
       // Set the user's edit access if they have configuration edit access.
       //
-      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementEditAccess );
+      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
 
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -2349,7 +2349,7 @@ namespace Evado.UniForm.Clinical
       // 
       ClientDataObject.Id = this.Session.RecordLayout.Guid;
       ClientDataObject.Title =
-        String.Format ( EvLabels.Form_Page_Title,
+        String.Format ( EdLabels.Form_Page_Title,
           this.Session.RecordLayout.LayoutId,
           this.Session.RecordLayout.Title );
 
@@ -2361,7 +2361,7 @@ namespace Evado.UniForm.Clinical
       //
       // Set the user's edit access if they have configuration edit access.
       //
-      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementEditAccess );
+      this.LogValue ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
 
       this.LogValue ( "GENERATE FORM" );
 
@@ -2371,7 +2371,7 @@ namespace Evado.UniForm.Clinical
       this.createDraftHeaderFields ( ClientDataObject.Page );
 
 
-      if ( this.Session.UserProfile.hasManagementEditAccess == true )
+      if ( this.Session.UserProfile.hasManagementAccess == true )
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
@@ -2385,7 +2385,7 @@ namespace Evado.UniForm.Clinical
       //
       if ( this.Session.RecordLayout.Design.FormSections.Count > 0 )
       {
-        foreach ( EvFormSection formSection in this.Session.RecordLayout.Design.FormSections )
+        foreach ( EdRecordSection formSection in this.Session.RecordLayout.Design.FormSections )
         {
           this.createDraftSectionFields ( formSection, ClientDataObject.Page );
 
@@ -2418,7 +2418,7 @@ namespace Evado.UniForm.Clinical
       //
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Form_Header_Group_Title,
+        EdLabels.Form_Header_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -2427,7 +2427,7 @@ namespace Evado.UniForm.Clinical
       //
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Label_Form_Id,
+        EdLabels.Label_Form_Id,
         this.Session.RecordLayout.LayoutId );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2436,7 +2436,7 @@ namespace Evado.UniForm.Clinical
       //
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Form_Title_Field_Label,
+        EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Design.Title );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2448,7 +2448,7 @@ namespace Evado.UniForm.Clinical
       {
         pageField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Form_Instructions_Field_Title,
+          EdLabels.Form_Instructions_Field_Title,
           this.Session.RecordLayout.Design.Instructions );
         pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -2460,7 +2460,7 @@ namespace Evado.UniForm.Clinical
       {
         pageField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Form_Reference_Field_Label,
+          EdLabels.Form_Reference_Field_Label,
           this.Session.RecordLayout.Design.HttpReference );
         pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -2472,7 +2472,7 @@ namespace Evado.UniForm.Clinical
       {
         pageField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Form_Category_Field_Title,
+          EdLabels.Form_Category_Field_Title,
           this.Session.RecordLayout.Design.RecordCategory );
         pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -2482,7 +2482,7 @@ namespace Evado.UniForm.Clinical
       //
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Form_Status_Field_Title,
+        EdLabels.Form_Status_Field_Title,
         this.Session.RecordLayout.StateDesc );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2491,7 +2491,7 @@ namespace Evado.UniForm.Clinical
       //
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Form_Version_Field_Title,
+        EdLabels.Form_Version_Field_Title,
         this.Session.RecordLayout.Design.stVersion );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2507,7 +2507,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="FormSection">EvFormSection object.</param>
     //  ----------------------------------------------------------------------------------
     private void createDraftSectionFields (
-      EvFormSection FormSection,
+      EdRecordSection FormSection,
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDraftSectionFields" );
@@ -2546,7 +2546,7 @@ namespace Evado.UniForm.Clinical
       // Add new field command.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.Form_New_Field_Page_Command_Title,
+        EdLabels.Form_New_Field_Page_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Record_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Get_Object );
@@ -2617,7 +2617,7 @@ namespace Evado.UniForm.Clinical
       // define the page pageMenuGroup for the section.
       //
       pageGroup = PageObject.AddGroup (
-        EvLabels.Form_No_Section_Field_Group_Title,
+        EdLabels.Form_No_Section_Field_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
@@ -2627,7 +2627,7 @@ namespace Evado.UniForm.Clinical
       // Add new field command.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.Form_New_Field_Page_Command_Title,
+        EdLabels.Form_New_Field_Page_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Record_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Get_Object );
@@ -2739,7 +2739,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Create_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Create_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -2884,7 +2884,7 @@ namespace Evado.UniForm.Clinical
         if ( result != EvEventCodes.Ok )
         {
           this.ErrorMessage = String.Format (
-            EvLabels.Form_Update_Error_Message,
+            EdLabels.Form_Update_Error_Message,
             EvStatics.getEventMessage ( result ) );
 
           string sStEvent = "Returned error message: "
@@ -2913,7 +2913,7 @@ namespace Evado.UniForm.Clinical
         // 
         // If an exception is raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Update_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Update_Error_Message;
 
         // 
         // Log the error event to the server log and DB event log.
@@ -2949,7 +2949,7 @@ namespace Evado.UniForm.Clinical
           && this.Session.RecordLayout.Guid != form.Guid
           && this.Session.RecordLayout.State == form.State )
         {
-          this.ErrorMessage = String.Format ( EvLabels.Form_Duplicate_ID_Error_Message,
+          this.ErrorMessage = String.Format ( EdLabels.Form_Duplicate_ID_Error_Message,
             this.Session.RecordLayout.LayoutId );
 
           this.LogValue ( this.ErrorMessage );
@@ -2996,7 +2996,7 @@ namespace Evado.UniForm.Clinical
         this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
         try
         {
-          EdRecord.FormClassFieldNames fieldName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.FormClassFieldNames> ( parameter.Name );
+          EdRecord.RecordFieldNames fieldName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.RecordFieldNames> ( parameter.Name );
 
           this.Session.RecordLayout.setValue ( fieldName, parameter.Value );
 

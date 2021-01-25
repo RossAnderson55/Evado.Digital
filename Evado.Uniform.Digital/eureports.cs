@@ -240,15 +240,13 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasMultiSiteAccess == false
-          && this.Session.UserProfile.hasRecordAccess == false
-          && this.Session.UserProfile.hasManagementAccess == false )
+        if ( this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
            this.ClassNameSpace + "getReports_ListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -269,40 +267,40 @@ namespace Evado.UniForm.Clinical
         // Initialise the client ResultData object.
         //
         clientDataObject.Id = Guid.NewGuid ( );
-        clientDataObject.Title = EvLabels.Reports_Operational_View_Page_Title;
+        clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
 
         switch ( this.Session.PageId )
               {
                 case EvPageIds.Data_Management_Report_List:
                   {
-                    clientDataObject.Title = EvLabels.Reports_Data_Management_List_Page_Title;
+                    clientDataObject.Title = EdLabels.Reports_Data_Management_List_Page_Title;
                     this.Session.ReportScope = EvReport.ReportScopeTypes.Data_Management_Reports;
                     break;
                   }
                 case EvPageIds.Monitoring_Report_List:
                   {
-                    clientDataObject.Title = EvLabels.Reports_Monitoring_List_Page_Title;
+                    clientDataObject.Title = EdLabels.Reports_Monitoring_List_Page_Title;
                     this.Session.ReportScope = EvReport.ReportScopeTypes.Monitoring_Reports;
                     break;
                   }
             /*
                 case EvPageIds.Financial_Report_List:
                   {
-                    clientDataObject.Title = EvLabels.Reports_Financial_List_Page_Title;
+                    clientDataObject.Title = EdLabels.Reports_Financial_List_Page_Title;
                     this.Session.ReportScope = EvReport.ReportScopeTypes.Finance_Reports;
                     break;
                   }
               */
           case EvPageIds.Site_Report_List:
                   {
-                    clientDataObject.Title = EvLabels.Reports_Site_List_Page_Title;
+                    clientDataObject.Title = EdLabels.Reports_Site_List_Page_Title;
                     this.Session.ReportScope = EvReport.ReportScopeTypes.Site_Reports;
                     break;
                   }
                 case EvPageIds.Operational_Report_List:
                 default:
                   {
-                    clientDataObject.Title = EvLabels.Reports_Operational_View_Page_Title;
+                    clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
                     this.Session.ReportScope = EvReport.ReportScopeTypes.Operational_Reports;
                     break;
                   }
@@ -332,7 +330,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Reports_List_Error_Message;
+        this.ErrorMessage = EdLabels.Reports_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -417,7 +415,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Reports_Selection_Group_Title,
+        EdLabels.Reports_Selection_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -427,7 +425,7 @@ namespace Evado.UniForm.Clinical
       //
       groupField = pageGroup.createSelectionListField (
         EuReportTemplates.CONST_REPORT_PROJECT_ID,
-        EvLabels.Label_Project_Id,
+        EdLabels.Label_Project_Id,
         this.Session.ReportStudyId,
         this.Session.ReportApplicationList );
 
@@ -453,7 +451,7 @@ namespace Evado.UniForm.Clinical
         // Create the new pageMenuGroup.
         // 
         Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-          EvLabels.Reports_List_Group_Title,
+          EdLabels.Reports_List_Group_Title,
           String.Empty,
           Evado.Model.UniForm.EditAccess.Inherited );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -482,7 +480,7 @@ namespace Evado.UniForm.Clinical
         // 
         foreach ( EvReport report in this.Session.ReportTemplateList )
         {
-          String stReportTitle = report.ReportTitle + EvLabels.Space_Arrow_Right + report.ReportTitle;
+          String stReportTitle = report.ReportTitle + EdLabels.Space_Arrow_Right + report.ReportTitle;
 
           Evado.Model.UniForm.Command command = pageGroup.addCommand ( stReportTitle,
             EuAdapter.APPLICATION_ID,
@@ -507,7 +505,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Reports_List_Error_Message;
+        this.ErrorMessage = EdLabels.Reports_List_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -543,14 +541,14 @@ namespace Evado.UniForm.Clinical
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if (  this.Session.UserProfile.hasMultiSiteAccess == false
+      if ( this.Session.UserProfile.hasManagementAccess == false
         && this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
          this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return this.Session.LastPage;
       }
@@ -632,7 +630,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Reports_Page_Error_Mesage;
+        this.ErrorMessage = EdLabels.Reports_Page_Error_Mesage;
 
         // 
         // Generate the log the error event.
@@ -750,36 +748,36 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       //
       ClientDataObject.Id = this.Session.Report.Guid;
-      ClientDataObject.Title = EvLabels.Reports_Operational_Page_Title;
+      ClientDataObject.Title = EdLabels.Reports_Operational_Page_Title;
 
       switch ( this.Session.Report.ReportScope )
       {
         case EvReport.ReportScopeTypes.Data_Management_Reports:
           {
-            ClientDataObject.Title = EvLabels.Reports_Data_Management_Page_Title;
+            ClientDataObject.Title = EdLabels.Reports_Data_Management_Page_Title;
             break;
           }
         case EvReport.ReportScopeTypes.Site_Reports:
           {
-            ClientDataObject.Title = EvLabels.Reports_Data_Management_Page_Title;
+            ClientDataObject.Title = EdLabels.Reports_Data_Management_Page_Title;
             break;
           }
         case EvReport.ReportScopeTypes.Monitoring_Reports:
           {
-            ClientDataObject.Title = EvLabels.Reports_Monitoring_Page_Title;
+            ClientDataObject.Title = EdLabels.Reports_Monitoring_Page_Title;
             break;
           }
           /*
         case EvReport.ReportScopeTypes.Finance_Reports:
           {
-            ClientDataObject.Title = EvLabels.Reports_Finance_Page_Title;
+            ClientDataObject.Title = EdLabels.Reports_Finance_Page_Title;
             break;
           }
            */ 
         case EvReport.ReportScopeTypes.Operational_Reports:
         default:
           {
-            ClientDataObject.Title = EvLabels.Reports_Operational_Page_Title;
+            ClientDataObject.Title = EdLabels.Reports_Operational_Page_Title;
             break;
           }
       }
@@ -834,7 +832,7 @@ namespace Evado.UniForm.Clinical
       // Add the generate report groupCommand
       // 
       pageCommand = PageObject.addCommand (
-        EvLabels.Reports_Generate_Command_Title,
+        EdLabels.Reports_Generate_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Reports.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -847,7 +845,7 @@ namespace Evado.UniForm.Clinical
       // Insert the download groupCommand
       //
       pageCommand = PageObject.addCommand (
-        EvLabels.Reports_Output_Command_Title,
+        EdLabels.Reports_Output_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Reports.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -884,7 +882,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-        EvLabels.Reports_Query_Selection_Group_Title,
+        EdLabels.Reports_Query_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -967,7 +965,7 @@ namespace Evado.UniForm.Clinical
       if ( displayGenerateCommand == true )
       {
         groupCommand = pageGroup.addCommand (
-          EvLabels.Reports_Generate_Command_Title,
+          EdLabels.Reports_Generate_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Reports.ToString ( ),
               Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1050,7 +1048,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Reports_Download_Group_Title,
+        EdLabels.Reports_Download_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1064,7 +1062,7 @@ namespace Evado.UniForm.Clinical
           groupField = pageGroup.createReadOnlyTextField (
             String.Empty,
             String.Empty,
-          this.ErrorMessage = EvLabels.Report_column_Mismatch_Error_Message );
+          this.ErrorMessage = EdLabels.Report_column_Mismatch_Error_Message );
 
           this.LogMethodEnd ( "getReport_Display_Group" );
 
@@ -1115,7 +1113,7 @@ namespace Evado.UniForm.Clinical
         groupField = pageGroup.createReadOnlyTextField (
           String.Empty,
           String.Empty,
-        this.ErrorMessage = EvLabels.Report_Result_Empty_Message );
+        this.ErrorMessage = EdLabels.Report_Result_Empty_Message );
 
         this.LogMethodEnd ( "getReport_Display_Group" );
 
@@ -1209,7 +1207,7 @@ namespace Evado.UniForm.Clinical
       // Create the download pageMenuGroup.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Reports_Download_Group_Title,
+        EdLabels.Reports_Download_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1217,14 +1215,14 @@ namespace Evado.UniForm.Clinical
         String.Empty,
        this.Session.Report.ReportId + " "
         + this.Session.Report.ReportTitle + " "
-        + EvLabels.Report_Html_Download_Link_Title,
+        + EdLabels.Report_Html_Download_Link_Title,
         Evado.Model.EvDataTypes.Html_Link,
         htmlFilename );
 
       groupField = pageGroup.addField (
         String.Empty,
         String.Format ( 
-          EvLabels.Report_CSV_Download_Link_Title,
+          EdLabels.Report_CSV_Download_Link_Title,
           this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
         Evado.Model.EvDataTypes.Html_Link,
@@ -1233,7 +1231,7 @@ namespace Evado.UniForm.Clinical
       groupField = pageGroup.addField (
         String.Empty,
         String.Format(
-          EvLabels.Report_Data_Download_Link_Title,
+          EdLabels.Report_Data_Download_Link_Title,
           this.Session.Report.ReportId, 
           this.Session.Report.ReportTitle ),
         Evado.Model.EvDataTypes.Html_Link,
@@ -1494,7 +1492,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Reports_Create_Error_Message;
+        this.ErrorMessage = EdLabels.Reports_Create_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1533,7 +1531,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Reports_Update_Error_Message;
+        this.ErrorMessage = EdLabels.Reports_Update_Error_Message;
 
         // 
         // Generate the log the error event.

@@ -26,7 +26,7 @@ namespace Evado.Model.Digital
   /// This enumeration list defines the states of module code.
   /// </summary>
   [Serializable]
-  public enum EvModuleCodes
+  public enum EdModuleCodes
   {
     /// <summary>
     /// This enumeration selects All modules

@@ -249,7 +249,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + ".getDB_Update_Object",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -293,7 +293,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationProfile_Page_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationProfile_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -328,7 +328,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       //
       ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
-      ClientDataObject.Title = EvLabels.DataBase_Update_Page_Title;
+      ClientDataObject.Title = EdLabels.DataBase_Update_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -371,7 +371,7 @@ namespace Evado.UniForm.Clinical
       // create the selection pageMenuGroup.
       //
       pageGroup = Page.AddGroup (
-        EvLabels.DataBase_Update_Selection_Group_Title,
+        EdLabels.DataBase_Update_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -382,7 +382,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EdPlatformSettings.CONST_UPDATE_VERSION,
-        EvLabels.DataBase_Update_Version_Field_Title,
+        EdLabels.DataBase_Update_Version_Field_Title,
         this.Session.DatabaseUpdateVersion.ToString ( ),
         optionlist );
 
@@ -396,7 +396,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         CONST_UPDATE_ORDER,
-        EvLabels.DataBase_Update_Order_Field_Title,
+        EdLabels.DataBase_Update_Order_Field_Title,
         this.Session.DataBaseUpdateOrderBy.ToString ( ),
         optionlist );
 
@@ -407,7 +407,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection groupCommand.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.DataBase_Update_Selection_Command_Title,
+        EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -456,37 +456,37 @@ namespace Evado.UniForm.Clinical
 
       if ( updateList.Count == 0 )
       {
-        pageGroup.Description = EvLabels.Database_Update_No_Data_Message;
+        pageGroup.Description = EdLabels.Database_Update_No_Data_Message;
         return;
       }
 
       pageGroup = Page.AddGroup (
-        EvLabels.DataBase_Update_Group_Title,
+        EdLabels.DataBase_Update_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createTableField (
         String.Empty,
-        EvLabels.Database_Update_Field_Title, 5 );
+        EdLabels.Database_Update_Field_Title, 5 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-      groupField.Table.Header [ 0 ].Text = EvLabels.Database_Update_Table_Column_0;
+      groupField.Table.Header [ 0 ].Text = EdLabels.Database_Update_Table_Column_0;
       groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       //groupField.Table.Header [ 0 ].Width = "4";
 
-      groupField.Table.Header [ 1 ].Text = EvLabels.Database_Update_Table_Column_1;
+      groupField.Table.Header [ 1 ].Text = EdLabels.Database_Update_Table_Column_1;
       groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 1 ].Width = "12";
 
-      groupField.Table.Header [ 2 ].Text = EvLabels.Database_Update_Table_Column_2;
+      groupField.Table.Header [ 2 ].Text = EdLabels.Database_Update_Table_Column_2;
       groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
       //groupField.Table.Header [ 2 ].Width = "5";
 
-      groupField.Table.Header [ 3 ].Text = EvLabels.Database_Update_Table_Column_3;
+      groupField.Table.Header [ 3 ].Text = EdLabels.Database_Update_Table_Column_3;
       groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 3 ].Width = "20";
 
-      groupField.Table.Header [ 4 ].Text = EvLabels.Database_Update_Table_Column_4;
+      groupField.Table.Header [ 4 ].Text = EdLabels.Database_Update_Table_Column_4;
       groupField.Table.Header [ 4 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 4 ].Width = "40";
 
@@ -539,11 +539,6 @@ namespace Evado.UniForm.Clinical
         this.Session.AuditRecordGuid = Guid.Empty;
       }
 
-      if ( this.Session.AuditScheduleGuid == null )
-      {
-        this.Session.AuditScheduleGuid = Guid.Empty;
-      }
-
       //
       // Update the selection parameters.
       //
@@ -555,37 +550,6 @@ namespace Evado.UniForm.Clinical
         {
           this.Session.AuditTableName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<
             EvDataChange.DataChangeTableNames> ( parameterValue );
-
-          this.Session.AuditScheduleGuid = Guid.Empty;
-          this.Session.AuditRecordGuid = Guid.Empty;
-          this.Session.AuditRecordItemGuid = Guid.Empty;
-        }
-      }
-
-      if ( PageCommand.hasParameter ( EdPlatformSettings.CONST_AUDIT_SCHEDULE ) == true )
-      {
-        string value = PageCommand.GetParameter ( EdPlatformSettings.CONST_AUDIT_SCHEDULE );
-        int iValue = 0;
-        if ( int.TryParse ( value, out iValue ) == true )
-        {
-          this.Session.ScheduleId = iValue;
-        }
-      }
-
-      if ( PageCommand.hasParameter ( EdPlatformSettings.CONST_AUDIT_VERSON ) == true )
-      {
-        this.Session.AuditScheduleGuid = new Guid (
-          PageCommand.GetParameter ( EdPlatformSettings.CONST_AUDIT_VERSON ) );
-      }
-
-      if ( PageCommand.hasParameter ( EdPlatformSettings.CONST_AUDIT_SCHEDULE_GUID ) == true )
-      {
-        parameterValue = PageCommand.GetParameter ( EdPlatformSettings.CONST_AUDIT_SCHEDULE_GUID );
-
-        if ( parameterValue != String.Empty
-          && parameterValue != this.Session.AuditScheduleGuid.ToString ( ) )
-        {
-          this.Session.AuditScheduleGuid = new Guid ( parameterValue );
 
           this.Session.AuditRecordGuid = Guid.Empty;
           this.Session.AuditRecordItemGuid = Guid.Empty;
@@ -632,7 +596,6 @@ namespace Evado.UniForm.Clinical
       }
 
       this.LogValue ( "AuditTableName: " + this.Session.AuditTableName );
-      this.LogValue ( "AuditScheduleGuid: " + this.Session.AuditScheduleGuid );
       this.LogValue ( "AuditRecordGuid: " + this.Session.AuditRecordGuid );
       this.LogValue ( "AuditRecordItemGuid: " + this.Session.AuditRecordItemGuid );
 
@@ -664,7 +627,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + ".getConfig_Audit_Object",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -692,7 +655,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Audit_Config_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Audit_Config_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -726,7 +689,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       //
       ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
-      ClientDataObject.Title = EvLabels.Audit_Config_Page_Title;
+      ClientDataObject.Title = EdLabels.Audit_Config_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -770,7 +733,7 @@ namespace Evado.UniForm.Clinical
       // create the selection pageMenuGroup.
       //
       pageGroup = Page.AddGroup (
-        EvLabels.Audit_Selection_Group_Title,
+        EdLabels.Audit_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -781,47 +744,18 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EdPlatformSettings.CONST_AUDIT_TABLE,
-        EvLabels.Audit_Table_Selection_Field_Title,
+        EdLabels.Audit_Table_Selection_Field_Title,
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
-      if ( this.Session.AuditTableName == EvDataChange.DataChangeTableNames.EvMilestones )
-      {
-
-
-        //
-        // create the version selection field.
-        //
-        optionlist = bllDataChanges.getConfigurationRecordSelectionList (
-          this.Session.Application.ApplicationId,
-          this.Session.AuditScheduleGuid,
-          this.Session.ScheduleId,
-          EvDataChange.DataChangeTableNames.EvSchedules );
-
-        this.LogText ( bllDataChanges.DebugLog );
-
-        //
-        // Display the selection field if the selecions exist.
-        //
-        if ( optionlist.Count > 1 )
-        {
-          groupField = pageGroup.createSelectionListField (
-            EdPlatformSettings.CONST_AUDIT_SCHEDULE_GUID,
-            EvLabels.Audit_Record_Selection_Field_Title,
-            this.Session.AuditScheduleGuid.ToString ( ),
-            optionlist );
-
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-          groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-        }
-      }
 
       //
       // create the version selection field.
       //
+      /*
       optionlist = bllDataChanges.getConfigurationRecordSelectionList (
         this.Session.Application.ApplicationId,
         this.Session.AuditScheduleGuid,
@@ -829,7 +763,7 @@ namespace Evado.UniForm.Clinical
         this.Session.AuditTableName );
 
       this.LogText ( bllDataChanges.DebugLog );
-
+      */
       //
       // Display the selection field if the selecions exist.
       //
@@ -837,7 +771,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createSelectionListField (
           EdPlatformSettings.CONST_AUDIT_RECORD_GUID,
-          EvLabels.Audit_Record_Selection_Field_Title,
+          EdLabels.Audit_Record_Selection_Field_Title,
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
@@ -849,7 +783,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection groupCommand.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.DataBase_Update_Selection_Command_Title,
+        EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -917,10 +851,10 @@ namespace Evado.UniForm.Clinical
         // create the audit tail pageMenuGroup.
         //
         pageGroup = Page.AddGroup (
-          EvLabels.Audit_Data_Group_Title,
+          EdLabels.Audit_Data_Group_Title,
           Evado.Model.UniForm.EditAccess.Enabled );
         pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.Description = EvLabels.Audit_Empty_Results_Message;
+        pageGroup.Description = EdLabels.Audit_Empty_Results_Message;
         return;
       }
 
@@ -934,7 +868,7 @@ namespace Evado.UniForm.Clinical
         // create the audit tail pageMenuGroup.
         //
         pageGroup = Page.AddGroup (
-          EvLabels.Audit_Data_Group_Title + EvLabels.Space_Hypen + index,
+          EdLabels.Audit_Data_Group_Title + EdLabels.Space_Hypen + index,
           Evado.Model.UniForm.EditAccess.Enabled );
         pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -943,7 +877,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Label_Project_Id,
+          EdLabels.Label_Project_Id,
           dataChange.TrialId );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -952,19 +886,19 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createTableField (
           String.Empty,
-          EvLabels.Database_Update_Field_Title, 5 );
+          EdLabels.Database_Update_Field_Title, 5 );
         groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-        groupField.Table.Header [ 0 ].Text = EvLabels.Audit_Data_Table_Column_0;
+        groupField.Table.Header [ 0 ].Text = EdLabels.Audit_Data_Table_Column_0;
         groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
 
-        groupField.Table.Header [ 1 ].Text = EvLabels.Audit_Data_Table_Column_1;
+        groupField.Table.Header [ 1 ].Text = EdLabels.Audit_Data_Table_Column_1;
         groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
 
-        groupField.Table.Header [ 2 ].Text = EvLabels.Audit_Data_Table_Column_2;
+        groupField.Table.Header [ 2 ].Text = EdLabels.Audit_Data_Table_Column_2;
         groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
 
-        groupField.Table.Header [ 3 ].Text = EvLabels.Audit_Data_Table_Column_3;
+        groupField.Table.Header [ 3 ].Text = EdLabels.Audit_Data_Table_Column_3;
         groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Read_Only_Text;
 
         for ( int count = 0; count < dataChange.Items.Count; count++ )
@@ -1023,7 +957,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Audit_Data_User_Field_Title,
+          EdLabels.Audit_Data_User_Field_Title,
           dataChange.UserId );
 
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1033,7 +967,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createReadOnlyTextField (
           String.Empty,
-          EvLabels.Audit_Data_Date_Field_Title,
+          EdLabels.Audit_Data_Date_Field_Title,
           dataChange.DateStamp.ToString ( "dd-MMM-yyy HH:mm:ss" ) );
 
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1078,8 +1012,8 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      List<EvUserSignoff> initialContent = new List<EvUserSignoff> ( );
-      List<EvUserSignoff> newContent = new List<EvUserSignoff> ( );
+      List<EdUserSignoff> initialContent = new List<EdUserSignoff> ( );
+      List<EdUserSignoff> newContent = new List<EdUserSignoff> ( );
 
       if ( Item.InitialValue == String.Empty
         && Item.NewValue == String.Empty )
@@ -1091,7 +1025,7 @@ namespace Evado.UniForm.Clinical
       {
         try
         {
-          initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EvUserSignoff>> ( Item.InitialValue );
+          initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdUserSignoff>> ( Item.InitialValue );
         }
         catch
         {
@@ -1103,7 +1037,7 @@ namespace Evado.UniForm.Clinical
       {
         try
         {
-          newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EvUserSignoff>> ( Item.NewValue );
+          newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdUserSignoff>> ( Item.NewValue );
         }
         catch
         {
@@ -1247,86 +1181,6 @@ namespace Evado.UniForm.Clinical
 
     }//END writeFormContentValues method
 
-    //===================================================================================
-    /// <summary>
-    /// This method process the list of ResultData changes.
-    /// </summary>
-    /// <param name="RowList">List<Evado.Model.UniForm.TableRow>: the list of rows in a table</param>
-    /// <param name="Instance">int: th instance of the change</param>
-    /// <param name="Item">EvDataChange object containing the change.</param>
-    //-----------------------------------------------------------------------------------
-    private void writeMilestoneDataValues (
-      List<Evado.Model.UniForm.TableRow> RowList,
-      int Instance,
-      EvDataChangeItem Item )
-    {
-      System.Console.WriteLine ( "writeMilestoneDateValues" );
-      //
-      // Initialise the methods variables and objects.
-      //
-      EvMilestoneData initialContent = new EvMilestoneData ( );
-      EvMilestoneData newContent = new EvMilestoneData ( );
-
-      if ( Item.InitialValue == String.Empty
-        && Item.NewValue == String.Empty )
-      {
-        return;
-      }
-
-      if ( Item.InitialValue != String.Empty )
-      {
-        initialContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvMilestoneData> ( Item.InitialValue );
-      }
-
-      if ( Item.NewValue != String.Empty )
-      {
-        newContent = Evado.Model.Digital.EvcStatics.DeserialiseObject<EvMilestoneData> ( Item.NewValue );
-      }
-
-      Item.ItemId = "MilestoneData";
-
-      //
-      // initial schedule version.
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "_InitialScheduleVersion",
-        initialContent.InitialScheduleVersion.ToString ( ),
-        newContent.InitialScheduleVersion.ToString ( ) );
-
-      //
-      // optional schedule version
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "_OptionalScheduleVersion",
-        initialContent.OptionalScheduleVersion.ToString ( ),
-        newContent.OptionalScheduleVersion.ToString ( ) );
-
-      //
-      // Previous visit date
-      //
-      this.addAuditReportRow (
-        RowList,
-        Instance,
-        Item.ItemId + "_PreviousVisitDate",
-        initialContent.PreviousVisitDate.ToString ( "dd-MMM-yyyy" ),
-        newContent.PreviousVisitDate.ToString ( "dd-MMM-yyyy" ) );
-
-      //
-      // Signoffs
-      //
-      this.writeSignoffField (
-        RowList,
-        Instance,
-        Item.ItemId,
-        "UserSignoff",
-        initialContent.Signoffs,
-        newContent.Signoffs );
-
-    }//END writeFormContentValues method
 
     //===================================================================================
     /// <summary>
@@ -1344,8 +1198,8 @@ namespace Evado.UniForm.Clinical
       int Instance,
       String ItemId,
       String FieldId,
-      List<EvUserSignoff> InitialData,
-      List<EvUserSignoff> NewData )
+      List<EdUserSignoff> InitialData,
+      List<EdUserSignoff> NewData )
     {
       //
       // Validate the signatures need to be added.
@@ -1557,7 +1411,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + ".getRecord_Audit_Object",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1585,7 +1439,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Audit_Record_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Audit_Record_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1620,7 +1474,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       //
       ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
-      ClientDataObject.Title = EvLabels.Audit_Record_Page_Title;
+      ClientDataObject.Title = EdLabels.Audit_Record_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -1695,7 +1549,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + ".getRecord_Item_Audit_Object",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1723,7 +1577,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Audit_Record_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Audit_Record_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1757,7 +1611,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the client ResultData object.
       //
       ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
-      ClientDataObject.Title = EvLabels.Audit_Config_Item_Page_Title;
+      ClientDataObject.Title = EdLabels.Audit_Config_Item_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -1805,7 +1659,7 @@ namespace Evado.UniForm.Clinical
       // create the selection pageMenuGroup.
       //
       pageGroup = Page.AddGroup (
-        EvLabels.Audit_Selection_Group_Title,
+        EdLabels.Audit_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1816,7 +1670,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createSelectionListField (
         EdPlatformSettings.CONST_AUDIT_TABLE,
-        EvLabels.Audit_Table_Selection_Field_Title,
+        EdLabels.Audit_Table_Selection_Field_Title,
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
@@ -1837,7 +1691,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createSelectionListField (
           EdPlatformSettings.CONST_AUDIT_RECORD_GUID,
-          EvLabels.Audit_Record_Selection_Field_Title,
+          EdLabels.Audit_Record_Selection_Field_Title,
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
@@ -1864,7 +1718,7 @@ namespace Evado.UniForm.Clinical
           //
           groupField = pageGroup.createSelectionListField (
             EdPlatformSettings.CONST_AUDIT_RECORD_ITEM_GUID,
-            EvLabels.Audit_Record_Item_Selection_Field_Title,
+            EdLabels.Audit_Record_Item_Selection_Field_Title,
             this.Session.AuditRecordItemGuid.ToString ( ),
             optionlist );
 
@@ -1879,7 +1733,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection groupCommand.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.DataBase_Update_Selection_Command_Title,
+        EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1924,7 +1778,7 @@ namespace Evado.UniForm.Clinical
           this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
-        this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
         return null;
       }
@@ -1942,12 +1796,6 @@ namespace Evado.UniForm.Clinical
 
         this.LogClass ( this._Bll_ApplicationSettings.Log );
 
-        //this.LogDebug ( "Loaded Modules: " + this.ApplicationObjects.ApplicationProfile.LoadedModules );
-
-        //this.LogDebug ( "Parameter Count: " + this.ApplicationObjects.ApplicationProfile.Parameters.Count );
-
-        //this.LogDebug ( "ProHiddenFields: " + this.ApplicationObjects.ApplicationProfile.ProHiddenFields );
-
         this.ApplicationObjects.PlatformSettings.Version = this.ApplicationObjects.FullVersion;
 
         this.LogValue ( "Version: " + this.ApplicationObjects.PlatformSettings.Version );
@@ -1963,7 +1811,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationProfile_Page_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationProfile_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1992,7 +1840,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
       ClientDataObject.Id = this.ApplicationObjects.PlatformSettings.Guid;
-      ClientDataObject.Title = EvLabels.ApplicationProfile_Page_Title;
+      ClientDataObject.Title = EdLabels.ApplicationProfile_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -2003,7 +1851,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       //
       Evado.Model.UniForm.Command saveCommand = ClientDataObject.Page.addCommand (
-        EvLabels.ApplicationProfiles_Save_Command_Title,
+        EdLabels.ApplicationProfiles_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2018,20 +1866,10 @@ namespace Evado.UniForm.Clinical
       //
       this.createConfigurationGroup ( ClientDataObject.Page );
 
-      //
-      // Create the PRO configuation group
-      //
-      this.createProConfigurationGroup ( ClientDataObject.Page );
-
       //  
       // Create the email properties group.
       //
       this.createEmailGroup ( ClientDataObject.Page );
-
-      //
-      // Create the selection list Group.
-      //
-      this.createSelectionListsGroup ( ClientDataObject.Page );
 
       this.LogMethodEnd ( "getDataObject" );
 
@@ -2052,7 +1890,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       //
       Evado.Model.UniForm.Command saveCommand = PageGroup.addCommand (
-        EvLabels.ApplicationProfiles_Save_Command_Title,
+        EdLabels.ApplicationProfiles_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2082,7 +1920,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.ApplicationProfile_General_Group_Title,
+        EdLabels.ApplicationProfile_General_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -2096,7 +1934,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.Version.ToString ( ),
-        EvLabels.Application_Profile_Version_Field_Label,
+        EdLabels.Application_Profile_Version_Field_Label,
         this.ApplicationObjects.PlatformSettings.Version, 30 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -2106,7 +1944,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Application_Profile_Application_Url_Field_Title,
+        EdLabels.Application_Profile_Application_Url_Field_Title,
         this.ApplicationObjects.ApplicationUrl );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2115,7 +1953,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Application_Profile_Reset_Url_Field_Title,
+        EdLabels.Application_Profile_Reset_Url_Field_Title,
         this.ApplicationObjects.PasswordResetUrl );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2124,7 +1962,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Application_Support_Email_Address_Field_Title,
+        EdLabels.Application_Support_Email_Address_Field_Title,
         this.ApplicationObjects.SupportEmailAddress );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2133,7 +1971,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.Application_NoReply_Email_Address_Field_Title,
+        EdLabels.Application_NoReply_Email_Address_Field_Title,
         this.ApplicationObjects.NoReplyEmailAddress );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2161,7 +1999,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.ApplicationProfile_Configuration_Group_Title,
+        EdLabels.ApplicationProfile_Configuration_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -2170,32 +2008,13 @@ namespace Evado.UniForm.Clinical
       //
       this.AddGroupCommands ( pageGroup );
 
-      //
-      // create the lite trial maximum subject number field.
-      //
-      pageField = pageGroup.createNumericField (
-        Model.Digital.EdPlatform.SettingFieldNames.Lite_Max_Subject_No.ToString ( ),
-        EvLabels.Settings_Lite_Trial_Max_Subject_No_Field_Label,
-        this.ApplicationObjects.PlatformSettings.LiteMaxSubjectNo, 0, 100000 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      //
-      // create the lite trial maximum subject number field.
-      //
-      pageField = pageGroup.createNumericField (
-        Model.Digital.EdPlatform.SettingFieldNames.Standard_Max_Subject_No.ToString ( ),
-        EvLabels.Settings_Standard_Trial_Max_Subject_No_Field_Label,
-        this.ApplicationObjects.PlatformSettings.StandardMaxSubjectNo, 0, 100000 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
       //
       // create the demonstration account expiry period in days.
       //
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.DemoAccountExpiryDays.ToString ( ),
-        EvLabels.Settings_Demo_Account_Expiry_Field_Label,
+        EdLabels.Settings_Demo_Account_Expiry_Field_Label,
         this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays, 0, 365 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2204,41 +2023,8 @@ namespace Evado.UniForm.Clinical
       //
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.DemoRegistrationVideoUrl.ToString ( ),
-        EvLabels.Settings_Demo_Video_URL_Field_Label,
+        EdLabels.Settings_Demo_Video_URL_Field_Label,
         this.ApplicationObjects.PlatformSettings.DemoRegistrationVideoUrl, 100 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-
-      //
-      // Create the Loaded modules list
-      //
-      List<EvOption> loadedModulesList = Model.Digital.EdPlatform.getModuleList ( );
-
-      // 
-      // Create the hidden milestone fields
-      // 
-      this.LogDebug ( "LoadedModules: " + this.ApplicationObjects.PlatformSettings.LoadedModules );
-
-      pageField = pageGroup.createCheckBoxListField (
-        Model.Digital.EdPlatform.SettingFieldNames.LoadedModules.ToString ( ),
-        EvLabels.Application_Profile_Loaded_Modules_Field_Label,
-        EvLabels.Application_Profile_Loaded_Modules_Description,
-        this.ApplicationObjects.PlatformSettings.LoadedModules,
-        loadedModulesList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      // 
-      // Create the regulatory reports options
-      // 
-      stOptionListValue = this.ApplicationObjects.PlatformSettings.RegulatoryReports;
-      stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdPlatform.SettingFieldNames.RegulatoryReports.ToString ( ),
-        EvLabels.Application_Profile_Regulatory_Reports_Field_Label,
-        stOptionListValue,
-        50,
-        5 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
@@ -2246,7 +2032,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createBooleanField (
         Model.Digital.EdPlatform.SettingFieldNames.Display_Site_Dashboard.ToString ( ),
-        EvLabels.Application_Profile_Display_Site_Dashboard_Field_Label,
+        EdLabels.Application_Profile_Display_Site_Dashboard_Field_Label,
         this.ApplicationObjects.PlatformSettings.DisplaySiteDashboard );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2255,7 +2041,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.HelpUrl.ToString ( ),
-        EvLabels.Application_Profile_Help_Url_Field_Label,
+        EdLabels.Application_Profile_Help_Url_Field_Label,
         this.ApplicationObjects.PlatformSettings.HelpUrl,
         50 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -2286,7 +2072,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.Application_Profile_Email_Group_Title,
+        EdLabels.Application_Profile_Email_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -2300,7 +2086,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpServer.ToString ( ),
-        EvLabels.Application_Profile_SMTP_Server_Field_Label,
+        EdLabels.Application_Profile_SMTP_Server_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpServer,
         50 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -2310,7 +2096,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createNumericField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpServerPort.ToString ( ),
-        EvLabels.Application_Profile_SMTP_Port_Field_Label,
+        EdLabels.Application_Profile_SMTP_Port_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpServerPort, 0, 650000 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -2319,7 +2105,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpUserId.ToString ( ),
-        EvLabels.Application_Profile_SMTP_User_Field_Label,
+        EdLabels.Application_Profile_SMTP_User_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpUserId,
         50 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -2329,137 +2115,13 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         Model.Digital.EdPlatform.SettingFieldNames.SmtpPassword.ToString ( ),
-        EvLabels.Application_Profile_SMTP_Password_Field_Label,
+        EdLabels.Application_Profile_SMTP_Password_Field_Label,
         this.ApplicationObjects.PlatformSettings.SmtpPassword,
         50 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       this.LogMethodEnd ( "createEmailGroup" );
     }//END createEmailGroup Method
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a PRO configuration Group object.
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
-    //  ------------------------------------------------------------------------------
-    private void createProConfigurationGroup (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      this.LogMethod ( "createProConfigurationGroup" );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
-      String stOptionListValue = String.Empty;
-      String parameterName = String.Empty;
-
-      // 
-      // create the page pageMenuGroup
-      // 
-      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.ApplicationProfile_Pro_Configuration_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      //F
-      // Add the group commands.
-      //
-      this.AddGroupCommands ( pageGroup );
-
-    }//END createProConfigurationGroup Method
-
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a general pageMenuGroup object.
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
-    //  ------------------------------------------------------------------------------
-    private void createSelectionListsGroup (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      this.LogMethod ( "createSelectionListsGroup" );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
-      String stOptionListValue = String.Empty;
-
-      // 
-      // create the page pageMenuGroup
-      // 
-      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.ApplicationProfile_Selection_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      //
-      // Add the group commands.
-      //
-      this.AddGroupCommands ( pageGroup );
-
-      pageGroup.Description = EvLabels.Application_Profile_Selection_Group_Description;
-
-      // 
-      // Create the disease type list options
-      // 
-      stOptionListValue = this.ApplicationObjects.PlatformSettings.DiseaseTypeListOptions;
-      stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdPlatform.SettingFieldNames.DiseaseTypeListOptions.ToString ( ),
-        EvLabels.Application_Profile_Disease_Type_Field_Label,
-        stOptionListValue,
-        50,
-        5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      // 
-      // Create the disease list options
-      // 
-      stOptionListValue = this.ApplicationObjects.PlatformSettings.DiseaseListOptions;
-      stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdPlatform.SettingFieldNames.DiseaseListOptions.ToString ( ),
-        EvLabels.Application_Profile_Patient_Diseases_Field_Label,
-        stOptionListValue,
-        50,
-        5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      // 
-      // Create the disease list options
-      // 
-      stOptionListValue = this.ApplicationObjects.PlatformSettings.CategoryListOptions;
-      stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdPlatform.SettingFieldNames.CategoryListOptions.ToString ( ),
-        EvLabels.Application_Profile_Patient_Categoriess_Field_Label,
-        stOptionListValue,
-        50,
-        5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      // 
-      // Create the disease list options
-      // 
-      stOptionListValue = this.ApplicationObjects.PlatformSettings.EarlyWithdrawalOptions;
-      stOptionListValue = stOptionListValue.Replace ( ";", ";\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdPlatform.SettingFieldNames.EarlyWithdrawalOptions.ToString ( ),
-        EvLabels.Application_Profile_Early_Withdrawal_Field_Label,
-        stOptionListValue,
-        50,
-        5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-    }//END createSelectionListsGroup Method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -2496,13 +2158,13 @@ namespace Evado.UniForm.Clinical
         // Determine if the user has access to this page and log and error if they do not.
         //
         if ( this.Session.UserProfile.hasManagementAccess == false
-          && this.Session.UserProfile.hasRecordAccess == false )
+          && this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + ".createObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return null;
         }
@@ -2590,10 +2252,6 @@ namespace Evado.UniForm.Clinical
           this.LogDebug ( "Parameter N: {0}, V: {1}", parm.Name, parm.Value );
         }
 
-        this.LogDebug ( "Subject No: Lite {0}, Subject {1}",
-          this.ApplicationObjects.PlatformSettings.LiteMaxSubjectNo,
-          this.ApplicationObjects.PlatformSettings.StandardMaxSubjectNo );
-
         this.LogDebug ( "DemoAccountExpiryDays {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
 
         // 
@@ -2618,7 +2276,7 @@ namespace Evado.UniForm.Clinical
           {
             default:
               {
-                this.ErrorMessage = EvLabels.ApplicationProfiles_Update_Error_Message;
+                this.ErrorMessage = EdLabels.ApplicationProfiles_Update_Error_Message;
                 break;
               }
           }
@@ -2633,7 +2291,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationProfiles_Update_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationProfiles_Update_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -2674,30 +2332,6 @@ namespace Evado.UniForm.Clinical
         }
 
         this.LogValue ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
-
-        if ( parameter.Name == Model.Digital.EdPlatform.SettingFieldNames.LoadedModules.ToString ( ) )
-        {
-          string modules = string.Empty;
-          string [ ] moduleList = parameter.Value.Split ( ';' );
-
-          //
-          // Iterate through the list of modules to ensure that they are all processes.
-          //
-          for ( int i = 0; i < moduleList.Length; i++ )
-          {
-            if ( modules.Contains ( moduleList [ i ] ) == false )
-            {
-              if ( modules != string.Empty )
-              {
-                modules += ";";
-              }
-              modules += moduleList [ i ];
-            }
-          }//END moduleList iteration loop
-          parameter.Value = modules;
-
-          this.LogValue ( "parameter.Value: " + parameter.Value );
-        }//END if modules field
 
         try
         {

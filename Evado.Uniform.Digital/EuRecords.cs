@@ -58,7 +58,7 @@ namespace Evado.UniForm.Clinical
         this.Session.RecordSelectionLayoutId = String.Empty;
       }
 
-      this.ClassNameSpace = " Evado.UniForm.Clinical.euFormRecords.";
+      this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace Evado.UniForm.Clinical
       String UniForm_BinaryServiceUrl,
       EvClassParameters Settings )
     {
-      this.ClassNameSpace = " Evado.UniForm.Clinical.EuFormRecords.";
+      this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
       this.ApplicationObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
@@ -80,7 +80,7 @@ namespace Evado.UniForm.Clinical
       this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
       this.ClassParameters = Settings;
 
-      this.LogInitMethod ( "FormRecords initialisation" );
+      this.LogInitMethod ( "EuRecords initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
       this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
@@ -136,7 +136,6 @@ namespace Evado.UniForm.Clinical
     //
     // Initialise the page labels
     //
-    private string _Subject_Id_Label = EvLabels.Label_Subject_Id;
     /// <summary>
     /// This constant defines the administrator field identifier prefix
     /// </summary>
@@ -249,19 +248,9 @@ namespace Evado.UniForm.Clinical
 
               switch ( this.Session.PageId )
               {
-                case EvPageIds.Record_Monitor_View:
-                  {
-                    clientDataObject = this.getList_MonitorRecords ( PageCommand );
-                    break;
-                  }
                 case EvPageIds.Record_Export_Page:
                   {
                     clientDataObject = this.getRecordExport_Object ( PageCommand );
-                    break;
-                  }
-                case EvPageIds.Record_Admin_Page:
-                  {
-                    clientDataObject = this.getList_AdminObject ( PageCommand );
                     break;
                   }
                 default:
@@ -282,25 +271,7 @@ namespace Evado.UniForm.Clinical
             {
               this.LogDebug ( "Get Object method" );
 
-              //
-              // Select page layout based on record page type.
-              //
-              switch ( this.Session.PageId )
-              {
-                //
-                // Select the record admin page.
-                //
-                case EvPageIds.Record_Admin_Page:
-                  {
-                    clientDataObject = this.getAdminPageObject ( PageCommand );
-                    break;
-                  }
-                default:
-                  {
-                    clientDataObject = this.getObject ( PageCommand );
-                    break;
-                  }
-              }//END RecordPageType switch
+              clientDataObject = this.getObject ( PageCommand );
 
               break;
 
@@ -421,20 +392,17 @@ namespace Evado.UniForm.Clinical
         && this.Session.Record.BookedOutBy != this.Session.UserProfile.CommonName )
       {
         this.ErrorMessage =
-          String.Format ( EvLabels.Form_Record_Locked_Message,
+          String.Format ( EdLabels.Form_Record_Locked_Message,
           this.Session.Record.RecordId,
           this.Session.Record.BookedOutBy );
 
         //
         // If the user is an administrator display a command to unlock the record.
         //
-        if ( this.Session.UserProfile.RoleId == EvRoleList.Evado_Administrator
-          || this.Session.UserProfile.RoleId == EvRoleList.Evado_Manager
-          || this.Session.UserProfile.RoleId == EvRoleList.Administrator
-          || this.Session.UserProfile.RoleId == EvRoleList.Manager )
+        if ( this.Session.UserProfile.hasManagementAccess )
         {
           Evado.Model.UniForm.Command pageCommand = PageObject.addCommand (
-            EvLabels.Form_UnLock_Command_Title,
+            EdLabels.Form_UnLock_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Records.ToString ( ),
              Model.UniForm.ApplicationMethods.Save_Object );
@@ -452,7 +420,7 @@ namespace Evado.UniForm.Clinical
       //
       // Do not lock the record is the user does not have update access.
       //
-      if ( this.Session.UserProfile.hasRecordEditAccess == false )
+      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
       {
         return false;
       }
@@ -517,9 +485,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Test if the record is already locked.
       // 
-      if ( this.Session.UserProfile.RoleId != EvRoleList.Evado_Administrator
-        && this.Session.UserProfile.RoleId != EvRoleList.Administrator
-        && this.Session.UserProfile.RoleId != EvRoleList.Manager )
+      if ( this.Session.UserProfile.hasManagementAccess )
       {
         return new Model.UniForm.AppData ( );
       }
@@ -531,7 +497,7 @@ namespace Evado.UniForm.Clinical
 
       if ( iReturn != EvEventCodes.Ok )
       {
-        this.ErrorMessage = EvLabels.Form_Record_Admin_Unlock_Error_Message;
+        this.ErrorMessage = EdLabels.Form_Record_Admin_Unlock_Error_Message;
         return this.Session.LastPage;
       }
 
@@ -556,9 +522,9 @@ namespace Evado.UniForm.Clinical
       this.LogMethod ( "updateSessionValue" );
 
 
-      if ( PageCommand.hasParameter ( EvIdentifiers.LAYOUT_ID ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString() ) == true )
       {
-        this.Session.RecordSelectionLayoutId = PageCommand.GetParameter ( EvIdentifiers.LAYOUT_ID );
+        this.Session.RecordSelectionLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString() );
       }
       this.LogValue ( "RecordSelectionFormId: " + this.Session.RecordSelectionLayoutId );
 
@@ -576,9 +542,9 @@ namespace Evado.UniForm.Clinical
       this.LogValue ( "RecordType: " + this.Session.RecordType );
 
 
-      if ( PageCommand.hasParameter ( EvIdentifiers.OBJECT_STATE ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString() ) == true )
       {
-        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EvIdentifiers.OBJECT_STATE );
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString() );
 
         if ( this.Session.RecordSelectionState != stateValue )
         {
@@ -674,13 +640,13 @@ namespace Evado.UniForm.Clinical
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
         /*
-        if ( this.Session.UserProfile.hasRecordAccess == false )
+        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "FormRecords.getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return this.Session.LastPage; ;
         }
@@ -698,7 +664,7 @@ namespace Evado.UniForm.Clinical
         clientDataObject.Id = Guid.NewGuid ( );
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EvLabels.Record_View_Page_Title;
+        clientDataObject.Title = EdLabels.Record_View_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
 
@@ -728,7 +694,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
+        this.ErrorMessage = EdLabels.Record_View_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -825,7 +791,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup for record selection.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Record_Selection_Group_Title,
+        EdLabels.Record_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -843,8 +809,8 @@ namespace Evado.UniForm.Clinical
       }
 
       selectionField = pageGroup.createSelectionListField (
-        EvIdentifiers.LAYOUT_ID,
-        EvLabels.Label_Form_Id,
+        EdRecord.RecordFieldNames.Layout_Id,
+        EdLabels.Label_Form_Id,
         this.Session.RecordSelectionLayoutId,
         optionList );
 
@@ -857,8 +823,8 @@ namespace Evado.UniForm.Clinical
       optionList = EdRecord.getRecordStates ( false );
 
       selectionField = pageGroup.createSelectionListField (
-        EvIdentifiers.OBJECT_STATE,
-        EvLabels.Record_State_Selection,
+        EdRecord.RecordFieldNames.Status.ToString(),
+        EdLabels.Record_State_Selection,
         this.Session.RecordSelectionState,
         optionList );
 
@@ -868,7 +834,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Add the selection groupCommand
       // 
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EvLabels.Select_Records_Command_Title,
+      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Records.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -901,13 +867,13 @@ namespace Evado.UniForm.Clinical
       // Create the record display pageMenuGroup.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Record_List_Group_Title,
+        EdLabels.Record_List_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EvLabels.List_Count_Label + RecordList.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + RecordList.Count;
 
       //
       // Add a create record command.
@@ -967,11 +933,11 @@ namespace Evado.UniForm.Clinical
 
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Short_Title,
-        EvLabels.Label_Record_Id + FormRecord.RecordId );
+        EdLabels.Label_Record_Id + FormRecord.RecordId );
 
       groupCommand.Title = String.Empty;
 
-      if ( this.Session.UserProfile.hasRecordEditAccess == false )
+      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
       {
         //
         // Switch to determine the icons and background colours.
@@ -986,7 +952,7 @@ namespace Evado.UniForm.Clinical
                Model.UniForm.CommandParameters.Image_Url,
                EuRecords.ICON_RECORD_DRAFT );
 
-              if ( this.Session.UserProfile.hasRecordEditAccess == true )
+              if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
               {
 
                 groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Yellow );
@@ -1006,12 +972,12 @@ namespace Evado.UniForm.Clinical
         // Display multi-site user content.
         //
         groupCommand.Title =
-          String.Format ( EvLabels.Form_Record_General_View_Title,
+          String.Format ( EdLabels.Form_Record_General_View_Title,
             FormRecord.RecordId,
             FormRecord.LayoutId,
             FormRecord.Title,
             String.Empty,
-            FormRecord.MilestoneId,
+            String.Empty,
             String.Empty );
 
       }
@@ -1066,10 +1032,10 @@ namespace Evado.UniForm.Clinical
         //
         // Display site user content.
         //
-        groupCommand.Title = String.Format ( EvLabels.Form_Record_Site_View_Title,
+        groupCommand.Title = String.Format ( EdLabels.Form_Record_Site_View_Title,
             FormRecord.LayoutId,
             FormRecord.Title,
-            FormRecord.MilestoneId,
+            String.Empty,
             String.Empty );
 
       }//END site users
@@ -1106,13 +1072,13 @@ namespace Evado.UniForm.Clinical
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasRecordAccess == false )
+        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getRecordExport_Object",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return this.Session.LastPage;
         }
@@ -1130,7 +1096,7 @@ namespace Evado.UniForm.Clinical
         clientDataObject.Id = Guid.NewGuid ( );
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EvLabels.Record_View_Page_Title;
+        clientDataObject.Title = EdLabels.Record_View_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EvPageIds.Record_Export_Page.ToString ( );
 
@@ -1156,7 +1122,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
+        this.ErrorMessage = EdLabels.Record_View_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1208,7 +1174,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup for query selection.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Record_Selection_Group_Title,
+        EdLabels.Record_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -1218,8 +1184,8 @@ namespace Evado.UniForm.Clinical
       // Add the selection pageMenuGroup.
       //
       selectionField = pageGroup.createSelectionListField (
-        EvIdentifiers.LAYOUT_ID,
-        EvLabels.Label_Form_Id,
+        EdRecord.RecordFieldNames.Layout_Id,
+        EdLabels.Label_Form_Id,
         this.Session.RecordSelectionLayoutId,
         this.Session.IssueFormList );
 
@@ -1230,7 +1196,7 @@ namespace Evado.UniForm.Clinical
       //
       selectionField = pageGroup.createBooleanField (
         EuRecords.CONST_INCLUDE_TEST_SITES,
-        EvLabels.Record_Export_Include_Test_Sites_Field_Title,
+        EdLabels.Record_Export_Include_Test_Sites_Field_Title,
         this.Session.FormRecords_IncludeTestSites );
       selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1239,7 +1205,7 @@ namespace Evado.UniForm.Clinical
       //
       selectionField = pageGroup.createBooleanField (
         EuRecords.CONST_INCLUDE_DRAFT_RECORDS,
-        EvLabels.Record_Export_Include_Draft_Record_Field_Title,
+        EdLabels.Record_Export_Include_Draft_Record_Field_Title,
         this.Session.FormRecords_IncludeDraftRecords );
       selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1248,7 +1214,7 @@ namespace Evado.UniForm.Clinical
       //
       selectionField = pageGroup.createBooleanField (
         EuRecords.CONST_INCLUDE_FREE_TEXT_DATA,
-        EvLabels.Record_Export_Include_FreeText_data_Field_Title,
+        EdLabels.Record_Export_Include_FreeText_data_Field_Title,
         this.Session.FormRecords_IncludeFreeTextData );
       selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1256,7 +1222,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection groupCommand
       // 
       command = pageGroup.addCommand (
-        EvLabels.Record_Export_Selection_Group_Command_Title,
+        EdLabels.Record_Export_Selection_Group_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Records.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1338,7 +1304,7 @@ namespace Evado.UniForm.Clinical
       // Create the record display pageMenuGroup.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Record_Export_Download_Group_Title,
+        EdLabels.Record_Export_Download_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -1347,7 +1313,7 @@ namespace Evado.UniForm.Clinical
       if ( inResultCount == 0 )
       {
         LogDebug ( "Record Count is 0." );
-        pageGroup.Description = EvLabels.Form_Record_Export_Empty_List_Error_Message;
+        pageGroup.Description = EdLabels.Form_Record_Export_Empty_List_Error_Message;
 
         this.LogMethodEnd ( "getRecordExport_DownloadGroup" );
         return;
@@ -1454,7 +1420,7 @@ namespace Evado.UniForm.Clinical
 
         if ( exportRecords.EventCode == EvEventCodes.Data_Export_Empty_Record_List )
         {
-          this.ErrorMessage = EvLabels.Form_Record_Export_Empty_List_Error_Message;
+          this.ErrorMessage = EdLabels.Form_Record_Export_Empty_List_Error_Message;
         }
         this.LogMethodEnd ( "exportRecordData" );
         return exportRecords.EventCode;
@@ -1488,7 +1454,7 @@ namespace Evado.UniForm.Clinical
 
       if ( result == false )
       {
-        this.ErrorMessage = EvLabels.Record_Export_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Export_Error_Message;
 
         this.LogDebugClass ( Evado.Model.Digital.EvcStatics.Files.DebugLog );
         this.LogDebug ( "ReturnedEventCode: " + Evado.Model.Digital.EvcStatics.Files.ReturnedEventCode );
@@ -1505,581 +1471,6 @@ namespace Evado.UniForm.Clinical
       this.LogMethodEnd ( "exportRecordData" );
       return EvEventCodes.Ok;
     }//END exportRecordData method.
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class record admin list methods
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>ClientApplicationData object</returns>
-    //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getList_AdminObject (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      try
-      {
-        this.LogMethod ( "getAdminListObject" );
-        this.LogValue ( "RecordSelectionState: " + this.Session.RecordSelectionState );
-
-        // 
-        // Initialise the methods variables and objects.
-        // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
-        // 
-        // If the user does not have monitor or ResultData manager roles exit the page.
-        // 
-        if ( this.Session.UserProfile.hasManagementEditAccess == false )
-        {
-          this.LogIllegalAccess (
-            this.ClassNameSpace + "getListObject",
-            this.Session.UserProfile );
-
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
-
-          return this.Session.LastPage; ;
-        }
-
-        // 
-        // Log the user's access to page.
-        // 
-        this.LogPageAccess (
-          this.ClassNameSpace + "getListObject",
-          this.Session.UserProfile );
-
-        //
-        // execute the admin query command
-        //
-        this.getList_AdminQuery ( PageCommand );
-
-        // 
-        // Initialise the client ResultData object.
-        // 
-        clientDataObject.Id = Guid.NewGuid ( );
-        clientDataObject.Page.Id = clientDataObject.Id;
-        clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EvLabels.Record_View_Page_Title;
-        clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
-
-        // 
-        // Change the page title to match the page type.
-        // 
-        if ( this.Session.PageId == EvPageIds.My_Records_View )
-        {
-          clientDataObject.Title = EvLabels.Record_My_Records_Page_Title;
-          clientDataObject.Page.Title = clientDataObject.Title;
-          clientDataObject.Page.PageId = EvPageIds.My_Records_View.ToString ( );
-        }
-
-        // 
-        // Create the new pageMenuGroup for query selection.
-        // 
-        this.getList_SelectionGroup ( clientDataObject.Page );
-
-        // 
-        // Create the pageMenuGroup containing commands to open the records.
-        //         
-        this.getList_AdminListGroup ( clientDataObject.Page );
-
-        this.LogValue ( "data.Page.Title: " + clientDataObject.Page.Title );
-
-
-        return clientDataObject;
-
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // Create the error message to be displayed to the user.
-        // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
-
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
-
-      return this.Session.LastPage; ;
-
-    }//END getListObject method.
-
-    // ==============================================================================
-    /// <summary>
-    /// This method creates the record view pageMenuGroup containing a list of commands to 
-    /// open the form record.
-    /// </summary>
-    /// <param name="Page">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
-    /// <param name="RecordType">Adapter.ApplicationObjects  Type of Record</param>    
-    /// <param name="QueryParameters">EvQueryParameters: conting the query parameters</param>
-    /// <param name="RecordList">List of EvForm: form record objects.</param>
-    //  ------------------------------------------------------------------------------
-    private void getList_AdminQuery (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "getList_AdminQuery" );
-      this.LogDebug ( "RecordSelectionState:  {0}.", this.Session.RecordSelectionState );
-      this.LogDebug ( "FormRecordType:  {0}.", this.Session.RecordType );
-      //
-      // Initialise the methods vaiables and objects.
-      //
-      String parameterValue = String.Empty;
-      EdQueryParameters queryParameters = new EdQueryParameters ( this.Session.Application.ApplicationId );
-      List<EdRecord> recordList = new List<EdRecord> ( );
-
-
-      #region Set the query paremter values.
-
-      //
-      // Update the record state selection.
-      //
-      queryParameters.States.Add ( EuAdapter.CONST_RECORD_STATE_SELECTION_DEFAULT );
-      queryParameters.NotSelectedState = true;
-
-      if ( this.Session.RecordSelectionState != EdRecordObjectStates.Null )
-      {
-        queryParameters.States.Add ( this.Session.RecordSelectionState );
-        queryParameters.NotSelectedState = false;
-      }
-
-      this.LogDebug ( "Query Parameters:  " );
-      this.LogDebug ( "-ProjectId: " + queryParameters.ApplicationId );
-
-      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      #endregion
-
-      #region Query the record database.
-
-      //
-      // query the database.
-      //
-      this.Session.AdminRecordList = this._Bll_FormRecords.getRecordList ( queryParameters );
-      this.LogDebugClass ( this._Bll_FormRecords.Log );
-      this.LogDebug ( "AdminRecordList.Count {0}.", this.Session.AdminRecordList.Count );
-
-      // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      #endregion
-
-      this.LogMethodEnd ( "getList_AdminQuery" );
-
-    }//END getList_AdminQuery METHOD
-
-    // ==============================================================================
-    /// <summary>
-    /// This method creates the record view pageMenuGroup containing a list of commands to 
-    /// open the form record.
-    /// </summary>
-    /// <param name="Page">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
-    /// <param name="RecordList">List of EvForm: form record objects.</param>
-    //  ------------------------------------------------------------------------------
-    private void getList_AdminListGroup (
-      Evado.Model.UniForm.Page Page )
-    {
-      this.LogMethod ( "createRecordViewGroup" );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image0_Url,
-        EuRecords.ICON_RECORD_DRAFT );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image1_Url,
-        EuRecords.ICON_RECORD_SUBMITTED );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image2_Url,
-        EuRecords.ICON_RECORD_SDR );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image3_Url,
-        EuRecords.ICON_RECORD_QUERIED );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image4_Url,
-        EuRecords.ICON_RECORD_LOCKED );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image5_Url,
-        EuRecords.ICON_RECORD_DELETED );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image6_Url,
-        EuRecords.ICON_QUERIED_OPEN );
-
-      Page.setImageUrl (
-        Model.UniForm.PageImageUrls.Image7_Url,
-        EuRecords.ICON_QUERIED_CLOSED );
-
-      // 
-      // Create the record display pageMenuGroup.
-      // 
-      pageGroup = Page.AddGroup (
-        EvLabels.Record_List_Group_Title,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      pageGroup.Title += EvLabels.List_Count_Label + this.Session.AdminRecordList.Count;
-
-      // 
-      // Iterate through the record list generating a groupCommand to access each record
-      // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
-      // 
-      foreach ( Evado.Model.Digital.EdRecord formRecord in this.Session.AdminRecordList )
-      {
-        //
-        // Create the group list groupCommand object.
-        //
-        groupCommand = this.getGroupListCommand ( formRecord, pageGroup );
-
-        groupCommand.AddParameter (
-          Model.UniForm.CommandParameters.Page_Id,
-          EvPageIds.Record_Admin_Page.ToString ( ) );
-
-      }//END iteration loop
-
-      this.LogValue ( "Group command count: " + pageGroup.CommandList.Count );
-
-    }//END getList_AdminListGroup method
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class record monitor list method methods
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="PageCommand"> Evado.Model.UniForm.Command object.</param>
-    /// <returns>ClientApplicationData object</returns>
-    /// <remarks>
-    /// This method creates a page group to monitor records based on the current query state of the record.
-    /// </remarks>
-    //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getList_MonitorRecords (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "GetMonitorRecordView" );
-      this.LogValue ( "RecordSelectionState: " + this.Session.RecordSelectionState );
-
-      try
-      {
-        // 
-        // Initialise the methods variables and objects.
-        // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-
-        // 
-        // If the user does not have monitor or ResultData manager roles exit the page.
-        // 
-        if ( this.Session.UserProfile.hasRecordAccess == false )
-        {
-          this.LogIllegalAccess (
-            this.ClassNameSpace + "FormRecords.GetMonitorRecordView",
-            this.Session.UserProfile );
-
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
-
-          return this.Session.LastPage; ;
-        }
-
-        // 
-        // Log user's access to page.
-        // 
-        this.LogPageAccess (
-          this.ClassNameSpace + "FormRecords.GetMonitorRecordView",
-          this.Session.UserProfile );
-
-        // 
-        // Initialise the client ResultData object.
-        // 
-        clientDataObject.Id = Guid.NewGuid ( );
-        clientDataObject.Page.Id = clientDataObject.Id;
-        clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EvLabels.Record_Monitor_View_Page_Title;
-        clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Record_Monitor_View.ToString ( );
-
-        // 
-        // Create the new pageMenuGroup for query selection.
-        // 
-        this.getList_SelectionGroup ( clientDataObject.Page );
-
-        //
-        // Execute the monitor list record query.
-        //
-        this.executeRecordQuery ( );
-
-
-        // 
-        // Create the pageMenuGroup containing commands to open the records.
-        // 
-
-        this.getRecord_ListGroup ( clientDataObject.Page );
-
-        // 
-        // Return the client ResultData object.
-        // 
-        return clientDataObject;
-
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // Create the error message to be displayed to the  user.
-        // 
-        this.ErrorMessage = EvLabels.Record_View_Error_Message;
-
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
-
-      return this.Session.LastPage; ;
-
-    }//END GetMonitorRecordView method.
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class admin page methods
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
-    //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getAdminPageObject (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "getAdminObject" );
-
-      try
-      {
-        // 
-        // Initialise the methods variables and objects.
-        // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        Guid recordGuid = Guid.Empty;
-
-        // 
-        // If the user does not have monitor or ResultData manager roles exit the page.
-        // 
-        if ( this.Session.UserProfile.hasManagementEditAccess == false )
-        {
-          this.LogIllegalAccess (
-            this.ClassNameSpace + "FormRecords.getObject",
-            this.Session.UserProfile );
-
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
-
-          return this.Session.LastPage; ;
-        }
-
-        // 
-        // Log access to page.
-        // 
-        this.LogPageAccess (
-          this.ClassNameSpace + "FormRecords.getObject",
-          this.Session.UserProfile );
-
-        String recordId = PageCommand.GetParameter ( EvIdentifiers.RECORD_ID );
-
-
-        if ( recordId != String.Empty )
-        {
-          this.LogValue ( "recordId: " + recordId );
-          // 
-          // Retrieve the customer object from the database via the DAL and BLL layers.
-          // 
-          if ( this.Session.Record.RecordId != recordId )
-          {
-            this.Session.Record = this._Bll_FormRecords.getRecord ( recordId );
-          }
-        }
-        else
-        {
-          // 
-          // Retrieve the record guid from the parameters
-          // 
-          recordGuid = PageCommand.GetGuid ( );
-          this.LogValue ( "recordGuid: " + recordGuid );
-
-          // 
-          // if the guid is empty the parameter was not found to exit.
-          // 
-          if ( recordGuid == Guid.Empty )
-          {
-            this.LogValue ( "recordGuid is EMPTY" );
-
-            return this.Session.LastPage; ;
-          }
-
-          // 
-          // Retrieve the record object from the database via the DAL and BLL layers.
-          // 
-          if ( this.Session.Record.Guid != recordGuid )
-          {
-            this.Session.Record = this._Bll_FormRecords.getRecord ( recordGuid );
-          }
-        }
-
-        this.LogValue ( this._Bll_FormRecords.Log );
-
-        this.LogValue ( "Record.RecordId: " + this.Session.Record.RecordId );
-
-        //
-        // IF the page type is admin page display the admin page layout.
-        //
-        this.getObject_AdminPage ( clientDataObject );
-
-        // 
-        // Return the client ResultData object to the calling method.
-        // 
-        return clientDataObject;
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // On an exception raised create the error message to be displayed to the user.
-        // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
-
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
-
-      return this.Session.LastPage; ;
-
-    }//END getAdminPageObject method
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
-    //  ------------------------------------------------------------------------------
-    private void getObject_AdminPage (
-      Evado.Model.UniForm.AppData ClientDataObject )
-    {
-      this.LogMethod ( "getObject_AdminPage" );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
-      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
-
-      // 
-      // Initialise the client ResultData object.
-      // 
-      ClientDataObject.Id = this.Session.Record.Guid;
-      ClientDataObject.Title = String.Format (
-        EvLabels.Record_Page_Title_Subject_Prefix,
-        String.Empty,
-        this.Session.Record.RecordId,
-        this.Session.Record.Title,
-        this.Session.Record.StateDesc );
-
-      ClientDataObject.Page.Id = ClientDataObject.Id;
-      ClientDataObject.Page.PageDataGuid = ClientDataObject.Id;
-      ClientDataObject.Page.PageId = this.Session.Record.LayoutId;
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-
-
-      #region set the user access to the record.
-
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      //
-      // The locked status of the record.
-      //
-      if ( this.checkRecordLockStatus ( ClientDataObject.Page ) == false )
-      {
-        this.LogValue ( "The record is not locked." );
-
-        // 
-        // Add the submit comment to the page groupCommand list.
-        // 
-        pageCommand = this.createRecordSaveCommand (
-          this.Session.Record.Guid,
-          EvLabels.Record_Submit_Command,
-          EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
-
-        pageCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-          this.Session.PageId.ToString ( ) );
-
-        ClientDataObject.Page.addCommand ( pageCommand );
-
-      }//END check record locked status.
-
-      ClientDataObject.Message = this.ErrorMessage;
-
-      //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-      #endregion
-
-      pageGroup = ClientDataObject.Page.AddGroup (
-        EvLabels.Record_List_Admin_Group_Title,
-         Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      //
-      // Display the record id.
-      //
-      groupField = pageGroup.createReadOnlyTextField (
-        String.Empty,
-        EvLabels.Label_Record_Id,
-        this.Session.Record.RecordId );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      //
-      // Display the form title
-      //
-      groupField = pageGroup.createReadOnlyTextField (
-        String.Empty,
-        EvLabels.Label_Title,
-        this.Session.Record.Title );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      //
-      // Display the record date
-      //
-      groupField = pageGroup.createDateField (
-        EvIdentifiers.RECORD_DATE,
-        EvLabels.Record_Date_Field_Title,
-        this.Session.Record.RecordDate );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      //
-      // Display the record state.
-      //
-      groupField = pageGroup.createRadioButtonListField (
-        EvIdentifiers.OBJECT_STATE,
-        EvLabels.Record_State_Field_Title,
-        this.Session.Record.State.ToString ( ),
-     EdRecord.getRecordStates ( false ) );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-    }//END getObject_AdminPage Method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -2108,13 +1499,13 @@ namespace Evado.UniForm.Clinical
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasRecordAccess == false )
+        if ( this.Session.UserProfile.hasDesignAccess == false )
         {
           this.LogIllegalAccess (
-            this.ClassNameSpace + "FormRecords.getObject",
+            this.ClassNameSpace + "getObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Record_Access_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return this.Session.LastPage; ;
         }
@@ -2123,7 +1514,7 @@ namespace Evado.UniForm.Clinical
         // Log access to page.
         // 
         this.LogPageAccess (
-          this.ClassNameSpace + "FormRecords.getObject",
+          this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
         //
@@ -2136,7 +1527,7 @@ namespace Evado.UniForm.Clinical
 
         if ( result != EvEventCodes.Ok )
         {
-          this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
           this.LogError ( EvEventCodes.Database_Record_Retrieval_Error, "Retrieved Record is empty." );
           this.LogMethodEnd ( "getObject" );
@@ -2147,29 +1538,19 @@ namespace Evado.UniForm.Clinical
         this.LogValue ( "Record.RecordId: " + this.Session.Record.RecordId );
 
         //
-        // IF the page type is admin page display the admin page layout.
+        // Rung the server script if server side scripts are enabled.
         //
-        if ( this.Session.PageId == EvPageIds.Record_Admin_Page )
-        {
-          this.getObject_AdminPage ( clientDataObject );
-        }
-        else
-        {
-          //
-          // Rung the server script if server side scripts are enabled.
-          //
-          this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
+        this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
 
-          // 
-          // Generate the client ResultData object for the UniForm client.
-          // 
-          this.getClientData ( clientDataObject );
-        }
+        // 
+        // Generate the client ResultData object for the UniForm client.
+        // 
+        this.getClientData ( clientDataObject );
 
-        this.LogMethodEnd ( "getObject" );
         // 
         // Return the client ResultData object to the calling method.
         // 
+        this.LogMethodEnd ( "getObject" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -2177,7 +1558,7 @@ namespace Evado.UniForm.Clinical
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -2209,7 +1590,7 @@ namespace Evado.UniForm.Clinical
       //
       this._Bll_FormRecords = new EdRecords ( this.ClassParameters );
       Guid recordGuid = PageCommand.GetGuid ( );
-      String recordId = PageCommand.GetParameter ( EvIdentifiers.RECORD_ID );
+      String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString() );
 
       //
       // If the record ids match then the record is loaded so exit.
@@ -2349,9 +1730,9 @@ namespace Evado.UniForm.Clinical
       // Initialise method objects.
       // 
       this.LogMethod ( "setUserRecordAccess" );
-      this.LogValue ( "RoleId: " + this.Session.UserProfile.RoleId );
+      this.LogValue ( "RoleId: " + this.Session.UserProfile.Roles );
       this.LogValue ( "ActiveDirectoryUserId: " + this.Session.UserProfile.ActiveDirectoryUserId );
-      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasRecordEditAccess );
+      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) );
       this.LogValue ( "Record state: " + this.Session.Record.StateDesc );
 
       // 
@@ -2363,7 +1744,7 @@ namespace Evado.UniForm.Clinical
         case EdRecordObjectStates.Empty_Record:
         case EdRecordObjectStates.Completed_Record:
           {
-            if ( this.Session.UserProfile.hasRecordEditAccess == true )
+            if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is draft of queried, and the user has Record Edit role
@@ -2375,7 +1756,7 @@ namespace Evado.UniForm.Clinical
           }
         case EdRecordObjectStates.Submitted_Record:
           {
-            if ( this.Session.UserProfile.hasRecordEditAccess == true )
+            if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is SubmittedRecords, and the user has Record Edit role
@@ -2465,7 +1846,7 @@ namespace Evado.UniForm.Clinical
 
       ClientDataObject.Id = this.Session.Record.Guid;
       ClientDataObject.Title = String.Format (
-          EvLabels.Record_Page_Title_Subject_Prefix,
+          EdLabels.Record_Page_Title_Subject_Prefix,
           String.Empty,
           this.Session.Record.RecordId,
           this.Session.Record.Title,
@@ -2506,7 +1887,7 @@ namespace Evado.UniForm.Clinical
       //
       if ( result == false )
       {
-        this.ErrorMessage = EvLabels.FormRecord_Page_Generation_Error;
+        this.ErrorMessage = EdLabels.FormRecord_Page_Generation_Error;
 
         this.LogMethodEnd ( "getPatientConsentDataObject " );
 
@@ -2527,7 +1908,7 @@ namespace Evado.UniForm.Clinical
         // 
         pageCommand = this.createRecordSaveCommand (
             this.Session.Record.Guid,
-            EvLabels.Record_Save_Command_Title,
+            EdLabels.Record_Save_Command_Title,
             EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
 
         group.addCommand ( pageCommand );
@@ -2537,7 +1918,7 @@ namespace Evado.UniForm.Clinical
         // 
         pageCommand = this.createRecordSaveCommand (
           this.Session.Record.Guid,
-          EvLabels.Record_Submit_Command,
+          EdLabels.Record_Submit_Command,
           EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
 
         pageCommand.setEnableForMandatoryFields ( );
@@ -2594,7 +1975,7 @@ namespace Evado.UniForm.Clinical
             // Add the save groupCommand and add it to the page groupCommand list.
             // 
             pageCommand = PageObject.addCommand (
-              EvLabels.Record_Save_Command_Title,
+              EdLabels.Record_Save_Command_Title,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2609,7 +1990,7 @@ namespace Evado.UniForm.Clinical
             // Add the submit comment to the page groupCommand list.
             // 
             pageCommand = PageObject.addCommand (
-              EvLabels.Record_Submit_Command,
+              EdLabels.Record_Submit_Command,
               EuAdapter.APPLICATION_ID,
               EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2629,7 +2010,7 @@ namespace Evado.UniForm.Clinical
                 || this.Session.Record.State == EdRecordObjectStates.Completed_Record ) )
             {
               pageCommand = PageObject.addCommand (
-                EvLabels.Record_Withdraw_Command,
+                EdLabels.Record_Withdraw_Command,
                 EuAdapter.APPLICATION_ID,
                 EuAdapterClasses.Records.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -2698,7 +2079,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Initialise the methods variables and objects.
         //    
-        string LayoutId = PageCommand.GetParameter ( EvIdentifiers.LAYOUT_ID );
+        string LayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
 
         newRecord.Guid = Guid.NewGuid ( );
         newRecord.ApplicationId = this.Session.Application.ApplicationId;
@@ -2714,7 +2095,7 @@ namespace Evado.UniForm.Clinical
 
         if ( this.Session.Record.Guid == Guid.Empty )
         {
-          this.ErrorMessage = EvLabels.Form_Record_Creation_Error_Message;
+          this.ErrorMessage = EdLabels.Form_Record_Creation_Error_Message;
 
           this.LogError ( EvEventCodes.Database_Record_Retrieval_Error,
             this.ErrorMessage );
@@ -2743,7 +2124,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Create_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Create_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -2837,7 +2218,7 @@ namespace Evado.UniForm.Clinical
             {
               if ( this.validateRecordDataEntry ( ) == false )
               {
-                this.ErrorMessage = EvLabels.Form_Record_Mandatory_Value_Error_Message;
+                this.ErrorMessage = EdLabels.Form_Record_Mandatory_Value_Error_Message;
 
                 this.Session.Record.SaveAction = EdRecord.SaveActionCodes.Save;
               }
@@ -2852,7 +2233,7 @@ namespace Evado.UniForm.Clinical
         // 
         EvEventCodes result = this._Bll_FormRecords.saveRecord (
           this.Session.Record,
-          this.Session.UserProfile.hasRecordEditAccess );
+          this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) );
 
         this.LogClass ( this._Bll_FormRecords.Log );
 
@@ -2868,11 +2249,11 @@ namespace Evado.UniForm.Clinical
 
           this.LogError ( EvEventCodes.Database_Record_Update_Error, stEvent );
 
-          this.ErrorMessage = EvLabels.Record_Update_Error_Message;
+          this.ErrorMessage = EdLabels.Record_Update_Error_Message;
 
           if ( this.DebugOn == true )
           {
-            this.ErrorMessage += EvLabels.Space_Hypen
+            this.ErrorMessage += EdLabels.Space_Hypen
               + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           }
 
@@ -2894,7 +2275,7 @@ namespace Evado.UniForm.Clinical
         // 
         // If an exception is raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Record_Update_Error_Message;
+        this.ErrorMessage = EdLabels.Record_Update_Error_Message;
 
         // 
         // Log the error event to the server log and DB event log.
@@ -2918,10 +2299,10 @@ namespace Evado.UniForm.Clinical
       this.LogMethod ( "updateObject_AdminValues" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
 
-      String stDate = PageCommand.GetParameter ( EvIdentifiers.RECORD_DATE );
+      String stDate = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordDate );
       this.Session.Record.RecordDate = Evado.Model.Digital.EvcStatics.getDateTime ( stDate );
 
-      String stState = PageCommand.GetParameter ( EvIdentifiers.OBJECT_STATE );
+      String stState = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status );
       this.Session.Record.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.

@@ -94,7 +94,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -116,6 +116,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EdLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EdLabels.resx</DependentUpon>
+    </Compile>
     <Compile Include="EdRecordEntity.cs" />
     <Compile Include="EvCustomerLabels.Designer.cs">
       <DependentUpon>EvCustomerLabels.resx</DependentUpon>
@@ -129,14 +134,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EdRecordTypes.cs" />
+    <Compile Include="EdRole.cs" />
     <Compile Include="EvStaticContentTemplates.cs" />
     <Compile Include="EvReportSource.cs" />
-    <Compile Include="EvModuleCodes.cs" />
+    <Compile Include="EdModuleCodes.cs" />
     <Compile Include="EvExportParameters.cs" />
     <Compile Include="evapplicationpage.cs" />
     <Compile Include="EvPageIds.cs" />
-    <Compile Include="evactivity.cs" />
-    <Compile Include="EvActivityForm.cs" />
     <Compile Include="evalert.cs" />
     <Compile Include="EvBinaryFileMetadata.cs" />
     <Compile Include="evchart.cs" />
@@ -146,22 +150,17 @@
     <Compile Include="EdRecordDesign.cs" />
     <Compile Include="EdRecordField.cs" />
     <Compile Include="EdRecordFieldDesign.cs" />
-    <Compile Include="evformfieldselectionlist.cs" />
+    <Compile Include="EdExternalSelectionList.cs" />
     <Compile Include="EdRecordTable.cs" />
     <Compile Include="EdRecordTableHeader.cs" />
     <Compile Include="EdRecordTableRow.cs" />
-    <Compile Include="evformrecordcomment.cs" />
-    <Compile Include="evformrecordsummary.cs" />
-    <Compile Include="EvFormSection.cs" />
+    <Compile Include="EdRecordComments.cs" />
+    <Compile Include="EdRecordSummary.cs" />
+    <Compile Include="EdRecordSection.cs" />
     <Compile Include="evformstaticfield.cs" />
-    <Compile Include="evidentifiers.cs" />
     <Compile Include="evmenuitem.cs" />
-    <Compile Include="evmilestone.cs" />
-    <Compile Include="evmilestonedata.cs" />
-    <Compile Include="evmilestonevalidationrules.cs" />
     <Compile Include="EvcStatics.cs" />
     <Compile Include="EvClassParameters.cs" />
-    <Compile Include="evorganisation.cs" />
     <Compile Include="EdQueryParameters.cs" />
     <Compile Include="evreport.cs" />
     <Compile Include="evreportcolumn.cs" />
@@ -171,16 +170,18 @@
     <Compile Include="evreportquery.cs" />
     <Compile Include="evreportrow.cs" />
     <Compile Include="evreportsection.cs" />
-    <Compile Include="EvRoleList.cs" />
-    <Compile Include="evschedule.cs" />
     <Compile Include="EdPlatform.cs" />
     <Compile Include="EvAncillaryRecord.cs" />
     <Compile Include="EdApplication.cs" />
     <Compile Include="evuserprofile.cs" />
-    <Compile Include="evusersignoff.cs" />
+    <Compile Include="EdUserSignoff.cs" />
     <Compile Include="Properties\assemblyinfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EdLabels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EdLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="EvCustomerLabels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EvCustomerLabels.Designer.cs</LastGenOutput>

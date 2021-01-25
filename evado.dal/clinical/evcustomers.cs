@@ -76,15 +76,15 @@ namespace Evado.Dal.Clinical
     private const string _STORED_PROCEDURE_DeleteItem = "USR_CUSTOMER_DELETE";
 
     private const string DB_GUID = "CU_GUID";
-	  private const string DB_CUSTOMER_NO = "CU_CUSTOMER_NO";
-	  private const string DB_NAME = "CU_NAME";
-	  private const string DB_ADDRESS_STREET_1 = "CU_ADDRESS_STREET_1";
-	  private const string DB_ADDRESS_STREET_2 = "CU_ADDRESS_STREET_2";
-	  private const string DB_ADDRESS_CITY = "CU_ADDRESS_CITY";
-	  private const string DB_ADDRESS_POSTCODE = "CU_ADDRESS_POST_CODE";
-	  private const string DB_ADDRESS_STATE = "CU_ADDRESS_STATE";
-	  private const string DB_ADDRESS_COUNTRY = "CU_ADDRESS_COUNTRY";
-	  private const string DB_TELEPHONE = "CU_TELEPHONE";
+    private const string DB_CUSTOMER_NO = "CU_CUSTOMER_NO";
+    private const string DB_NAME = "CU_NAME";
+    private const string DB_ADDRESS_STREET_1 = "CU_ADDRESS_STREET_1";
+    private const string DB_ADDRESS_STREET_2 = "CU_ADDRESS_STREET_2";
+    private const string DB_ADDRESS_CITY = "CU_ADDRESS_CITY";
+    private const string DB_ADDRESS_POSTCODE = "CU_ADDRESS_POST_CODE";
+    private const string DB_ADDRESS_STATE = "CU_ADDRESS_STATE";
+    private const string DB_ADDRESS_COUNTRY = "CU_ADDRESS_COUNTRY";
+    private const string DB_TELEPHONE = "CU_TELEPHONE";
     private const string DB_EMAIL = "CU_EMAIL";
     private const string DB_ADMIN_NAME = "CU_ADMIN_NAME";
     private const string DB_ADMIN_EMAIL = "CU_ADMIN_EMAIL";
@@ -93,9 +93,9 @@ namespace Evado.Dal.Clinical
     private const string DB_STATE = "CU_STATE";
     private const string DB_ADS_GROUP = "CU_ADS_GROUP";
     private const string DB_HOME_PAGE_HEADER = "CU_HOME_PAGE_HEADER";
-	  private const string DB_IS_CURRENT = "CU_IS_CURRENT";
-	  private const string DB_UPDATE_BY_USER_ID = "CU_UPDATE_BY_USER_ID";
-	  private const string DB_UPDATED_BY = "CU_UPDATE_BY";
+    private const string DB_IS_CURRENT = "CU_IS_CURRENT";
+    private const string DB_UPDATE_BY_USER_ID = "CU_UPDATE_BY_USER_ID";
+    private const string DB_UPDATED_BY = "CU_UPDATE_BY";
     private const string DB_UPDATE_DATE = "CU_UPDATE_DATE";
     private const string DB_DELETED = "CU_DELETED";
 
@@ -260,7 +260,7 @@ namespace Evado.Dal.Clinical
           value );
       }
 
-       value = EvSqlMethods.getString ( Row, EvCustomers.DB_STATE );
+      value = EvSqlMethods.getString ( Row, EvCustomers.DB_STATE );
       if ( value != String.Empty )
       {
         customer.State = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvCustomer.CustomerStates> (
@@ -273,7 +273,7 @@ namespace Evado.Dal.Clinical
       customer.Current = EvSqlMethods.getBool ( Row, EvCustomers.DB_IS_CURRENT );
 
       customer.UpdatedBy = EvSqlMethods.getString ( Row, EvCustomers.DB_UPDATED_BY );
-      customer.UpdatedByUserId = EvSqlMethods.getString ( Row, EvCustomers.DB_UPDATE_BY_USER_ID);
+      customer.UpdatedByUserId = EvSqlMethods.getString ( Row, EvCustomers.DB_UPDATE_BY_USER_ID );
       customer.UpdatedDate = EvSqlMethods.getDateTime ( Row, EvCustomers.DB_UPDATE_DATE );
 
       // 
@@ -336,15 +336,15 @@ namespace Evado.Dal.Clinical
 
       if ( CustomerState != EvCustomer.CustomerStates.Null )
       {
-        sqlQueryString += " AND ( " + EvCustomers.DB_STATE + " = "+ EvCustomers.PARM_STATE+ " ) ";
+        sqlQueryString += " AND ( " + EvCustomers.DB_STATE + " = " + EvCustomers.PARM_STATE + " ) ";
       }
       if ( IsCurrent == true )
       {
-        sqlQueryString += " AND ( "+ EvCustomers.DB_IS_CURRENT +" = 1 ) ";
+        sqlQueryString += " AND ( " + EvCustomers.DB_IS_CURRENT + " = 1 ) ";
       }
       sqlQueryString += "ORDER BY " + EvCustomers.DB_CUSTOMER_NO;
 
-       this.LogDebug( sqlQueryString );
+      this.LogDebug ( sqlQueryString );
 
       // 
       // Execute the query against the database
@@ -366,12 +366,12 @@ namespace Evado.Dal.Clinical
           CustomerList.Add ( customer );
         }
       }
-       this.LogDebug( " View Count: " + CustomerList.Count );
+      this.LogDebug ( " View Count: " + CustomerList.Count );
 
       // 
       // Return the arraylist of organisations.
-       // 
-       this.LogMethodEnd ( "getView" );
+      // 
+      this.LogMethodEnd ( "getView" );
       return CustomerList;
 
     }//End getView method.
@@ -415,7 +415,7 @@ namespace Evado.Dal.Clinical
 
       if ( IsCurrent == true )
       {
-        sqlQueryString += " WHERE ( "+ EvCustomers.DB_IS_CURRENT +" = 1 ) ";
+        sqlQueryString += " WHERE ( " + EvCustomers.DB_IS_CURRENT + " = 1 ) ";
       }
       sqlQueryString += "ORDER BY " + EvCustomers.DB_CUSTOMER_NO;
 
@@ -485,7 +485,7 @@ namespace Evado.Dal.Clinical
       // Initialize the method status and a return organization object. 
       //
       this.LogMethod ( "getItem method" );
-       this.LogDebug( "OrgGuid: " + OrgGuid);
+      this.LogDebug ( "OrgGuid: " + OrgGuid );
 
       EvCustomer customer = new EvCustomer ( );
 
@@ -503,14 +503,14 @@ namespace Evado.Dal.Clinical
       SqlParameter cmdParms = new SqlParameter ( PARM_Guid, SqlDbType.UniqueIdentifier );
       cmdParms.Value = OrgGuid;
 
-       this.LogDebug(  " SqlParameterValue: '" + cmdParms.Value + "'" );
+      this.LogDebug ( " SqlParameterValue: '" + cmdParms.Value + "'" );
 
       // 
       // Construct the Sql query string.
       // 
-      sqlQueryString = _sqlQuery_View + " WHERE "+ EvCustomers.DB_GUID+ " = " + EvCustomers.PARM_Guid + "; ";
+      sqlQueryString = _sqlQuery_View + " WHERE " + EvCustomers.DB_GUID + " = " + EvCustomers.PARM_Guid + "; ";
 
-       this.LogDebug( "SQL: " + sqlQueryString );
+      this.LogDebug ( "SQL: " + sqlQueryString );
 
       // 
       // Execute the query against the database
@@ -522,8 +522,8 @@ namespace Evado.Dal.Clinical
         // 
         if ( table.Rows.Count == 0 )
         {
-           this.LogDebug(  "ROW NOT FOUND" );
-         
+          this.LogDebug ( "ROW NOT FOUND" );
+
           return customer;
         }
 
@@ -539,7 +539,7 @@ namespace Evado.Dal.Clinical
 
       }//END Using 
 
-       this.LogDebug( "END getItem." );
+      this.LogDebug ( "END getItem." );
 
       // 
       // Return Customer.
@@ -570,8 +570,8 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query parameters
       // 
-      SqlParameter cmdParms = 
-        new SqlParameter( PARM_ADMIN_NAME, SqlDbType.NVarChar, 100);
+      SqlParameter cmdParms =
+        new SqlParameter ( PARM_ADMIN_NAME, SqlDbType.NVarChar, 100 );
       cmdParms.Value = Name;
 
       this.LogDebug ( " SqlParameterValue: '" + cmdParms.Value + "'" );
@@ -579,7 +579,7 @@ namespace Evado.Dal.Clinical
       // 
       // Construct the Sql query string.
       // 
-      sqlQueryString = _sqlQuery_View + " WHERE "+ EvCustomers.DB_NAME + " = "+ EvCustomers.PARM_ADMIN_NAME + "; ";
+      sqlQueryString = _sqlQuery_View + " WHERE " + EvCustomers.DB_NAME + " = " + EvCustomers.PARM_ADMIN_NAME + "; ";
 
       this.LogDebug ( "SQL: " + sqlQueryString );
 
@@ -597,7 +597,7 @@ namespace Evado.Dal.Clinical
 
           return false;
         }
-          return true;
+        return true;
 
       }//END Using 
 
@@ -643,7 +643,7 @@ namespace Evado.Dal.Clinical
       //
       if ( oldOrg.Guid == Guid.Empty )
       {
-         this.LogDebug( " Invalid Guid not object found." );
+        this.LogDebug ( " Invalid Guid not object found." );
         return EvEventCodes.Data_InvalidId_Error;
       }
 
@@ -652,7 +652,7 @@ namespace Evado.Dal.Clinical
       // 
       if ( Customer.Guid == Guid.Empty )
       {
-         this.LogDebug( " Creating a new GUID." );
+        this.LogDebug ( " Creating a new GUID." );
         Customer.Guid = Guid.NewGuid ( );
       }
 
@@ -662,7 +662,7 @@ namespace Evado.Dal.Clinical
       //
       EvDataChanges dataChanges = new EvDataChanges ( );
       EvDataChange dataChange = new EvDataChange ( );
-      dataChange.TableName = EvDataChange.DataChangeTableNames.EvOrganisations;
+      dataChange.TableName = EvDataChange.DataChangeTableNames.EdApplicationSettings;
       dataChange.RecordGuid = Customer.Guid;
       dataChange.UserId = Customer.UpdatedByUserId;
       dataChange.DateStamp = DateTime.Now;
@@ -739,7 +739,7 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query parameters
       // 
-       this.LogDebug(  " Setting Parameters." );
+      this.LogDebug ( " Setting Parameters." );
       SqlParameter [ ] cmdParms = GetParameters ( );
       SetParameters ( cmdParms, Customer );
 
@@ -755,7 +755,7 @@ namespace Evado.Dal.Clinical
       // Save the datachanges to the database.
       // 
       dataChanges.AddItem ( dataChange );
-       this.LogDebug( "DataChange: " + dataChanges.Log );
+      this.LogDebug ( "DataChange: " + dataChanges.Log );
 
       return EvEventCodes.Ok;
 
@@ -794,7 +794,7 @@ namespace Evado.Dal.Clinical
       //
       if ( exists == true )
       {
-         this.LogDebug( " Duplicate Name." );
+        this.LogDebug ( " Duplicate Name." );
         return EvEventCodes.Data_Duplicate_Id_Error;
       }
 

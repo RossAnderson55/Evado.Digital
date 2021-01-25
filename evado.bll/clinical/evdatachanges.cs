@@ -150,7 +150,8 @@ namespace Evado.Bll.Clinical
     /// 2. Return the new options list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getConfigurationRecordSelectionList ( String ProjectId,
+    public List<EvOption> getConfigurationRecordSelectionList (
+      String ProjectId,
       Guid VersionGuid,
       int ArmIndex,
       EvDataChange.DataChangeTableNames RecordTable )
@@ -170,10 +171,6 @@ namespace Evado.Bll.Clinical
       //
       switch ( RecordTable )
       {
-        case EvDataChange.DataChangeTableNames.EvActivities:
-          {
-            return this.GetActivities ( ProjectId );
-          }
 
         case EvDataChange.DataChangeTableNames.EvAlerts:
           {
@@ -183,22 +180,6 @@ namespace Evado.Bll.Clinical
         case EvDataChange.DataChangeTableNames.EvForms:
           {
             return this.GetFormsList ( ProjectId );
-          }
-
-
-        case EvDataChange.DataChangeTableNames.EvOrganisations:
-          {
-            return this.GetOrganisationsList ( );
-          }
-
-        case EvDataChange.DataChangeTableNames.EvSchedules:
-          {
-            return this.GetSchedules ( ProjectId );
-          }
-
-        case EvDataChange.DataChangeTableNames.EvMilestones:
-          {
-            return this.GetMilestones ( VersionGuid );
           }
 
         case EvDataChange.DataChangeTableNames.EvUserProfiles:
@@ -343,78 +324,6 @@ namespace Evado.Bll.Clinical
 
     //  ==================================================================================
     /// <summary>
-    /// This class returns a list of activities options objects. 
-    /// </summary>
-    /// <param name="ProjectId">String: a Project identifier</param>
-    /// <returns>List of EvOption: a list of activities options</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving a list of activities
-    /// 
-    /// 2. Return the list of activities. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetActivities ( String ProjectId )
-    {
-      EvActivities activities = new EvActivities ( );
-
-      return activities.getOptionList ( ProjectId );
-    }//END GetActivities class 
-
-
-    //  ==================================================================================
-    /// <summary>
-    /// This class returns a list of schedule options objects. 
-    /// </summary>
-    /// <param name="ProjectId">String: a Project identifier</param>
-    /// <returns>List of EvOption: a list of schedule options</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving a list of Schedule objects
-    /// 
-    /// 2. Return the list of Schedule objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetSchedules ( String ProjectId )
-    {
-      EvSchedules schedules = new EvSchedules ( );
-
-      return schedules.getOptionList ( ProjectId, false, true, true );
-    }//END GetSchedules class
-
-    //  ==================================================================================
-    /// <summary>
-    /// This class returns a list of Milestone options objects. 
-    /// </summary>
-    /// <param name="ScheduleGuid">Guid: a schedule global unique identifier</param>
-    /// <returns>List of EvOption: a list of Milestone options</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving a list of Milestone objects
-    /// 
-    /// 2. Return the list of Milestone objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetMilestones ( 
-      Guid ScheduleGuid )
-    {
-       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_END 
-      + "Evadol.dll.eclinical.EvDataChanges.GetMilestones method." );
-
-      EvMilestones milestones = new EvMilestones ( );
-
-       List<EvOption> optionList = milestones.getMilestoneList ( ScheduleGuid, EvMilestone.MilestoneTypes.Null, false, false );
-
-       this._DebugLog.AppendLine( milestones.DebugLog );
-
-       return optionList;
-    }//END GetMilestones class. 
-
-    //  ==================================================================================
-    /// <summary>
     /// This class returns a list of Form options objects
     /// </summary>
     /// <param name="TrialId">String: a trial identifier</param>
@@ -466,55 +375,6 @@ namespace Evado.Bll.Clinical
 
     }//END GetFormsList method
 
-
-    //  ==================================================================================
-    /// <summary>
-    /// This class returns a list of Organization options objects
-    /// </summary>
-    /// <returns>List of EvOption: a list of Organization options objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the Organization objects list. 
-    /// 
-    /// 2. Loop through the Organization object list and add object's values to the options list. 
-    /// 
-    /// 3. Return the options list. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetOrganisationsList ( )
-    {
-      // 
-      // Initialise the method variables and objects.
-      // 
-      EvOrganisations organisations = new EvOrganisations ( );
-      List<EvOption> list = new List<EvOption> ( );
-
-      // 
-      // Add the blank first testReport.
-      // 
-      EvOption option = new EvOption ( );
-      list.Add ( option );
-
-      // 
-      // Get the list of Organization objects
-      // 
-      List<EvOrganisation> view = organisations.getView ( );
-
-      // 
-      // Iterate through the list of Organization objects.
-      // 
-      foreach ( EvOrganisation org in view )
-      {
-        option = new EvOption ( org.Guid.ToString ( ),
-         org.OrgId + " - " + org.Name );
-        list.Add ( option );
-      }
-
-      return list;
-
-    }//END GetOrganisationsList method
-
     //  ==================================================================================
     /// <summary>
     /// This class returns a list of Project alerts options objects. 
@@ -530,10 +390,10 @@ namespace Evado.Bll.Clinical
     //  ----------------------------------------------------------------------------------
     private List<EvOption> GetTrialAlerts ( string ProjectId )
     {
-      EvAlerts trialAlerts = new EvAlerts ( );
+      //EvAlerts trialAlerts = new EvAlerts ( );
       this._DebugLog.AppendLine (  "GetTrialAlerts method executed" );
 
-      return trialAlerts.getList ( ProjectId, true ); ;
+      return new List<EvOption> ( ); // trialAlerts.getList ( ProjectId, true ); ;
     }//END GetTrialAlerts class. 
 
     //  ==================================================================================
@@ -555,60 +415,6 @@ namespace Evado.Bll.Clinical
       return forms.getList ( ProjectId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, true );
     }//END GetFormList class
 
-
-    //  ==================================================================================
-    /// <summary>
-    /// This class returns a list of Milestone options objects
-    /// </summary>
-    /// <param name="ProjectId">String: a trial identifier</param>
-    /// <param name="ScheduleId">int: Schedule id</param>
-    /// <returns>List of EvOption: a list of Milestone options objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the Milestone objects list. 
-    /// 
-    /// 2. Loop through the Milestone object list and add object's values to the options list. 
-    /// 
-    /// 3. Return the options list. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetMilestones ( 
-      String ProjectId, 
-      int ScheduleId )
-    {
-      this._DebugLog.AppendLine (  "Evado.Bll.Clinical.EvDataChanges.GetMilestones " );
-      this._DebugLog.AppendLine (  "Trialid: " + ProjectId );
-      this._DebugLog.AppendLine (  "ScheduleId: " + ScheduleId );
-
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      List<EvOption> list = new List<EvOption> ( );
-      EvMilestones trialMilestones = new EvMilestones ( );
-
-      // 
-      // Get the Milestone objects.
-      // 
-      List<EvMilestone> milestones = trialMilestones.getMilestoneList ( ProjectId, ScheduleId, EvMilestone.MilestoneTypes.Null, false );
-      this._DebugLog.AppendLine ( trialMilestones.DebugLog );
-
-      // 
-      // Iterate through the milestone list creating the list.
-      // 
-      foreach ( EvMilestone milestone in milestones )
-      {
-        EvOption option = new EvOption ( milestone.Guid.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( milestone.ScheduleId )
-         + " - " + milestone.MilestoneId
-         + " - " + milestone.Title + " (Ver: " + milestone.Data.CurrentVersion + ")" );
-
-        list.Add ( option );
-      }
-
-      return list;
-    }//END GetMilestones class
-
     //  ==================================================================================
     /// <summary>
     /// This class returns a list of user options objects. 
@@ -625,7 +431,7 @@ namespace Evado.Bll.Clinical
     private List<EvOption> GetUserList ( )
     {
       EvUserProfiles users = new EvUserProfiles ( );
-      List<EvOption> list = users.GetList ( String.Empty, true );
+      List<EvOption> list = users.GetList ( EvUserProfile.UserTypesList.Null , true );
 
       return list;
     }//END GetUserList class

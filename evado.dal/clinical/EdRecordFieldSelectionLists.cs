@@ -266,7 +266,7 @@ namespace Evado.Dal.Clinical
     /// 2. Update the items values from formfield selectionlist object to the array of sql parameters.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private void SetParameters( SqlParameter [] parms, EvFormFieldSelectionList Item )
+    private void SetParameters( SqlParameter [] parms, EdExternalSelectionList Item )
     {
       //
       // Add new DB row Guid, if item's Guid is empty
@@ -283,8 +283,8 @@ namespace Evado.Dal.Clinical
       parms [ 1 ].Value = Item.ListId;
       parms [ 2 ].Value = Item.Title;
       parms [ 3 ].Value = Item.Instructions;
-      parms [ 4 ].Value = Evado.Model.EvStatics.SerialiseObject<EvFormFieldSelectionList.XmlValidationRules> ( Item.ValidationRules );
-      parms [ 5 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvFormFieldSelectionList.CodeItem>> ( Item.Items );
+      parms [ 4 ].Value = Evado.Model.EvStatics.SerialiseObject<EdExternalSelectionList.XmlValidationRules> ( Item.ValidationRules );
+      parms [ 5 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdExternalSelectionList.CodeItem>> ( Item.Items );
       parms [ 6 ].Value = Item.Authors;
       parms [ 7 ].Value = Item.ReviewedBy;
       parms [ 8 ].Value = Item.ReviewedByUserId;
@@ -318,12 +318,12 @@ namespace Evado.Dal.Clinical
     /// 2. Return the Formfield selectionlist object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private EvFormFieldSelectionList readDataRow ( DataRow Row )
+    private EdExternalSelectionList readDataRow ( DataRow Row )
     {
       // 
       // Initialise the formfield selectionlist object.
       // 
-      EvFormFieldSelectionList Item = new EvFormFieldSelectionList();
+      EdExternalSelectionList Item = new EdExternalSelectionList();
 
       //
       // Extract the compatible data row values to the formfield selectionlist object items.
@@ -336,7 +336,7 @@ namespace Evado.Dal.Clinical
       string xmlValidationRules = EvSqlMethods.getString( Row, "FSL_XmlValidationRules" );
         if ( xmlValidationRules != String.Empty )
         {
-          Item.ValidationRules = Evado.Model.EvStatics.DeserialiseObject<EvFormFieldSelectionList.XmlValidationRules> ( xmlValidationRules );
+          Item.ValidationRules = Evado.Model.EvStatics.DeserialiseObject<EdExternalSelectionList.XmlValidationRules> ( xmlValidationRules );
         }
         string xmlCodeItem = EvSqlMethods.getString( Row, "FSL_XmlItems" );
         if ( xmlCodeItem != String.Empty )
@@ -346,7 +346,7 @@ namespace Evado.Dal.Clinical
           xmlCodeItem = xmlCodeItem.Replace( "<CodeItems>", "<CodeItem>" );
           xmlCodeItem = xmlCodeItem.Replace( "</CodeItems>", "</CodeItem>" );
 
-          Item.Items = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EvFormFieldSelectionList.CodeItem>>( xmlCodeItem );
+          Item.Items = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdExternalSelectionList.CodeItem>>( xmlCodeItem );
         }
         Item.Authors = EvSqlMethods.getString( Row, "FSL_Authors" );
         Item.ReviewedBy = EvSqlMethods.getString( Row, "FSL_Reviewer" );
@@ -356,7 +356,7 @@ namespace Evado.Dal.Clinical
         Item.ApprovedByUserId = EvSqlMethods.getString( Row, "FSL_ApproverUserId" );
         Item.ApprovalDate = EvSqlMethods.getDateTime( Row, "FSL_ApprovalDate" );
         Item.Version = EvSqlMethods.getString( Row, "FSL_Version" );
-        Item.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvFormFieldSelectionList.SelectionListStates>(
+        Item.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdExternalSelectionList.SelectionListStates>(
           EvSqlMethods.getString( Row, "FSL_State" ) );
         Item.UpdatedByUserId = EvSqlMethods.getString( Row, "FSL_UpdatedByUserId" );
         Item.UpdatedBy = EvSqlMethods.getString( Row, "FSL_UpdatedBy" );
@@ -392,8 +392,8 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Formfield selection list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public List<EvFormFieldSelectionList> getView ( 
-      EvFormFieldSelectionList.SelectionListStates State )
+    public List<EdExternalSelectionList> getView ( 
+      EdExternalSelectionList.SelectionListStates State )
     {
       //
       // Initialize the method status and a return list of formfield selectionlist object
@@ -401,7 +401,7 @@ namespace Evado.Dal.Clinical
       this.LogMethod( "getView method.");
       this._Log.AppendLine( "State: " + State );
 
-      List<EvFormFieldSelectionList> view = new List<EvFormFieldSelectionList>( );
+      List<EdExternalSelectionList> view = new List<EdExternalSelectionList>( );
 
       //
       // Define the sql query parameter and load the query values.
@@ -416,14 +416,14 @@ namespace Evado.Dal.Clinical
       // Define the sql query string. 
       // 
       _sqlQueryString = _sqlQuery_View;
-      if ( State != EvFormFieldSelectionList.SelectionListStates.Null )
+      if ( State != EdExternalSelectionList.SelectionListStates.Null )
       {
         _sqlQueryString += " WHERE ( FSL_State = @State ) " 
           + " ORDER BY ListId, FSL_Version;";
       }
       else
       {
-        _sqlQueryString += " WHERE ( FSL_State <> '" + EvFormFieldSelectionList.SelectionListStates.Withdrawn + "' ) "
+        _sqlQueryString += " WHERE ( FSL_State <> '" + EdExternalSelectionList.SelectionListStates.Withdrawn + "' ) "
           + " ORDER BY ListId, FSL_Version;";
       }
 
@@ -444,7 +444,7 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ Count ];
 
-          EvFormFieldSelectionList selectionList = this.readDataRow( row );
+          EdExternalSelectionList selectionList = this.readDataRow( row );
 
           // 
           // Append the value to the visit
@@ -485,7 +485,7 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     public List<EvOption> getList ( 
-      EvFormFieldSelectionList.SelectionListStates State, 
+      EdExternalSelectionList.SelectionListStates State, 
       bool SelectByGuid )
     {
       this.LogMethod ( "getList method." );
@@ -512,14 +512,14 @@ namespace Evado.Dal.Clinical
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View;
-      if ( State != EvFormFieldSelectionList.SelectionListStates.Null )
+      if ( State != EdExternalSelectionList.SelectionListStates.Null )
       {
         _sqlQueryString += " WHERE ( FSL_State = @State ) "
           + " ORDER BY ListId, FSL_Version;";
       }
       else
       {
-        _sqlQueryString += " WHERE ( FSL_State <> '" + EvFormFieldSelectionList.SelectionListStates.Withdrawn + "' ) "
+        _sqlQueryString += " WHERE ( FSL_State <> '" + EdExternalSelectionList.SelectionListStates.Withdrawn + "' ) "
           + " ORDER BY ListId, FSL_Version;";
       }
 
@@ -601,14 +601,14 @@ namespace Evado.Dal.Clinical
     /// 5. Return the formfield selection list data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EvFormFieldSelectionList getItem( Guid ListGuid )
+    public EdExternalSelectionList getItem( Guid ListGuid )
     {
       this.LogMethod ( "getItemmethod." );
       this._Log.AppendLine( "ListGuid: " + ListGuid );
       //
       // Initialise the local variables
       //
-      EvFormFieldSelectionList item = new EvFormFieldSelectionList( );
+      EdExternalSelectionList item = new EdExternalSelectionList( );
 
       //
       // If TestReport UID is null return empty checlist object.
@@ -681,7 +681,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the formfield selection list data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EvFormFieldSelectionList getItem( 
+    public EdExternalSelectionList getItem( 
       string ListId, 
       bool Issued )
     {
@@ -689,7 +689,7 @@ namespace Evado.Dal.Clinical
       //
       // Initialise the local variables
       //
-      EvFormFieldSelectionList item = new EvFormFieldSelectionList( );
+      EdExternalSelectionList item = new EdExternalSelectionList( );
 
       //
       // If the ListId is null then return empty Ethics object.
@@ -706,7 +706,7 @@ namespace Evado.Dal.Clinical
 
       if ( Issued == true )
       {
-        _sqlQueryString += " AND (FSL_State = '" + EvFormFieldSelectionList.SelectionListStates.Issued + "'); ";
+        _sqlQueryString += " AND (FSL_State = '" + EdExternalSelectionList.SelectionListStates.Issued + "'); ";
       }
 
       this._Log.AppendLine( _sqlQueryString );
@@ -784,7 +784,7 @@ namespace Evado.Dal.Clinical
       //
       // Initialise the local variables
       //
-      EvFormFieldSelectionList item = new EvFormFieldSelectionList( );
+      EdExternalSelectionList item = new EdExternalSelectionList( );
       string EvOptions = string.Empty;
 
       //
@@ -800,7 +800,7 @@ namespace Evado.Dal.Clinical
       // Generate the Selection query string.
       // 
       _sqlQueryString = _sqlQuery_View + " WHERE (ListId = @ListId) "
-        + " AND (FSL_State = '" + EvFormFieldSelectionList.SelectionListStates.Issued + "'); ";
+        + " AND (FSL_State = '" + EdExternalSelectionList.SelectionListStates.Issued + "'); ";
 
       this._Log.AppendLine( _sqlQueryString );
 
@@ -838,7 +838,7 @@ namespace Evado.Dal.Clinical
       // Extract the options to be used.
       // For Category = null all options are passed.
       // 
-      foreach ( EvFormFieldSelectionList.CodeItem codeItem in item.Items )
+      foreach ( EdExternalSelectionList.CodeItem codeItem in item.Items )
       {
         if ( Category == String.Empty
           || codeItem.Category.Contains( Category ) )
@@ -883,14 +883,14 @@ namespace Evado.Dal.Clinical
     /// 5. Return the event code for updating the items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateItem( EvFormFieldSelectionList Item )
+    public EvEventCodes updateItem( EdExternalSelectionList Item )
     {
       this.LogMethod ( "updateItem method. " );
 
       // 
       // Get the previous value
       // 
-      EvFormFieldSelectionList oldItem = getItem( Item.Guid );
+      EdExternalSelectionList oldItem = getItem( Item.Guid );
       if ( oldItem.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
@@ -964,18 +964,18 @@ namespace Evado.Dal.Clinical
         dataChange.AddItem( "State", oldItem.State.ToString(), Item.State.ToString() );
       }
 
-      string oldXmlValidationRules = Evado.Model.Digital.EvcStatics.SerialiseObject<EvFormFieldSelectionList.XmlValidationRules>( Item.ValidationRules ) ;
-      string newXmlValidationRules = Evado.Model.Digital.EvcStatics.SerialiseObject<EvFormFieldSelectionList.XmlValidationRules>( Item.ValidationRules ) ;
+      string oldXmlValidationRules = Evado.Model.Digital.EvcStatics.SerialiseObject<EdExternalSelectionList.XmlValidationRules>( Item.ValidationRules ) ;
+      string newXmlValidationRules = Evado.Model.Digital.EvcStatics.SerialiseObject<EdExternalSelectionList.XmlValidationRules>( Item.ValidationRules ) ;
       if ( oldXmlValidationRules != newXmlValidationRules )
       {
         dataChange.AddItem( "XmlValidationRules", oldXmlValidationRules, newXmlValidationRules );
       }
 
       string oldCodeItem = 
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EvFormFieldSelectionList.CodeItem>>( Item.Items ) ;
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdExternalSelectionList.CodeItem>>( Item.Items ) ;
 
       string newCodeItem = 
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EvFormFieldSelectionList.CodeItem>>( Item.Items ) ;
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdExternalSelectionList.CodeItem>>( Item.Items ) ;
 
       if ( newCodeItem != oldCodeItem )
       {
@@ -1023,7 +1023,7 @@ namespace Evado.Dal.Clinical
     /// 4. Return the event code fore adding new items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes addItem( EvFormFieldSelectionList Item )
+    public EvEventCodes addItem( EdExternalSelectionList Item )
     {
       this.LogMethod ( "addItem method. " );
       this.LogDebug ( "ListId: '" + Item.ListId );
@@ -1115,7 +1115,7 @@ namespace Evado.Dal.Clinical
     /// 2. Return an event code for withdrawing items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes WithdrawIssuedList( EvFormFieldSelectionList Item )
+    public EvEventCodes WithdrawIssuedList( EdExternalSelectionList Item )
     {
       this.LogMethod ( "WithdrawIssuedList method. " );
       // 
@@ -1159,7 +1159,7 @@ namespace Evado.Dal.Clinical
     /// 2. Return an event code for deleting the items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes deleteItem( EvFormFieldSelectionList Item )
+    public EvEventCodes deleteItem( EdExternalSelectionList Item )
     {
       this.LogDebug ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Dal.Clinical.EvFiledSelectionLists.deleteItem method. " );
@@ -1213,7 +1213,7 @@ namespace Evado.Dal.Clinical
     /// 4. Else, Return an event code for copying items. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes CopyList( EvFormFieldSelectionList Item )
+    public EvEventCodes CopyList( EdExternalSelectionList Item )
     {
       this._Log.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         +  "Evado.Dal.Clinical.EvFiledSelectionLists.CopyTest method " );

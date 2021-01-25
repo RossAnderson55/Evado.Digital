@@ -59,7 +59,7 @@ namespace Evado.Bll.Clinical
 
       this.LogMethod ( "EvUserProfiles initialisation method." );
       this.LogDebug ( "CustomerGuid: " + this.ClassParameter.CustomerGuid );
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.ApplicationGuid );
+      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.PlatformGuid );
 
       this.LogMethodEnd ( "EvUserProfiles" );
 
@@ -80,7 +80,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of userprofile objects based on OrgId and OrderBy
     /// </summary>
-    /// <param name="OrgId">string: an organization identifier</param>
+    /// <param name="UserType">string: an organization identifier</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of userprofile objects</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -91,12 +91,51 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EvUserProfile> GetView ( 
-      String OrgId )
+      EvUserProfile.UserTypesList UserType )
     {
       this.LogMethod ( "GetView method." );
-      this.LogDebug ( "OrgId: " + OrgId );
+      this.LogDebug ( "UserType: " + UserType );
 
-      List<Evado.Model.Digital.EvUserProfile> profiles = this._Dal_UserProfiles.GetView ( OrgId );
+      List<Evado.Model.Digital.EvUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType );
+      this.LogClass ( this._Dal_UserProfiles.Log );
+
+      return profiles;
+
+    }//END GetView method.
+    // =====================================================================================
+    /// <summary>
+    /// This method returns a list of UserProfile object
+    /// </summary>
+    /// <param name="UserType">String: The selection organistion's identifier</param>
+    /// <param name="PartialUserId">String: partial string of the user's user identifier</param>
+    /// <param name="PartialCommonName">String: partial string of the user's common nbame identifier</param>
+    /// <returns>List of Evado.Model.Digital.EvUserProfile: A list of UserProfile objects.</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Define the sql query parameters and sql query string. 
+    /// 
+    /// 2. Execute the sql query string and store the results on datatable. 
+    /// 
+    /// 3. Loop through the table and extract data row to the UserProfile object. 
+    /// 
+    /// 4. Add the UserProfile object's values to the UserProfiles list. 
+    /// 
+    /// 5. Return the UserProfiles list. 
+    /// 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
+    public List<Evado.Model.Digital.EvUserProfile> GetView (
+      EvUserProfile.UserTypesList UserType,
+      String PartialUserId,
+      String PartialCommonName )
+    {
+      this.LogMethod ( "GetView method." );
+      this.LogDebug ( "UserType: " + UserType );
+
+      List<Evado.Model.Digital.EvUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType,
+        PartialUserId,
+        PartialCommonName);
       this.LogClass ( this._Dal_UserProfiles.Log );
 
       return profiles;
@@ -107,7 +146,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of options for userprofile objects based on OrgId and useGuid condition
     /// </summary>
-    /// <param name="OrgId">string: an organization identifier</param>
+    /// <param name="UserType">EvUserProfile.UserTypesList enumerated value</param>
     /// <param name="useGuid">Boolean: true, if the Guid is used</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of options for userprofile objects</returns>
     /// <remarks>
@@ -119,13 +158,13 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  -------------------------------------------------------------------------------------
     public List<EvOption> GetList ( 
-      String OrgId, 
+     EvUserProfile.UserTypesList UserType,
       bool useGuid )
     {
       LogMethod ( "GetView method." );
-      this.LogDebug ( "OrgId: " + OrgId );
+      this.LogDebug ( "UserType: " + UserType );
 
-      List<EvOption> list = this._Dal_UserProfiles.GetList ( OrgId, useGuid );
+      List<EvOption> list = this._Dal_UserProfiles.GetList ( UserType, useGuid );
       this.LogDebugClass ( this._Dal_UserProfiles.Log );
 
       return list;
@@ -159,105 +198,18 @@ namespace Evado.Bll.Clinical
     /// <param name="OrgId">String: The organisation identifier.</param>
     /// <returns>Integer</returns>
     // -------------------------------------------------------------------------------------
-    public int UserCount ( string OrgId )
+    public int UserCount ( EvUserProfile.UserTypesList UserType )
     {
       this.LogMethod ( "UserCount method." );
-      this.LogDebug ( "UserId: " + OrgId );
+      this.LogDebug ( "UserType: " + UserType );
 
-      int response = this._Dal_UserProfiles.UserCount ( OrgId );
+      int response = this._Dal_UserProfiles.UserCount ( UserType );
       this.LogDebugClass ( this._Dal_UserProfiles.Log );
 
       this.LogMethodEnd ( "UserCount" );
       return response;
 
     }//END UserCount method
-
-    // ==================================================================================
-    /// <summary>
-    /// This class returns a list of options for userprofile objects based on OrgId and useGuid condition
-    /// </summary>
-    /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of options for userprofile objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of options for userprofile objects
-    /// 
-    /// 2. Return the list of options for userprofile objects. 
-    /// </remarks>
-    //  -------------------------------------------------------------------------------------
-    public List<EvOption> GetEventUserList ( )
-    {
-      LogMethod ( "GetEventUserList method." );
-
-      List<EvOption> list = this._Dal_UserProfiles.GetEventUserList ( );
-      this.LogDebugClass ( this._Dal_UserProfiles.Log );
-
-      return list;
-
-    }//END GetList method
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of options for userprofile objects based on OrgId, role and useGuid condition
-    /// </summary>
-    /// <param name="OrgId">string: an organization identifier</param>
-    /// <param name="RoleId">string: a role string</param>
-    /// <param name="useGuid">Boolean: true, if the Guid is used</param>
-    /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of options for userprofile objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of options for userprofile objects
-    /// 
-    /// 2. Loop through the list and add the options to the selection list. 
-    /// 
-    /// 3. Return the selection list. 
-    /// </remarks>
-    //  ------------------------------------------------------------------------------------
-    public List<EvOption> GetList ( string OrgId, EvRoleList RoleId, bool useGuid )
-    {
-      this.FlushLog ( );
-      LogMethod ( "GetList method." );
-      this.LogDebug ( "OrgId: " + OrgId );
-      this.LogDebug ( " Role: " + RoleId );
-
-      // 
-      // Initialise the method variables and objects.
-      // 
-      List<EvOption> SelectionList = new List<EvOption> ( );
-
-      EvOption option = new EvOption ( );
-      if ( useGuid )
-      {
-        option = new EvOption ( Guid.Empty.ToString ( ), String.Empty );
-      }
-      SelectionList.Add ( option );
-
-      List<Evado.Model.Digital.EvUserProfile> Profiles = this._Dal_UserProfiles.GetView ( OrgId );
-      this.LogDebugClass ( this._Dal_UserProfiles.Log );
-
-      foreach ( Evado.Model.Digital.EvUserProfile user in Profiles )
-      {
-        if ( user.RoleId == RoleId )
-        {
-          if ( useGuid == true )
-          {
-            option = new EvOption (
-              user.Guid.ToString ( ),
-              user.CommonName );
-            SelectionList.Add ( option );
-          }
-          else
-          {
-            option = new EvOption (
-             user.UserId, user.CommonName );
-            SelectionList.Add ( option );
-          }
-        }
-      }
-      return SelectionList;
-
-    }//END GetList class
 
     // =====================================================================================
     /// <summary>

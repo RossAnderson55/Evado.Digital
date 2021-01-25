@@ -194,7 +194,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 7 ].Value = Schedule.Version;
       cmdParms [ 8 ].Value = Schedule.State.ToString ( );
       cmdParms [ 9 ].Value = Schedule.Type.ToString ( );
-      cmdParms [ 10 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Schedule.Signoffs );
+      cmdParms [ 10 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Schedule.Signoffs );
       cmdParms [ 11 ].Value = Schedule.ApprovedByUserId;
       cmdParms [ 12 ].Value = Schedule.ApprovedBy;
       cmdParms [ 13 ].Value = Schedule.ApprovedDate;
@@ -265,7 +265,7 @@ namespace Evado.Dal.Clinical
       if ( xmlSignoffs != String.Empty )
       {
         schedule.Signoffs =
-          Evado.Model.EvStatics.DeserialiseObject<List<EvUserSignoff>> ( xmlSignoffs );
+          Evado.Model.EvStatics.DeserialiseObject<List<EdUserSignoff>> ( xmlSignoffs );
       }
 
       schedule.ApprovedByUserId = EvSqlMethods.getString ( Row, EvSchedules.DB_APPROVED_USER_ID );
@@ -835,10 +835,10 @@ namespace Evado.Dal.Clinical
       }
 
       string oldXmlSignoffs =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EvUserSignoff>> ( oldSchedule.Signoffs );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdUserSignoff>> ( oldSchedule.Signoffs );
 
       string newXmlSignoffs =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EvUserSignoff>> ( Schedule.Signoffs );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdUserSignoff>> ( Schedule.Signoffs );
 
       if ( oldXmlSignoffs != newXmlSignoffs )
       {

@@ -110,14 +110,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of formfield selection list objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormFieldSelectionList> getView(
-      EvFormFieldSelectionList.SelectionListStates State)
+    public List<EdExternalSelectionList> getView(
+      EdExternalSelectionList.SelectionListStates State)
     {
       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Bll.Clinical.EvFiledSelectionLists.getView method." );
       this._DebugLog.AppendLine( "State: " + State );
 
-      List<EvFormFieldSelectionList> view = this._dalExternalSelectionLists.getView(State);
+      List<EdExternalSelectionList> view = this._dalExternalSelectionLists.getView(State);
       this._DebugLog.AppendLine ( this._dalExternalSelectionLists.Log );
 
       return view;
@@ -140,7 +140,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getList
-      (EvFormFieldSelectionList.SelectionListStates State, 
+      (EdExternalSelectionList.SelectionListStates State, 
       bool SelectByGuid)
     {
       this._DebugLog.AppendLine ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START
@@ -172,7 +172,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a formfield selectionList object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvFormFieldSelectionList getItem(Guid ListGuid)
+    public EdExternalSelectionList getItem(Guid ListGuid)
     {
       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Bll.Clinical.EvFiledSelectionLists.getItem method." );
@@ -180,7 +180,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the method variables and objects.
       // 
-      EvFormFieldSelectionList item = this._dalExternalSelectionLists.getItem(ListGuid);
+      EdExternalSelectionList item = this._dalExternalSelectionLists.getItem(ListGuid);
       this._DebugLog.AppendLine ( this._dalExternalSelectionLists.Log );
 
       return item;
@@ -201,7 +201,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return a formfield selectionList object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvFormFieldSelectionList getItem(string ListId)
+    public EdExternalSelectionList getItem(string ListId)
     {
       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Bll.Clinical.EvFiledSelectionLists.getItem method.  " );
@@ -211,7 +211,7 @@ namespace Evado.Bll.Clinical
       // Execute the DAL method to retrieve the ExternalSelectionList object and process the 
       // result.
       // 
-      EvFormFieldSelectionList Item = this._dalExternalSelectionLists.getItem(ListId, true);
+      EdExternalSelectionList Item = this._dalExternalSelectionLists.getItem(ListId, true);
       this._DebugLog.AppendLine ( this._dalExternalSelectionLists.Log );
 
       return Item;
@@ -244,7 +244,7 @@ namespace Evado.Bll.Clinical
     /// 6. Return an event code of method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveItem(EvFormFieldSelectionList ExternalList)
+    public EvEventCodes saveItem(EdExternalSelectionList ExternalList)
     {
       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Bll.Clinical.EvFiledSelectionLists.saveItem method " );
@@ -272,7 +272,7 @@ namespace Evado.Bll.Clinical
       // 
       for (int count = 0; count < ExternalList.Items.Count; count++)
       {
-        EvFormFieldSelectionList.CodeItem item = (EvFormFieldSelectionList.CodeItem)ExternalList.Items[count];
+        EdExternalSelectionList.CodeItem item = (EdExternalSelectionList.CodeItem)ExternalList.Items[count];
 
         if (item.Value == String.Empty)
         {
@@ -309,7 +309,7 @@ namespace Evado.Bll.Clinical
       // If the Action is DELTE and the state is draft.
       // 
       if (ExternalList.Action == EvFormFieldSelectionLists.Action_Deleted
-        && ExternalList.State == EvFormFieldSelectionList.SelectionListStates.Draft)
+        && ExternalList.State == EdExternalSelectionList.SelectionListStates.Draft)
       {
         iReturn = this._dalExternalSelectionLists.deleteItem(ExternalList);
         this._DebugLog.AppendLine( this._dalExternalSelectionLists.Log );
@@ -371,7 +371,7 @@ namespace Evado.Bll.Clinical
     /// 1. Update the formfield selectionlist object's items and its state based on its action codes. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void updateState(EvFormFieldSelectionList Item)
+    private void updateState(EdExternalSelectionList Item)
     {
       this._DebugLog.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
         + "Evado.Bll.Clinical.EvFiledSelectionLists.updateState." );
@@ -411,7 +411,7 @@ namespace Evado.Bll.Clinical
         // 
         this._DebugLog.AppendLine( " Reviewing ExternalSelectionList" );
 
-        Item.State = EvFormFieldSelectionList.SelectionListStates.Reviewed;
+        Item.State = EdExternalSelectionList.SelectionListStates.Reviewed;
         ;
         Item.ReviewedBy = Item.UserCommonName;
         Item.ReviewedByUserId = AuthenticatedUserId;
@@ -434,7 +434,7 @@ namespace Evado.Bll.Clinical
         // 
         this._DebugLog.AppendLine( " Issuing ExternalSelectionList" );
 
-        Item.State = EvFormFieldSelectionList.SelectionListStates.Issued;
+        Item.State = EdExternalSelectionList.SelectionListStates.Issued;
         Item.ApprovedByUserId = AuthenticatedUserId;
         Item.ApprovedBy = Item.UserCommonName;
         Item.ApprovalDate = DateTime.Now;
@@ -452,7 +452,7 @@ namespace Evado.Bll.Clinical
         //		set state to Withdrawn (CW),
         //		add ExternalSelectionList UpdatedBy entry.
         // 
-        Item.State = EvFormFieldSelectionList.SelectionListStates.Withdrawn;
+        Item.State = EdExternalSelectionList.SelectionListStates.Withdrawn;
 
         return;
       }
@@ -461,9 +461,9 @@ namespace Evado.Bll.Clinical
       // If none of the above occur, save the record
       // 
       this._DebugLog.AppendLine( " Saving ExternalSelectionList. State:" + Item.State );
-      if (Item.State == EvFormFieldSelectionList.SelectionListStates.Null)
+      if (Item.State == EdExternalSelectionList.SelectionListStates.Null)
       {
-        Item.State = EvFormFieldSelectionList.SelectionListStates.Draft;
+        Item.State = EdExternalSelectionList.SelectionListStates.Draft;
       }
       fltVersion += (float)0.01;
       Item.Version = fltVersion.ToString();
@@ -471,7 +471,7 @@ namespace Evado.Bll.Clinical
       // 
       // Reset the approval values if in draft state.
       // 
-      if (Item.State == EvFormFieldSelectionList.SelectionListStates.Draft)
+      if (Item.State == EdExternalSelectionList.SelectionListStates.Draft)
       {
         Item.ReviewedBy = String.Empty;
         Item.ReviewedByUserId = String.Empty;
@@ -522,7 +522,7 @@ namespace Evado.Bll.Clinical
       // Initialise the local variables
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
-      EvFormFieldSelectionList item = new EvFormFieldSelectionList();
+      EdExternalSelectionList item = new EdExternalSelectionList();
 
       // 
       // Exit, if the ListGuid or UserCommonName is empty
@@ -556,7 +556,7 @@ namespace Evado.Bll.Clinical
       // Update and save the object.
       // 
       item.UserCommonName = UserCommonName;
-      item.State = EvFormFieldSelectionList.SelectionListStates.Draft;
+      item.State = EdExternalSelectionList.SelectionListStates.Draft;
       item.ListId += "_cpy";
       item.Title += " (Copy)";
       item.ReviewedBy = String.Empty;
@@ -609,7 +609,7 @@ namespace Evado.Bll.Clinical
       // Initialise the local variables
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
-      EvFormFieldSelectionList item = new EvFormFieldSelectionList();
+      EdExternalSelectionList item = new EdExternalSelectionList();
 
       // 
       // Exit, if the listGuid or UserCommonName is empty. 
@@ -651,7 +651,7 @@ namespace Evado.Bll.Clinical
       // Update and save the object.
       // 
       item.UserCommonName = UserCommonName;
-      item.State = EvFormFieldSelectionList.SelectionListStates.Draft;
+      item.State = EdExternalSelectionList.SelectionListStates.Draft;
       item.ReviewedBy = String.Empty;
       item.ReviewDate = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
       item.ApprovedBy = String.Empty;

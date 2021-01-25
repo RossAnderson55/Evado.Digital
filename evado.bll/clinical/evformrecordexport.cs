@@ -415,12 +415,12 @@ namespace Evado.Bll.Clinical
           this.LogDebug ( "Comment.Count: " + record.CommentList.Count );
 
           String stComments = String.Empty;
-          foreach ( EvFormRecordComment comment in record.CommentList )
+          foreach ( EdFormRecordComment comment in record.CommentList )
           {
             stComments += comment.Content
-              + EvLabels.Label_Activity_Id
+              + " by "
               + comment.UserCommonName
-              + EvLabels.Label_on
+              + " on "
               + comment.CommentDate.ToString ( "dd-MMM-yy HH:mm" ) + " ";
           }
 

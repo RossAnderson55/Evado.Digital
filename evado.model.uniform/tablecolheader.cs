@@ -113,6 +113,27 @@ namespace Evado.Model.UniForm
       get { return _No; }
       set { _No = value; }
     }
+
+    private string _ColumnId = String.Empty;
+    /// <summary>
+    /// This property contains the header column text of table.
+    /// </summary>
+    public string ColumnId
+    {
+      get
+      {
+        //
+        // if column id is empty the use the colunn text as the identifier.
+        //
+        if ( this._ColumnId == String.Empty )
+        {
+          this._ColumnId = _No.ToString ( "00" );
+        }
+
+        return _ColumnId;
+      }
+      set { _ColumnId = value; }
+    }
     /// <summary>
     /// This property contains a text value for Table Col Header object.
     /// </summary>

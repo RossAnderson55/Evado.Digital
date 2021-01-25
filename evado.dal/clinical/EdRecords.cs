@@ -212,7 +212,7 @@ namespace Evado.Dal.Clinical
       CommandParameters [ 1 ].Value = Record.State;
       CommandParameters [ 2 ].Value = Record.SourceId;
       CommandParameters [ 3 ].Value = Record.RecordDate;
-      CommandParameters [ 4 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Record.Signoffs );
+      CommandParameters [ 4 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
       CommandParameters [ 5 ].Value = this.ClassParameters.UserProfile.UserId;
       CommandParameters [ 6 ].Value = this.ClassParameters.UserProfile.CommonName;
       CommandParameters [ 7 ].Value = DateTime.Now;
@@ -441,8 +441,8 @@ namespace Evado.Dal.Clinical
       //
       FormRecord.CommentList = formRecordComments.getCommentList (
         FormRecord.Guid, Guid.Empty,
-        EvFormRecordComment.CommentTypeCodes.Form,
-        EvFormRecordComment.AuthorTypeCodes.Not_Set );
+        EdFormRecordComment.CommentTypeCodes.Form,
+        EdFormRecordComment.AuthorTypeCodes.Not_Set );
 
       //this.LogClass ( formRecordComments.Log );
 
@@ -1497,9 +1497,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "createRecord, " );
       this.LogDebug ( "TrialId: " + Record.ApplicationId );
-      this.LogDebug ( "MilestoneId: " + Record.MilestoneId );
-      this.LogDebug ( "ActivityId: " + Record.ActivityId );
-      this.LogDebug ( "IsMandatory: " + Record.IsMandatoryActivity );
       this.LogDebug ( "FormId: " + Record.LayoutId );
 
       // 
@@ -1888,7 +1885,7 @@ namespace Evado.Dal.Clinical
       // Initialize the method debug log, internal variables and objects. 
       //
       this.LogMethod ( "updateRecord, " );
-      this.LogDebug ( "UserProfile.RoleId: " + this.ClassParameters.UserProfile.RoleId );
+      this.LogDebug ( "UserProfile.RoleId: " + this.ClassParameters.UserProfile.Roles );
       this.LogDebug ( "Guid: " + Record.Guid );
       this.LogDebug ( "RecordId: " + Record.RecordId );
       this.LogDebug ( "FormGuid: " + Record.LayoutGuid );
@@ -2104,7 +2101,7 @@ namespace Evado.Dal.Clinical
             AddCommentToDataChange (
               "Comment_",
               dataChange,
-              count, new EvFormRecordComment ( ),
+              count, new EdFormRecordComment ( ),
               NewRecord.CommentList [ count ] );
           }
         }
@@ -2120,7 +2117,7 @@ namespace Evado.Dal.Clinical
           this.AddSignoffToDataChange (
             dataChange,
             count,
-            new EvUserSignoff ( ),
+            new EdUserSignoff ( ),
             NewRecord.Signoffs [ count ] );
         }
         else
@@ -2180,8 +2177,8 @@ namespace Evado.Dal.Clinical
       String Prefix,
       EvDataChange dataChange,
       int count,
-     EvFormRecordComment OldComment,
-      EvFormRecordComment NewComment )
+     EdFormRecordComment OldComment,
+      EdFormRecordComment NewComment )
     {
 
       dataChange.AddItem ( Prefix + "_AuthorType_" + count,
@@ -2227,8 +2224,8 @@ namespace Evado.Dal.Clinical
     private void AddSignoffToDataChange (
       EvDataChange dataChange,
       int count,
-      EvUserSignoff OldRecord,
-      EvUserSignoff NewRecord )
+      EdUserSignoff OldRecord,
+      EdUserSignoff NewRecord )
     {
       dataChange.AddItem ( "Signoff_Description_" + count,
         OldRecord.Description,
@@ -2475,7 +2472,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class is handles the data access layer for the form records data object.
     /// </summary>
-    public class sortOndate : IComparer<EvFormRecordComment>
+    public class sortOndate : IComparer<EdFormRecordComment>
     {
       /// <summary>
       /// This method sorts the list busing the ICompare interface
@@ -2483,7 +2480,7 @@ namespace Evado.Dal.Clinical
       /// <param name="a">EvFormRecordComment object</param>
       /// <param name="b">EvFormRecordComment object</param>
       /// <returns></returns>
-      public int Compare ( EvFormRecordComment a, EvFormRecordComment b )
+      public int Compare ( EdFormRecordComment a, EdFormRecordComment b )
       {
         if ( a.CommentDate > b.CommentDate ) return 1;
         else if ( a.CommentDate < b.CommentDate ) return -1;

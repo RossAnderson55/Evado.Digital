@@ -58,7 +58,7 @@ namespace Evado.Bll.Clinical
       this.LogDebug ( "Settings:" );
       this.LogDebug ( "-PlatformId: " + this.ClassParameter.PlatformId );
       this.LogDebug ( "-CustomerGuid: " + this.ClassParameter.CustomerGuid );
-      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameter.ApplicationGuid );
+      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameter.PlatformGuid );
 
       this._DalOrganisations = new Evado.Dal.Clinical.EvOrganisations ( Settings );
     }

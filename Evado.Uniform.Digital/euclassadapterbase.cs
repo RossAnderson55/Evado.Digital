@@ -574,7 +574,7 @@ namespace Evado.UniForm.Clinical
       
       stEvent.AppendFormat ( 
         "Page Role: {0} user Access: {1} ",
-        User.RoleId, 
+        User.Roles, 
         RoleId ); 
 
       //

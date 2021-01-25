@@ -479,10 +479,10 @@ namespace Evado.UniForm
         //
         // define the licensed modules for this installation.
         //
-        String licensedModules = Evado.Model.Digital.EvModuleCodes.Administration_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Management_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Imaging_Module + ";"
-         + Evado.Model.Digital.EvModuleCodes.Integration_Module;
+        String licensedModules = Evado.Model.Digital.EdModuleCodes.Administration_Module + ";"
+         + Evado.Model.Digital.EdModuleCodes.Management_Module + ";"
+         + Evado.Model.Digital.EdModuleCodes.Imaging_Module + ";"
+         + Evado.Model.Digital.EdModuleCodes.Integration_Module;
 
         this._ApplicationAdapter.LicensedModules = licensedModules;
 

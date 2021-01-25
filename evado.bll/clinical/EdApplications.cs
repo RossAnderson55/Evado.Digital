@@ -61,9 +61,8 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
       this.LogDebug ( "CustomerGuid: " + this.ClassParameter.CustomerGuid );
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.ApplicationGuid );
+      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.PlatformGuid );
       this.LogDebug ( "UserProfile.UserId: " + this.ClassParameter.UserProfile.UserId );
-      this.LogDebug ( "UserProfile.OrgId: " + this.ClassParameter.UserProfile.OrgId );
 
       this._Dal_Applications = new Evado.Dal.Clinical.EdApplications ( Settings );
     }

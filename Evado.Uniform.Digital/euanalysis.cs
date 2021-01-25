@@ -310,14 +310,14 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if (  this.Session.UserProfile.hasMultiSiteAccess == false
+        if (  this.Session.UserProfile.hasManagementAccess == false
           && this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getChartObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -352,7 +352,7 @@ namespace Evado.UniForm.Clinical
         //
         // Initialise the client ResultData object.
         //
-        clientDataObject.Title = EvLabels.Analysis_Chart_Query_Page_Title;
+        clientDataObject.Title = EdLabels.Analysis_Chart_Query_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
@@ -376,7 +376,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Analysis_Chart_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Analysis_Chart_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -502,7 +502,7 @@ namespace Evado.UniForm.Clinical
       // Add the chart generation page groupCommand.
       //
       groupCommand = Page.addCommand (
-        EvLabels.Analysis_Chart_Query_Command_Title,
+        EdLabels.Analysis_Chart_Query_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
@@ -527,7 +527,7 @@ namespace Evado.UniForm.Clinical
       }
 
       groupCommand = Page.addCommand (
-        EvLabels.Analysis_Chart_Export_Command_Title,
+        EdLabels.Analysis_Chart_Export_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
@@ -580,8 +580,8 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.ChartSourceOptionList.Count == 0 )
       {
         Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-          EvLabels.Analysis_Chart_Selection_Group_Title,
-          EvLabels.Analysis_Chart_Selection_Group_No_Value_Message,
+          EdLabels.Analysis_Chart_Selection_Group_Title,
+          EdLabels.Analysis_Chart_Selection_Group_No_Value_Message,
           Evado.Model.UniForm.EditAccess.Enabled );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -602,7 +602,7 @@ namespace Evado.UniForm.Clinical
         // Create the new pageMenuGroup.
         // 
         Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-          EvLabels.Analysis_Chart_Selection_Group_Title,
+          EdLabels.Analysis_Chart_Selection_Group_Title,
           String.Empty,
           Evado.Model.UniForm.EditAccess.Enabled );
         pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -611,22 +611,22 @@ namespace Evado.UniForm.Clinical
         {
           case 1:
             {
-              pageGroup.Title = EvLabels.Analysis_Chart_Selection_Group_Title_1;
+              pageGroup.Title = EdLabels.Analysis_Chart_Selection_Group_Title_1;
               break;
             }
           case 2:
             {
-              pageGroup.Title = EvLabels.Analysis_Chart_Selection_Group_Title_2;
+              pageGroup.Title = EdLabels.Analysis_Chart_Selection_Group_Title_2;
               break;
             }
           case 3:
             {
-              pageGroup.Title = EvLabels.Analysis_Chart_Selection_Group_Title_3;
+              pageGroup.Title = EdLabels.Analysis_Chart_Selection_Group_Title_3;
               break;
             }
           case 4:
             {
-              pageGroup.Title = EvLabels.Analysis_Chart_Selection_Group_Title_4;
+              pageGroup.Title = EdLabels.Analysis_Chart_Selection_Group_Title_4;
               break;
             }
         }//END pageMenuGroup title switch.
@@ -636,7 +636,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_ITEM + index,
-          EvLabels.Analysis_Chart_Selection_Source_Field_Label,
+          EdLabels.Analysis_Chart_Selection_Source_Field_Label,
           this.Session.Chart.QueryItems [ index ].ItemId,
           this.Session.ChartSourceOptionList );
 
@@ -649,7 +649,7 @@ namespace Evado.UniForm.Clinical
 
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_AGGREGATION + index,
-          EvLabels.Analysis_Chart_Selection_Aggregation_Field_Label,
+          EdLabels.Analysis_Chart_Selection_Aggregation_Field_Label,
           this.Session.Chart.QueryItems [ index ].Aggregation.ToString ( ),
           optionList );
 
@@ -816,7 +816,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-        EvLabels.Analysis_Chart_Display_Group_Title,
+        EdLabels.Analysis_Chart_Display_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -855,13 +855,13 @@ namespace Evado.UniForm.Clinical
       //
       // reinitialise the table column tableColumn.
       //
-      groupField.Table.Header [ 0 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_0_Label;
+      groupField.Table.Header [ 0 ].Text = EdLabels.Analysis_Chart_Group_Table_Column_0_Label;
       groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 0 ].Width = "10";
-      groupField.Table.Header [ 1 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_1_Label;
+      groupField.Table.Header [ 1 ].Text = EdLabels.Analysis_Chart_Group_Table_Column_1_Label;
       groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 1 ].Width = "20";
-      groupField.Table.Header [ 2 ].Text = EvLabels.Analysis_Chart_Group_Table_Column_2_Label;
+      groupField.Table.Header [ 2 ].Text = EdLabels.Analysis_Chart_Group_Table_Column_2_Label;
       groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Read_Only_Text;
       groupField.Table.Header [ 2 ].Width = "10";
 
@@ -944,14 +944,14 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-        EvLabels.Analysis_Chart_Export_Group_Title,
+        EdLabels.Analysis_Chart_Export_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createHtmlLinkField (
         String.Empty,
-        EvLabels.Analysis_Chart_Download_Link_Field_Title,
+        EdLabels.Analysis_Chart_Download_Link_Field_Title,
         htmlLink );
 
     }//END getChart_Export_Group method.
@@ -983,14 +983,14 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if (  this.Session.UserProfile.hasMultiSiteAccess == false
+        if (  this.Session.UserProfile.hasManagementAccess == false
           && this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
             "Evado.UniForm.Clinical.Reports.getRecordQueryObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return this.Session.LastPage;
         }
@@ -1034,7 +1034,7 @@ namespace Evado.UniForm.Clinical
         //
         // Initialise the client ResultData object.
         //
-        clientDataObject.Title = EvLabels.Analysis_Query_Page_Title;
+        clientDataObject.Title = EdLabels.Analysis_Query_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
@@ -1060,7 +1060,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.Analysis_Query_Page_Error_Message;
+        this.ErrorMessage = EdLabels.Analysis_Query_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1268,7 +1268,7 @@ namespace Evado.UniForm.Clinical
       // Add the chart generation page groupCommand.
       //
       groupCommand = Page.addCommand (
-        EvLabels.Analysis_Query_Update_Command_Title,
+        EdLabels.Analysis_Query_Update_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1288,7 +1288,7 @@ namespace Evado.UniForm.Clinical
         return;
       }
       groupCommand = Page.addCommand (
-        EvLabels.Analysis_Query_Export_Command_Title,
+        EdLabels.Analysis_Query_Export_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1324,7 +1324,7 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-        EvLabels.Analysis_Query_Selection_Group_Title,
+        EdLabels.Analysis_Query_Selection_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -1336,7 +1336,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_FORM_ID,
-          EvLabels.Analysis_Query_Form_Selection_Field_Title,
+          EdLabels.Analysis_Query_Form_Selection_Field_Title,
           this.Session.AnalysisQueryFormId,
           this.Session.AnalysisFormSelectionList );
 
@@ -1351,7 +1351,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_FIELD_ID,
-          EvLabels.Analysis_Query_Field_Selection_Field_Title,
+          EdLabels.Analysis_Query_Field_Selection_Field_Title,
           this.Session.AnalysisQueryFormFieldId,
           this.Session.AnalysisFormFieldSelectionList );
 
@@ -1366,7 +1366,7 @@ namespace Evado.UniForm.Clinical
       {
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_FIELD_VALUE,
-          EvLabels.Analysis_Query_Value_Selection_Field_Title,
+          EdLabels.Analysis_Query_Value_Selection_Field_Title,
           this.Session.AnalysisQueryFormFieldValue,
           this.Session.AnalysisFormFieldValueSelectionList );
 
@@ -1378,7 +1378,7 @@ namespace Evado.UniForm.Clinical
       // Add the chart generation page groupCommand.
       //
       groupCommand = pageGroup.addCommand (
-        EvLabels.Analysis_Query_Update_Command_Title,
+        EdLabels.Analysis_Query_Update_Command_Title,
             EuAdapter.APPLICATION_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1421,13 +1421,13 @@ namespace Evado.UniForm.Clinical
       // Create the record display pageMenuGroup.
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.Analysis_Query_Record_List_Group_Title,
+        EdLabels.Analysis_Query_Record_List_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EvLabels.List_Count_Label + this.Session.AnalysisRecordlist.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + this.Session.AnalysisRecordlist.Count;
 
       // 
       // Iterate through the record list generating a groupCommand to access each record
@@ -1436,15 +1436,15 @@ namespace Evado.UniForm.Clinical
       foreach ( Evado.Model.Digital.EdRecord formRecord in this.Session.AnalysisRecordlist )
       {
         string stTitle = formRecord.RecordId
-          + EvLabels.Space_Arrow_Right
+          + EdLabels.Space_Arrow_Right
           + formRecord.RecordId
-          + EvLabels.Space_Open_Bracket
-          + EvLabels.Label_Date
+          + EdLabels.Space_Open_Bracket
+          + EdLabels.Label_Date
           + formRecord.stRecordDate
-          + EvLabels.Space_Close_Bracket
-          + EvLabels.Space_Open_Bracket
-          + EvLabels.Label_Status
-          + formRecord.StateDesc + EvLabels.Space_Close_Bracket;
+          + EdLabels.Space_Close_Bracket
+          + EdLabels.Space_Open_Bracket
+          + EdLabels.Label_Status
+          + formRecord.StateDesc + EdLabels.Space_Close_Bracket;
 
         EuAdapterClasses appObject =
           EuConversions.convertRecordType ( this.Session.RecordType );
@@ -1459,7 +1459,7 @@ namespace Evado.UniForm.Clinical
 
         groupCommand.AddParameter (
           Model.UniForm.CommandParameters.Short_Title,
-          EvLabels.Label_Record_Id + formRecord.RecordId );
+          EdLabels.Label_Record_Id + formRecord.RecordId );
 
       }//END iteration loop
 
@@ -1543,14 +1543,14 @@ namespace Evado.UniForm.Clinical
       // Create the new pageMenuGroup.
       // 
       Evado.Model.UniForm.Group pageGroup = Page.AddGroup (
-        EvLabels.Analysis_Chart_Export_Group_Title,
+        EdLabels.Analysis_Chart_Export_Group_Title,
         String.Empty,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createHtmlLinkField (
         String.Empty,
-        EvLabels.Analysis_Chart_Download_Link_Field_Title,
+        EdLabels.Analysis_Chart_Download_Link_Field_Title,
         htmlLink );
 
     }//END getRecordQuery_Export_Group method.

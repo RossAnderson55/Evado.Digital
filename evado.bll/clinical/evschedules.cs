@@ -410,7 +410,7 @@ namespace Evado.Bll.Clinical
       // to the DAL layer and DB.
       // 
       string AuthenticatedUserId = String.Empty;
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
+      EdUserSignoff userSignoff = new EdUserSignoff ( );
 
 
 
@@ -432,7 +432,7 @@ namespace Evado.Bll.Clinical
         // 
         // Append the signoff object.
         // 
-        userSignoff.Type = EvUserSignoff.TypeCode.Schedule_Review_Signoff;
+        userSignoff.Type = EdUserSignoff.TypeCode.Schedule_Review_Signoff;
         userSignoff.SignedOffUserId = AuthenticatedUserId;
         userSignoff.SignedOffBy = Schedule.UserCommonName;
         userSignoff.SignOffDate = DateTime.Now;
@@ -459,7 +459,7 @@ namespace Evado.Bll.Clinical
         // 
         // Append the signoff object.
         // 
-        userSignoff.Type = EvUserSignoff.TypeCode.Schedule_Approver_Signoff;
+        userSignoff.Type = EdUserSignoff.TypeCode.Schedule_Approver_Signoff;
         userSignoff.SignedOffUserId = AuthenticatedUserId;
         userSignoff.SignedOffBy = Schedule.UserCommonName;
         userSignoff.SignOffDate = Schedule.ApprovedDate;
@@ -477,7 +477,7 @@ namespace Evado.Bll.Clinical
         // 
         // Append the signoff object.
         // 
-        userSignoff.Type = EvUserSignoff.TypeCode.Schedule_Withdrawal_Signoff;
+        userSignoff.Type = EdUserSignoff.TypeCode.Schedule_Withdrawal_Signoff;
         userSignoff.SignedOffUserId = AuthenticatedUserId;
         userSignoff.SignedOffBy = Schedule.UserCommonName;
         userSignoff.SignOffDate = DateTime.Now;

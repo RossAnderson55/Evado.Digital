@@ -26,7 +26,7 @@ namespace Evado.Model.Digital
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvFormRecordSummary
+  public class EdRecordSummary
   {
 
     #region Internal member variables
@@ -45,7 +45,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// Default constructor
     /// </summary>
-    public EvFormRecordSummary()
+    public EdRecordSummary()
     {
     }
 

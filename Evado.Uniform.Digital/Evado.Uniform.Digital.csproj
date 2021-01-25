@@ -90,15 +90,10 @@
     <Compile Include="EuConversions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EuAlerts.cs" />
     <Compile Include="EuAdapter.HomePage.cs" />
-    <Compile Include="EuActivities.cs" />
     <Compile Include="EuMenusUtility.cs" />
     <Compile Include="EuUserProfiles.cs" />
     <Compile Include="EvServerPageScript.cs" />
-    <Compile Include="EuMilestones.cs" />
-    <Compile Include="EuOrganisations.cs" />
-    <Compile Include="EuSchedules.cs" />
     <Compile Include="EuRecordLayoutFields.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,7 +126,7 @@
       <Name>evado.dal</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model.Digital\Evado.Model.Digital.csproj">
-      <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
+      <Project>{C85C0FC2-76E7-496C-AEA1-1F97FA573C93}</Project>
       <Name>Evado.Model.Digital</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model.integration\evado.model.integration.csproj">
@@ -143,7 +138,7 @@
       <Name>evado.model.uniform</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model\evado.model.csproj">
-      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>
   </ItemGroup>

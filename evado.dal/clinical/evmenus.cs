@@ -212,7 +212,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 4 ].Value = MenuItem.Group;
       cmdParms [ 5 ].Value = MenuItem.GroupHeader;
       cmdParms [ 6 ].Value = MenuItem.Platform;
-      cmdParms [ 7 ].Value = MenuItem.Modules;
+      cmdParms [ 7 ].Value = String.Empty;
       cmdParms [ 8 ].Value = MenuItem.RoleList;
 
     }//END SetLetterParameters.
@@ -276,120 +276,11 @@ namespace Evado.Dal.Clinical
       menu.Group = EvSqlMethods.getString ( Row, "MNU_GROUP" );
       menu.GroupHeader = EvSqlMethods.getBool ( Row, "MNU_GROUP_HEADER" );
       menu.Platform = EvSqlMethods.getString ( Row, "MNU_PLATFORM" );
-      menu.Modules = EvSqlMethods.getString ( Row, "MNU_MODULES" );
       menu.RoleList = EvSqlMethods.getString ( Row, "MNU_ROLES" );
-
-      //
-      // Update the menu roles to match the EvRoleList enumerated values.
-      //
-      this.updatModuleManagement ( menu );
-      //
-      // Update the menu roles to match the EvRoleList enumerated values.
-      //
-      this.updateMenuRoleManagement ( menu );
 
       return menu;
 
     }//END getRowData method.
-
-    // ==================================================================================
-    /// <summary>
-    /// This method updates the Menu role management to align it with the EvRoleList 
-    /// enumerated list values.
-    /// </summary>
-    /// <param name="MenuItem">EvMenuItem class object</param>
-    // ----------------------------------------------------------------------------------
-    private void updateMenuRoleManagement (  Evado.Model.Digital.EvMenuItem MenuItem )
-    {
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "; ", ";" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( " ", "" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( ";Management", ";Trial_Manager" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "TrialManager", "Trial_Manager" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "TrialDesigner", "Trial_Manager" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Project_Manager", "Trial_Manager" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Project_Designer", "Trial_Manager" );
-
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "TrialStaff", "Trial_Coordinator" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Trial_Staff", "Trial_Coordinator" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Project_Coordinator", "Trial_Coordinator" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Auditor", "Sponsor" );
-
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Site_Staff", "Site_User" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Site_Coordinator", "Site_User" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "SiteCoordinator", "Site_User" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Researcher", "Investigator" );
-      MenuItem.RoleList = MenuItem.RoleList.Replace ( "Record_Author", "Site_User" );
-
-      //this.LogDebug ( "MenuItem {0} roles {1}.", MenuItem.PageId, MenuItem.RoleList );
-
-      //
-      // If the item had project management ensure that administrators also have access.
-      //
-      if ( MenuItem.hasRole ( Evado.Model.Digital.EvRoleList.Manager ) == true
-        && MenuItem.hasRole ( Evado.Model.Digital.EvRoleList.Administrator ) == false )
-      {
-        MenuItem.addRole ( Evado.Model.Digital.EvRoleList.Administrator );
-      }
-
-    }//END updateMenuRoleManagement method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method updates the Menu role management to align it with the EvRoleList 
-    /// enumerated list values.
-    /// </summary>
-    /// <param name="MenuItem">EvMenuItem class object</param>
-    // ----------------------------------------------------------------------------------
-    private void updatModuleManagement ( Evado.Model.Digital.EvMenuItem MenuItem )
-    {
-      if ( MenuItem.Modules.Contains ( "Mobile" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Mobile",
-          String.Empty );
-      }
-
-      if ( MenuItem.Modules.Contains ( "Surveillance" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Surveillance",
-          String.Empty );
-      }
-
-      if ( MenuItem.Modules.Contains ( "Administration_Module" ) == false
-        && MenuItem.Modules.Contains ( "Administration" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Administration",
-          Evado.Model.Digital.EvModuleCodes.Administration_Module.ToString ( ) );
-      }
-
-      if ( MenuItem.Modules.Contains ( "Clinical_Module" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Clinical_Module",
-          Evado.Model.Digital.EvModuleCodes.Design_Module.ToString ( ) +";"
-          + Evado.Model.Digital.EvModuleCodes.Record_Module.ToString ( ) );
-      }
-      if ( MenuItem.Modules.Contains ( "Registry_Module" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Registry_Module",
-          Evado.Model.Digital.EvModuleCodes.Record_Module.ToString ( ) );
-      }
-
-      if ( MenuItem.Modules.Contains ( "Management_Module" ) == false
-        && MenuItem.Modules.Contains ( "Management" ) == true )
-      {
-        MenuItem.Modules = MenuItem.Modules.Replace (
-          "Management",
-          Evado.Model.Digital.EvModuleCodes.Management_Module.ToString ( ) );
-      }
-
-
-      MenuItem.Modules = MenuItem.Modules.Replace ( ";;", ";" );
-      MenuItem.Modules = MenuItem.Modules.Replace ( " ", String.Empty);
-    }
 
     #endregion
 

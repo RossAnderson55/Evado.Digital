@@ -214,7 +214,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 23 ].Value = Record.UserCommonName;
       cmdParms [ 24 ].Value = DateTime.Now;
       cmdParms [ 25 ].Value = Record.BookedOutBy;
-      cmdParms [ 26 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EvUserSignoff>> ( Record.Signoffs );
+      cmdParms [ 26 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
 
     }//END SetParameters class.
 
@@ -278,7 +278,7 @@ namespace Evado.Dal.Clinical
       record.UpdatedBy = EvSqlMethods.getString( Row, "TSR_UpdatedBy" );
       record.UpdatedDate = EvSqlMethods.getDateTime( Row, "TSR_UpdateDate" );
       record.BookedOutBy = EvSqlMethods.getString( Row, "TSR_BookedOutBy" );
-      record.Signoffs = Evado.Model.EvStatics.DeserialiseObject<List<EvUserSignoff>> ( EvSqlMethods.getString ( Row, "TSR_Signoffs" ) );
+      record.Signoffs = Evado.Model.EvStatics.DeserialiseObject<List<EdUserSignoff>> ( EvSqlMethods.getString ( Row, "TSR_Signoffs" ) );
 
       // 
       // Return an object containing EvSubjectRecord object. 
@@ -525,7 +525,7 @@ namespace Evado.Dal.Clinical
     /// 4. Add the FormRecordSummary object's values to the FormRecordSummary list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvFormRecordSummary> getRecordSummary( string ProjectId, string SubjectId )
+    public List<EdRecordSummary> getRecordSummary( string ProjectId, string SubjectId )
     {
       this.LogMethod ( "getRecordSummary Mehtod. " );
       this.LogValue ( "ProjectId: " + ProjectId );
@@ -534,7 +534,7 @@ namespace Evado.Dal.Clinical
       // 
       // Define the local variables.
       // 
-      List<EvFormRecordSummary> summaryList = new List<EvFormRecordSummary>( );
+      List<EdRecordSummary> summaryList = new List<EdRecordSummary>( );
       string sGroup = "TrialId";
 
       // 
@@ -589,7 +589,7 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ count ];
 
-          EvFormRecordSummary summary = new EvFormRecordSummary( );
+          EdRecordSummary summary = new EdRecordSummary( );
           summary.SubjectId = EvSqlMethods.getString( row, sGroup );
           summary.DraftRecords = EvSqlMethods.getInteger( row, "Draft_Record" ) + EvSqlMethods.getInteger( row, "Queried_Record" );
           summary.SubmittedRecords = EvSqlMethods.getInteger( row, "Submitted_Record" );

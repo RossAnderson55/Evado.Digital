@@ -117,7 +117,7 @@ namespace Evado.UniForm.Clinical
             this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return null;
         }
@@ -265,7 +265,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.ApplicationProfile_Page_Error_Message;
+        this.ErrorMessage = EdLabels.ApplicationProfile_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -294,7 +294,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
       ClientDataObject.Id = Guid.NewGuid ( );
-      ClientDataObject.Title = EvLabels.UserAdmin_Page_Title;
+      ClientDataObject.Title = EdLabels.UserAdmin_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -354,7 +354,7 @@ namespace Evado.UniForm.Clinical
         // Add the display groupCommand
         //
         pageCommand = PageObject.addCommand (
-          EvLabels.UserAdmin_Edit_Page_Command_Title,
+          EdLabels.UserAdmin_Edit_Page_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Email_Templates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -373,7 +373,7 @@ namespace Evado.UniForm.Clinical
         // Add the display groupCommand
         //
         pageCommand = PageObject.addCommand (
-          EvLabels.UserAdmin_Display_Page_Command_Title,
+          EdLabels.UserAdmin_Display_Page_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Email_Templates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -389,7 +389,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       //
       pageCommand = PageObject.addCommand (
-        EvLabels.UserAdmin_Save_Command_Title,
+        EdLabels.UserAdmin_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Email_Templates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -436,7 +436,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = PageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.UserAdmin_Email_Title_Field_Label,
+        EdLabels.UserAdmin_Email_Title_Field_Label,
         Title );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -445,7 +445,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = PageGroup.createReadOnlyTextField (
         String.Empty,
-        EvLabels.UserAdmin_Email_Body_Field_Label,
+        EdLabels.UserAdmin_Email_Body_Field_Label,
         Body );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -472,7 +472,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.UserAdmin_Introductory_Group_Title,
+        EdLabels.UserAdmin_Introductory_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -495,7 +495,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Title,
-        EvLabels.UserAdmin_Email_Title_Field_Label,
+        EdLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Title,
         80 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -505,11 +505,11 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Body,
-        EvLabels.UserAdmin_Email_Body_Field_Label,
+        EdLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Body, 80, 30 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-      pageField.Description = EvLabels.UserAdmin_Email_Body_Description_Field_Label ;
+      pageField.Description = EdLabels.UserAdmin_Email_Body_Description_Field_Label ;
 
     }//END create_IntroductoryEmail_Group Method
 
@@ -533,7 +533,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.UserAdmin_Reset_Password_Group_Title,
+        EdLabels.UserAdmin_Reset_Password_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -556,7 +556,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Title,
-        EvLabels.UserAdmin_Email_Title_Field_Label,
+        EdLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Title,
         80 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -566,12 +566,12 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Body,
-        EvLabels.UserAdmin_Email_Body_Field_Label,
+        EdLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Body, 80, 20 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
-        EvLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
+        EdLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
 
     }//END create_ResetPasswordEmail_Group Method
 
@@ -595,7 +595,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.UserAdmin_UpdatePassword_Group_Title,
+        EdLabels.UserAdmin_UpdatePassword_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -618,7 +618,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Title,
-        EvLabels.UserAdmin_Email_Title_Field_Label,
+        EdLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Title,
         80 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -628,12 +628,12 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Body,
-        EvLabels.UserAdmin_Email_Body_Field_Label,
+        EdLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Body, 80, 40 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
-        EvLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
+        EdLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
 
     }//END create_ResetPasswordEmail_Group Method
 
@@ -657,7 +657,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.UserAdmin_Password_Confirmation_Group_Title,
+        EdLabels.UserAdmin_Password_Confirmation_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -681,7 +681,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Title,
-        EvLabels.UserAdmin_Email_Title_Field_Label,
+        EdLabels.UserAdmin_Email_Title_Field_Label,
         this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Title,
         80 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -691,12 +691,12 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Body,
-        EvLabels.UserAdmin_Email_Body_Field_Label,
+        EdLabels.UserAdmin_Email_Body_Field_Label,
         this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Body, 80, 20 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField.Description = 
-        EvLabels.UserAdmin_PasswordChange_Body_Description_Field_Label ;
+        EdLabels.UserAdmin_PasswordChange_Body_Description_Field_Label ;
 
     }//END create_PasswordChangeEmail_Group Method
 
@@ -720,7 +720,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EvLabels.UserAdmin_Demo_Registration_Group_Title,
+        EdLabels.UserAdmin_Demo_Registration_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -734,7 +734,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationInstuctions,
-        EvLabels.UserAdmin_Demo_Registration_Instructions_Field_Label,
+        EdLabels.UserAdmin_Demo_Registration_Instructions_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationInstuctions,
         80, 20 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -744,7 +744,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationConfirmation,
-        EvLabels.UserAdmin_Demo_Registration_Confirmation_Field_Label,
+        EdLabels.UserAdmin_Demo_Registration_Confirmation_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationConfirmation,
         80, 20 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -754,7 +754,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationError,
-        EvLabels.UserAdmin_Demo_Registration_Error_Field_Label,
+        EdLabels.UserAdmin_Demo_Registration_Error_Field_Label,
         this.ApplicationObjects.ContentTemplates.DemoRegistrationError,
         80, 20 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -781,7 +781,7 @@ namespace Evado.UniForm.Clinical
         // Add the display groupCommand
         //
         pageCommand = PageGroup.addCommand (
-          EvLabels.UserAdmin_Edit_Page_Command_Title,
+          EdLabels.UserAdmin_Edit_Page_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Email_Templates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -800,7 +800,7 @@ namespace Evado.UniForm.Clinical
         // Add the display groupCommand
         //
         pageCommand = PageGroup.addCommand (
-          EvLabels.UserAdmin_Display_Page_Command_Title,
+          EdLabels.UserAdmin_Display_Page_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Email_Templates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -818,7 +818,7 @@ namespace Evado.UniForm.Clinical
       if ( this._displayPage == false )
       {
         pageCommand = PageGroup.addCommand (
-          EvLabels.UserAdmin_Save_Command_Title,
+          EdLabels.UserAdmin_Save_Command_Title,
           EuAdapter.APPLICATION_ID,
           EuAdapterClasses.Email_Templates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -860,14 +860,13 @@ namespace Evado.UniForm.Clinical
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasManagementAccess == false
-          && this.Session.UserProfile.hasRecordAccess == false )
+        if ( this.Session.UserProfile.hasEvadoAccess == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "createObject",
             this.Session.UserProfile );
 
-          this.ErrorMessage = EvLabels.Illegal_Page_Access_Attempt;
+          this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
           return null;
         }

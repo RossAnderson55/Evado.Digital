@@ -227,19 +227,6 @@ namespace Evado.Model
 
     }//END method
 
-    private string _OrgId = String.Empty;
-    /// <summary>
-    /// This property contains user's organization identifier
-    /// </summary>
-    public string OrgId
-    {
-      get { return this._OrgId; }
-      set
-      {
-        this._OrgId = value;
-      }
-    }
-
     private string _EmailAddress = String.Empty;
     /// <summary>
     /// This property contains user's email address
@@ -421,6 +408,17 @@ namespace Evado.Model
       set { _NewAuthentication = value; }
     }
 
+    private string _OrgId = String.Empty;
+    /// <summary>
+    /// This property contains user organisation identifier
+    /// </summary>
+   /*
+   public string OrgId
+    {
+      get { return this._OrgId; }
+      set { this._OrgId = value; }
+    }
+    */
     private string _SessionId = String.Empty;
     /// <summary>
     /// This property defines the user's session identifier
@@ -791,7 +789,6 @@ namespace Evado.Model
       // Append user profile elements to the return text
       //
       sbText.AppendLine ( "User Profile for UserId: " + this.UserId );
-      sbText.AppendLine ( "OrgId: " + this.OrgId );
       if ( this.Password != String.Empty )
       {
         sbText.AppendLine ( "Password: " + this.Password );

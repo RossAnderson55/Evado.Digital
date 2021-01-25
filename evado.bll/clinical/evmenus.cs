@@ -137,16 +137,6 @@ namespace Evado.Bll.Clinical
         }// Null role currentSchedule
 
         // 
-        // Withdraw the menu newField if the module is not present
-        // 
-        if ( item.Modules != String.Empty
-          && Modules != String.Empty
-          && Modules.Contains ( item.Modules ) == false )
-        {
-          delete = true;
-        }
-
-        // 
         // Withdraw menu newField if role missing.
         // 
         if ( delete == true )

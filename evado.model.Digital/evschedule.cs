@@ -535,11 +535,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff> ( );
+    private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );
     /// <summary>
     /// This property contains signoffs object list of schedule.
     /// </summary>
-    public List<EvUserSignoff> Signoffs
+    public List<EdUserSignoff> Signoffs
     {
       get
       {

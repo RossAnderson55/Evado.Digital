@@ -377,39 +377,9 @@ namespace Evado.Model.Digital
       None = 0,
 
       /// <summary>
-      /// This enumeration defines subject identifier type of selection list
-      /// </summary>
-      Subject_Id = 1,
-
-      /// <summary>
-      /// This enumeration defines site identifier type of selection list
-      /// </summary>
-      Site_Id = 2,
-
-      /// <summary>
-      /// This enumeration defines sex type of selection list
-      /// </summary>
-      Sex = 3,
-
-      /// <summary>
       /// This enumeration defines status type of selection list
       /// </summary>
       Status = 4,
-
-      /// <summary>
-      /// This enumeration defines trial identifier type of selection list
-      /// </summary>Project_Id
-      Trial_Id = 5,
-
-      /// <summary>
-      /// This enumeration defines arm index type of selection list
-      /// </summary>
-      ScheduleId = 6,
-
-      /// <summary>
-      /// This enumeration defines all trial sites type of selection list
-      /// </summary>
-      All_Trial_Sites = 7,
 
       /// <summary>
       /// This enumeration defines a current trial type of selection list
@@ -421,10 +391,6 @@ namespace Evado.Model.Digital
       /// </summary>
       LayoutId = 9,
 
-      /// <summary>
-      /// This enumeration defines a common form identifier type of selection list
-      /// </summary>
-      Common_Form_Id = 10,
 
       /// <summary>
       /// This enumeration defines a form field identifier type of selection list
@@ -442,11 +408,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines trial identifier type of selection list
       /// </summary>Project_Id
       Project_Id = 5,
-
-      /// <summary>
-      /// This enumeration defines all trial sites type of selection list
-      /// </summary>
-      All_Project_Sites = 7,
 
       /// <summary>
       /// This enumeration defines a current trial type of selection list

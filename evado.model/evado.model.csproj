@@ -54,7 +54,6 @@
     <Compile Include="evhassetvalue.cs" />
     <Compile Include="evhtmlcoding.cs" />
     <Compile Include="evitemcount.cs" />
-    <Compile Include="evlabels.designer.cs" />
     <Compile Include="evobjectparameter.cs" />
     <Compile Include="evoption.cs" />
     <Compile Include="EvParameters.cs" />
@@ -67,10 +66,16 @@
     <Compile Include="evurl.cs" />
     <Compile Include="evuserprofilebase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="evlabels.resx">
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -53,7 +53,7 @@ namespace Evado.UniForm.Clinical
       this.ApplicationObjects = ApplicationObjects;
       this.Session = Session;
       this.ClassParameters = Settings;
-      this._ModuleList = ApplicationObjects.PlatformSettings.LoadedModuleList;
+      this._ModuleList = new List<EdModuleCodes> ( );
 
       this.LoggingLevel = Settings.LoggingLevel;
     }
@@ -82,8 +82,6 @@ namespace Evado.UniForm.Clinical
     //
     // Initialise the page labels
     //
-    private string _Subject_Demographics_Label = EvLabels.Subject_Demographics_Group_Title;
-    private string _Subject_Id_Label = EvLabels.Label_Subject_Id;
 
     // ***********************************************************************************
     #endregion
@@ -108,7 +106,7 @@ namespace Evado.UniForm.Clinical
     //
     // Lists the Evado Clinical modules that are enabled.
     //
-    private List<EvModuleCodes> _ModuleList = new List<EvModuleCodes> ( );
+    private List<EdModuleCodes> _ModuleList = new List<EdModuleCodes> ( );
 
     // 
     // this list is used to create the field value change comment when a user updates a record's values.
@@ -118,7 +116,7 @@ namespace Evado.UniForm.Clinical
     // 
     // Used internally selection field enablement.
     // 
-    private List<Evado.Model.Digital.EvFormSection> _Sections = new List<Evado.Model.Digital.EvFormSection> ( );
+    private List<Evado.Model.Digital.EdRecordSection> _Sections = new List<Evado.Model.Digital.EdRecordSection> ( );
 
     // 
     // Used internally selection field enablement.
@@ -199,7 +197,7 @@ namespace Evado.UniForm.Clinical
       this.LogDebug ( "Form.State: " + Form.State );
       Form.setFormRole ( this.Session.UserProfile );
 
-      this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.RoleId );
+      this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
       this.LogDebug ( "FormAccessRole: " + Form.FormAccessRole );
       // 
       // Set the default pageMenuGroup type to annotated fields.  This will enable the 
@@ -348,11 +346,11 @@ namespace Evado.UniForm.Clinical
         if ( Form.Design.HttpReference != String.Empty )
         {
           groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.LAYOUT_TITLE,
+            EuRecordGenerator.CONST_DISPLAY_PREFIX + EdRecord.RecordFieldNames.Title,
             Form.RecordId
-            + EvLabels.Space_Arrow_Right
+            + EdLabels.Space_Arrow_Right
             + Form.LayoutId
-            + EvLabels.Space_Hypen
+            + EdLabels.Space_Hypen
             + Form.Title,
             Form.Design.HttpReference );
           groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -361,11 +359,11 @@ namespace Evado.UniForm.Clinical
         {
           groupField = formHeaderGroup.createTextField (
             String.Empty,
-            EvLabels.Label_Form_Id,
+            EdLabels.Label_Form_Id,
             Form.RecordId
-            + EvLabels.Space_Arrow_Right
+            + EdLabels.Space_Arrow_Right
             + Form.LayoutId
-            + EvLabels.Space_Hypen
+            + EdLabels.Space_Hypen
             + Form.Title, 50 );
           groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
           groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
@@ -380,9 +378,9 @@ namespace Evado.UniForm.Clinical
         if ( Form.Design.HttpReference != String.Empty )
         {
           groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EvIdentifiers.LAYOUT_TITLE,
+            EuRecordGenerator.CONST_DISPLAY_PREFIX + EdRecord.RecordFieldNames.Title,
             Form.LayoutId
-            + EvLabels.Space_Hypen
+            + EdLabels.Space_Hypen
             + Form.Title,
             Form.Design.HttpReference );
           groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -391,11 +389,11 @@ namespace Evado.UniForm.Clinical
         {
           groupField = formHeaderGroup.createTextField (
             String.Empty,
-            EvLabels.Label_Form_Id,
+            EdLabels.Label_Form_Id,
             Form.RecordId
-            + EvLabels.Space_Arrow_Right
+            + EdLabels.Space_Arrow_Right
             + Form.LayoutId
-            + EvLabels.Space_Hypen
+            + EdLabels.Space_Hypen
             + Form.Title, 50 );
           groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
           groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
@@ -601,8 +599,8 @@ namespace Evado.UniForm.Clinical
         {
           groupField = pageGroup.createReadOnlyTextField (
             EuRecordGenerator.CONST_FORM_DISP_COMMENT_FIELD_ID,
-            EvLabels.Label_Comments,
-             Evado.Model.Digital.EvFormRecordComment.getCommentMD ( Form.CommentList, false ) );
+            EdLabels.Label_Comments,
+             Evado.Model.Digital.EdFormRecordComment.getCommentMD ( Form.CommentList, false ) );
 
           groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         }
@@ -615,7 +613,7 @@ namespace Evado.UniForm.Clinical
           this.LogDebug ( "Add Comment Field" );
           groupField = pageGroup.createFreeTextField (
             EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID,
-            EvLabels.Label_New_Comment,
+            EdLabels.Label_New_Comment,
             String.Empty,
             50,
             5 );
@@ -647,7 +645,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Interate through the signoff objects extracting the signoff content.
         // 
-        foreach ( EvUserSignoff signoff in Form.Signoffs )
+        foreach ( EdUserSignoff signoff in Form.Signoffs )
         {
           // 
           // If the signoff has a description output it.
@@ -655,9 +653,9 @@ namespace Evado.UniForm.Clinical
           if ( signoff.SignedOffBy != String.Empty )
           {
             sbSignoffLog.AppendLine ( signoff.Description
-            + " " + EvLabels.Label_by + " "
+            + " " + EdLabels.Label_by + " "
             + signoff.SignedOffBy
-             + " " + EvLabels.Label_on + " "
+             + " " + EdLabels.Label_on + " "
             + signoff.stSignOffDate );
 
           }//END signoff exists.
@@ -666,7 +664,7 @@ namespace Evado.UniForm.Clinical
 
         groupField = pageGroup.createReadOnlyTextField (
           "sol_dsp",
-          EvLabels.Label_Signoff_Log_Field_Title,
+          EdLabels.Label_Signoff_Log_Field_Title,
           sbSignoffLog.ToString ( ) );
 
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -726,7 +724,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Entering the form section iteration loop.
       // 
-      foreach ( Evado.Model.Digital.EvFormSection section in Form.Design.FormSections )
+      foreach ( Evado.Model.Digital.EdRecordSection section in Form.Design.FormSections )
       {
         sectionFieldCount = 0;
         // 
@@ -1208,13 +1206,13 @@ namespace Evado.UniForm.Clinical
       {
         this.LogDebug ( "Hidden Signature field." );
         GroupField.Type = Evado.Model.EvDataTypes.Text;
-        GroupField.Value = EvLabels.Signature_Field_Status_No_Text;
+        GroupField.Value = EdLabels.Signature_Field_Status_No_Text;
         GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, "50" );
         GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
         if ( Field.ItemText != String.Empty )
         {
-          GroupField.Value = EvLabels.Signature_Field_Status_Yes_Text;
+          GroupField.Value = EdLabels.Signature_Field_Status_Yes_Text;
         }
 
         this.LogDebug ( "GroupField.Type: " + GroupField.Type );
@@ -1753,7 +1751,7 @@ namespace Evado.UniForm.Clinical
       GroupField.setBackgroundColor ( Model.UniForm.FieldParameterList.BG_Mandatory, Model.UniForm.Background_Colours.Red );
 
       GroupField.SetValueColumnWidth ( Model.UniForm.FieldValueWidths.Twenty_Percent );
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Field_Value_Legend, EvLabels.FormField_YesNo_Query_Legend );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Field_Value_Legend, EdLabels.FormField_YesNo_Query_Legend );
 
       // 
       // Set the custom validation script if it exists.
@@ -1943,7 +1941,7 @@ namespace Evado.UniForm.Clinical
       GroupField.Mandatory = Field.Design.Mandatory;
 
       GroupField.SetValueColumnWidth ( Model.UniForm.FieldValueWidths.Twenty_Percent );
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Field_Value_Legend, EvLabels.FormField_Checkbox_Query_Legend );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Field_Value_Legend, EdLabels.FormField_Checkbox_Query_Legend );
 
       this.LogDebug ( "GroupField.Value: " + GroupField.Value );
 
@@ -2324,7 +2322,7 @@ namespace Evado.UniForm.Clinical
       // 
       string commentText = String.Empty;
       string stValue = String.Empty;
-      Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes authorType = Evado.Model.Digital.EvFormRecordComment.AuthorTypeCodes.Record_Author;
+      Evado.Model.Digital.EdFormRecordComment.AuthorTypeCodes authorType = Evado.Model.Digital.EdFormRecordComment.AuthorTypeCodes.Record_Author;
       // 
       // Get the static test comment field value.
       // 
@@ -2348,7 +2346,7 @@ namespace Evado.UniForm.Clinical
           // 
           foreach ( EvDataChangeItem item in this._FieldValueChange )
           {
-            stValue += "\r\n" + item.ItemId + EvLabels.Label_ChangeInitialValue + item.InitialValue + EvLabels.Label_ChangeNewValue + item.NewValue;
+            stValue += "\r\n" + item.ItemId + EdLabels.Label_ChangeInitialValue + item.InitialValue + EdLabels.Label_ChangeNewValue + item.NewValue;
           }
         }
 
@@ -2359,7 +2357,7 @@ namespace Evado.UniForm.Clinical
         {
           if ( stValue != String.Empty )
           {
-            Evado.Model.Digital.EvFormRecordComment comment = new Evado.Model.Digital.EvFormRecordComment (
+            Evado.Model.Digital.EdFormRecordComment comment = new Evado.Model.Digital.EdFormRecordComment (
             Form.Guid,
             Guid.Empty,
             authorType,
@@ -2593,7 +2591,7 @@ namespace Evado.UniForm.Clinical
       String stValue = this.GetParameterValue ( CommandParameters, FormField.FieldId );
       //this.LogDebugValue ( "stValue: " + stValue );
 
-      EvFormSection section = this.getSection ( FormField );
+      EdRecordSection section = this.getSection ( FormField );
       if ( section != null )
       {
         //this.LogDebugValue ( "Title: " + section.Title );
@@ -2642,14 +2640,14 @@ namespace Evado.UniForm.Clinical
     /// <param name="SectionId">String Section idenifier</param>
     /// <returns>EvFormSection object</returns>
     //  ----------------------------------------------------------------------------------
-    private EvFormSection getSection ( EdRecordField FormField )
+    private EdRecordSection getSection ( EdRecordField FormField )
     {
       //this.LogMethod ( "updateUserEndorcementField method " );
       //this.LogDebugValue ( "Design.Section: " + FormField.Design.Section );
       //
       // Iterate through teh sections and return the matching section object
       //
-      foreach ( EvFormSection section in this._Sections )
+      foreach ( EdRecordSection section in this._Sections )
       {
         //this.LogDebugValue ( "section.Section: " + section.Section );
 

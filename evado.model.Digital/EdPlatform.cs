@@ -53,85 +53,14 @@ namespace Evado.Model.Digital
       SiteLicenseNo,
 
       /// <summary>
-      /// This enumeration defines an EarlyWithdrawalOptions field name of an application profile
-      /// </summary>
-      EarlyWithdrawalOptions,
-
-      /// <summary>
-      /// This enumeration defines an DiseaseTypeListOptions field name of an application profile
-      /// </summary>
-      DiseaseTypeListOptions,
-
-      /// <summary>
-      /// This enumeration defines an DiseaseListOptions field name of an application profile
-      /// </summary>
-      DiseaseListOptions,
-
-      /// <summary>
-      /// This enumeration defines a CategoryListOptions field name of an application profile
-      /// </summary>
-      CategoryListOptions,
-
-      /// <summary>
-      /// This enumeration defines a SignoffStatement field name of an application profile
-      /// </summary>
-      SignoffStatement,
-
-      /// <summary>
-      /// This enumeration defines a DisplayVisitResourceTime field name of an application profile
-      /// </summary>
-      DisplayVisitResourceTime,
-
-      /// <summary>
-      /// This enumeration defines an DefaultTrialId field name of an application profile
-      /// </summary>
-      DefaultTrialId,
-
-      /// <summary>
       /// This enumeration defines a HelpUrl field name of an application profile
       /// </summary>
       HelpUrl,
 
       /// <summary>
-      /// This enumeration defines a RegulatoryReports field name of an application profile
-      /// </summary>
-      RegulatoryReports,
-
-
-      /// <summary>
-      /// This enumeration defines a DisplayHistory field name of an application profile
-      /// </summary>
-      DisplayHistory,
-
-      /// <summary>
-      /// This enumeration defines a DepersonalisedAcceess field name of an application profile
-      /// </summary>
-      DepersonalisedAccess,
-
-      /// <summary>
-      /// This enumeration defines a LoadedModules field name of an application profile
-      /// </summary>
-      LoadedModules,
-
-      /// <summary>
-      /// This enumeration defines an HideSubjectFields field name of an application profile
-      /// </summary>
-      HideSubjectFields,
-
-      /// <summary>
-      /// This enumeration defines a FdaCompliance field name of an application profile
-      /// </summary>
-      FdaCompliance,
-
-      /// <summary>
       /// This enumeration defines a MaximumSelectionListLength field name of an application profile
       /// </summary>
       MaximumSelectionListLength,
-
-      /// <summary>
-      /// This enumeration defines a OverRideConfig field name of an application profile
-      /// </summary>
-      OverRideConfig,
 
       /// <summary>
       /// This enumeration defines a SmtpServerfield name of an application profile
@@ -157,11 +86,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines a EmailAlertTestAddress field name of an application profile
       /// </summary>
       EmailAlertTestAddress,
-
-      /// <summary>
-      /// This enumeration defines a ProHiddenFieldse of an application profile
-      /// </summary>
-      Pro_Hidden_Fields,
 
       /// <summary>
       /// This enumeration defines a display site dashboard of an application profile
@@ -262,90 +186,11 @@ namespace Evado.Model.Digital
       }
     }
 
+
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region Object Update
-
-    private string _EarlyWithdrawalOptions = String.Empty;
-    /// <summary>
-    /// This property contains early withdrawal options string of site profile
-    /// </summary>
-    public string EarlyWithdrawalOptions
-    {
-      get
-      {
-        return this._EarlyWithdrawalOptions;
-      }
-      set
-      {
-        this._EarlyWithdrawalOptions = value;
-      }
-    }
-
-    private string _DiseaseTypeListOptions = String.Empty;
-    /// <summary>
-    /// This property contains disease type list options string of site profile
-    /// </summary>
-    public string DiseaseTypeListOptions
-    {
-      get
-      {
-        return this._DiseaseTypeListOptions;
-      }
-      set
-      {
-        this._DiseaseTypeListOptions = value;
-      }
-    }
-
-    private string _DiseaseListOptions = String.Empty;
-    /// <summary>
-    /// This property contains disease list options string of site profile
-    /// </summary>
-    public string DiseaseListOptions
-    {
-      get
-      {
-        return this._DiseaseListOptions;
-      }
-      set
-      {
-        this._DiseaseListOptions = value; ;
-      }
-    }
-
-    private string _CategoryListOptions = String.Empty;
-    /// <summary>
-    /// This property contains category list options string of site profile
-    /// </summary>
-    public string CategoryListOptions
-    {
-      get
-      {
-        return this._CategoryListOptions;
-      }
-      set
-      {
-        this._CategoryListOptions = value;
-      }
-    }
-
-    private string _SignoffStatement = String.Empty;
-    /// <summary>
-    /// This property contains the signoff statement of site profile
-    /// </summary>
-    public string SignoffStatement
-    {
-      get
-      {
-        return this._SignoffStatement;
-      }
-      set
-      {
-        this._SignoffStatement = value;
-      }
-    }
 
     private string _HelpUrl = String.Empty;
     /// <summary>
@@ -365,152 +210,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private string _RegulatoryReports = String.Empty;
-    /// <summary>
-    /// This property contains regulatory reports of site profile
-    /// </summary>
-    public string RegulatoryReports
-    {
-      get
-      {
-        return this._RegulatoryReports;
-      }
-      set
-      {
-        this._RegulatoryReports = value;
-      }
-    }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region EVADO environment configuration
-
-    private List<EvModuleCodes> _LoadedModuleList = new List<EvModuleCodes> ( );
-    /// <summary>
-    /// This property contains loaded modules of site profile
-    /// </summary>
-    public string LoadedModules
-    {
-      get
-      {
-        string loadedModules = String.Empty;
-
-        //
-        // Iterate through the list of modules to ensure that they are all processes.
-        //
-        foreach ( EvModuleCodes code in this._LoadedModuleList )
-        {
-          if ( loadedModules.Contains ( code.ToString ( ) ) == false )
-          {
-            if ( loadedModules != String.Empty )
-            {
-              loadedModules += ";";
-            }
-            loadedModules += code.ToString ( );
-          }
-        }//END moduleList iteration loop
-        return loadedModules;
-      }
-      set
-      {
-        //
-        // Initialise the methods variable and objects.
-        //
-        string [ ] arModuules = value.Split ( ';' );
-        this._LoadedModuleList = new List<EvModuleCodes> ( );
-
-        //
-        // Iterate through the list of modules enumerations.
-        //
-        for ( int i = 0; i < arModuules.Length; i++ )
-        {
-          EvModuleCodes name = EvModuleCodes.Null;
-
-          if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
-          {
-            arModuules [ i ] = "Clinical_Outcome_Assessments";
-          }
-
-          if ( arModuules [ i ] == "Patient_Recorded_Outcomes" )
-          {
-            arModuules [ i ] = "Patient_Recorded_Observation";
-          }
-
-
-          if ( EvcStatics.Enumerations.tryParseEnumValue<EvModuleCodes> ( arModuules [ i ], out name ) == true )
-          {
-            this.addModule ( name );
-          }
-        }
-      }
-    }
-
-    /// <summary>
-    /// This property returns the modules as an array of string objects.
-    /// </summary>
-    public List<EvModuleCodes> LoadedModuleList
-    {
-      get
-      {
-        return this._LoadedModuleList;
-      }
-      set
-      {
-        this._LoadedModuleList = value;
-      }
-    }
-
-    private string _HideSubjectFields = String.Empty;
-    /// <summary>
-    /// This property contains hide subject fields of site profile
-    /// </summary>
-    public string HideSubjectFields
-    {
-      get
-      {
-        return this._HideSubjectFields;
-      }
-      set
-      {
-        this._HideSubjectFields = value;
-      }
-    }
-
-    /// <summary>
-    /// This property contains Lite trial maximum subject no
-    /// </summary>
-    public int LiteMaxSubjectNo
-    {
-      get
-      {
-        var value = this.getParameter ( SettingFieldNames.Lite_Max_Subject_No.ToString ( ) );
-
-        return EvStatics.getInteger ( value );
-      }
-      set
-      {
-        this.setParameter ( SettingFieldNames.Lite_Max_Subject_No, EvDataTypes.Integer, value.ToString ( ) );
-      }
-    }
-
-    /// <summary>
-    /// This property contains standard trial maximum subject no
-    /// </summary>
-    public int StandardMaxSubjectNo
-    {
-      get
-      {
-        var value = this.getParameter ( SettingFieldNames.Standard_Max_Subject_No.ToString ( ) );
-
-        return EvStatics.getInteger ( value );
-      }
-      set
-      {
-
-        this.setParameter ( SettingFieldNames.Standard_Max_Subject_No, EvDataTypes.Integer, value.ToString ( ) );
-      }
-    }
 
     /// <summary>
     /// This property contains demonstration account expiry in days
@@ -676,23 +380,6 @@ namespace Evado.Model.Digital
 
     #region PRO configuration
 
-    private const string CONST_PRO_HIDDEN_FIELDS = "PRO_HIDDEN_FIELDS";
-    /// <summary>
-    /// Ths property contains PRO hidden field parameter.
-    /// </summary>
-    public String ProHiddenFields
-    {
-      get
-      {
-        return this.getParameter ( SettingFieldNames.Pro_Hidden_Fields );
-
-      }
-      set
-      {
-        this.setParameter ( SettingFieldNames.Pro_Hidden_Fields, EvDataTypes.Text, value.ToString ( ) );
-      }
-    }
-
     /// <summary>
     /// Ths property contains PRO hidden field parameter.
     /// </summary>
@@ -707,7 +394,7 @@ namespace Evado.Model.Digital
       }
       set
       {
-        this.setParameter ( SettingFieldNames.Pro_Hidden_Fields, EvDataTypes.Boolean, value.ToString ( ) );
+        this.setParameter ( SettingFieldNames.Display_Site_Dashboard, EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
 
@@ -776,95 +463,6 @@ namespace Evado.Model.Digital
 
     #region Class Methods
 
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="Module"></param>
-    /// <returns></returns>
-    //  ---------------------------------------------------------------------------------
-    public void addModule ( EvModuleCodes Module )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( EvModuleCodes module in this.LoadedModuleList )
-      {
-        if ( module == Module
-          || Module == EvModuleCodes.Null )
-        {
-          return;
-        }
-      }
-
-      this.LoadedModuleList.Add ( Module );
-
-    }//END hadModule method.
-
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="Module"></param>
-    /// <returns></returns>
-    //  ---------------------------------------------------------------------------------
-    public bool hasModule ( EvModuleCodes Module )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( EvModuleCodes module in this.LoadedModuleList )
-      {
-        if ( module == Module )
-        {
-          return true;
-        }
-      }
-
-      return false;
-
-    }//END hadModule method.
-
-    ///  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method tests whether the passed module enumeration is currently loaded.
-    /// 
-    /// </summary>
-    /// <param name="ModuleList">Array of string containing module enumerated values.</param>
-    /// <returns>Bool: True module exists in both lists.</returns>
-    //  ---------------------------------------------------------------------------------
-    public bool hasModule ( String [ ] ModuleList )
-    {
-      // 
-      // Iterate through the list to look for a matching module.
-      // 
-      foreach ( string module1 in ModuleList )
-      {
-        string module = module1.Trim ( );
-
-        if ( module == EvModuleCodes.All_Modules.ToString ( ) )
-        {
-          return true;
-        }
-
-        foreach ( EvModuleCodes module2 in this.LoadedModuleList )
-        {
-          if ( module == module2.ToString ( ) )
-          {
-            return true;
-          }
-        }
-      }
-
-      return false;
-
-    }//END hadModule method. 
-
     // ==================================================================================
     /// <summary>
     /// This method sets the field value.
@@ -902,61 +500,6 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdPlatform.SettingFieldNames.EarlyWithdrawalOptions:
-          {
-            Value = Value.Replace ( "\r\n", String.Empty );
-            Value = Value.Replace ( ",", String.Empty );
-            Value = Value.Replace ( "; ", ";" );
-            this.EarlyWithdrawalOptions = Value;
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.DiseaseTypeListOptions:
-          {
-            Value = Value.Replace ( "\r\n", String.Empty );
-            Value = Value.Replace ( ",", String.Empty );
-            Value = Value.Replace ( "; ", ";" );
-            this.DiseaseTypeListOptions = Value;
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.DiseaseListOptions:
-          {
-            Value = Value.Replace ( "\r\n", String.Empty );
-            Value = Value.Replace ( ",", String.Empty );
-            Value = Value.Replace ( "; ", ";" );
-            this.DiseaseListOptions = Value;
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.CategoryListOptions:
-          {
-            Value = Value.Replace ( "\r\n", String.Empty );
-            Value = Value.Replace ( ",", String.Empty );
-            Value = Value.Replace ( "; ", ";" );
-            this.CategoryListOptions = Value;
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.SignoffStatement:
-          {
-            this.SignoffStatement = Value;
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.LoadedModules:
-          {
-            this.LoadedModules = Value;
-            this.LoadedModules = this.LoadedModules.Replace ( ",", ";" );
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.HideSubjectFields:
-          {
-            this.HideSubjectFields = Value;
-            return;
-          }
-
         case EdPlatform.SettingFieldNames.Lite_Max_Subject_No:
           {
             this.setParameter ( SettingFieldNames.Lite_Max_Subject_No, EvDataTypes.Integer, Value );
@@ -986,17 +529,6 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdPlatform.SettingFieldNames.OverRideConfig:
-          {
-            this.OverRideConfig = EvcStatics.getBool ( Value );
-            return;
-          }
-
-        case EdPlatform.SettingFieldNames.Pro_Hidden_Fields:
-          {
-            this.ProHiddenFields = Value;
-            return;
-          }
 
         case EdPlatform.SettingFieldNames.Display_Site_Dashboard:
           {
@@ -1044,212 +576,10 @@ namespace Evado.Model.Digital
 
     }//END setValue method 
 
-    // ==================================================================================
-    /// <summary>
-    /// This class returns the module lists as a selection option arraylist.    
-    /// </summary>
-    /// <param name="IsSelection">Boolean: true, if option is selected</param>
-    /// <returns>ArrayList: a list of disease activity options</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Initialize a return list, a disease type array and an option object
-    /// 
-    /// 2. Validate whether the option is select.
-    /// 
-    /// 3. Loop through the disease type array
-    /// 
-    /// 4. Append the type array value to option object
-    /// 
-    /// 5. Add option items to the return list.
-    /// 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public ArrayList getDiseaseTypeListOptions ( bool IsSelection )
-    {
-      // 
-      // Initialise local variables and objects.
-      // 
-      ArrayList list = new ArrayList ( );
-      string [ ] arrDiseaseTypes = this.DiseaseTypeListOptions.Split ( ';' );
-      EvOption option = new EvOption ( );
-
-      // 
-      // If a selection list then add a null option for the first element.
-      // 
-      if ( IsSelection == true )
-      {
-        list.Add ( option );
-      }
-
-      // 
-      // Iterate through the module list generating the arraylist.
-      // 
-      foreach ( string disease in arrDiseaseTypes )
-      {
-        if ( disease != String.Empty )
-        {
-          option = new EvOption ( disease.Trim ( ), disease.Trim ( ) );
-          list.Add ( option );
-        }
-      }//END iteration loop
-
-      // 
-      //Return the completed Array List.
-      //
-      return list;
-
-    }//END getDiseaseCategoryList method
-
-    // ==================================================================================
-    /// <summary>
-    /// This class returns the module lists as a selection option arraylist.
-    /// </summary>
-    /// <param name="IsSelection">Boolean: true, if option is selected</param>
-    /// <returns>ArrayList: a list of disease activity options</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Initialize a return list, a disease array and an option object
-    /// 
-    /// 2. Validate whether the option is select.
-    /// 
-    /// 3. Loop through the disease array
-    /// 
-    /// 4. Append the disease array value to option object
-    /// 
-    /// 5. Add option items to the return list.
-    /// 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public ArrayList getDiseaseOptionList ( bool IsSelection )
-    {
-      // 
-      // Initialise local variables and objects.
-      // 
-      ArrayList list = new ArrayList ( );
-      string [ ] arrDiseases = this.DiseaseListOptions.Split ( ';' );
-      EvOption option = new EvOption ( );
-      // 
-      // If a selection list then add a null option for the first element.
-      // 
-      if ( IsSelection == true )
-      {
-        list.Add ( option );
-      }
-      // 
-      // Iterate through the module list generating the arraylist.
-      // 
-      foreach ( string disease in arrDiseases )
-      {
-        if ( disease != String.Empty )
-        {
-          option = new EvOption ( disease.Trim ( ), disease.Trim ( ) );
-          list.Add ( option );
-        }
-      }
-      // 
-      //Return the completed Array List.
-      //
-      return list;
-
-    }//END getDiseaseOptionList method
-
-    // ==================================================================================
-    /// <summary>
-    /// This class returns the module lists as a selection option arraylist.
-    /// </summary>
-    /// <param name="IsSelection">Boolean: true, if option is selected</param>
-    /// <returns>ArrayList: a list of disease activity options</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Initialize a return list, a category array and an option object
-    /// 
-    /// 2. Validate whether the option is select.
-    /// 
-    /// 3. Loop through the category array
-    /// 
-    /// 4. Append the category array value to option object
-    /// 
-    /// 5. Add option items to the return list.
-    /// 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public ArrayList getCategoryOptionList ( bool IsSelection )
-    {
-      // 
-      // Initialise local variables and objects.
-      // 
-      ArrayList list = new ArrayList ( );
-      string [ ] arrCategories = this.CategoryListOptions.Split ( ';' );
-      EvOption option = new EvOption ( );
-      // 
-      // If a selection list then add a null option for the first element.
-      // 
-      if ( IsSelection == true )
-      {
-        list.Add ( option );
-      }
-
-      // 
-      // Iterate through the module list generating the arraylist.
-      // 
-      foreach ( string category in arrCategories )
-      {
-        if ( category != String.Empty )
-        {
-          option = new EvOption ( category, category );
-          list.Add ( option );
-        }
-      }//END iteration loop
-
-      // 
-      //Return the completed Array List.
-      //
-      return list;
-
-    }//END getCategoryOptionList method
-
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region Class static Methods
-
-    //  =================================================================================
-    /// <summary>
-    /// This method returns a list of field data types.
-    /// </summary>
-    /// <param name="DisplayAllModules">Bool: True display all selection.</param>
-    /// <returns>List of EvOption: a list of data types.</returns>
-    //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getModuleList ( )
-    {
-      //
-      // Initialize a return list and an option object.
-      //
-      List<EvOption> list = new List<EvOption> ( );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.All_Modules ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Administration_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Management_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Design_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Entity_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Record_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Imaging_Module ) );
-
-      list.Add ( EvStatics.Enumerations.getOption ( Evado.Model.Digital.EvModuleCodes.Integration_Module ) );
-
-      return list;
-
-    }//END getDataTypes methd
-
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
   }//END SiteProperties class

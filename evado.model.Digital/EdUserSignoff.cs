@@ -20,14 +20,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Evado.Model
+namespace Evado.Model.Digital
 {
 
   /// <summary>
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvUserSignoff
+  public class EdUserSignoff
   {
     #region initialise class
 
@@ -36,7 +36,7 @@ namespace Evado.Model
     /// This method initalises the class .
     /// </summary>
     //------------------------------------------------------------------------------------
-    public EvUserSignoff ( )
+    public EdUserSignoff ( )
     { }
 
     //====================================================================================
@@ -47,7 +47,7 @@ namespace Evado.Model
     /// <param name="SignedOffUserId">String: the user id of the person that signed off the object.</param>
     /// <param name="SignedOffBy">String: the name of the person that signed off the object.</param>
     //------------------------------------------------------------------------------------
-    public EvUserSignoff ( 
+    public EdUserSignoff ( 
       TypeCode Type,
       string SignedOffUserId,
       string SignedOffBy )
@@ -68,7 +68,7 @@ namespace Evado.Model
     /// <param name="SignedOffBy">String: the name of the person that signed off the object.</param>
     /// <param name="Description">String: the description of the.</param>
     //------------------------------------------------------------------------------------
-    public EvUserSignoff (
+    public EdUserSignoff (
       TypeCode Type,
       string SignedOffUserId,
       string SignedOffBy,
@@ -662,7 +662,7 @@ namespace Evado.Model
     /// 5. Return the html sign off string. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public static string getSignoffLog(List<EvUserSignoff> SignoffList, bool withHeader)
+    public static string getSignoffLog(List<EdUserSignoff> SignoffList, bool withHeader)
     {
       //
       // Validate whether the sign off list is not null
@@ -696,7 +696,7 @@ namespace Evado.Model
         // 
         if (SignoffList != null)
         {
-          EvUserSignoff signoff = SignoffList[count];
+          EdUserSignoff signoff = SignoffList[count];
 
           // 
           // Output a signoff if it has a value.
@@ -704,8 +704,8 @@ namespace Evado.Model
           if (signoff.SignedOffBy != String.Empty)
           {
             stHtml += signoff.Description
-              + EvLabels.Label_by + signoff.SignedOffBy
-              + EvLabels.Label_on + signoff.stSignOffDate
+              + Evado.Model.Digital.EdLabels.Label_by + signoff.SignedOffBy
+              + Evado.Model.Digital.EdLabels.Label_on + signoff.stSignOffDate
               + "<br/>";
           }//END signoff exits.
         }

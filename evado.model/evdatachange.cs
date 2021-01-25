@@ -43,11 +43,6 @@ namespace Evado.Model
       Null,
 
       /// <summary>
-      /// This enumeration value defines Data Change on Activities table
-      /// </summary>
-      EvActivities,
-
-      /// <summary>
       /// This enumeration value defines Data Change on Alert table
       /// </summary>
       EvAlerts,
@@ -73,17 +68,6 @@ namespace Evado.Model
       EvFormFieldSelectionLists,
 
       /// <summary>
-      /// This enumeration value defines Data Change on milestones table
-      /// </summary>
-      EvMilestones,
-
-      /// <summary>
-      /// This enumeration value defines Data Change on organistions stable
-      /// </summary>
-      EvOrganisations,
-
-
-      /// <summary>
       /// This enumeration value defines Data Change on records table
       /// </summary>
       EvRecords,
@@ -99,19 +83,9 @@ namespace Evado.Model
       EvReportTemplates,
 
       /// <summary>
-      /// This enumeration value defines Data Change on schedules table
-      /// </summary>
-      EvSchedules,
-
-      /// <summary>
       /// This enumeration value defines Data Change on site profile table
       /// </summary>
       EdmPlatformSettings,
-
-      /// <summary>
-      /// This enumeration value defines Data Change on subject milestones table
-      /// </summary>
-      EvSubjectMilestones,
 
       /// <summary>
       /// This enumeration value defines Data Change on userprofiles table
@@ -918,24 +892,12 @@ namespace Evado.Model
       //
       // Add items from option list to the return list
       //
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvActivities );
-      list.Add( option );
 
       option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvAlerts );
       list.Add( option );
 
       option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvForms );
       list.Add( option );
-
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvMilestones );
-      list.Add( option );
-
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvOrganisations );
-      list.Add( option );
-
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvSchedules );
-      list.Add( option );
-
 
       option = EvStatics.Enumerations.getOption( DataChangeTableNames.EdApplicationSettings );
       list.Add( option );
@@ -982,9 +944,6 @@ namespace Evado.Model
 
       option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvRecords );
       list.Add ( option );
-
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvSubjectMilestones );
-      list.Add( option );
 
       // 
       // Return the list.

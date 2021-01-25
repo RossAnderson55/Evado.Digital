@@ -74,7 +74,7 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "Settings:" );
       this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
       this.LogInit ( "-CustomerGuid: " + this.ClassParameters.CustomerGuid );
-      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.ApplicationGuid );
+      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.PlatformGuid );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
@@ -216,7 +216,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + this.ClassNameSpace + "getDataObject_RegistrationPage" );
-      this.LogDebug ( "AdminOrganisation.OrgId: " + this.Session.AdminOrganisation.OrgId );
+      this.LogDebug ( "AdminOrganisation.OrgId: " +this.Session.SelectedUserType.ToString() );
       this.LogDebug ( "Demo Expiry {0}", this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays.ToString() );
       try
       {
@@ -230,14 +230,14 @@ namespace Evado.UniForm.Clinical
         // 
         this.Session.AdminUserProfile = new Evado.Model.Digital.EvUserProfile ( );
         this.Session.AdminUserProfile.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.AdminUserProfile.OrgId = this.Session.AdminOrganisation.OrgId;
         this.Session.AdminUserProfile.CustomerGuid = this.Session.Customer.Guid;
         this.Session.AdminUserProfile.ExpiryDate = DateTime.Now.AddDays (
           this.ApplicationObjects.PlatformSettings.DemoAccountExpiryDays );
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
-        this.Session.AdminUserProfile.RoleId = EvRoleList.Application_User;
+        this.Session.AdminUserProfile.Roles = this.Session.Application.DefaultRoles;
+        this.Session.AdminUserProfile.TypeId = EvUserProfile.UserTypesList.End_User;
 
         this.LogDebug ( "AdminUserProfile.UserId: {0} ", this.Session.AdminUserProfile.UserId );
         this.LogDebug ( "AdminUserProfile.ExpiryDate: {0} ", this.Session.AdminUserProfile.ExpiryDate );
@@ -254,7 +254,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.User_Profile_Creation_Error_Message;
+        this.ErrorMessage = EdLabels.User_Profile_Creation_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -283,7 +283,7 @@ namespace Evado.UniForm.Clinical
       //
       // get the list of users.
       //
-      int userCount = this._Bll_UserProfiles.UserCount ( String.Empty );
+      int userCount = this._Bll_UserProfiles.UserCount ( EvUserProfile.UserTypesList.Null );
       userCount++;
 
       userId = EuDemoUserRegistration.CONST_DEMO_USER_PREFIX + userCount.ToString ( "##000" );
@@ -306,7 +306,7 @@ namespace Evado.UniForm.Clinical
       //
       ClientDataObject.Id = this.Session.AdminUserProfile.Guid;
       ClientDataObject.Page.Id = this.Session.AdminUserProfile.Guid;
-      ClientDataObject.Title = EvLabels.User_Profile_Page_Title
+      ClientDataObject.Title = EdLabels.User_Profile_Page_Title
         + this.Session.AdminUserProfile.CommonName;
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -355,7 +355,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       // 
       pageCommand = Page.addCommand (
-        EvLabels.Demo_Registration_Save_Command_Title,
+        EdLabels.Demo_Registration_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Demo_Registration.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -513,7 +513,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.UserId.ToString ( ),
-        EvLabels.User_Profile_Identifier_Field_Label,
+        EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -525,7 +525,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.CommonName,
-        EvLabels.Dem_Registration_CommonName_Field_Label,
+        EdLabels.Dem_Registration_CommonName_Field_Label,
         this.Session.AdminUserProfile.CommonName,
         80 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -536,7 +536,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTelephoneNumberField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
-        EvLabels.UserProfile_Telephone_Field_Label,
+        EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.AdminUserProfile.Telephone );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
@@ -546,7 +546,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createEmailAddressField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
-        EvLabels.UserProfile_Email_Field_Label,
+        EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
@@ -575,7 +575,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       // 
       groupCommand = PageGroup.addCommand (
-        EvLabels.Demo_Registration_Save_Command_Title,
+        EdLabels.Demo_Registration_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Demo_Registration.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -609,14 +609,11 @@ namespace Evado.UniForm.Clinical
 
       description.AppendFormat ( "Customer No: {0} - {1} \r\n", this.Session.Customer.CustomerNo, this.Session.Customer.Name );
 
-      description.AppendFormat ( "Organisation Id: {0} - {1} \r\n", this.Session.AdminOrganisation.OrgId, this.Session.AdminOrganisation.Name );
-
       description.AppendLine ( "Demonstration User details: " );
-      description.AppendFormat ( "OrgId: {0} \r\n", this.Session.AdminUserProfile.OrgId );
       description.AppendFormat ( "UserId: {0} \r\n", this.Session.AdminUserProfile.UserId );
       description.AppendFormat ( "GivenName: {0} \r\n", this.Session.AdminUserProfile.GivenName );
       description.AppendFormat ( "FamilyName: {0} \r\n", this.Session.AdminUserProfile.FamilyName );
-      description.AppendFormat ( "RoleId: {0} \r\n", this.Session.AdminUserProfile.RoleId );
+      description.AppendFormat ( "RoleId: {0} \r\n", this.Session.AdminUserProfile.Roles );
 
       // 
       // Create the  name object
@@ -695,7 +692,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.updateObjectValue ( PageCommand ) == false )
         {
-          this.ErrorMessage = EvLabels.UserProfile_Value_Update_Error_Message;
+          this.ErrorMessage = EdLabels.UserProfile_Value_Update_Error_Message;
 
           this.LogMethodEnd ( "RegisterUserDetails" );
           return EvEventCodes.Value_Update_Processing_Error;
@@ -717,9 +714,9 @@ namespace Evado.UniForm.Clinical
         {
           this.Session.AdminUserProfile.CustomerGuid = this.Session.Customer.Guid;
 
-          if ( this.Session.AdminUserProfile.OrgId == "Evado" )
+          if ( this.Session.SelectedUserType.ToString() == "Evado" )
           {
-            this.Session.AdminUserProfile.CustomerGuid = this.ClassParameters.ApplicationGuid;
+            this.Session.AdminUserProfile.CustomerGuid = this.ClassParameters.PlatformGuid;
           }
         }
 
@@ -762,7 +759,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.User_Profile_Save_Error_Message;
+        this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -803,7 +800,7 @@ namespace Evado.UniForm.Clinical
       //
       clientDataObject.Id = this.Session.AdminUserProfile.Guid;
       clientDataObject.Page.Id = this.Session.AdminUserProfile.Guid;
-      clientDataObject.Title = EvLabels.User_Profile_Page_Title
+      clientDataObject.Title = EdLabels.User_Profile_Page_Title
         + this.Session.AdminUserProfile.CommonName;
 
       clientDataObject.Page.Title = clientDataObject.Title;

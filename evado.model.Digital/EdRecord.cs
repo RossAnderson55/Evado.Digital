@@ -28,7 +28,7 @@ namespace Evado.Model.Digital
   /// </summary>
   [Serializable]
   public class EdRecord
-    {
+  {
     #region Class Enumerators
 
     //  ===================================================================================
@@ -37,7 +37,7 @@ namespace Evado.Model.Digital
     /// </summary>
     //  ----------------------------------------------------------------------------------- 
     public enum SaveActionCodes
-      {
+    {
       /// <summary>
       /// This enumeration defines the default save action
       /// </summary>
@@ -82,17 +82,22 @@ namespace Evado.Model.Digital
       /// This enumeration defines the record withdrawn save action.
       /// </summary>
       Withdrawn_Record,
-      }
+    }
 
     /// <summary>
     /// This enumeration list 
     /// </summary>
     public enum FormAccessRoles
-      {
+    {
       /// <summary>
-      /// This enumeration defines the form role is not set. So display only.
+      /// This enumeration defines the form role is not set the user does not have access.
       /// </summary>
       Null = 0,
+
+      /// <summary>
+      /// This enumeration defines the form role is not set the user does not have access.
+      /// </summary>
+      None = 0,
 
       /// <summary>
       /// This enumeration defines the form access roles is a reader.
@@ -108,14 +113,14 @@ namespace Evado.Model.Digital
       /// This enumerate defiens the record the form designer role.
       /// </summary>
       Form_Designer
-      }
+    }
 
 
     /// <summary>
     /// This enumeration list 
     /// </summary>
     public enum UpdateReasonList
-      {
+    {
       /// <summary>
       /// This enumeration defines the form role is not set. So display only.
       /// </summary>
@@ -144,15 +149,15 @@ namespace Evado.Model.Digital
       /// This enumeration defines a major change for a regulatory change.
       /// </summary>
       Regulatory_Change,
-      }
+    }
 
 
 
     /// <summary>
     /// This enumeration list defines the form class field names enumerated identifiers.
     /// </summary>
-    public enum FormClassFieldNames
-      {
+    public enum RecordFieldNames
+    {
       /// <summary>
       /// This enumeration is the null value
       /// </summary>
@@ -161,12 +166,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the trial identifier field.
       /// </summary>
-      ProjectId,
+      ApplivcationId,
 
       /// <summary>
       /// This enumeration identifies the form identifier field.
       /// </summary>
-      FormId,
+      Layout_Id,
 
       /// <summary>
       /// This enumeration identifies the milestone identifier field
@@ -237,6 +242,11 @@ namespace Evado.Model.Digital
       /// This enumeration identifies the source identifier field.
       /// </summary>
       SourceId,
+
+      /// <summary>
+      /// This enumeration identifies the data collection event identifier field.
+      /// </summary>
+      Data_Collect_Event_Id,
 
       /// <summary>
       /// This enumeration identifies the form or record status field.
@@ -316,9 +326,9 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the form user access role field
       /// </summary>
-      FormAccessRole
+      RecordAccessRole
 
-      }
+    }
 
     #endregion
 
@@ -528,12 +538,12 @@ namespace Evado.Model.Digital
 
 
 
-    private List<EvUserSignoff> _Signoffs = new List<EvUserSignoff> ( );
+    private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );
 
     /// <summary>
     /// This property contains a sign off list of a form content.
     /// </summary>
-    public List<EvUserSignoff> Signoffs
+    public List<EdUserSignoff> Signoffs
     {
       get
       {
@@ -557,49 +567,6 @@ namespace Evado.Model.Digital
       set { _RecordFilterFieldIds = value; }
     }
 
-    int _ScheduleId = 0;
-
-    /// <summary>
-    /// This property contains the schedule identifier when the record was created.
-    /// </summary>
-    public int ScheduleId
-    {
-      get { return _ScheduleId; }
-      set { _ScheduleId = value; }
-    }
-
-    private string _MilestoneId = String.Empty;
-    /// <summary>
-    /// This property contains a milestone identifier of a form. 
-    /// </summary>
-    public string MilestoneId
-    {
-      get
-      {
-        return this._MilestoneId;
-      }
-      set
-      {
-        this._MilestoneId = value;
-      }
-    }
-
-    private string _ActivityId = String.Empty;
-    /// <summary>
-    /// This property contains an activity identifier of a form. 
-    /// </summary>
-    public string ActivityId
-    {
-      get
-      {
-        return this._ActivityId;
-      }
-      set
-      {
-        this._ActivityId = value;
-      }
-    }
-
     private string _DataCollectEventId = String.Empty;
     /// <summary>
     /// This property contains data collection event identifier for the record. 
@@ -613,37 +580,6 @@ namespace Evado.Model.Digital
       set
       {
         this._DataCollectEventId = value;
-      }
-    }
-
-    private bool _IsMandatoryActivity = false;
-    /// <summary>
-    /// This property indicates a mandatory activity of a form. 
-    /// </summary>
-    public bool IsMandatoryActivity
-    {
-      get
-      {
-        return this._IsMandatoryActivity;
-      }
-      set
-      {
-        this._IsMandatoryActivity = value;
-      }
-    }
-
-    /// <summary>
-    /// This property contains a mandatory activity string of a form. 
-    /// </summary>
-    public string stIsMandatoryActivity
-    {
-      get
-      {
-        if ( this._IsMandatoryActivity == true )
-        {
-          return "Yes";
-        }
-        return "No";
       }
     }
 
@@ -678,15 +614,15 @@ namespace Evado.Model.Digital
       }
     }
 
-    private FormAccessRoles _FormAccessRole = FormAccessRoles.Null;
+    private FormAccessRoles AccessRole = FormAccessRoles.Null;
 
     /// <summary>
     /// This property defines the form user access role.
     /// </summary>
     public FormAccessRoles FormAccessRole
     {
-      get { return _FormAccessRole; }
-      set { _FormAccessRole = value; }
+      get { return AccessRole; }
+      set { AccessRole = value; }
     }
 
 
@@ -734,11 +670,11 @@ namespace Evado.Model.Digital
     }
 
 
-    private List<EvFormRecordComment> _CommentList = new List<EvFormRecordComment> ( );
+    private List<EdFormRecordComment> _CommentList = new List<EdFormRecordComment> ( );
     /// <summary>
     /// This property contains a comment list of a form. 
     /// </summary>
-    public List<EvFormRecordComment> CommentList
+    public List<EdFormRecordComment> CommentList
     {
       get
       {
@@ -1084,6 +1020,80 @@ namespace Evado.Model.Digital
 
     #region class methods
 
+
+    //  =================================================================================
+    /// <summary>
+    ///  This method updates the form record state based on current data content.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    public void SetUserAccess ( String UserRoleIds )
+    {
+      //
+      // Initialise the methods objects and variables.
+      //
+      String [ ] arUserRoleIds = UserRoleIds.Split ( ';' );
+      this.AccessRole = FormAccessRoles.None;
+
+      //
+      // User the state switch to determine the user's access to the record.@
+      //
+      switch ( this.State )
+      {
+        case EdRecordObjectStates.Form_Draft:
+        case EdRecordObjectStates.Form_Reviewed:
+        case EdRecordObjectStates.Form_Issued:
+          {
+            this.AccessRole = FormAccessRoles.Record_Reader;
+
+            if ( UserRoleIds.Contains ( EdRole.CONST_DESIGNER ) == true )
+            {
+              this.AccessRole = FormAccessRoles.Form_Designer;
+            }
+
+            return;
+          }
+        case EdRecordObjectStates.Empty_Record:
+        case EdRecordObjectStates.Draft_Record:
+        case EdRecordObjectStates.Completed_Record:
+        case EdRecordObjectStates.Submitted_Record:
+          {
+            bool bReadRole = EvStatics.CompareDelimtedStrings (
+              this.Design.ReadAccessRoles,
+              UserRoleIds );
+
+            if( bReadRole == true )
+            {
+              this.AccessRole = FormAccessRoles.Record_Reader;
+            }
+
+            bool bEditRole = EvStatics.CompareDelimtedStrings (
+              this.Design.EditAccessRoles,
+              UserRoleIds );
+            
+            if( bReadRole == true )
+            {
+              this.AccessRole = FormAccessRoles.Record_Author;
+            }
+            return;
+          }
+
+        default:
+          {
+            bool bReadRole = EvStatics.CompareDelimtedStrings (
+              this.Design.ReadAccessRoles,
+              UserRoleIds );
+
+            if ( bReadRole == true )
+            {
+              this.AccessRole = FormAccessRoles.Record_Reader;
+            }
+            break;
+          }
+      }
+
+    }
+
+
     //  =================================================================================
     /// <summary>
     ///  This method updates the form record state based on current data content.
@@ -1193,8 +1203,8 @@ namespace Evado.Model.Digital
     /// 2. Return a html string with Name and FieldValue
     /// </remarks>
     // ----------------------------------------------------------------------------------------
-    private String getSummaryField ( 
-      String Name, 
+    private String getSummaryField (
+      String Name,
       String FieldValue )
     {
       if ( FieldValue != String.Empty )
@@ -1216,33 +1226,22 @@ namespace Evado.Model.Digital
       //
       // Swtich roleid to select the form role for the user.
       //
-      switch ( UserProfile.RoleId )
+      this.FormAccessRole = EdRecord.FormAccessRoles.Null;
+
+      if ( UserProfile.hasEndUserRole ( this.Design.ReadAccessRoles ) == true )
       {
-        case EvRoleList.Evado_Administrator:
-        case EvRoleList.Application_User:
-        case EvRoleList.Coordinator:
-          {
-            if ( UserProfile.hasRecordEditAccess == true
-              && ( this.State == EdRecordObjectStates.Empty_Record
-                || this.State == EdRecordObjectStates.Draft_Record
-                || this.State == EdRecordObjectStates.Completed_Record
-                || this.State == EdRecordObjectStates.Submitted_Record ) )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
-              break;
-            }
+        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
+      }
 
-            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            break;
-          }
-        default:
-          {
-            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            break;
-          }
+      if ( UserProfile.hasDesignAccess == true )
+      {
+        this.FormAccessRole = EdRecord.FormAccessRoles.Form_Designer;
+      }
 
-      }//END switch statement
-
+      if ( UserProfile.hasEndUserRole ( this.Design.EditAccessRoles ) == true )
+      {
+        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
+      }
 
     }//END setFormRole method
 
@@ -1261,7 +1260,7 @@ namespace Evado.Model.Digital
       //
       // Iterate through the section adding the fields in section in order of occurance.
       //
-      foreach ( EvFormSection section in this._Design.FormSections )
+      foreach ( EdRecordSection section in this._Design.FormSections )
       {
         //
         // Build a list of section indexes
@@ -1335,18 +1334,18 @@ namespace Evado.Model.Digital
       // 
       // Initialise the fieldname as enumerated object
       // 
-      FormClassFieldNames fieldname = FormClassFieldNames.Null;
+      RecordFieldNames fieldname = RecordFieldNames.Null;
 
       //
       // Try convert the FieldName into fieldname 
       //
       try
       {
-        fieldname = (FormClassFieldNames) Enum.Parse ( typeof ( FormClassFieldNames ), FieldName );
+        fieldname = (RecordFieldNames) Enum.Parse ( typeof ( RecordFieldNames ), FieldName );
       }
       catch
       {
-        fieldname = FormClassFieldNames.Null;
+        fieldname = RecordFieldNames.Null;
       }
 
       return getValue ( fieldname );
@@ -1368,70 +1367,62 @@ namespace Evado.Model.Digital
     /// 3. Switch fieldname and update value for the property defined by form class field names.
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public string getValue ( FormClassFieldNames FieldName )
+    public string getValue ( RecordFieldNames FieldName )
     {
       // 
       // Switch to the fieldname and return the related value.
       // 
       switch ( FieldName )
       {
-        case FormClassFieldNames.ProjectId:
+        case RecordFieldNames.ApplivcationId:
           return this._ApplicationId;
 
-        case FormClassFieldNames.FormId:
+        case RecordFieldNames.Layout_Id:
           return this.LayoutId;
 
-        case FormClassFieldNames.MilestoneId:
-          return this._MilestoneId;
-        case FormClassFieldNames.SourceId:
+        case RecordFieldNames.SourceId:
           return this._SourceId;
 
-        case FormClassFieldNames.Status:
+        case RecordFieldNames.Status:
           return this.StateDesc;
 
-        case FormClassFieldNames.ActivityId:
-          return this._ActivityId;
-
-        case FormClassFieldNames.IsMandatory:
+        case RecordFieldNames.IsMandatory:
           return this._IsMandatory.ToString ( );
 
-        case FormClassFieldNames.IsMandatoryActivity:
-          return this._IsMandatoryActivity.ToString ( );
-
-        case FormClassFieldNames.Title:
+        case RecordFieldNames.Title:
           return this._Design.Title;
 
-        case FormClassFieldNames.Instructions:
+        case RecordFieldNames.Instructions:
           return this._Design.Instructions;
 
-        case FormClassFieldNames.Description:
+        case RecordFieldNames.Description:
           {
             return this._Design.Description;
           }
 
-        case FormClassFieldNames.UpdateReason:
+        case RecordFieldNames.UpdateReason:
           {
             return this._Design.UpdateReason.ToString ( );
           }
-        case FormClassFieldNames.FormAccessRole:
+        case RecordFieldNames.RecordAccessRole:
           {
-            return this._FormAccessRole.ToString ( );
+            return this.AccessRole.ToString ( );
           }
 
 
-        case FormClassFieldNames.Reference:
+        case RecordFieldNames.Reference:
           return this._Design.HttpReference;
 
-        case FormClassFieldNames.FormCategory:
+        case RecordFieldNames.FormCategory:
           return this._Design.RecordCategory;
 
-        case FormClassFieldNames.TypeId:
+        case RecordFieldNames.TypeId:
           return this._Design.TypeId.ToString ( );
 
-        case FormClassFieldNames.JavaScript:
+        case RecordFieldNames.JavaScript:
           return this._Design.JavaScript;
 
-        case FormClassFieldNames.HasCsScript:
+        case RecordFieldNames.HasCsScript:
           return this._Design.hasCsScript.ToString ( );
 
         default:
@@ -1470,18 +1461,18 @@ namespace Evado.Model.Digital
       //float fltValue = 0;
       //int intValue = 0;
       //bool bValue = false;
-      FormClassFieldNames fieldname = FormClassFieldNames.Null;
+      RecordFieldNames fieldname = RecordFieldNames.Null;
 
       //
       // Try convert the FieldName into a fieldname enumerated object
       //
       try
       {
-        fieldname = (FormClassFieldNames) Enum.Parse ( typeof ( FormClassFieldNames ), FieldName );
+        fieldname = (RecordFieldNames) Enum.Parse ( typeof ( RecordFieldNames ), FieldName );
       }
       catch
       {
-        fieldname = FormClassFieldNames.Null;
+        fieldname = RecordFieldNames.Null;
       }
 
       this.setValue ( fieldname, Value );
@@ -1503,7 +1494,7 @@ namespace Evado.Model.Digital
     /// 3. Switch fieldname and update value for the property defined by form class field names.
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public void setValue ( FormClassFieldNames FieldName, string Value )
+    public void setValue ( RecordFieldNames FieldName, string Value )
     {
       // 
       // Initialise the methods variables including date, float value, integer value, 
@@ -1516,28 +1507,18 @@ namespace Evado.Model.Digital
       // 
       switch ( FieldName )
       {
-        case FormClassFieldNames.ProjectId:
+        case RecordFieldNames.ApplivcationId:
           {
             this._ApplicationId = Value;
             return;
           }
-        case FormClassFieldNames.FormId:
+        case RecordFieldNames.Layout_Id:
           {
             this._LayoutId = Value;
             return;
           }
-        case FormClassFieldNames.ActivityId:
-          {
-            this._ActivityId = Value;
-            return;
-          }
-        case FormClassFieldNames.MilestoneId:
-          {
-            this._MilestoneId = Value;
-            return;
-          }
 
-        case FormClassFieldNames.Status:
+        case RecordFieldNames.Status:
           {
             try
             {
@@ -1550,12 +1531,17 @@ namespace Evado.Model.Digital
 
             return;
           }
-        case FormClassFieldNames.SourceId:
+        case RecordFieldNames.SourceId:
           {
             this._SourceId = Value;
             return;
           }
-        case FormClassFieldNames.IsMandatory:
+        case RecordFieldNames.Data_Collect_Event_Id:
+          {
+            this.DataCollectEventId = Value;
+            return;
+          }
+        case RecordFieldNames.IsMandatory:
           {
             this._IsMandatory = EvcStatics.getBool ( Value );
             return;
@@ -1563,53 +1549,53 @@ namespace Evado.Model.Digital
         //
         // Design elements.
         //
-        case FormClassFieldNames.Title:
+        case RecordFieldNames.Title:
           {
             this._Design.Title = Value;
             return;
           }
 
-        case FormClassFieldNames.Instructions:
+        case RecordFieldNames.Instructions:
           {
             this._Design.Instructions = Value;
             return;
           }
 
-        case FormClassFieldNames.Description:
+        case RecordFieldNames.Description:
           {
             this._Design.Description = Value;
             return;
           }
 
-        case FormClassFieldNames.UpdateReason:
+        case RecordFieldNames.UpdateReason:
           {
             this._Design.UpdateReason = EvStatics.Enumerations.parseEnumValue<UpdateReasonList> ( Value );
             return;
           }
-        case FormClassFieldNames.FormAccessRole:
+        case RecordFieldNames.RecordAccessRole:
           {
-            this._FormAccessRole = EvStatics.Enumerations.parseEnumValue<FormAccessRoles> ( Value );
+            this.AccessRole = EvStatics.Enumerations.parseEnumValue<FormAccessRoles> ( Value );
             return;
           }
 
 
-        case FormClassFieldNames.Reference:
+        case RecordFieldNames.Reference:
           {
             this._Design.HttpReference = Value;
             return;
           }
 
-        case FormClassFieldNames.FormCategory:
+        case RecordFieldNames.FormCategory:
           {
             this._Design.RecordCategory = Value;
             return;
           }
-        case FormClassFieldNames.TypeId:
+        case RecordFieldNames.TypeId:
           {
             this._Design.TypeId = EvcStatics.Enumerations.parseEnumValue<EdRecordTypes> ( Value );
             return;
           }
-        case FormClassFieldNames.HasCsScript:
+        case RecordFieldNames.HasCsScript:
           {
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
             return;
@@ -1651,7 +1637,7 @@ namespace Evado.Model.Digital
       //
       // Get the label string value.
       //
-      String stLabel1 = EvLabels.ResourceManager.GetString ( stLabelKey );
+      String stLabel1 = Evado.Model.Digital.EdLabels.ResourceManager.GetString ( stLabelKey );
       if ( stLabel1 != null )
       {
         stLabel = stLabel1;
@@ -1694,7 +1680,7 @@ namespace Evado.Model.Digital
       return list;
     }//END getRecordTypes method
 
- 
+
     //  =================================================================================
     /// <summary>
     ///  This methiod lists the common form types.
@@ -1830,7 +1816,7 @@ namespace Evado.Model.Digital
 
       EvOption Option = new EvOption (
         String.Empty,
-        EvLabels.All_Active_Project_Records_Selection_Option );
+        Evado.Model.Digital.EdLabels.All_Active_Project_Records_Selection_Option );
       list.Add ( Option );
 
       //
@@ -1838,18 +1824,18 @@ namespace Evado.Model.Digital
       //
       Option = new EvOption (
         EdRecordObjectStates.Draft_Record.ToString ( ),
-        EvLabels.Record_State_Draft_Record );
+        Evado.Model.Digital.EdLabels.Record_State_Draft_Record );
       list.Add ( Option );
 
       Option = new EvOption (
         EdRecordObjectStates.Submitted_Record.ToString ( ),
-        EvLabels.Record_State_Submitted_Record );
+        Evado.Model.Digital.EdLabels.Record_State_Submitted_Record );
       list.Add ( Option );
 
-        Option = new EvOption (
-          EdRecordObjectStates.Withdrawn.ToString ( ),
-          EvLabels.Record_State_Withdrawn );
-        list.Add ( Option );
+      Option = new EvOption (
+        EdRecordObjectStates.Withdrawn.ToString ( ),
+        Evado.Model.Digital.EdLabels.Record_State_Withdrawn );
+      list.Add ( Option );
 
       return list;
     }//END getRecordStates method.

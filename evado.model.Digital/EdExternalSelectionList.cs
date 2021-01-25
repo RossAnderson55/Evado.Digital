@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// This is the data model for the form field selection list class.
   /// </summary>
   [Serializable]
-  public class EvFormFieldSelectionList
+  public class EdExternalSelectionList
   {
     #region CodeItem class
 

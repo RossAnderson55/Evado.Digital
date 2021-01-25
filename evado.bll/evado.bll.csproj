@@ -102,7 +102,7 @@
       <Name>Evado.Model.Digital</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model\evado.model.csproj">
-      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>
     <Reference Include="Accessibility" />
@@ -151,8 +151,6 @@
     <Compile Include="Integation\EiCsvServices.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Integation\EiSchedules.cs" />
-    <Compile Include="Integation\EiActivities.cs" />
     <Compile Include="Integation\EiServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -163,13 +161,9 @@
     <Compile Include="Clinical\EvReportTemplates.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EvMilestoneActivities.cs" />
-    <Compile Include="Clinical\EvMilestones.cs" />
     <Compile Include="Clinical\EvReports.cs" />
     <Compile Include="Clinical\EvReportSaved.cs" />
-    <Compile Include="Clinical\EvActivities.cs" />
     <Compile Include="Clinical\EvFormFieldSelectionLists.cs" />
-    <Compile Include="Clinical\evschedules.cs" />
     <Compile Include="Clinical\EdPlatforms.cs" />
     <Compile Include="Clinical\EvDataChanges.cs" />
     <Compile Include="Clinical\EdRecordLayouts.cs">
@@ -177,12 +171,6 @@
     </Compile>
     <Compile Include="Clinical\EdRecordFields.cs" />
     <Compile Include="Clinical\EvDataAnalysis.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvOrganisations.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvAlerts.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvFormRecordFields.cs">
@@ -195,9 +183,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EvAncillaryRecords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvActivityForms.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

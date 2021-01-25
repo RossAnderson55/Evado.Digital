@@ -340,7 +340,7 @@ namespace Evado.Model.Digital
       get
       {
         String stTitle = String.Format (
-            EvLabels.Form_Field_Draft_List_Command_Title,
+            Evado.Model.Digital.EdLabels.Form_Field_Draft_List_Command_Title,
             this.FieldId,
             this.Title, 
             EvStatics.getEnumStringValue( this.TypeId ),
@@ -348,17 +348,17 @@ namespace Evado.Model.Digital
 
         if ( this.Design.Mandatory == true )
         {
-          stTitle += EvLabels.Form_Field_Is_Mandatory_List_Label;
+          stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Mandatory_List_Label;
         }
 
         if ( this.Design.AiDataPoint == true )
         {
-          stTitle += EvLabels.Form_Field_Is_Data_Point_List_Label;
+          stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Data_Point_List_Label;
         }
 
         if ( this.Design.HideField == true )
         {
-          stTitle += EvLabels.Form_Field_Is_Hidden_List_Label;
+          stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Hidden_List_Label;
         }
 
         return stTitle;

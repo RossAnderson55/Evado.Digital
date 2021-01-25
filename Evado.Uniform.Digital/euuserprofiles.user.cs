@@ -76,7 +76,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.User_Profile_Page_Error_Message;
+        this.ErrorMessage = EdLabels.User_Profile_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -110,7 +110,7 @@ namespace Evado.UniForm.Clinical
       //
       ClientDataObject.Id = this.Session.UserProfile.Guid;
       ClientDataObject.Page.Id = this.Session.UserProfile.Guid;
-      ClientDataObject.Title = EvLabels.User_Profile_Page_Title
+      ClientDataObject.Title = EdLabels.User_Profile_Page_Title
         + this.Session.UserProfile.CommonName;
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -145,39 +145,25 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      List<EvOption> optionList = new List<EvOption> ( );
 
       // 
       // create the page pageMenuGroup
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.UserProfile_General_Field_Group_Title,
-         Evado.Model.UniForm.EditAccess.Inherited );
+        EdLabels.UserProfile_General_Field_Group_Title );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       pageGroup.SetCommandBackBroundColor (
         Model.UniForm.GroupParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
-
-      //
-      // Add the user's organisation
-      // 
-      groupField = pageGroup.createTextField (
-         String.Empty,
-         EvLabels.Organisation_Field_Label,
-         String.Format (
-          EvLabels.Organisation_Name,
-          this.Session.UserProfile.OrgId,
-          this.Session.UserProfile.OrganisationName ), 80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       // 
       // Create the user id object
       // 
       groupField = pageGroup.createTextField (
          String.Empty,
-        EvLabels.User_Profile_Identifier_Field_Label,
+        EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.UserProfile.UserId,
         80 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -187,8 +173,8 @@ namespace Evado.UniForm.Clinical
       // Generate the organisation type radio button list field object.
       //
       groupField = pageGroup.createTextField ( String.Empty,
-        EvLabels.User_Profile_Role_Label,
-         EvStatics.enumValueToString ( this.Session.UserProfile.RoleId ),
+        EdLabels.User_Profile_Role_Label,
+         EvStatics.enumValueToString ( this.Session.UserProfile.Roles ),
         30 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -219,7 +205,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       pageGroup = Page.AddGroup (
-        EvLabels.UserProfile_General_Details_Group_Title,
+        EdLabels.UserProfile_General_Details_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -238,13 +224,13 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Prefix,
-        EvLabels.UserProfile_Prefix_Field_Label,
+        EdLabels.UserProfile_Prefix_Field_Label,
         this.Session.UserProfile.Prefix, 10 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Given_Name,
-        EvLabels.UserProfile_GivenName_Field_Label,
+        EdLabels.UserProfile_GivenName_Field_Label,
         this.Session.UserProfile.GivenName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
@@ -254,7 +240,7 @@ namespace Evado.UniForm.Clinical
 
       groupField = pageGroup.createTextField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Family_Name,
-        EvLabels.UserProfile_FamilyName_Field_Label,
+        EdLabels.UserProfile_FamilyName_Field_Label,
         this.Session.UserProfile.FamilyName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;
@@ -278,7 +264,7 @@ namespace Evado.UniForm.Clinical
         //
         groupField = pageGroup.createAddressField (
           EuUserProfiles.CONST_ADDRESS_FIELD_ID,
-          EvLabels.UserProfile_Address_Field_Label,
+          EdLabels.UserProfile_Address_Field_Label,
           this.Session.UserProfile.Address_1,
           this.Session.UserProfile.Address_2,
           this.Session.UserProfile.AddressCity,
@@ -294,7 +280,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTelephoneNumberField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
-        EvLabels.UserProfile_Telephone_Field_Label,
+        EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.UserProfile.Telephone );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -303,7 +289,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createTelephoneNumberField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Mobile_Phone.ToString ( ),
-        EvLabels.UserProfile_Mobilephone_Field_Label,
+        EdLabels.UserProfile_Mobilephone_Field_Label,
         this.Session.UserProfile.MobilePhone );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -312,7 +298,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createEmailAddressField (
          Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
-        EvLabels.UserProfile_Email_Field_Label,
+        EdLabels.UserProfile_Email_Field_Label,
         this.Session.UserProfile.EmailAddress );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -342,7 +328,7 @@ namespace Evado.UniForm.Clinical
       // create the page pageMenuGroup
       // 
       pageGroup = Page.AddGroup (
-         EvLabels.UserProfile_Dashboard_Field_Group_Title,
+         EdLabels.UserProfile_Dashboard_Field_Group_Title,
          Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -353,7 +339,7 @@ namespace Evado.UniForm.Clinical
       this.getDataObject_UserGroupCommands ( pageGroup );
 
       /*
-    if ( this.Session.UserProfile.hasMultiSiteAccess == true )
+    if ( this.Session.UserProfile.hasManagementAccess == true )
     {
       //
       // create the project dashboard option list.
@@ -365,7 +351,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createCheckBoxListField (
          EvUserProfile.UserProfileFieldNames.Project_Dashboard_Components,
-         EvLabels.UserProfile_Project_Dashboard_Option_Title,
+         EdLabels.UserProfile_Project_Dashboard_Option_Title,
          this.Session.UserProfile.ProjectDashboardComponents,
          optionList );
       groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
@@ -375,7 +361,7 @@ namespace Evado.UniForm.Clinical
     // These can see site dashboard.
     //
     if ( ( this.ApplicationObjects.ApplicationSettings.DisplaySiteDashboard == true )
-     &&  ( this.Session.UserProfile.hasRecordEditAccess == true ) )
+     &&  ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true ) )
     {
       //
       // create the site dashboard option list.
@@ -387,7 +373,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupField = pageGroup.createCheckBoxListField (
          EvUserProfile.UserProfileFieldNames.Site_Dashboard_Components,
-         EvLabels.UserProfile_Site_Dashboard_Option_Title,
+         EdLabels.UserProfile_Site_Dashboard_Option_Title,
          this.Session.UserProfile.SiteDashboardComponents, optionList );
       groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
     }
@@ -414,7 +400,7 @@ namespace Evado.UniForm.Clinical
       // Add the save groupCommand
       // 
       groupCommand = PageGroup.addCommand (
-        EvLabels.User_Profile_Save_Command_Title,
+        EdLabels.User_Profile_Save_Command_Title,
         EuAdapter.APPLICATION_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -471,7 +457,7 @@ namespace Evado.UniForm.Clinical
         // 
         if ( this.updateUserObjectValue ( PageCommand ) == false )
         {
-          this.ErrorMessage = EvLabels.UserProfile_Value_Update_Error_Message;
+          this.ErrorMessage = EdLabels.UserProfile_Value_Update_Error_Message;
 
           return this.Session.LastPage;
         }
@@ -524,7 +510,7 @@ namespace Evado.UniForm.Clinical
           string StEvent = this._Bll_UserProfiles.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
 
-          this.ErrorMessage = EvLabels.User_Profile_Save_Error_Message;
+          this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
 
           return this.Session.LastPage;
         }
@@ -541,7 +527,7 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EvLabels.User_Profile_Save_Error_Message;
+        this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
 
         // 
         // Generate the log the error event.

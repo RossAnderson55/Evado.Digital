@@ -167,11 +167,6 @@ namespace Evado.UniForm.Clinical
     /// <summary>
     /// This property contains the audit record guid for the record selection.
     /// </summary>
-    public Guid AuditScheduleGuid { get; set; }
-
-    /// <summary>
-    /// This property contains the audit record guid for the record selection.
-    /// </summary>
     public Guid AuditRecordGuid { get; set; }
 
     /// <summary>
@@ -217,6 +212,11 @@ namespace Evado.UniForm.Clinical
       get { return _CollectUserAddress; }
       set { _CollectUserAddress = value; }
     }
+
+    /// <summary>
+    /// This property contains the current user type selection.
+    /// </summary>
+    public EvUserProfile.UserTypesList SelectedUserType  { get; set; }
 
     EvUserProfile _UserProfile = new EvUserProfile ( );
     /// <summary>
@@ -304,22 +304,6 @@ namespace Evado.UniForm.Clinical
       set
       {
         this._Customer = value;
-      }
-    }
-
-    List<Evado.Model.Digital.EvOrganisation> _OrganisationList = new List<Evado.Model.Digital.EvOrganisation> ( );
-    /// <summary>
-    /// This property object contains a list of the application organisations object.
-    /// </summary>
-    public List<EvOrganisation> OrganisationList
-    {
-      get
-      {
-        return this._OrganisationList;
-      }
-      set
-      {
-        this._OrganisationList = value;
       }
     }
 
@@ -432,11 +416,6 @@ namespace Evado.UniForm.Clinical
     /// </summary>
     public List<Evado.Model.Digital.EvBinaryFileMetaData> BinaryFileVersionList { get; set; }
 
-    /// <summary>
-    /// This property object contains the eClinical administration organisation object.
-    /// </summary>
-    public Evado.Model.Digital.EvOrganisation AdminOrganisation { get; set; }
-
     //
     // This property is a list of the eclinical administrator usres list.
     //
@@ -446,22 +425,6 @@ namespace Evado.UniForm.Clinical
     /// This property contains the users eClinical user profile used by the admin module.
     /// </summary>
     public Evado.Model.Digital.EvUserProfile AdminUserProfile { get; set; }
-
-    EvOrganisation _Organisation = new EvOrganisation ( );
-    /// <summary>
-    /// This property object contains the eClinical trial object.
-    /// </summary>
-    public EvOrganisation Organisation
-    {
-      get
-      {
-        return this._Organisation;
-      }
-      set
-      {
-        this._Organisation = value;
-      }
-    }
 
     /// <summary>
     /// This property contains the form analysis record list.
@@ -594,16 +557,6 @@ namespace Evado.UniForm.Clinical
       set { _ReportStudyId = value; }
     }
 
-    /* private EvReport.ReportTypeCode _ReportTypeId = EvReport.ReportTypeCode.Null;
-     /// <summary>
-     /// This property stores the current report type selection.
-     /// </summary>
-     public EvReport.ReportTypeCode ReportType
-     {
-       get { return _ReportTypeId; }
-       set { _ReportTypeId = value; }
-     }
-     */
     private String _ReportCategory = String.Empty;
     /// <summary>
     /// This property stores the current report category string.
@@ -766,11 +719,11 @@ namespace Evado.UniForm.Clinical
       set { _FormState = value; }
     }
 
-    EvFormSection _FormSection = new EvFormSection ( );
+    EdRecordSection _FormSection = new EdRecordSection ( );
     /// <summary>
     /// This property object contains the eClinical EvFormSeciotn object for the currently selected record.
     /// </summary>
-    public EvFormSection FormSection
+    public EdRecordSection FormSection
     {
       get { return _FormSection; }
       set { _FormSection = value; }
@@ -801,11 +754,11 @@ namespace Evado.UniForm.Clinical
       set { _CommonForm = value; }
     }
 
-    EvFormSection _CommonFormSection = new EvFormSection ( );
+    EdRecordSection _CommonFormSection = new EdRecordSection ( );
     /// <summary>
     /// This property object contains the eClinical EvFormSeciotn object for the currently selected record.
     /// </summary>
-    public EvFormSection CommonFormSection
+    public EdRecordSection CommonFormSection
     {
       get { return _CommonFormSection; }
       set { _CommonFormSection = value; }
@@ -877,82 +830,6 @@ namespace Evado.UniForm.Clinical
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Schedule properties properties
-
-    int _ScheduleId = 1;
-
-    /// <summary>
-    /// This property contains current sechedule id.
-    /// </summary>
-    public int ScheduleId
-    {
-      get { return _ScheduleId; }
-      set { _ScheduleId = value; }
-    }
-
-    EvSchedule.ScheduleStates _ScheduleState = 0;
-
-    /// <summary>
-    /// This property contains the schedule version selections.
-    /// </summary>
-    public EvSchedule.ScheduleStates ScheduleState
-    {
-      get { return _ScheduleState; }
-      set { _ScheduleState = value; }
-    }
-
-    /// <summary>
-    /// This property object contains a list of eClinical EvSchedule objects.
-    /// </summary>
-    public List<EvSchedule> ScheduleList { get; set; }
-
-    /// <summary>
-    /// This property contains the currently selecte schedule.
-    /// </summary>
-    public EvSchedule Schedule { get; set; }
-
-    List<EvMilestone> _MilestoneList = new List<EvMilestone> ( );
-    /// <summary>
-    /// This property object contains a list of eClinical EvMilestone objects.
-    /// </summary>
-    public List<EvMilestone> MilestoneList
-    {
-      get { return _MilestoneList; }
-      set { _MilestoneList = value; }
-    }
-
-    EvMilestone _Milestone = new EvMilestone ( );
-    /// <summary>
-    /// This property object contains a EvMilestone object.
-    /// </summary>
-    public EvMilestone Milestone
-    {
-      get { return _Milestone; }
-      set { _Milestone = value; }
-    }
-
-    List<EvActivity> _ActivityList = new List<EvActivity> ( );
-    /// <summary>
-    /// This property object contains a list of eClinical EvActivity objects.
-    /// </summary>
-    public List<EvActivity> ActivityList
-    {
-      get { return _ActivityList; }
-      set { _ActivityList = value; }
-    }
-
-    private EvActivity _activity = new EvActivity ( );
-    /// <summary>
-    /// This property contains the currently selecte activty.
-    /// </summary>
-    public EvActivity Activity
-    {
-      get { return _activity; }
-      set { _activity = value; }
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
     #region class methods
 
     // ==================================================================================
@@ -976,7 +853,7 @@ namespace Evado.UniForm.Clinical
       content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_TITLE, this.Application.Title );
 
       if ( this.Application.Description == String.Empty
-        || this.Application.Description == EvLabels.Project_Create_Project_Description )
+        || this.Application.Description == EdLabels.Project_Create_Project_Description )
       {
         content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_DESCRIPTION, String.Empty );
       }
@@ -1016,91 +893,6 @@ namespace Evado.UniForm.Clinical
       else
       {
         content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_DESCRIPTION, String.Empty );
-      }
-
-      //
-      // Return the substituted text content.
-      //
-      return content;
-    }
-    // ==================================================================================
-    /// <summary>
-    /// This methods performs a MarkDown text substitution in the Content text passed into the
-    /// method and returns text with the relevant text substitutions.
-    /// </summary>
-    /// <param name="Content">String: MarkDown text containing the values to be substituted</param>
-    /// <param name="SubjectMilestone">EvMilestone: the subject milestone</param>
-    /// <returns>Markdown String</returns>
-    //  ---------------------------------------------------------------------------------
-    public String substituteDataValue (
-      String Content,
-      EvMilestone SubjectMilestone )
-    {
-      String content = this.substituteDataValue ( Content );
-
-      //
-      // substitute the milestone values.
-      //
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_ID, SubjectMilestone.MilestoneId );
-
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_NAME, SubjectMilestone.Title );
-
-      if ( SubjectMilestone.Description != String.Empty )
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_DESCRIPTION, SubjectMilestone.Description );
-      }
-      else
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_DESCRIPTION, String.Empty );
-      }
-
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_QUESTIONNAIRE_URL, String.Empty );
-
-      //
-      // Return the substituted text content.
-      //
-      return content;
-    }
-
-    // ==================================================================================
-    /// <summary>
-    /// This methods performs a MarkDown text substitution in the Content text passed into the
-    /// method and returns text with the relevant text substitutions.
-    /// </summary>
-    /// <param name="Content">String: MarkDown text containing the values to be substituted</param>
-    /// <param name="SubjectMilestone">EvMilestone: the subject milestone</param>
-    /// <returns>Markdown String</returns>
-    //  ---------------------------------------------------------------------------------
-    public String substituteDataValue (
-      String Content,
-      EvMilestone SubjectMilestone,
-      EdRecord FormRecord,
-      String QuestionnaireUrl )
-    {
-      String content = this.substituteDataValue ( Content );
-
-      //
-      // substitute the milestone values.
-      //
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_ID, SubjectMilestone.MilestoneId );
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_NAME, SubjectMilestone.Title );
-      if ( SubjectMilestone.Description != String.Empty )
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_DESCRIPTION, SubjectMilestone.Description );
-      }
-      else
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_MILESTONE_DESCRIPTION, String.Empty );
-      }
-
-      //
-      // retreive the Questionnaire URL from the config and add record Guid to it.
-      //
-      if ( QuestionnaireUrl != String.Empty )
-      {
-        QuestionnaireUrl += FormRecord.Guid.ToString ( );
-
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_QUESTIONNAIRE_URL, QuestionnaireUrl.Trim ( ) );
       }
 
       //
@@ -1221,7 +1013,6 @@ namespace Evado.UniForm.Clinical
     {
       this.Application = new Evado.Model.Digital.EdApplication ( );
       this.ApplicationList = new List<Model.Digital.EdApplication> ( );
-      this.OrganisationList = new List<EvOrganisation> ( );
     }
 
 

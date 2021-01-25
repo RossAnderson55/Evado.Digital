@@ -338,7 +338,7 @@ namespace Evado.Bll.Integration
         if ( dataObject.DataRows != null )
         {
           int columnIndex = dataObject.getColumnNo (
-            Evado.Model.Digital.EvIdentifiers.ORGANISATION_ID );
+            "Org_Id" );
 
           if ( dataObject.DataRows.Count > 0
             && columnIndex > -1 )

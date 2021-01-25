@@ -412,15 +412,6 @@ namespace Evado.Bll.Clinical
       //
       switch ( selectionType )
       {
-
-
-        case EvReport.SelectionListTypes.Sex:
-          {
-            this.LogValue ( "Sex source selected." );
-            returnList = Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.Digital.EvcStatics.SexOptions ), true );
-            break;
-          }
-
         case EvReport.SelectionListTypes.Status:
           {
             this.LogValue ( "Status source selected." );
@@ -435,14 +426,6 @@ namespace Evado.Bll.Clinical
 
             break;
           }
-
-        case EvReport.SelectionListTypes.Trial_Id:
-          {
-            this.LogValue ( "Project source selected." );
-            EdApplications bllTrials = new EdApplications ( this.ClassParameter );
-            returnList = bllTrials.getList ( Model.Digital.EdApplication.ApplicationStates.Null, false );
-            break;
-          }
         case EvReport.SelectionListTypes.Record_State:
           {
             this.LogValue ( "Record source selected." );
@@ -450,26 +433,6 @@ namespace Evado.Bll.Clinical
             break;
           }
 
-        case EvReport.SelectionListTypes.ScheduleId:
-          {
-            this.LogValue ( "Project Arms source selected." );
-            EdApplications bllTrials = new EdApplications ( this.ClassParameter );
-            returnList = new List<EvOption> ( );
-            EvOption option = new EvOption ( );
-            returnList.Add ( option );
-
-            //
-            // get the trial.
-            //
-            Model.Digital.EdApplication project = bllTrials.GetApplication ( Project.ApplicationId );
-
-            EvSchedules schedules = new EvSchedules (  );
-            List<EvOption> scheduleList = schedules.getOptionList ( project.ApplicationId, true, true, true );
-
-            returnList = scheduleList;
-
-            break;
-          }
 
         case EvReport.SelectionListTypes.LayoutId:
           {
@@ -486,7 +449,7 @@ namespace Evado.Bll.Clinical
             returnList = new List<EvOption> ( );
             EvOption option = new EvOption (
               Project.ApplicationId,
-              Project.ApplicationId + EvLabels.Space_Hypen + Project.Title );
+              Project.ApplicationId + " - " + Project.Title );
             returnList.Add ( option );
             break;
           }
@@ -517,7 +480,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of option objects for report types. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public static List<EvOption> getReportTypeList ( EvRoleList UserRoleId, bool CtmsEnabled )
+    public static List<EvOption> getReportTypeList ( )
     {
       //
       // Initialise the methods variables and objects.
@@ -525,16 +488,7 @@ namespace Evado.Bll.Clinical
       List<EvOption> list = new List<EvOption> ( );
 
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Null ) );
-      /*
-      if ( UserRoleId == EvRoleList.Evado_Administrator
-        || UserRoleId == EvRoleList.Administrator
-        || UserRoleId == EvRoleList.Project_Finance )
-      {
-        list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Budget ) );
 
-        list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Billing ) );
-      }
-      */
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Clinical ) );
       
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Data_Management ) );
@@ -567,7 +521,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of option objects for report types. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public static List<EvOption> getReportScopeList ( EvRoleList UserRoleId, bool CtmsEnabled )
+    public static List<EvOption> getReportScopeList (  )
     {
       //
       // Initialise the methods variables and objects.
@@ -583,30 +537,6 @@ namespace Evado.Bll.Clinical
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Data_Management_Reports ) );
 
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Site_Reports ) );
-     /*
-      if ( CtmsEnabled == true )
-      {
-        if ( UserRoleId == EvRoleList.Evado_Administrator
-          || UserRoleId == EvRoleList.Customer_Administrator )
-        {
-          list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Finance_Reports ) );
-
-          list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Budget ) );
-
-          list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Billing_Summary ) );
-
-          list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Billing_Detailed ) );
-        }
-      } 
-      */
-
-      if ( UserRoleId == EvRoleList.Evado_Administrator
-        || UserRoleId == EvRoleList.Administrator)
-      {
-        list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Subject_Calendar ) );
-
-        list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.SAE_Correlation ) );
-      }
 
       // 
       // Return the repot QueryType currentSchedule.

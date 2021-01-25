@@ -57,7 +57,7 @@ namespace Evado.Dal.Clinical
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvOrganisations.";
 
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.ApplicationGuid );
+      this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.PlatformGuid );
       this.LogDebug ( "CustomerGuid: " + this.ClassParameters.CustomerGuid );
 
     }
@@ -310,15 +310,13 @@ namespace Evado.Dal.Clinical
         new SqlParameter ( EvOrganisations.PARM_APPLICATION_GUID, SqlDbType.UniqueIdentifier), 
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = this.ClassParameters.ApplicationGuid;
+      cmdParms [ 1 ].Value = this.ClassParameters.PlatformGuid;
 
       //
       // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
       // to ensure that Evado organisations are not displayed in the org list.
       //
-      if ( this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
-        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
-        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff )
+      if ( this.ClassParameters.UserProfile.hasEvadoAccess == false )
       {
         cmdParms [ 1 ].Value = Guid.Empty;
       }
@@ -363,9 +361,7 @@ namespace Evado.Dal.Clinical
           EvOrganisation organisation = this.readQueryRow ( row );
 
           if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
-            && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
-            && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
-            && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff )
+            && this.ClassParameters.UserProfile.hasEvadoAccess == false )
           {
             continue;
           }
@@ -496,16 +492,14 @@ namespace Evado.Dal.Clinical
         new SqlParameter (  EvOrganisations.PARM_Guid, SqlDbType.UniqueIdentifier )
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = this.ClassParameters.ApplicationGuid;
+      cmdParms [ 1 ].Value = this.ClassParameters.PlatformGuid;
       cmdParms [ 2 ].Value = OrgGuid;
 
       //
       // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
       // to ensure that Evado organisations are not displayed in the org list.
       //
-      if ( this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
-        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
-        && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff )
+      if ( this.ClassParameters.UserProfile.hasEvadoAccess == false  )
       {
         cmdParms [ 1 ].Value = Guid.Empty;
       }
@@ -550,11 +544,9 @@ namespace Evado.Dal.Clinical
         // return an empty organisation object.
         //
         if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff )
+          && this.ClassParameters.UserProfile.hasEvadoAccess == false)
         {
-          organisation = new EvOrganisation();
+          organisation = new EvOrganisation ( );
         }
 
       }//END Using 
@@ -617,7 +609,7 @@ namespace Evado.Dal.Clinical
         new SqlParameter (  EvOrganisations.PARM_OrgId, SqlDbType.NVarChar, 10 )
       };
       cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = this.ClassParameters.ApplicationGuid;
+      cmdParms [ 1 ].Value = this.ClassParameters.PlatformGuid;
       cmdParms [ 2 ].Value = OrgId;
 
       // 
@@ -659,9 +651,7 @@ namespace Evado.Dal.Clinical
         // return an empty organisation object.
         //
         if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Administrator
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Manager
-          && this.ClassParameters.UserProfile.RoleId != EvRoleList.Evado_Staff )
+          && this.ClassParameters.UserProfile.hasEvadoAccess == false)
         {
           organisation = new EvOrganisation ( );
         }
@@ -669,8 +659,8 @@ namespace Evado.Dal.Clinical
       }//END Using 
 
       //this.LogDebugValue ( "Guid: " + organisation.Guid );
-     // this.LogDebugValue ( "OrgId: " + organisation.OrgId );
-     // this.LogDebugValue ( "Name: " + organisation.Name );
+      // this.LogDebugValue ( "OrgId: " + organisation.OrgId );
+      // this.LogDebugValue ( "Name: " + organisation.Name );
 
       // 
       // Return Organisation.

@@ -141,13 +141,13 @@ namespace Evado.Dal.Clinical
     /// 8. Return the formfield object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private Evado.Model.Digital.EvFormSection getRowData ( DataRow Row )
+    private Evado.Model.Digital.EdRecordSection getRowData ( DataRow Row )
     {
       // 
       // Initialise xmltable string and a return formfield object. 
       // 
       string xmlTable = String.Empty;
-      Evado.Model.Digital.EvFormSection formSection = new Evado.Model.Digital.EvFormSection ( );
+      Evado.Model.Digital.EdRecordSection formSection = new Evado.Model.Digital.EdRecordSection ( );
 
       //
       // Update formfield object with the compatible data row items. 
@@ -193,14 +193,14 @@ namespace Evado.Dal.Clinical
     /// 5. Return the FormFields list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvFormSection> getSectionList ( Guid FormGuid )
+    public List<EdRecordSection> getSectionList ( Guid FormGuid )
     {
       this.LogMethod ( "GetView method" );
       this.LogDebug ( "FormGuid: " + FormGuid );
       //
       // Initialize the debug log and a return list of formfield
       //
-      List<EvFormSection> sectionList = new List<EvFormSection> ( );
+      List<EdRecordSection> sectionList = new List<EdRecordSection> ( );
 
       // 
       // Define the SQL query parameters.
@@ -235,7 +235,7 @@ namespace Evado.Dal.Clinical
           // 
           DataRow row = table.Rows [ count ];
 
-          EvFormSection section = this.getRowData ( row );
+          EdRecordSection section = this.getRowData ( row );
 
           section.Order = count * 2 + 1;
 
@@ -301,7 +301,7 @@ namespace Evado.Dal.Clinical
 
       for ( int count = 0; count < Form.Design.FormSections.Count; count++ )
       {
-        EvFormSection section = Form.Design.FormSections [ count ];
+        EdRecordSection section = Form.Design.FormSections [ count ];
 
         //
         // skip empty sections 

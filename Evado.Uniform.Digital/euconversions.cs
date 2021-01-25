@@ -105,7 +105,7 @@ namespace Evado.UniForm.Clinical
     // ---------------------------------------------------------------------------------
     public static Evado.Model.UniForm.Group convertListOfEvFormFields (
       List< Evado.Model.Digital.EdRecordField> FormRecordFields,
-        Evado.Model.Digital.EvFormSection Section,
+        Evado.Model.Digital.EdRecordSection Section,
       Evado.Model.UniForm.EditAccess EditStatus )
     {
       return convertListOfEvFormFields (
@@ -127,7 +127,7 @@ namespace Evado.UniForm.Clinical
     // ---------------------------------------------------------------------------------
     public static Evado.Model.UniForm.Group convertListOfEvFormFields (
       List< Evado.Model.Digital.EdRecordField> FormRecordFields,
-       Evado.Model.Digital.EvFormSection Section,
+       Evado.Model.Digital.EdRecordSection Section,
       Evado.Model.UniForm.EditAccess EditStatus,
       Evado.Model.UniForm.GroupLayouts GroupLayout )
     {
@@ -151,7 +151,7 @@ namespace Evado.UniForm.Clinical
       // 
       if ( Section == null )
       {
-        Section = new  Evado.Model.Digital.EvFormSection ( );
+        Section = new  Evado.Model.Digital.EdRecordSection ( );
       }
 
       // 

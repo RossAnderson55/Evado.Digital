@@ -131,6 +131,38 @@ namespace Evado.Model.Digital
       }
     }
 
+    private string _ReadAccessRoles = String.Empty;
+    /// <summary>
+    /// This property contains a list of read acces roles
+    /// </summary>
+    public string ReadAccessRoles
+    {
+      get
+      {
+        return this._ReadAccessRoles;
+      }
+      set
+      {
+        this._ReadAccessRoles = value;
+      }
+    }
+
+    private string _EditAccessRoles = String.Empty;
+    /// <summary>
+    /// This property contains a list of edit acces roles
+    /// </summary>
+    public string EditAccessRoles
+    {
+      get
+      {
+        return this._EditAccessRoles;
+      }
+      set
+      {
+        this._EditAccessRoles = value;
+      }
+    }
+
     /// <summary>
     /// This property contains a form approval for display on records.
     /// </summary>
@@ -176,11 +208,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EvFormSection> _FormSections = new List<EvFormSection> ( );
+    private List<EdRecordSection> _FormSections = new List<EdRecordSection> ( );
     /// <summary>
     /// This property contains a form section list of a form design.
     /// </summary>
-    public List<EvFormSection> FormSections
+    public List<EdRecordSection> FormSections
     {
       get
       {
@@ -279,11 +311,11 @@ namespace Evado.Model.Digital
     /// <param name="SectionTitle">String containing the section title.</param>
     /// <returns>EvFormSection object.</returns>
     //-----------------------------------------------------------------------------------
-    public EvFormSection getSection ( String SectionTitle )
+    public EdRecordSection getSection ( String SectionTitle )
     {
       SectionTitle = SectionTitle.ToLower ( );
 
-      foreach ( EvFormSection section in this._FormSections )
+      foreach ( EdRecordSection section in this._FormSections )
       {
         String title = section.Title.ToLower ( );
 

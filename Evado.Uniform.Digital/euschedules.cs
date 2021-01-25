@@ -1637,7 +1637,7 @@ namespace Evado.UniForm.Clinical
         String.Empty,
         EvLabels.Label_Signoff_Log_Field_Title,
         String.Empty,
-        EvUserSignoff.getSignoffLog ( this.Session.Schedule.Signoffs, false ) );
+        EdUserSignoff.getSignoffLog ( this.Session.Schedule.Signoffs, false ) );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END getClientClientDataObjectObject Method

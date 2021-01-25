@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="JSON_DESERIALISATION_ERROR" xml:space="preserve">
-    <value>JSON deserialisation failure:</value>
+  <data name="Default_Home_Page_Command_Title" xml:space="preserve">
+    <value>Home Page</value>
   </data>
-  <data name="Label_Activity_Id" xml:space="preserve">
-    <value>ActivityId:</value>
+  <data name="Default_Logout_Command_Title" xml:space="preserve">
+    <value>Logout</value>
   </data>
-  <data name="Label_No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Label_Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Label_Yes_No" xml:space="preserve">
-    <value>Yes/No</value>
-  </data>
-  <data name="Space_Arrow_Right" xml:space="preserve">
-    <value> &gt; </value>
-  </data>
-  <data name="Space_Close_Bracket" xml:space="preserve">
-    <value> ) </value>
-  </data>
-  <data name="Space_Coma" xml:space="preserve">
-    <value>, </value>
-  </data>
-  <data name="Space_Full_Colon" xml:space="preserve">
-    <value>: </value>
-  </data>
-  <data name="Space_Hypen" xml:space="preserve">
-    <value> - </value>
-  </data>
-  <data name="Space_Open_Bracket" xml:space="preserve">
-    <value> ( </value>
+  <data name="Label_Command_List" xml:space="preserve">
+    <value> List</value>
   </data>
 </root>

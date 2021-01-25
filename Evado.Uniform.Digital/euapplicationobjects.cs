@@ -137,10 +137,10 @@ namespace Evado.UniForm.Clinical
 
     }
 
-    private String _LicensedModules = EvModuleCodes.Administration_Module + ";"
-      + EvModuleCodes.Management_Module + ";"
-      + EvModuleCodes.Imaging_Module + ";"
-      + EvModuleCodes.Integration_Module ;
+    private String _LicensedModules = EdModuleCodes.Administration_Module + ";"
+      + EdModuleCodes.Management_Module + ";"
+      + EdModuleCodes.Imaging_Module + ";"
+      + EdModuleCodes.Integration_Module ;
     /// <summary>
     /// This property contains an encoded ';' list of licenced modules for this instance.
     /// </summary>
@@ -209,13 +209,13 @@ namespace Evado.UniForm.Clinical
       set { relativelXslCrfFilePath = value; }
     }
 
-    private List<EvFormFieldSelectionList> _ExternalSelectionLists = new List<EvFormFieldSelectionList> ( );
+    private List<EdExternalSelectionList> _ExternalSelectionLists = new List<EdExternalSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
     /// lists.
     /// </summary>
 
-    public List<EvFormFieldSelectionList> ExternalSelectionLists
+    public List<EdExternalSelectionList> ExternalSelectionLists
     {
       get { return _ExternalSelectionLists; }
       set { _ExternalSelectionLists = value; }
@@ -419,13 +419,6 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "loadGlobalMenu method" );
       this.LogDebugValue ( "PlatformId: " + this._PlatformId );
-      this.LogDebugValue ( "LoadedModules: " + this.PlatformSettings.LoadedModules );
-
-      if ( this.PlatformSettings.LoadedModules.Contains ( "Null" ) == true )
-      {
-        this.PlatformSettings.LoadedModules = "Administration_Module;Trial_Module;Record_Module"
-          + " Design_Module;Imaging_Module;Integration_Module:Auxiliary_Subject_Data";
-      }
 
       try
       {
@@ -433,11 +426,6 @@ namespace Evado.UniForm.Clinical
         // Initialse the methods objects and variables.
         // 
         EvMenus bll_Menu = new EvMenus ( this.Settings );
-
-        foreach ( EvModuleCodes str in this.PlatformSettings.LoadedModuleList )
-        {
-          this.LogDebugValue ( "-" + str );
-        }
 
         // 
         // Get the site setMenu.
@@ -499,7 +487,7 @@ namespace Evado.UniForm.Clinical
 
       if ( Add_AllModules == true )
       {
-        String str = EvModuleCodes.All_Modules.ToString ( );
+        String str = EdModuleCodes.All_Modules.ToString ( );
         string description = str.Replace ( "_", " " );
         loadedModulesList.Add ( new EvOption ( str, description ) );
       }
@@ -599,11 +587,6 @@ namespace Evado.UniForm.Clinical
       // Log the Site Properties on startup.
       // 
       this.LogDebugValue ( "Version: " + this._PlatformSettings.Version );
-      this.LogDebugValue ( "Loaded Modules: " );
-      for ( int i = 0; i < this._PlatformSettings.LoadedModuleList.Count; i++ )
-      {
-        this.LogDebugValue ( "- " + this._PlatformSettings.LoadedModuleList [ i ] );
-      }
 
     }//ENd loadSiteProperties method
 
@@ -643,11 +626,6 @@ namespace Evado.UniForm.Clinical
       }
 
       this.LogDebugValue ( "HelpUrl: '" + this._HelpUrl + "'" );
-
-      // 
-      // Log the disabled fields on startup.
-      // 
-      this.LogDebugValue ( "Hidden Trial Subject Fields: " + this._PlatformSettings.HideSubjectFields );
 
       // 
       // Log the Maximum selection list length on startup.
@@ -985,7 +963,7 @@ namespace Evado.UniForm.Clinical
 
       stEvent.AppendFormat (
         "Page Role: {0} user Access: {2} ",
-        User.RoleId,
+        User.Roles,
         RoleId );
 
       //

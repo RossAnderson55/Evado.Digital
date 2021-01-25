@@ -82,7 +82,7 @@ namespace Evado.Bll.Clinical
     // Instantiate the Business Logic.
     //
     //TrialSamples BllTrialSamples = new TrialSamples();
-    private EvAlerts _BllTrialAlerts = new EvAlerts ( );
+   //private EvAlerts _BllTrialAlerts = new EvAlerts ( );
 
     #endregion
 
@@ -376,184 +376,6 @@ namespace Evado.Bll.Clinical
       return iReturn;
 
     }//END unlockItem method
-
-    #endregion
-
-    #region Form Record create mandatory record methods
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates all of the records associated with a visit tp database.
-    /// 
-    /// It is used for visits that have one activity and one record.
-    /// </summary>
-    /// <param name="SubectMilestone">EvMilestone: milestone milestone object.</param>
-    /// <param name="UserProfile">EvUserProfile: user profile object.</param>
-    /// <returns>Integer: an event code for creating new form object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the mandatory activity object
-    /// 
-    /// 2. Execute the method for retrieving the list of activity record objects 
-    /// based on the mandatory activity object
-    /// 
-    /// 3. Loop through the list and update values to the new form object. 
-    /// 
-    /// 4. Execute the method for creating new form object to database. 
-    /// 
-    /// 5. Return an event code for creating new form object
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public int createAllMandatoryVisitRecords ( EvMilestone SubectMilestone, Evado.Model.Digital.EvUserProfile UserProfile )
-    {
-      this.LogValue ( "Evado.Bll.EvFormRecords.createAllMandatoryVisitRecords method." );
-      this.LogValue ( " TrialId: " + SubectMilestone.ProjectId
-        + ", OrgId: " + SubectMilestone.OrgId
-        + ", SubjectId: " + SubectMilestone.SubjectId
-        + ", VisitId: " + SubectMilestone.VisitId
-        + ", MilestoneId: " + SubectMilestone.MilestoneId
-        + ", Activity count: " + SubectMilestone.ActivityList.Count );
-
-      //
-      // Initialise the methods variables and objects.
-      //
-      List<EvActvityForm> activityFormList = new List<EvActvityForm> ( );
-      EdRecord newFormRecord = new EdRecord ( );
-      EvActivity mandatoryActivity = getMandatoryActivity ( SubectMilestone.ActivityList );
-
-      //
-      // If the return value is null then there is not mandatory activity so exit the method.
-      //
-      if ( mandatoryActivity == null )
-      {
-        this.LogValue ( "No mandatory activities found for this milestone." );
-        return ( int ) EvEventCodes.Object_Activity_Error;
-      }
-
-      //
-      // get the list of forms for the mandatory activity.
-      //
-      activityFormList = this.getActivityForms ( mandatoryActivity );
-
-      this.LogValue ( "Activity form list count:" + activityFormList.Count + "\r\n" );
-
-      //
-      // Iterate through the list creating the mandatory form records.
-      //
-      foreach ( EvActvityForm activityRecord in activityFormList )
-      {
-        //
-        // Skip optional records.
-        //
-        if ( activityRecord.Mandatory == false )
-        {
-          continue;
-        }
-
-        //
-        // Initialise the form record to be generated.
-        //
-        newFormRecord = new EdRecord ( );
-        newFormRecord.ApplicationId = SubectMilestone.ProjectId;
-        newFormRecord.MilestoneId = SubectMilestone.MilestoneId;
-        newFormRecord.ActivityId = mandatoryActivity.ActivityId;
-        newFormRecord.IsMandatoryActivity = mandatoryActivity.IsMandatory;
-        newFormRecord.LayoutId = activityRecord.FormId;
-        newFormRecord.IsMandatory = activityRecord.Mandatory;
-
-        //
-        // Submit the initialised record to be created.
-        //
-        EdRecord createdRecord = this.createRecord ( newFormRecord );
-
-        if ( createdRecord.Guid == Guid.Empty )
-        {
-          this.LogValue ( "\r\nRecord creation failed.\r\n" );
-
-          return ( int ) EvEventCodes.Database_Record_Update_Error;
-        }
-
-        this.LogValue ( "Record: " + createdRecord.RecordId + " created." );
-
-      }//END Record creation iteration loop.
-
-      return ( int ) EvEventCodes.Ok;
-    }//END createAllMandatoryVisitRecords class
-
-    // =====================================================================================
-    /// <summary>
-    /// This method finds the first mandatory activity and returns it to the calling method.
-    /// </summary>
-    /// <param name="ActivityList">List of EvActivity: list of activitie objects.</param>
-    /// <returns>EvActivity: an activity object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Loop through the list of activity objects and return mandatory activity object, if it is found
-    /// 
-    /// 2. Else, return null. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private EvActivity getMandatoryActivity ( List<EvActivity> ActivityList )
-    {
-      //
-      // Iterate through the list of activities looking for the first mandatory activity.
-      //
-      foreach ( EvActivity activity in ActivityList )
-      {
-        //
-        // If the mandatory activity is found return the activity.
-        //
-        if ( activity.IsMandatory == true )
-        {
-          return activity;
-        }
-      }//END iteration loop
-
-      //
-      // No activity is found return null.
-      return null;
-
-    }//END getMandatoryActivity method
-
-    // =====================================================================================
-    /// <summary>
-    /// This method creates a list of Activity record objects based on the passed activity object.
-    /// </summary>
-    /// <param name="Activity">EvActivity: the activity object.</param>
-    /// <returns>List of EvActivityRecord: a list of activity record objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Return the form list of activity, if the passed activity object contain a form list. 
-    /// 
-    /// 2. Else, execute the method for retrieving a list of activity record objects. 
-    /// 
-    /// 3. Return the list of activity record objects.
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    private List<EvActvityForm> getActivityForms ( EvActivity Activity )
-    {
-      //
-      // If the list exists return it.
-      //
-      if ( Activity.FormList.Count > 0 )
-      {
-        return Activity.FormList;
-      }
-
-      //
-      //Initialise methods variables and objects.
-      //
-      EvActivityForms activityForms = new EvActivityForms ( );
-
-      //
-      // Get the list of EvActivityRecord objects for this activity.
-      //
-      return activityForms.getList ( Activity.Guid );
-
-    }//END getActivityForms method
 
     #endregion
 
@@ -869,14 +691,14 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the local variables
       // 
-      EvUserSignoff userSignoff = new EvUserSignoff ( );
+      EdUserSignoff userSignoff = new EdUserSignoff ( );
 
       Record.State = EdRecordObjectStates.Submitted_Record;
 
       // 
       // Append the signoff object.
       // 
-      userSignoff.Type = EvUserSignoff.TypeCode.Record_Submitted_Signoff;
+      userSignoff.Type = EdUserSignoff.TypeCode.Record_Submitted_Signoff;
       userSignoff.SignedOffUserId = this.ClassParameter.UserProfile.UserId;
       userSignoff.SignedOffBy = this.ClassParameter.UserProfile.CommonName;
       userSignoff.SignOffDate = DateTime.Now;

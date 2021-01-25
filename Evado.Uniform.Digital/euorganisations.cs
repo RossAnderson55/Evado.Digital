@@ -75,7 +75,7 @@ namespace Evado.UniForm.Clinical
       this.LogInit ( "Settings:" );
       this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
       this.LogInit ( "-CustomerGuid: " + this.ClassParameters.CustomerGuid );
-      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.ApplicationGuid );
+      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.PlatformGuid );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );

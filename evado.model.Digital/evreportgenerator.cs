@@ -292,21 +292,6 @@ namespace Evado.Model.Digital
                 // If the user is not site staff, or site trial coordinator, or site principal investigator
                 // dont show the details.
                 //
-                if ( this._UserProfile.hasRecordEditAccess == false )
-                {
-                  detail.Visible = false;
-                  detail.OnlyShowHeadersForTotalColumns = true;
-                }
-
-                //
-                // If the detailOrg is empty, means that is not found. If the detailOrganization is
-                // different than the user organization, then hide the detail.
-                //
-                else if ( detailOrganizationId != string.Empty && detailOrganizationId.ToLower ( ) != this._UserProfile.OrgId.ToLower ( ) )
-                {
-                  detail.Visible = false;
-                  detail.OnlyShowHeadersForTotalColumns = true;
-                }
 
               }//End if it is site filtered.
               else

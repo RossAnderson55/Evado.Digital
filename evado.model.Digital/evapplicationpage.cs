@@ -87,16 +87,6 @@ namespace Evado.Model.Digital
       set { this._PageUrl = value.Trim ( ); }
     }
 
-    private string _Module = EvModuleCodes.All_Modules.ToString ( );
-    /// <summary>
-    /// This this property contains page modules used in the Application Page.
-    /// </summary>
-    public string Modules
-    {
-      get { return this._Module; }
-      set { this._Module = value.Trim ( ); }
-    }
-
     //  =================================================================================
     /// <summary>
     /// This method returns the page Url, from the module directory.
