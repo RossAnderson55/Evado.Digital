@@ -33,95 +33,10 @@ using Evado.Model.Digital;
 /// using Evado.Web;
 
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   public partial class EuAdapter : Evado.Model.UniForm.ApplicationAdapterBase
   {
-
-    // ==================================================================================
-    /// <summary>
-    /// This method gets the application object from the list.
-    /// 
-    /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    /// <returns>Bool: True: trial object loaded</returns>
-    // ----------------------------------------------------------------------------------
-    private void getCustomer (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "getCustomer" );
-      this.LogDebug ( "CURRENT: Customer.Guid: '{0}'", this.Session.Customer.Guid );
-      this.LogDebug ( "CURRENT: Customer.CustomerNo: '{0}'", this.Session.Customer.CustomerNo );
-
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Guid parameterGuid = this.Session.Customer.Guid;
-
-      //
-      // if the trial id parameter does not exist exit.
-      //
-      if ( PageCommand.hasParameter ( EvCustomer.CustomerFieldNames.Customer_Guid ) == true )
-      {
-        string value = PageCommand.GetParameter ( EvCustomer.CustomerFieldNames.Customer_Guid );
-        if ( value != String.Empty )
-        {
-          parameterGuid = new Guid ( value );
-        }
-        else
-        {
-          parameterGuid = Guid.Empty;
-        }
-      }
-      this.LogDebug ( "PARAMETER: Guid: '" + parameterGuid + "'" );
-
-      // 
-      // if the parameter value matches the current customer exit.
-      // 
-      if ( this.Session.Customer.Guid == parameterGuid )
-      {
-        this.LogDebug ( "EXIT: Parameter Matches the current customer." );
-        this.LogMethodEnd ( "getCustomer" );
-        return;
-      }
-
-      //
-      // re-initialise the customer object.
-      //
-      this.Session.Customer = new EvCustomer ( );
-
-      // 
-      // if parameter trial is empty but a trial exists then rest it to empty.
-      // 
-      if ( parameterGuid == Guid.Empty )
-      {
-        this.LogDebug ( "Parmater Guid is empty." );
-        this.LogMethodEnd ( "getCustomer" );
-        return;
-      }
-
-      // 
-      // iterate through the list of customers to select the customer.
-      // 
-      foreach ( EvCustomer customer in this._ApplicationObjects.CustomerList )
-      {
-        if ( customer.Guid == parameterGuid )
-        {
-          this.Session.Customer = customer;
-          this.ClassParameters.CustomerGuid = customer.Guid;
-        }
-      }
-      this.LogDebug ( "NEW: Customer.Guid: '{0}'", this.Session.Customer.Guid );
-      this.LogDebug ( "NEW: Customer.CustomerNo: '{0}'", this.Session.Customer.CustomerNo );
-
-      //
-      // Reset the Study List.
-      //
-      this.Session.ApplicationList = new List<Model.Digital.EdApplication> ( );
-      this.Session.Application = new Model.Digital.EdApplication ( );
-      this.LogMethodEnd ( "getCustomer" );
-
-    }//END getCustomer method.
 
     // ==================================================================================
     /// <summary>
@@ -149,7 +64,7 @@ namespace Evado.UniForm.Clinical
       {
         this.LogEvent ( "Anonymous command encountered" );
 
-        this.Session.UserProfile = new EvUserProfile ( );
+        this.Session.UserProfile = new EdUserProfile ( );
         this.Session.UserProfile.UserId = this.ServiceUserProfile.UserId;
         this.Session.UserProfile.CommonName = this.ServiceUserProfile.UserId;
         this.Session.UserProfile.Roles = String.Empty;
@@ -217,19 +132,6 @@ namespace Evado.UniForm.Clinical
 
       this.ClassParameters.UserProfile = this.Session.UserProfile;
 
-      //
-      // if the user is not an Evado administrator load the customer object as the currently set 
-      // Customer object.
-      //
-      if ( this.Session.UserProfile.CustomerGuid != Guid.Empty
-        && this.Session.UserProfile.CustomerGuid != this._ApplicationObjects.PlatformSettings.Guid )
-      {
-        this.ClassParameters.CustomerGuid = this.Session.UserProfile.CustomerGuid;
-
-        this.Session.Customer = this.Session.UserProfile.Customer;
-        this.LogDebug ( "Customer Name is {0}. ", this.Session.Customer.Name );
-      }
-
       return true;
 
     }///END loadUserProfile method.
@@ -239,19 +141,11 @@ namespace Evado.UniForm.Clinical
     /// This method executes the form list query 
     /// </summary>
     //-----------------------------------------------------------------------------------
-    private void loadTrialFormList ( )
+    private void loadRecordLayoutList ( )
     {
       this.LogMethod ( "loadTrialFormList" );
-      this.LogDebug ( "ApplicationId: '" + this.Session.Application.ApplicationId + "'" );
 
-      if ( this.Session.Application.ApplicationId == String.Empty )
-      {
-        this.LogDebug ( "ApplicationId not defined" );
-        this.LogMethodEnd ( "loadTrialFormList" );
-        return;
-      }
-
-      if ( this.Session.FormList.Count > 0 )
+      if ( this.Session.RecordLayoutList.Count > 0 )
       {
         this.LogDebug ( "FormList loaded." );
         this.LogMethodEnd ( "loadTrialFormList" );
@@ -261,7 +155,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and object.
       //
-      EdRecordLayouts bll_Forms = new EdRecordLayouts ( this.ClassParameters );
+      EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
       this.Session.FormType = EdRecordTypes.Null;
       this.Session.FormState = EdRecordObjectStates.Form_Issued;
       this.Session.FormsAdaperLoaded = true;
@@ -269,14 +163,13 @@ namespace Evado.UniForm.Clinical
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.FormList = bll_Forms.GetRecordLayoutListWithFields (
-        this.Session.Application.ApplicationId,
+      this.Session.RecordLayoutList = bll_RecordLayouts.GetRecordLayoutListWithFields (
         this.Session.FormType,
         this.Session.FormState );
 
-      this.LogDebugClass ( bll_Forms.Log );
+      this.LogDebugClass ( bll_RecordLayouts.Log );
 
-      this.LogDebug ( " list count: " + this.Session.FormList.Count );
+      this.LogDebug ( " list count: " + this.Session.RecordLayoutList.Count );
 
       this.LogMethodEnd ( "loadTrialFormList" );
 

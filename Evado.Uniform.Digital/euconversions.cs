@@ -25,7 +25,7 @@ using Evado.Bll;
 using Evado.Bll.Clinical;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class contains static form field ResultData conversion method.

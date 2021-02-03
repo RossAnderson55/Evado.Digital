@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class profile UniFORM class adapter for the user profile classes
@@ -103,8 +103,8 @@ namespace Evado.UniForm.Clinical
         //
         // if the ADS is not available
         //
-        if ( this.Session.Customer.AdsGroupName == null
-          || this.Session.Customer.AdsGroupName == String.Empty )
+        if ( this.GlobalObjects.AdapterSettings.AdsGroupName == null
+          || this.GlobalObjects.AdapterSettings.AdsGroupName == String.Empty )
         {
           this.LogDebug ( "Debug Authenication or AD Group is null" );
           this.LogMethodEnd ( "saveUserProfile" );
@@ -231,7 +231,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getAdsCustomerGroup" );
       this.LogDebug ( "Customer Group Name: " +
-        this.Session.Customer.AdsGroupName );
+        this.GlobalObjects.AdapterSettings.AdsGroupName );
 
       //
       // if ADS is not enabled then set the AdsCustomerGroup to null 
@@ -244,7 +244,7 @@ namespace Evado.UniForm.Clinical
         return EvEventCodes.Active_Directory_Not_Enabled;
       }
 
-      if ( this.Session.Customer.AdsGroupName == String.Empty )
+      if ( this.GlobalObjects.AdapterSettings.AdsGroupName == String.Empty )
       {
         return EvEventCodes.Active_Directory_Group_Not_Found;
       }
@@ -252,9 +252,9 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.AdsCustomerGroup != null )
       {
         this.LogValue ( "Customer Group Name: " +
-          this.Session.Customer.AdsGroupName + " EXISTS." );
+          this.GlobalObjects.AdapterSettings.AdsGroupName + " EXISTS." );
 
-        if ( this.Session.AdsCustomerGroup.Name == this.Session.Customer.AdsGroupName )
+        if ( this.Session.AdsCustomerGroup.Name == this.GlobalObjects.AdapterSettings.AdsGroupName )
         {
           this.LogMethodEnd ( "getAdsCustomerGroup" );
           return EvEventCodes.Ok;
@@ -272,7 +272,7 @@ namespace Evado.UniForm.Clinical
       // Get the customer's Group name.
       //
       resultGroup = adsProfiles.GetGroup (
-        this.Session.Customer.AdsGroupName );
+        this.GlobalObjects.AdapterSettings.AdsGroupName );
 
       //
       // If the user does not exist add them as a new user.
@@ -316,7 +316,7 @@ namespace Evado.UniForm.Clinical
       //
       // Skip update if a new user.
       //
-      if ( this.Session.Customer.AdsGroupName == null
+      if ( this.GlobalObjects.AdapterSettings.AdsGroupName == null
         || this.Session.AdsEnabled == false )
       {
         this.LogValue ( "Debug Authenication or AD Group is null" );
@@ -501,7 +501,7 @@ namespace Evado.UniForm.Clinical
       //
       if ( ( AdUserProfile.EvGroups.Count == 0
         || hasCustomerGroup == false )
-        && ( this.Session.Customer.AdsGroupName != null ) )
+        && ( this.GlobalObjects.AdapterSettings.AdsGroupName != null ) )
       {
         AdUserProfile.EvGroups.Add ( this.Session.AdsCustomerGroup );
         this.LogValue ( "ADS Customer group added" );
@@ -522,8 +522,8 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "sendUserNotificationEmail" );
       this.LogDebug ( "Notification: " + Notification );
-      this.LogDebug ( "ApplicationParameters.ApplicationUrl: " + this.ApplicationObjects.ApplicationUrl );
-      this.LogDebug ( "SupportEmailAddress: " + this.ApplicationObjects.SupportEmailAddress );
+      this.LogDebug ( "ApplicationParameters.ApplicationUrl: " + this.GlobalObjects.ApplicationUrl );
+      this.LogDebug ( "SupportEmailAddress: " + this.GlobalObjects.SupportEmailAddress );
       this.LogDebug ( "AdminUserProfile.UserId: " + this.Session.AdminUserProfile.UserId );
       this.LogDebug ( "AdminUserProfile.Password: " + this.Session.AdminUserProfile.Password );
       this.LogDebug ( "AdminUserProfile.EmailAddress: " + this.Session.AdminUserProfile.EmailAddress );
@@ -538,9 +538,9 @@ namespace Evado.UniForm.Clinical
       //
       // Validate that the necessary parametes exist.
       //
-      if ( this.ApplicationObjects.ApplicationUrl == String.Empty
+      if ( this.GlobalObjects.ApplicationUrl == String.Empty
         || this.Session.AdminUserProfile.EmailAddress == String.Empty
-        || this.ApplicationObjects.SupportEmailAddress == String.Empty )
+        || this.GlobalObjects.SupportEmailAddress == String.Empty )
       {
         this.LogValue ( "Parameters Missing" );
         this.LogMethodEnd ( "sendUserNotificationEmail" );
@@ -551,27 +551,27 @@ namespace Evado.UniForm.Clinical
       {
         case EvStaticContentTemplates.NotiificationTypes.Update_Password_Email:
           {
-            EmailTitle = this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Title;
-            EmailBody = this.ApplicationObjects.ContentTemplates.UpdatePasswordEmail_Body;
+            EmailTitle = this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title;
+            EmailBody = this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Reset_Password_Email:
           {
-            EmailTitle = this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Title;
-            EmailBody = this.ApplicationObjects.ContentTemplates.ResetPasswordEmail_Body;
+            EmailTitle = this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Title;
+            EmailBody = this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Password_Change_Email:
           {
-            EmailTitle = this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Title;
-            EmailBody = this.ApplicationObjects.ContentTemplates.PasswordConfirmationEmail_Body;
+            EmailTitle = this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title;
+            EmailBody = this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Introductory_Email:
         default:
           {
-            EmailTitle = this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Title;
-            EmailBody = this.ApplicationObjects.ContentTemplates.IntroductoryEmail_Body;
+            EmailTitle = this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title;
+            EmailBody = this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body;
             break;
           }
       }//End switch statementf
@@ -583,8 +583,8 @@ namespace Evado.UniForm.Clinical
       EmailTitle = EmailTitle.Replace ( EvcStatics.TEXT_SUBSITUTION_FAMILY_NAME,
         this.Session.AdminUserProfile.FamilyName );
 
-      EmailTitle = EmailTitle.Replace ( EvcStatics.TEXT_SUBSITUTION_CUSTOMER, 
-        this.Session.Customer.Name );
+      EmailTitle = EmailTitle.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE, 
+        this.GlobalObjects.AdapterSettings.Title );
 
       EmailBody = EmailBody.Replace ( "\r\n\r\n", "\r\n \r\n" );
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_FIRST_NAME,
@@ -607,14 +607,11 @@ namespace Evado.UniForm.Clinical
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ORG_NAME,
         this.Session.AdminUserProfile.OrganisationName );
 
-      EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_CUSTOMER,
-        this.Session.Customer.Name );
-
-      EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_CUSTOMER_PHONE,
-        this.Session.Customer.Telephone );
+      EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE,
+        this.GlobalObjects.AdapterSettings.Title );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_PASSWORD_RESET_URL,
-        this.ApplicationObjects.PasswordResetUrl );
+        this.GlobalObjects.PasswordResetUrl );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_DATE_STAMP,
         DateTime.Now.ToLongDateString ( ) + " at " + DateTime.Now.ToShortTimeString ( ) );
@@ -646,10 +643,10 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the report alert class
       //
-      email.SmtpServer = this.ApplicationObjects.PlatformSettings.SmtpServer;
-      email.SmtpServerPort = this.ApplicationObjects.PlatformSettings.SmtpServerPort;
-      email.SmtpUserId = this.ApplicationObjects.PlatformSettings.SmtpUserId;
-      email.SmtpPassword = this.ApplicationObjects.PlatformSettings.SmtpPassword;
+      email.SmtpServer = this.GlobalObjects.AdapterSettings.SmtpServer;
+      email.SmtpServerPort = this.GlobalObjects.AdapterSettings.SmtpServerPort;
+      email.SmtpUserId = this.GlobalObjects.AdapterSettings.SmtpUserId;
+      email.SmtpPassword = this.GlobalObjects.AdapterSettings.SmtpPassword;
 
       //
       // Set the email alert to the recipents
@@ -657,7 +654,7 @@ namespace Evado.UniForm.Clinical
       emailStatus = email.sendEmail (
         EmailTitle,
         EmailBody,
-        this.ApplicationObjects.SupportEmailAddress,
+        this.GlobalObjects.SupportEmailAddress,
         this.Session.AdminUserProfile.EmailAddress,
         String.Empty );
 

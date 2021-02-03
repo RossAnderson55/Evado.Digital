@@ -30,7 +30,7 @@ namespace Evado.Model.Digital
   {
 
     #region Initialization
-    public EvReportCsv ( EvReport report, string separator, EvUserProfile userProfile )
+    public EvReportCsv ( EvReport report, string separator, EdUserProfile userProfile )
     {
       _report = report;
       _separator = separator;

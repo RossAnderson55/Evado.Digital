@@ -19,7 +19,7 @@
  ****************************************************************************************/
 using System;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
      /// <summary>
     /// This is an enumeration of of application objects. 

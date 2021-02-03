@@ -146,7 +146,7 @@ namespace Evado.Dal.Clinical
     private void SetParameters ( SqlParameter [ ] parms, EvReport Report )
     {
       parms [ 0 ].Value = Report.Guid;
-      parms [ 1 ].Value = Report.TrialId;
+      parms [ 1 ].Value = String.Empty ;
       parms [ 2 ].Value = Report.ReportId;
       parms [ 3 ].Value = Report.ReportNo;
       parms [ 4 ].Value = Report.ReportDate;
@@ -237,7 +237,6 @@ namespace Evado.Dal.Clinical
       // Extract the compatible data row values to the Report object. 
       //
       report.Guid = EvSqlMethods.getGuid ( Row, "RS_Guid" );
-      report.TrialId = EvSqlMethods.getString ( Row, "TrialId" );
       report.ReportId = EvSqlMethods.getString ( Row, "ReportId" );
       report.ReportTitle = EvSqlMethods.getString ( Row, "RS_ReportTitle" );
       //Report.ReportSubTitle = EvSqlMethods.getString( Row, "RS_ReportSubTitle" );
@@ -470,7 +469,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "addReport. ");
       this.LogDebug ( "Guid: " + Report.Guid);
-      this.LogDebug ( "TrialId: " + Report.TrialId);
       this.LogDebug ( "ReportId: " + Report.ReportId);
       this.LogDebug ( "ReportTitle: " + Report.ReportTitle);
       this.LogDebug ( "ReportSubTitle: " + Report.ReportSubTitle);
@@ -480,15 +478,6 @@ namespace Evado.Dal.Clinical
       // Define the local variables.
       // 
       string _sqlQueryString = String.Empty;
-
-      //
-      // Validate whether the VisitId or User common name is not empty. 
-      //
-      if ( Report.TrialId == String.Empty )
-      {
-        this.LogDebug ( "TrialId missing. " );
-        return EvEventCodes.Identifier_Project_Id_Error;
-      }
 
       if ( Report.UserCommonName == String.Empty )
       {

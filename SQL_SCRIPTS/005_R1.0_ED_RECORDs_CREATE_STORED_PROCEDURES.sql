@@ -10,7 +10,7 @@ GO
 DECLARE @RC int
 
 EXECUTE @RC = dbo.usr_DB_Add_Database_Update 
-   004, 'R1.0','ED_RECORDS', 
+   005, 'R1.0','ED_RECORDS', 
    'CREATE STORED PROCEDURES.'
 GO
 

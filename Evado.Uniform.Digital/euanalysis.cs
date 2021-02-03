@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application analysis class
@@ -50,7 +50,7 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuAnalysis (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
@@ -59,7 +59,7 @@ namespace Evado.UniForm.Clinical
     {
 
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuAnalysis.";
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
@@ -69,7 +69,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "EuAnalysis initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.UserId: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniForm BinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -232,19 +231,11 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "loadTrialFormList" );
       this.LogDebug ( "FormsAdaperLoaded: '{0}'", this.Session.FormsAdaperLoaded );
-      this.LogDebug ( "TrialId: '{0}'", this.Session.Application.ApplicationId );
       this.LogDebug ( "FormState: '{0}'", this.Session.FormState );
       this.LogDebug ( "FormType: '{0}'", this.Session.FormType );
-      this.LogDebug ( "FormList.Count: {0}", this.Session.FormList.Count );
+      this.LogDebug ( "FormList.Count: {0}", this.Session.RecordLayoutList.Count );
 
-      if ( this.Session.Application.ApplicationId == String.Empty )
-      {
-        this.LogDebug ( "Trial not defined" );
-        this.LogMethod ( "loadTrialFormList" );
-        return;
-      }
-
-      if ( this.Session.FormList.Count > 0
+      if ( this.Session.RecordLayoutList.Count > 0
         && this.Session.FormsAdaperLoaded == true
         && this.Session.FormState == EdRecordObjectStates.Form_Issued
         && this.Session.FormType == EdRecordTypes.Null )
@@ -254,7 +245,7 @@ namespace Evado.UniForm.Clinical
         return;
       }
 
-      if ( this.Session.FormList [ 0 ].Fields.Count > 0 )
+      if ( this.Session.RecordLayoutList [ 0 ].Fields.Count > 0 )
       {
         this.LogDebug ( "Forms have fields" );
         this.LogMethodEnd ( "loadTrialFormList" );
@@ -271,13 +262,12 @@ namespace Evado.UniForm.Clinical
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.FormList = bll_Forms.GetRecordLayoutListWithFields (
-        this.Session.Application.ApplicationId,
+      this.Session.RecordLayoutList = bll_Forms.GetRecordLayoutListWithFields (
         this.Session.FormType,
         this.Session.FormState );
 
       this.LogValue ( bll_Forms.Log );
-      this.LogValue ( " list count: " + this.Session.FormList.Count );
+      this.LogValue ( " list count: " + this.Session.RecordLayoutList.Count );
 
       this.Session.FormsAdaperLoaded = false;
       this.LogMethodEnd ( "loadTrialFormList" );
@@ -404,7 +394,6 @@ namespace Evado.UniForm.Clinical
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
-      this.Session.Chart.ProjectId = this.Session.Application.ApplicationId;
       this._RunQuery = false;
       this._ExportData = false;
 
@@ -503,7 +492,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = Page.addCommand (
         EdLabels.Analysis_Chart_Query_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -528,7 +517,7 @@ namespace Evado.UniForm.Clinical
 
       groupCommand = Page.addCommand (
         EdLabels.Analysis_Chart_Export_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -675,7 +664,7 @@ namespace Evado.UniForm.Clinical
       this.Session.ChartSourceOptionList = new List<EvOption> ( );
       this.Session.ChartSourceOptionList.Add ( new EvOption ( ) );
 
-      foreach ( EdRecord form in this.Session.FormList )
+      foreach ( EdRecord form in this.Session.RecordLayoutList )
       {
         if ( form.State != EdRecordObjectStates.Form_Issued )
         {
@@ -923,7 +912,7 @@ namespace Evado.UniForm.Clinical
       // Initialise method variables and objects.
       //
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      String filename = this.Session.Application.ApplicationId + "_DAQ_"
+      String filename =  "DAQ_"
           + DateTime.Now.ToString ( "yyyyMMdd_HHmm" ) + ".csv";
 
       if ( this._ExportData == false )
@@ -1158,7 +1147,6 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.AnalysisFormSelectionList.Count == 0 )
       {
         this.Session.AnalysisFormSelectionList = bllForms.getList (
-            this.Session.Application.ApplicationId,
             EdRecordTypes.Null,
             EdRecordObjectStates.Form_Issued,
             false );
@@ -1172,7 +1160,6 @@ namespace Evado.UniForm.Clinical
       if ( this.Session.AnalysisQueryFormId != String.Empty )
       {
         this.Session.AnalysisFormFieldSelectionList = bllEvFormFields.GetOptionList (
-          this.Session.Application.ApplicationId,
           this.Session.AnalysisQueryFormId,
           true );
 
@@ -1269,7 +1256,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = Page.addCommand (
         EdLabels.Analysis_Query_Update_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1289,7 +1276,7 @@ namespace Evado.UniForm.Clinical
       }
       groupCommand = Page.addCommand (
         EdLabels.Analysis_Query_Export_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1379,7 +1366,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.Analysis_Query_Update_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Analysis.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1451,7 +1438,7 @@ namespace Evado.UniForm.Clinical
 
         groupCommand = pageGroup.addCommand (
           stTitle,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           appObject.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -1493,7 +1480,7 @@ namespace Evado.UniForm.Clinical
       EvFormRecordExport recordExport = new EvFormRecordExport ( );
       System.Text.StringBuilder sOutput = new StringBuilder ( );
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      String filename = this.Session.Application.ApplicationId + "_RECORD_"
+      String filename = "RECORD_"
           + DateTime.Now.ToString ( "yyyyMMdd_HHmm" ) + ".csv";
       //
       // Iterate through the record to fill a list of records witih all fields and comments.

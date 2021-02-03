@@ -28,7 +28,7 @@ using Evado.Model;
 using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the uniform interface object for handling menus.
@@ -49,14 +49,14 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuMenus (
-      EuApplicationObjects ApplicationObject,
+      EuAdapterObjects ApplicationObject,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuMenus.";
-      this.ApplicationObjects = ApplicationObject;
+      this.GlobalObjects = ApplicationObject;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -116,7 +116,7 @@ namespace Evado.UniForm.Clinical
         //
         if ( this.Session.MenuPlatformId == null )
         {
-          this.Session.MenuPlatformId = this.ApplicationObjects.PlatformId;
+          this.Session.MenuPlatformId = this.GlobalObjects.PlatformId;
         }
 
         // 
@@ -231,7 +231,7 @@ namespace Evado.UniForm.Clinical
         //
         if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
         {
-          this.ApplicationObjects.MenuList = new List<EvMenuItem> ( );
+          this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
         }
 
         // 
@@ -269,7 +269,7 @@ namespace Evado.UniForm.Clinical
         // 
         clientDataObject.Page.addCommand (
           EdLabels.Menu_New_Item_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Menu.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
@@ -325,7 +325,7 @@ namespace Evado.UniForm.Clinical
       {
         EvMenus _Bll_Menus = new EvMenus ( this.ClassParameters );
 
-        if ( this.ApplicationObjects.MenuList.Count > 0 )
+        if ( this.GlobalObjects.MenuList.Count > 0 )
         {
           this.LogMethodEnd ( "loadGlobalMenu" );
           return;
@@ -334,17 +334,17 @@ namespace Evado.UniForm.Clinical
         // 
         // Get the site setMenu.
         // 
-        this.ApplicationObjects.MenuList = _Bll_Menus.getView ( this.ClassParameters.PlatformId, String.Empty );
+        this.GlobalObjects.MenuList = _Bll_Menus.getView ( this.ClassParameters.PlatformId, String.Empty );
 
         this.LogDebugClass ( "menus.DebugLog: " + _Bll_Menus.Log );
-        this.LogValue ( "GlobalMenuList.Count: " + this.ApplicationObjects.MenuList.Count );
+        this.LogValue ( "GlobalMenuList.Count: " + this.GlobalObjects.MenuList.Count );
 
       }
       catch ( Exception Ex )
       {
         this.LogDebug ( "loadGlobalMenu exception:  " + Evado.Model.Digital.EvcStatics.getException ( Ex ) );
       }
-      this.LogDebug ( "Global Menu list count: " + this.ApplicationObjects.MenuList.Count );
+      this.LogDebug ( "Global Menu list count: " + this.GlobalObjects.MenuList.Count );
 
       this.LogMethodEnd ( "loadGlobalMenu" );
     }//END loadMenu method
@@ -407,7 +407,7 @@ namespace Evado.UniForm.Clinical
       //
       Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
         EdLabels.Menu_Selection_Menu,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Menu.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -466,7 +466,7 @@ namespace Evado.UniForm.Clinical
         // 
         groupCommand = pageGroup.addCommand (
           EdLabels.Menu_New_Item_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Menu.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
@@ -475,7 +475,7 @@ namespace Evado.UniForm.Clinical
         // 
         // get the list of customers.
         // 
-        foreach ( EvMenuItem item in this.ApplicationObjects.MenuList )
+        foreach ( EvMenuItem item in this.GlobalObjects.MenuList )
         {
           if ( item.Group.ToLower ( ) == GroupId.ToLower ( ) )
           {
@@ -508,19 +508,19 @@ namespace Evado.UniForm.Clinical
           + EdLabels.Menu_List_Role_Label );
 
 
-          if ( menuItem.hasRole ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true )
+          if ( menuItem.hasRole ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true )
           {
             sbTitle.Append ( EdLabels.Menu_List_Administrator_Label );
             sbTitle.Append ( EdLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvUserProfile.CONST_DESIGNER_ROLE ) == true )
+          if ( menuItem.hasRole ( EdUserProfile.CONST_DESIGNER_ROLE ) == true )
           {
             sbTitle.Append ( EdLabels.Menu_List_Project_Manager_Label );
             sbTitle.Append ( EdLabels.Space_Coma );
           }
 
-          if ( menuItem.hasRole ( EvUserProfile.CONST_MANAGER_ROLE ) == true )
+          if ( menuItem.hasRole ( EdUserProfile.CONST_MANAGER_ROLE ) == true )
           {
             sbTitle.Append ( EdLabels.Menu_List_Project_Coordinator_Label );
             sbTitle.Append ( EdLabels.Space_Coma );
@@ -537,7 +537,7 @@ namespace Evado.UniForm.Clinical
           // Add the Menu Field to the list of organisations as a groupCommand.
           // 
           groupCommand = pageGroup.addCommand ( stTitle,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Menu.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -664,9 +664,9 @@ namespace Evado.UniForm.Clinical
     //  ------------------------------------------------------------------------------
     private Evado.Model.Digital.EvMenuItem getMenuItem ( Guid MenuItemGuid )
     {
-      if ( this.ApplicationObjects.MenuList.Count > 0 )
+      if ( this.GlobalObjects.MenuList.Count > 0 )
       {
-        foreach ( EvMenuItem item in this.ApplicationObjects.MenuList )
+        foreach ( EvMenuItem item in this.GlobalObjects.MenuList )
         {
           if ( item.Guid == MenuItemGuid )
           {
@@ -772,8 +772,8 @@ namespace Evado.UniForm.Clinical
       // 
       // Create the customer name object
       // 
-      List<EvOption> roleList = EvUserProfile.getRoleOptionList( 
-        this.Session.Application.RoleList,
+      List<EvOption> roleList = EdUserProfile.getRoleOptionList( 
+        this.GlobalObjects.AdapterSettings.RoleList,
         false );
       string roles = this.Session.MenuItem.RoleList;
 
@@ -792,7 +792,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageCommand = pageGroup.addCommand (
         EdLabels.Menu_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Menu.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -806,7 +806,7 @@ namespace Evado.UniForm.Clinical
       //
       pageCommand = pageGroup.addCommand (
          EdLabels.Menu_Delete_Command_Title,
-         EuAdapter.APPLICATION_ID,
+         EuAdapter.ADAPTER_ID,
          EuAdapterClasses.Menu.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -867,7 +867,7 @@ namespace Evado.UniForm.Clinical
         this.Session.MenuItem.Group = this.Session.MenuGroupIdentifier;
         this.Session.MenuItem.Platform = this.Session.MenuPlatformId;
 
-        this.ApplicationObjects.MenuList = new List<EvMenuItem> ( );
+        this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
 
         this.getClientData ( clientDataObject );
 
@@ -1005,7 +1005,7 @@ namespace Evado.UniForm.Clinical
           return this.Session.LastPage;
         }
 
-        this.ApplicationObjects.MenuList = new List<EvMenuItem> ( );
+        this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
 
         this.LogMethodEnd ( "updateObject" );
         return new Model.UniForm.AppData ( );

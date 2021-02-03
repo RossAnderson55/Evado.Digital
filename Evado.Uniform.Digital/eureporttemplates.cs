@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -52,14 +52,14 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuReportTemplates (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl,
       EvClassParameters Settings )
     {
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.ClassParameters = Settings;
@@ -70,9 +70,8 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "ReportTemplates initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
-      this.LogInit ( "SessionObjects.UserProfile.UserId: " + this.Session.UserProfile.UserId );
-      this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
+      this.LogInit ( "Session.UserProfile.UserId: " + this.Session.UserProfile.UserId );
+      this.LogInit ( "Session.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniForm BinaryFilePath: " + this.UniForm_BinaryFilePath );
       this.LogInit ( "UniForm BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
 
@@ -193,11 +192,6 @@ namespace Evado.UniForm.Clinical
 
           this.LogDebug ( this._Bll_ReportTemplates.Log );
         }
-
-        //
-        // get the report selection list.
-        //
-        this.getReportProjectList ( );
 
         // 
         // Set the page type to control the DB query type.
@@ -357,7 +351,7 @@ namespace Evado.UniForm.Clinical
       //
       pageCommand = PageObject.addCommand (
         EdLabels.Report_emplates_Source_Data_Refresh_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
          Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -372,7 +366,7 @@ namespace Evado.UniForm.Clinical
       {
         pageCommand = PageObject.addCommand (
           EdLabels.ReportTemplate_Upload_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.ReportTemplates.ToString ( ),
           Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -404,21 +398,10 @@ namespace Evado.UniForm.Clinical
       String parameterValue = String.Empty;
       this.Session.ReportCategory = String.Empty;
 
-      //
-      // Set the report project id to global if not set.
-      //
-      if ( this.Session.ReportStudyId == String.Empty )
-      {
-        this.Session.ReportStudyId = EvcStatics.CONST_GLOBAL_PROJECT;
-      }
 
       if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
       {
         _SelectionCommand = true;
-      }
-      if ( PageCommand.hasParameter ( EuReportTemplates.CONST_REPORT_PROJECT_ID ) == true )
-      {
-        this.Session.ReportStudyId = PageCommand.GetParameter ( EuReportTemplates.CONST_REPORT_PROJECT_ID );
       }
       if ( PageCommand.hasParameter ( EuReportTemplates.CONST_REPORT_CATEGORY ) == true )
       {
@@ -430,7 +413,6 @@ namespace Evado.UniForm.Clinical
       {
         this.Session.ReportScope = PageCommand.GetParameter<EvReport.ReportScopeTypes> ( EuReportTemplates.CONST_REPORT_SCOPE );
       }
-      this.LogDebug ( "ReportProjectId: " + this.Session.ReportStudyId );
       this.LogDebug ( "ReportCategory: " + this.Session.ReportCategory );
       //this.LogDebugValue ( "ReportType: " + this.SessionObjects.ReportType );
       this.LogDebug ( "ReportScope: " + this.Session.ReportScope );
@@ -490,7 +472,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.ReportTemplate_Upload_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates,
         Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -503,7 +485,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.ReportTemplate_Upload_New_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates,
         Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -714,34 +696,6 @@ namespace Evado.UniForm.Clinical
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
-      // Define the report project selection list.
-      //
-      groupField = pageGroup.createSelectionListField (
-        EuReportTemplates.CONST_REPORT_PROJECT_ID,
-        EdLabels.Label_Project_Id,
-        this.Session.ReportStudyId,        
-        this.Session.ReportApplicationList );
-
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-
-      //
-      // Define the report Type selection
-      //
-      /*
-      optionList =  Evado.Model.Digital.EvStatics.Enumerations.getOptionsFromEnum ( typeof (  Evado.Model.Digital.EvReport.ReportTypeCode ), true );
-
-      groupField = pageGroup.createSelectionListField (
-        EuReportTemplates.CONST_REPORT_TYPE,
-        EdLabels.Report_Type_Field_Title,
-        this.SessionObjects.ReportType.ToString ( ),
-        optionList );
-
-      groupField.Layout = EuPageGenerator.ApplicationFieldLayout;
-      groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-      */
-
-      //
       // Define the report Type selection
       //
       optionList = EvReportTemplates.getReportScopeList ( );
@@ -760,7 +714,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.Report_Selecton_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.ReportTemplates.ToString ( ),
             Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -806,7 +760,6 @@ namespace Evado.UniForm.Clinical
           || this._SelectionCommand == true )
         {
           this.Session.ReportDesignTemplateList = this._Bll_ReportTemplates.getReportList (
-            this.Session.ReportStudyId,
             EvReport.ReportTypeCode.Null,
             this.Session.ReportScope );
 
@@ -828,7 +781,7 @@ namespace Evado.UniForm.Clinical
         // 
         groupCommand = pageGroup.addCommand (
           EdLabels.ReportTemplate_New_Report_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.ReportTemplates.ToString ( ),
           Model.UniForm.ApplicationMethods.Create_Object );
 
@@ -850,7 +803,7 @@ namespace Evado.UniForm.Clinical
 
           groupCommand = pageGroup.addCommand (
              stReportTitle,
-             EuAdapter.APPLICATION_ID,
+             EuAdapter.ADAPTER_ID,
              EuAdapterClasses.ReportTemplates.ToString ( ),
              Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -1089,36 +1042,6 @@ namespace Evado.UniForm.Clinical
 
 
     }//END updateTemplateSourceDate method
-
-
-    // ==============================================================================
-    /// <summary>
-    /// This method retrieves the report template from the list of report templates.
-    /// </summary>
-    /// <param name="ReportId">EvReport object containing the report template.</param>
-    /// <returns>True: report was found.</returns>
-    //  ------------------------------------------------------------------------------
-    private bool getReportProjectList ( )
-    {
-      this.LogMethod ( "getReportProjectList" );
-
-
-      if ( this.Session.ApplicationList.Count > 0 )
-      {
-        return true;
-      }
-      /*
-
-      this.Session.ApplicationList = applications.GetApplicationList ( 
-        Model.Digital.EdApplication.ApplicationStates.Null );
-
-      if ( this.Session.ApplicationList.Count == 0 )
-      {
-        return false;
-      }
-       */ 
-      return true;
-    }//END getReportProjectList method
 
     // ==============================================================================
     /// <summary>
@@ -1524,7 +1447,7 @@ namespace Evado.UniForm.Clinical
           {
             pageCommand = PageObject.addCommand (
               EdLabels.ReportTemplate_Page_Column_Structure_Command_Title,
-              EuAdapter.APPLICATION_ID,
+              EuAdapter.ADAPTER_ID,
               EuAdapterClasses.ReportTemplates.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1539,7 +1462,7 @@ namespace Evado.UniForm.Clinical
           {
             pageCommand = PageObject.addCommand (
               EdLabels.ReportTemplate_Page_Column_Selection_Command_Title,
-              EuAdapter.APPLICATION_ID,
+              EuAdapter.ADAPTER_ID,
               EuAdapterClasses.ReportTemplates.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1555,7 +1478,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageCommand = PageObject.addCommand (
         EdLabels.ReportTemplate_Pate_Download_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1569,7 +1492,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageCommand = PageObject.addCommand (
         EdLabels.ReportTemplate_Page_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1582,7 +1505,7 @@ namespace Evado.UniForm.Clinical
       {
         pageCommand = PageObject.addCommand (
           EdLabels.ReportTemplate_Page_Delete_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.ReportTemplates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Delete_Object );
 
@@ -1677,7 +1600,6 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_General_Group" );
-      this.LogDebug ( "ReportTemplate.ProjectId:" + this.Session.ReportTemplate.TrialId );
       this.LogDebug ( "ReportTemplate.IsAggregated:" + this.Session.ReportTemplate.IsAggregated );
       //
       // Initialise method variables and objects.
@@ -1696,17 +1618,6 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      //
-      // Add the project id field.
-      //
-      groupField = pageGroup.createSelectionListField (
-        EvReport.ReportClassFieldNames.ProjectId.ToString ( ),
-        EdLabels.ReportTemplate_Project_ID_Field_Title,
-        this.Session.ReportTemplate.TrialId,
-       this.Session.ReportApplicationList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      groupField.Description = EdLabels.ReportTemplate_Project_ID_Description ;
 
       //
       // Define the source selection options.
@@ -1859,7 +1770,6 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Group PageGroup )
     {
       this.LogMethod ( "getDataObject_General_Group" );
-      this.LogDebug ( "ReportTemplate.ProjectId:" + this.Session.ReportTemplate.TrialId );
       this.LogDebug ( "ReportTemplate.IsAggregated:" + this.Session.ReportTemplate.IsAggregated );
       //
       // Initialise method variables and objects.
@@ -1870,7 +1780,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = PageGroup.addCommand (
         EdLabels.ReportTemplate_Page_Refresh_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1892,7 +1802,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupCommand = PageGroup.addCommand (
         EdLabels.ReportTemplate_Page_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1905,7 +1815,7 @@ namespace Evado.UniForm.Clinical
       {
         groupCommand = PageGroup.addCommand (
           EdLabels.ReportTemplate_Page_Delete_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.ReportTemplates.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Delete_Object );
 
@@ -2071,7 +1981,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.ReportTemplate_Page_Refresh_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.ReportTemplates.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -2280,7 +2190,6 @@ namespace Evado.UniForm.Clinical
         this.Session.ReportTemplate = new EvReport ( );
         this.Session.ReportTemplate.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.ReportTemplate.LayoutTypeId = EvReport.LayoutTypeCode.FlatTable;
-        this.Session.ReportTemplate.TrialId = this.Session.ReportStudyId;
 
         this.Session.PageId = EvPageIds.Report_Template_Form;
 

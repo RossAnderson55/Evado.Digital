@@ -48,11 +48,9 @@ namespace Evado.Model.Digital
     /// <param name="FormId">String form identifier</param>
     //-----------------------------------------------------------------------------------
     public EvExportParameters (
-      EdApplication Project,
       ExportDataSources ExportDataSource,
       String FormId )
     {
-      this._Project = Project;
       this._ExportDataSource = ExportDataSource;
       this._LayoutId = FormId;
     }
@@ -65,10 +63,8 @@ namespace Evado.Model.Digital
     /// <param name="ExportDataSource">ExportDataSource enumeration value</param>
     //-----------------------------------------------------------------------------------
     public EvExportParameters (
-      EdApplication Project,
       ExportDataSources ExportDataSource )
     {
-      this._Project = Project;
       this._ExportDataSource = ExportDataSource;
     }
 
@@ -172,27 +168,11 @@ namespace Evado.Model.Digital
 
     #region Common Export parameters.
 
-    EdApplication _Project = new EdApplication ( );
-    /// <summary>
-    /// This property contains a project identifier of the data item
-    /// </summary>
-    public EdApplication Project
-    {
-      get
-      {
-        return _Project;
-      }
-      set
-      {
-        this._Project = value;
-      }
-    }
-
-    EvUserProfile _UserProfile = new EvUserProfile ( );
+    EdUserProfile _UserProfile = new EdUserProfile ( );
     /// <summary>
     /// This property contains a user profile object
     /// </summary>
-    public EvUserProfile UserProfile
+    public EdUserProfile UserProfile
     {
       get
       {
@@ -490,7 +470,6 @@ namespace Evado.Model.Digital
     public String getRecordExportParameters ( )
     {
       String stExportParameters = "Record Export Parameters:"
-        + "\r\n -ProjectId: " + this.Project
         + "\r\n -ExportDataSource: " + this.ExportDataSource
         + "\r\n -FormId: " + this.LayoutId
         + "\r\n -Include Free Text: " + this.IncludeFreeTextData
@@ -508,7 +487,6 @@ namespace Evado.Model.Digital
     public String getStatisticalExportParameters ( )
     {
       String stExportParameters = "Statistical Export Parameters:"
-        + "\r\n -ProjectId: " + this._Project
         + "\r\n -Hide Test Sites: " + this.IncludeTestSites
         + "\r\n -Include Submitted Records: " + this.IncludeDraftRecords
         + "\r\n -Include Free Text: " + this.IncludeFreeTextData

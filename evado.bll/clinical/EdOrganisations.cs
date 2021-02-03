@@ -30,7 +30,7 @@ namespace Evado.Bll.Clinical
   /// <summary>
   /// A business Component used to manage Organisations
   /// </summary>
-  public class EvOrganisations : EvBllBase
+  public class EdOrganisations : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -38,7 +38,7 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvOrganisations ( )
+    public EdOrganisations ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvOrganisations.";
     }
@@ -49,7 +49,7 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvOrganisations ( EvClassParameters Settings )
+    public EdOrganisations ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
 
@@ -57,16 +57,15 @@ namespace Evado.Bll.Clinical
 
       this.LogDebug ( "Settings:" );
       this.LogDebug ( "-PlatformId: " + this.ClassParameter.PlatformId );
-      this.LogDebug ( "-CustomerGuid: " + this.ClassParameter.CustomerGuid );
-      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameter.PlatformGuid );
+      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameter.AdapterGuid );
 
-      this._DalOrganisations = new Evado.Dal.Clinical.EvOrganisations ( Settings );
+      this._DalOrganisations = new Evado.Dal.Clinical.EdOrganisations ( Settings );
     }
     #endregion
 
     #region Class variables and properties
 
-    private Evado.Dal.Clinical.EvOrganisations _DalOrganisations = new Evado.Dal.Clinical.EvOrganisations ( );
+    private Evado.Dal.Clinical.EdOrganisations _DalOrganisations = new Evado.Dal.Clinical.EdOrganisations ( );
 
     #endregion
 

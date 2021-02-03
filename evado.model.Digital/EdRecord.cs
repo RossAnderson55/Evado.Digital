@@ -1221,7 +1221,7 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="UserProfile">EvUserProfile Object</param>
     //-------------------------------------------------------------------------------------
-    public void setFormRole ( EvUserProfile UserProfile )
+    public void setFormRole ( EdUserProfile UserProfile )
     {
       //
       // Swtich roleid to select the form role for the user.

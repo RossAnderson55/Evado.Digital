@@ -147,6 +147,9 @@
   <data name="Label_Yes_No" xml:space="preserve">
     <value>Yes/No</value>
   </data>
+  <data name="Organisation_Type_Label" xml:space="preserve">
+    <value>Organisation Type</value>
+  </data>
   <data name="Space_Arrow_Right" xml:space="preserve">
     <value> &gt; </value>
   </data>

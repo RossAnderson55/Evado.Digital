@@ -223,7 +223,7 @@ namespace Evado.Dal.Clinical
       if ( recordField.TypeId == EvDataTypes.Signature )
       {
         this.LogDebug ( "Encrypted Signature string" );
-        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.PlatformGuid, recordField.Guid );
+        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.AdapterGuid, recordField.Guid );
         encrypt.ClassParameters = this.ClassParameters;
 
         value = encrypt.decryptString ( recordField.ItemText );

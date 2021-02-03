@@ -179,15 +179,6 @@ namespace Evado.Model.Digital
       set
       {
         this._SelectionSource = value;
-
-        switch ( this._SelectionSource )
-        {
-          case EvReport.SelectionListTypes.Current_Project:
-            {
-              this._SelectionSource = EvReport.SelectionListTypes.Current_Application;
-              break;
-            }
-        }
       }
     } //end _SelectionSource
 

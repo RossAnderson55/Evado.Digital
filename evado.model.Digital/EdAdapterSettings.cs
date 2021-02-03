@@ -28,7 +28,7 @@ namespace Evado.Model.Digital
   /// Business entity used to model SiteProperties
   /// </summary>
   [Serializable]
-  public class EdAdapterParameters : Evado.Model.EvParameters
+  public class EdAdapterSettings : Evado.Model.EvParameters
   {
     #region enumerated lists
 
@@ -231,12 +231,11 @@ namespace Evado.Model.Digital
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Application setings
+    #region Application settings
 
     private string _HomePageHeaderText = String.Empty;
     /// <summary>
-    /// This property contains the Home page header text.
-    /// 
+    /// This property contains the Home page header text.   
     /// </summary>
     public string HomePageHeaderText
     {
@@ -275,11 +274,11 @@ namespace Evado.Model.Digital
       get
       {
         return
-          this.getParameter ( EdAdapterParameters.AdapterFieldNames.Http_Reference );
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Http_Reference );
       }
       set
       {
-        this.setParameter ( EdAdapterParameters.AdapterFieldNames.Http_Reference,
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Http_Reference,
           EvDataTypes.Text, value.ToString ( ) );
       }
     }
@@ -315,7 +314,24 @@ namespace Evado.Model.Digital
         this._State = value;
       }
     }
-
+    
+    // =====================================================================================
+    /// <summary>
+    /// This property contains the Adapter ADS Group name
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public String AdsGroupName
+    {
+      get
+      {
+        return this.getParameter ( EdAdapterSettings.AdapterFieldNames.Ads_Group );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Ads_Group,
+          EvDataTypes.Text, value);
+      }
+    }
 
     // =====================================================================================
     /// <summary>
@@ -327,11 +343,11 @@ namespace Evado.Model.Digital
       get
       {
         return EvStatics.getBool (
-          this.getParameter ( EdAdapterParameters.AdapterFieldNames.Enable_Binary_Data ) );
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data ) );
       }
       set
       {
-        this.setParameter ( EdAdapterParameters.AdapterFieldNames.Enable_Binary_Data,
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data,
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
@@ -365,11 +381,11 @@ namespace Evado.Model.Digital
       get
       {
         return
-          this.getParameter ( EdAdapterParameters.AdapterFieldNames.Default_User_Roles );
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Roles );
       }
       set
       {
-        this.setParameter ( EdAdapterParameters.AdapterFieldNames.Default_User_Roles,
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Roles,
           EvDataTypes.Text, value.ToString ( ) );
       }
     }
@@ -660,7 +676,7 @@ namespace Evado.Model.Digital
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     public void setValue (
-      EdAdapterParameters.AdapterFieldNames FieldName,
+      EdAdapterSettings.AdapterFieldNames FieldName,
       String Value )
     {
       //
@@ -676,36 +692,36 @@ namespace Evado.Model.Digital
       //
       switch ( FieldName )
       {
-        case EdAdapterParameters.AdapterFieldNames.Version:
+        case EdAdapterSettings.AdapterFieldNames.Version:
           {
             this.Version = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.MaximumSelectionListLength:
+        case EdAdapterSettings.AdapterFieldNames.MaximumSelectionListLength:
           {
             this.MaximumSelectionListLength = EvcStatics.getInteger ( Value );
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.DemoAccountExpiryDays:
+        case EdAdapterSettings.AdapterFieldNames.DemoAccountExpiryDays:
           {
             this.DemoAccountExpiryDays = EvcStatics.getInteger ( Value );
             return;
           }
-        case EdAdapterParameters.AdapterFieldNames.DemoRegistrationVideoUrl:
+        case EdAdapterSettings.AdapterFieldNames.DemoRegistrationVideoUrl:
           {
             this.DemoRegistrationVideoUrl = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.SmtpServer:
+        case EdAdapterSettings.AdapterFieldNames.SmtpServer:
           {
             this.SmtpServer = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.SmtpServerPort:
+        case EdAdapterSettings.AdapterFieldNames.SmtpServerPort:
           {
             if ( int.TryParse ( Value, out intValue ) == true )
             {
@@ -714,73 +730,73 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.SmtpUserId:
+        case EdAdapterSettings.AdapterFieldNames.SmtpUserId:
           {
             this.SmtpUserId = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.SmtpPassword:
+        case EdAdapterSettings.AdapterFieldNames.SmtpPassword:
           {
             this.SmtpPassword = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.EmailAlertTestAddress:
+        case EdAdapterSettings.AdapterFieldNames.EmailAlertTestAddress:
           {
             this.EmailAlertTestAddress = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.State:
+        case EdAdapterSettings.AdapterFieldNames.State:
           {
             this.setParameter ( AdapterFieldNames.State, EvDataTypes.Text, Value );
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Ads_Group:
+        case EdAdapterSettings.AdapterFieldNames.Ads_Group:
           {
             this.setParameter ( AdapterFieldNames.Ads_Group, EvDataTypes.Text, Value );
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.HelpUrl:
+        case EdAdapterSettings.AdapterFieldNames.HelpUrl:
           {
             this.HelpUrl = Value ;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Home_Page_Header:
+        case EdAdapterSettings.AdapterFieldNames.Home_Page_Header:
           {
             this._HomePageHeaderText = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Title:
+        case EdAdapterSettings.AdapterFieldNames.Title:
           {
             this._Title = Value ;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Http_Reference:
+        case EdAdapterSettings.AdapterFieldNames.Http_Reference:
           {
             this._HttpReference = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Description:
+        case EdAdapterSettings.AdapterFieldNames.Description:
           {
             this._HttpReference = Value;
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Enable_Binary_Data:
+        case EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data:
           {
-            this.setParameter ( AdapterFieldNames.Ads_Group, EvDataTypes.Text, Value );
+            this.setParameter ( AdapterFieldNames.Enable_Binary_Data, EvDataTypes.Text, Value );
             return;
           }
 
-        case EdAdapterParameters.AdapterFieldNames.Roles:
+        case EdAdapterSettings.AdapterFieldNames.Roles:
           {
             this.Roles = Value ;
             return;

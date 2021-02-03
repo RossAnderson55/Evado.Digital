@@ -179,7 +179,7 @@ namespace Evado.Bll.Clinical
 
         case EvDataChange.DataChangeTableNames.EvForms:
           {
-            return this.GetFormsList ( ProjectId );
+            return this.GetFormsList ( );
           }
 
         case EvDataChange.DataChangeTableNames.EvUserProfiles:
@@ -256,7 +256,6 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getItemRecordSelectionList ( 
-      String ProjectId,
       EvDataChange.DataChangeTableNames RecordTable )
     {
       // 
@@ -264,7 +263,6 @@ namespace Evado.Bll.Clinical
       // 
       this._DebugLog.AppendLine (  Evado.Model.Digital.EvcStatics.CONST_METHOD_START
         + "Evado.Bll.Clinical.EvDataChanges.getItemRecordSelectionList. " );
-      this._DebugLog.AppendLine (  "ProjectId: " + ProjectId );
       this._DebugLog.AppendLine (  "RecordTable: " + RecordTable );
 
       // 
@@ -274,7 +272,7 @@ namespace Evado.Bll.Clinical
       {
         case EvDataChange.DataChangeTableNames.EvFormFields:
           {
-            return this.GetFormsList ( ProjectId );
+            return this.GetFormsList ( );
           }
       }
       return new List<EvOption> ( );
@@ -338,7 +336,7 @@ namespace Evado.Bll.Clinical
     /// 3. Return the options list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetFormsList ( string TrialId )
+    private List<EvOption> GetFormsList (  )
     {
       this._DebugLog.AppendLine ( "Evado.Bll.Clinical.EvDataChanges.GetFormsList" );
       // 
@@ -356,7 +354,7 @@ namespace Evado.Bll.Clinical
       // 
       // Get the form objects list .
       // 
-      List<EdRecord> view = forms.getLayoutList ( TrialId, EdRecordTypes.Null,
+      List<EdRecord> view = forms.getLayoutList ( EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
       this._DebugLog.AppendLine (  forms.Log );
@@ -409,10 +407,10 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetFormList ( string ProjectId )
+    private List<EvOption> GetFormList ( )
     {
       EdRecordLayouts forms = new EdRecordLayouts ( );
-      return forms.getList ( ProjectId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, true );
+      return forms.getList ( EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, true );
     }//END GetFormList class
 
     //  ==================================================================================
@@ -431,7 +429,7 @@ namespace Evado.Bll.Clinical
     private List<EvOption> GetUserList ( )
     {
       EvUserProfiles users = new EvUserProfiles ( );
-      List<EvOption> list = users.GetList ( EvUserProfile.UserTypesList.Null , true );
+      List<EvOption> list = users.GetList ( EdUserProfile.UserTypesList.Null , true );
 
       return list;
     }//END GetUserList class

@@ -566,14 +566,9 @@ namespace Evado.Dal.Clinical
       // Define the query parameters.
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
-      {
-        new SqlParameter( EdRecords.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
-        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+      { new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = QueryParameters.ApplicationId;
-      cmdParms [ 2 ].Value = QueryParameters.LayoutId;
+      cmdParms [ 0 ].Value = QueryParameters.LayoutId;
 
       //
       // Generate the SQL query string.
@@ -690,8 +685,7 @@ namespace Evado.Dal.Clinical
       StringBuilder sqlQueryString = new StringBuilder ( );
 
       sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
-      sqlQueryString.AppendLine ( " WHERE ( ( " + EdRecords.DB_CUSTOMER_GUID + " = " + EdRecords.PARM_CUSTOMER_GUID + " )" );
-      sqlQueryString.AppendLine ( "   AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) " );
+      sqlQueryString.AppendLine ( " WHERE ( ( " + EdRecords.DB_DELETED + " = 0 )" );
 
       if ( QueryParameters.LayoutId != String.Empty )
       {

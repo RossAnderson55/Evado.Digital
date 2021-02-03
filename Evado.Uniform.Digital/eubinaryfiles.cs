@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class manages the integration of Evado eclinical binary files functions with 
@@ -62,7 +62,7 @@ namespace Evado.UniForm.Clinical
     /// </summary>
     //  ----------------------------------------------------------------------------------
     public EuBinaryFiles (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String BinaryFilePath,
@@ -70,7 +70,7 @@ namespace Evado.UniForm.Clinical
       String FileRepositoryPath,
       EvClassParameters Settings )
     {
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = BinaryFilePath;
@@ -81,7 +81,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "EuBinaryFiles initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -186,14 +185,6 @@ namespace Evado.UniForm.Clinical
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
-        // 
-        // Retrieve the customer object from the database via the DAL and BLL layers.
-        // 
-        if ( this.Session.Application.ApplicationId == String.Empty )
-        {
-          return this.Session.LastPage;
-        }
 
         // 
         // Determine the method to be called
@@ -318,11 +309,7 @@ namespace Evado.UniForm.Clinical
         //
         // initialise the date object values.
         //
-        clientDataObject.Title =
-          String.Format (
-          EdLabels.Binary_File_List_Of_Files_Page_Label,
-          this.Session.Application.ApplicationId,
-          this.Session.Application.Title );
+        clientDataObject.Title = EdLabels.Binary_File_List_Of_Files_Page_Label;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
@@ -330,7 +317,6 @@ namespace Evado.UniForm.Clinical
         // get the list of customers.
         // 
         this.Session.BinaryFileList = this._Bll_BinaryFiles.getBinaryFileList (
-          this.Session.Application.ApplicationId,
           this.Session.BinaryFileOrgId,
           String.Empty );
 
@@ -400,7 +386,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupCommand = pageGroup.addCommand (
         EdLabels.HomePage_Select_Project,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
          EuAdapterClasses.Binary_File.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -440,7 +426,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Command newFileCommand = pageGroup.addCommand (
       EdLabels.Binary_File_Create_Command_Title,
-      EuAdapter.APPLICATION_ID,
+      EuAdapter.ADAPTER_ID,
       EuAdapterClasses.Binary_File.ToString ( ),
       Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
@@ -468,16 +454,12 @@ namespace Evado.UniForm.Clinical
            file.Title,
            file.Version,
            file.UpdatedByDate.ToString ( "dd MMM yyyy" ) ),
-           EuAdapter.APPLICATION_ID,
+           EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Binary_File,
            Model.UniForm.ApplicationMethods.Get_Object );
 
         command.AddParameter (
-          EdApplication.ApplicationFieldNames.ApplicationId,
-          file.TrialId );
-
-        command.AddParameter (
-          EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
+          EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
           file.GroupId );
 
         command.AddParameter ( EuBinaryFiles.CONST_BINARY_FILE_ID,
@@ -597,9 +579,9 @@ namespace Evado.UniForm.Clinical
       //
       // if the org Id parameter exists update the setting.
       //
-      if ( PageCommand.hasParameter ( EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
+      if ( PageCommand.hasParameter ( EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
       {
-        value = PageCommand.GetParameter ( EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString() );
+        value = PageCommand.GetParameter ( EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() );
 
 
         if ( this.Session.BinaryFileOrgId != value )
@@ -693,7 +675,6 @@ namespace Evado.UniForm.Clinical
       }
 
       this.Session.BinaryFileVersionList = binaryFiles.GetVersionedFileList (
-        this.Session.Application.ApplicationId,
         this.Session.BinaryFileOrgId,
         String.Empty,
         this.Session.BinaryFileId );
@@ -758,8 +739,7 @@ namespace Evado.UniForm.Clinical
         Guid orgGuid = Guid.Empty;
 
         this._BinaryFile.FileGuid = Guid.NewGuid ( );
-        this._BinaryFile.TrialId = this.Session.Application.ApplicationId;
-        this._BinaryFile.TrialGuid = this.Session.Application.Guid;
+        this._BinaryFile.TrialGuid = this.GlobalObjects.AdapterSettings.Guid;
         this._BinaryFile.GroupId = this.Session.BinaryFileOrgId;
         this._BinaryFile.GroupGuid = orgGuid;
       }//END emtpty binary object.
@@ -837,8 +817,7 @@ namespace Evado.UniForm.Clinical
       {
         if ( parameter.Name == Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          || parameter.Name == EdApplication.ApplicationFieldNames.ApplicationId.ToString()
-          || parameter.Name == EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString()
+          || parameter.Name == EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString()
           || parameter.Name == EuBinaryFiles.CONST_UPLOAD_PARM_ID )
         {
           continue;
@@ -1198,7 +1177,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = pageGroup.addCommand (
         EdLabels.Binary_File_Upload_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Binary_File,
         Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -1257,8 +1236,6 @@ namespace Evado.UniForm.Clinical
         this._BinaryFile = new EvBinaryFileMetaData ( );
         this.Session.BinaryFile = new EvBinaryFileMetaData ( );
         this.Session.BinaryFileId = String.Empty;
-        this.Session.BinaryFile.TrialId = this.Session.Application.ApplicationId;
-        this.Session.BinaryFile.TrialGuid = this.Session.Application.Guid;
 
         //
         // Create the client page.
@@ -1368,7 +1345,6 @@ namespace Evado.UniForm.Clinical
         // Get the list of project files.
         //
         binaryFileList = this._Bll_BinaryFiles.getProjectFileList (
-          this.Session.Application.ApplicationId,
           OrgId );
 
         this.LogClass ( this._Bll_BinaryFiles.Log );
@@ -1571,7 +1547,6 @@ namespace Evado.UniForm.Clinical
           case EuAdapterClasses.Ancillary_Record:
             {
               binaryFileList = this._Bll_BinaryFiles.getBinaryFileList (
-                this.Session.Application.ApplicationId,
                 String.Empty,
                 this.Session.AncillaryRecord.RecordId );
 
@@ -1583,7 +1558,6 @@ namespace Evado.UniForm.Clinical
           case EuAdapterClasses.Applications:
             {
               binaryFileList = this._Bll_BinaryFiles.getBinaryFileList (
-                this.Session.Application.ApplicationId,
                 String.Empty,
                 String.Empty );
 
@@ -2065,10 +2039,10 @@ namespace Evado.UniForm.Clinical
       // 
       EvBinaryFileMetaData binaryFile = new EvBinaryFileMetaData (
         FileGuid,
-        this.Session.Application.Guid,
+        this.GlobalObjects.AdapterSettings.Guid,
         GroupGuid,
         SubGroupGuid,
-        this.Session.Application.ApplicationId,
+        this.GlobalObjects.AdapterSettings.ApplicationId,
         GroupId,
         SubGroupId,
         FileId,

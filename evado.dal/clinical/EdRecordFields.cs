@@ -720,7 +720,6 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> GetOptionList (
-      String ApplicationId,
       String LayoutId,
       bool OnlySingleValueFields )
     {
@@ -728,7 +727,6 @@ namespace Evado.Dal.Clinical
       // Initialize the debug log, a return list of options and an option object
       //
       this.LogMethod ( "GetOptionList. " );
-      this.LogValue ( "ApplicationId: " + ApplicationId );
       this.LogValue ( "LayoutId: " + LayoutId );
 
       List<EvOption> list = new List<EvOption> ( );
@@ -740,13 +738,9 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar,10 ),
         new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = ApplicationId;
-      cmdParms [ 2 ].Value = LayoutId;
+      cmdParms [ 0 ].Value = LayoutId;
 
       // 
       // Define the query string.
@@ -754,7 +748,7 @@ namespace Evado.Dal.Clinical
       if ( OnlySingleValueFields == false )
       {
         _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdRecordFields.DB_APPLICATION_ID + "=" + EdRecordFields.PARM_APPLICATION_ID + ") "
+          + "WHERE (" + EdRecordFields.DB_DELETED + "= 0 ) "
           + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
           + " AND (" + EdRecordFields.DB_FIELD_ID + "=" + EdRecordFields.PARM_FIELD_ID + ") "
           + " AND (" + EdRecordFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
@@ -860,18 +854,15 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = LayoutId;
+      cmdParms [ 0 ].Value = LayoutId;
 
       // 
       // Define the query string.
       // 
       _sqlQueryString = _sqlDataAnalysisQuery_List
-          + "WHERE (" + EdRecordFields.DB_CUSTOMER_GUID + "=" + EdRecordFields.PARM_CUSTOMER_GUID + ") "
-          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + "WHERE (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
           + " ORDER BY " + EdRecordFields.DB_ORDER + ";";
 
       this.LogDebug ( _sqlQueryString );
@@ -1079,22 +1070,29 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar,10 ),
         new SqlParameter( PARM_LAYOUT_ID, SqlDbType.NVarChar,10 ),
+        new SqlParameter( PARM_FIELD_ID, SqlDbType.NVarChar,20 ),
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
+          cmdParms [ 0 ].Value = string.Empty ;
+          cmdParms [ 1 ].Value = string.Empty;
+          cmdParms [ 0 ].Value = string.Empty;
+          cmdParms [ 2 ].Value = string.Empty;
 
       //
       // Extract the parameters from the parameter list.
       //
       for ( int i = 0; i < Report.Queries.Length; i++ )
       {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Current_Application )
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
+        {
+          cmdParms [ 0 ].Value = Report.Queries [ i ].Value;
+        }
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Field_Id )
         {
           cmdParms [ 1 ].Value = Report.Queries [ i ].Value;
         }
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
+        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Field_Id)
         {
           cmdParms [ 2 ].Value = Report.Queries [ i ].Value;
         }

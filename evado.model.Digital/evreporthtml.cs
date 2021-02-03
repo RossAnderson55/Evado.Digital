@@ -36,7 +36,7 @@ namespace Evado.Model.Digital
     #region Initialization
     public EvReportHtml (
       EvReport report,
-      EvUserProfile userProfile )
+      EdUserProfile userProfile )
     {
       this.writeDebugLogMethod ( "EvReportHtml initialisation method." );
       this._report = report;

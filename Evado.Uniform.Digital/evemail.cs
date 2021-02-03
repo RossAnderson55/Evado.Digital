@@ -27,7 +27,7 @@ using System.Net.Mail;
 
 using Evado.Model;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   public class EvEmail
   {

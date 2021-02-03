@@ -58,8 +58,7 @@ namespace Evado.Bll.Clinical
       this.ClassNameSpace = "Evado.Bll.Clinical.EvUserProfiles.";
 
       this.LogMethod ( "EvUserProfiles initialisation method." );
-      this.LogDebug ( "CustomerGuid: " + this.ClassParameter.CustomerGuid );
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.PlatformGuid );
+      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.AdapterGuid );
 
       this.LogMethodEnd ( "EvUserProfiles" );
 
@@ -90,13 +89,13 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of userprofile objects. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public List<Evado.Model.Digital.EvUserProfile> GetView ( 
-      EvUserProfile.UserTypesList UserType )
+    public List<Evado.Model.Digital.EdUserProfile> GetView ( 
+      EdUserProfile.UserTypesList UserType )
     {
       this.LogMethod ( "GetView method." );
       this.LogDebug ( "UserType: " + UserType );
 
-      List<Evado.Model.Digital.EvUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType );
+      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType );
       this.LogClass ( this._Dal_UserProfiles.Log );
 
       return profiles;
@@ -125,15 +124,15 @@ namespace Evado.Bll.Clinical
     /// 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<Evado.Model.Digital.EvUserProfile> GetView (
-      EvUserProfile.UserTypesList UserType,
+    public List<Evado.Model.Digital.EdUserProfile> GetView (
+      String OrgId,
       String PartialUserId,
       String PartialCommonName )
     {
       this.LogMethod ( "GetView method." );
-      this.LogDebug ( "UserType: " + UserType );
+      this.LogDebug ( "OrgId: " + OrgId );
 
-      List<Evado.Model.Digital.EvUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType,
+      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( OrgId,
         PartialUserId,
         PartialCommonName);
       this.LogClass ( this._Dal_UserProfiles.Log );
@@ -158,7 +157,7 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  -------------------------------------------------------------------------------------
     public List<EvOption> GetList ( 
-     EvUserProfile.UserTypesList UserType,
+     EdUserProfile.UserTypesList UserType,
       bool useGuid )
     {
       LogMethod ( "GetView method." );
@@ -198,7 +197,7 @@ namespace Evado.Bll.Clinical
     /// <param name="OrgId">String: The organisation identifier.</param>
     /// <returns>Integer</returns>
     // -------------------------------------------------------------------------------------
-    public int UserCount ( EvUserProfile.UserTypesList UserType )
+    public int UserCount ( EdUserProfile.UserTypesList UserType )
     {
       this.LogMethod ( "UserCount method." );
       this.LogDebug ( "UserType: " + UserType );
@@ -226,13 +225,13 @@ namespace Evado.Bll.Clinical
     /// 2. Return the UserProfile object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvUserProfile getItem ( string ConnectionStringKey, string UserId )
+    public EdUserProfile getItem ( string ConnectionStringKey, string UserId )
     {
       this.FlushLog ( );
       this.LogMethod ( "getItem method" );
       Evado.Bll.EvStaticSetting.ConnectionStringKey = ConnectionStringKey;
 
-      EvUserProfile userProfile = getItem ( UserId );
+      EdUserProfile userProfile = getItem ( UserId );
 
       Evado.Bll.EvStaticSetting.ResetConnectionString ( );
       return userProfile;
@@ -252,14 +251,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the UserProfile object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EvUserProfile getItem ( string UserId )
+    public Evado.Model.Digital.EdUserProfile getItem ( string UserId )
     {
       this.LogMethod ( "getItem method." );
       this.LogDebug ( "UserId: " + UserId );
       //
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile ( );
+      Evado.Model.Digital.EdUserProfile userProfile = new Evado.Model.Digital.EdUserProfile ( );
 
       // 
       // Retrieve the user object from the database.
@@ -301,7 +300,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return the UserProfile object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EvUserProfile getItem ( Guid UserProfileGuid )
+    public Evado.Model.Digital.EdUserProfile getItem ( Guid UserProfileGuid )
     {
       this.FlushLog ( );
       this.LogMethod ( "getItem method." );
@@ -309,50 +308,13 @@ namespace Evado.Bll.Clinical
       //
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile ( );
+      Evado.Model.Digital.EdUserProfile userProfile = new Evado.Model.Digital.EdUserProfile ( );
 
       // 
       // Retrieve the user object from the database.
       // 
       userProfile = this._Dal_UserProfiles.GetItem ( UserProfileGuid );
       this.LogDebugClass ( this._Dal_UserProfiles.Log );
-
-      // 
-      // Return the user profile.
-      // 
-      return userProfile;
-
-    }//END getItem method
-    // =====================================================================================
-    /// <summary>
-    /// This class retrieves the Userprofile object based on Guid
-    /// </summary>
-    /// <param name="PatientGuid">Guid: a patient the user is associated with</param>
-    /// <returns>Evado.Model.Digital.EvUserProfile: a user profile object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method to retrieve a userProfile object based on Guid
-    /// 
-    /// 2. Return the UserProfile object
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EvUserProfile getItemByPatientGuid ( 
-      Guid PatientGuid )
-    {
-      this.FlushLog ( );
-      this.LogMethod ( "getItemByPatientGuid method." );
-      this.LogDebug ( "PatientGuid: " + PatientGuid );
-      //
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.Digital.EvUserProfile userProfile = new Evado.Model.Digital.EvUserProfile ( );
-
-      // 
-      // Retrieve the user object from the database.
-      // 
-      userProfile = this._Dal_UserProfiles.getItemByPatientGuid ( PatientGuid );
-      this.LogDebug ( this._Dal_UserProfiles.Log );
 
       // 
       // Return the user profile.
@@ -371,7 +333,7 @@ namespace Evado.Bll.Clinical
     // -------------------------------------------------------------------------------------
     public EvEventCodes saveItem (
       string ConnectionStringKey,
-      Evado.Model.Digital.EvUserProfile UserProfile )
+      Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.FlushLog ( );
       this.LogMethod ( "saveItem method." );
@@ -406,7 +368,7 @@ namespace Evado.Bll.Clinical
     /// 5. Return an event code of method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveItem ( Evado.Model.Digital.EvUserProfile UserProfile )
+    public EvEventCodes saveItem ( Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.FlushLog ( );
       this.LogMethod ( "saveItem method." );

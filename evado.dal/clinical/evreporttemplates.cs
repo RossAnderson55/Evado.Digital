@@ -128,7 +128,6 @@ namespace Evado.Dal.Clinical
     private const string DB_SOURCE_COLUMN_ID = "RTSC_COLUMN_ID";
 
     private const string DB_REPORT_GUID = "RT_Guid";
-    private const string DB_REPORT_TRIAL_ID = "TrialId";
     private const string DB_REPORT_ID = "ReportId";
     private const string DB_REPORT_TITLE = "RT_ReportTitle";
     private const string DB_REPORT_SUB_TITLE = "RT_ReportSubTitle";
@@ -250,7 +249,7 @@ namespace Evado.Dal.Clinical
     private void SetParameters ( SqlParameter [ ] parms, EvReport Report )
     {
       parms [ 0 ].Value = Report.Guid;
-      parms [ 1 ].Value = Report.TrialId;
+      parms [ 1 ].Value = String.Empty;
       parms [ 2 ].Value = Report.ReportId;
       parms [ 3 ].Value = Report.ReportTitle;
       parms [ 4 ].Value = Report.ReportSubTitle;
@@ -469,7 +468,6 @@ namespace Evado.Dal.Clinical
       // Extract the data object values.
       // 
       report.Guid = EvSqlMethods.getGuid ( Row, EvReportTemplates.DB_REPORT_GUID );
-      report.TrialId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_TRIAL_ID );
       report.ReportId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_ID );
       report.LastReportId = report.ReportId;
       report.SourceId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_ID );
@@ -559,14 +557,12 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvReport> getReportList (
-      String ProjectId,
       EvReport.ReportTypeCode ReportType,
       EvReport.ReportScopeTypes ReportScope,
       String Category,
       bool IncludeSuperseded )
     {
       this.LogMethod ( "getReportList method. " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "ReportTypeId: " + ReportType );
       this.LogDebug ( "ReportScope: " + ReportScope );
       this.LogDebug ( "Category: " + Category );
@@ -578,29 +574,24 @@ namespace Evado.Dal.Clinical
       string SqlQueryString;
       List<EvReport> view = new List<EvReport> ( );
 
-      ProjectId = ProjectId == string.Empty ? "GLOBAL" : ProjectId;
-
-      this.LogDebug ( "Parameter ProjectId: " + ProjectId );
       // 
       // Define the SQL query parameters and load the query values.
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_TRIAL_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_REPORT_SCOPE, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_REPORT_TYPE, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_CATEGORY, SqlDbType.NVarChar, 100),
       };
 
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = ReportScope.ToString ( );
-      cmdParms [ 2 ].Value = ReportType;
-      cmdParms [ 3 ].Value = Category;
+      cmdParms [ 0 ].Value = ReportScope.ToString ( );
+      cmdParms [ 1 ].Value = ReportType;
+      cmdParms [ 2 ].Value = Category;
 
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (" + DB_REPORT_TRIAL_ID + " = " + PARM_TRIAL_ID + " OR " + DB_REPORT_TRIAL_ID + " = 'GLOBAL' ) ";
+      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (" + DB_REPORT_DELETED + " = 0 ) ";
 
       if ( ReportScope != EvReport.ReportScopeTypes.Null )
       {
@@ -1313,12 +1304,10 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     private EvReport getReport (
-      String ProjectId,
       String ReportId )
     {
        
       this.LogMethod ( "getreportList method. " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "ReportId: " + ReportId );
 
       // 
@@ -1332,16 +1321,14 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_TRIAL_ID, SqlDbType.NVarChar, 10),
         new SqlParameter(PARM_REPORT_ID, SqlDbType.NVarChar, 20),
       };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = ReportId;
+      cmdParms [ 0 ].Value = ReportId;
 
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (TrialId = @TrialId) AND (ReportId = @ReportId) AND RT_Superseded = 0; ";
+      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (ReportId = @ReportId) AND RT_Superseded = 0; ";
       this.LogDebug ( SqlQueryString );
 
       //
@@ -1627,7 +1614,6 @@ namespace Evado.Dal.Clinical
        
       this.LogMethod ( "updateReport method." );
       this.LogDebug ( "Guid: " + ReportTemplate.Guid );
-      this.LogDebug ( "TrialId: " + ReportTemplate.TrialId );
       this.LogDebug ( "ReportId: " + ReportTemplate.ReportId );
       this.LogDebug ( "ReportTitle: " + ReportTemplate.ReportTitle );
       this.LogDebug ( "ReportSubTitle: " + ReportTemplate.ReportSubTitle );
@@ -1640,14 +1626,6 @@ namespace Evado.Dal.Clinical
       EvEventCodes result = EvEventCodes.Ok;
       EvDataChanges dataChanges = new EvDataChanges ( );
       EvDataChange dataChange = new EvDataChange ( );
-
-      // 
-      // Check that the Report id is valid
-      // 
-      if ( ReportTemplate.TrialId == String.Empty )
-      {
-        return EvEventCodes.Identifier_Project_Id_Error;
-      }
 
       //
       // Validate whether the Old Report object's Guid is not empty.
@@ -1717,7 +1695,6 @@ namespace Evado.Dal.Clinical
       //
       EvDataChange dataChange = new EvDataChange ( );
       dataChange.TableName = EvDataChange.DataChangeTableNames.EvReportTemplates;
-      dataChange.TrialId = ReportTemplate.TrialId;
       dataChange.RecordUid = 0;
       dataChange.RecordGuid = ReportTemplate.Guid;
       dataChange.UserId = ReportTemplate.UpdateUserId;
@@ -1901,7 +1878,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "addReport method. " );
       this.LogDebug ( "Guid: " + ReportTemplate.Guid );
-      this.LogDebug ( "ProjectId: " + ReportTemplate.TrialId );
       this.LogDebug ( "ReportId: " + ReportTemplate.ReportId );
       this.LogDebug ( "ReportTitle: " + ReportTemplate.ReportTitle );
       this.LogDebug ( "ReportSubTitle: " + ReportTemplate.ReportSubTitle );
@@ -1915,10 +1891,10 @@ namespace Evado.Dal.Clinical
       //
       // Validate whether the ProjectId or User common name is not empty. 
       //
-      if ( ReportTemplate.TrialId == String.Empty )
+      if ( ReportTemplate.ReportType == EvReport.ReportTypeCode.Null )
       {
-        this.LogDebug ( "TrialId missing. " );
-        return EvEventCodes.Identifier_Project_Id_Error;
+        this.LogDebug ( "ReportType missing. " );
+        return EvEventCodes.Identifier_General_ID_Error;
       }
       if ( ReportTemplate.UserCommonName == String.Empty )
       {
@@ -1930,7 +1906,7 @@ namespace Evado.Dal.Clinical
       // 
       // Check that the Report id is unique trial.
       // 
-      EvReport report = this.getReport ( ReportTemplate.TrialId, ReportTemplate.ReportId );
+      EvReport report = this.getReport ( ReportTemplate.ReportId );
       if ( report.Guid != Guid.Empty )
       {
         this.LogDebug ( "Duplicate report Id. " );
@@ -1994,21 +1970,7 @@ namespace Evado.Dal.Clinical
     public EvEventCodes deleteItem ( EvReport Report )
     {
       this.LogMethod ( "deleteItem method. " );
-      this.LogDebug ( "ProjectId: " + Report.TrialId );
       this.LogDebug ( "ReportId: " + Report.ReportId );
-
-      // 
-      // Validate whether the ReportId or trialId or Usercommon name is not empty. 
-      // 
-      if ( Report.ReportId == String.Empty )
-      {
-        return EvEventCodes.Identifier_General_ID_Error;
-      }
-
-      if ( Report.TrialId == String.Empty )
-      {
-        return EvEventCodes.Identifier_Project_Id_Error;
-      }
 
       if ( Report.UserCommonName == String.Empty )
       {
@@ -2026,8 +1988,8 @@ namespace Evado.Dal.Clinical
         new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime )
       };
       cmdParms [ 0 ].Value = Report.Guid;
-      cmdParms [ 1 ].Value = Report.UpdateUserId;
-      cmdParms [ 2 ].Value = Report.UserCommonName;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
 
       //

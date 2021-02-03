@@ -26,7 +26,7 @@ using System.Web.SessionState;
 using Evado.Model;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -71,14 +71,14 @@ namespace Evado.UniForm.Clinical
       set { this._ServiceUserProfile = value; }
     }
 
-    private EuApplicationObjects _ApplicationObjects = new EuApplicationObjects ( );
+    private EuAdapterObjects _GlobalObjects = new EuAdapterObjects ( );
     /// <summary>
     /// This property contains the global application parameters.
     /// </summary>
-    public EuApplicationObjects ApplicationObjects
+    public EuAdapterObjects GlobalObjects
     {
-      get { return _ApplicationObjects; }
-      set { _ApplicationObjects = value; }
+      get { return _GlobalObjects; }
+      set { _GlobalObjects = value; }
     }
 
     private EuSession _Session = new EuSession ( );
@@ -455,7 +455,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public void LogPageAccess (
      String ClassMethodAccessed,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables
@@ -512,7 +512,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public void LogIllegalAccess (
      String ClassMethodAccessed,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables
@@ -558,7 +558,7 @@ namespace Evado.UniForm.Clinical
     public void LogIllegalAccess (
      String ClassMethodAccessed,
       String RoleId,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
 	/// <summary>
     /// Summary description for AssemblyAttributes class.

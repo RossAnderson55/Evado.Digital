@@ -150,7 +150,7 @@ namespace Evado.Bll.Integration
     /// <returns>Evado.Model.Integration.EiData object</returns>
     //-----------------------------------------------------------------------------------
     public Evado.Model.Integration.EiData ImportData (
-        Evado.Model.Digital.EvUserProfile UserProfile,
+        Evado.Model.Digital.EdUserProfile UserProfile,
         EiQueryTypes QueryType,
         List<String> CsvDataList )
     {

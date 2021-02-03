@@ -47,14 +47,12 @@ namespace Evado.Model.Digital
     /// </summary>
     // ----------------------------------------------------------------------------------
     public EvClassParameters (
-      EvUserProfile UserProfile,
+      EdUserProfile UserProfile,
       int Logginglevel,
-      Guid ApplicationGuid,
-      Guid CustomerGuid )
+      Guid ApplicationGuid )
     {
       this._LoggingLevel = Logginglevel;
-      this.CustomerGuid = CustomerGuid;
-      this.PlatformGuid = ApplicationGuid;
+      this.AdapterGuid = ApplicationGuid;
       this.UserProfile = UserProfile;
 
       String CustomerGroup = UserProfile.AdsCustomerGroup;
@@ -109,43 +107,26 @@ namespace Evado.Model.Digital
 
     #region Application identifier property
 
-    private Guid _PlatformGuid = Guid.Empty;
+    private Guid _AdapterGuid = Guid.Empty;
 
     // ================================================================================
     /// <summary>
     /// This property contains the site guid 
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public Guid PlatformGuid
+    public Guid AdapterGuid
     {
       get
       {
-        return this._PlatformGuid;
+        return this._AdapterGuid;
       }
       set
       {
-        this._PlatformGuid = value;
+        this._AdapterGuid = value;
       }
     }
 
     private Guid _CustomerGuid = Guid.Empty;
-
-    // ================================================================================
-    /// <summary>
-    /// This property contains the Current customer guid 
-    /// </summary>
-    // ----------------------------------------------------------------------------------
-    public Guid CustomerGuid
-    {
-      get
-      {
-        return this._CustomerGuid;
-      }
-      set
-      {
-        this._CustomerGuid = value;
-      }
-    }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -155,7 +136,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the user common name 
     /// </summary>
-    public EvUserProfile UserProfile { get; set; }
+    public EdUserProfile UserProfile { get; set; }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

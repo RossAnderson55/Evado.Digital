@@ -93,6 +93,11 @@ namespace Evado.Model
       EvUserProfiles,
 
       /// <summary>
+      /// This enumeration value defines Data Change on organisations table
+      /// </summary>
+      EvOrganisations,
+
+      /// <summary>
       /// This enumerated value defines the data change for activie directory services.
       /// </summary>
       ActiveDirectoryServices

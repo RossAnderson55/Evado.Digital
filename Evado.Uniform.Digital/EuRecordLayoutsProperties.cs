@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -294,8 +294,8 @@ namespace Evado.UniForm.Clinical
       //
       // Form Update reason
       //
-      optionList = EvUserProfile.getRoleOptionList( 
-        this.Session.Application.RoleList, false ) ;
+      optionList = EdUserProfile.getRoleOptionList( 
+        this.GlobalObjects.AdapterSettings.RoleList, false ) ;
 
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.RecordAccessRole.ToString ( ),
@@ -404,7 +404,7 @@ namespace Evado.UniForm.Clinical
       // Add the new form section object.
 
       groupCommand = pageGroup.addCommand ( EdLabels.Form_Section_New_Section_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Record_Layouts.ToString ( ),
         Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -420,7 +420,7 @@ namespace Evado.UniForm.Clinical
       foreach ( EdRecordSection formSection in this.Session.RecordLayout.Design.FormSections )
       {
         groupCommand = pageGroup.addCommand ( formSection.LinkText,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Record_Layouts.ToString ( ),
           Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -720,7 +720,7 @@ namespace Evado.UniForm.Clinical
       //
       pageCommand = pageGroup.addCommand (
         EdLabels.Form_Properties_Section_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Record_Layouts.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 

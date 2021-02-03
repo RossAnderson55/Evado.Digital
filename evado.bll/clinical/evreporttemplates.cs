@@ -94,7 +94,6 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvReport> getReportList (
-      String ProjectId,
       EvReport.ReportTypeCode ReportType,
       string Category )
     {
@@ -102,7 +101,7 @@ namespace Evado.Bll.Clinical
       this.LogMethod( "getReportList method " );
 
       List<EvReport> view = this._dalReportTemplates.getReportList ( 
-        ProjectId, ReportType, 
+        ReportType, 
         EvReport.ReportScopeTypes.Null, 
         Category, false );
 
@@ -128,7 +127,6 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvReport> getAllReportList (
-      String ProjectId,
       EvReport.ReportTypeCode ReportTypeId,
       String Category )
     {
@@ -136,7 +134,6 @@ namespace Evado.Bll.Clinical
       this.LogMethod ( "getAllReportList method " );
 
       List<EvReport> reportList = this._dalReportTemplates.getReportList (
-        ProjectId,
         ReportTypeId,
         EvReport.ReportScopeTypes.Null,
         Category,
@@ -163,18 +160,15 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvReport> getReportList (
-      String ProjectId,
       EvReport.ReportTypeCode ReportType,
       EvReport.ReportScopeTypes ReportScope )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod ( "getReportList method " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "ReportTypeId: " + ReportType);
       this.LogDebug ( "ReportScope: " + ReportScope );
 
       List<EvReport> view = this._dalReportTemplates.getReportList (
-        ProjectId,
         ReportType, 
         ReportScope,
         String.Empty,
@@ -203,20 +197,18 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvReport> getReportList (
-      String ProjectId,
       EvReport.ReportTypeCode ReportTypeId,
       String Category,
       EvReport.ReportScopeTypes ReportScope )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod( "getReportList method ");
-      this.LogDebug ( "ProjectId: " + ProjectId);
       this.LogDebug ( "ReportTypeId: " + ReportTypeId);
       this.LogDebug ( "Category: " + Category);
       this.LogDebug ( "ReportScope: " + ReportScope );
 
       List<EvReport> view = this._dalReportTemplates.getReportList (
-        ProjectId, ReportTypeId, ReportScope, Category, false );
+         ReportTypeId, ReportScope, Category, false );
 
       this.LogClass ( this._dalReportTemplates.Log );
 
@@ -393,17 +385,15 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getSelectionList (
-      Model.Digital.EdApplication Project,
       EvReport.SelectionListTypes selectionType,
       string ListParameters,
-      Evado.Model.Digital.EvUserProfile profile )
+      Evado.Model.Digital.EdUserProfile profile )
     {
       //
       // Initialise the methods variables and objects.
       //
       List<EvOption> returnList = new List<EvOption> ( );
       this.LogMethod ( "getSelectionList method " );
-      this.LogDebug ( "ProjectId: " + Project.ApplicationId );
       this.LogDebug ( "selectionType: " + selectionType );
       this.LogDebug ( "ListParameters: " + ListParameters );
 
@@ -438,19 +428,7 @@ namespace Evado.Bll.Clinical
           {
             this.LogValue ( "Form source selected." );
             EdRecordLayouts formsBll = new EdRecordLayouts ( this.ClassParameter );
-            returnList = formsBll.getList ( Project.ApplicationId, EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
-            break;
-          }
-
-        //AFC 1 July 2010: Create a filter only with the current trial
-        case EvReport.SelectionListTypes.Current_Application:
-          {
-            this.LogValue ( "Current Project." );
-            returnList = new List<EvOption> ( );
-            EvOption option = new EvOption (
-              Project.ApplicationId,
-              Project.ApplicationId + " - " + Project.Title );
-            returnList.Add ( option );
+            returnList = formsBll.getList ( EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
             break;
           }
 
@@ -489,15 +467,11 @@ namespace Evado.Bll.Clinical
 
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Null ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Clinical ) );
-      
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Data_Management ) );
-
       list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.General ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Schedule ) );
+      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Entity ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Monitoring ) );
+      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Record ) );
 
       // 
       // Return the repot QueryType currentSchedule.
@@ -596,7 +570,6 @@ namespace Evado.Bll.Clinical
       EvReport report = new EvReport ( );
 
       List<EvReport> reportList = this._dalReportTemplates.getReportList (
-      String.Empty,
       EvReport.ReportTypeCode.Null,
       Scope, String.Empty, false );
 

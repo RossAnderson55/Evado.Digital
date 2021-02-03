@@ -151,6 +151,15 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisation Type.
+        /// </summary>
+        public static string Organisation_Type_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Type_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  &gt; .
         /// </summary>
         public static string Space_Arrow_Right {

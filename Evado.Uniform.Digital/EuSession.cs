@@ -27,7 +27,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class contains the session ResultData object
@@ -65,8 +65,7 @@ namespace Evado.UniForm.Clinical
 
     #endregion
 
-    #region Application properties members
-
+    #region Adapter properties members
 
     public bool AdsEnabled = true;
     /// <summary>
@@ -216,23 +215,27 @@ namespace Evado.UniForm.Clinical
     /// <summary>
     /// This property contains the current user type selection.
     /// </summary>
-    public EvUserProfile.UserTypesList SelectedUserType  { get; set; }
+    public EdUserProfile.UserTypesList SelectedUserType  { get; set; }
 
-    EvUserProfile _UserProfile = new EvUserProfile ( );
     /// <summary>
     /// This property contains the users eClinical user profile.
     /// </summary>
-    public Evado.Model.Digital.EvUserProfile UserProfile
-    {
-      get
-      {
-        return this._UserProfile;
-      }
-      set
-      {
-        this._UserProfile = value;
-      }
-    }
+    public Evado.Model.Digital.EdUserProfile UserProfile { get; set; }
+
+    /// <summary>
+    /// This property contains a list of organisations.
+    /// </summary>
+    public List<Evado.Model.Digital.EvOrganisation> OrganisationList { get; set; }
+
+    /// <summary>
+    /// This property contains the Organisation
+    /// </summary>
+    public Evado.Model.Digital.EvOrganisation Organisation { get; set; }
+
+    /// <summary>
+    /// This property contains the adminstration Organisation
+    /// </summary>
+    public Evado.Model.Digital.EvOrganisation AdminOrganisation { get; set; }
 
 
     Evado.Model.Digital.EvExportParameters _ExportParameters = new EvExportParameters ( );
@@ -245,88 +248,12 @@ namespace Evado.UniForm.Clinical
       set { _ExportParameters = value; }
     }
 
-    List<Evado.Model.Digital.EdApplication> _ApplicationList = new List<Evado.Model.Digital.EdApplication> ( );
-    /// <summary>
-    /// This property contains the list of trials as option objects.
-    /// </summary>
-    public List<Evado.Model.Digital.EdApplication> ApplicationList
-    {
-      get { return this._ApplicationList; }
-      set { this._ApplicationList = value; }
-    }
-
-    /// <summary>
-    /// This property contains the list of studies as option objects.
-    /// </summary>
-    public List<EvOption> ApplicationSelectionList
-    {
-      get
-      {
-        //
-        // Initialise the properties objects and variables.
-        //
-        List<EvOption> optionList = new List<EvOption> ( );
-        optionList.Add (
-            new Evado.Model.EvOption ( "Null", String.Empty ) );
-
-        if ( this.ApplicationList == null )
-        {
-          return optionList;
-        }
-
-        //
-        // Iterate through the study list generate the selection list.
-        //
-        foreach ( Model.Digital.EdApplication app in this.ApplicationList )
-        {
-          optionList.Add ( new EvOption ( app.ApplicationId,
-            string.Format ( "{0} - {1}", app.ApplicationId, app.Title ) ) );
-        }
-
-        return optionList;
-      }
-    }
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Customer properties
-    Evado.Model.Digital.EvCustomer _Customer = new EvCustomer ( );
-    /// <summary>
-    /// This property object contains the eClinical customer object.
-    /// </summary>
-    public Evado.Model.Digital.EvCustomer Customer
-    {
-      get
-      {
-        return this._Customer;
-      }
-      set
-      {
-        this._Customer = value;
-      }
-    }
-
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
     #region Application properties
 
-    Evado.Model.Digital.EdApplication _Trial = new Evado.Model.Digital.EdApplication ( );
-    /// <summary>
-    /// This property object contains the trial object.
-    /// </summary>
-    public Evado.Model.Digital.EdApplication Application
-    {
-      get
-      {
-        return this._Trial;
-      }
-      set
-      {
-        this._Trial = value;
-      }
-    }
+
     public List<EvBinaryFileMetaData> FileMetaDataList { get; set; }
 
     Evado.Model.Digital.EvPageIds _PageId = new Evado.Model.Digital.EvPageIds ( );
@@ -419,12 +346,12 @@ namespace Evado.UniForm.Clinical
     //
     // This property is a list of the eclinical administrator usres list.
     //
-    public List<Evado.Model.Digital.EvUserProfile> AdminUserProfileList { get; set; }
+    public List<Evado.Model.Digital.EdUserProfile> AdminUserProfileList { get; set; }
 
     /// <summary>
     /// This property contains the users eClinical user profile used by the admin module.
     /// </summary>
-    public Evado.Model.Digital.EvUserProfile AdminUserProfile { get; set; }
+    public Evado.Model.Digital.EdUserProfile AdminUserProfile { get; set; }
 
     /// <summary>
     /// This property contains the form analysis record list.
@@ -507,37 +434,6 @@ namespace Evado.UniForm.Clinical
     public List<EvReport> ReportTemplateList { get; set; }
 
     /// <summary>
-    /// This property contains the list of studies as option objects.
-    /// </summary>
-    public List<EvOption> ReportApplicationList
-    {
-      get
-      {
-        //
-        // Initialise the properties objects and variables.
-        //
-        List<EvOption> optionList = new List<EvOption> ( );
-        optionList.Add (
-            new Evado.Model.EvOption ( EvcStatics.CONST_GLOBAL_PROJECT, "Global" ) );
-
-        if ( this.ApplicationList == null )
-        {
-          return optionList;
-        }
-
-        //
-        // Iterate through the study list generate the selection list.
-        //
-        foreach ( Model.Digital.EdApplication app in this.ApplicationList )
-        {
-          optionList.Add ( new EvOption ( app.ApplicationId,
-            string.Format ( "{0} - {1}", app.ApplicationId, app.Title ) ) );
-        }
-
-        return optionList;
-      }
-    }
-    /// <summary>
     /// This property contains the current report template object.
     /// </summary>
     public EvReport ReportTemplate { get; set; }
@@ -546,16 +442,6 @@ namespace Evado.UniForm.Clinical
     /// This property contains the current report object.
     /// </summary>
     public EvReport Report { get; set; }
-
-    private String _ReportStudyId = "GLOBAL";
-    /// <summary>
-    /// This property stores the current report type selection.
-    /// </summary>
-    public String ReportStudyId
-    {
-      get { return _ReportStudyId; }
-      set { _ReportStudyId = value; }
-    }
 
     private String _ReportCategory = String.Empty;
     /// <summary>
@@ -567,15 +453,15 @@ namespace Evado.UniForm.Clinical
       set { _ReportCategory = value; }
     }
 
-    private EvReport.ReportScopeTypes _ReportScope = EvReport.ReportScopeTypes.Null;
     /// <summary>
     /// This property stores the current report scope.
     /// </summary>
-    public EvReport.ReportScopeTypes ReportScope
-    {
-      get { return _ReportScope; }
-      set { _ReportScope = value; }
-    }
+    public EvReport.ReportTypeCode ReportType { get; set; }
+
+    /// <summary>
+    /// This property stores the current report scope.
+    /// </summary>
+    public EvReport.ReportScopeTypes ReportScope { get; set; }
 
     /// <summary>
     /// This property contains the form template upload filename
@@ -587,35 +473,21 @@ namespace Evado.UniForm.Clinical
     //
     public bool FormsAdaperLoaded { get; set; }
 
-    List<EdRecord> _FormList = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of eClinical evForm object for the currently selected record.
     /// </summary>
-    public List<EdRecord> FormList
-    {
-      get { return _FormList; }
-      set { _FormList = value; }
-    }
+    public List<EdRecord> RecordLayoutList { get; set; }
 
-    EdRecord _Form = new EdRecord ( );
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
-    public EdRecord RecordLayout
-    {
-      get { return _Form; }
-      set { _Form = value; }
-    }
+    public EdRecord RecordLayout { get; set; }
 
     EdRecordField _FormField = new EdRecordField ( );
     /// <summary>
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
-    public EdRecordField FormField
-    {
-      get { return _FormField; }
-      set { _FormField = value; }
-    }
+    public EdRecordField FormField { get; set; }
 
     public EdRecordObjectStates RecordSelectionState = EdRecordObjectStates.Null;
 
@@ -847,22 +719,6 @@ namespace Evado.UniForm.Clinical
       String content = Content;
 
       //
-      // Substitute the project markup for actual data.
-      //
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_ID, this.Application.ApplicationId );
-      content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_TITLE, this.Application.Title );
-
-      if ( this.Application.Description == String.Empty
-        || this.Application.Description == EdLabels.Project_Create_Project_Description )
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_DESCRIPTION, String.Empty );
-      }
-      else
-      {
-        content = content.Replace ( EvcStatics.TEXT_SUBSITUTION_TRIAL_DESCRIPTION, this.Application.Description );
-      }
-
-      //
       // Return the substituted text 
       //
       return content;
@@ -944,7 +800,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public String substituteDataValue (
       String Content,
-      EvUserProfile PatientUseProfile )
+      EdUserProfile PatientUseProfile )
     {
       String content = Content;
 
@@ -997,24 +853,11 @@ namespace Evado.UniForm.Clinical
       set { _BlockAllResets = value; }
     }
 
-
     public EdRecord Record { get; set; }
 
     public EdRecord Entity { get; set; }
 
     public EvAncillaryRecord AncillaryRecord = new EvAncillaryRecord ( );
-
-    // ==================================================================================
-    /// <summary>
-    /// This methods resets the session object value on a trial change.
-    /// </summary>
-    //  ---------------------------------------------------------------------------------
-    private void resetCustomerObjects ( )
-    {
-      this.Application = new Evado.Model.Digital.EdApplication ( );
-      this.ApplicationList = new List<Model.Digital.EdApplication> ( );
-    }
-
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

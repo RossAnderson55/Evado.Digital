@@ -32,7 +32,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class manages the Evado.UniFORM.eClinical application services. Integrating
@@ -116,23 +116,17 @@ namespace Evado.UniForm.Clinical
         this.LogInitValue ( "-ApplicationPath: " + this.ApplicationPath );
         this.LogInitValue ( "-ExitCommand: " + this.ExitCommand.getAsString ( false, true ) );
 
-        //
-        // if last page is null then the 
-        if ( this.Session.LastPage == null )
-        {
-          this.Session.LastPage = new Model.UniForm.AppData ( );
-        }
 
         Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
         //
         // Define the settings object.
         //
-        this.ClassParameters.UserProfile = new EvUserProfile ( this.ServiceUserProfile );
+        this.ClassParameters.UserProfile = new EdUserProfile ( this.ServiceUserProfile );
         this.ClassParameters.LoggingLevel = 5;
 
-        this._ApplicationObjects = new EuApplicationObjects ( this.ClassParameters );
-        this._ApplicationObjects.LoggingLevel = 5;
+        this._AdapterObjects = new EuAdapterObjects ( this.ClassParameters );
+        this._AdapterObjects.LoggingLevel = 5;
         //
         // Delete the old application objects.
         //
@@ -146,30 +140,24 @@ namespace Evado.UniForm.Clinical
         //
         // Define the application Guid
         //
-        this.ClassParameters.PlatformGuid = this._ApplicationObjects.PlatformSettings.Guid;
-        this.ClassParameters.PlatformId = this._ApplicationObjects.PlatformId;
+        this.ClassParameters.AdapterGuid = this._AdapterObjects.AdapterSettings.Guid;
+        this.ClassParameters.PlatformId = this._AdapterObjects.PlatformId;
 
         //
         // load the user's session object in to memory.
         //
         this.loadSessionObjects ( );
 
-        //
-        // set the setting customer GUID value.
-        // 
-        this.ClassParameters.CustomerGuid = this.Session.Customer.Guid;
-
-        this.LogInitValue ( "ServiceUserProfile\r\n-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
+        this.LogInitValue ( "ServiceUserProfile" );
+        this.LogInitValue ( "-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
 
         this.LogInitValue ( "Settings:" );
         this.LogInitValue ( "-PlatformId: " + this.ClassParameters.PlatformId );
-        this.LogInitValue ( "-CustomerGuid: " + this.ClassParameters.CustomerGuid );
-        this.LogInitValue ( "-ApplicationGuid: " + this.ClassParameters.PlatformGuid );
+        this.LogInitValue ( "-AdapterGuid: " + this.ClassParameters.AdapterGuid );
         this.LogInitValue ( "-LoggingLevel: " + ClassParameters.LoggingLevel );
         this.LogInitValue ( "-UserId: " + ClassParameters.UserProfile.UserId );
         this.LogInitValue ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
 
-        this.LogInitValue ( "ProjectSelectionList.Count: " + this.Session.ApplicationSelectionList.Count );
         this.LogInitValue ( "ClientDataObject.Page.Title: " + this.ClientDataObject.Page.Title );
 
         if ( this.Session.AdminUserProfile != null )
@@ -229,7 +217,12 @@ namespace Evado.UniForm.Clinical
     /// <summary>
     /// This constant defines the Application identifier
     /// </summary>
-    public const string APPLICATION_ID = "Evado_eClinical";
+    public const string ADAPTER_ID = "Evado_Digital";
+
+    /// <summary>
+    /// This constant defines the application global object hash table key value.
+    /// </summary>
+    public const string GLOBAL_OBJECT = ADAPTER_ID + "_GLOBAL_OBJECT";
 
     public const string CONST_ALERT_SELECT = "ALERT_SELECT";
 
@@ -248,7 +241,7 @@ namespace Evado.UniForm.Clinical
 
     public static readonly EdRecordObjectStates CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn;
 
-    private EuApplicationObjects _ApplicationObjects = new EuApplicationObjects ( );
+    private EuAdapterObjects _AdapterObjects = new EuAdapterObjects ( );
 
     private EuSession Session = new EuSession ( );
 
@@ -331,9 +324,9 @@ namespace Evado.UniForm.Clinical
       {
         this._LicensedModules = value;
 
-        if ( this._ApplicationObjects.PlatformSettings != null )
+        if ( this._AdapterObjects.AdapterSettings != null )
         {
-          this._ApplicationObjects.LicensedModules = this._LicensedModules;
+          this._AdapterObjects.LicensedModules = this._LicensedModules;
         }
       }
     }
@@ -372,11 +365,9 @@ namespace Evado.UniForm.Clinical
       this.LogMethod ( "getPageObject" );
       try
       {
-        this.LogValue ( "Page Command: " + PageCommand.getAsString ( false, false ) );
-        this.LogValue ( "Exit Command: " + this.ExitCommand.getAsString ( false, false ) );
-        this.LogDebug ( "LastPage.Title: " + this.Session.LastPage.Title );
-        this.LogDebug ( "Customer Guid {0}. ", this.Session.Customer.Guid );
-        this.LogDebug ( "Customer No {0}. ", this.Session.Customer.CustomerNo );
+        this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
+        this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
+        this.LogDebug ( "LastPage.Title: {0}. ", this.Session.LastPage.Title );
 
         //
         // Turn on BLL debug to match the current class setting.
@@ -396,7 +387,7 @@ namespace Evado.UniForm.Clinical
         //
         if ( PageCommand.ApplicationId == Evado.Model.UniForm.EuStatics.CONST_DEFAULT )
         {
-          PageCommand.ApplicationId = EuAdapter.APPLICATION_ID;
+          PageCommand.ApplicationId = EuAdapter.ADAPTER_ID;
           PageCommand.Object = EuAdapterClasses.Home_Page.ToString ( );
         }
 
@@ -404,7 +395,7 @@ namespace Evado.UniForm.Clinical
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-        Evado.Bll.EvStaticSetting.SiteGuid = this._ApplicationObjects.PlatformSettings.Guid;
+        Evado.Bll.EvStaticSetting.SiteGuid = this._AdapterObjects.AdapterSettings.Guid;
 
         // 
         // Load the user profile.
@@ -435,15 +426,13 @@ namespace Evado.UniForm.Clinical
         this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
 
         //
-        // get the customer object if it not already selected.
-        //
-        this.getCustomer ( PageCommand );
-
-        //
         // set the current project
         //
-        this.loadTrialFormList ( );
+        this.loadRecordLayoutList ( );
 
+        //
+        // get the application object.
+        //
         clientDataObject = this.getApplicationObject ( PageCommand );
 
         //
@@ -521,14 +510,7 @@ namespace Evado.UniForm.Clinical
 
       description = PageCommand.getAsString ( false, true );
 
-
-      this.LogDebug ( "{0} - {1}.", this.Session.Customer.CustomerNo, this.Session.Customer.Name );
-
-      description += "\r\n Customer No: " + this.Session.Customer.CustomerNo
-        + ", Name: " + this.Session.Customer.Name;
-
-
-      description += "\r\n User Type: " + EvUserProfile.UserTypesList.End_User;
+      description += "\r\n User Type: " + EdUserProfile.UserTypesList.End_User;
 
       this.LogValue ( "Group Description:\r\n " + description );
       pageGroup.Description = description;
@@ -536,7 +518,7 @@ namespace Evado.UniForm.Clinical
       // initialise patient adapter the service object.
       //
       EuDemoUserRegistration demonstrationUserRegistration = new EuDemoUserRegistration (
-        this._ApplicationObjects,
+        this._AdapterObjects,
         this.ServiceUserProfile,
         this.Session,
         this.UniForm_BinaryFilePath,
@@ -552,7 +534,7 @@ namespace Evado.UniForm.Clinical
       //
       // Update the application and session objects.
       //
-      this._ApplicationObjects = demonstrationUserRegistration.ApplicationObjects;
+      this._AdapterObjects = demonstrationUserRegistration.GlobalObjects;
       this.Session = demonstrationUserRegistration.Session;
 
       //
@@ -597,7 +579,7 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "getApplicationObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
-      this.LogDebug ( "Settings.UserProfile.RoleId: " + this.ClassParameters.UserProfile.Roles );
+      this.LogDebug ( "UserProfile.RoleId: " + this.ClassParameters.UserProfile.Roles );
       //
       // Initialise the methods variables and objects.
       //
@@ -605,7 +587,7 @@ namespace Evado.UniForm.Clinical
       this.ErrorMessage = String.Empty;
 
       EuRecords formRecords = new EuRecords (
-              this._ApplicationObjects,
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -619,7 +601,7 @@ namespace Evado.UniForm.Clinical
       // 
       // Save the application parameters to global objects.
       // 
-      this.GlobalObjectList [ Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ] = this._ApplicationObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
 
       // 
       // Get the application object enumeration value.
@@ -649,8 +631,8 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EdAdapterSettings applicationProfiles = new EdAdapterSettings (
-              this._ApplicationObjects,
+            EdAdapterConfig applicationProfiles = new EdAdapterConfig (
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -681,7 +663,7 @@ namespace Evado.UniForm.Clinical
             // Initialise the methods variables and objects.
             // 
             EuApplicationEvents applicationProfiles = new EuApplicationEvents (
-              this._ApplicationObjects,
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -711,7 +693,7 @@ namespace Evado.UniForm.Clinical
             // Initialise the methods variables and objects.
             // 
             EuStaticContentTemplates emailTemplates = new EuStaticContentTemplates (
-              this._ApplicationObjects,
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath );
@@ -724,6 +706,36 @@ namespace Evado.UniForm.Clinical
             this.LogAdapter ( emailTemplates.Log );
 
             break;
+          }
+        case EuAdapterClasses.Organisations:
+          {
+            this.LogDebug ( " USERS CLASS SELECTED." );
+
+            //
+            // Log command and exit for illegal access attempty.
+            //
+            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
+            {
+              return this.IllegalAnonymousAccessAttempt ( adapterClass );
+            }
+
+            // 
+            // Initialise the methods variables and objects.
+            // 
+            EuOrganisations userProfiles = new EuOrganisations ( this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.ClassParameters );
+
+            userProfiles.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = userProfiles.getDataObject ( PageCommand );
+            this.ErrorMessage = userProfiles.ErrorMessage;
+            this.LogAdapter ( userProfiles.Log );
+
+            break;
+
           }
         case EuAdapterClasses.Users:
           {
@@ -740,7 +752,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuUserProfiles userProfiles = new EuUserProfiles ( this._ApplicationObjects,
+            EuUserProfiles userProfiles = new EuUserProfiles ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -771,7 +783,7 @@ namespace Evado.UniForm.Clinical
             // Initialise the methods variables and objects.
             // 
             EuMenus menus = new EuMenus (
-              this._ApplicationObjects,
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -783,7 +795,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Save the application parameters to global objects.
             // 
-            this.GlobalObjectList [ Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ] = this._ApplicationObjects;
+            this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
 
             this.ErrorMessage = menus.ErrorMessage;
             this.LogAdapter ( menus.Log );
@@ -807,7 +819,7 @@ namespace Evado.UniForm.Clinical
             // Initialise the methods variables and objects.
             // 
             EuBinaryFiles binaryFiles = new EuBinaryFiles (
-              this._ApplicationObjects,
+              this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -872,7 +884,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayouts forms = new EuRecordLayouts ( this._ApplicationObjects,
+            EuRecordLayouts forms = new EuRecordLayouts ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -902,7 +914,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayoutFields formFields = new EuRecordLayoutFields ( this._ApplicationObjects,
+            EuRecordLayoutFields formFields = new EuRecordLayoutFields ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1020,7 +1032,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuReportTemplates reportTemplates = new EuReportTemplates ( this._ApplicationObjects,
+            EuReportTemplates reportTemplates = new EuReportTemplates ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1050,7 +1062,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuReports reports = new EuReports ( this._ApplicationObjects,
+            EuReports reports = new EuReports ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1080,7 +1092,7 @@ namespace Evado.UniForm.Clinical
             // 
             // Initialise the methods variables and objects.
             // 
-            EuAnalysis analysis = new EuAnalysis ( this._ApplicationObjects,
+            EuAnalysis analysis = new EuAnalysis ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1223,48 +1235,48 @@ namespace Evado.UniForm.Clinical
       // 
       // load the global object.
       // 
-      if ( this.GlobalObjectList.ContainsKey ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ) == true )
+      if ( this.GlobalObjectList.ContainsKey ( EuAdapter.GLOBAL_OBJECT ) == true )
       {
-        this._ApplicationObjects =
-          ( EuApplicationObjects ) this.GlobalObjectList [ Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ];
+        this._AdapterObjects =
+          ( EuAdapterObjects ) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
       }
 
       //  
       // Load the paremeters from the web.config if not already loaded.
       // 
-      if ( this._ApplicationObjects.PlatformSettings.Guid != Guid.Empty )
+      if ( this._AdapterObjects.AdapterSettings.Guid != Guid.Empty )
       {
         this.LogInitValue ( "APPLICATION OBJECT IS LOADED" );
-
         return;
       }
+
+      this.LogInitValue ( "LOADING THE APPLICATION OBJECT VALUES" );
 
       // 
       // Update the application path.
       // 
-      this._ApplicationObjects.ApplicationPath = this.ApplicationPath;
+      this._AdapterObjects.ApplicationPath = this.ApplicationPath;
 
-      this.LogInitValue ( "LOADING THE APPLICATION OBJECT VALUES" );
       //
       // The object is empty so load the application parameter values.
       //
-      int loggingLevel = this._ApplicationObjects.LoggingLevel;
-      this._ApplicationObjects.LoggingLevel = 5;
+      int loggingLevel = this._AdapterObjects.LoggingLevel;
+      this._AdapterObjects.LoggingLevel = 5;
 
-      this._ApplicationObjects.loadGlobalParameters ( );
+      this._AdapterObjects.loadGlobalParameters ( );
 
-      this.LogInit ( this._ApplicationObjects.Log );
-      this.LogInitValue ( "Version: " + this._ApplicationObjects.PlatformSettings.Version );
+      this.LogInit ( this._AdapterObjects.Log );
+      this.LogInitValue ( "Version: " + this._AdapterObjects.AdapterSettings.Version );
 
       // 
       // Save the application parameters to global objects.
       // 
-      this.GlobalObjectList [ Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ] = this._ApplicationObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
 
       this.LogInitValue ( "GlobalObjects: " + this.GlobalObjectList.Count );
 
       this.LogInitValue ( "GLOBAL APPLICATION OBJECT VALUES LOADED" );
-      this._ApplicationObjects.LoggingLevel = loggingLevel;
+      this._AdapterObjects.LoggingLevel = loggingLevel;
 
     }//END loadGlobalApplicationObjects method
 
@@ -1288,7 +1300,7 @@ namespace Evado.UniForm.Clinical
         //
         // exit if web site is defined.
         //
-        if ( this._ApplicationObjects.PlatformId != String.Empty )
+        if ( this._AdapterObjects.PlatformId != String.Empty )
         {
           this.LogInitValue ( "The web site identifier exists to exit." );
           return;
@@ -1348,6 +1360,14 @@ namespace Evado.UniForm.Clinical
     {
       this.LogInitMethod ( "loadSessionObjects" );
 
+      //
+      // if last page is null then the 
+      //
+      if ( this.Session.LastPage == null )
+      {
+        this.Session.LastPage = new Model.UniForm.AppData ( );
+      }
+
       // 
       // load eclinical session object.
       //
@@ -1358,7 +1378,7 @@ namespace Evado.UniForm.Clinical
         return;
       }
 
-      this._SessionObjectKey = this.ServiceUserProfile.UserId + Evado.Model.Digital.EvcStatics.SESSION_CLINICAL_OBJECT;
+      this._SessionObjectKey = this.ServiceUserProfile.UserId + EuAdapter.ADAPTER_ID;
       this._SessionObjectKey = this._SessionObjectKey.Replace ( ".", "_" );
       this._SessionObjectKey = this._SessionObjectKey.ToUpper ( );
 
@@ -1383,7 +1403,6 @@ namespace Evado.UniForm.Clinical
 
         //this.LogInitValue ( "Last client data object loaded." );
       }
-
 
       // 
       // if the last page is empty, meaning that the home page has been opened for the first time,
@@ -1448,7 +1467,7 @@ namespace Evado.UniForm.Clinical
       this.GlobalObjectList [ this._ClientObjectKey ] = this.ClientDataObject;
 
       string Date_Key = this._SessionObjectKey.Replace (
-         Evado.Model.Digital.EvcStatics.SESSION_CLINICAL_OBJECT,
+         EuAdapter.ADAPTER_ID,
         Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP );
 
       this.GlobalObjectList [ Date_Key ] = DateTime.Now.ToString ( "dd MMM yyyy HH:mm" );
@@ -1456,7 +1475,7 @@ namespace Evado.UniForm.Clinical
       //
       // Save the application session for the next user generated groupCommand.
       //
-      this.GlobalObjectList [ Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ] = this._ApplicationObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
 
       this.LogValue ( "GlobalObjects.Count: " + this.GlobalObjectList.Count );
 
@@ -1499,7 +1518,7 @@ namespace Evado.UniForm.Clinical
       {
         Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command (
           EdLabels.Default_Home_Page_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
            Evado.Model.Digital.EvcStatics.CONST_DEFAULT,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 

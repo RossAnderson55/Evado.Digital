@@ -521,7 +521,6 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> getProjectFileList (
-      String ProjectId,
       String OrgId )
     {
       this.LogMethod ( "getProjectFileList method. " );
@@ -537,11 +536,9 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EvBinaryFiles.PARM_TRIAL_ID, SqlDbType.VarChar, 10),
         new SqlParameter( EvBinaryFiles.PARM_GROUP_ID, SqlDbType.VarChar, 50),
       };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = OrgId;
+      cmdParms [ 0 ].Value = OrgId;
 
       // 
       // Generate the SQL query string
@@ -552,14 +549,12 @@ namespace Evado.Dal.Clinical
 
       if ( OrgId == String.Empty )
       {
-        sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_TRIAL_ID + "= " + EvBinaryFiles.PARM_TRIAL_ID + ") " );
         sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_GROUP_ID + " = '' ) " );
       }
       else
       {
 
-        sqlQueryString.AppendLine ( " AND ( (" + EvBinaryFiles.DB_TRIAL_ID + "= " + EvBinaryFiles.PARM_TRIAL_ID  
-          + " AND " + EvBinaryFiles.DB_GROUP_ID + " = '' ) " );
+        sqlQueryString.AppendLine ( " AND ( (" + EvBinaryFiles.DB_GROUP_ID + " = '' ) " );
         sqlQueryString.AppendLine ( " OR (" + EvBinaryFiles.DB_TRIAL_ID + "= " + EvBinaryFiles.PARM_TRIAL_ID 
           + " AND " + EvBinaryFiles.DB_GROUP_ID + " = " + EvBinaryFiles.PARM_GROUP_ID + ") ) " );
       }
@@ -617,7 +612,6 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This method retrieves a list of binary file metadata objects.
     /// </summary>
-    /// <param name="ProjectId">String: Project identifier (Mandatory)</param>
     /// <param name="GroupId">Stirng: FilingIndex Identifier (Mandatory)</param>
     /// <param name="SubGroupId">String: A sub group identifier</param>
     /// <returns>List of EvBinaryFileMetaData: a list contains binary file data objects.</returns>
@@ -636,7 +630,6 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> getBinaryFileList (
-      String ProjectId,
       String GroupId,
       String SubGroupId )
     {
@@ -653,20 +646,17 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EvBinaryFiles.PARM_TRIAL_ID, SqlDbType.VarChar, 10),
         new SqlParameter( EvBinaryFiles.PARM_GROUP_ID, SqlDbType.VarChar, 50),
         new SqlParameter( EvBinaryFiles.PARM_SUB_GROUP_ID, SqlDbType.VarChar, 50),
       };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = GroupId;
-      cmdParms [ 2 ].Value = SubGroupId;
+      cmdParms [ 0 ].Value = GroupId;
+      cmdParms [ 1 ].Value = SubGroupId;
 
       // 
       // Generate the SQL query string
       // 
       sqlQueryString.AppendLine ( SQL_VIEW_QUERY );
-      sqlQueryString.AppendLine ( "WHERE (" + EvBinaryFiles.DB_TRIAL_ID + "= " + EvBinaryFiles.PARM_TRIAL_ID + ") " );
-      sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_FILE_EXISTS + " = 1 ) " );
+      sqlQueryString.AppendLine ( "WHERE (" + EvBinaryFiles.DB_FILE_EXISTS + " = 1 ) " );
       sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_FILE_STATUS + " <> '" + EvBinaryFileMetaData.FileStatus.Superseded + "' ) " );
 
       if ( GroupId == String.Empty )
@@ -752,7 +742,6 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> GetVersionedFileList (
-      String ProjectId,
       String GroupId,
       String SubGroupId,
       String FileId )
@@ -770,22 +759,19 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EvBinaryFiles.PARM_TRIAL_ID, SqlDbType.VarChar, 10),
         new SqlParameter( EvBinaryFiles.PARM_GROUP_ID, SqlDbType.VarChar, 50),
         new SqlParameter( EvBinaryFiles.PARM_SUB_GROUP_ID, SqlDbType.VarChar, 50),
         new SqlParameter( EvBinaryFiles.PARM_FILE_ID, SqlDbType.VarChar, 100),
       };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = GroupId;
-      cmdParms [ 2 ].Value = SubGroupId;
-      cmdParms [ 3 ].Value = FileId;
+      cmdParms [ 0 ].Value = GroupId;
+      cmdParms [ 1 ].Value = SubGroupId;
+      cmdParms [ 2 ].Value = FileId;
 
       // 
       // Generate the SQL query string
       // 
       sqlQueryString.AppendLine ( SQL_VIEW_QUERY );
-      sqlQueryString.AppendLine ( "WHERE (" + EvBinaryFiles.DB_TRIAL_ID + "= " + EvBinaryFiles.PARM_TRIAL_ID + ") " );
-      sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_FILE_ID + " = " + EvBinaryFiles.PARM_FILE_ID + ") " );
+      sqlQueryString.AppendLine ( "WHERE (" + EvBinaryFiles.DB_FILE_ID + " = " + EvBinaryFiles.PARM_FILE_ID + ") " );
       sqlQueryString.AppendLine ( " AND (" + EvBinaryFiles.DB_FILE_EXISTS + " = 1 ) " );
 
       if ( GroupId == String.Empty )

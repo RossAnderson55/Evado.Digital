@@ -32,7 +32,7 @@ namespace Evado.Bll.Clinical
   /// The m_xfs.Model.Process is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EdAdapterSettings : EvBllBase
+  public class EdAdapterConfig : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -40,7 +40,7 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdAdapterSettings ( )
+    public EdAdapterConfig ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EdAdapterSettings.";
     }
@@ -51,12 +51,12 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdAdapterSettings ( EvClassParameters Settings )
+    public EdAdapterConfig ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EdAdapterSettings.";
 
-      this._dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterSettings ( Settings );
+      this._dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterConfig ( Settings );
     }
     #endregion
 
@@ -64,7 +64,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class containing the datbase access functions for the class.
     // 
-    private Evado.Dal.Clinical.EdAdapterSettings _dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterSettings();
+    private Evado.Dal.Clinical.EdAdapterConfig _dll_AdapterSettings = new Evado.Dal.Clinical.EdAdapterConfig();
 
     #endregion 
 
@@ -84,12 +84,12 @@ namespace Evado.Bll.Clinical
     /// 2. Return a Site Properties object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EdAdapterParameters getItem ( string ApplicationId )
+    public Evado.Model.Digital.EdAdapterSettings getItem ( string ApplicationId )
     {
       this.LogMethod ( "getItem Method." );
       this.LogDebug ( "ApplicationId: " + ApplicationId );
 
-      Evado.Model.Digital.EdAdapterParameters adapterSettings = this._dll_AdapterSettings.getItem ( ApplicationId );
+      Evado.Model.Digital.EdAdapterSettings adapterSettings = this._dll_AdapterSettings.getItem ( ApplicationId );
 
       this.LogDebugClass ( this._dll_AdapterSettings.Log );
 
@@ -112,7 +112,7 @@ namespace Evado.Bll.Clinical
     /// 2. Return an event code for updating items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterParameters Properties )
+    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterSettings Properties )
     {
       this.LogMethod ( "Saving Record method" );
       EvEventCodes iReturn = EvEventCodes.Ok;

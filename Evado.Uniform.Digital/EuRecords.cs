@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -65,7 +65,7 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuRecords (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
@@ -73,7 +73,7 @@ namespace Evado.UniForm.Clinical
       EvClassParameters Settings )
     {
       this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
@@ -82,7 +82,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "EuRecords initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniForm BinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -403,7 +402,7 @@ namespace Evado.UniForm.Clinical
         {
           Evado.Model.UniForm.Command pageCommand = PageObject.addCommand (
             EdLabels.Form_UnLock_Command_Title,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Records.ToString ( ),
              Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -723,7 +722,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      EdQueryParameters queryParameters = new EdQueryParameters ( this.Session.Application.ApplicationId );
+      EdQueryParameters queryParameters = new EdQueryParameters ( );
 
       // 
       // Initialise the query values to the currently selected objects identifiers.
@@ -779,7 +778,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Page Page )
     {
       this.LogMethod ( "getList_SelectionGroup" );
-      this.LogDebug ( "FormList.Count {0}. ", this.Session.FormList.Count );
+      this.LogDebug ( "FormList.Count {0}. ", this.Session.RecordLayoutList.Count );
       //
       // Initialise the methods variables and objects.
       //
@@ -802,7 +801,7 @@ namespace Evado.UniForm.Clinical
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
-      foreach ( EdRecord layout in this.Session.FormList )
+      foreach ( EdRecord layout in this.Session.RecordLayoutList )
       {
         optionList.Add ( new EvOption ( layout.LayoutId,
           String.Format ( "{0} - {1}", layout.LayoutId, layout.Title ) ) );
@@ -835,7 +834,7 @@ namespace Evado.UniForm.Clinical
       // Add the selection groupCommand
       // 
       Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Records.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -882,7 +881,7 @@ namespace Evado.UniForm.Clinical
       {
         groupCommand = pageGroup.addCommand (
           "New Record",
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records, Model.UniForm.ApplicationMethods.Create_Object );
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
       }
@@ -925,7 +924,7 @@ namespace Evado.UniForm.Clinical
       //
       Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
           FormRecord.RecordId,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -1105,7 +1104,6 @@ namespace Evado.UniForm.Clinical
         // 
         this.getRecordExport_SelectionGroup ( clientDataObject.Page );
 
-        this.LogValue ( "ProjectId: " + this.Session.Application.ApplicationId );
         this.LogValue ( "FormId: " + this.Session.RecordSelectionLayoutId );
         this.LogValue ( "UserCommonName: " + this.Session.UserProfile.CommonName );
 
@@ -1163,7 +1161,6 @@ namespace Evado.UniForm.Clinical
         EdRecordLayouts forms = new EdRecordLayouts ( this.ClassParameters );
 
         this.Session.IssueFormList = forms.getList (
-          this.Session.Application.ApplicationId,
           EdRecordTypes.Null,
           EdRecordObjectStates.Form_Issued,
           false );
@@ -1223,7 +1220,7 @@ namespace Evado.UniForm.Clinical
       // 
       command = pageGroup.addCommand (
         EdLabels.Record_Export_Selection_Group_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Records.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
       command.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -1258,24 +1255,22 @@ namespace Evado.UniForm.Clinical
       //
       // IF there are not parameters then exit.
       //
-      if ( this.Session.Application.ApplicationId == String.Empty
-        || this.Session.RecordSelectionLayoutId == String.Empty )
+      if ( this.Session.RecordSelectionLayoutId == String.Empty )
       {
-        this.LogDebug ( "Trial {0}, Form {1}. ", this.Session.Application.ApplicationId, this.Session.RecordSelectionLayoutId );
+        this.LogDebug ( " Form {0}. ", this.Session.RecordSelectionLayoutId );
         this.LogMethodEnd ( "getRecordExport_DownloadGroup" );
         return;
       }
 
 
       exportParameters = new EvExportParameters (
-        this.Session.Application,
         EvExportParameters.ExportDataSources.Project_Record,
         this.Session.RecordSelectionLayoutId );
       exportParameters.IncludeTestSites = this.Session.FormRecords_IncludeTestSites;
       exportParameters.IncludeFreeTextData = this.Session.FormRecords_IncludeFreeTextData;
       exportParameters.IncludeDraftRecords = this.Session.FormRecords_IncludeDraftRecords;
 
-      queryParameters = new EdQueryParameters ( this.Session.Application.ApplicationId );
+      queryParameters = new EdQueryParameters ( );
       queryParameters.LayoutId = this.Session.RecordSelectionLayoutId;
 
       queryParameters.States.Add ( EdRecordObjectStates.Withdrawn );
@@ -1430,15 +1425,13 @@ namespace Evado.UniForm.Clinical
       //
       // Create the export file name.
       //
-      csvFileName = this.Session.Application.ApplicationId
-        + "-" + FormId
+      csvFileName = FormId
         + "-Records-"
         + DateTime.Now.ToString ( "yy-MM-dd" ) + ".csv";
 
       if ( iteration > 0 )
       {
-        csvFileName = this.Session.Application.ApplicationId
-        + "-" + FormId
+        csvFileName = FormId
         + "-Records-" + iteration
         + "-" + DateTime.Now.ToString ( "yy-MM-dd" ) + ".csv";
       }
@@ -1684,7 +1677,7 @@ namespace Evado.UniForm.Clinical
         //
         // Define the page to retrieve the script
         //
-        this._ServerPageScript.CsScriptPath = this.ApplicationObjects.ApplicationPath + @"\csScripts\";
+        this._ServerPageScript.CsScriptPath = this.GlobalObjects.ApplicationPath + @"\csScripts\";
 
 
         // 
@@ -1797,7 +1790,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Command saveCommand = new Evado.Model.UniForm.Command (
         SaveCommandTitle,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Records.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1832,7 +1825,7 @@ namespace Evado.UniForm.Clinical
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
-        this.ApplicationObjects,
+        this.GlobalObjects,
         this.Session,
         this.ClassParameters );
 
@@ -1976,7 +1969,7 @@ namespace Evado.UniForm.Clinical
             // 
             pageCommand = PageObject.addCommand (
               EdLabels.Record_Save_Command_Title,
-              EuAdapter.APPLICATION_ID,
+              EuAdapter.ADAPTER_ID,
               EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1991,7 +1984,7 @@ namespace Evado.UniForm.Clinical
             // 
             pageCommand = PageObject.addCommand (
               EdLabels.Record_Submit_Command,
-              EuAdapter.APPLICATION_ID,
+              EuAdapter.ADAPTER_ID,
               EuAdapterClasses.Records.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -2011,7 +2004,7 @@ namespace Evado.UniForm.Clinical
             {
               pageCommand = PageObject.addCommand (
                 EdLabels.Record_Withdraw_Command,
-                EuAdapter.APPLICATION_ID,
+                EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Records.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -2082,7 +2075,6 @@ namespace Evado.UniForm.Clinical
         string LayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
 
         newRecord.Guid = Guid.NewGuid ( );
-        newRecord.ApplicationId = this.Session.Application.ApplicationId;
         newRecord.LayoutId = this.Session.RecordSelectionLayoutId;
         newRecord.RecordDate = DateTime.Now;
 
@@ -2322,7 +2314,7 @@ namespace Evado.UniForm.Clinical
       // Initialise method variables and objects.
       // 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
-        this.ApplicationObjects,
+        this.GlobalObjects,
         this.Session,
         this.ClassParameters );
 

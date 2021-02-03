@@ -651,7 +651,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>The binary file list is empty.</value>
   </data>
   <data name="Binary_File_List_Of_Files_Page_Label" xml:space="preserve">
-    <value>Binary Files for project {0} - {1}</value>
+    <value>Binary Files</value>
   </data>
   <data name="Binary_File_List_Selection_Group_Title" xml:space="preserve">
     <value>Binary File Selection</value>
@@ -2660,5 +2660,125 @@ __Note__: all of these text substitutions are case sensitive.
   </data>
   <data name="UserProfile_Value_Update_Error_Message" xml:space="preserve">
     <value>Error encountered update the user profile.</value>
+  </data>
+  <data name="Config_Role_List_Field_Label" xml:space="preserve">
+    <value>Adapte Roles:</value>
+  </data>
+  <data name="Label_Organisation_Id" xml:space="preserve">
+    <value>Organisation ID:</value>
+  </data>
+  <data name="Organisation_Address_Field_Label" xml:space="preserve">
+    <value>Address: </value>
+  </data>
+  <data name="Organisation_AD_Group_Field_Label" xml:space="preserve">
+    <value>AD Group: </value>
+  </data>
+  <data name="Organisation_Coordinator_All_User_Option_Label" xml:space="preserve">
+    <value>All coordinating site users</value>
+  </data>
+  <data name="Organisation_Coordinator_Field_Label" xml:space="preserve">
+    <value>Central Coordinating User:</value>
+  </data>
+  <data name="Organisation_Create_Error_Message" xml:space="preserve">
+    <value>Error raised when creating an organisation.</value>
+  </data>
+  <data name="Organisation_Current_Field_Label" xml:space="preserve">
+    <value>Current organisation: </value>
+  </data>
+  <data name="Organisation_Delete_Command_Title" xml:space="preserve">
+    <value>Delete Organissation</value>
+  </data>
+  <data name="Organisation_Duplicate_Error_Message" xml:space="preserve">
+    <value>Save Error: the {0} organisation identifier already exists.</value>
+  </data>
+  <data name="Organisation_Email_Address_Field_Label" xml:space="preserve">
+    <value>Email Address: </value>
+  </data>
+  <data name="Organisation_Email_Field_Label" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="Organisation_Fax_Number_Field_Label" xml:space="preserve">
+    <value>Faxsimile No:</value>
+  </data>
+  <data name="Organisation_Field_Label" xml:space="preserve">
+    <value>Organisation: </value>
+  </data>
+  <data name="Organisation_Guid_Empty_Message" xml:space="preserve">
+    <value>Error Encountered: the organisation identifier was not provided.</value>
+  </data>
+  <data name="Organisation_Identifier_Empty_Error_Message" xml:space="preserve">
+    <value>Save Error: the organisation identifier is empty.</value>
+  </data>
+  <data name="Organisation_Identifier_Field_Label" xml:space="preserve">
+    <value>Organisation Identifier: </value>
+  </data>
+  <data name="Organisation_Investigator_Name_Field_Label" xml:space="preserve">
+    <value>Site investigator's name:</value>
+  </data>
+  <data name="Organisation_Label" xml:space="preserve">
+    <value>Organisation</value>
+  </data>
+  <data name="Organisation_Last_Updated_Field_Label" xml:space="preserve">
+    <value>Last Updated: </value>
+  </data>
+  <data name="Organisation_List_Error_Message" xml:space="preserve">
+    <value>Error raised when generating the organisation list page.</value>
+  </data>
+  <data name="Organisation_List_Group_Title" xml:space="preserve">
+    <value>List of organisations</value>
+  </data>
+  <data name="Organisation_List_Page_Title" xml:space="preserve">
+    <value>List of organisations</value>
+  </data>
+  <data name="Organisation_Name" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="Organisation_Name_Field_Label" xml:space="preserve">
+    <value>Name: </value>
+  </data>
+  <data name="Organisation_New_Command_Title" xml:space="preserve">
+    <value>New Organisation</value>
+  </data>
+  <data name="Organisation_Organisations_Label" xml:space="preserve">
+    <value>Organisations</value>
+  </data>
+  <data name="Organisation_Org_ID_Error_Message" xml:space="preserve">
+    <value> The organisation identifier has not been defined</value>
+  </data>
+  <data name="Organisation_Org_Name_Error_Message" xml:space="preserve">
+    <value> The organisation name has not been defined</value>
+  </data>
+  <data name="Organisation_Org_Type_Error_Message" xml:space="preserve">
+    <value> The organisation type has not been defined</value>
+  </data>
+  <data name="Organisation_Page_Error_Message" xml:space="preserve">
+    <value>Error raised when retrieving an organisation.</value>
+  </data>
+  <data name="Organisation_Page_Title" xml:space="preserve">
+    <value>Organisation page</value>
+  </data>
+  <data name="Organisation_Save_Command_Title" xml:space="preserve">
+    <value>Save Organisation</value>
+  </data>
+  <data name="Organisation_Selection_Group_Title" xml:space="preserve">
+    <value>Organisation Selection</value>
+  </data>
+  <data name="Organisation_Site_Id" xml:space="preserve">
+    <value> Site Id: </value>
+  </data>
+  <data name="Organisation_Telephone_Field_Label" xml:space="preserve">
+    <value>Telephone No:</value>
+  </data>
+  <data name="Organisation_Type_Field_Description" xml:space="preserve">
+    <value>Changing an organisation's type changes it's user access to the entire environment.</value>
+  </data>
+  <data name="Organisation_Type_Field_Label" xml:space="preserve">
+    <value>Organisation type:</value>
+  </data>
+  <data name="Organisation_Type_Label" xml:space="preserve">
+    <value>Org Type: </value>
+  </data>
+  <data name="Organisation_Update_Error_Message" xml:space="preserve">
+    <value>Error raised when updating an organisation.</value>
   </data>
 </root>

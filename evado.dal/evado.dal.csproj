@@ -127,6 +127,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Clinical\EdRecordFieldSelectionLists.cs" />
+    <Compile Include="Clinical\EdOrganisations.cs" />
     <Compile Include="EvObjectParameters.cs" />
     <Compile Include="Clinical\EdRecordSections.cs" />
     <Compile Include="EvDalBase.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Clinical\EdRecordLayouts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EdAdapterSettings.cs" />
+    <Compile Include="Clinical\EdAdapterConfig.cs" />
     <Compile Include="Clinical\EvDataChanges.cs" />
     <Compile Include="Clinical\EvMenus.cs">
       <SubType>Code</SubType>

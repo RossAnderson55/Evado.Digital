@@ -100,7 +100,6 @@ namespace Evado.Bll.Clinical
       this.LogDebug(  "ReportId: " + Report.ReportId );
       this.LogDebug(  "SourceId: " + Report.DataSourceId );
       this.LogDebug(  "Source: " + Report.Source );
-      this.LogDebug(  "ProjectId: " + Report.TrialId );
       this.LogDebug(  "RequireUserTrial: " + Report.RequireUserTrial );
 
       this.LogDebug(  "Report.Queries.Length: " + Report.Queries.Length );

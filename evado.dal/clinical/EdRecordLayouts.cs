@@ -110,6 +110,7 @@ namespace Evado.Dal.Clinical
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
     public const string DB_UPDATED_DATE = "EDRL_UPDATED_DATE";
+    public const string DB_DELETED = "EDRL_DELETED";
 
 
     /// <summary>
@@ -222,29 +223,28 @@ namespace Evado.Dal.Clinical
       // 
       // Fill the parameters array with the values from the form object. 
       // 
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = Form.Guid;
-      cmdParms [ 2 ].Value = Form.ApplicationId.Trim ( );
-      cmdParms [ 3 ].Value = Form.LayoutId.Trim ( );
-      cmdParms [ 4 ].Value = Form.State.ToString ( );
-      cmdParms [ 5 ].Value = Form.Design.Title;
-      cmdParms [ 6 ].Value = Form.Design.HttpReference;
-      cmdParms [ 7 ].Value = Form.Design.Instructions;
-      cmdParms [ 8 ].Value = Form.Design.Description;
-      cmdParms [ 9 ].Value = Form.Design.UpdateReason.ToString ( );
+      cmdParms [ 0 ].Value = Form.Guid;
+      cmdParms [ 1 ].Value = Form.ApplicationId.Trim ( );
+      cmdParms [ 2 ].Value = Form.LayoutId.Trim ( );
+      cmdParms [ 3 ].Value = Form.State.ToString ( );
+      cmdParms [ 4 ].Value = Form.Design.Title;
+      cmdParms [ 5 ].Value = Form.Design.HttpReference;
+      cmdParms [ 6 ].Value = Form.Design.Instructions;
+      cmdParms [ 7 ].Value = Form.Design.Description;
+      cmdParms [ 8 ].Value = Form.Design.UpdateReason.ToString ( );
 
-      cmdParms [ 10 ].Value = Form.Design.RecordCategory;
-      cmdParms [ 11 ].Value = Form.Design.TypeId.ToString ( );
-      cmdParms [ 12 ].Value = Form.Design.Version;
-      cmdParms [ 13 ].Value = Form.Design.JavaScript;
-      cmdParms [ 14 ].Value = Form.Design.hasCsScript;
-      cmdParms [ 15 ].Value = Form.Design.Language;
-      cmdParms [ 16 ].Value = Form.cDashMetadata;
-      cmdParms [ 17 ].Value = Form.Design.ReadAccessRoles;
-      cmdParms [ 18 ].Value = Form.Design.EditAccessRoles;
-      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 20 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 21 ].Value = DateTime.Now;
+      cmdParms [ 9 ].Value = Form.Design.RecordCategory;
+      cmdParms [ 10 ].Value = Form.Design.TypeId.ToString ( );
+      cmdParms [ 11 ].Value = Form.Design.Version;
+      cmdParms [ 12 ].Value = Form.Design.JavaScript;
+      cmdParms [ 13 ].Value = Form.Design.hasCsScript;
+      cmdParms [ 14 ].Value = Form.Design.Language;
+      cmdParms [ 15 ].Value = Form.cDashMetadata;
+      cmdParms [ 16 ].Value = Form.Design.ReadAccessRoles;
+      cmdParms [ 17 ].Value = Form.Design.EditAccessRoles;
+      cmdParms [ 18 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 20 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -382,13 +382,11 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     public List<EdRecord> getLayoutList (
-      string ApplicationId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State,
       bool WithFields )
     {
       this.LogMethod ( "GetFormList method." );
-      this.LogDebug ( "TrialId: '{0}'", ApplicationId );
       this.LogDebug ( "TypeId: '{0}'", TypeId );
       this.LogDebug ( "State: '{0}'", State );
       //
@@ -397,35 +395,21 @@ namespace Evado.Dal.Clinical
       List<EdRecord> view = new List<EdRecord> ( );
 
       //
-      // Validate whether the trial identifier is not empty 
-      // 
-      if ( ApplicationId == String.Empty )
-      {
-        this.LogValue ( "Appl is null" );
-        return view;
-      }
-
-      //
       // Initalise the parameters for the query
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_TYPE_ID, SqlDbType.VarChar, 30),
         new SqlParameter( PARM_STATE, SqlDbType.VarChar, 20)
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = ApplicationId;
-      cmdParms [ 2 ].Value = TypeId.ToString ( );
-      cmdParms [ 3 ].Value = State.ToString ( );
+      cmdParms [ 0 ].Value = TypeId.ToString ( );
+      cmdParms [ 1 ].Value = State.ToString ( );
 
       //
       // Build the query string
       // 
       _sqlQueryString = _sqlQuery_View
-        + "WHERE ( (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )\r\n"
-        + " AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) ";
+        + "WHERE ( (" + EdRecordLayouts.DB_DELETED + " = 0 )";
 
       if ( TypeId != EdRecordTypes.Null )
       {
@@ -546,7 +530,6 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     public List<EvOption> GetList (
-      string ApplicationId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State, bool SelectByGuid )
     {
@@ -554,7 +537,6 @@ namespace Evado.Dal.Clinical
       // Initialize the method status, a return option list and an option object
       //
       this.LogMethod ( "GetList." );
-      this.LogValue ( "TrialId: " + ApplicationId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State );
       this.LogValue ( "SelectByUid: " + SelectByGuid );
@@ -567,7 +549,7 @@ namespace Evado.Dal.Clinical
       //
       // Build the query string
       // 
-      recordList = this.getLayoutList ( ApplicationId, TypeId, State, false );
+      recordList = this.getLayoutList ( TypeId, State, false );
 
         // 
         // Iterate through the results extracting the role information.
@@ -605,7 +587,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This class returns a list of option object based on form object
     /// </summary>
-    /// <param name="Form">EvForm: (Mandatory) The EvForm object being updated.</param>
+    /// <param name="Layout">EvForm: (Mandatory) The EvForm object being updated.</param>
     /// <returns>List of EvOption: a list of option object items</returns>
     /// <remarks>
     /// This method consists of the followings steps: 
@@ -621,14 +603,14 @@ namespace Evado.Dal.Clinical
     /// 5. Return the Options list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private List<EvOption> GetValidationList ( EdRecord Form )
+    private List<EvOption> GetValidationList ( EdRecord Layout )
     {
       //
       // Initialize the method status and the return option list
       //
       this.LogMethod ( "GetValidationList, method. " );
-      this.LogValue ( "ApplicationId: " + Form.ApplicationId );
-      this.LogValue ( "TypeId: " + Form.Design.TypeId );
+      this.LogValue ( "ApplicationId: " + Layout.ApplicationId );
+      this.LogValue ( "TypeId: " + Layout.Design.TypeId );
 
       List<EvOption> list = new List<EvOption> ( );
 
@@ -637,13 +619,11 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_TYPE_ID, SqlDbType.VarChar, 30),
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
-      cmdParms [ 1 ].Value = Form.ApplicationId;
-      cmdParms [ 2 ].Value = Form.Design.TypeId;
+      cmdParms [ 1 ].Value = Layout.ApplicationId;
+      cmdParms [ 2 ].Value = Layout.Design.TypeId;
 
       //
       // Build the query string
@@ -846,11 +826,9 @@ namespace Evado.Dal.Clinical
       //
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( EdRecordLayouts.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.Char, 10)
       };
-      cmdParms [ 0 ].Value = this.ClassParameters.CustomerGuid;
       cmdParms [ 1 ].Value = ApplicationId;
       cmdParms [ 2 ].Value = LayoutId;
 
@@ -858,7 +836,7 @@ namespace Evado.Dal.Clinical
       // Generate the Selection query string.
       // 
       this._sqlQueryString = _sqlQuery_View
-        + " WHERE (" + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + ")"
+        + " WHERE (" + EdRecordLayouts.DB_DELETED + " = 0 )"
         + "   AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) "
         + "   AND (" + EdRecordLayouts.DB_LAYOUT_ID + " = " + EdRecordLayouts.PARM_LAYOUT_ID + " ) "
         + "   AND NOT (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Withdrawn + "' ) ";

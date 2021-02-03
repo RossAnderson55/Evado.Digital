@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyAttributes.cs" />
+    <Compile Include="Clinical\EdOrganisations.cs" />
     <Compile Include="EvServerUtillities.cs" />
     <Compile Include="EvBllBase.cs" />
     <Compile Include="Clinical\EvUserProfiles.cs">
@@ -163,7 +164,7 @@
     <Compile Include="Clinical\EvReports.cs" />
     <Compile Include="Clinical\EvReportSaved.cs" />
     <Compile Include="Clinical\EvFormFieldSelectionLists.cs" />
-    <Compile Include="Clinical\EdAdapterSettings.cs" />
+    <Compile Include="Clinical\EdAdapterConfig.cs" />
     <Compile Include="Clinical\EvDataChanges.cs" />
     <Compile Include="Clinical\EdRecordLayouts.cs">
       <SubType>Code</SubType>

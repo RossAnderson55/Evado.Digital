@@ -110,18 +110,15 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> getProjectFileList (
-      String ProjectId,
       String OrgId )
     {
       this.LogMethod ( "getProjectFileList method. " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "OrgId: " + OrgId );
 
       // 
       // Execute the method for retrieving the list of Binary file objects
       // 
       List<EvBinaryFileMetaData> fileList = this._DalBinaryFiles.getProjectFileList (
-        ProjectId,
         OrgId );
 
       this.LogClass ( this._DalBinaryFiles.Log );
@@ -136,7 +133,6 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class return a list of Binary File Meta ResultData objects based on ProjectId, SubjectId and ObjectId
     /// </summary>
-    /// <param name="ProjectId">String: A Project identifier</param>
     /// <param name="GroupId">String: A Group identifier</param>
     /// <param name="SubGroupId">String: A sub group identifier</param>
     /// <returns>List of EvBinaryFileMetaData: A list of binary file meta ResultData object</returns>
@@ -149,12 +145,10 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> getBinaryFileList (
-      String ProjectId,
       String GroupId,
       String SubGroupId )
     {
       this.LogMethod ( "getBinaryFileList method. " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "GroupId: " + GroupId );
       this.LogDebug ( "SubGroupId: " + SubGroupId );
 
@@ -162,7 +156,6 @@ namespace Evado.Bll.Clinical
       // Execute the method for retrieving the list of Binary file objects
       // 
       List<EvBinaryFileMetaData> fileList = this._DalBinaryFiles.getBinaryFileList (
-        ProjectId,
         GroupId,
         SubGroupId );
 
@@ -192,13 +185,11 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvBinaryFileMetaData> GetVersionedFileList (
-      String ProjectId,
       String GroupId,
       String SubGroupId,
       String FileId )
     {
       this.LogMethod ( "GetVersionedFileList method. " );
-      this.LogDebug ( "ProjectId: " + ProjectId );
       this.LogDebug ( "GroupId: " + GroupId );
       this.LogDebug ( "SubGroupId: " + SubGroupId );
       this.LogDebug ( "FileId: " + FileId );
@@ -207,7 +198,6 @@ namespace Evado.Bll.Clinical
       // Execute the method for retrieving the list of Binary file objects
       // 
       List<EvBinaryFileMetaData> fileList = this._DalBinaryFiles.GetVersionedFileList (
-        ProjectId,
         GroupId,
         SubGroupId,
         FileId );

@@ -27,7 +27,7 @@ using Evado.Bll.Clinical;
 
 using CSScriptLibrary;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class handles the dynamically compiled C# scripts for forms and records.

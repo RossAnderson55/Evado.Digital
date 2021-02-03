@@ -176,12 +176,10 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> GetOptionList ( 
-      String ProjectId, 
       String FormId,
       bool OnlySignalValueFields )
     {
       this.LogMethod ( "GetOptionList" );
-      this.LogValue ( "ProjectId: " + ProjectId );
       this.LogValue ( "FormId: " + FormId );
       this.LogValue ( "OnlySignalValueFields: " + OnlySignalValueFields );
       // 
@@ -192,7 +190,7 @@ namespace Evado.Bll.Clinical
       //
       // Query the database
       //
-      optionList = this._DalFormFields.GetOptionList ( ProjectId, FormId, OnlySignalValueFields );
+      optionList = this._DalFormFields.GetOptionList (FormId, OnlySignalValueFields );
       this.LogClass ( this._DalFormFields.Log );
 
       return optionList;

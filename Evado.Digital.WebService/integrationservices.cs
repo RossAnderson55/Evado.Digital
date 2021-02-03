@@ -117,12 +117,7 @@ namespace Evado.UniForm
 
     #region Class Application List Enumeration
 
-    private enum ApplicationList
-    {
-      Null,
-      Default,
-      Evado_eClinical,
-    }
+    private string CONST_DEFAULT_ADAPTER = "DEFAULT";
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -230,8 +225,8 @@ namespace Evado.UniForm
     //
     // The eclinical application service.
     //
-    Evado.UniForm.Clinical.EuAdapter _ApplicationAdapter =
-          new Evado.UniForm.Clinical.EuAdapter ( );
+    Evado.UniForm.Digital.EuAdapter _ApplicationAdapter =
+          new Evado.UniForm.Digital.EuAdapter ( );
 
     private bool _NewUser = false;
 
@@ -311,7 +306,7 @@ namespace Evado.UniForm
           this.LogValue ( "last command: " + lastCommand.Title );
 
           if ( lastCommand.Id != Guid.Empty
-            && lastCommand.Object != Evado.UniForm.Clinical.EuAdapterClasses.Home_Page.ToString ( ) )
+            && lastCommand.Object != Evado.UniForm.Digital.EuAdapterClasses.Home_Page.ToString ( ) )
           {
             this.LogValue ( "Executing the last command" );
             PageCommand = lastCommand;
@@ -467,14 +462,14 @@ namespace Evado.UniForm
         //
         // Initialise the Evado clinical adapter object.
         //
-        this._ApplicationAdapter = new Evado.UniForm.Clinical.EuAdapter (
+        this._ApplicationAdapter = new Evado.UniForm.Digital.EuAdapter (
           this._ClientVersion,
-            this._GlobalObjects,
-            this._ServiceUserProfile,
-            this._ExitCommand,
-            this._ApplicationPath,
-            this._UniForm_BinaryFilePath,
-            this._UniForm_BinaryServiceUrl );
+          this._GlobalObjects,
+          this._ServiceUserProfile,
+          this._ExitCommand,
+          this._ApplicationPath,
+          this._UniForm_BinaryFilePath,
+          this._UniForm_BinaryServiceUrl );
 
         //
         // define the licensed modules for this installation.
@@ -505,13 +500,12 @@ namespace Evado.UniForm
         //
         // If not found create a new object and add it to the list then return it.
         //  
-        switch ( Evado.Model.EvStatics.Enumerations.parseEnumValue<ApplicationList> ( PageCommand.ApplicationId ) )
+        switch (  PageCommand.ApplicationId )
         {
-          case ApplicationList.Evado_eClinical:
+          case Evado.UniForm.Digital.EuAdapter.ADAPTER_ID:
             {
               this.LogValue ( "SELECTING APPLICATION AppId: '" + PageCommand.ApplicationId + "'"
                 + " >> CALLING ECLINICAL APPLICATION" );
-
               //
               // Call the get page method to generate the next page.
               //

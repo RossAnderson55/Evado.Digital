@@ -30,13 +30,13 @@ using Evado.Bll.Clinical;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class contains the session ResultData object
   /// </summary>
   [Serializable]
-  public class EuApplicationObjects 
+  public class EuAdapterObjects 
   {
     #region Class Initialisation
 
@@ -45,7 +45,7 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    public EuApplicationObjects ( )
+    public EuAdapterObjects ( )
     {
       this.Settings = new EvClassParameters ( );
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuApplicationObjects.";
@@ -56,7 +56,7 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    public EuApplicationObjects (
+    public EuAdapterObjects (
       EvClassParameters Settings )
     {
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuApplicationObjects.";
@@ -87,7 +87,7 @@ namespace Evado.UniForm.Clinical
 
       this.LoadStaticEnvironmentalProperties ( );
 
-      this.loadApplicationProperties ( );
+      this.loadAdatperSettings ( );
 
       this.loadGlobalMenu ( );
 
@@ -111,7 +111,7 @@ namespace Evado.UniForm.Clinical
     public const string Static_DefaultEventSource = "Application";
 
 
-    Evado.UniForm.Clinical.AssemblyAttributes _AssembyAttributes = new AssemblyAttributes();
+    Evado.UniForm.Digital.AssemblyAttributes _AssembyAttributes = new AssemblyAttributes();
 
     private string _ApplicationPath = String.Empty;
     /// <summary>
@@ -219,53 +219,6 @@ namespace Evado.UniForm.Clinical
       set { _ExternalSelectionLists = value; }
     }
 
-
-    List<Evado.Model.Digital.EvCustomer> _CustomerList = new List<Evado.Model.Digital.EvCustomer> ( );
-    /// <summary>
-    /// This property object contains the eClinical customer list object.
-    /// </summary>
-    public List<Evado.Model.Digital.EvCustomer> CustomerList
-    {
-      get
-      {
-        return this._CustomerList;
-      }
-      set
-      {
-        this._CustomerList = value;
-      }
-    }
-
-
-    /// <summary>
-    /// This property object contains the eClinical customer list object.
-    /// </summary>
-    public List<Evado.Model.EvOption> CustomerSelectionList
-    {
-      get
-      {
-        List<EvOption> optionList = new List<EvOption> ( );
-
-        optionList.Add ( new EvOption ( ) );
-
-        //
-        // iterate through the list of customers creating option values..
-        //
-        foreach ( EvCustomer customer in this.CustomerList )
-        {
-          optionList.Add ( new EvOption (
-            customer.Guid.ToString(),
-            String.Format( 
-             EvCustomerLabels.Customer_No_Name_Format,
-             customer.CustomerNo,
-             customer.Name ) ) );
-        }
-
-        return optionList;
-      }
-    }
-
-
     /// <summary>
     /// This property contains the email templates for user administration.
     /// </summary>
@@ -335,14 +288,14 @@ namespace Evado.UniForm.Clinical
       }
     }
 
-    private Model.Digital.EdAdapterParameters _PlatformSettings = new Model.Digital.EdAdapterParameters ( );
+    private Model.Digital.EdAdapterSettings _AdapterSettings = new Model.Digital.EdAdapterSettings ( );
     /// <summary>
     /// This property object contains the platform settings object.
     /// </summary>
-    public Model.Digital.EdAdapterParameters PlatformSettings
+    public Model.Digital.EdAdapterSettings AdapterSettings
     {
-      get { return _PlatformSettings; }
-      set { _PlatformSettings = value; }
+      get { return _AdapterSettings; }
+      set { _AdapterSettings = value; }
     }
 
     private List<EvMenuItem> _MenuList = new List<EvMenuItem> ( );
@@ -396,75 +349,14 @@ namespace Evado.UniForm.Clinical
         this.LogDebug ( bll_Menu.Log );
         this.LogInitValue ( "MenuList .Count: " + this.MenuList.Count );
 
-        // 
-        // Process menu items.
-        // 
-        /*
-        for ( int count = 0; count < this.MenuList.Count; count++ )
-        {
-          EvMenuItem menuItem = this.MenuList [ count ];
-
-          this.LogDebugFormat ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
-          //
-          // Load the menu items that are associated with the loaded modules.
-          //
-          if ( this.PlatformSettings.hasModule ( menuItem.ModuleList ) == false )
-          {
-            this.LogDebugFormat ( "REMOVE: Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", menuItem.Group, menuItem.PageId, menuItem.Title, menuItem.Modules );
-            //
-            // Remove the menu item from the list.
-            //
-            this.MenuList.RemoveAt ( count );
-            count--;
-            continue;
-          }
-
-        }//END menuitem iteration loop.
-        */
       }
       catch ( Exception Ex )
       {
-        this.LogInitValue ( "loadGlobalMenu exception:  " + Evado.Model.Digital.EvcStatics.getException ( Ex ) );
+        this.LogException( Ex  );
       }
-      this.LogInitValue ( "Global Menu list count: " + this.MenuList.Count );
 
+      this.LogMethodEnd ( "loadGlobalMenu" );
     }//END loadMenu method
-
-    //  =================================================================================
-    /// <summary>
-    ///   This method create a list of module options.  The list is filled from LicensedModules. 
-    /// </summary>
-    /// <param name="Add_AllModules">boolean add All_Modules option to the list..</param>
-    /// <returns>List of EvOption </returns>
-    //  ---------------------------------------------------------------------------------
-    public List<EvOption> getModuleList ( bool Add_AllModules )
-    {
-      //
-      // Get the string value of the selected module
-      // 
-      List<EvOption> loadedModulesList = new List<EvOption> ( );
-
-      String [ ] arrLicensedModules = this.LicensedModules.Split ( ';' );
-
-      if ( Add_AllModules == true )
-      {
-        String str = EdModuleCodes.All_Modules.ToString ( );
-        string description = str.Replace ( "_", " " );
-        loadedModulesList.Add ( new EvOption ( str, description ) );
-      }
-
-      //
-      // Create the Loaded modules list
-      //
-      foreach ( String str in arrLicensedModules )
-      {
-        string description = str.Replace ( "_", " " );
-        loadedModulesList.Add ( new EvOption ( str, description ) );
-      }
-
-      return loadedModulesList;
-
-    }//END addRole method.
 
     ///  =======================================================================================
     /// <summary>
@@ -473,25 +365,25 @@ namespace Evado.UniForm.Clinical
     /// 
     /// </summary>
     //  ---------------------------------------------------------------------------------
-    private void loadApplicationProperties ( )
+    private void loadAdatperSettings ( )
     {
-      this.LogMethod ( "loadApplicationProperties method" );
+      this.LogMethod ( "loadAdatperSettings method" );
       // 
       // Load the Web Site Properties
       // 
-      Bll.Clinical.EdAdapterSettings applicationProfiles = new Bll.Clinical.EdAdapterSettings (  );
+      Bll.Clinical.EdAdapterConfig adapterConfig = new Bll.Clinical.EdAdapterConfig (  );
 
       if ( this.Settings != null )
       {
-        applicationProfiles = new Bll.Clinical.EdAdapterSettings ( this.Settings );
+        adapterConfig = new Bll.Clinical.EdAdapterConfig ( this.Settings );
       }
 
       //
       // Get the Application profile.
       //
-      this._PlatformSettings = applicationProfiles.getItem ( "A" );
+      this._AdapterSettings = adapterConfig.getItem ( "A" );
 
-      this.LogDebug ( applicationProfiles.Log );
+      this.LogDebug ( adapterConfig.Log );
 
       if ( ConfigurationManager.AppSettings [ EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ] != null )
       {
@@ -536,19 +428,20 @@ namespace Evado.UniForm.Clinical
 
       this.LogDebugValue ( "Full version: " + _AssembyAttributes.FullVersion );
 
-      this._PlatformSettings.Version = _AssembyAttributes.FullVersion;
-      this._PlatformSettings.MinorVersion = _AssembyAttributes.MinorVersion;
+      this._AdapterSettings.Version = _AssembyAttributes.FullVersion;
+      this._AdapterSettings.MinorVersion = _AssembyAttributes.MinorVersion;
 
       //
       // Set the Stide GUid used by encryption module.
       //
-      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._PlatformSettings.Guid.ToString ( );
+      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._AdapterSettings.Guid.ToString ( );
 
       // 
       // Log the Site Properties on startup.
       // 
-      this.LogDebugValue ( "Version: " + this._PlatformSettings.Version );
+      this.LogDebugValue ( "Version: " + this._AdapterSettings.Version );
 
+      this.LogMethodEnd ( "loadAdatperSettings" );
     }//ENd loadSiteProperties method
 
     ///  =======================================================================================
@@ -591,8 +484,9 @@ namespace Evado.UniForm.Clinical
       // 
       // Log the Maximum selection list length on startup.
       // 
-      this.LogDebugValue ( "MaximumSelectionListLength: " + this._PlatformSettings.MaximumSelectionListLength );
+      this.LogDebugValue ( "MaximumSelectionListLength: " + this._AdapterSettings.MaximumSelectionListLength );
 
+      this.LogMethodEnd ( "LoadStaticEnvironmentalProperties" );
     }//END setStaticEnvironmentalProperties method
 
     ///  =======================================================================================
@@ -624,6 +518,7 @@ namespace Evado.UniForm.Clinical
         this.LogDebugValue ( "PasswordConfirmationEmail_Title: " + this.ContentTemplates.PasswordConfirmationEmail_Title );
       }
 
+      this.LogMethodEnd ( "LoadEmailTemplates" );
     }
 
     ///  =======================================================================================
@@ -637,37 +532,63 @@ namespace Evado.UniForm.Clinical
     {
       this.LogMethod ( "loadSmtpServerProperties method" );
 
+      //
+      // Load the SMTP server properties is not loadedd.
+      //
+      if ( this._AdapterSettings.SmtpServer == String.Empty )
+      {
+        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_KEY ] != null )
+        {
+          this._AdapterSettings.SmtpServer = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_KEY ];
+        }
+        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] != null )
+        {
+          this._AdapterSettings.SmtpServerPort = 
+            EvStatics.getInteger ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] );
+        }
+        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY] != null )
+        {
+          this._AdapterSettings.SmtpUserId = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ];
+        }
+        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_PASSWORD_KEY ] != null )
+        {
+          this._AdapterSettings.SmtpPassword = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_PASSWORD_KEY ];
+        }
+
+      }//END no SMTP server.
+
       // 
       // Log the SMTP server.
       // 
-      this.LogDebugValue ( " SmtpServer: " + this._PlatformSettings.SmtpServer );
+      this.LogDebugValue ( " SmtpServer: " + this._AdapterSettings.SmtpServer );
 
       // 
       // Log the SMTP port setting
       // 
-      this.LogDebugValue ( " SmtpServerPort: " + this._PlatformSettings.SmtpServerPort );
+      this.LogDebugValue ( " SmtpServerPort: " + this._AdapterSettings.SmtpServerPort );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._PlatformSettings.SmtpUserId );
+      this.LogDebugValue ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " SmtpPassword: " + this._PlatformSettings.SmtpPassword );
+      this.LogDebugValue ( " SmtpPassword: " + this._AdapterSettings.SmtpPassword );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._PlatformSettings.SmtpUserId );
+      this.LogDebugValue ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " EmailAlertTestAddress: " + this._PlatformSettings.EmailAlertTestAddress );
+      this.LogDebugValue ( " EmailAlertTestAddress: " + this._AdapterSettings.EmailAlertTestAddress );
 
 
+      this.LogMethodEnd ( "loadSmtpServerProperties" );
     }//END setSmtpServerProperties method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -802,7 +723,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public void LogPageAccess (
      String ClassMethodAccessed,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables
@@ -854,7 +775,7 @@ namespace Evado.UniForm.Clinical
     //  ---------------------------------------------------------------------------------
     public void LogIllegalAccess (
      String ClassMethodAccessed,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables
@@ -908,7 +829,7 @@ namespace Evado.UniForm.Clinical
     public void LogIllegalAccess (
      String ClassMethodAccessed,
       String RoleId,
-      Evado.Model.Digital.EvUserProfile User )
+      Evado.Model.Digital.EdUserProfile User )
     {
       // 
       // Initialise the method variables

@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class profile UniFORM class adapter for the user profile classes
@@ -49,13 +49,13 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuUserProfiles (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects AdapterObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings)
     {
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = AdapterObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -64,22 +64,20 @@ namespace Evado.UniForm.Clinical
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuUserProfiles.";
       this.LogInitMethod ( "UserProfiles initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
 
       this.LogInit ( "Settings:" );
       this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
-      this.LogInit ( "-CustomerGuid: " + this.ClassParameters.CustomerGuid );
-      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.PlatformGuid );
+      this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.AdapterGuid );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      if ( this.Session.SelectedUserType == EvUserProfile.UserTypesList.Null )
+      if ( this.Session.SelectedUserType == EdUserProfile.UserTypesList.Null )
       {
-        this.Session.SelectedUserType = EvUserProfile.UserTypesList.End_User;
+        this.Session.SelectedUserType = EdUserProfile.UserTypesList.End_User;
       }
 
       this._Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( this.ClassParameters );
@@ -152,12 +150,12 @@ namespace Evado.UniForm.Clinical
         {
           if ( this.Session.AdminUserProfile == null )
           {
-            this.Session.AdminUserProfile = new Evado.Model.Digital.EvUserProfile ( );
+            this.Session.AdminUserProfile = new Evado.Model.Digital.EdUserProfile ( );
           }
 
           if ( this.Session.AdminUserProfileList == null )
           {
-            this.Session.AdminUserProfileList = new List<EvUserProfile> ( );
+            this.Session.AdminUserProfileList = new List<EdUserProfile> ( );
           }
           this.LogValue ( "AdminUserProfile.Guid: " + this.Session.AdminUserProfile.Guid );
         }
@@ -293,7 +291,7 @@ namespace Evado.UniForm.Clinical
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-      EvUserProfile.UserTypesList userType = EvUserProfile.UserTypesList.Null;
+      EdUserProfile.UserTypesList userType = EdUserProfile.UserTypesList.Null;
 
       //
       // Determine if the user has access to this page and log and error if they do not.
@@ -334,10 +332,10 @@ namespace Evado.UniForm.Clinical
       // get the current user type selection identifier.
       // 
       if ( PageCommand.hasParameter (
-          EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
+          EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
       {
-        userType = PageCommand.GetParameter<EvUserProfile.UserTypesList> ( 
-          EvUserProfile.UserProfileFieldNames.User_Type_Id );
+        userType = PageCommand.GetParameter<EdUserProfile.UserTypesList> ( 
+          EdUserProfile.UserProfileFieldNames.User_Type_Id );
 
         this.LogDebug ( "Parameter set User Type: " + userType );
 
@@ -425,7 +423,7 @@ namespace Evado.UniForm.Clinical
       {
         pageCommand = PageObject.addCommand (
            EdLabels.UserProfile_Downoad_Command_Title,
-           EuAdapter.APPLICATION_ID,
+           EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Users.ToString ( ),
            Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -440,7 +438,7 @@ namespace Evado.UniForm.Clinical
       {
         pageCommand = PageObject.addCommand (
            EdLabels.UserProfile_Upload_Command_Title,
-           EuAdapter.APPLICATION_ID,
+           EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Users.ToString ( ),
            Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -544,7 +542,7 @@ namespace Evado.UniForm.Clinical
 
       groupCommand = pageGroup.addCommand (
         EdLabels.UserProfile_Upload_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -639,7 +637,7 @@ namespace Evado.UniForm.Clinical
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
-      List<EvUserProfile> userProfileList = this._Bll_UserProfiles.GetView ( 
+      List<EdUserProfile> userProfileList = this._Bll_UserProfiles.GetView ( 
         this.Session.SelectedUserType );
 
       //
@@ -647,23 +645,23 @@ namespace Evado.UniForm.Clinical
       //
       if ( userProfileList.Count > 0 )
       {
-        String csvText = "\"" + EvUserProfile.UserProfileFieldNames.UserId + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Password + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.User_Type_Id + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Prefix + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Given_Name + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Family_Name + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.CommonName + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Title + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.Email_Address + "\","
-          + "\"" + EvUserProfile.UserProfileFieldNames.RoleId + "\"";
+        String csvText = "\"" + EdUserProfile.UserProfileFieldNames.UserId + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Password + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.User_Type_Id + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Prefix + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Given_Name + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Family_Name + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.CommonName + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Title + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.Email_Address + "\","
+          + "\"" + EdUserProfile.UserProfileFieldNames.RoleId + "\"";
 
         outputFile.AppendLine ( csvText );
 
         //
         // iterate through the users in the list.
         //
-        foreach ( EvUserProfile user in userProfileList )
+        foreach ( EdUserProfile user in userProfileList )
         {
           csvText = "\"" + user.UserId + "\","
             + "\"" + user.Password + "\","
@@ -682,7 +680,7 @@ namespace Evado.UniForm.Clinical
         //
         // Define the form template filename.
         //
-        if ( this.Session.SelectedUserType !=  EvUserProfile.UserTypesList.Null)
+        if ( this.Session.SelectedUserType !=  EdUserProfile.UserTypesList.Null)
         {
           downloadFileName = this.Session.SelectedUserType + "-"
            + EuUserProfiles.CONST_DOWNLOAD_EXTENSION;
@@ -751,15 +749,15 @@ namespace Evado.UniForm.Clinical
       // get the list of organisations.
       //
       usertypeList.Add ( new EvOption ( ) );
-      usertypeList.Add ( new EvOption ( EvUserProfile.UserTypesList.Customer.ToString ( ), EvUserProfile.UserTypesList.Customer.ToString ( ) ) );
-      usertypeList.Add ( new EvOption ( EvUserProfile.UserTypesList.Evado.ToString ( ), EvUserProfile.UserTypesList.Evado.ToString ( ) ) );
-      usertypeList.Add ( new EvOption ( EvUserProfile.UserTypesList.End_User.ToString ( ), EvUserProfile.UserTypesList.End_User.ToString ( ).Replace( "_"," ") ) );
+      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.Customer.ToString ( ), EdUserProfile.UserTypesList.Customer.ToString ( ) ) );
+      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.Evado.ToString ( ), EdUserProfile.UserTypesList.Evado.ToString ( ) ) );
+      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.End_User.ToString ( ), EdUserProfile.UserTypesList.End_User.ToString ( ).Replace( "_"," ") ) );
 
       // 
       // Set the selection to the current site org id.
       // 
       organisationSelectionField = selectionGroup.createSelectionListField (
-        EvUserProfile.UserProfileFieldNames.User_Type_Id,
+        EdUserProfile.UserProfileFieldNames.User_Type_Id,
         EdLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.SelectedUserType.ToString(),
         usertypeList );
@@ -772,7 +770,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Command customCommand = selectionGroup.addCommand (
         EdLabels.User_Profile_Organisation_Selection_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -813,12 +811,12 @@ namespace Evado.UniForm.Clinical
         // 
         Evado.Model.UniForm.Command newCommand = PageGroup.addCommand (
           EdLabels.User_Profile_New_User_Command_Title,
-          EuAdapter.APPLICATION_ID,
+          EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Users.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
         newCommand.AddParameter (
-          EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
+          EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
           this.Session.SelectedUserType.ToString() );
 
         newCommand.SetBackgroundColour (
@@ -837,11 +835,11 @@ namespace Evado.UniForm.Clinical
         // 
         // generate the page links.
         // 
-        foreach (  Evado.Model.Digital.EvUserProfile userProfile in this.Session.AdminUserProfileList )
+        foreach (  Evado.Model.Digital.EdUserProfile userProfile in this.Session.AdminUserProfileList )
         {
           Evado.Model.UniForm.Command command = PageGroup.addCommand (
             userProfile.LinkText,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Users.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -950,7 +948,6 @@ namespace Evado.UniForm.Clinical
 
         this.LogDebug ( "AdminUserProfile.Guid {0}. ", this.Session.AdminUserProfile.Guid );
         this.LogDebug ( "AdminUserProfile.UserId {0}.", this.Session.AdminUserProfile.UserId );
-        this.LogDebug ( "AdminUserProfile.Customer.CustomerNo {0}.", this.Session.AdminUserProfile.Customer.CustomerNo );
 
         // 
         // return the client ResultData object for the customer.
@@ -1046,7 +1043,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageCommand = Page.addCommand (
         EdLabels.User_Profile_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1061,7 +1058,7 @@ namespace Evado.UniForm.Clinical
       // 
       pageCommand = Page.addCommand (
         EdLabels.User_Profile_New_Password_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1111,26 +1108,12 @@ namespace Evado.UniForm.Clinical
       //
       this.getDataObject_GroupCommands ( pageGroup );
 
-      //
-      // Add the user's organisation
-      //
-      if ( this.Session.AdminUserProfile.Customer != null )
-      {
-        groupField = pageGroup.createReadOnlyTextField (
-          EvCustomerLabels.Customer_Name_Field_Label,
-         String.Format (
-           EvCustomerLabels.Customer_No_Name_Format,
-           this.Session.AdminUserProfile.Customer.CustomerNo,
-           this.Session.AdminUserProfile.Customer.Name ) );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-      }
-
-      optionList = EvUserProfile.GetUserTypeOptionList ( true );
+      optionList = EdUserProfile.GetUserTypeOptionList ( true );
       //
       // Add the user's organisation
       //
       groupField = pageGroup.createSelectionListField (
-        EvUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
+        EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
         EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.SelectedUserType.ToString(),
         optionList );
@@ -1144,7 +1127,7 @@ namespace Evado.UniForm.Clinical
       // Create the user id object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.UserId.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.UserId.ToString ( ),
         EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
@@ -1190,7 +1173,7 @@ namespace Evado.UniForm.Clinical
       */
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Given_Name,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
         EdLabels.UserProfile_GivenName_Field_Label,
         this.Session.AdminUserProfile.GivenName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1200,7 +1183,7 @@ namespace Evado.UniForm.Clinical
         Model.UniForm.Background_Colours.Red );
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Family_Name,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
         EdLabels.UserProfile_FamilyName_Field_Label,
         this.Session.AdminUserProfile.FamilyName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1213,7 +1196,7 @@ namespace Evado.UniForm.Clinical
       // Create the comon name object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.CommonName,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.CommonName,
         EdLabels.UserProfile_CommonName_Field_Label,
         String.Empty,
         this.Session.AdminUserProfile.CommonName,
@@ -1256,7 +1239,7 @@ namespace Evado.UniForm.Clinical
       // Create the user's email address object
       // 
       groupField = pageGroup.createEmailAddressField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1270,8 +1253,8 @@ namespace Evado.UniForm.Clinical
       //
       // Generate the user role list.
       //
-      List<EvOption> roleList =  Evado.Model.Digital.EvUserProfile.getRoleOptionList (
-        this.Session.Application.RoleList,
+      List<EvOption> roleList =  Evado.Model.Digital.EdUserProfile.getRoleOptionList (
+        this.GlobalObjects.AdapterSettings.RoleList,
         false );
 
 
@@ -1279,7 +1262,7 @@ namespace Evado.UniForm.Clinical
       // Generate the user role radio button list field object.
       //
       groupField = pageGroup.createRadioButtonListField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.RoleId.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.RoleId.ToString ( ),
         EdLabels.UserProfile_Role_Field_Label,
         EdLabels.UserProfile_Role_Field_Description,
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminUserProfile.Roles ),
@@ -1294,7 +1277,7 @@ namespace Evado.UniForm.Clinical
       {
 
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Expiry_Date.ToString ( ),
+           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Expiry_Date.ToString ( ),
           EdLabels.UserProfile_Expiry_Date_Field_Label,
           EvStatics.getDateAsString( this.Session.AdminUserProfile.ExpiryDate ),
           15 );
@@ -1324,7 +1307,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupCommand = PageGroup.addCommand (
         EdLabels.User_Profile_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1341,7 +1324,7 @@ namespace Evado.UniForm.Clinical
       {
         groupCommand = PageGroup.addCommand (
            EdLabels.User_Profile_Delete_Command_Title,
-           EuAdapter.APPLICATION_ID,
+           EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Users.ToString ( ),
            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -1407,9 +1390,8 @@ namespace Evado.UniForm.Clinical
         // 
         // Create the milestone object and add it to the clinical session object.
         // 
-        this.Session.AdminUserProfile = new  Evado.Model.Digital.EvUserProfile ( );
+        this.Session.AdminUserProfile = new  Evado.Model.Digital.EdUserProfile ( );
         this.Session.AdminUserProfile.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.AdminUserProfile.CustomerGuid = this.Session.Customer.Guid;
         this.Session.AdminUserProfile.ExpiryDate = EvStatics.getDateTime( "1 JAN 2100" );
 
 
@@ -1501,7 +1483,7 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the mathods variables and objects.
       //
-      List<EvUserProfile> dataObjectList = new List<EvUserProfile> ( );
+      List<EdUserProfile> dataObjectList = new List<EdUserProfile> ( );
       String stFileContent = String.Empty;
       String line = String.Empty;
       List<String> Columns = new List<String> ( );
@@ -1641,7 +1623,7 @@ namespace Evado.UniForm.Clinical
     /// <param name="CsvDataList">List of String: Csv encoded data object.</param>
     /// <returns>List of EvUserProfile objects</returns>
     //-----------------------------------------------------------------------------------
-    private EvUserProfile updateUserProfile (
+    private EdUserProfile updateUserProfile (
       List<String> Columns,
       List<String> DataRow )
     {
@@ -1651,9 +1633,9 @@ namespace Evado.UniForm.Clinical
       //
       // Initialise the methods variables and objects.
       //
-      EvUserProfile userProfile = new EvUserProfile ( );
-      EvUserProfile uploadedUserProfile = new EvUserProfile ( );
-      EvUserProfile.UserProfileFieldNames field = EvUserProfile.UserProfileFieldNames.Null;
+      EdUserProfile userProfile = new EdUserProfile ( );
+      EdUserProfile uploadedUserProfile = new EdUserProfile ( );
+      EdUserProfile.UserProfileFieldNames field = EdUserProfile.UserProfileFieldNames.Null;
 
       //
       // Iterate through the columns filling the values into the uploaded user profile.
@@ -1664,7 +1646,7 @@ namespace Evado.UniForm.Clinical
 
         this.LogValue ( "Column: " + value + ", Value: " + DataRow [ columnCount ] );
 
-        if ( EvStatics.Enumerations.tryParseEnumValue<EvUserProfile.UserProfileFieldNames> (
+        if ( EvStatics.Enumerations.tryParseEnumValue<EdUserProfile.UserProfileFieldNames> (
           value, out field ) == true )
         {
           uploadedUserProfile.setValue ( field, DataRow [ columnCount ] );
@@ -1776,21 +1758,6 @@ namespace Evado.UniForm.Clinical
         // Update the address field.
         //
         this.updateAddressValue ( PageCommand );
-
-        //
-        // Set Customer Guid to associated the user with a customer.
-        //
-        // Evado user are associated with the Application Guid.
-        //
-        if ( this.Session.AdminUserProfile.Guid == EvStatics.CONST_NEW_OBJECT_ID )
-        {
-          this.Session.AdminUserProfile.CustomerGuid = this.Session.Customer.Guid;
-
-          if ( this.Session.SelectedUserType.ToString() == "Evado" )
-          {
-            this.Session.AdminUserProfile.CustomerGuid = this.ClassParameters.PlatformGuid;
-          }
-        }
 
         //
         // Perform new user ADS duplication validation.
@@ -1967,8 +1934,8 @@ namespace Evado.UniForm.Clinical
           this.LogTextEnd ( " >> UPDATED" );
           try
           {
-             Evado.Model.Digital.EvUserProfile.UserProfileFieldNames fieldName =
-               Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue< Evado.Model.Digital.EvUserProfile.UserProfileFieldNames> (
+             Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
+               Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue< Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
               parameter.Name );
 
             this.Session.AdminUserProfile.setValue ( fieldName, parameter.Value );

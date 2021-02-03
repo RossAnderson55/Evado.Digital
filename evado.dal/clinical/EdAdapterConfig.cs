@@ -37,7 +37,7 @@ namespace Evado.Dal.Clinical
   /// <summary>
   /// This class is handles the data access layer for the application profile data object.
   /// </summary>
-  public class EdAdapterSettings : EvDalBase
+  public class EdAdapterConfig : EvDalBase
   {
     #region class initailisation methods.
     // ==================================================================================
@@ -45,7 +45,7 @@ namespace Evado.Dal.Clinical
     /// This is the class initialisation method.
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdAdapterSettings ( )
+    public EdAdapterConfig ( )
     {
       this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
     }
@@ -56,7 +56,7 @@ namespace Evado.Dal.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdAdapterSettings ( EvClassParameters Settings )
+    public EdAdapterConfig ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
@@ -146,27 +146,27 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-	      new SqlParameter( EdAdapterSettings.PARM_APPLICATION_ID, SqlDbType.Char, 1  ),
-	      new SqlParameter( EdAdapterSettings.PARM_HOME_PAGE_HEADER, SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdAdapterSettings.PARM_HELP_URL, SqlDbType.NVarChar, 50 ),
-        new SqlParameter( EdAdapterSettings.PARM_MAX_SELECTION_LENGTH, SqlDbType.Int ),
-	      new SqlParameter( EdAdapterSettings.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
+	      new SqlParameter( EdAdapterConfig.PARM_APPLICATION_ID, SqlDbType.Char, 1  ),
+	      new SqlParameter( EdAdapterConfig.PARM_HOME_PAGE_HEADER, SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdAdapterConfig.PARM_HELP_URL, SqlDbType.NVarChar, 50 ),
+        new SqlParameter( EdAdapterConfig.PARM_MAX_SELECTION_LENGTH, SqlDbType.Int ),
+	      new SqlParameter( EdAdapterConfig.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
 
-	      new SqlParameter( EdAdapterSettings.PARM_SMTP_PORT, SqlDbType.Int ),
-	      new SqlParameter( EdAdapterSettings.PARM_SMTP_USER_ID, SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdAdapterSettings.PARM_SMTP_PASSWORD, SqlDbType.NVarChar, 50 ),
-	      new SqlParameter( EdAdapterSettings.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ),        
-	      new SqlParameter( EdAdapterSettings.PARM_APPLICATION_URL, SqlDbType.NVarChar, 250 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_SMTP_PORT, SqlDbType.Int ),
+	      new SqlParameter( EdAdapterConfig.PARM_SMTP_USER_ID, SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdAdapterConfig.PARM_SMTP_PASSWORD, SqlDbType.NVarChar, 50 ),
+	      new SqlParameter( EdAdapterConfig.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ),        
+	      new SqlParameter( EdAdapterConfig.PARM_APPLICATION_URL, SqlDbType.NVarChar, 250 ), 
 
-	      new SqlParameter( EdAdapterSettings.PARM_STATE, SqlDbType.NVarChar, 50 ), 
-	      new SqlParameter( EdAdapterSettings.PARM_TITLE, SqlDbType.NVarChar, 50 ), 
-	      new SqlParameter( EdAdapterSettings.PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250 ), 
-	      new SqlParameter( EdAdapterSettings.PARM_DESCRIPTION, SqlDbType.NText ), 
-	      new SqlParameter( EdAdapterSettings.PARM_ROLES, SqlDbType.NVarChar, 500 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_STATE, SqlDbType.NVarChar, 50 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_TITLE, SqlDbType.NVarChar, 50 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_DESCRIPTION, SqlDbType.NText ), 
+	      new SqlParameter( EdAdapterConfig.PARM_ROLES, SqlDbType.NVarChar, 500 ), 
 
-	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_USER_ID, SqlDbType.NVarChar,100 ), 
-	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_USER, SqlDbType.NVarChar, 100 ), 
-	      new SqlParameter( EdAdapterSettings.PARM_UPDATE_DATE, SqlDbType.DateTime ),  
+	      new SqlParameter( EdAdapterConfig.PARM_UPDATE_USER_ID, SqlDbType.NVarChar,100 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_UPDATE_USER, SqlDbType.NVarChar, 100 ), 
+	      new SqlParameter( EdAdapterConfig.PARM_UPDATE_DATE, SqlDbType.DateTime ),  
       };
 
       return cmdParms;
@@ -186,7 +186,7 @@ namespace Evado.Dal.Clinical
     //  ------------------------------------------------------------------------------------
     private void SetParameters ( 
       SqlParameter [ ] cmdParms, 
-      Evado.Model.Digital.EdAdapterParameters AdapterSettings )
+      Evado.Model.Digital.EdAdapterSettings AdapterSettings )
     {
       cmdParms [ 0 ].Value = "A";
       cmdParms [ 1 ].Value = AdapterSettings.HomePageHeaderText;
@@ -231,52 +231,52 @@ namespace Evado.Dal.Clinical
     /// 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public Model.Digital.EdAdapterParameters getReaderData ( DataRow Row )
+    public Model.Digital.EdAdapterSettings getReaderData ( DataRow Row )
     {
       //this.LogMethod ( "getReaderData method. " );
       // 
       // Initialise method variables and objects.
       // 
-      Evado.Model.Digital.EdAdapterParameters applicationSettings = new Evado.Model.Digital.EdAdapterParameters ( );
+      Evado.Model.Digital.EdAdapterSettings applicationSettings = new Evado.Model.Digital.EdAdapterSettings ( );
 
       // 
       // Load the query results into the EvProfile object.
       //
-      applicationSettings.Guid = EvSqlMethods.getGuid ( Row, EdAdapterSettings.DB_FIELD_GUID );
+      applicationSettings.Guid = EvSqlMethods.getGuid ( Row, EdAdapterConfig.DB_FIELD_GUID );
 
-      applicationSettings.ApplicationId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_APPLICATION_ID );
+      applicationSettings.ApplicationId = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_APPLICATION_ID );
 
-      applicationSettings.HomePageHeaderText = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HOME_PAGE_HEADER);
+      applicationSettings.HomePageHeaderText = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_HOME_PAGE_HEADER);
 
-      applicationSettings.HelpUrl = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HELP_URL );
+      applicationSettings.HelpUrl = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_HELP_URL );
 
-      applicationSettings.MaximumSelectionListLength = EvSqlMethods.getInteger ( Row, EdAdapterSettings.DB_FIELD_MAX_SELECTION_LENGTH );
+      applicationSettings.MaximumSelectionListLength = EvSqlMethods.getInteger ( Row, EdAdapterConfig.DB_FIELD_MAX_SELECTION_LENGTH );
 
-      applicationSettings.SmtpServer = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_SERVER );
+      applicationSettings.SmtpServer = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_SMTP_SERVER );
 
-      applicationSettings.SmtpServerPort = EvSqlMethods.getInteger ( Row, EdAdapterSettings.DB_FIELD_SMTP_PORT );
+      applicationSettings.SmtpServerPort = EvSqlMethods.getInteger ( Row, EdAdapterConfig.DB_FIELD_SMTP_PORT );
 
-      applicationSettings.SmtpUserId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_USER_ID );
+      applicationSettings.SmtpUserId = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_SMTP_USER_ID );
 
-      applicationSettings.SmtpPassword = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_SMTP_PASSWORD );
+      applicationSettings.SmtpPassword = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_SMTP_PASSWORD );
 
-      applicationSettings.EmailAlertTestAddress = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_ALERT_EMAIL_ADDRESS );
+      applicationSettings.EmailAlertTestAddress = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_ALERT_EMAIL_ADDRESS );
 
       //applicationSettings.ap = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_APPLICATION_URL );
 
-      applicationSettings.State = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_STATE );
+      applicationSettings.State = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_STATE );
 
-      applicationSettings.Title = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_TITLE );
+      applicationSettings.Title = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_TITLE );
 
-      applicationSettings.HttpReference = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_HTTP_REFERENCE );
+      applicationSettings.HttpReference = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_HTTP_REFERENCE );
 
-      applicationSettings.Description = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_DESCRIPTION );
+      applicationSettings.Description = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_DESCRIPTION );
 
-      applicationSettings.Roles = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_ROLES );
+      applicationSettings.Roles = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_ROLES );
 
-      applicationSettings.UpdatedBy = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_UPDATE_USER );
+      applicationSettings.UpdatedBy = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_UPDATE_USER );
 
-      applicationSettings.UpdatedByUserId = EvSqlMethods.getString ( Row, EdAdapterSettings.DB_FIELD_UPDATE_USER_ID );
+      applicationSettings.UpdatedByUserId = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_UPDATE_USER_ID );
 
       if ( applicationSettings.DemoAccountExpiryDays == 0 )
       {
@@ -317,14 +317,14 @@ namespace Evado.Dal.Clinical
     /// 6. Return a SiteProfile Object. 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public Evado.Model.Digital.EdAdapterParameters getItem ( string ApplicationId )
+    public Evado.Model.Digital.EdAdapterSettings getItem ( string ApplicationId )
     {
       this.LogMethod ( "getItem method. " );
 
       // 
       // Define the local variables and objects.
       // 
-      Evado.Model.Digital.EdAdapterParameters adapterParameters = new Evado.Model.Digital.EdAdapterParameters ( );
+      Evado.Model.Digital.EdAdapterSettings adapterParameters = new Evado.Model.Digital.EdAdapterSettings ( );
       String sqlQueryString = String.Empty;
 
       // 
@@ -338,14 +338,14 @@ namespace Evado.Dal.Clinical
       // 
       // Define the query parameters.
       // 
-      SqlParameter cmdParms = new SqlParameter ( EdAdapterSettings.PARM_APPLICATION_ID, SqlDbType.NVarChar, 1 );
+      SqlParameter cmdParms = new SqlParameter ( EdAdapterConfig.PARM_APPLICATION_ID, SqlDbType.NVarChar, 1 );
       cmdParms.Value = ApplicationId;
 
       // 
       // Generate the query string.
       // 
-      sqlQueryString = EdAdapterSettings.SQL_ADAPTER_SETTINGS_QUERY
-        + " WHERE (" + EdAdapterSettings.DB_FIELD_APPLICATION_ID + " = " + EdAdapterSettings.PARM_APPLICATION_ID + " ); ";
+      sqlQueryString = EdAdapterConfig.SQL_ADAPTER_SETTINGS_QUERY
+        + " WHERE (" + EdAdapterConfig.DB_FIELD_APPLICATION_ID + " = " + EdAdapterConfig.PARM_APPLICATION_ID + " ); ";
 
       this.LogDebug ( sqlQueryString );
 
@@ -408,7 +408,7 @@ namespace Evado.Dal.Clinical
     /// 5. Else, return an event code for updating items. 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterParameters AdapterParameters )
+    public EvEventCodes updateItem ( Evado.Model.Digital.EdAdapterSettings AdapterParameters )
     {
       this.LogMethod ( "updateItem method " );
       //
@@ -481,7 +481,7 @@ namespace Evado.Dal.Clinical
     /// <param name="ApplicationProperties">EvApplicationProfile Object.</param>
     /// <returns>EvDataChange</returns>
     //-----------------------------------------------------------------------------------
-    private EvDataChange createDataChange ( Evado.Model.Digital.EdAdapterParameters ApplicationProperties )
+    private EvDataChange createDataChange ( Evado.Model.Digital.EdAdapterSettings ApplicationProperties )
     {
       // 
       // Initialise the methods variables and objects.
@@ -491,7 +491,7 @@ namespace Evado.Dal.Clinical
       // 
       // Get an item to be updated.
       // 
-      Evado.Model.Digital.EdAdapterParameters oldItem = this.getItem ( ApplicationProperties.ApplicationId );
+      Evado.Model.Digital.EdAdapterSettings oldItem = this.getItem ( ApplicationProperties.ApplicationId );
 
       // 
       // Compare the changes.

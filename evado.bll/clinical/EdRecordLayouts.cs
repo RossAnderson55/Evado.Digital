@@ -92,7 +92,6 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EdRecord> getLayoutList ( 
-      String LayoutId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State )
     {
@@ -100,11 +99,10 @@ namespace Evado.Bll.Clinical
       // Initialise the methods objects and variables.
       // 
       this.LogMethod ( "getLayoutList" );
-      this.LogValue ( "LayoutId: " + LayoutId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State  );
 
-      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( LayoutId, TypeId, State, false );
+      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( TypeId, State, false );
 
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
@@ -130,7 +128,6 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EdRecord> GetRecordLayoutListWithFields (
-      String TrialId,
       EdRecordTypes TypeId,
       EdRecordObjectStates State )
     {
@@ -138,11 +135,10 @@ namespace Evado.Bll.Clinical
       // Initialise the methods objects and variables.
       // 
       this.LogMethod ( "GetRecordLayoutListWithFields" );
-      this.LogValue ( "TrialId: " + TrialId );
       this.LogValue ( "TypeId: " + TypeId );
       this.LogValue ( "State: " + State );
 
-      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( TrialId, TypeId, State, true );
+      List<EdRecord> _view = _Dal_RecordLayouts.getLayoutList ( TypeId, State, true );
 
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
@@ -169,15 +165,13 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getList ( 
-      string ApplicationId, 
       EdRecordTypes TypeId, 
       EdRecordObjectStates State, 
       bool SelectByGuid )
     {
       this.LogMethod ( "GetList." );
-      this.LogValue ( "ApplicationId: " + ApplicationId );
 
-      List<EvOption> List = this._Dal_RecordLayouts.GetList ( ApplicationId, TypeId, State, SelectByGuid );
+      List<EvOption> List = this._Dal_RecordLayouts.GetList ( TypeId, State, SelectByGuid );
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
       return List;

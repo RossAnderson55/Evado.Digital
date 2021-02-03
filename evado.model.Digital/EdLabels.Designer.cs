@@ -1593,7 +1593,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Binary Files for project {0} - {1}.
+        ///   Looks up a localized string similar to Binary Files.
         /// </summary>
         public static string Binary_File_List_Of_Files_Page_Label {
             get {
@@ -1868,6 +1868,15 @@ namespace Evado.Model.Digital {
         public static string Binary_Get_Page_Error_Message {
             get {
                 return ResourceManager.GetString("Binary_Get_Page_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapte Roles:.
+        /// </summary>
+        public static string Config_Role_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Role_List_Field_Label", resourceCulture);
             }
         }
         
@@ -4354,6 +4363,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisation ID:.
+        /// </summary>
+        public static string Label_Organisation_Id {
+            get {
+                return ResourceManager.GetString("Label_Organisation_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application Designer.
         /// </summary>
         public static string Label_Project_Design {
@@ -5043,6 +5061,348 @@ namespace Evado.Model.Digital {
         public static string Offline_Synchronsie_Command_Title {
             get {
                 return ResourceManager.GetString("Offline_Synchronsie_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AD Group: .
+        /// </summary>
+        public static string Organisation_AD_Group_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_AD_Group_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address: .
+        /// </summary>
+        public static string Organisation_Address_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All coordinating site users.
+        /// </summary>
+        public static string Organisation_Coordinator_All_User_Option_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Coordinator_All_User_Option_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Central Coordinating User:.
+        /// </summary>
+        public static string Organisation_Coordinator_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Coordinator_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error raised when creating an organisation..
+        /// </summary>
+        public static string Organisation_Create_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Create_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current organisation: .
+        /// </summary>
+        public static string Organisation_Current_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Current_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Organissation.
+        /// </summary>
+        public static string Organisation_Delete_Command_Title {
+            get {
+                return ResourceManager.GetString("Organisation_Delete_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Error: the {0} organisation identifier already exists..
+        /// </summary>
+        public static string Organisation_Duplicate_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Duplicate_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Address: .
+        /// </summary>
+        public static string Organisation_Email_Address_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Email_Address_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email:.
+        /// </summary>
+        public static string Organisation_Email_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Email_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Faxsimile No:.
+        /// </summary>
+        public static string Organisation_Fax_Number_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Fax_Number_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation: .
+        /// </summary>
+        public static string Organisation_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Encountered: the organisation identifier was not provided..
+        /// </summary>
+        public static string Organisation_Guid_Empty_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Guid_Empty_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Error: the organisation identifier is empty..
+        /// </summary>
+        public static string Organisation_Identifier_Empty_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Identifier_Empty_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation Identifier: .
+        /// </summary>
+        public static string Organisation_Identifier_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Identifier_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site investigator&apos;s name:.
+        /// </summary>
+        public static string Organisation_Investigator_Name_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Investigator_Name_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation.
+        /// </summary>
+        public static string Organisation_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Updated: .
+        /// </summary>
+        public static string Organisation_Last_Updated_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Last_Updated_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error raised when generating the organisation list page..
+        /// </summary>
+        public static string Organisation_List_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_List_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of organisations.
+        /// </summary>
+        public static string Organisation_List_Group_Title {
+            get {
+                return ResourceManager.GetString("Organisation_List_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of organisations.
+        /// </summary>
+        public static string Organisation_List_Page_Title {
+            get {
+                return ResourceManager.GetString("Organisation_List_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}.
+        /// </summary>
+        public static string Organisation_Name {
+            get {
+                return ResourceManager.GetString("Organisation_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name: .
+        /// </summary>
+        public static string Organisation_Name_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Name_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Organisation.
+        /// </summary>
+        public static string Organisation_New_Command_Title {
+            get {
+                return ResourceManager.GetString("Organisation_New_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The organisation identifier has not been defined.
+        /// </summary>
+        public static string Organisation_Org_ID_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Org_ID_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The organisation name has not been defined.
+        /// </summary>
+        public static string Organisation_Org_Name_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Org_Name_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  The organisation type has not been defined.
+        /// </summary>
+        public static string Organisation_Org_Type_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Org_Type_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisations.
+        /// </summary>
+        public static string Organisation_Organisations_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Organisations_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error raised when retrieving an organisation..
+        /// </summary>
+        public static string Organisation_Page_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Page_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation page.
+        /// </summary>
+        public static string Organisation_Page_Title {
+            get {
+                return ResourceManager.GetString("Organisation_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Organisation.
+        /// </summary>
+        public static string Organisation_Save_Command_Title {
+            get {
+                return ResourceManager.GetString("Organisation_Save_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation Selection.
+        /// </summary>
+        public static string Organisation_Selection_Group_Title {
+            get {
+                return ResourceManager.GetString("Organisation_Selection_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Site Id: .
+        /// </summary>
+        public static string Organisation_Site_Id {
+            get {
+                return ResourceManager.GetString("Organisation_Site_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telephone No:.
+        /// </summary>
+        public static string Organisation_Telephone_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Telephone_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing an organisation&apos;s type changes it&apos;s user access to the entire environment..
+        /// </summary>
+        public static string Organisation_Type_Field_Description {
+            get {
+                return ResourceManager.GetString("Organisation_Type_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation type:.
+        /// </summary>
+        public static string Organisation_Type_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Type_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Org Type: .
+        /// </summary>
+        public static string Organisation_Type_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Type_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error raised when updating an organisation..
+        /// </summary>
+        public static string Organisation_Update_Error_Message {
+            get {
+                return ResourceManager.GetString("Organisation_Update_Error_Message", resourceCulture);
             }
         }
         

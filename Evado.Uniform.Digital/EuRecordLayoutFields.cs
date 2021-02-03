@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -52,14 +52,14 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuRecordLayoutFields (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuFormFields.";
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -68,7 +68,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "EuFormFields initialisation" );
       this.LogInit ( "-ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "-SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "-SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "-UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -404,7 +403,7 @@ namespace Evado.UniForm.Clinical
       //
       groupCommand = PageGroup.addCommand (
         EdLabels.Form_Field_Refresh_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Record_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -433,7 +432,7 @@ namespace Evado.UniForm.Clinical
             //
             groupCommand = PageGroup.addCommand (
               EdLabels.Form_Field_Save_Command_Title,
-              EuAdapter.APPLICATION_ID,
+              EuAdapter.ADAPTER_ID,
               EuAdapterClasses.Record_Layout_Fields.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -454,7 +453,7 @@ namespace Evado.UniForm.Clinical
             {
               groupCommand = PageGroup.addCommand (
                 EdLabels.Form_Field_Delete_Command_Title,
-                EuAdapter.APPLICATION_ID,
+                EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Record_Layout_Fields.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
               // 

@@ -90,37 +90,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines a budget type code of report
       /// </summary>
-      Budget,
+      Entity,
 
       /// <summary>
       /// This enumeration defines a schedule type code of report
       /// </summary>
-      Schedule,
-
-      /// <summary>
-      /// This enumeration defines a clinical type code of report
-      /// </summary>
-      Clinical,
-
-      /// <summary>
-      /// This enumeration defines a billing type code of report
-      /// </summary>
-      Billing,
-
-      /// <summary>
-      /// This enumeration defines a validation type code of report
-      /// </summary>
-      Monitoring,
-
-      /// <summary>
-      /// This enumeration defines a data management type code of report
-      /// </summary>
-      Data_Management,
-
-      /// <summary>
-      /// This enumeration defines a validation type code of report
-      /// </summary>
-      Validation,
+      Record,
     }
 
     /// <summary>
@@ -154,27 +129,7 @@ namespace Evado.Model.Digital
       /// This enumeration defines a billing summary type of report scope
       /// </summary>
       Site_Reports,
-      /*
-      /// <summary>
-      /// This enumeration defines a billing summary type of report scope
-      /// </summary>
-     // Finance_Reports,
 
-      /// <summary>
-      /// This enumeration defines a budget type of report scope
-      /// </summary>
-      //Budget,
-
-      /// <summary>
-      /// This enumeration defines a billing summary type of report scope
-      /// </summary>
-      //Billing_Summary,
-
-      /// <summary>
-      /// This enumeration defines a billing detailed type of report scope
-      /// </summary>
-      //Billing_Detailed,
-      */
       /// <summary>
       /// This enumeration defines a subject calendar of report scope
       /// </summary>
@@ -382,11 +337,6 @@ namespace Evado.Model.Digital
       Status = 4,
 
       /// <summary>
-      /// This enumeration defines a current trial type of selection list
-      /// </summary>
-      Current_Application = 8,
-
-      /// <summary>
       /// This enumeration defines a form identifier type of selection list
       /// </summary>
       LayoutId = 9,
@@ -401,18 +351,6 @@ namespace Evado.Model.Digital
       /// This property defines the record state type of selection list.
       ///
       Record_State = 12,
-
-      // DPRECIATED ENUMERATIONS.
-
-      /// <summary>
-      /// This enumeration defines trial identifier type of selection list
-      /// </summary>Project_Id
-      Project_Id = 5,
-
-      /// <summary>
-      /// This enumeration defines a current trial type of selection list
-      /// </summary>
-      Current_Project = 8,
     }
 
     /// <summary>
@@ -449,11 +387,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines the source identifier of report field names.
       /// </summary>
       SourceId,
-
-      /// <summary>
-      /// This enumeration defines the project identifier of report field names.
-      /// </summary>
-      ProjectId,
 
       /// <summary>
       /// This enumeration defines the report identifier of report field names.
@@ -538,13 +471,6 @@ namespace Evado.Model.Digital
     /// 
     /// </summary>
     private string _Category = String.Empty;
-
-    /// <summary>
-    /// The trial identifier definine the type of report that will be generated.
-    /// 
-    /// </summary>
-    private string _TrialId = String.Empty;
-
 
     /// <summary>
     /// The report identifier definine the type of report that will be generated.
@@ -850,21 +776,6 @@ namespace Evado.Model.Digital
       set
       {
         this._Category = value;
-      }
-    }
-
-    /// <summary>
-    /// This property contains a trial identifier of a report
-    /// </summary>
-    public string TrialId
-    {
-      get
-      {
-        return this._TrialId;
-      }
-      set
-      {
-        this._TrialId = value;
       }
     }
 
@@ -1456,11 +1367,6 @@ namespace Evado.Model.Digital
             this.SourceId = value;
             break;
           }
-        case ReportClassFieldNames.ProjectId:
-          {
-            this.TrialId = value;
-            break;
-          }
         case ReportClassFieldNames.ReportId:
           {
             this.ReportId = value;
@@ -1578,7 +1484,7 @@ namespace Evado.Model.Digital
     /// 2. Return a generated report
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public string getReportAsHtml ( EvUserProfile profile )
+    public string getReportAsHtml ( EdUserProfile profile )
     {
       this.LogMethod ( "getReportAsHtml method. " );
 
@@ -1614,7 +1520,7 @@ namespace Evado.Model.Digital
     //  ----------------------------------------------------------------------------------
     public string getReportAsCsv (
       String separator,
-      EvUserProfile profile )
+      EdUserProfile profile )
     {
       this.LogMethod ( "getReportAsCsv method " );
       this.LogDebugValue( "Title: " + this.ReportTitle);
@@ -1652,7 +1558,7 @@ namespace Evado.Model.Digital
     //  ----------------------------------------------------------------------------------
     public string getReportFlatAsCsv (
       String separator,
-      EvUserProfile profile )
+      EdUserProfile profile )
     {
       this.LogMethod ( "getReportFlatAsCsv method " );
       this.LogDebugValue ( "Title: " + this.ReportTitle );
@@ -1680,7 +1586,7 @@ namespace Evado.Model.Digital
     //  ----------------------------------------------------------------------------------
     public string getResultAsCsv (
       String separator,
-      EvUserProfile profile )
+      EdUserProfile profile )
     {
       this.LogMethod ( "getResultAsCsv method " );
       //

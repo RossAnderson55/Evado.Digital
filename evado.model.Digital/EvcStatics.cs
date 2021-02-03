@@ -108,12 +108,8 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This consant defines the customer name substitution text value
     /// </summary>
-    public const string TEXT_SUBSITUTION_CUSTOMER = "{Customer}";
+    public const string TEXT_SUBSITUTION_ADAPTER_TITLE = "{AdapterTitle}";
 
-    /// <summary>
-    /// This consant defines the customer telephone number substitution text value
-    /// </summary>
-    public const string TEXT_SUBSITUTION_CUSTOMER_PHONE = "{CustomerPhone}";
 
     /// <summary>
     /// This consant defines the password reset URL substitution text value

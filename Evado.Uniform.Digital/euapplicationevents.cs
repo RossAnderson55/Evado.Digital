@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This class defines the application base classs that is used to terminate the 
@@ -51,14 +51,14 @@ namespace Evado.UniForm.Clinical
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuApplicationEvents (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuAPplicationEvents. ";
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -68,7 +68,6 @@ namespace Evado.UniForm.Clinical
 
       this.LogInitMethod ( "EuApplicationEvents initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.Project.ProjectId: " + this.Session.Application.ApplicationId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -224,11 +223,11 @@ namespace Evado.UniForm.Clinical
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
-        if ( this.ApplicationObjects.HelpUrl != String.Empty )
+        if ( this.GlobalObjects.HelpUrl != String.Empty )
         {
           Evado.Model.UniForm.Command helpCommand = clientDataObject.Page.addCommand (
            EdLabels.Label_Help_Command_Title,
-           EuAdapter.APPLICATION_ID,
+           EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Events.ToString ( ),
            Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -236,7 +235,7 @@ namespace Evado.UniForm.Clinical
 
           helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (
-            this.ApplicationObjects.HelpUrl,
+            this.GlobalObjects.HelpUrl,
              Evado.Model.Digital.EvPageIds.Application_Event_View ) );
         }
         if ( this.Session.EventStartDate ==  Evado.Model.Digital.EvcStatics.CONST_DATE_MIN_RANGE )
@@ -419,7 +418,7 @@ namespace Evado.UniForm.Clinical
       // 
       Evado.Model.UniForm.Command customCommand = selectionGroup.addCommand (
         EdLabels.ApplicationEvent_Selection_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Events.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
@@ -475,7 +474,7 @@ namespace Evado.UniForm.Clinical
           // 
           Evado.Model.UniForm.Command command = listGroup.addCommand (
             applicationEvent.LinkText,
-            EuAdapter.APPLICATION_ID,
+            EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Events.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -605,11 +604,11 @@ namespace Evado.UniForm.Clinical
       //
       // Add the help button if the help url is defined.
       //
-      if ( this.ApplicationObjects.HelpUrl != String.Empty )
+      if ( this.GlobalObjects.HelpUrl != String.Empty )
       {
         Evado.Model.UniForm.Command helpCommand = ClientDataObject.Page.addCommand (
          EdLabels.Label_Help_Command_Title,
-         EuAdapter.APPLICATION_ID,
+         EuAdapter.ADAPTER_ID,
          EuAdapterClasses.Events.ToString ( ),
          Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -617,7 +616,7 @@ namespace Evado.UniForm.Clinical
 
         helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (
-            this.ApplicationObjects.HelpUrl,
+            this.GlobalObjects.HelpUrl,
              Evado.Model.Digital.EvPageIds.Application_Event ) );
       }
 

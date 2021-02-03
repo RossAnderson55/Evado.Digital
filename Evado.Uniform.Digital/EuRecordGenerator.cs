@@ -27,7 +27,7 @@ using Evado.Bll;
 using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   //  =================================================================================
   /// <summary>
@@ -45,12 +45,12 @@ namespace Evado.UniForm.Clinical
     /// <param name="ModuleList">String: encoded list of loaded application modules.</param>
     //-----------------------------------------------------------------------------------
     public EuRecordGenerator (
-      EuApplicationObjects ApplicationObjects,
+      EuAdapterObjects ApplicationObjects,
       EuSession Session,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.Model.UniForm.EuFormGenerator.";
-      this.ApplicationObjects = ApplicationObjects;
+      this.GlobalObjects = ApplicationObjects;
       this.Session = Session;
       this.ClassParameters = Settings;
       this._ModuleList = new List<EdModuleCodes> ( );

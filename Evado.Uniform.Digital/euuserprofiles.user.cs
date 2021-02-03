@@ -29,7 +29,7 @@ using Evado.Bll.Clinical;
 using Evado.Model.Digital;
 // using Evado.Web;
 
-namespace Evado.UniForm.Clinical
+namespace Evado.UniForm.Digital
 {
   /// <summary>
   /// This partial class contains the user updatable profile page layout.
@@ -223,13 +223,13 @@ namespace Evado.UniForm.Clinical
       // Create the  name object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Prefix,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Prefix,
         EdLabels.UserProfile_Prefix_Field_Label,
         this.Session.UserProfile.Prefix, 10 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Given_Name,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
         EdLabels.UserProfile_GivenName_Field_Label,
         this.Session.UserProfile.GivenName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -239,7 +239,7 @@ namespace Evado.UniForm.Clinical
         Model.UniForm.Background_Colours.Red );
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Family_Name,
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
         EdLabels.UserProfile_FamilyName_Field_Label,
         this.Session.UserProfile.FamilyName, 50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -279,7 +279,7 @@ namespace Evado.UniForm.Clinical
       // Create the customer telephone number object
       // 
       groupField = pageGroup.createTelephoneNumberField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
         EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.UserProfile.Telephone );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -288,7 +288,7 @@ namespace Evado.UniForm.Clinical
       // Create the customer telephone number object
       // 
       groupField = pageGroup.createTelephoneNumberField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Mobile_Phone.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Mobile_Phone.ToString ( ),
         EdLabels.UserProfile_Mobilephone_Field_Label,
         this.Session.UserProfile.MobilePhone );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -297,7 +297,7 @@ namespace Evado.UniForm.Clinical
       // Create the customer fax number object
       // 
       groupField = pageGroup.createEmailAddressField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.UserProfile.EmailAddress );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -401,7 +401,7 @@ namespace Evado.UniForm.Clinical
       // 
       groupCommand = PageGroup.addCommand (
         EdLabels.User_Profile_Save_Command_Title,
-        EuAdapter.APPLICATION_ID,
+        EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
@@ -517,7 +517,7 @@ namespace Evado.UniForm.Clinical
 
         this.LogMethodEnd ( "updateUserObject" );
 
-        this.Session.UserProfile = new EvUserProfile ( );
+        this.Session.UserProfile = new EdUserProfile ( );
 
         return new Model.UniForm.AppData ( );
 
@@ -624,8 +624,8 @@ namespace Evado.UniForm.Clinical
           this.LogTextEnd ( " >> UPDATED" );
           try
           {
-            Evado.Model.Digital.EvUserProfile.UserProfileFieldNames fieldName =
-              Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Evado.Model.Digital.EvUserProfile.UserProfileFieldNames> (
+            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
+              Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
              parameter.Name );
 
             this.Session.UserProfile.setValue ( fieldName, parameter.Value );

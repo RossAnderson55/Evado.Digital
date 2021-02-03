@@ -54,7 +54,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// Organization of the user generating this report.
     /// </summary>
-    protected EvUserProfile _UserProfile = new EvUserProfile ( );
+    protected EdUserProfile _UserProfile = new EdUserProfile ( );
     #endregion
 
     #region Methods

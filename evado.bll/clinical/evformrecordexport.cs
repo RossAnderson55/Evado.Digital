@@ -151,7 +151,7 @@ namespace Evado.Bll.Clinical
     // -------------------------------------------------------------------------------------
     public String exportRecords (
       EvExportParameters ExportParameters,
-      Evado.Model.Digital.EvUserProfile UserProfile )
+      Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.LogMethod ( "exportRecords method. " );
       this.LogDebug ( ExportParameters.getRecordExportParameters ( ) );
@@ -195,7 +195,7 @@ namespace Evado.Bll.Clinical
     // -------------------------------------------------------------------------------------
     private String exportProjectRecords (
       EvExportParameters ExportParameters,
-      Evado.Model.Digital.EvUserProfile UserProfile )
+      Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.LogMethod ( "exportProjectRecords method. " );
 
@@ -205,7 +205,7 @@ namespace Evado.Bll.Clinical
       List<EdRecord> recordList = new List<EdRecord> ( );
       EdRecords formRecords = new EdRecords ( this.ClassParameter );
 
-      EdQueryParameters queryParameters = new EdQueryParameters ( ExportParameters.Project.ApplicationId );
+      EdQueryParameters queryParameters = new EdQueryParameters ( );
 
       //
       // Set the start and end date filters.
@@ -268,7 +268,7 @@ namespace Evado.Bll.Clinical
     //  ----------------------------------------------------------------------------------
     public String createExportFile (
       System.Collections.Generic.List<EdRecord> FormRecordList,
-      Evado.Model.Digital.EvUserProfile UserProfile,
+      Evado.Model.Digital.EdUserProfile UserProfile,
       bool IncludeFreeTextData,
       bool IncludeDraftRecords )
     {

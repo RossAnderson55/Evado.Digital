@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="model\EvUserProfile.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="model\EdUserProfile.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
@@ -29,7 +29,7 @@ namespace Evado.Model.Digital
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvUserProfile : Evado.Model.EvUserProfileBase
+  public class EdUserProfile : Evado.Model.EvUserProfileBase
   {
     #region Initialisation method.
     //==================================================================================
@@ -37,7 +37,7 @@ namespace Evado.Model.Digital
     /// This method creates a user profile.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    public EvUserProfile ( )
+    public EdUserProfile ( )
     {
     }
 
@@ -47,7 +47,7 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="BaseUserProfile">EvUserProfileBase object.</param>
     //-----------------------------------------------------------------------------------
-    public EvUserProfile ( EvUserProfileBase BaseUserProfile )
+    public EdUserProfile ( EvUserProfileBase BaseUserProfile )
     {
       this.ImportBaseUserProfile ( BaseUserProfile );
     }
@@ -247,24 +247,18 @@ namespace Evado.Model.Digital
         this._TypeId = value;
       }
     }
-
+    String _OrgId = String.Empty;
     /// <summary>
-    /// This property contains an customer global unique identifier of an organization
-    /// This foreign key links the organisation to the customer object.
+    /// This property defines the user type and used to organisation to the platform.
     /// </summary>
-    public Guid CustomerGuid { get; set; }
-
-    /// <summary>
-    /// This property contains the customer no for the user is associated with.
-    /// This value is used for resolving uploaded user profiles.
-    /// </summary>
-    public int CustomerNo { get; set; }
-
-
-    /// <summary>
-    /// This property contains the customer object the user is associated with.
-    /// </summary>
-    public EvCustomer Customer { get; set; }
+    public String OrgId
+    {
+      get { return this._OrgId; }
+      set
+      {
+        this._OrgId = value;
+      }
+    }
 
     private String _Roles = String.Empty;
     /// <summary>
@@ -297,11 +291,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( EvUserProfile.UserProfileFieldNames.Project_Dashboard_Components );
+        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Project_Dashboard_Components );
       }
       set
       {
-        var debug = this.setParameter ( EvUserProfile.UserProfileFieldNames.Project_Dashboard_Components, value );
+        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Project_Dashboard_Components, value );
 
         //this.debug += "\r\n"+ debug;
       }
@@ -314,11 +308,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( EvUserProfile.UserProfileFieldNames.Site_Dashboard_Components );
+        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Site_Dashboard_Components );
       }
       set
       {
-        var debug = this.setParameter ( EvUserProfile.UserProfileFieldNames.Site_Dashboard_Components, value );
+        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Site_Dashboard_Components, value );
         //this.debug += "\r\n" + debug;
       }
     }
@@ -351,7 +345,7 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.TypeId == UserTypesList.Evado )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
         }
@@ -367,9 +361,9 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.TypeId == UserTypesList.Evado )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
           return true;
         }
@@ -385,10 +379,10 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.TypeId == UserTypesList.Evado )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-             || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
-             || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true
-             || this._Roles.Contains ( EvUserProfile.CONST_STAFF_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
+             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
+             || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
         {
           return true;
         }
@@ -405,7 +399,7 @@ namespace Evado.Model.Digital
       {
         if ( ( this.TypeId == UserTypesList.Evado
             || this.TypeId == UserTypesList.Customer )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
         }
@@ -422,8 +416,8 @@ namespace Evado.Model.Digital
       {
         if ( ( this.TypeId == UserTypesList.Evado
             || this.TypeId == UserTypesList.Customer )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true ) )
         {
           return true;
         }
@@ -441,8 +435,8 @@ namespace Evado.Model.Digital
       {
         if ( ( this.TypeId == UserTypesList.Evado
             || this.TypeId == UserTypesList.Customer )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
           return true;
         }
@@ -460,10 +454,10 @@ namespace Evado.Model.Digital
       {
         if (  ( this.TypeId == UserTypesList.Evado
             || this.TypeId == UserTypesList.Customer )
-          && ( this._Roles.Contains ( EvUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_MANAGER_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_DESIGNER_ROLE ) == true
-            || this._Roles.Contains ( EvUserProfile.CONST_STAFF_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
         {
           return true;
         }
@@ -542,13 +536,6 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "Title: " + this.Title );
       sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
       sbText.AppendLine ( "RoleId: " + this.Roles );
-
-
-      if ( this.Customer != null )
-      {
-        sbText.AppendLine ( "Customer No : " + this.Customer.CustomerNo );
-        sbText.AppendLine ( "Customer Name : " + this.Customer.Name );
-      }
 
       if ( this.DomainGroupNames != String.Empty )
       {
@@ -734,11 +721,6 @@ namespace Evado.Model.Digital
             this.Roles = value;
             break;
           }
-        case UserProfileFieldNames.Customer_No:
-          {
-            this.CustomerNo = EvStatics.getInteger ( value );
-            break;
-          }
         case UserProfileFieldNames.Expiry_Date:
           {
             this.ExpiryDate = EvStatics.getDateTime ( value );
@@ -786,10 +768,10 @@ namespace Evado.Model.Digital
       {
         List<EdRole> staticRoles = new List<EdRole> ( );
 
-        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_ADMINISTRATOR_ROLE, "Administrator" ) );
-        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_MANAGER_ROLE, "Manager" ) );
-        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_DESIGNER_ROLE, "Designer" ) );
-        staticRoles.Add ( new EdRole ( EvUserProfile.CONST_STAFF_ROLE, "Staff" ) );
+        staticRoles.Add ( new EdRole ( EdUserProfile.CONST_ADMINISTRATOR_ROLE, "Administrator" ) );
+        staticRoles.Add ( new EdRole ( EdUserProfile.CONST_MANAGER_ROLE, "Manager" ) );
+        staticRoles.Add ( new EdRole ( EdUserProfile.CONST_DESIGNER_ROLE, "Designer" ) );
+        staticRoles.Add ( new EdRole ( EdUserProfile.CONST_STAFF_ROLE, "Staff" ) );
 
         return staticRoles;
       }
@@ -826,7 +808,7 @@ namespace Evado.Model.Digital
         optionList.Add ( new EvOption ( ) );
       }
 
-      foreach ( EdRole role in EvUserProfile.StaticRoles )
+      foreach ( EdRole role in EdUserProfile.StaticRoles )
       {
         optionList.Add ( new EvOption ( role.RoleId, role.Description ) );
       }

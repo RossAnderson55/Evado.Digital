@@ -120,14 +120,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EdLabels.resx</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EdOrganisation.cs" />
     <Compile Include="EdRecordEntity.cs" />
     <Compile Include="EvCustomerLabels.Designer.cs">
       <DependentUpon>EvCustomerLabels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="EvCustomer.cs" />
     <Compile Include="evdataitem.cs" />
     <Compile Include="EvMediaMetadata.cs" />
     <Compile Include="EdRecordObjectStates.cs">
@@ -170,19 +171,20 @@
     <Compile Include="evreportquery.cs" />
     <Compile Include="evreportrow.cs" />
     <Compile Include="evreportsection.cs" />
-    <Compile Include="EdAdapterParameters.cs" />
+    <Compile Include="EdAdapterSettings.cs" />
     <Compile Include="EvAncillaryRecord.cs" />
-    <Compile Include="EdApplication.cs" />
-    <Compile Include="evuserprofile.cs" />
+    <Compile Include="EdUserProfile.cs" />
     <Compile Include="EdUserSignoff.cs" />
     <Compile Include="Properties\assemblyinfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\evlabels.resx" />
-    <None Include="EdLabels.resx">
+    <EmbeddedResource Include="EdLabels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EdLabels.Designer.cs</LastGenOutput>
-    </None>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="EvCustomerLabels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EvCustomerLabels.Designer.cs</LastGenOutput>
