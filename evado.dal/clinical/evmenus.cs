@@ -469,60 +469,6 @@ namespace Evado.Dal.Clinical
         }
       }
 
-      //
-      // Ensure that the mandatory menu groups are present.
-      //
-      bool hasTRDSH = false;  // The trial dashboard
-      bool hasSTDSH = false;  // Site dashboard
-      bool hasTMNU = false;  // Subject page menu.
-      bool hasSUMNU = false;  // Subject page menu.
-
-      //
-      // Loop through the list of options and update the value of mandatory groups, if they exist. 
-      //
-      foreach ( Evado.Model.EvOption option1 in List )
-      {
-        if ( option1.Value ==  Evado.Model.Digital.EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP )
-        {
-          hasTRDSH = true;
-        }
-        if ( option1.Value ==  Evado.Model.Digital.EvMenuItem.CONST_SITE_DASHBOARD_GROUP )
-        {
-          hasSTDSH = true;
-        }
-        if ( option1.Value ==  Evado.Model.Digital.EvMenuItem.CONST_PROJECT_MENU_GROUP )
-        {
-          hasTMNU = true;
-        }
-        if ( option1.Value ==  Evado.Model.Digital.EvMenuItem.CONST_SUBJECT_MENU_GROUP )
-        {
-          hasSUMNU = true;
-        }
-      }//END foreach loop
-
-      //
-      // Add mandatory menu groups to the return list if they do not exist. 
-      //
-      if ( hasTRDSH == false )
-      {
-        List.Add ( new Evado.Model.EvOption ( Evado.Model.Digital.EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP, "Trial Dashboard" ) );
-      }
-
-      if ( hasSTDSH == false )
-      {
-        List.Add ( new Evado.Model.EvOption ( Evado.Model.Digital.EvMenuItem.CONST_SITE_DASHBOARD_GROUP, "Site Dashboard" ) );
-      }
-
-      if ( hasTMNU == false )
-      {
-        List.Add ( new Evado.Model.EvOption ( Evado.Model.Digital.EvMenuItem.CONST_PROJECT_MENU_GROUP, "Trial Page Menu" ) );
-      }
-
-      if ( hasSUMNU == false )
-      {
-        List.Add ( new Evado.Model.EvOption ( Evado.Model.Digital.EvMenuItem.CONST_SUBJECT_MENU_GROUP, "Subject Page Menu" ) );
-      }
-
       // 
       // Pass back the result arrray.
       // 

@@ -45,7 +45,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EdAdapterConfig ( )
     {
-      this.ClassNameSpace = "Evado.UniForm.Clinical.EdPlatformSettings.";
+      this.ClassNameSpace = "Evado.UniForm.Clinical.EdAdapterConfig.";
     }
 
     /// <summary>
@@ -63,10 +63,10 @@ namespace Evado.UniForm.Digital
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.UniForm.Clinical.EdPlatformSettings.";
+      this.ClassNameSpace = "Evado.UniForm.Clinical.EdAdapterConfig.";
 
 
-      this.LogInitMethod ( "EuApplicationSettings initialisation" );
+      this.LogInitMethod ( "EdAdapterConfig initialisation" );
       this.LogInit ( "-ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
@@ -1753,6 +1753,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getObject" );
+      this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1762,7 +1763,7 @@ namespace Evado.UniForm.Digital
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasAdministrationAccess == false )
+      if ( this.Session.UserProfile.hasEvadoAccess == false )
       {
         this.LogIllegalAccess (
           this.ClassNameSpace + "getObject",

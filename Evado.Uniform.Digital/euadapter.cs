@@ -222,6 +222,11 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constant defines the application global object hash table key value.
     /// </summary>
+    public const string SESSION_OBJECT = "_SESSION_OBJECT";
+
+    /// <summary>
+    /// This constant defines the application global object hash table key value.
+    /// </summary>
     public const string GLOBAL_OBJECT = ADAPTER_ID + "_GLOBAL_OBJECT";
 
     public const string CONST_ALERT_SELECT = "ALERT_SELECT";
@@ -837,38 +842,38 @@ namespace Evado.UniForm.Digital
               clientDataObject.Page.GroupList.Count );
             break;
           }
-          /*
-        case EuAdapterClasses.Alert:
+        /*
+      case EuAdapterClasses.Alert:
+        {
+          this.LogDebug ( "ALERT CLASS SELECTED." );
+
+          //
+          // Log command and exit for illegal access attempty.
+          //
+          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
           {
-            this.LogDebug ( "ALERT CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuAlerts alerts = new EuAlerts (
-              this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            alerts.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = alerts.getClientDataObject ( PageCommand );
-            this.ErrorMessage = alerts.ErrorMessage;
-            LogAdapter ( alerts.Log );
-
-            break;
+            return this.IllegalAnonymousAccessAttempt ( adapterClass );
           }
-           */ 
+
+          // 
+          // Initialise the methods variables and objects.
+          // 
+          EuAlerts alerts = new EuAlerts (
+            this._ApplicationObjects,
+            this.ServiceUserProfile,
+            this.Session,
+            this.UniForm_BinaryFilePath,
+            this.ClassParameters );
+
+          alerts.LoggingLevel = this.LoggingLevel;
+
+          clientDataObject = alerts.getClientDataObject ( PageCommand );
+          this.ErrorMessage = alerts.ErrorMessage;
+          LogAdapter ( alerts.Log );
+
+          break;
+        }
+         */
         case EuAdapterClasses.Record_Layouts:
           {
             this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
@@ -928,95 +933,95 @@ namespace Evado.UniForm.Digital
 
             break;
           }
-          /*
-        case EuAdapterClasses.Activities:
+        /*
+      case EuAdapterClasses.Activities:
+        {
+          this.LogDebug ( "ACTIVITIES CLASS SELECTED." );
+
+          //
+          // Log command and exit for illegal access attempty.
+          //
+          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
           {
-            this.LogDebug ( "ACTIVITIES CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuActivities actvities = new EuActivities ( this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            actvities.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = actvities.getDataObject ( PageCommand );
-            this.ErrorMessage = actvities.ErrorMessage;
-            LogAdapter ( actvities.Log );
-
-            break;
+            return this.IllegalAnonymousAccessAttempt ( adapterClass );
           }
-        case EuAdapterClasses.Schedules:
+
+          // 
+          // Initialise the methods variables and objects.
+          // 
+          EuActivities actvities = new EuActivities ( this._ApplicationObjects,
+            this.ServiceUserProfile,
+            this.Session,
+            this.UniForm_BinaryFilePath,
+            this.ClassParameters );
+
+          actvities.LoggingLevel = this.LoggingLevel;
+
+          clientDataObject = actvities.getDataObject ( PageCommand );
+          this.ErrorMessage = actvities.ErrorMessage;
+          LogAdapter ( actvities.Log );
+
+          break;
+        }
+      case EuAdapterClasses.Schedules:
+        {
+          this.LogDebug ( "SCHEDULES CLASS SELECTED." );
+
+          //
+          // Log command and exit for illegal access attempty.
+          //
+          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
           {
-            this.LogDebug ( "SCHEDULES CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuSchedules schedules = new EuSchedules ( this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            schedules.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = schedules.getDataObject ( PageCommand );
-            this.ErrorMessage = schedules.ErrorMessage;
-            LogAdapter ( schedules.Log );
-
-            break;
+            return this.IllegalAnonymousAccessAttempt ( adapterClass );
           }
-        case EuAdapterClasses.Milestones:
+
+          // 
+          // Initialise the methods variables and objects.
+          // 
+          EuSchedules schedules = new EuSchedules ( this._ApplicationObjects,
+            this.ServiceUserProfile,
+            this.Session,
+            this.UniForm_BinaryFilePath,
+            this.ClassParameters );
+
+          schedules.LoggingLevel = this.LoggingLevel;
+
+          clientDataObject = schedules.getDataObject ( PageCommand );
+          this.ErrorMessage = schedules.ErrorMessage;
+          LogAdapter ( schedules.Log );
+
+          break;
+        }
+      case EuAdapterClasses.Milestones:
+        {
+          this.LogDebug ( "MILESTONES CLASS SELECTED." );
+
+          //
+          // Log command and exit for illegal access attempty.
+          //
+          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
           {
-            this.LogDebug ( "MILESTONES CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
-            // 
-            // Initialise the methods variables and objects.
-            // 
-            EuMilestones milestones = new EuMilestones ( this._ApplicationObjects,
-              this.ServiceUserProfile,
-              this.Session,
-              this.UniForm_BinaryFilePath,
-              this.ClassParameters );
-
-            milestones.LoggingLevel = this.LoggingLevel;
-
-            clientDataObject = milestones.getDataObject ( PageCommand );
-            this.ErrorMessage = milestones.ErrorMessage;
-            LogAdapter ( milestones.Log );
-
-            break;
+            return this.IllegalAnonymousAccessAttempt ( adapterClass );
           }
-           */ 
+
+          // 
+          // Initialise the methods variables and objects.
+          // 
+          EuMilestones milestones = new EuMilestones ( this._ApplicationObjects,
+            this.ServiceUserProfile,
+            this.Session,
+            this.UniForm_BinaryFilePath,
+            this.ClassParameters );
+
+          milestones.LoggingLevel = this.LoggingLevel;
+
+          clientDataObject = milestones.getDataObject ( PageCommand );
+          this.ErrorMessage = milestones.ErrorMessage;
+          LogAdapter ( milestones.Log );
+
+          break;
+        }
+         */
         case EuAdapterClasses.ReportTemplates:
           {
             this.LogDebug ( "REPORT TEMPLATESS CLASS SELECTED." );
@@ -1238,7 +1243,7 @@ namespace Evado.UniForm.Digital
       if ( this.GlobalObjectList.ContainsKey ( EuAdapter.GLOBAL_OBJECT ) == true )
       {
         this._AdapterObjects =
-          ( EuAdapterObjects ) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
+          (EuAdapterObjects) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
       }
 
       //  
@@ -1378,28 +1383,28 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      this._SessionObjectKey = this.ServiceUserProfile.UserId + EuAdapter.ADAPTER_ID;
+      this._SessionObjectKey = this.ServiceUserProfile.UserId + EuAdapter.SESSION_OBJECT;
       this._SessionObjectKey = this._SessionObjectKey.Replace ( ".", "_" );
       this._SessionObjectKey = this._SessionObjectKey.ToUpper ( );
 
-      //this.LogInitValue ( "SessionObjectKey: " + this._SessionObjectKey );
+      this.LogInitValue ( "SessionObjectKey: " + this._SessionObjectKey );
 
-      if ( this.GlobalObjectList [ this._SessionObjectKey ] != null )
+      if ( this.GlobalObjectList.ContainsKey ( this._SessionObjectKey ) == true )
       {
-        this.Session = ( EuSession ) this.GlobalObjectList [ this._SessionObjectKey ];
+        this.Session = (Evado.UniForm.Digital.EuSession) this.GlobalObjectList [ this._SessionObjectKey ]; 
 
-        //this.LogInitValue ( "Session object loaded." );
+        this.LogInitValue ( "Session object loaded." );
       }
 
       this._ClientObjectKey = this.ServiceUserProfile.UserId + Evado.Model.Digital.EvcStatics.SESSION_CLIENT_DATA_OBJECT;
       this._ClientObjectKey = this._ClientObjectKey.Replace ( ".", "_" );
       this._ClientObjectKey = this._ClientObjectKey.ToUpper ( );
 
-      //this.LogInitValue ( "ClientObjectKey: " + this._ClientObjectKey );
+      this.LogInitValue ( "ClientObjectKey: " + this._ClientObjectKey );
 
-      if ( this.GlobalObjectList [ this._ClientObjectKey ] != null )
+      if ( this.GlobalObjectList.ContainsKey ( this._ClientObjectKey ) == true )
       {
-        this.ClientDataObject = ( Evado.Model.UniForm.AppData ) this.GlobalObjectList [ this._ClientObjectKey ];
+        this.ClientDataObject = (Evado.Model.UniForm.AppData) this.GlobalObjectList [ this._ClientObjectKey ];
 
         //this.LogInitValue ( "Last client data object loaded." );
       }
@@ -1449,13 +1454,15 @@ namespace Evado.UniForm.Digital
 
       if ( this._SessionObjectKey == String.Empty )
       {
+        this.LogEvent ( "Session Key Empty." );
+        this.LogMethodEnd ( "saveSessionObject" );
         return;
       }
 
       // 
-      // Save the session ResultData to global object hashtable.
+      // Save the session object.
       //
-      this.GlobalObjectList [ this._SessionObjectKey ] = this.Session;
+      this.GlobalObjectList [ this._SessionObjectKey ] = (EuSession) this.Session;
 
       //
       // Save the last generated client data object
@@ -1466,9 +1473,12 @@ namespace Evado.UniForm.Digital
 
       this.GlobalObjectList [ this._ClientObjectKey ] = this.ClientDataObject;
 
-      string Date_Key = this._SessionObjectKey.Replace (
-         EuAdapter.ADAPTER_ID,
+      string Date_Key = this._SessionObjectKey;
+
+      Date_Key = Date_Key.Replace ( EuAdapter.SESSION_OBJECT,
         Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP );
+
+      this.LogValue ( "Date_Key: " + Date_Key );
 
       this.GlobalObjectList [ Date_Key ] = DateTime.Now.ToString ( "dd MMM yyyy HH:mm" );
 

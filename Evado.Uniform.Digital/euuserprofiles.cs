@@ -1532,7 +1532,7 @@ namespace Evado.UniForm.Digital
         }
 
         this.writeProcessLog ( "Processing User " + this.Session.AdminUserProfile.UserId );
-        this.LogValue ( "AdminUserProfile: " + this.Session.AdminUserProfile.getUserProfile ( false ) );
+        this.LogValue ( "AdminUserProfile: " + this.Session.AdminUserProfile.getUserProfile ( ) );
 
 
         //

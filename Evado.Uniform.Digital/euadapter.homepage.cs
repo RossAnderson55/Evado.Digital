@@ -461,16 +461,6 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        // 
-        // Skip the menu items for none ResultData collection and monitoring users.
-        // 
-        if ( groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_SITE_DASHBOARD_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_SUBJECT_MENU_GROUP
-          || groupHeader.Group.ToUpper ( ) == EvMenuItem.CONST_PROJECT_MENU_GROUP )
-        {
-          continue;
-        }
         /*
         this.LogDebugFormat ( "Group: {0}, User Role: {1}, HR: {2}, EDC: {3}, CTMS: {4}, PR: (5)",
           groupHeader.Group,

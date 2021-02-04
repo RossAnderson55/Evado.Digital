@@ -143,12 +143,13 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     private void loadRecordLayoutList ( )
     {
-      this.LogMethod ( "loadTrialFormList" );
+      this.LogMethod ( "loadRecordLayoutList" );
 
-      if ( this.Session.RecordLayoutList.Count > 0 )
+      if ( this.Session.RecordLayoutList.Count > 0
+        || this.Session.FormsAdaperLoaded == false )
       {
-        this.LogDebug ( "FormList loaded." );
-        this.LogMethodEnd ( "loadTrialFormList" );
+        this.LogDebug ( "Record layout loaded." );
+        this.LogMethodEnd ( "loadRecordLayoutList" );
         return;
       }
 
@@ -171,7 +172,7 @@ namespace Evado.UniForm.Digital
 
       this.LogDebug ( " list count: " + this.Session.RecordLayoutList.Count );
 
-      this.LogMethodEnd ( "loadTrialFormList" );
+      this.LogMethodEnd ( "loadRecordLayoutList" );
 
     }//END loadTrialFormList method
   }///END EuAdapter class

@@ -93,7 +93,7 @@ namespace Evado.UniForm
       // Reset  the exit method for the object.
       //
       this._ExitCommand = Command.getLogoutCommand ( );
- 
+
       this._CommandHistory.DebugOn = true;
       //
       // Initialise the command history object.
@@ -105,9 +105,10 @@ namespace Evado.UniForm
       this.logInitValue ( "Command History list: "
         + this._CommandHistory.listCommandHistory ( true ) );
 
+      this.logInitValue ( "Global Objects:" );
       foreach ( System.Collections.DictionaryEntry entry in this._GlobalObjects )
       {
-        this.logInitValue ( "Item: " + entry.Key );
+        this.logInitValue ( "Item: " + entry.Key + " , type: " + entry.Value.GetType() );
       }
 
     }//END Initialisation Method
@@ -323,7 +324,7 @@ namespace Evado.UniForm
         //
         this._ErrorMessage = String.Empty;
 
-        this.LogValue ( "Short Title: " + PageCommand.GetParameter (CommandParameters.Short_Title ) );
+        this.LogValue ( "Short Title: " + PageCommand.GetParameter ( CommandParameters.Short_Title ) );
 
         //
         // Set the groupCommand to a short title to it can be added to the groupCommand history.
@@ -448,15 +449,15 @@ namespace Evado.UniForm
     private AppData getObjectData (
       Command PageCommand )
     {
-        this.LogMethod ( "getDataObject method. " );
-        this.LogValue ( "ClientVersion: " + this._ClientVersion );
-        this.LogValue ( "PageCommand " + PageCommand.getAsString ( false, false ) );
-        this.LogValue ( "Exit Command: " + this._ExitCommand.getAsString ( false, false ) );
+      this.LogMethod ( "getDataObject method. " );
+      this.LogValue ( "ClientVersion: " + this._ClientVersion );
+      this.LogValue ( "PageCommand " + PageCommand.getAsString ( false, false ) );
+      this.LogValue ( "Exit Command: " + this._ExitCommand.getAsString ( false, false ) );
       //
       // Initialise the methods variables and objects.
       //
-        AppData clientDataObject = new AppData ( );
-          
+      AppData clientDataObject = new AppData ( );
+
       try
       {
         //
@@ -500,7 +501,7 @@ namespace Evado.UniForm
         //
         // If not found create a new object and add it to the list then return it.
         //  
-        switch (  PageCommand.ApplicationId )
+        switch ( PageCommand.ApplicationId )
         {
           case Evado.UniForm.Digital.EuAdapter.ADAPTER_ID:
             {
@@ -631,13 +632,13 @@ namespace Evado.UniForm
       //
       // Initialise the methods variables and objects.
       //
-     AppData clientDataObject = new AppData ( );
+      AppData clientDataObject = new AppData ( );
 
       Command homePageCommand = Command.getDefaultCommand ( );
 
       homePageCommand.Header = PageCommand.Header;
 
-      this.LogDebugValue( "Default Home page command: " + homePageCommand.getAsString( true, false ) );
+      this.LogDebugValue ( "Default Home page command: " + homePageCommand.getAsString ( true, false ) );
 
       //
       // Call the get page method to generate the next page.

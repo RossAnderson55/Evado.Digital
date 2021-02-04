@@ -257,6 +257,11 @@ namespace Evado.Model.Digital
       set
       {
         this._OrgId = value;
+
+        if( this._OrgId.ToLower() == "evado" )
+        {
+          this._TypeId = UserTypesList.Evado;
+        }
       }
     }
 
@@ -380,9 +385,9 @@ namespace Evado.Model.Digital
       {
         if ( ( this.TypeId == UserTypesList.Evado )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
-             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
-             || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
+            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
         {
           return true;
         }
@@ -397,8 +402,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado
-            || this.TypeId == UserTypesList.Customer )
+        if ( ( this.TypeId == UserTypesList.Evado )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -525,6 +529,7 @@ namespace Evado.Model.Digital
       // Append user profile elements to the return text
       //
       sbText.AppendLine ( "User Profile for UserId: " + this.UserId );
+      sbText.AppendLine ( "OrgId: " + this.OrgId );
       if ( this.Password != String.Empty )
       {
         sbText.AppendLine ( "Password: " + this.Password );
@@ -536,6 +541,7 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "Title: " + this.Title );
       sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
       sbText.AppendLine ( "RoleId: " + this.Roles );
+      sbText.AppendLine ( "TypeId: " + this.TypeId );
 
       if ( this.DomainGroupNames != String.Empty )
       {

@@ -32,6 +32,7 @@ namespace Evado.UniForm.Digital
   /// <summary>
   /// This class contains the session ResultData object
   /// </summary>
+  [Serializable]
   public class EuSession
   {
     #region global variables and consts
@@ -217,10 +218,15 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EdUserProfile.UserTypesList SelectedUserType  { get; set; }
 
+    Evado.Model.Digital.EdUserProfile _UserProfile = new EdUserProfile ( );
     /// <summary>
     /// This property contains the users eClinical user profile.
     /// </summary>
-    public Evado.Model.Digital.EdUserProfile UserProfile { get; set; }
+    public Evado.Model.Digital.EdUserProfile UserProfile
+    {
+      get { return _UserProfile; }
+      set { _UserProfile = value; }
+    }
 
     /// <summary>
     /// This property contains a list of organisations.
@@ -473,21 +479,53 @@ namespace Evado.UniForm.Digital
     //
     public bool FormsAdaperLoaded { get; set; }
 
+    private List<EdRecord> _EntityLayoutList = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of eClinical evForm object for the currently selected record.
     /// </summary>
-    public List<EdRecord> RecordLayoutList { get; set; }
+    public List<EdRecord> EntityLayoutList
+    {
+      get { return _EntityLayoutList; }
+      set { _EntityLayoutList = value; }
+    }
+
+    /// <summary>
+    /// This property object contains the eClinical evForm object for the currently selected record.
+    /// </summary>
+    public EdRecord EntityLayout { get; set; }
+
+    /// <summary>
+    /// This property object contains the eClinical evFormField object for the currently selected record.
+    /// </summary>
+    public EdRecordField EntityField { get; set; }
+
+    public EdRecordObjectStates EntitySelectionState = EdRecordObjectStates.Null;
+
+    public EdRecordTypes EntityType { get; set; }
+
+    public List<EdRecord> AdminEntityList { get; set; }
+
+    public List<EdRecord> EntityList { get; set; }
+
+    private List<EdRecord> _RecordLayoutList = new List<EdRecord> ( );
+    /// <summary>
+    /// This property object contains a list of eClinical evForm object for the currently selected record.
+    /// </summary>
+    public List<EdRecord> RecordLayoutList
+    {
+      get { return _RecordLayoutList; }
+      set { _RecordLayoutList = value; }
+    }
 
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
     public EdRecord RecordLayout { get; set; }
 
-    EdRecordField _FormField = new EdRecordField ( );
     /// <summary>
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
-    public EdRecordField FormField { get; set; }
+    public EdRecordField RecordField { get; set; }
 
     public EdRecordObjectStates RecordSelectionState = EdRecordObjectStates.Null;
 

@@ -89,45 +89,13 @@ namespace Evado.Model.Digital
     /// </summary>
     public const string CONST_MENU_ADMIN_GROUP_ID = "ADMIN";
     /// <summary>
-    /// this constant defines the analysis menu group identifier.
-    /// </summary>
-    public const string CONST_MENU_ANALYSIS_GROUP_ID = "ANA";
-    /// <summary>
     /// this constant defines the management menu group identifier.
     /// </summary>
-    public const string CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID = "TM";
-    /// <summary>
-    /// this constant defines the global project menu group identifier.
-    /// </summary>
-    public const string CONST_MENU_PROJECT_RECORD_GROUP_ID = "TR";
+    public const string CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID = "MGT";
     /// <summary>
     /// this constant defines the project record menu group identifier.
     /// </summary>
-    public const string CONST_MENU_AUDIT_GROUP_ID = "TAU";
-    /// <summary>
-    /// this constant defines the data management menu group identifier.
-    /// </summary>
-    public const string CONST_MENU_DATA_MANAGEMENT_GROUP_ID = "DMG";
-
-    /// <summary>
-    /// This constant defines the trail dashboard group key value.
-    /// </summary>
-    public const string CONST_PROJECT_DASHBOARD_GROUP = "TRDSH";
-
-    /// <summary>
-    /// The constant defines site dashboard group key value
-    /// </summary>
-    public const string CONST_SITE_DASHBOARD_GROUP = "STDSH";
-
-    /// <summary>
-    /// The constant defines trail menu group key value
-    /// </summary>
-    public const string CONST_PROJECT_MENU_GROUP = "TMNU";
-
-    /// <summary>
-    /// The constant defines subject menu group key value
-    /// </summary>
-    public const string CONST_SUBJECT_MENU_GROUP = "SUMNU";
+    public const string CONST_MENU_AUDIT_GROUP_ID = "AUDIT";
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

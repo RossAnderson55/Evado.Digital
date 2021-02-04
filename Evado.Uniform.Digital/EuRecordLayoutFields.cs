@@ -301,16 +301,16 @@ namespace Evado.UniForm.Digital
         //
         // If the field has changed then get a new instance of the field.
         //
-        if ( this.Session.FormField.Guid != formFieldGuid )
+        if ( this.Session.RecordField.Guid != formFieldGuid )
         {
           // 
           // Retrieve the record object from the database via the DAL and BLL layers.
           // 
-          this.Session.FormField = this._Bll_FormFields.getField ( formFieldGuid );
+          this.Session.RecordField = this._Bll_FormFields.getField ( formFieldGuid );
 
           this.LogClass ( this._Bll_FormFields.Log );
 
-          this.LogValue ( " SessionObjects.Record.FieldId: " + this.Session.FormField.FieldId );
+          this.LogValue ( " SessionObjects.Record.FieldId: " + this.Session.RecordField.FieldId );
         }
 
 
@@ -327,7 +327,7 @@ namespace Evado.UniForm.Digital
         // to enable the relevant groups.
         //
         if ( ( stDataType != String.Empty
-          && stDataType != this.Session.FormField.TypeId.ToString ( ) )
+          && stDataType != this.Session.RecordField.TypeId.ToString ( ) )
           || value == "1" )
         {
           this.LogValue ( "Data Type has changed." );
@@ -342,9 +342,9 @@ namespace Evado.UniForm.Digital
 
           this.validateFieldId ( PageCommand );
         }
-        if ( this.Session.FormField.TypeId == EvDataTypes.Radio_Button_List )
+        if ( this.Session.RecordField.TypeId == EvDataTypes.Radio_Button_List )
         {
-          this.LogDebug ( "Is Options numeric: " + this.Session.FormField.Design.hasNumericValues );
+          this.LogDebug ( "Is Options numeric: " + this.Session.RecordField.Design.hasNumericValues );
         }
         // 
         // Save the session ResultData so it is available for the next user generated groupCommand.
@@ -408,7 +408,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.ApplicationMethods.Custom_Method );
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-      groupCommand.SetGuid ( this.Session.FormField.Guid );
+      groupCommand.SetGuid ( this.Session.RecordField.Guid );
       groupCommand.AddParameter ( EuRecordLayouts.CONST_REFRESH, "1" );
 
       //
@@ -439,7 +439,7 @@ namespace Evado.UniForm.Digital
             // 
             // Define the save groupCommand parameters.
             // 
-            groupCommand.SetGuid ( this.Session.FormField.Guid );
+            groupCommand.SetGuid ( this.Session.RecordField.Guid );
 
             groupCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -449,7 +449,7 @@ namespace Evado.UniForm.Digital
             // Add the same groupCommand.
             //
             int majorVersion = ( int ) this.Session.RecordLayout.Design.Version;
-            if ( this.Session.FormField.Design.InitialVersion == majorVersion )
+            if ( this.Session.RecordField.Design.InitialVersion == majorVersion )
             {
               groupCommand = PageGroup.addCommand (
                 EdLabels.Form_Field_Delete_Command_Title,
@@ -459,7 +459,7 @@ namespace Evado.UniForm.Digital
               // 
               // Define the save groupCommand parameters.
               // 
-              groupCommand.SetGuid ( this.Session.FormField.Guid );
+              groupCommand.SetGuid ( this.Session.RecordField.Guid );
 
               groupCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -493,15 +493,15 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the client ResultData object.
       // 
-      ClientDataObject.Id = this.Session.FormField.Guid;
+      ClientDataObject.Id = this.Session.RecordField.Guid;
       ClientDataObject.Title = EdLabels.Form_Field_Page_Title_Prefix
-        + this.Session.FormField.FieldId
+        + this.Session.RecordField.FieldId
         + EdLabels.Space_Hypen
-        + this.Session.FormField.Title;
+        + this.Session.RecordField.Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.PageDataGuid = ClientDataObject.Id;
-      ClientDataObject.Page.PageId = this.Session.FormField.FieldId;
+      ClientDataObject.Page.PageId = this.Session.RecordField.FieldId;
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       //
@@ -514,7 +514,7 @@ namespace Evado.UniForm.Digital
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
 
-      this.LogValue ( "Field TypeId: " + this.Session.FormField.TypeId );
+      this.LogValue ( "Field TypeId: " + this.Session.RecordField.TypeId );
 
       //
       // add a pageMenuGroup with fields that are not allocated to a section.
@@ -524,9 +524,9 @@ namespace Evado.UniForm.Digital
       //
       // add a pageMenuGroup with fields for custom field validations.
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Computed_Field )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Computed_Field )
       {
-        this.Session.FormField.Design.Mandatory = false;
+        this.Session.RecordField.Design.Mandatory = false;
 
         this.createComputedScriptGroup ( ClientDataObject.Page );
 
@@ -580,13 +580,13 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
       int formVersion = (int) this.Session.RecordLayout.Design.Version;
-      bool bEditType = this.Session.FormField.Design.InitialVersion == formVersion;
+      bool bEditType = this.Session.RecordField.Design.InitialVersion == formVersion;
 
       this.LogValue ( "formVersion: " + formVersion );
-      this.LogValue ( "Field.InitialVersion: " + this.Session.FormField.Design.InitialVersion );
+      this.LogValue ( "Field.InitialVersion: " + this.Session.RecordField.Design.InitialVersion );
 
       this.LogValue ( "EditType: " + bEditType );
-      this.LogValue ( "Form.Design.Section: " + this.Session.FormField.Design.SectionNo );
+      this.LogValue ( "Form.Design.Section: " + this.Session.RecordField.Design.SectionNo );
 
       //
       // Define the general properties pageMenuGroup..
@@ -623,7 +623,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.FieldId.ToString ( ),
         EdLabels.Form_Field_Identifier_Field_Label,
-        this.Session.FormField.FieldId,
+        this.Session.RecordField.FieldId,
         20 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -641,7 +641,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
         EdLabels.Form_Field_Type_Field_Label,
-        this.Session.FormField.TypeId.ToString ( ),
+        this.Session.RecordField.TypeId.ToString ( ),
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -660,7 +660,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Subject.ToString ( ),
         EdLabels.Form_Field_Subject_Field_Label,
-        this.Session.FormField.Design.Title,
+        this.Session.RecordField.Design.Title,
         150 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -687,7 +687,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createSelectionListField (
           EdRecordField.FieldClassFieldNames.FormSection.ToString ( ),
           EdLabels.Form_Field_Section_Field_Label,
-          this.Session.FormField.Design.SectionNo,
+          this.Session.RecordField.Design.SectionNo,
           optionList );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -707,7 +707,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.Order.ToString ( ),
         EdLabels.Form_Field_Order_Field_Label,
-        this.Session.FormField.Order,
+        this.Session.RecordField.Order,
         0,
         200 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -715,21 +715,21 @@ namespace Evado.UniForm.Digital
       //
       // Form field static text Fill the instruction field with text
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text )
       {
         groupField = pageGroup.createFreeTextField (
           EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
           EdLabels.Form_Field_Read_Only_Text_Field_Label,
-          this.Session.FormField.Design.Instructions,
+          this.Session.RecordField.Design.Instructions,
           150, 20 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         String instructions = EdLabels.Form_Field_Instruction_Field_Description;
 
         groupField.Description =  instructions ;
-        this.Session.FormField.Design.AiDataPoint = false;
-        this.Session.FormField.Design.Mandatory = false;
-        this.Session.FormField.Design.Mandatory = false;
+        this.Session.RecordField.Design.AiDataPoint = false;
+        this.Session.RecordField.Design.Mandatory = false;
+        this.Session.RecordField.Design.Mandatory = false;
 
         //
         // Form hide hidden field
@@ -737,7 +737,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
-          this.Session.FormField.Design.HideField );
+          this.Session.RecordField.Design.HideField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         return;
@@ -746,24 +746,24 @@ namespace Evado.UniForm.Digital
       //
       // This block displays the fields needed to define an streamed video or external image
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.External_Image
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Streamed_Video )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Image
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Streamed_Video )
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
           EdLabels.Form_Field_External_URL_Field_Label,
-          this.Session.FormField.Design.Instructions,
+          this.Session.RecordField.Design.Instructions,
           100 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-        this.Session.FormField.Design.AiDataPoint = false;
-        this.Session.FormField.Design.Mandatory = false;
+        this.Session.RecordField.Design.AiDataPoint = false;
+        this.Session.RecordField.Design.Mandatory = false;
 
         int iWidth = 0;
         int iHeight = 0;
-        if ( this.Session.FormField.Design.JavaScript != String.Empty )
+        if ( this.Session.RecordField.Design.JavaScript != String.Empty )
         {
-          String [ ] arParms = this.Session.FormField.Design.JavaScript.Split ( ';' );
+          String [ ] arParms = this.Session.RecordField.Design.JavaScript.Split ( ';' );
           if ( int.TryParse ( arParms [ 0 ], out iWidth ) == false )
           {
             iWidth = 0;
@@ -803,11 +803,11 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
-          this.Session.FormField.Design.HideField );
+          this.Session.RecordField.Design.HideField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-        this.Session.FormField.Design.AiDataPoint = false;
-        this.Session.FormField.Design.Mandatory = false;
+        this.Session.RecordField.Design.AiDataPoint = false;
+        this.Session.RecordField.Design.Mandatory = false;
 
         return;
       }
@@ -818,7 +818,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
         EdLabels.Form_Field_Instructions_Field_Label,
-        this.Session.FormField.Design.Instructions,
+        this.Session.RecordField.Design.Instructions,
         150, 5 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -828,20 +828,20 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Reference.ToString ( ),
         EdLabels.Form_Field_Reference_Field_Label,
-        this.Session.FormField.Design.HttpReference,
+        this.Session.RecordField.Design.HttpReference,
         50 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
       // Form field category
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Signature
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Password )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Signature
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Password )
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.FieldCategory.ToString ( ),
           EdLabels.Form_Field_Category_Field_Title,
-          this.Session.FormField.Design.FieldCategory,
+          this.Session.RecordField.Design.FieldCategory,
           20 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -849,7 +849,7 @@ namespace Evado.UniForm.Digital
       //
       // Create the external selection list,
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
       {/*
         optionList = EvFormField.getDataTypes ( false );
 
@@ -874,19 +874,19 @@ namespace Evado.UniForm.Digital
       //
       // Form field selection options field.
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Analogue_Scale )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Analogue_Scale )
       {
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.AnalogueLegendStart.ToString ( ),
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
-          this.Session.FormField.Design.AnalogueLegendStart,
+          this.Session.RecordField.Design.AnalogueLegendStart,
           50 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.AnalogueLegendFinish.ToString ( ),
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
-          this.Session.FormField.Design.AnalogueLegendFinish,
+          this.Session.RecordField.Design.AnalogueLegendFinish,
           50 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
@@ -894,12 +894,12 @@ namespace Evado.UniForm.Digital
       //
       // Form field selection options field.
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Selection_List
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Radio_Button_List
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Check_Box_List
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Horizontal_Radio_Buttons )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Selection_List
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Radio_Button_List
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Check_Box_List
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Horizontal_Radio_Buttons )
       {
-        string stOptions = this.Session.FormField.Design.Options.Replace ( ";", ";\r\n" );
+        string stOptions = this.Session.RecordField.Design.Options.Replace ( ";", ";\r\n" );
 
         groupField = pageGroup.createFreeTextField (
           EdRecordField.FieldClassFieldNames.Selection_Options.ToString ( ),
@@ -915,42 +915,42 @@ namespace Evado.UniForm.Digital
       //
       // Form summary field  field
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Read_Only_Text
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Free_Text
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Password
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Signature
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Table
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Read_Only_Text
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Free_Text
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Password
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Signature
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Table
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
           EdLabels.Form_Field_Summary_Field_Label,
-          this.Session.FormField.Design.SummaryField );
+          this.Session.RecordField.Design.SummaryField );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       }
 
       //
       // Form hide mandatory field
       //
-      if ( this.Session.FormField.isReadOnly == false )
+      if ( this.Session.RecordField.isReadOnly == false )
       {
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Mandatory.ToString ( ),
           EdLabels.Form_Field_Mandatory_Field_Label,
-          this.Session.FormField.Design.Mandatory );
+          this.Session.RecordField.Design.Mandatory );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
         //
         // Form hide ResultData point field
         //
-        if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Free_Text
-          && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Password
-          && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Signature )
+        if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Free_Text
+          && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Password
+          && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Signature )
         {
           groupField = pageGroup.createBooleanField (
             EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
             EdLabels.Form_Field_Date_Point_Field_Label,
-            this.Session.FormField.Design.AiDataPoint );
+            this.Session.RecordField.Design.AiDataPoint );
           groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
         }
       }
@@ -960,7 +960,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createBooleanField (
         EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
         EdLabels.Form_Field_Hide_Field_Label,
-        this.Session.FormField.Design.HideField );
+        this.Session.RecordField.Design.HideField );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
     }//END createGeneralFieldGroup Method
@@ -984,12 +984,12 @@ namespace Evado.UniForm.Digital
       //
       // If a static field field exit the method.
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Text
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Free_Text
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Password
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Signature
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Computed_Field )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Text
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Free_Text
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Password
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Signature
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Computed_Field )
       {
         return;
       }
@@ -1016,7 +1016,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdRecordField.FieldClassFieldNames.Java_Script.ToString ( ),
         String.Empty,
-        this.Session.FormField.Design.JavaScript,
+        this.Session.RecordField.Design.JavaScript,
         80, 10 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
@@ -1041,7 +1041,7 @@ namespace Evado.UniForm.Digital
       //
       // If a static field field exit the method.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Computed_Field )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Computed_Field )
       {
         return;
       }
@@ -1075,7 +1075,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdRecordField.FieldClassFieldNames.Java_Script.ToString ( ),
         String.Empty,
-        this.Session.FormField.Design.JavaScript,
+        this.Session.RecordField.Design.JavaScript,
         80, 10 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
@@ -1092,7 +1092,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + "Evado.UniForm.Clinical.FormFields.createFieldValidationGroup" );
-      this.LogValue ( "TypeId: " + this.Session.FormField.TypeId );
+      this.LogValue ( "TypeId: " + this.Session.RecordField.TypeId );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1103,11 +1103,11 @@ namespace Evado.UniForm.Digital
       //
       // If a static field field exit the method.
       //
-      if ( this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Password
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Signature
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.Streamed_Video
-        || this.Session.FormField.TypeId == Evado.Model.EvDataTypes.External_Image )
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Password
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Signature
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Streamed_Video
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Image )
       {
         return;
       }
@@ -1139,7 +1139,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createFieldNumericValidationGroup" );
-      this.LogValue ( "TypeId: " + this.Session.FormField.TypeId );
+      this.LogValue ( "TypeId: " + this.Session.RecordField.TypeId );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1150,9 +1150,9 @@ namespace Evado.UniForm.Digital
       //
       // If not a numeric field exit the method.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Numeric
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Integer_Range
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Float_Range )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Numeric
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Integer_Range
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Float_Range )
       {
         return;
       }
@@ -1179,7 +1179,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.Unit_Scaling.ToString ( ),
         EdLabels.Form_Field_Unit_Scale_Field_Label,
-        this.Session.FormField.Design.UnitScaling,
+        this.Session.RecordField.Design.UnitScaling,
         optionList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1189,7 +1189,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createTextField (
         EdRecordField.FieldClassFieldNames.Unit.ToString ( ),
         EdLabels.Form_Field_Unit_Scale_Field_Label,
-        this.Session.FormField.Design.Unit,
+        this.Session.RecordField.Design.Unit,
         10 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
@@ -1204,7 +1204,7 @@ namespace Evado.UniForm.Digital
         1000000 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-      groupField.Value = this.Session.FormField.Design.DefaultValue;
+      groupField.Value = this.Session.RecordField.Design.DefaultValue;
 
       if ( groupField.Value ==  Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( ) )
       {
@@ -1217,7 +1217,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.ValidationLowerLimit.ToString ( ),
         EdLabels.Form_Field_Lower_Validation_Field_Label,
-        this.Session.FormField.Design.ValidationLowerLimit,
+        this.Session.RecordField.Design.ValidationLowerLimit,
         -1000000,
         1000000 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1228,7 +1228,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.ValidationUpperLimit.ToString ( ),
         EdLabels.Form_Field_Upper_Validation_Field_Label,
-        this.Session.FormField.Design.ValidationUpperLimit,
+        this.Session.RecordField.Design.ValidationUpperLimit,
         -1000000,
         1000000 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1239,7 +1239,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.AlertLowerLimit.ToString ( ),
         EdLabels.Form_Field_Lower_Alert_Field_Label,
-        this.Session.FormField.Design.AlertLowerLimit,
+        this.Session.RecordField.Design.AlertLowerLimit,
         -1000000,
         1000000 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1250,7 +1250,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNumericField (
         EdRecordField.FieldClassFieldNames.AlertUpperLimit.ToString ( ),
         EdLabels.Form_Field_Upper_Alert_Field_Label,
-        this.Session.FormField.Design.AlertUpperLimit,
+        this.Session.RecordField.Design.AlertUpperLimit,
         -1000000,
         1000000 );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1261,7 +1261,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.NormalRangeLowerLimit.ToString ( ),
           EdLabels.Form_Field_Lower_Normal_Range_Field_Label,
-          this.Session.FormField.Design.NormalRangeLowerLimit,
+          this.Session.RecordField.Design.NormalRangeLowerLimit,
           -1000000,
           1000000 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1272,7 +1272,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.NormalRangeUpperLimit.ToString ( ),
           EdLabels.Form_Field_Upper_Normal_Range_Field_Label,
-          this.Session.FormField.Design.NormalRangeUpperLimit,
+          this.Session.RecordField.Design.NormalRangeUpperLimit,
           -1000000,
           1000000 );
         groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -1290,19 +1290,19 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createTableFieldGroup" );
-      this.LogValue ( "Field TypeId: " + this.Session.FormField.TypeId );
+      this.LogValue ( "Field TypeId: " + this.Session.RecordField.TypeId );
 
       //
       // If the ResultData type is not a table or matrix exit.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Table
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Table
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         this.LogValue ( "Not a table or matix so exit" );
 
         return;
       }
-      this.Session.FormField.Design.SummaryField = false;
+      this.Session.RecordField.Design.SummaryField = false;
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1313,9 +1313,9 @@ namespace Evado.UniForm.Digital
       //
       // if the table object is null initialise the object.
       //
-      if ( this.Session.FormField.Table == null )
+      if ( this.Session.RecordField.Table == null )
       {
-        this.Session.FormField.Table = new EdRecordTable ( );
+        this.Session.RecordField.Table = new EdRecordTable ( );
       }
 
       //
@@ -1340,7 +1340,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createSelectionListField (
         EuRecordLayoutFields.CONST_TABLE_ROW_FIELD,
         EdLabels.Form_Field_Table_Row_Field_Label,
-        this.Session.FormField.Table.Rows.Count.ToString ( ),
+        this.Session.RecordField.Table.Rows.Count.ToString ( ),
         optionList );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
 
@@ -1369,7 +1369,7 @@ namespace Evado.UniForm.Digital
       groupField.Table.Header [ 3 ].Text = "Data Type";
       groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Selection_List;
       groupField.Table.Header [ 3 ].OptionList = EdRecordTableHeader.getTypeList (
-        this.Session.FormField.TypeId );
+        this.Session.RecordField.TypeId );
 
       groupField.Table.Header [ 4 ].Text = "Option or Unit";
       groupField.Table.Header [ 4 ].TypeId = EvDataTypes.Text;
@@ -1380,12 +1380,12 @@ namespace Evado.UniForm.Digital
       for ( int iCol = 0; iCol < 10; iCol++ )
       {
         String indexCol = ( iCol + 1 ).ToString ( );
-        EdRecordTableHeader header = this.Session.FormField.Table.Header [ iCol ];
+        EdRecordTableHeader header = this.Session.RecordField.Table.Header [ iCol ];
         Evado.Model.UniForm.TableRow row = new Model.UniForm.TableRow ( );
         //
         // if the prefilled exists convert it to Matrix type  (readonly).
         //
-        if ( this.Session.FormField.Table.PreFilledColumnList.Contains ( indexCol ) == true )
+        if ( this.Session.RecordField.Table.PreFilledColumnList.Contains ( indexCol ) == true )
         {
           header.TypeId = EvDataTypes.Read_Only_Text;
         }
@@ -1416,7 +1416,7 @@ namespace Evado.UniForm.Digital
       //
       // If the ResultData type is not a table or matrix exit.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         this.LogValue ( "Not a matix so exit" );
       this.LogMethodEnd ( "creatMatrixFieldGroup" );
@@ -1433,9 +1433,9 @@ namespace Evado.UniForm.Digital
       //
       // if the table object is null initialise the object.
       //
-      if ( this.Session.FormField.Table == null )
+      if ( this.Session.RecordField.Table == null )
       {
-        this.Session.FormField.Table = new EdRecordTable ( );
+        this.Session.RecordField.Table = new EdRecordTable ( );
       }
 
       //
@@ -1461,12 +1461,12 @@ namespace Evado.UniForm.Digital
         10 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-      this.LogDebug ( "PreFilledColumnList: " + this.Session.FormField.Table.PreFilledColumnList );
+      this.LogDebug ( "PreFilledColumnList: " + this.Session.RecordField.Table.PreFilledColumnList );
 
       for ( int iCol = 0; iCol < 10; iCol++ )
       {
         String indexCol = ( iCol + 1 ).ToString ( );
-        EdRecordTableHeader header = this.Session.FormField.Table.Header [ iCol ];
+        EdRecordTableHeader header = this.Session.RecordField.Table.Header [ iCol ];
 
         if ( header.Text != String.Empty )
         {
@@ -1493,7 +1493,7 @@ namespace Evado.UniForm.Digital
             || groupField.Table.Header [ iCol ].TypeId == EvDataTypes.Selection_List )
           {
             groupField.Table.Header [ iCol ].OptionList =
-               Evado.Model.Digital.EvcStatics.getStringAsOptionList ( this.Session.FormField.Table.Header [ iCol ].OptionsOrUnit );
+               Evado.Model.Digital.EvcStatics.getStringAsOptionList ( this.Session.RecordField.Table.Header [ iCol ].OptionsOrUnit );
           }
 
           if ( groupField.Table.Header [ iCol ].TypeId == EvDataTypes.Special_Matrix)
@@ -1506,7 +1506,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the rows in the matrix.
       //
-      foreach ( EdRecordTableRow row in this.Session.FormField.Table.Rows )
+      foreach ( EdRecordTableRow row in this.Session.RecordField.Table.Rows )
       {
         Evado.Model.UniForm.TableRow groupRow = new Model.UniForm.TableRow ( );
 
@@ -1582,16 +1582,16 @@ namespace Evado.UniForm.Digital
 
         order = order * 2 + 1;
 
-        this.Session.FormField = new  Evado.Model.Digital.EdRecordField ( );
-        this.Session.FormField.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.FormField.LayoutGuid = this.Session.RecordLayout.Guid;
-        this.Session.FormField.LayoutId = this.Session.RecordLayout.LayoutId;
-        this.Session.FormField.Design.InitialVersion = initialVersion;
-        this.Session.FormField.Order = order;
-        this.Session.FormField.Design.SectionNo = EvStatics.getInteger (stSectionNo );
-        this.LogValue ( "Field.InitialVersion: " + this.Session.FormField.Design.InitialVersion );
-        this.LogValue ( "Field.LayoutGuid: " + this.Session.FormField.LayoutGuid );
-        this.LogValue ( "Field.LayoutId: " + this.Session.FormField.LayoutId );
+        this.Session.RecordField = new  Evado.Model.Digital.EdRecordField ( );
+        this.Session.RecordField.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.RecordField.LayoutGuid = this.Session.RecordLayout.Guid;
+        this.Session.RecordField.LayoutId = this.Session.RecordLayout.LayoutId;
+        this.Session.RecordField.Design.InitialVersion = initialVersion;
+        this.Session.RecordField.Order = order;
+        this.Session.RecordField.Design.SectionNo = EvStatics.getInteger (stSectionNo );
+        this.LogValue ( "Field.InitialVersion: " + this.Session.RecordField.Design.InitialVersion );
+        this.LogValue ( "Field.LayoutGuid: " + this.Session.RecordField.LayoutGuid );
+        this.LogValue ( "Field.LayoutId: " + this.Session.RecordField.LayoutId );
 
         // 
         // Generate the new page layout 
@@ -1652,9 +1652,9 @@ namespace Evado.UniForm.Digital
           + PageCommand.getAsString ( false, false ) );
 
         this.LogValue ( "SessionObjects.FormFields" );
-        this.LogValue ( "Guid: " + this.Session.FormField.Guid );
-        this.LogValue ( "FormId: " + this.Session.FormField.LayoutId );
-        this.LogValue ( "Title: " + this.Session.FormField.Title );
+        this.LogValue ( "Guid: " + this.Session.RecordField.Guid );
+        this.LogValue ( "FormId: " + this.Session.RecordField.LayoutId );
+        this.LogValue ( "Title: " + this.Session.RecordField.Title );
 
         // 
         // Log access to page.
@@ -1666,9 +1666,9 @@ namespace Evado.UniForm.Digital
         //
         // If is selected is true this is a new field set the guid to empty.
         //
-        if ( this.Session.FormField.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+        if ( this.Session.RecordField.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
-          this.Session.FormField.Guid = Guid.Empty;
+          this.Session.RecordField.Guid = Guid.Empty;
           this.Session.RecordLayout.Fields = new List<EdRecordField> ( );
         }
 
@@ -1705,7 +1705,7 @@ namespace Evado.UniForm.Digital
         // Evado database.
         // 
         EvEventCodes result = this._Bll_FormFields.SaveItem (
-          this.Session.FormField );
+          this.Session.RecordField );
 
         this.LogValue ( this._Bll_FormFields.Log );
 
@@ -1717,7 +1717,7 @@ namespace Evado.UniForm.Digital
           if ( result == EvEventCodes.Data_Duplicate_Field_Error )
           {
             this.ErrorMessage = String.Format ( EdLabels.Form_Field_Duplicate_ID_Error_Message,
-              this.Session.FormField.FieldId );
+              this.Session.RecordField.FieldId );
           }
           string StEvent = this._Bll_FormFields.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
@@ -1774,12 +1774,12 @@ namespace Evado.UniForm.Digital
     private bool validateFieldId ( Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "validateFieldId" );
-      this.LogValue ( "FormField.Guid: " + this.Session.FormField.Guid + ", FieldId: " + this.Session.FormField.FieldId );
+      this.LogValue ( "FormField.Guid: " + this.Session.RecordField.Guid + ", FieldId: " + this.Session.RecordField.FieldId );
 
       //
       // Replace periods in the field identifier with underscore
       //
-      this.Session.FormField.FieldId = this.Session.FormField.FieldId.Replace ( " ", "_" );
+      this.Session.RecordField.FieldId = this.Session.RecordField.FieldId.Replace ( " ", "_" );
 
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
@@ -1788,11 +1788,11 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "FormField.Guid: " + field.Guid + ", FieldId: " + field.FieldId );
 
-        if ( field.FieldId == this.Session.FormField.FieldId
-          && this.Session.FormField.Guid != field.Guid )
+        if ( field.FieldId == this.Session.RecordField.FieldId
+          && this.Session.RecordField.Guid != field.Guid )
         {
           this.ErrorMessage = String.Format ( EdLabels.Form_Field_Duplicate_ID_Error_Message,
-            this.Session.FormField.FieldId );
+            this.Session.RecordField.FieldId );
 
           this.LogValue ( this.ErrorMessage );
           return false;
@@ -1834,7 +1834,7 @@ namespace Evado.UniForm.Digital
           {
             EdRecordField.FieldClassFieldNames fieldName =  Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordField.FieldClassFieldNames> ( parameter.Name );
 
-            this.Session.FormField.setValue ( fieldName, parameter.Value );
+            this.Session.RecordField.setValue ( fieldName, parameter.Value );
 
           }
           catch ( Exception Ex )
@@ -1862,8 +1862,8 @@ namespace Evado.UniForm.Digital
       //
       // If the ResultData type is not a table or matrix exit.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Streamed_Video
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.External_Image )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Streamed_Video
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.External_Image )
       {
         this.LogValue ( "Not a streamed video or extenal image so exit" );
         return;
@@ -1872,15 +1872,15 @@ namespace Evado.UniForm.Digital
       string stWidth = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_VIDEO_IMAGE_WIDTH );
       string stHeight = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_VIDEO_IMAGE_HEIGHT );
 
-      this.Session.FormField.Design.JavaScript = String.Empty;
+      this.Session.RecordField.Design.JavaScript = String.Empty;
 
       if ( stWidth != String.Empty )
       {
-        this.Session.FormField.Design.JavaScript = stWidth;
+        this.Session.RecordField.Design.JavaScript = stWidth;
 
         if ( stHeight != String.Empty )
         {
-          this.Session.FormField.Design.JavaScript += ";" + stHeight;
+          this.Session.RecordField.Design.JavaScript += ";" + stHeight;
         }
       }
 
@@ -1900,8 +1900,8 @@ namespace Evado.UniForm.Digital
       //
       // If the ResultData type is not a table or matrix exit.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Table
-        && this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Table
+        && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         this.LogValue ( "Not a table or matix so exit" );
         return;
@@ -1910,10 +1910,10 @@ namespace Evado.UniForm.Digital
       //
       // if the table object is null initialise it.
       //
-      if ( this.Session.FormField.Table == null )
+      if ( this.Session.RecordField.Table == null )
       {
         this.LogValue ( "Re initialised the table" );
-        this.Session.FormField.Table = new EdRecordTable ( );
+        this.Session.RecordField.Table = new EdRecordTable ( );
       }
 
       // 
@@ -1925,14 +1925,14 @@ namespace Evado.UniForm.Digital
 
       int iRowCount =  Evado.Model.Digital.EvcStatics.getInteger ( stRowCount );
 
-      this.Session.FormField.Table.SetRowCount ( iRowCount );
+      this.Session.RecordField.Table.SetRowCount ( iRowCount );
 
-      this.LogValue ( "Table.Rows.Count: " + this.Session.FormField.Table.Rows.Count );
+      this.LogValue ( "Table.Rows.Count: " + this.Session.RecordField.Table.Rows.Count );
 
       //
       // Iterate through the table headers.
       //
-      for ( int iCol = 0; iCol < this.Session.FormField.Table.Header.Length; iCol++ )
+      for ( int iCol = 0; iCol < this.Session.RecordField.Table.Header.Length; iCol++ )
       {
         String stParameterName = EuRecordLayoutFields.CONST_TABLE_FIELD_ID + "_" + ( iCol + 1 );
 
@@ -1941,30 +1941,30 @@ namespace Evado.UniForm.Digital
         //
         // Set the column header .
         //
-        this.Session.FormField.Table.Header [ iCol ].Text =
+        this.Session.RecordField.Table.Header [ iCol ].Text =
           PageCommand.GetParameter ( stParameterName + "_2" );
 
         //
         // Set the column width.
         //
-        this.Session.FormField.Table.Header [ iCol ].Width =
+        this.Session.RecordField.Table.Header [ iCol ].Width =
           PageCommand.GetParameter ( stParameterName + "_3" );
 
         //
         // Set the column date type.
         //
-        this.Session.FormField.Table.Header [ iCol ].TypeId =
+        this.Session.RecordField.Table.Header [ iCol ].TypeId =
           PageCommand.GetParameter<EvDataTypes> ( stParameterName + "_4" ); 
 
-        this.LogValue ( "Text: " + this.Session.FormField.Table.Header [ iCol ].Text );
+        this.LogValue ( "Text: " + this.Session.RecordField.Table.Header [ iCol ].Text );
 
         //
         // Set the column date type.
         //
-        this.Session.FormField.Table.Header [ iCol ].OptionsOrUnit =
+        this.Session.RecordField.Table.Header [ iCol ].OptionsOrUnit =
           PageCommand.GetParameter ( stParameterName + "_5" );
 
-        this.LogValue ( "Text: " + this.Session.FormField.Table.Header [ iCol ].Text );
+        this.LogValue ( "Text: " + this.Session.RecordField.Table.Header [ iCol ].Text );
 
       }// End iteration loop
 
@@ -1984,7 +1984,7 @@ namespace Evado.UniForm.Digital
       //
       // If the ResultData type is not a table or matrix exit.
       //
-      if ( this.Session.FormField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
+      if ( this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         this.LogValue ( "Not a matix so exit" );
         return;
@@ -1993,21 +1993,21 @@ namespace Evado.UniForm.Digital
       // 
       // Get the list of prefilled columns
       //
-      this.Session.FormField.Table.PreFilledColumnList =
+      this.Session.RecordField.Table.PreFilledColumnList =
         PageCommand.GetParameter ( EuRecordLayoutFields.CONST_MATIX_COL_FIELD );
-      this.LogValue ( "PreFilledColumnList: " + this.Session.FormField.Table.PreFilledColumnList );
+      this.LogValue ( "PreFilledColumnList: " + this.Session.RecordField.Table.PreFilledColumnList );
 
       //
       // Iterate through the table rows.
       //
-      for ( int iRow = 0; iRow < this.Session.FormField.Table.Rows.Count; iRow++ )
+      for ( int iRow = 0; iRow < this.Session.RecordField.Table.Rows.Count; iRow++ )
       {
         String indexRow = ( iRow + 1 ).ToString ( );
 
         //
         // Iterate through the table columns.
         //
-        for ( int iCol = 0; iCol < this.Session.FormField.Table.Header.Length; iCol++ )
+        for ( int iCol = 0; iCol < this.Session.RecordField.Table.Header.Length; iCol++ )
         {
           String indexCol = ( iCol + 1 ).ToString ( );
           String stParmeterName = EuRecordLayoutFields.CONST_MATRIX_FIELD_ID + "_" + indexRow + "_" + indexCol;
@@ -2015,18 +2015,18 @@ namespace Evado.UniForm.Digital
           //
           // if the column is included in the prefil list add the value to the table.
           //
-          if ( this.Session.FormField.Table.PreFilledColumnList.Contains ( indexCol ) == true
-            || this.Session.FormField.Table.Header [ iCol ].TypeId == EvDataTypes.Special_Matrix)
+          if ( this.Session.RecordField.Table.PreFilledColumnList.Contains ( indexCol ) == true
+            || this.Session.RecordField.Table.Header [ iCol ].TypeId == EvDataTypes.Special_Matrix)
           {
             String stValue = PageCommand.GetParameter ( stParmeterName );
 
             this.LogValue ( stParmeterName + ": " + stValue );
 
-            this.Session.FormField.Table.Rows [ iRow ].Column [ iCol ] = stValue;
+            this.Session.RecordField.Table.Rows [ iRow ].Column [ iCol ] = stValue;
           }
           else
           {
-            this.Session.FormField.Table.Rows [ iRow ].Column [ iCol ] = String.Empty;
+            this.Session.RecordField.Table.Rows [ iRow ].Column [ iCol ] = String.Empty;
           }
 
         }// End column iteration loop

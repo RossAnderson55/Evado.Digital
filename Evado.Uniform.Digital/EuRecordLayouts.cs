@@ -83,9 +83,9 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout = new EdRecord ( );
       }
 
-      if ( this.Session.FormField == null )
+      if ( this.Session.RecordField == null )
       {
-        this.Session.FormField = new EdRecordField ( );
+        this.Session.RecordField = new EdRecordField ( );
       }
 
     }//END Method
