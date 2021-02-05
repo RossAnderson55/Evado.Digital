@@ -96,7 +96,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuRecordLayouts.cs" />
-    <Compile Include="EuApplicationObjects.cs">
+    <Compile Include="EuAdapterObjects.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuMenus.cs" />

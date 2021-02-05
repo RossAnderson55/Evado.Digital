@@ -2152,7 +2152,6 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
 
         this.LogDebug ( "Record.Guid: " + this.Session.Record.Guid );
-        this.LogDebug ( "TrialId: {0} ", this.Session.Record.ApplicationId );
         this.LogDebug ( "Title: {0} ", this.Session.Record.Title );
         this.LogDebug ( "RecordId: {0} ", this.Session.Record.RecordId );
         this.LogDebug ( "FormAccessRole: {0} ", this.Session.Record.FormAccessRole );

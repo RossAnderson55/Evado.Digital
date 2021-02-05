@@ -233,11 +233,9 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EdRecord GetLayout ( 
-      String ApplicationId, 
       String LayoutId )
     {
       this.LogMethod ( "GetLayout method." );
-      this.LogValue ( "TrialId: " + ApplicationId );
       this.LogValue ( "FormId:" + LayoutId );
       // 
       // Initialise the methods objects and variables.
@@ -246,7 +244,7 @@ namespace Evado.Bll.Clinical
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EdRecord Item = this._Dal_RecordLayouts.GetLayout ( ApplicationId, LayoutId, true );
+      EdRecord Item = this._Dal_RecordLayouts.GetLayout ( LayoutId, true );
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
@@ -271,14 +269,14 @@ namespace Evado.Bll.Clinical
     /// 2. Return the form object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EdRecord GetIssuedItem ( string TrialId, string FormId )
+    public EdRecord GetIssuedItem (string FormId )
     {
        this.LogMethod ( "GetIssuedItem method." );
       // 
       // Execute the DAL method to retrieve the form object and process the 
       // result.
       // 
-      EdRecord Item = _Dal_RecordLayouts.GetLayout ( TrialId, FormId, true );
+      EdRecord Item = _Dal_RecordLayouts.GetLayout ( FormId, true );
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
 
@@ -323,13 +321,6 @@ namespace Evado.Bll.Clinical
       EdRecords records = new EdRecords ( this.ClassParameter);
       EdRecordFields formFields = new EdRecordFields ( this.ClassParameter );
       EvEventCodes iReturn = EvEventCodes.Ok;
-
-
-      if ( Layout.ApplicationId == String.Empty )
-      {
-        this.LogValue ( "Empty Project" );
-        return EvEventCodes.Identifier_Project_Id_Error;
-      }
 
       if ( Layout.LayoutId == String.Empty )
       {

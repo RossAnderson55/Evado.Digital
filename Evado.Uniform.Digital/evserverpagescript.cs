@@ -123,7 +123,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
-      string stFileName = Form.ApplicationId + "_" + Form.LayoutId;
+      string stFileName = Form.LayoutId;
 
       this._debugLog.AppendLine ( "Type: " + Type );
       this._debugLog.AppendLine ( "FileName: " + stFileName );

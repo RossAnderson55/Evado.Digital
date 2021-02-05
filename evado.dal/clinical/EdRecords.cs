@@ -236,7 +236,6 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
         new SqlParameter( EdRecords.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecords.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdRecords.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
@@ -266,11 +265,10 @@ namespace Evado.Dal.Clinical
       // Load the command parmameter values
       // 
       CommandParameters [ 0 ].Value = Record.Guid;
-      CommandParameters [ 1 ].Value = Record.ApplicationId;
-      CommandParameters [ 2 ].Value = Record.LayoutId;
-      CommandParameters [ 3 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 4 ].Value = this.ClassParameters.UserProfile.CommonName;
-      CommandParameters [ 5 ].Value = DateTime.Now;
+      CommandParameters [ 1 ].Value = Record.LayoutId;
+      CommandParameters [ 2 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 3 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 4 ].Value = DateTime.Now;
 
     }//END SetCreateParameters class.
 
@@ -365,7 +363,6 @@ namespace Evado.Dal.Clinical
       record.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_CUSTOMER_GUID );
       record.Guid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
       record.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      record.ApplicationId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_APPLICATION_ID );
       record.SourceId = EvSqlMethods.getString ( Row, EdRecords.DB_SOURCE_ID );
       record.LayoutId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LAYOUT_ID );
       record.RecordId = EvSqlMethods.getString ( Row, EdRecords.DB_RECORD_ID );
@@ -841,8 +838,7 @@ namespace Evado.Dal.Clinical
       // Generate the SQL query string.
       // 
       sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
-      sqlQueryString.AppendLine ( " WHERE  ( " + EdRecordLayouts.DB_CUSTOMER_GUID + " = " + EdRecordLayouts.PARM_CUSTOMER_GUID + " )" );
-      sqlQueryString.AppendLine ( " AND (" + EdRecordLayouts.DB_APPLICATION_ID + " = " + EdRecordLayouts.PARM_APPLICATION_ID + " ) " );
+      sqlQueryString.AppendLine ( " WHERE  ( " + EdRecordLayouts.DB_DELETED + " = 0 )" );
 
       if ( LayoutId != String.Empty )
       {
@@ -1366,7 +1362,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "getRecordData." );
       this.LogDebug ( "State: " + Record.StateDesc );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1407,7 +1402,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "getLayoutFields." );
       this.LogDebug ( "State: " + Record.StateDesc );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
 
       if ( Record.Fields.Count > 0
          || Record.State != EdRecordObjectStates.Empty_Record )
@@ -1490,7 +1484,6 @@ namespace Evado.Dal.Clinical
     public EdRecord createRecord ( EdRecord Record )
     {
       this.LogMethod ( "createRecord, " );
-      this.LogDebug ( "TrialId: " + Record.ApplicationId );
       this.LogDebug ( "FormId: " + Record.LayoutId );
 
       // 
@@ -1883,7 +1876,6 @@ namespace Evado.Dal.Clinical
       this.LogDebug ( "Guid: " + Record.Guid );
       this.LogDebug ( "RecordId: " + Record.RecordId );
       this.LogDebug ( "FormGuid: " + Record.LayoutGuid );
-      this.LogDebug ( "ApplicationId: " + Record.ApplicationId ); 
       this.LogDebug ( "State: " + Record.State );
 
       int databaseRecordAffected = 0;
@@ -1962,7 +1954,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "updateRecordData." );
       this.LogDebug ( "State: " + Record.StateDesc );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2001,7 +1992,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "updateRecordComments." );
       this.LogDebug ( "State: " + Record.StateDesc );
-      this.LogDebug ( "ProjectId: " + Record.ApplicationId );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2056,7 +2046,6 @@ namespace Evado.Dal.Clinical
       //       
       dataChange.Guid = Guid.NewGuid ( );
       dataChange.TableName = EvDataChange.DataChangeTableNames.EvRecords;
-      dataChange.TrialId = NewRecord.ApplicationId;
       dataChange.RecordId = NewRecord.RecordId;
       dataChange.RecordGuid = NewRecord.Guid;
       dataChange.UserId = this.ClassParameters.UserProfile.UserId;
@@ -2065,8 +2054,6 @@ namespace Evado.Dal.Clinical
       //
       // Add items values to the datachange object if they do not exist. 
       //
-      dataChange.AddItem ( "TrialId", OldRecord.ApplicationId, NewRecord.ApplicationId );
-
       dataChange.AddItem ( "RecordDate", OldRecord.RecordDate, NewRecord.RecordDate );
 
       dataChange.AddItem ( "State", OldRecord.State.ToString ( ), NewRecord.State.ToString ( ) );

@@ -124,11 +124,6 @@
     </Compile>
     <Compile Include="EdOrganisation.cs" />
     <Compile Include="EdRecordEntity.cs" />
-    <Compile Include="EvCustomerLabels.Designer.cs">
-      <DependentUpon>EvCustomerLabels.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="evdataitem.cs" />
     <Compile Include="EvMediaMetadata.cs" />
     <Compile Include="EdRecordObjectStates.cs">
@@ -184,11 +179,6 @@
       <LastGenOutput>EdLabels.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EvCustomerLabels.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EvCustomerLabels.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

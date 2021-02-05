@@ -238,18 +238,6 @@ namespace Evado.UniForm.Digital
       }
 
       //
-      // Create the project selection list,
-      // If the project is Global then only display the Global project identifier and not
-      // a selection list.
-      //
-        pageField = pageGroup.createTextField (
-          EdRecord.RecordFieldNames.ApplivcationId.ToString ( ),
-          EdLabels.Label_Project_Id,
-          this.Session.RecordLayout.ApplicationId, 20 );
-        pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-
-      //
       // Form type selection list.
       //
       optionList = EdRecord.getFormTypes ( );
@@ -298,7 +286,7 @@ namespace Evado.UniForm.Digital
         this.GlobalObjects.AdapterSettings.RoleList, false ) ;
 
       pageField = pageGroup.createCheckBoxListField (
-        EdRecord.RecordFieldNames.RecordAccessRole.ToString ( ),
+        EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
         EdLabels.Record_Layout_AccessRole_Field_Label,
         this.Session.RecordLayout.Design.UpdateReason,
         optionList );

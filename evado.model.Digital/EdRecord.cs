@@ -326,7 +326,37 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the form user access role field
       /// </summary>
-      RecordAccessRole
+      ReadAccessRoles,
+
+      /// <summary>
+      /// This enumeration identifies the form user edit role field
+      /// </summary>
+      EditAccessRoles,
+
+      /// <summary>
+      /// This enumeration identifies the related entities fielsd
+      /// </summary>
+      RelatedEntities,
+
+      /// <summary>
+      /// This enumeration identifies the default page layout field
+      /// </summary>
+      DefaultPageLayout,
+
+      /// <summary>
+      /// This enumeration identifies the displkay record summary field
+      /// </summary>
+      DisplayRecordSummary,
+
+      /// <summary>
+      /// This enumeration identifies the display related entities field
+      /// </summary>
+      DisplayRelatedEntities,
+
+      /// <summary>
+      /// This enumeration indicates the author field 
+      /// </summary>
+      DisplayAuthorDetails,
 
     }
 
@@ -379,22 +409,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    private string _ApplicationId = String.Empty;
-    /// <summary>
-    /// This property contains a application identifier of a form. 
-    /// </summary>
-    public string ApplicationId
-    {
-      get
-      {
-        return this._ApplicationId;
-      }
-      set
-      {
-        this._ApplicationId = value;
-      }
-    }
-
     private string _LayoutId = String.Empty;
     /// <summary>
     /// This property contains an identifier of a form. 
@@ -440,6 +454,37 @@ namespace Evado.Model.Digital
       set
       {
         this._RecordId = value;
+      }
+    }
+    private string _OrgId = String.Empty;
+    /// <summary>
+    /// This property contains the organisation ID of the organisation associated with this record.
+    /// </summary>
+    public string OrgId
+    {
+      get
+      {
+        return this._OrgId;
+      }
+      set
+      {
+        this._OrgId = value;
+      }
+    }
+
+    private string _UserId = String.Empty;
+    /// <summary>
+    /// This property contains a user id of the user associated with this record. 
+    /// </summary>
+    public string UserId
+    {
+      get
+      {
+        return this._UserId;
+      }
+      set
+      {
+        this._UserId = value;
       }
     }
 
@@ -614,18 +659,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    private FormAccessRoles AccessRole = FormAccessRoles.Null;
-
-    /// <summary>
-    /// This property defines the form user access role.
-    /// </summary>
-    public FormAccessRoles FormAccessRole
-    {
-      get { return AccessRole; }
-      set { AccessRole = value; }
-    }
-
-
     private DateTime _RecordDate = EvcStatics.CONST_DATE_NULL;
     /// <summary>
     /// This property contains a record date of a form. 
@@ -669,6 +702,22 @@ namespace Evado.Model.Digital
       }
     }
 
+    String _RecordSummary = String.Empty;
+    /// <summary>
+    /// This property contains Record Summary data.
+    /// </summary>
+    public string RecordSummary
+    {
+      get
+      {
+        return this._RecordSummary;
+      }
+      set
+      {
+        this._RecordSummary = value;
+      }
+    }
+
 
     private List<EdFormRecordComment> _CommentList = new List<EdFormRecordComment> ( );
     /// <summary>
@@ -686,6 +735,7 @@ namespace Evado.Model.Digital
       }
     }
 
+    public FormAccessRoles FormAccessRole { set; get; }
 
     String _cDashMetadata = String.Empty;
     /// <summary>
@@ -1032,7 +1082,7 @@ namespace Evado.Model.Digital
       // Initialise the methods objects and variables.
       //
       String [ ] arUserRoleIds = UserRoleIds.Split ( ';' );
-      this.AccessRole = FormAccessRoles.None;
+      this.FormAccessRole = FormAccessRoles.None;
 
       //
       // User the state switch to determine the user's access to the record.@
@@ -1043,11 +1093,11 @@ namespace Evado.Model.Digital
         case EdRecordObjectStates.Form_Reviewed:
         case EdRecordObjectStates.Form_Issued:
           {
-            this.AccessRole = FormAccessRoles.Record_Reader;
+            this.FormAccessRole = FormAccessRoles.Record_Reader;
 
             if ( UserRoleIds.Contains ( EdRole.CONST_DESIGNER ) == true )
             {
-              this.AccessRole = FormAccessRoles.Form_Designer;
+              this.FormAccessRole = FormAccessRoles.Form_Designer;
             }
 
             return;
@@ -1063,7 +1113,7 @@ namespace Evado.Model.Digital
 
             if( bReadRole == true )
             {
-              this.AccessRole = FormAccessRoles.Record_Reader;
+              this.FormAccessRole = FormAccessRoles.Record_Reader;
             }
 
             bool bEditRole = EvStatics.CompareDelimtedStrings (
@@ -1072,7 +1122,7 @@ namespace Evado.Model.Digital
             
             if( bReadRole == true )
             {
-              this.AccessRole = FormAccessRoles.Record_Author;
+              this.FormAccessRole = FormAccessRoles.Record_Author;
             }
             return;
           }
@@ -1085,7 +1135,7 @@ namespace Evado.Model.Digital
 
             if ( bReadRole == true )
             {
-              this.AccessRole = FormAccessRoles.Record_Reader;
+              this.FormAccessRole = FormAccessRoles.Record_Reader;
             }
             break;
           }
@@ -1374,8 +1424,6 @@ namespace Evado.Model.Digital
       // 
       switch ( FieldName )
       {
-        case RecordFieldNames.ApplivcationId:
-          return this._ApplicationId;
 
         case RecordFieldNames.Layout_Id:
           return this.LayoutId;
@@ -1404,9 +1452,9 @@ namespace Evado.Model.Digital
           {
             return this._Design.UpdateReason.ToString ( );
           }
-        case RecordFieldNames.RecordAccessRole:
+        case RecordFieldNames.ReadAccessRoles:
           {
-            return this.AccessRole.ToString ( );
+            return this.FormAccessRole.ToString ( );
           }
 
 
@@ -1424,6 +1472,24 @@ namespace Evado.Model.Digital
 
         case RecordFieldNames.HasCsScript:
           return this._Design.hasCsScript.ToString ( );
+
+        case RecordFieldNames.EditAccessRoles:
+          return this._Design.EditAccessRoles.ToString ( );
+
+        case RecordFieldNames.RelatedEntities:
+          return this._Design.RelatedEntities.ToString ( );
+
+        case RecordFieldNames.DefaultPageLayout:
+          return this._Design.DefaultPageLayout.ToString ( );
+
+        case RecordFieldNames.DisplayRecordSummary:
+          return this._Design.DisplayRecordSummary.ToString ( );
+
+        case RecordFieldNames.DisplayRelatedEntities:
+          return this._Design.DisplayRelatedEntities.ToString ( );
+
+        case RecordFieldNames.DisplayAuthorDetails:
+          return this._Design.DisplayAuthorDetails.ToString ( );
 
         default:
           {
@@ -1507,11 +1573,6 @@ namespace Evado.Model.Digital
       // 
       switch ( FieldName )
       {
-        case RecordFieldNames.ApplivcationId:
-          {
-            this._ApplicationId = Value;
-            return;
-          }
         case RecordFieldNames.Layout_Id:
           {
             this._LayoutId = Value;
@@ -1572,12 +1633,16 @@ namespace Evado.Model.Digital
             this._Design.UpdateReason = EvStatics.Enumerations.parseEnumValue<UpdateReasonList> ( Value );
             return;
           }
-        case RecordFieldNames.RecordAccessRole:
+        case RecordFieldNames.EditAccessRoles:
           {
-            this.AccessRole = EvStatics.Enumerations.parseEnumValue<FormAccessRoles> ( Value );
+            this.Design.EditAccessRoles = Value;
             return;
           }
-
+        case RecordFieldNames.ReadAccessRoles:
+          {
+            this.Design.ReadAccessRoles = Value;
+            return;
+          }
 
         case RecordFieldNames.Reference:
           {
@@ -1598,6 +1663,31 @@ namespace Evado.Model.Digital
         case RecordFieldNames.HasCsScript:
           {
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.RelatedEntities:
+          {
+            this._Design.RelatedEntities = Value;
+            return;
+          }
+        case RecordFieldNames.DefaultPageLayout:
+          {
+            this._Design.DefaultPageLayout = Value;
+            return;
+          }
+        case RecordFieldNames.DisplayRecordSummary:
+          {
+            this.Design.DisplayRecordSummary = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.DisplayRelatedEntities:
+          {
+            this.Design.DisplayRelatedEntities = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.DisplayAuthorDetails:
+          {
+            this.Design.DisplayAuthorDetails = EvcStatics.getBool ( Value );
             return;
           }
         default:

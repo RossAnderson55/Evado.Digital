@@ -38,7 +38,6 @@ namespace Evado.Model.Digital
 
     #endregion
 
-
     #region class property
 
 
@@ -167,6 +166,23 @@ namespace Evado.Model.Digital
     /// This property contains a form approval for display on records.
     /// </summary>
     public string Approval { get; set; }
+
+
+    private string _RelatedEntities = String.Empty;
+    /// <summary>
+    /// This property contains a form category of a form design.
+    /// </summary>
+    public string RelatedEntities
+    {
+      get
+      {
+        return this._RelatedEntities;
+      }
+      set
+      {
+        this._RelatedEntities = value;
+      }
+    }
     
     private string _RecordCategory = String.Empty;
     /// <summary>
@@ -184,8 +200,6 @@ namespace Evado.Model.Digital
       }
     }
     
-
-
     private EdRecordTypes _TypeId = EdRecordTypes.Null;
     /// <summary>
     /// This property contains a type identifier of a form design.
@@ -207,6 +221,26 @@ namespace Evado.Model.Digital
         }
       }
     }
+
+    /// <summary>
+    /// This property contains the page layout enumerated value 
+    /// </summary>
+    public object DefaultPageLayout { get; set; }
+
+    /// <summary>
+    /// This property indicated whether record summary content is to be displayed on command titles of the page.
+    /// </summary>
+    public bool DisplayRecordSummary { get; set; }
+
+    /// <summary>
+    /// This property indicated whether related entities are to be displayed at the bottom of the page.
+    /// </summary>
+    public bool DisplayRelatedEntities { get; set; }
+
+    /// <summary>
+    /// This property indicated whether the authoer details are to be displayed at the top of the page.
+    /// </summary>
+    public bool DisplayAuthorDetails { get; set; }
 
     private List<EdRecordSection> _FormSections = new List<EdRecordSection> ( );
     /// <summary>

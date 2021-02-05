@@ -401,24 +401,12 @@ namespace Evado.Bll.Clinical
     public EdRecord createRecord ( EdRecord Record )
     {
       this.LogMethod ( "createRecord method." );
-      this.LogDebug ( "ApplicationId: " + Record.ApplicationId );
       this.LogDebug ( "LayoutId: " + Record.LayoutId );
 
       // 
       // Instantiate the local variables
       //
       EdRecord record = new EdRecord ( );
-
-      // 
-      // Check that the ResultData object has valid identifiers to add it to the database.
-      //
-      if ( Record.ApplicationId == String.Empty )
-      {
-        this.LogValue ( " Trial Empty " );
-        Record.EventCode = EvEventCodes.Identifier_Project_Id_Error;
-        this.LogMethodEnd ( "createRecord" );
-        return Record;
-      }
 
       if ( Record.LayoutId == String.Empty )
       {
@@ -431,10 +419,9 @@ namespace Evado.Bll.Clinical
       //
       // Retrieve the specified form to determine the form QueryType.
       //
-      EdRecord form = this._DalForms.GetLayout ( Record.ApplicationId, Record.LayoutId, true );
+      EdRecord form = this._DalForms.GetLayout (Record.LayoutId, true );
 
       this.LogDebugClass ( this._DalForms.Log );
-      this.LogDebug ( "form ProjectId: " + form.ApplicationId );
       this.LogDebug ( "form Id: " + form.LayoutId );
       this.LogDebug ( "form title: " + form.Title );
       this.LogDebug ( "form TypeId: " + form.Design.TypeId );
@@ -506,7 +493,6 @@ namespace Evado.Bll.Clinical
       this.LogMethod ( "saveItem method. " );
       this.LogValue ( "FormRecord.Guid: " + FormRecord.Guid );
       this.LogValue ( "FormGuid: " + FormRecord.LayoutGuid );
-      this.LogValue ( "ApplicationId: " + FormRecord.ApplicationId );
       this.LogValue ( "Action: " + FormRecord.SaveAction );
       this.LogValue ( "UserRole.Edit: " + HadEditAccess );
       // 
@@ -526,11 +512,6 @@ namespace Evado.Bll.Clinical
       {
         this.LogValue ( "Form ID is empty" );
         return EvEventCodes.Identifier_Form_Id_Error;
-      }
-      if ( FormRecord.ApplicationId == String.Empty )
-      {
-        this.LogValue ( "Project ID is empty" );
-        return EvEventCodes.Identifier_Project_Id_Error;
       }
 
       // 

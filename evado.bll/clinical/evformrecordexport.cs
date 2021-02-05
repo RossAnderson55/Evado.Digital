@@ -303,14 +303,12 @@ namespace Evado.Bll.Clinical
         // 
         // Create the report header
         // 
-        stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "ProjectId: " + headerForm.ApplicationId ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Type: " + EvStatics.getEnumStringValue( headerForm.TypeId ) ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "FormId: " + headerForm.LayoutId ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Form Title: " + headerForm.Title ) );
         stCsvData.AppendLine ( Evado.Model.Digital.EvcStatics.encodeCsvFirstColumn ( "Exported on: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm" )
           + " By " + UserProfile.CommonName ) );
 
-        this.LogDebug ( "ProjectId: " + headerForm.ApplicationId );
         this.LogDebug ( "Form Type: " + headerForm.Design.TypeId );
         this.LogDebug ( "FormId: " + headerForm.LayoutId );
         this.LogDebug ( "Form Title: " + headerForm.Title );
@@ -539,7 +537,7 @@ namespace Evado.Bll.Clinical
         this.LogDebug ( "Forms " );
         EdRecordLayouts forms = new EdRecordLayouts ( );
 
-        form = forms.GetLayout ( FormRecord.ApplicationId, FormRecord.LayoutId );
+        form = forms.GetLayout ( FormRecord.LayoutId );
       return form;
 
     }//END getHeaderForm method

@@ -2763,7 +2763,6 @@ namespace Evado.UniForm.Digital
           + PageCommand.getAsString ( false, false ) );
 
         this.LogDebug ( "SessionObjects.Forms" + " Guid: " + this.Session.RecordLayout.Guid );
-        this.LogDebug ( " ProjectId: " + this.Session.RecordLayout.ApplicationId );
         this.LogDebug ( " Title: " + this.Session.RecordLayout.Title );
 
         // 
