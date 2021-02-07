@@ -314,7 +314,7 @@ namespace Evado.Model.Digital
         this._State = value;
       }
     }
-    
+
     // =====================================================================================
     /// <summary>
     /// This property contains the Adapter ADS Group name
@@ -329,7 +329,7 @@ namespace Evado.Model.Digital
       set
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Ads_Group,
-          EvDataTypes.Text, value);
+          EvDataTypes.Text, value );
       }
     }
 
@@ -356,16 +356,77 @@ namespace Evado.Model.Digital
 
     #region Role Group
 
-    private List<EdRole> _RoleList = new List<EdRole> ( );
+    private String _Roles = String.Empty;
 
+    /// <summary>
+    /// This property contains the name of the person who last updated the trial object.
+    /// </summary>
+    public string Roles
+    {
+      get
+      {
+        return _Roles;
+      }
+      set
+      {
+        this._Roles = value.Trim ( );
+
+        //
+        // Define the role list.
+        //
+        this._RoleList = new List<EdRole> ( );
+        EdRole role = new EdRole ( );
+
+        //
+        // Add Global roles
+        //
+        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_ADMINISTRATOR_ROLE, "Administrator " ) );
+        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_DESIGNER_ROLE, "Designer " ) );
+        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_MANAGER_ROLE, "Manager " ) );
+        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_STAFF_ROLE, "Staff " ) );
+
+
+        String [ ] arRoles = this._Roles.Split ( ';' );
+
+
+        for ( int i = 0; i < arRoles.Length; i++ )
+        {
+          string str = arRoles [ i ].Trim ( );
+
+          if ( str == String.Empty )
+          {
+            continue;
+          }
+          if ( str.Contains ( ":" ) == true )
+          {
+            string [ ] arStr = str.Split ( ':' );
+            if ( arStr [ 0 ] == String.Empty )
+            {
+              continue;
+            }
+
+            role = new EdRole ( arStr [ 0 ], arStr [ 1 ] );
+          }
+          else
+          {
+            role = new EdRole ( str, str );
+          }
+
+          _RoleList.Add ( role );
+        }
+      }
+    }
+    List<EdRole> _RoleList = new List<EdRole> ( );
     /// <summary>
     /// This property contains the list of roles for this application.
     /// Static roles will be automatically added to the last on creation.
     /// </summary>
     public List<EdRole> RoleList
     {
-      get { return _RoleList; }
-      set { _RoleList = value; }
+      get
+      {
+        return _RoleList;
+      }
     }
 
 
@@ -391,45 +452,6 @@ namespace Evado.Model.Digital
     }
 
 
-    /// <summary>
-    /// This property contains the name of the person who last updated the trial object.
-    /// </summary>
-    public string Roles
-    {
-      get
-      {
-        String roles = String.Empty;
-        foreach ( EdRole role in this._RoleList )
-        {
-          roles += role.RoleId + ":" + role.Description + ";\r\n";
-        }
-
-        return roles;
-      }
-      set
-      {
-        this._RoleList = new List<EdRole> ( );
-        EdRole role = new EdRole ( );
-        String roles = value;
-        String [ ] arRoles = roles.Split ( ';' );
-
-        foreach ( string str in arRoles )
-        {
-          if ( str.Contains ( ":" ) == true )
-          {
-            string [ ] arStr = str.Split ( ':' );
-
-            role = new EdRole ( arStr [ 0 ], arStr [ 1 ] );
-          }
-          else
-          {
-            role = new EdRole ( str, str );
-          }
-
-          this._RoleList.Add ( role );
-        }
-      }
-    }
 
     // ==================================================================================
     /// <summary>
@@ -762,7 +784,7 @@ namespace Evado.Model.Digital
 
         case EdAdapterSettings.AdapterFieldNames.HelpUrl:
           {
-            this.HelpUrl = Value ;
+            this.HelpUrl = Value;
             return;
           }
 
@@ -774,7 +796,7 @@ namespace Evado.Model.Digital
 
         case EdAdapterSettings.AdapterFieldNames.Title:
           {
-            this._Title = Value ;
+            this._Title = Value;
             return;
           }
 
@@ -798,7 +820,7 @@ namespace Evado.Model.Digital
 
         case EdAdapterSettings.AdapterFieldNames.Roles:
           {
-            this.Roles = Value ;
+            this.Roles = Value;
             return;
           }
 

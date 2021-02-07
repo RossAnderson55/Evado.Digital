@@ -374,6 +374,11 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
         this.LogDebug ( "LastPage.Title: {0}. ", this.Session.LastPage.Title );
 
+        foreach ( EdRole role in this._AdapterObjects.AdapterSettings.RoleList )
+        {
+          this.LogDebug ( "Role ID: {0} D: {1}. ", role.RoleId, role.Description );
+        }
+
         //
         // Turn on BLL debug to match the current class setting.
         //

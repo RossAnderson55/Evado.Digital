@@ -48,7 +48,7 @@ namespace Evado.UniForm.Digital
     public EuAdapterObjects ( )
     {
       this.Settings = new EvClassParameters ( );
-      this._ClassNameSpace = "Evado.UniForm.Clinical.EuApplicationObjects.";
+      this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
     }
 
     //===================================================================================
@@ -59,7 +59,7 @@ namespace Evado.UniForm.Digital
     public EuAdapterObjects (
       EvClassParameters Settings )
     {
-      this._ClassNameSpace = "Evado.UniForm.Clinical.EuApplicationObjects.";
+      this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
       this.Settings = Settings;
 
       this._LoggingLevel = this.Settings.LoggingLevel;
@@ -332,7 +332,7 @@ namespace Evado.UniForm.Digital
     public void loadGlobalMenu ( )
     {
       this.LogMethod ( "loadGlobalMenu method" );
-      this.LogDebugValue ( "PlatformId: " + this._PlatformId );
+      this.LogDebug ( "PlatformId: " + this._PlatformId );
 
       try
       {
@@ -346,8 +346,13 @@ namespace Evado.UniForm.Digital
         // 
         this.MenuList = bll_Menu.getView ( this._PlatformId, String.Empty );
 
-        this.LogDebug ( bll_Menu.Log );
+        this.LogDebugClass ( bll_Menu.Log );
         this.LogInitValue ( "MenuList .Count: " + this.MenuList.Count );
+
+        foreach ( EvMenuItem itm in this.MenuList )
+        {
+          this.LogDebug ( "PageId: {0}, Group {1}, Roles {2}: ", itm.PageId, itm.Group, itm.RoleList );
+        }
 
       }
       catch ( Exception Ex )
@@ -383,7 +388,7 @@ namespace Evado.UniForm.Digital
       //
       this._AdapterSettings = adapterConfig.getItem ( "A" );
 
-      this.LogDebug ( adapterConfig.Log );
+      this.LogDebugClass ( adapterConfig.Log );
 
       if ( ConfigurationManager.AppSettings [ EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ] != null )
       {
@@ -394,7 +399,7 @@ namespace Evado.UniForm.Digital
         }
       }
 
-      this.LogDebugValue ( "ApplicationUrl: " + this._ApplicationUrl );
+      this.LogDebug ( "ApplicationUrl: " + this._ApplicationUrl );
 
       if ( ConfigurationManager.AppSettings [ EuAdapter.CONFIG_PASSWORD_RESET_URL_KEY ] != null )
       {
@@ -404,7 +409,7 @@ namespace Evado.UniForm.Digital
           this._PasswordResetUrl = value;
         }
       }
-      this.LogDebugValue ( "PasswordResetUrl: " + this._PasswordResetUrl );
+      this.LogDebug ( "PasswordResetUrl: " + this._PasswordResetUrl );
 
       if ( ConfigurationManager.AppSettings [ EuAdapter.CONFIG_SUPPORT_EMAIL_ADDRESS_KEY ] != null )
       {
@@ -414,7 +419,7 @@ namespace Evado.UniForm.Digital
           this._SupportEmailAddress = value;
         }
       }
-      this.LogDebugValue ( "SupportEmailAddress: " + this._SupportEmailAddress );
+      this.LogDebug ( "SupportEmailAddress: " + this._SupportEmailAddress );
 
       if ( ConfigurationManager.AppSettings [ EuAdapter.CONFIG_NOREPLY_EMAIL_ADDRESS_KEY ] != null )
       {
@@ -424,9 +429,9 @@ namespace Evado.UniForm.Digital
           this._NoReplyEmailAddress = value;
         }
       }
-      this.LogDebugValue ( "NoReplyEmailAddress: " + this._NoReplyEmailAddress );
+      this.LogDebug ( "NoReplyEmailAddress: " + this._NoReplyEmailAddress );
 
-      this.LogDebugValue ( "Full version: " + _AssembyAttributes.FullVersion );
+      this.LogDebug ( "Full version: " + _AssembyAttributes.FullVersion );
 
       this._AdapterSettings.Version = _AssembyAttributes.FullVersion;
       this._AdapterSettings.MinorVersion = _AssembyAttributes.MinorVersion;
@@ -439,7 +444,7 @@ namespace Evado.UniForm.Digital
       // 
       // Log the Site Properties on startup.
       // 
-      this.LogDebugValue ( "Version: " + this._AdapterSettings.Version );
+      this.LogDebug ( "Version: " + this._AdapterSettings.Version );
 
       this.LogMethodEnd ( "loadAdatperSettings" );
     }//ENd loadSiteProperties method
@@ -468,7 +473,7 @@ namespace Evado.UniForm.Digital
         this._PlatformId = (string) ConfigurationManager.AppSettings [  Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
       }
 
-      this.LogDebugValue ( "PlatformId: " + this._PlatformId );
+      this.LogDebug ( "PlatformId: " + this._PlatformId );
 
       // 
       // Set the connection string settings.
@@ -479,12 +484,12 @@ namespace Evado.UniForm.Digital
 
       }
 
-      this.LogDebugValue ( "HelpUrl: '" + this._HelpUrl + "'" );
+      this.LogDebug ( "HelpUrl: '" + this._HelpUrl + "'" );
 
       // 
       // Log the Maximum selection list length on startup.
       // 
-      this.LogDebugValue ( "MaximumSelectionListLength: " + this._AdapterSettings.MaximumSelectionListLength );
+      this.LogDebug ( "MaximumSelectionListLength: " + this._AdapterSettings.MaximumSelectionListLength );
 
       this.LogMethodEnd ( "LoadStaticEnvironmentalProperties" );
     }//END setStaticEnvironmentalProperties method
@@ -512,10 +517,10 @@ namespace Evado.UniForm.Digital
 
       if ( this.ContentTemplates != null )
       {
-        this.LogDebugValue ( "IntroductoryEmail_Title: " + this.ContentTemplates.IntroductoryEmail_Title );
-        this.LogDebugValue ( "UpdatePasswordEmail_Title: " + this.ContentTemplates.UpdatePasswordEmail_Title );
-        this.LogDebugValue ( "ResetPasswordEmail_Title: " + this.ContentTemplates.ResetPasswordEmail_Title );
-        this.LogDebugValue ( "PasswordConfirmationEmail_Title: " + this.ContentTemplates.PasswordConfirmationEmail_Title );
+        this.LogDebug ( "IntroductoryEmail_Title: " + this.ContentTemplates.IntroductoryEmail_Title );
+        this.LogDebug ( "UpdatePasswordEmail_Title: " + this.ContentTemplates.UpdatePasswordEmail_Title );
+        this.LogDebug ( "ResetPasswordEmail_Title: " + this.ContentTemplates.ResetPasswordEmail_Title );
+        this.LogDebug ( "PasswordConfirmationEmail_Title: " + this.ContentTemplates.PasswordConfirmationEmail_Title );
       }
 
       this.LogMethodEnd ( "LoadEmailTemplates" );
@@ -560,32 +565,32 @@ namespace Evado.UniForm.Digital
       // 
       // Log the SMTP server.
       // 
-      this.LogDebugValue ( " SmtpServer: " + this._AdapterSettings.SmtpServer );
+      this.LogDebug ( " SmtpServer: " + this._AdapterSettings.SmtpServer );
 
       // 
       // Log the SMTP port setting
       // 
-      this.LogDebugValue ( " SmtpServerPort: " + this._AdapterSettings.SmtpServerPort );
+      this.LogDebug ( " SmtpServerPort: " + this._AdapterSettings.SmtpServerPort );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
+      this.LogDebug ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " SmtpPassword: " + this._AdapterSettings.SmtpPassword );
+      this.LogDebug ( " SmtpPassword: " + this._AdapterSettings.SmtpPassword );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebugValue ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
+      this.LogDebug ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebugValue ( " EmailAlertTestAddress: " + this._AdapterSettings.EmailAlertTestAddress );
+      this.LogDebug ( " EmailAlertTestAddress: " + this._AdapterSettings.EmailAlertTestAddress );
 
 
       this.LogMethodEnd ( "loadSmtpServerProperties" );
@@ -747,7 +752,7 @@ namespace Evado.UniForm.Digital
       //
       // Log the event to the application log.
       //
-      this.LogDebugValue ( stEvent );
+      this.LogDebug ( stEvent );
 
     }//END LogPageAccess class
 
@@ -799,7 +804,7 @@ namespace Evado.UniForm.Digital
       //
       // Log the event to the application log.
       //
-      this.LogDebugValue ( stEvent );
+      this.LogDebug ( stEvent );
 
     }//END LogPageAccess class
 
@@ -1091,7 +1096,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebugValue ( String Value )
+    protected void LogDebug ( String Value )
     {
       if ( this.LoggingLevel >= EuClassAdapterBase.DebugValueLevel )
       {
@@ -1106,7 +1111,7 @@ namespace Evado.UniForm.Digital
     /// <param name="Format">String: format text.</param>
     /// <param name="args">Array of objects as parameters.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebugFormat ( String Format, params object [ ] args )
+    protected void LogDebug ( String Format, params object [ ] args )
     {
       if ( this._LoggingLevel >= EuClassAdapterBase.DebugValueLevel )
       {
@@ -1122,7 +1127,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebug ( String Value )
+    protected void LogDebugClass ( String Value )
     {
       if ( this.LoggingLevel >= EuClassAdapterBase.DebugValueLevel )
       {

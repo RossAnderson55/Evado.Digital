@@ -182,7 +182,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "GENERATE FORM" );
 
-      this.setFormPageLayoutCommands ( ClientDataObject.Page, true );
+      this.setFormPageLayoutCommands ( ClientDataObject.Page );
 
       //
       // Add the general field properties pageMenuGroup.
@@ -214,13 +214,21 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
+      Page.EditAccess = Model.UniForm.EditAccess.Disabled;
+      Boolean bInDesign = false;
+
+      if ( this.Session.RecordLayout.State != EdRecordObjectStates.Form_Issued
+        && this.Session.RecordLayout.State != EdRecordObjectStates.Withdrawn )
+      {
+        bInDesign = true;
+      }
+
 
       //
       // Define the general properties pageMenuGroup..
       //
       pageGroup = Page.AddGroup (
-        EdLabels.Form_Properties_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
+        EdLabels.Form_Properties_General_Group_Title);
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -250,6 +258,14 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+
+      //
       // Form title
       //
       pageField = pageGroup.createTextField (
@@ -258,6 +274,14 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.LayoutId,
         10 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
 
       //
       // Form title
@@ -294,6 +318,14 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+
+      //
       // Form Update reason
       //
       optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.UpdateReasonList ), false );
@@ -307,6 +339,14 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+
+      //
       // Form Change description
       //
       pageField = pageGroup.createFreeTextField (
@@ -316,6 +356,14 @@ namespace Evado.UniForm.Digital
         90, 5 );
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
 
       //
       // Form reference
@@ -346,6 +394,14 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.hasCsScript );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+
     }//END getProperties_GeneralPageGroup Method
 
     // ==============================================================================
@@ -365,26 +421,13 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
-
-      List<EvOption> optionList = new List<EvOption> ( );
       String stFieldList = String.Empty;
-      optionList.Add ( new EvOption ( ) );
-
-      foreach ( EdRecordField field in this.Session.RecordLayout.Fields )
-      {
-        optionList.Add ( new EvOption (
-          field.FieldId,
-          field.FieldId
-          + EdLabels.Space_Hypen
-          + field.Title ) );
-      }
 
       //
       // Define the section properties pageMenuGroup..
       //
       pageGroup = Page.AddGroup (
-        EdLabels.Form_Properties_Sections_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
+        EdLabels.Form_Properties_Sections_Group_Title );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
@@ -509,6 +552,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FormSection.Title: " + this.Session.FormSection.Title );
       this.LogDebug ( "FormSection.DisplayRoles: " + this.Session.FormSection.UserDisplayRoles );
       this.LogDebug ( "FormSection.EditRoles: " + this.Session.FormSection.UserEditRoles );
+      this.LogDebug ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -558,10 +602,15 @@ namespace Evado.UniForm.Digital
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
 
+      if ( this.Session.RecordLayout.State != EdRecordObjectStates.Form_Issued
+        && this.Session.RecordLayout.State != EdRecordObjectStates.Withdrawn )
+      {
+        ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+      }
+
       //
       // Set the user's edit access if they have configuration edit access.
       //
-      this.LogDebug ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
 
 
       if ( this.Session.UserProfile.hasManagementAccess == true )

@@ -45,7 +45,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EuRecordLayouts ( )
     {
-      this.ClassNameSpace = this.ClassNameSpace + "";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuRecordLayouts.";
     }
 
     /// <summary>
@@ -63,10 +63,10 @@ namespace Evado.UniForm.Digital
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.UniForm.Clinical.EuForms.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuRecordLayouts.";
 
 
-      this.LogInitMethod ( "EuForms initialisation" );
+      this.LogInitMethod ( "EuRecordLayouts initialisation" );
       this.LogInit ( "-ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "-UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
@@ -1679,7 +1679,7 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.UserProfile.hasManagementAccess == false )
       {
-        this.setFormPageLayoutCommands ( PageObject, false );
+        this.setFormPageLayoutCommands ( PageObject );
 
         return;
 
@@ -1714,7 +1714,7 @@ namespace Evado.UniForm.Digital
             //
             // add the page layout selection commands.
             //
-            this.setFormPageLayoutCommands ( PageObject, true );
+            this.setFormPageLayoutCommands ( PageObject );
 
             //
             // For a new form do not display the delete or review commands.
@@ -1805,7 +1805,7 @@ namespace Evado.UniForm.Digital
             //
             // add the page layout selection commands.
             //
-            this.setFormPageLayoutCommands ( PageObject, true );
+            this.setFormPageLayoutCommands ( PageObject );
 
             //
             // Add the same groupCommand.
@@ -1867,7 +1867,7 @@ namespace Evado.UniForm.Digital
             //
             // add the page layout selection commands.
             //
-            this.setFormPageLayoutCommands ( PageObject, false );
+            this.setFormPageLayoutCommands ( PageObject );
 
             //
             // Add the form template save command.
@@ -1939,8 +1939,7 @@ namespace Evado.UniForm.Digital
     /// <returns>Evado.Model.UniForm.Page object</returns>
     //  ------------------------------------------------------------------------------
     private void setFormPageLayoutCommands (
-      Evado.Model.UniForm.Page PageObject,
-      bool EditAccess )
+      Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "setFormPageLayoutCommands" );
       // 
@@ -1952,10 +1951,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the properties page groupCommand.
       //
-      if ( ( this.Session.PageId == EvPageIds.Form_Annotated_Page
-          || this.Session.PageId == EvPageIds.Form_Page
-          || this.Session.PageId == EvPageIds.Form_Draft_Page )
-        && EditAccess == true )
+      if ( this.Session.UserProfile.hasEvadoManagementAccess == true  )
       {
         pageCommand = PageObject.addCommand (
           EdLabels.Form_Properties_Command_Title,
@@ -2016,7 +2012,7 @@ namespace Evado.UniForm.Digital
       if ( ( this.Session.PageId == EvPageIds.Form_Annotated_Page
           || this.Session.PageId == EvPageIds.Form_Page
           || this.Session.PageId == EvPageIds.Form_Properties_Page )
-        && EditAccess == true )
+        && this.Session.UserProfile.hasEvadoManagementAccess == true )
       {
         pageCommand = PageObject.addCommand (
           EdLabels.Form_Draft_Layout_Command_Title,

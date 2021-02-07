@@ -101,7 +101,7 @@ namespace Evado.Dal.Clinical
     // 
     // Define the stored procedure names.
     // 
-    private const string SQL_PROCEDURE_UPATE_ITEM = "USR_ADAPTER_SETTINGS_UPDATE";
+    private const string SQL_PROCEDURE_UPDATE = "USR_ADAPTER_SETTINGS_UPDATE";
     // 
     // Define the class constants
     // 
@@ -146,19 +146,19 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
+	      new SqlParameter( EdAdapterConfig.PARM_GUID, SqlDbType.UniqueIdentifier ),
 	      new SqlParameter( EdAdapterConfig.PARM_APPLICATION_ID, SqlDbType.Char, 1  ),
 	      new SqlParameter( EdAdapterConfig.PARM_HOME_PAGE_HEADER, SqlDbType.NVarChar, 100 ),
         new SqlParameter( EdAdapterConfig.PARM_HELP_URL, SqlDbType.NVarChar, 50 ),
         new SqlParameter( EdAdapterConfig.PARM_MAX_SELECTION_LENGTH, SqlDbType.Int ),
-	      new SqlParameter( EdAdapterConfig.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
 
+	      new SqlParameter( EdAdapterConfig.PARM_SMTP_SERVER, SqlDbType.VarChar, 100 ),
 	      new SqlParameter( EdAdapterConfig.PARM_SMTP_PORT, SqlDbType.Int ),
 	      new SqlParameter( EdAdapterConfig.PARM_SMTP_USER_ID, SqlDbType.NVarChar, 100 ),
         new SqlParameter( EdAdapterConfig.PARM_SMTP_PASSWORD, SqlDbType.NVarChar, 50 ),
-	      new SqlParameter( EdAdapterConfig.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ),        
+	      new SqlParameter( EdAdapterConfig.PARM_ALERT_EMAIL_ADDRESS, SqlDbType.NVarChar, 50 ),
+        
 	      new SqlParameter( EdAdapterConfig.PARM_APPLICATION_URL, SqlDbType.NVarChar, 250 ), 
-
-	      new SqlParameter( EdAdapterConfig.PARM_STATE, SqlDbType.NVarChar, 50 ), 
 	      new SqlParameter( EdAdapterConfig.PARM_TITLE, SqlDbType.NVarChar, 50 ), 
 	      new SqlParameter( EdAdapterConfig.PARM_HTTP_REFERENCE, SqlDbType.NVarChar, 250 ), 
 	      new SqlParameter( EdAdapterConfig.PARM_DESCRIPTION, SqlDbType.NText ), 
@@ -188,17 +188,17 @@ namespace Evado.Dal.Clinical
       SqlParameter [ ] cmdParms, 
       Evado.Model.Digital.EdAdapterSettings AdapterSettings )
     {
-      cmdParms [ 0 ].Value = "A";
-      cmdParms [ 1 ].Value = AdapterSettings.HomePageHeaderText;
-      cmdParms [ 2 ].Value = AdapterSettings.HelpUrl;
-      cmdParms [ 3 ].Value = AdapterSettings.MaximumSelectionListLength;
-      cmdParms [ 4 ].Value = AdapterSettings.SmtpServer;
+      cmdParms [ 0 ].Value = AdapterSettings.Guid;
+      cmdParms [ 1 ].Value = "A";
+      cmdParms [ 2 ].Value = AdapterSettings.HomePageHeaderText;
+      cmdParms [ 3 ].Value = AdapterSettings.HelpUrl;
+      cmdParms [ 4 ].Value = AdapterSettings.MaximumSelectionListLength;
 
-      cmdParms [ 5 ].Value = AdapterSettings.SmtpServerPort;
-      cmdParms [ 6 ].Value = AdapterSettings.SmtpUserId;
-      cmdParms [ 7 ].Value = AdapterSettings.SmtpPassword;
-      cmdParms [ 8 ].Value = AdapterSettings.EmailAlertTestAddress;
-      cmdParms [ 9 ].Value = String.Empty;
+      cmdParms [ 5 ].Value = AdapterSettings.SmtpServer;
+      cmdParms [ 6 ].Value = AdapterSettings.SmtpServerPort;
+      cmdParms [ 7 ].Value = AdapterSettings.SmtpUserId;
+      cmdParms [ 8 ].Value = AdapterSettings.SmtpPassword;
+      cmdParms [ 9 ].Value = AdapterSettings.EmailAlertTestAddress;
 
       cmdParms [ 10 ].Value = AdapterSettings.State;
       cmdParms [ 11 ].Value = AdapterSettings.Title;
@@ -442,7 +442,7 @@ namespace Evado.Dal.Clinical
         //
         // Execute the update command.
         //
-        if ( EvSqlMethods.StoreProcUpdate ( SQL_PROCEDURE_UPATE_ITEM, cmdParms ) == 0 )
+        if ( EvSqlMethods.StoreProcUpdate ( SQL_PROCEDURE_UPDATE, cmdParms ) == 0 )
         {
           return EvEventCodes.Database_Record_Update_Error;
         }
