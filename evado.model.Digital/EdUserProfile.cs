@@ -66,6 +66,11 @@ namespace Evado.Model.Digital
       Null,
 
       /// <summary>
+      /// This enumeration defines the organisation identifier in user profile
+      /// </summary>
+      OrgId,
+
+      /// <summary>
       /// This enumeration defines the user identifier in user profile
       /// </summary>
       UserId,
@@ -222,10 +227,10 @@ namespace Evado.Model.Digital
 
     #region Class contants
 
-    public const string CONST_ADMINISTRATOR_ROLE = "ADMIN";
-    public const string CONST_MANAGER_ROLE = "MGT";
-    public const string CONST_DESIGNER_ROLE = "DSGN";
-    public const string CONST_STAFF_ROLE = "STFF";
+    public const string CONST_ADMINISTRATOR_ROLE = "Administrator";
+    public const string CONST_MANAGER_ROLE = "Manager";
+    public const string CONST_DESIGNER_ROLE = "Designer";
+    public const string CONST_STAFF_ROLE = "Staff";
 
     public const String CONT_STATIC_ROLES = CONST_ADMINISTRATOR_ROLE + ":"
       + CONST_MANAGER_ROLE + ":"
@@ -622,6 +627,11 @@ namespace Evado.Model.Digital
       //
       switch ( fieldName )
       {
+        case UserProfileFieldNames.OrgId:
+          {
+            this.OrgId = value;
+            break;
+          }
         case UserProfileFieldNames.UserId:
           {
             this.UserId = value;

@@ -43,12 +43,12 @@ CREATE TABLE [dbo].[ED_USER_PROFILES](
 	[UP_TELEPHONE] [varchar](20) NULL,
 	[UP_EMAIL_ADDRESS] [varchar](255) NULL,
 	[UP_ROLES] [nvarchar](250) NULL,
-	[UP_type] [nvarchar](50) NULL,
+	[UP_TYPE] [nvarchar](50) NULL,
+	[UP_EXPIRY_DATE] [datetime] NULL,
 	[UP_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
 	[UP_UPDATE_BY] [nvarchar](100) NULL,
 	[UP_UPDATE_DATE] [datetime] NULL,
 	[UP_DELETED] [bit] NULL,
-	[UP_EXPIRY_DATE] [datetime] NULL,
  CONSTRAINT [PK_USER_PROFILES] PRIMARY KEY CLUSTERED 
 (
 	[UP_GUID] ASC

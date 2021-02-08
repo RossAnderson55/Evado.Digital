@@ -80,6 +80,11 @@ namespace Evado.UniForm.Digital
         this.Session.SelectedUserType = EdUserProfile.UserTypesList.End_User;
       }
 
+      if ( this.Session.OrganisationList == null )
+      {
+        this.Session.OrganisationList = new List<EvOrganisation> ( );
+      }
+
       this._Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( this.ClassParameters );
 
     }//END Method
@@ -131,6 +136,8 @@ namespace Evado.UniForm.Digital
         // Load the customer group.
         //
         this.getAdsCustomerGroup ( );
+
+        this.getUpdateSelectionParameters ( PageCommand );
 
         //
         // Retrieve the groupCommand parameters to determine the type of page to generate.
@@ -269,6 +276,39 @@ namespace Evado.UniForm.Digital
 
     }//END updateObject method
 
+    // ==================================================================================
+    /// <summary>
+    /// This methods returns a pageMenuGroup object contains a selection of organisations.
+    /// </summary>
+    /// <param name="PageObject">Application</param>
+    /// <returns>Evado.Model.UniForm.Group object</returns>
+    //  ---------------------------------------------------------------------------------
+    public void getUpdateSelectionParameters (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getUpdateSelectionParameters" );
+
+      if ( this.Session.SelectedOrgId == null )
+      {
+        this.Session.SelectedOrgId = String.Empty;
+      }
+
+      //
+      // Update the user selection.
+      //
+      this.Session.SelectedUserType = PageCommand.GetParameter<EdUserProfile.UserTypesList> (
+        EdUserProfile.UserProfileFieldNames.User_Type_Id );
+
+      //
+      // Update the user organisation selection.
+      //
+      this.Session.SelectedOrgId = PageCommand.GetParameter (
+        EdUserProfile.UserProfileFieldNames.OrgId );
+
+      this.LogMethodEnd ( "getUpdateSelectionParameters" );
+
+    }// END getUpdateSelectionParameters method
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -381,7 +421,7 @@ namespace Evado.UniForm.Digital
       return clientDataObject;
 
     }//END getListObject method.
-
+    
     // ==================================================================================
     /// <summary>
     /// This methods returns a pageMenuGroup object contains a selection of organisations.
@@ -638,7 +678,8 @@ namespace Evado.UniForm.Digital
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       List<EdUserProfile> userProfileList = this._Bll_UserProfiles.GetView ( 
-        this.Session.SelectedUserType );
+        this.Session.SelectedUserType,
+        this.Session.SelectedOrgId );
 
       //
       // if the user profile list exists display the download link.
@@ -737,38 +778,61 @@ namespace Evado.UniForm.Digital
       // 
       // initialise the methods variables and objects.
       // 
-      List<Evado.Model.EvOption> usertypeList = new List<Evado.Model.EvOption> ( );
-      Evado.Model.UniForm.Field organisationSelectionField = new Evado.Model.UniForm.Field ( );
+      List<Evado.Model.EvOption> optionList = new List<Evado.Model.EvOption> ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
 
-      Evado.Model.UniForm.Group selectionGroup = PageObject.AddGroup (
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
         EdLabels.UserProfile_List_Selection_Group,
         Evado.Model.UniForm.EditAccess.Enabled );
-      selectionGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
       // get the list of organisations.
       //
-      usertypeList.Add ( new EvOption ( ) );
-      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.Customer.ToString ( ), EdUserProfile.UserTypesList.Customer.ToString ( ) ) );
-      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.Evado.ToString ( ), EdUserProfile.UserTypesList.Evado.ToString ( ) ) );
-      usertypeList.Add ( new EvOption ( EdUserProfile.UserTypesList.End_User.ToString ( ), EdUserProfile.UserTypesList.End_User.ToString ( ).Replace( "_"," ") ) );
+      optionList.Add ( new EvOption ( ) );
+      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.Customer.ToString ( ), EdUserProfile.UserTypesList.Customer.ToString ( ) ) );
+      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.Evado.ToString ( ), EdUserProfile.UserTypesList.Evado.ToString ( ) ) );
+      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.End_User.ToString ( ), EdUserProfile.UserTypesList.End_User.ToString ( ).Replace( "_"," ") ) );
 
       // 
       // Set the selection to the current site org id.
       // 
-      organisationSelectionField = selectionGroup.createSelectionListField (
+      groupField = pageGroup.createSelectionListField (
         EdUserProfile.UserProfileFieldNames.User_Type_Id,
-        EdLabels.User_Profile_Organisation_List_Field_Label,
+        EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.SelectedUserType.ToString(),
-        usertypeList );
-      organisationSelectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        optionList );
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
-      organisationSelectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
+
+      //
+      // Create the organisation selection list.
+      //
+      optionList = new List<Evado.Model.EvOption> ( );
+      optionList.Add ( new EvOption());
+
+      foreach ( EvOrganisation org in this.Session.OrganisationList )
+      {
+        optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
+      }      
+
+      // 
+      // Set the selection to the current site org id.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdUserProfile.UserProfileFieldNames.OrgId,
+        EdLabels.User_Profile_Organisation_List_Field_Label,
+        this.Session.SelectedUserType.ToString ( ),
+        optionList );
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       // 
       // Create a custom groupCommand to process the selection.
       // 
-      Evado.Model.UniForm.Command customCommand = selectionGroup.addCommand (
+      Evado.Model.UniForm.Command customCommand = pageGroup.addCommand (
         EdLabels.User_Profile_Organisation_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Users.ToString ( ),
@@ -826,7 +890,9 @@ namespace Evado.UniForm.Digital
         // 
         // get the list of customers.
         // 
-        this.Session.AdminUserProfileList = this._Bll_UserProfiles.GetView (this.Session.SelectedUserType );
+        this.Session.AdminUserProfileList = this._Bll_UserProfiles.GetView (
+        this.Session.SelectedUserType, 
+        this.Session.SelectedOrgId );
 
         this.LogClass ( this._Bll_UserProfiles.Log );
 
@@ -1088,8 +1154,6 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
-
-
       // 
       // create the page pageMenuGroup
       // 
@@ -1122,6 +1186,27 @@ namespace Evado.UniForm.Digital
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
+
+      //
+      // Create the organisation selection list.
+      //
+      optionList = new List<Evado.Model.EvOption> ( );
+      optionList.Add ( new EvOption());
+
+      foreach ( EvOrganisation org in this.Session.OrganisationList )
+      {
+        optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
+      }      
+
+      // 
+      // Set the selection to the current site org id.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdUserProfile.UserProfileFieldNames.OrgId,
+        EdLabels.User_Profile_Organisation_List_Field_Label,
+        this.Session.SelectedUserType.ToString ( ),
+        optionList );
+      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       // 
       // Create the user id object
@@ -1257,15 +1342,14 @@ namespace Evado.UniForm.Digital
         this.GlobalObjects.AdapterSettings.RoleList,
         false );
 
-
       //
       // Generate the user role radio button list field object.
       //
-      groupField = pageGroup.createRadioButtonListField (
+      groupField = pageGroup.createCheckBoxListField (
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.RoleId.ToString ( ),
         EdLabels.UserProfile_Role_Field_Label,
         EdLabels.UserProfile_Role_Field_Description,
-        Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminUserProfile.Roles ),
+        this.Session.AdminUserProfile.Roles ,
         roleList );
       groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       groupField.Mandatory = true;

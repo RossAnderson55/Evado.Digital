@@ -371,23 +371,8 @@ namespace Evado.Model.Digital
       {
         this._Roles = value.Trim ( );
 
-        //
-        // Define the role list.
-        //
-        this._RoleList = new List<EdRole> ( );
-        EdRole role = new EdRole ( );
-
-        //
-        // Add Global roles
-        //
-        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_ADMINISTRATOR_ROLE, "Administrator " ) );
-        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_DESIGNER_ROLE, "Designer " ) );
-        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_MANAGER_ROLE, "Manager " ) );
-        _RoleList.Add ( new EdRole ( EdUserProfile.CONST_STAFF_ROLE, "Staff " ) );
-
-
         String [ ] arRoles = this._Roles.Split ( ';' );
-
+        EdRole role = new EdRole ( );
 
         for ( int i = 0; i < arRoles.Length; i++ )
         {

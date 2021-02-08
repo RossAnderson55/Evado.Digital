@@ -216,7 +216,12 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains the current user type selection.
     /// </summary>
-    public EdUserProfile.UserTypesList SelectedUserType  { get; set; }
+    public EdUserProfile.UserTypesList SelectedUserType { get; set; }
+
+    /// <summary>
+    /// This property contains the current user type selection.
+    /// </summary>
+    public String SelectedOrgId { get; set; }
 
     Evado.Model.Digital.EdUserProfile _UserProfile = new EdUserProfile ( );
     /// <summary>
@@ -228,6 +233,10 @@ namespace Evado.UniForm.Digital
       set { _UserProfile = value; }
     }
 
+    /// <summary>
+    /// This property contains a list of organisations.
+    /// </summary>
+    public EvOrganisation.OrganisationTypes OrganisationType { get; set; }
     /// <summary>
     /// This property contains a list of organisations.
     /// </summary>

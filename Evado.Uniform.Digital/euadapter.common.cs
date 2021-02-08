@@ -135,6 +135,46 @@ namespace Evado.UniForm.Digital
       return true;
 
     }///END loadUserProfile method.
+     ///
+    //===================================================================================
+    /// <summary>
+    /// This method executes the form list query 
+    /// </summary>
+    //-----------------------------------------------------------------------------------
+    private void loadOrganisationList ( )
+    {
+      this.LogMethod ( "loadOrganisationList" );
+
+      if ( this.Session.OrganisationList == null )
+      {
+        this.Session.OrganisationList = new List<EvOrganisation> ( );
+      }
+
+      if ( this.Session.OrganisationList.Count > 0 )
+      {
+        this.LogDebug ( "Organistion layout loaded." );
+        this.LogMethodEnd ( "loadRecordLayoutList" );
+        return;
+      }
+
+      //
+      // Initialise the methods variables and object.
+      //
+      EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
+      this.Session.OrganisationType = EvOrganisation.OrganisationTypes.Null;
+      // 
+      // Query the database to retrieve a list of the records matching the query parameter values.
+      // 
+      this.Session.OrganisationList = bll_Organisations.getOrganisationList(
+         this.Session.OrganisationType, false );
+
+      this.LogDebugClass ( bll_Organisations.Log );
+
+      this.LogDebug ( "Organisation list count: " + this.Session.OrganisationList.Count );
+
+      this.LogMethodEnd ( "loadOrganisationList" );
+
+    }//END loadTrialFormList method
 
     //===================================================================================
     /// <summary>

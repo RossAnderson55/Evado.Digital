@@ -45,44 +45,14 @@ namespace Evado.Model.Digital
       Evado,
 
       /// <summary>
-      /// This enumeration defines a account holder organization
+      /// This enumeration defines a trial manager organization
       /// </summary>
-      Customer,
+      Management,
 
       /// <summary>
       /// This enumeration defines a trial manager organization
       /// </summary>
-      Project_Management,
-
-      /// <summary>
-      /// This enumeration defines a trial manager organization
-      /// </summary>
-      Project_Coordinator,
-
-      /// <summary>
-      /// This enumeration defines a trial monitor organization
-      /// </summary>
-      Monitor,
-
-      /// <summary>
-      /// This enumeration defines a trial data management organization
-      /// </summary>
-      Data_Management,
-
-      /// <summary>
-      /// This enumeration defines a trial site organization
-      /// </summary>
-      Data_Collection,
-
-      /// <summary>
-      /// This enumeration defines a lab site organization
-      /// </summary>
-      External,
-
-      /// <summary>
-      /// This enumeration defines a sponsor organization
-      /// </summary>
-      Sponsor,
+      User,
     }
 
     /// <summary>
@@ -1273,14 +1243,6 @@ namespace Evado.Model.Digital
     {
       get
       {
-        //
-        // Reset the status if not a data collection site.
-        //
-        if ( this._OrgType != OrganisationTypes.Data_Collection )
-        {
-          this._State = OrganisationStates.Null;
-        }
-        
         return this._State;
       }
       set
@@ -1737,10 +1699,19 @@ namespace Evado.Model.Digital
 
       switch ( CurrentType )
       {
-        case OrganisationTypes.Customer:
+        case OrganisationTypes.Evado:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption ( 
-              OrganisationTypes.Customer ) );
+            optionList.Add ( EvcStatics.Enumerations.getOption (
+              OrganisationTypes.Management ) );
+
+            optionList.Add ( EvcStatics.Enumerations.getOption (
+              OrganisationTypes.Management ) );
+            return optionList;
+          }
+        case OrganisationTypes.Management:
+          {
+            optionList.Add ( EvcStatics.Enumerations.getOption (
+              OrganisationTypes.Management ) );
             return optionList;
           }
         default:

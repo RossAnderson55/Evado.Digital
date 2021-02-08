@@ -75,50 +75,55 @@ namespace Evado.Dal.Clinical
     /// This constant selects all rows from EvUserProfile_View view.
     /// </summary>
 
-    private const string SQL_SELECT_QUERY = "Select * FROM EV_USER_PROFILE_VIEW ";
+    private const string SQL_SELECT_QUERY = "Select * FROM ED_USER_PROFILES ";
 
     /// <summary>
     /// This constant defines a store procedure for adding items to UserProfile table.
     /// </summary>
-    private const string STORED_PROCEDURE_AddItem = "usr_UserProfile_add";
+    private const string STORED_PROCEDURE_AddItem = "USR_USER_PROFILE_ADD";
 
     /// <summary>
     /// This constant defines a store procedure for updating items to UserProfile table.
     /// </summary>
-    private const string STORED_PROCEDURE_UpdateItem = "usr_UserProfile_update";
+    private const string STORED_PROCEDURE_UpdateItem = "USR_USER_PROFILE_UPDATE";
 
     /// <summary>
     /// This constant defines a store procedure for deleting items from UserProfile table.
     /// </summary>
-    private const string STORED_PROCEDURE_DeleteItem = "usr_UserProfile_delete";
+    private const string STORED_PROCEDURE_DeleteItem = "USR_USER_PROFILE_DELETE";
 
-    private const string DB_PATIENT_GUID = "PA_GUID";
-
-    private const string DB_CUSTOMER_GUID = "CU_GUID";
-
-    private const string DB_ORG_ID = "OrgId";
-
-    private const string DB_USER_ID = "UserId";
-
-    private const string DB_AD_NAME = "UP_ActiveDirectName";
-
-    private const string DB_COMMON_NAME = "UP_CommonName";
-
-    private const string DB_USER_GUID = "UP_Guid";
-
-    private const string DB_EXPIRY_DATE = "UP_EXPIRY_DATE";
+    public const string DB_USER_GUID = "UP_Guid";
+    public const string DB_ORG_ID = "ORG_ID";
+    public const string DB_USER_ID = "USER_ID";
+    public const string DB_AD_NAME = "UP_ACTIVE_DIRECTORY_NAME";
+    public const string DB_COMMON_NAME = "UP_COMMON_NAME";
+    public const string DB_TITLE = "UP_TITLE";
+    public const string DB_PREFIX = "UP_PREFIX";
+    public const string DB_GIVEN_NAME = "UP_GIVEN_NAME";
+    public const string DB_FAMILY_NAME = "UP_FAMILY_NAME";
+    public const string DB_SUFFIX = "UP_SUFFIX";
+    public const string DB_ADDRESS_1 = "UP_ADDRESS_1";
+    public const string DB_ADDRESS_2 = "UP_ADDRESS_2";
+    public const string DB_ADDRESS_CITY = "UP_ADDRESS_CITY";
+    public const string DB_ADDRESS_POST_CODE = "UP_ADDRESS_POST_CODE";
+    public const string DB_ADDRESS_STATE = "UP_ADDRESS_STATE";
+    public const string DB_ADDRESS_COUNTRY = "UP_ADDRESS_COUNTRY";
+    public const string DB_MOBILE_PHONE = "UP_MOBILE_PHONE";
+    public const string DB_TELEPHONE = "UP_TELEPHONE";
+    public const string DB_EMAIL_ADDRESS = "UP_EMAIL_ADDRESS";
+    public const string DB_ROLES = "UP_ROLES";
+    public const string DB_TYPE = "UP_TYPE";
+    public const string DB_UPDATED_BY_USER_ID = "UP_UPDATED_BY_USER_ID";
+    public const string DB_UPDATE_BY = "UP_UPDATE_BY";
+    public const string DB_UPDATE_DATE = "UP_UPDATE_DATE";
+    public const string DB_DELETED = "UP_DELETED";
+    public const string DB_EXPIRY_DATE = "UP_EXPIRY_DATE";
 
 
     /// <summary>
     /// This constant defines a string parameter as Guid for the UserProfile object
     /// </summary>
     private const string PARM_Guid = "@Guid";
-
-    private const string PARM_PATIENT_GUID = "@PATIENT_GUID";
-
-    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
-
-    private const string PARM_PLATFORM_GUID = "@APPLICATION_GUID";
 
     private const string PARM_ORG_ID = "@OrgId";
 
@@ -150,6 +155,8 @@ namespace Evado.Dal.Clinical
     private const string PARM_EmailAddress = "@EmailAddress";
 
     private const string PARM_RoleId = "@RoleId";
+
+    private const string PARM_TYPE = "@TYPE";
 
     private const string PARM_Title = "@Title";
 
@@ -206,6 +213,7 @@ namespace Evado.Dal.Clinical
         new SqlParameter( PARM_CommonName, SqlDbType.NVarChar, 100),
         new SqlParameter( PARM_EmailAddress, SqlDbType.NVarChar, 100),
         new SqlParameter( PARM_RoleId, SqlDbType.NVarChar, 100),
+        new SqlParameter( PARM_TYPE, SqlDbType.NVarChar, 100),
         new SqlParameter( PARM_Title, SqlDbType.NVarChar, 100),
         new SqlParameter( PARM_EXPIRY_DATE, SqlDbType.DateTime),
         new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
@@ -251,11 +259,12 @@ namespace Evado.Dal.Clinical
       parms [ 16 ].Value = UserProfile.CommonName;
       parms [ 17 ].Value = UserProfile.EmailAddress.ToLower ( );
       parms [ 18 ].Value = UserProfile.Roles;
-      parms [ 19 ].Value = UserProfile.Title;
-      parms [ 20 ].Value = UserProfile.ExpiryDate;
-      parms [ 21 ].Value = UserProfile.UpdatedByUserId;
-      parms [ 22 ].Value = UserProfile.UserCommonName;
-      parms [ 23 ].Value = DateTime.Now;
+      parms [ 19 ].Value = UserProfile.TypeId;
+      parms [ 20 ].Value = UserProfile.Title;
+      parms [ 21 ].Value = UserProfile.ExpiryDate;
+      parms [ 22 ].Value = UserProfile.UpdatedByUserId;
+      parms [ 23 ].Value = UserProfile.UserCommonName;
+      parms [ 24 ].Value = DateTime.Now;
 
 
     }//END setUsersParameters class.
@@ -289,34 +298,35 @@ namespace Evado.Dal.Clinical
       // 
       // Update the object properties.
       // 
-      profile.Guid = EvSqlMethods.getGuid ( Row, "UP_Guid" );
-      profile.OrgId = EvSqlMethods.getString ( Row, "OrgId" ) ;
+      profile.Guid = EvSqlMethods.getGuid ( Row, DB_USER_GUID );
+      profile.OrgId = EvSqlMethods.getString ( Row, DB_ORG_ID );
 
-      profile.UserId = EvSqlMethods.getString ( Row, "UserId" );
-      profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, "UP_ActiveDirectName" );
+      profile.UserId = EvSqlMethods.getString ( Row, DB_USER_ID );
+      profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, DB_AD_NAME );
+      profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
+      profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
+      profile.TypeId = EvStatics.Enumerations.parseEnumValue<EdUserProfile.UserTypesList> (
+        EvSqlMethods.getString ( Row, DB_TYPE ) );
 
-      profile.Roles = EvSqlMethods.getString ( Row, "RoleId" );
-
-      profile.Prefix = EvSqlMethods.getString ( Row, "UP_PREFIX" );
-      profile.GivenName = EvSqlMethods.getString ( Row, "UP_GIVEN_NAME" );
-      profile.FamilyName = EvSqlMethods.getString ( Row, "UP_FAMILY_NAME" );
-      profile.Suffix = EvSqlMethods.getString ( Row, "UP_SUFFIX" );
-      profile.Address_1 = EvSqlMethods.getString ( Row, "UP_ADDRESS_1" );
-      profile.Address_2 = EvSqlMethods.getString ( Row, "UP_ADDRESS_2" );
-      profile.AddressCity = EvSqlMethods.getString ( Row, "UP_ADDRESS_CITY" );
-      profile.AddressState = EvSqlMethods.getString ( Row, "UP_ADDRESS_STATE" );
-      profile.AddressPostCode = EvSqlMethods.getString ( Row, "UP_ADDRESS_POST_CODE" );
-      profile.AddressCountry = EvSqlMethods.getString ( Row, "UP_ADDRESS_COUNTRY" );
-      profile.Telephone = EvSqlMethods.getString ( Row, "UP_TELEPHONE" );
-      profile.MobilePhone = EvSqlMethods.getString ( Row, "UP_MOBILE_PHONE" );
-      profile.CommonName = EvSqlMethods.getString ( Row, "UP_CommonName" );
-      profile.EmailAddress = EvSqlMethods.getString ( Row, "UP_EmailAddress" ).ToLower ( );
-      profile.Title = EvSqlMethods.getString ( Row, "UP_Title" );
+      profile.Prefix = EvSqlMethods.getString ( Row, DB_PREFIX );
+      profile.GivenName = EvSqlMethods.getString ( Row, DB_GIVEN_NAME );
+      profile.FamilyName = EvSqlMethods.getString ( Row, DB_FAMILY_NAME );
+      profile.Suffix = EvSqlMethods.getString ( Row, DB_SUFFIX );
+      profile.Address_1 = EvSqlMethods.getString ( Row, DB_ADDRESS_1 );
+      profile.Address_2 = EvSqlMethods.getString ( Row, DB_ADDRESS_2 );
+      profile.AddressCity = EvSqlMethods.getString ( Row, DB_ADDRESS_CITY );
+      profile.AddressState = EvSqlMethods.getString ( Row, DB_ADDRESS_STATE );
+      profile.AddressPostCode = EvSqlMethods.getString ( Row, DB_ADDRESS_POST_CODE );
+      profile.AddressCountry = EvSqlMethods.getString ( Row, DB_ADDRESS_COUNTRY );
+      profile.Telephone = EvSqlMethods.getString ( Row, DB_TELEPHONE );
+      profile.MobilePhone = EvSqlMethods.getString ( Row, DB_MOBILE_PHONE );
+      profile.EmailAddress = EvSqlMethods.getString ( Row, DB_EMAIL_ADDRESS ).ToLower ( );
+      profile.Title = EvSqlMethods.getString ( Row, DB_TITLE );
       profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EvUserProfiles.DB_EXPIRY_DATE );
 
-      profile.UpdatedByUserId = EvSqlMethods.getString ( Row, "UP_UpdatedByUserId" );
-      profile.UpdatedBy = EvSqlMethods.getString ( Row, "UP_UpdatedBy" );
-      profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, "UP_UpdateDate" );
+      profile.UpdatedByUserId = EvSqlMethods.getString ( Row, DB_UPDATED_BY_USER_ID );
+      profile.UpdatedBy = EvSqlMethods.getString ( Row, DB_UPDATE_BY );
+      profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, DB_UPDATE_DATE );
 
       // 
       // Return the profile Object.
@@ -333,7 +343,8 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This method returns a list of UserProfile object.
     /// </summary>
-    /// <param name="UserType">String: The selection user type</param>
+    /// <param name="UserType">EdUserProfile.UserTypesList enumeration</param>
+    /// <param name="OrgId">String: The selection user type</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: A list of UserProfile objects.</returns>
     /// <remarks>
     /// This method consists of following steps. 
@@ -351,11 +362,13 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EdUserProfile> GetView (
-      EdUserProfile.UserTypesList UserType )
+     EdUserProfile.UserTypesList UserType,
+      String OrgId )
     {
 
       this.LogMethod ( "GetView method." );
-      this.LogDebug ( "UserType: " + UserType );
+      this.LogDebug ( "Type: " + UserType );
+      this.LogDebug ( "OrgId: " + OrgId );
 
       // 
       // Define the local variables
@@ -363,37 +376,36 @@ namespace Evado.Dal.Clinical
       String sqlQueryString;
       List<Evado.Model.Digital.EdUserProfile> view = new List<Evado.Model.Digital.EdUserProfile> ( );
 
+      if ( UserType == EdUserProfile.UserTypesList.Evado )
+      {
+        OrgId = "EVADO";
+      }
+
       // 
       // Define the SQL query parameters and load the query values.
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EvUserProfiles.PARM_PLATFORM_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter ( PARM_ORG_ID, SqlDbType.Char, 20 )
       };
-      cmdParms [ 1 ].Value = this.ClassParameters.AdapterGuid;
-      cmdParms [ 2 ].Value = UserType;
-
-      //
-      // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
-      // to ensure that Evado organisations are not displayed in the org list.
-      //
-      if ( this.ClassParameters.UserProfile.hasEvadoAccess == false )
-      {
-        cmdParms [ 1 ].Value = Guid.Empty;
-      }
+      cmdParms [ 0 ].Value = OrgId;
 
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_SELECT_QUERY;
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + DB_DELETED + " = 0) \r\n"; ;
 
       if ( UserType != EdUserProfile.UserTypesList.Null )
       {
-        sqlQueryString += " WHERE (OrgId = @OrgId) \r\n";
+        sqlQueryString += " AND (" + DB_TYPE + " = " + PARM_TYPE + ") \r\n";
       }
 
-      sqlQueryString += " ORDER BY OrgId, UserId;";
+      if ( OrgId != String.Empty )
+      {
+        sqlQueryString += " AND (" + DB_ORG_ID + " = " + PARM_ORG_ID + ") \r\n";
+      }
+
+      sqlQueryString += " ORDER BY " + DB_ORG_ID + ", " + DB_USER_ID + ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -474,14 +486,14 @@ namespace Evado.Dal.Clinical
       {
         new SqlParameter ( EvUserProfiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
       };
-      cmdParms [ 0 ].Value =  OrgId;
+      cmdParms [ 0 ].Value = OrgId;
 
       //
       // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
       // to ensure that Evado organisations are not displayed in the org list.
       //
       if ( this.ClassParameters.UserProfile.hasEvadoAccess == false
-        && OrgId.ToLower() == "evado")
+        && OrgId.ToLower ( ) == "evado" )
       {
         cmdParms [ 1 ].Value = Guid.Empty;
       }
@@ -500,14 +512,14 @@ namespace Evado.Dal.Clinical
 
       if ( PartialUserId != String.Empty )
       {
-        PartialUserId = PartialUserId.Replace( "'", "" );
+        PartialUserId = PartialUserId.Replace ( "'", "" );
 
         sqlQueryString += " AND (" + EvUserProfiles.DB_USER_ID + " LIKE '%" + PartialUserId + "%' ) \r\n";
       }
 
       if ( PartialCommonName != String.Empty )
       {
-        PartialCommonName = PartialUserId.Replace( "'", "" );
+        PartialCommonName = PartialUserId.Replace ( "'", "" );
 
         sqlQueryString += " AND (" + EvUserProfiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
       }
@@ -550,7 +562,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// This method returns a list of UserProfile object based on OrgId and useGuid condition
     /// </summary>
-    /// <param name="UserType">string: an organization identifier</param>
+    /// <param name="OrgId">string: an organization identifier</param>
     /// <param name="useGuid">Boolean: true, if Guid is used</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: A list of UserProfile objects.</returns>
     /// <remarks>
@@ -568,11 +580,14 @@ namespace Evado.Dal.Clinical
     /// 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<Evado.Model.EvOption> GetList ( EdUserProfile.UserTypesList UserType, bool useGuid )
+    public List<Evado.Model.EvOption> GetList (
+     EdUserProfile.UserTypesList Type,
+      String OrgId,
+      bool useGuid )
     {
 
       this.LogMethod ( "GetList method. " );
-      this.LogValue ( "UserType: " + UserType );
+      this.LogValue ( "OrgId: " + OrgId );
       // 
       // Define local variables
       // 
@@ -587,7 +602,7 @@ namespace Evado.Dal.Clinical
       //
       // get the list of users for this customer.
       //
-      var userProfileList = this.GetView ( UserType );
+      var userProfileList = this.GetView ( Type, OrgId );
 
       //
       // iterate through the list to create the option list of users.
@@ -1112,7 +1127,7 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_SELECT_QUERY + " WHERE (UserId = @UserId);";
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + DB_USER_ID + " = " + PARM_UserId + " );";
 
       this.LogDebug ( sqlQueryString );
 

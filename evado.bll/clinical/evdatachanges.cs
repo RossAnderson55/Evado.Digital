@@ -429,7 +429,7 @@ namespace Evado.Bll.Clinical
     private List<EvOption> GetUserList ( )
     {
       EvUserProfiles users = new EvUserProfiles ( );
-      List<EvOption> list = users.GetList ( EdUserProfile.UserTypesList.Null , true );
+      List<EvOption> list = users.GetList ( EdUserProfile.UserTypesList.Null, String.Empty , true );
 
       return list;
     }//END GetUserList class

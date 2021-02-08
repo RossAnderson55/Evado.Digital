@@ -103,7 +103,7 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod( "getView method." );
 
-      List<EvOrganisation> organisationList = this._DalOrganisations.getView (
+      List<EvOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
         EvOrganisation.OrganisationTypes.Null,
         false );
 
@@ -127,48 +127,24 @@ namespace Evado.Bll.Clinical
     /// 2. Return a list of organization objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getView ( EvOrganisation.OrganisationTypes OrgType, bool NotOrgType )
+    public List<EvOrganisation> getOrganisationList ( 
+      EvOrganisation.OrganisationTypes OrgType, 
+      bool NotOrgType )
     {
-      this.LogMethod ( "getView method." );
+      this.LogMethod ( "getOrganisationList" );
        this.LogDebug(  "Type: " + OrgType );
        this.LogDebug(  "NotOrgType: " + NotOrgType );
 
-      List<EvOrganisation> organisationList = this._DalOrganisations.getView (
+      List<EvOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
         OrgType,
         NotOrgType );
 
-       this.LogDebug(  this._DalOrganisations.Log );
+       this.LogDebugClass(  this._DalOrganisations.Log );
 
+       this.LogMethodEnd ( "getOrganisationList" );
       return organisationList;
 
     }//END getMilestoneList method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of options for organization object based on OrderBy string
-    /// </summary>
-    /// <returns>List of EvOption: a list of options for organization ResultData objects.</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Execute the method for retrieving the list of options for Organization objects based on OrderBy string
-    /// 
-    /// 2. Return a list of options for Organization objects
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( )
-    {
-      this.LogMethod ( "getList method." );
-
-      List<EvOption> optionList = this._DalOrganisations.getList (
-        EvOrganisation.OrganisationTypes.Null,
-        false );
-
-       this.LogDebug(  this._DalOrganisations.Log );
-
-      return optionList;
-
-    }//END getList method.
 
     // =====================================================================================
     /// <summary>
@@ -190,46 +166,14 @@ namespace Evado.Bll.Clinical
        this.LogDebug(  "Type: " + Type );
 
       List<EvOption> organisationList = this._DalOrganisations.getList ( 
-        Type, 
+        Type,
         false );
 
-       this.LogDebug(  this._DalOrganisations.Log );
+      this.LogDebugClass ( this._DalOrganisations.Log );
 
       return organisationList;
 
     }//END getList method
-
-    // =====================================================================================
-    /// <summary>
-    /// This class returns a list of options for organization object based on the passed parameters
-    /// </summary>
-    /// <param name="IsCurrent">Boolean: true, if select the current organization</param>
-    /// <param name="Type">EvOrganisation.OrganisationTypes: an Organisation QueryType</param>
-    /// <returns>List of EvOption: a list of options for organization ResultData objects.</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Execute the method for retrieving the list of options for Organization objects based on the passed parameters
-    /// 
-    /// 2. Return a list of options for Organization objects
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( 
-      EvOrganisation.OrganisationTypes Type,
-      bool IsCurrent )
-    {
-      this.LogMethod ( "getList method. " );
-       this.LogDebug(  "Type: " + Type );
-       this.LogDebug(  "IsCurrent: " + IsCurrent );
-
-      List<EvOption> _Organisations = this._DalOrganisations.getList ( 
-        Type, 
-        IsCurrent );
-
-       this.LogDebug(  this._DalOrganisations.Log );
-      return _Organisations;
-
-    }//END getList method.
 
     // =====================================================================================
     /// <summary>
@@ -252,7 +196,7 @@ namespace Evado.Bll.Clinical
 
       EvOrganisation organisation = this._DalOrganisations.getItem ( OrgGuid );
 
-       this.LogDebug(  this._DalOrganisations.Log );
+      this.LogDebugClass ( this._DalOrganisations.Log );
 
       return organisation;
 
@@ -278,7 +222,7 @@ namespace Evado.Bll.Clinical
 
       EvOrganisation organisation = this._DalOrganisations.getItem ( OrgId );
 
-       this.LogDebug(  this._DalOrganisations.Log );
+      this.LogDebugClass ( this._DalOrganisations.Log );
 
       return organisation;
 
@@ -331,7 +275,7 @@ namespace Evado.Bll.Clinical
         || Organisation.Action == EvOrganisation.ActionCodes.Delete_Object )	
       {
         iReturn = this._DalOrganisations.deleteItem ( Organisation );
-         this.LogDebug(  this._DalOrganisations.Log );
+        this.LogDebugClass ( this._DalOrganisations.Log );
         return iReturn;
       }
 
@@ -342,7 +286,7 @@ namespace Evado.Bll.Clinical
       if ( Organisation.Guid == Guid.Empty )
       {
         iReturn = this._DalOrganisations.addItem ( Organisation );
-         this.LogDebug(  this._DalOrganisations.Log );
+        this.LogDebugClass ( this._DalOrganisations.Log );
         return iReturn;
       }
 
@@ -350,7 +294,7 @@ namespace Evado.Bll.Clinical
       //  Update the Organisation ResultData object in the database.
       //  
       iReturn = this._DalOrganisations.updateItem ( Organisation );		// Update existing record.
-       this.LogDebug(  this._DalOrganisations.Log );
+      this.LogDebugClass ( this._DalOrganisations.Log );
       return iReturn;
 
     }//END saveItem class

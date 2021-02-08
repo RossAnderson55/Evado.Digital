@@ -79,7 +79,8 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of userprofile objects based on OrgId and OrderBy
     /// </summary>
-    /// <param name="UserType">string: an organization identifier</param>
+    /// <param name="Type">EdUserProfile.UserTypesList enumerated value</param>
+    /// <param name="OrgId">string: an organization identifier</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of userprofile objects</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -89,13 +90,15 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of userprofile objects. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public List<Evado.Model.Digital.EdUserProfile> GetView ( 
-      EdUserProfile.UserTypesList UserType )
+    public List<Evado.Model.Digital.EdUserProfile> GetView (
+     EdUserProfile.UserTypesList Type,
+      String OrgId )
     {
       this.LogMethod ( "GetView method." );
-      this.LogDebug ( "UserType: " + UserType );
+      this.LogDebug ( "OrgId: " + OrgId );
+      this.LogDebug ( "Type: " + Type );
 
-      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( UserType );
+      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( Type, OrgId );
       this.LogClass ( this._Dal_UserProfiles.Log );
 
       return profiles;
@@ -145,7 +148,7 @@ namespace Evado.Bll.Clinical
     /// <summary>
     /// This class returns a list of options for userprofile objects based on OrgId and useGuid condition
     /// </summary>
-    /// <param name="UserType">EvUserProfile.UserTypesList enumerated value</param>
+    /// <param name="OrgId">EvUserProfile.UserTypesList enumerated value</param>
     /// <param name="useGuid">Boolean: true, if the Guid is used</param>
     /// <returns>List of Evado.Model.Digital.EvUserProfile: a list of options for userprofile objects</returns>
     /// <remarks>
@@ -156,14 +159,15 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of options for userprofile objects. 
     /// </remarks>
     //  -------------------------------------------------------------------------------------
-    public List<EvOption> GetList ( 
-     EdUserProfile.UserTypesList UserType,
+    public List<EvOption> GetList (
+     EdUserProfile.UserTypesList Type,
+     String OrgId,
       bool useGuid )
     {
       LogMethod ( "GetView method." );
-      this.LogDebug ( "UserType: " + UserType );
+      this.LogDebug ( "OrgId: " + OrgId );
 
-      List<EvOption> list = this._Dal_UserProfiles.GetList ( UserType, useGuid );
+      List<EvOption> list = this._Dal_UserProfiles.GetList ( Type, OrgId, useGuid );
       this.LogDebugClass ( this._Dal_UserProfiles.Log );
 
       return list;

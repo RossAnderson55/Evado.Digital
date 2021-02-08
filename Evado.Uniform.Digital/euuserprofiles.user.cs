@@ -36,7 +36,6 @@ namespace Evado.UniForm.Digital
   /// </summary>
   public partial class EuUserProfiles : EuClassAdapterBase
   {
-
     #region Class get user profile methods
     // ==============================================================================
     /// <summary>

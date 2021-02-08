@@ -417,6 +417,8 @@ namespace Evado.UniForm.Digital
           // 
           return generateNoProfilePage ( );
         }
+        this.LogDebug ( "User Roles: {0}, ", this.Session.UserProfile.Roles );
+        this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.TypeId );
 
         //
         // Process a demonstration user registration request. 
@@ -434,6 +436,11 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 
         this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
+
+        //
+        // Load the organisation list.
+        //
+        this.loadOrganisationList ( );
 
         //
         // set the current project

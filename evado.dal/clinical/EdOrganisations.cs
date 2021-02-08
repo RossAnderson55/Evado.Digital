@@ -287,7 +287,7 @@ namespace Evado.Dal.Clinical
     /// 5. Return the organizations list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getView (
+    public List<EvOrganisation> getOrganisationList (
       EvOrganisation.OrganisationTypes Type,
       bool IsCurrent )
     {
@@ -302,28 +302,10 @@ namespace Evado.Dal.Clinical
       List<EvOrganisation> organisationList = new List<EvOrganisation> ( );
 
       // 
-      // Define the SQL query parameters and load the query values.
-      // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
-      {
-        new SqlParameter ( EdOrganisations.PARM_APPLICATION_GUID, SqlDbType.UniqueIdentifier), 
-      };
-      cmdParms [ 1 ].Value = this.ClassParameters.AdapterGuid;
-
-      //
-      // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
-      // to ensure that Evado organisations are not displayed in the org list.
-      //
-      if ( this.ClassParameters.UserProfile.hasEvadoAccess == false )
-      {
-        cmdParms [ 1 ].Value = Guid.Empty;
-      }
-
-      // 
       // Create the sql query string.
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (  (O_DELETED = 0 ) ";
+        + "WHERE (  (O_Superseded = 0 ) ";
 
       if ( IsCurrent == true )
       {
@@ -335,14 +317,14 @@ namespace Evado.Dal.Clinical
         sqlQueryString += " AND (O_ORG_TYPE = '" + Type + "') ";
       }
 
-      sqlQueryString += " ORDER BY OrgId";
+      sqlQueryString += " ) ORDER BY OrgId";
 
       this.LogDebug ( sqlQueryString );
 
       // 
       // Execute the query against the database
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, null ) )
       {
         // 
         // Iterate through the results extracting the role information.
@@ -412,7 +394,7 @@ namespace Evado.Dal.Clinical
       //
       // Get the list of organisations
       //
-      var organisationList = this.getView ( Type, IsCurrent );
+      var organisationList = this.getOrganisationList ( Type, IsCurrent );
 
       //
       // iterate through the organisation list creating the selection list.
@@ -865,14 +847,6 @@ namespace Evado.Dal.Clinical
       //
       this.LogMethod ( "deleteItem method. " );
       this.LogDebug ( "OrgId: " + organisation.OrgId );
-
-      // 
-      // Validate whether the orgnization is not in used in the trial. 
-      // 
-      if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Data_Collection )
-      {
-        return EvEventCodes.Business_Logic_Object_In_Use_Error;
-      }
 
       // 
       // Define the query parameters.
