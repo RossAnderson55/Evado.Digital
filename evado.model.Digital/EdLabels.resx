@@ -2781,4 +2781,10 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Organisation_Update_Error_Message" xml:space="preserve">
     <value>Error raised when updating an organisation.</value>
   </data>
+  <data name="Form_Llink_Content_Setting_Field_Title" xml:space="preserve">
+    <value>Command Link Content Setting:</value>
+  </data>
+  <data name="Record_Layout_EditRole_Field_Label" xml:space="preserve">
+    <value>Record Edit Roles:</value>
+  </data>
 </root>

@@ -115,7 +115,6 @@ namespace Evado.Model.Digital
       Form_Designer
     }
 
-
     /// <summary>
     /// This enumeration list 
     /// </summary>
@@ -151,6 +150,25 @@ namespace Evado.Model.Digital
       Regulatory_Change,
     }
 
+    /// <summary>
+    /// This enumeration list 
+    /// </summary>
+    public enum LinkConsentSetting
+    {
+      /// <summary>
+      /// This enumeration set the command link to display the default content.
+      /// </summary>
+      Default,
+      /// <summary>
+      /// This enumeration sets the command link to display the record summary.
+      /// </summary>
+      Display_Summary,
+
+      /// <summary>
+      /// This enumeration set the command link to display the first record field content.
+      /// </summary>
+      First_Field,
+    }
 
 
     /// <summary>
@@ -346,7 +364,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the displkay record summary field
       /// </summary>
-      DisplayRecordSummary,
+      LinkConsentSetting,
 
       /// <summary>
       /// This enumeration identifies the display related entities field
@@ -1482,8 +1500,8 @@ namespace Evado.Model.Digital
         case RecordFieldNames.DefaultPageLayout:
           return this._Design.DefaultPageLayout.ToString ( );
 
-        case RecordFieldNames.DisplayRecordSummary:
-          return this._Design.DisplayRecordSummary.ToString ( );
+        case RecordFieldNames.LinkConsentSetting:
+          return this._Design.CommandLinkContentSetting.ToString ( );
 
         case RecordFieldNames.DisplayRelatedEntities:
           return this._Design.DisplayRelatedEntities.ToString ( );
@@ -1675,9 +1693,10 @@ namespace Evado.Model.Digital
             this._Design.DefaultPageLayout = Value;
             return;
           }
-        case RecordFieldNames.DisplayRecordSummary:
+        case RecordFieldNames.LinkConsentSetting:
           {
-            this.Design.DisplayRecordSummary = EvcStatics.getBool ( Value );
+            this.Design.CommandLinkContentSetting = 
+              EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( Value );
             return;
           }
         case RecordFieldNames.DisplayRelatedEntities:

@@ -108,9 +108,10 @@ namespace Evado.Dal.Clinical
     public const string DB_EDIT_ACCESS_ROLES = "EDRL_EDIT_ACCESS_ROLES";
     public const string DB_RELATED_ENTITIES = "EDRL_RELATED_ENTITIES";
     public const string DB_DEFAULT_PAGE_LAYOUT = "EDRL_DEFAULT_PAGE_LAYOUT";
-    public const string DB_DISPLAY_RECORD_SUMMARY = "EDRL_DISPLAY_RECORD_SUMMARY";
+    public const string DB_LINK_CONTENT_SETTING = "EDRL_LINK_CONTENT_SETTING";
     public const string DB_DISPLAY_ENTITIES = "EDRL_DISPLAY_ENTITIES";
     public const string DB_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
+    public const string DB_RECORD_PRFIX = "EDRL_RECORD_PRFIX";
 
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
@@ -142,9 +143,10 @@ namespace Evado.Dal.Clinical
     private const string PARM_EDIT_ACCESS_ROLES = "@EDIT_ACCESS_ROLES";
     private const string PARM_RELATED_ENTITIES = "@RELATED_ENTITIES";
     private const string PARM_DEFAULT_PAGE_LAYOUT = "@DEFAULT_PAGE_LAYOUT";
-    private const string PARM_DISPLAY_RECORD_SUMMARY = "@DISPLAY_RECORD_SUMMARY";
+    private const string PARM_LINK_CONTENT_SETTING = "@LINK_CONTENT_SETTING";
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
     private const string PARM_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
+    private const string PARM_RECORD_PRFIX = "EDRL_RECORD_PRFIX";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -200,10 +202,11 @@ namespace Evado.Dal.Clinical
         new SqlParameter( EdRecordLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
 
         new SqlParameter( EdRecordLayouts.PARM_RELATED_ENTITIES, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdRecordLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdRecordLayouts.PARM_DISPLAY_RECORD_SUMMARY, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdRecordLayouts.PARM_LINK_CONTENT_SETTING, SqlDbType.NVarChar, 50),
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayouts.PARM_RECORD_PRFIX, SqlDbType.NVarChar, 5),
 
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
@@ -260,12 +263,14 @@ namespace Evado.Dal.Clinical
       cmdParms [ 16 ].Value = Form.Design.EditAccessRoles;
       cmdParms [ 17 ].Value = Form.Design.RelatedEntities;
       cmdParms [ 18 ].Value = Form.Design.DefaultPageLayout;
-      cmdParms [ 19 ].Value = Form.Design.DisplayRecordSummary;
+      cmdParms [ 19 ].Value = Form.Design.CommandLinkContentSetting;
+
       cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
       cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
-      cmdParms [ 22 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 23 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 24 ].Value = DateTime.Now;
+      cmdParms [ 22 ].Value = Form.Design.RecordPrefix;
+      cmdParms [ 23 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 25 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -330,9 +335,15 @@ namespace Evado.Dal.Clinical
       layout.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RELATED_ENTITIES );
       layout.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_DEFAULT_PAGE_LAYOUT );
 
-      layout.Design.DisplayRecordSummary = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_RECORD_SUMMARY );
+      string value = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LINK_CONTENT_SETTING );
+      if ( value != String.Empty )
+      {
+        layout.Design.CommandLinkContentSetting =
+          Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( value );
+      }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
+      layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PRFIX );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdRecordLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );

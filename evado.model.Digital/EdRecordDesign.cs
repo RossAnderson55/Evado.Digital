@@ -163,6 +163,11 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property contains a record id prefix.
+    /// </summary>
+    public string RecordPrefix { get; set; }
+
+    /// <summary>
     /// This property contains a form approval for display on records.
     /// </summary>
     public string Approval { get; set; }
@@ -213,12 +218,6 @@ namespace Evado.Model.Digital
       set
       {
         this._TypeId = value;
-
-        if ( ( int ) value < 0 )
-        {
-          int typeId = ( int ) value;
-          this._TypeId = ( EdRecordTypes ) ( -typeId );
-        }
       }
     }
 
@@ -227,10 +226,21 @@ namespace Evado.Model.Digital
     /// </summary>
     public object DefaultPageLayout { get; set; }
 
+    private EdRecord.LinkConsentSetting _CommandLinkContentSetting = EdRecord.LinkConsentSetting.Default;
     /// <summary>
-    /// This property indicated whether record summary content is to be displayed on command titles of the page.
+    /// This property indicated whether record summary content is to be displayed in command titles of the page.
     /// </summary>
-    public bool DisplayRecordSummary { get; set; }
+    public EdRecord.LinkConsentSetting CommandLinkContentSetting
+    {
+      get
+      {
+        return this._CommandLinkContentSetting;
+      }
+      set
+      {
+        this._CommandLinkContentSetting = value;
+      }
+    }
 
     /// <summary>
     /// This property indicated whether related entities are to be displayed at the bottom of the page.

@@ -83,5 +83,62 @@ CREATE TABLE [dbo].[ED_ORGANISATIONS](
 END
 GO
 
+IF NOT EXISTS( SELECT 1 FROM ED_USER_PROFILES 
+          WHERE (USER_ID = N'Ross' ) )
+BEGIN
+Insert Into ED_USER_PROFILES 
+  ([UP_GUID]
+  ,[USER_ID]
+  ,[ORG_ID]
+  ,[UP_ACTIVE_DIRECTORY_NAME]
+  ,[UP_COMMON_NAME]
+  ,[UP_EMAIL_ADDRESS]
+  ,[UP_ROLES]
+  ,[UP_TYPE]
+  ,[UP_EXPIRY_DATE]
+  ,[UP_UPDATED_BY_USER_ID]
+  ,[UP_UPDATE_BY]
+  ,[UP_UPDATE_DATE]
+  ,[UP_DELETED] ) 
+values 	
+ (NEWID(),
+ 'Ross',
+ 'Evado',
+ 'Ross',
+ 'Ross Anderson',
+ 'ross@evado.com',
+ 'Administrator',
+ 'Evado',
+ '31 dec 2099',
+ 'Ross',
+ 'Ross Anderson',
+  GETDATE(), 0 );
+ END
+ GO
+ 
+IF NOT EXISTS( SELECT 1 FROM ED_ORGANISATIONS 
+          WHERE (ORG_ID = N'Evado' ) )
+BEGIN
+Insert Into ED_ORGANISATIONS 
+  (O_GUID,
+	 ORG_ID,
+   O_NAME,
+	 O_ORG_TYPE,
+   O_UPDATED_BY_USER_ID,
+   O_UPDATE_BY,
+   O_UPDATE_DATE,
+   O_DELETED ) 
+values 	
+ (NEWID(),
+ 'Evado',
+ 'Evado Digital',
+ 'Evado',
+ 'Ross',
+ 'Ross Anderson',
+  GETDATE(), 0 );
+ END
+ GO
+ 
+ 
 PRINT N'FINISH: 006_R1.0_ED_USERS_ED_ORGANISATIONS_CREATE_TABLES.'; 
 GO

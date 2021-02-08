@@ -317,6 +317,14 @@ namespace Evado.UniForm.Digital
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
+      pageField = pageGroup.createCheckBoxListField (
+        EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
+        EdLabels.Record_Layout_EditRole_Field_Label,
+        this.Session.RecordLayout.Design.UpdateReason,
+        optionList );
+
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
       //
       // disable edit acces to fields that should not be accessed once issued.
       //
@@ -325,6 +333,18 @@ namespace Evado.UniForm.Digital
         pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
       }
 
+      //
+      // Form Update reason
+      //
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkConsentSetting), false );
+
+      pageField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.LinkConsentSetting.ToString ( ),
+        EdLabels.Form_Llink_Content_Setting_Field_Title,
+        this.Session.RecordLayout.Design.CommandLinkContentSetting,
+        optionList );
+
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
       //
       // Form Update reason
       //

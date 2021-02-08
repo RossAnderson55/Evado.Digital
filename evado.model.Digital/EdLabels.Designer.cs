@@ -3126,6 +3126,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command Link Content Setting:.
+        /// </summary>
+        public static string Form_Llink_Content_Setting_Field_Title {
+            get {
+                return ResourceManager.GetString("Form_Llink_Content_Setting_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new form field .
         /// </summary>
         public static string Form_New_Field_Page_Command_Title {
@@ -5963,6 +5972,15 @@ namespace Evado.Model.Digital {
         public static string Record_Layout_AccessRole_Field_Label {
             get {
                 return ResourceManager.GetString("Record_Layout_AccessRole_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record Edit Roles:.
+        /// </summary>
+        public static string Record_Layout_EditRole_Field_Label {
+            get {
+                return ResourceManager.GetString("Record_Layout_EditRole_Field_Label", resourceCulture);
             }
         }
         
