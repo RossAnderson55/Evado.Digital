@@ -2050,10 +2050,6 @@ namespace Evado.UniForm.Digital
       {
         return;
       }
-      if ( PageGroup.Id == Guid.Empty )
-      {
-        return;
-      }
 
       //
       // Add the save groupCommand for the page.

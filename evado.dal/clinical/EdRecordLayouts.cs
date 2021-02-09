@@ -110,7 +110,7 @@ namespace Evado.Dal.Clinical
     public const string DB_LINK_CONTENT_SETTING = "EDRL_LINK_CONTENT_SETTING";
     public const string DB_DISPLAY_ENTITIES = "EDRL_DISPLAY_ENTITIES";
     public const string DB_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
-    public const string DB_RECORD_PRFIX = "EDRL_RECORD_PRFIX";
+    public const string DB_RECORD_PREFIX = "EDRL_RECORD_PREFIX";
 
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
@@ -202,7 +202,7 @@ namespace Evado.Dal.Clinical
 
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 5),
+        new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -337,7 +337,7 @@ namespace Evado.Dal.Clinical
       }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
-      layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PRFIX );
+      layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdRecordLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
@@ -940,6 +940,7 @@ namespace Evado.Dal.Clinical
     public EvEventCodes UpdateItem ( EdRecord Layout )
     {
       this.LogMethod ( "updateItem() method." );
+      this.LogValue ( "RecordPrefix." + Layout.Design.RecordPrefix );
       // 
       // Initialise the method status and the old form object
       // 

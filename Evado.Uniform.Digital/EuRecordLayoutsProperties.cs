@@ -330,15 +330,23 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
         EdLabels.Record_Layout_AccessRole_Field_Label,
-        this.Session.RecordLayout.Design.UpdateReason,
+        this.Session.RecordLayout.Design.EditAccessRoles,
         optionList );
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
 
       pageField = pageGroup.createCheckBoxListField (
-        EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
+        EdRecord.RecordFieldNames.EditAccessRoles.ToString ( ),
         EdLabels.Record_Layout_EditRole_Field_Label,
-        this.Session.RecordLayout.Design.UpdateReason,
+        this.Session.RecordLayout.Design.ReadAccessRoles,
         optionList );
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
@@ -363,6 +371,14 @@ namespace Evado.UniForm.Digital
         optionList );
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
       //
       // Form Update reason
       //
@@ -375,6 +391,14 @@ namespace Evado.UniForm.Digital
         optionList );
 
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
 
       //
       // disable edit acces to fields that should not be accessed once issued.
