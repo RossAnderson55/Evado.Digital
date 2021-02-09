@@ -333,11 +333,11 @@ namespace Evado.UniForm.Digital
 
       // 
       // if the design reference object exists include the 
-      // link using markdown markup.
+      // using markdown markup.
       // 
       if ( Form.Design.HttpReference != String.Empty )
       {
-        formHeaderGroup.Description = "[[a href='" + Form.Design.HttpReference + "' target='_link']]"+ Form.LinkText + "[[/a]]";
+        formHeaderGroup.Description = "[" + Form.LinkText + "] (" + Form.Design.HttpReference + ")";
         formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
       else
