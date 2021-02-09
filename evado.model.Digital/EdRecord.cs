@@ -362,6 +362,11 @@ namespace Evado.Model.Digital
       DefaultPageLayout,
 
       /// <summary>
+      /// This enumeration identifies the record prefix field
+      /// </summary>
+      RecordPrefix,
+
+      /// <summary>
       /// This enumeration identifies the displkay record summary field
       /// </summary>
       LinkConsentSetting,
@@ -1691,6 +1696,11 @@ namespace Evado.Model.Digital
         case RecordFieldNames.DefaultPageLayout:
           {
             this._Design.DefaultPageLayout = Value;
+            return;
+          }
+        case RecordFieldNames.RecordPrefix:
+          {
+            this._Design.RecordPrefix = Value;
             return;
           }
         case RecordFieldNames.LinkConsentSetting:

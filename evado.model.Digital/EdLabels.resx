@@ -2787,4 +2787,7 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Record_Layout_EditRole_Field_Label" xml:space="preserve">
     <value>Record Edit Roles:</value>
   </data>
+  <data name="Record_Layout_Record_Prefix_Field_Label" xml:space="preserve">
+    <value>Record Prefix: </value>
+  </data>
 </root>

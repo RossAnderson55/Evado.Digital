@@ -5985,6 +5985,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record Prefix: .
+        /// </summary>
+        public static string Record_Layout_Record_Prefix_Field_Label {
+            get {
+                return ResourceManager.GetString("Record_Layout_Record_Prefix_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Administration Group.
         /// </summary>
         public static string Record_List_Admin_Group_Title {

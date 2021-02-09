@@ -491,11 +491,9 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
       };
-      cmdParms [ 0 ].Value = QueryParameters.ApplicationId;
-      cmdParms [ 1 ].Value = QueryParameters.LayoutId;
+      cmdParms [ 0 ].Value = QueryParameters.LayoutId;
 
       //
       // Generate the SQL query string.
@@ -808,12 +806,10 @@ namespace Evado.Dal.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public List<EdRecord> getRecordList (
-      String ApplicationId,
       String LayoutId,
       EdRecordObjectStates State )
     {
       this.LogMethod ( "getRecordList method " );
-      this.LogValue ( "ApplicationId: " + ApplicationId );
       this.LogValue ( "LayoutId: " + LayoutId );
       this.LogValue ( "State: " + State );
 
@@ -828,11 +824,9 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdRecordLayouts.PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
       };
-      cmdParms [ 0 ].Value = ApplicationId;
-      cmdParms [ 1 ].Value = LayoutId;
+      cmdParms [ 0 ].Value =LayoutId;
 
       // 
       // Generate the SQL query string.

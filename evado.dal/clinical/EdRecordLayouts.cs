@@ -88,7 +88,6 @@ namespace Evado.Dal.Clinical
     //
     // The field and parameter values for the SQl customer filter 
     //
-    public const string DB_CUSTOMER_GUID = "CU_GUID";
     public const string DB_LAYOUT_GUID = "EDRL_GUID";
     public const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
     public const string DB_STATE = "EDRL_STATE";
@@ -122,9 +121,7 @@ namespace Evado.Dal.Clinical
     /// <summary>
     /// Define the query parameter names.
     /// </summary>
-    public const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
     private const string PARM_LAYOUT_GUID = "@GUID";
-    public const string PARM_APPLICATION_ID = "@APPLICATION_ID";
     public const string PARM_LAYOUT_ID = "@LAYOUT_ID";
     private const string PARM_STATE = "@STATE";
     private const string PARM_TITLE = "@TITLE";
@@ -145,8 +142,8 @@ namespace Evado.Dal.Clinical
     private const string PARM_DEFAULT_PAGE_LAYOUT = "@DEFAULT_PAGE_LAYOUT";
     private const string PARM_LINK_CONTENT_SETTING = "@LINK_CONTENT_SETTING";
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
-    private const string PARM_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
-    private const string PARM_RECORD_PRFIX = "EDRL_RECORD_PRFIX";
+    private const string PARM_DISPLAY_AUTHOR_DETAILS = "@DISPLAY_AUTHOR_DETAILS";
+    private const string PARM_RECORD_PREFIX = "@RECORD_PREFIX";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -181,7 +178,6 @@ namespace Evado.Dal.Clinical
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdRecordLayouts.PARM_CUSTOMER_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20),
         new SqlParameter( EdRecordLayouts.PARM_STATE, SqlDbType.NVarChar, 20),
@@ -190,9 +186,9 @@ namespace Evado.Dal.Clinical
         new SqlParameter( EdRecordLayouts.PARM_INSTRUCTIONS, SqlDbType.NText),
         new SqlParameter( EdRecordLayouts.PARM_DESCRIPTION, SqlDbType.NText),   
         new SqlParameter( EdRecordLayouts.PARM_UPDATE_REASON, SqlDbType.NVarChar, 50),
-
         new SqlParameter( EdRecordLayouts.PARM_RECORD_CATEGORY, SqlDbType.NVarChar, 100),
         new SqlParameter( EdRecordLayouts.PARM_TYPE_ID, SqlDbType.VarChar, 25),
+
         new SqlParameter( EdRecordLayouts.PARM_VERSION, SqlDbType.Float),
         new SqlParameter( EdRecordLayouts.PARM_JAVA_SCRIPT, SqlDbType.NText),   
         new SqlParameter( EdRecordLayouts.PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
@@ -200,14 +196,13 @@ namespace Evado.Dal.Clinical
         new SqlParameter( EdRecordLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_READ_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
-
         new SqlParameter( EdRecordLayouts.PARM_RELATED_ENTITIES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 50),
         new SqlParameter( EdRecordLayouts.PARM_LINK_CONTENT_SETTING, SqlDbType.NVarChar, 50),
+
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
-        new SqlParameter( EdRecordLayouts.PARM_RECORD_PRFIX, SqlDbType.NVarChar, 5),
-
+        new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 5),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -308,7 +303,6 @@ namespace Evado.Dal.Clinical
       // 
       // Extract the compatible data row values to the form object. 
       // 
-      layout.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_CUSTOMER_GUID );
       layout.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
       layout.LayoutId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LAYOUT_ID );
       layout.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
@@ -656,10 +650,9 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_APPLICATION_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_TYPE_ID, SqlDbType.VarChar, 30),
       };
-      cmdParms [ 2 ].Value = Layout.Design.TypeId;
+      cmdParms [ 0 ].Value = Layout.Design.TypeId;
 
       //
       // Build the query string
@@ -667,8 +660,8 @@ namespace Evado.Dal.Clinical
       _sqlQueryString = _sqlQuery_View
         + "WHERE (" + EdRecordLayouts.DB_TYPE_ID + " = " + EdRecordLayouts.PARM_TYPE_ID + " ) "
         + " AND ( (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Draft + "' ) "
-        + "  OR (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Reviewed + "')) "
-        + ") ORDER BY "+ EdRecordLayouts.DB_LAYOUT_ID + ";";
+        + "  OR (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Reviewed + "') ) "
+        + " ORDER BY "+ EdRecordLayouts.DB_LAYOUT_ID + ";";
 
       this.LogValue ( _sqlQueryString );
 

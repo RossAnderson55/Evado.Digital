@@ -214,7 +214,6 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      Page.EditAccess = Model.UniForm.EditAccess.Disabled;
       Boolean bInDesign = false;
 
       if ( this.Session.RecordLayout.State != EdRecordObjectStates.Form_Issued
@@ -302,6 +301,25 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.Instructions,
         50, 4 );
       pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+
+      //
+      // Form title
+      //
+      pageField = pageGroup.createTextField (
+        EdRecord.RecordFieldNames.RecordPrefix,
+        EdLabels.Record_Layout_Record_Prefix_Field_Label,
+        this.Session.RecordLayout.Design.RecordPrefix,
+        5 );
+      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+
+      //
+      // disable edit acces to fields that should not be accessed once issued.
+      //
+      if ( bInDesign == false )
+      {
+        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
 
       //
       // Form Update reason
