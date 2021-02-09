@@ -258,7 +258,7 @@ namespace Evado.Dal.Clinical
       cmdParms [ 16 ].Value = Form.Design.EditAccessRoles;
       cmdParms [ 17 ].Value = Form.Design.RelatedEntities;
       cmdParms [ 18 ].Value = Form.Design.DefaultPageLayout;
-      cmdParms [ 19 ].Value = Form.Design.CommandLinkContentSetting;
+      cmdParms [ 19 ].Value = Form.Design.LinkContentSetting;
 
       cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
       cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
@@ -332,7 +332,7 @@ namespace Evado.Dal.Clinical
       string value = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LINK_CONTENT_SETTING );
       if ( value != String.Empty )
       {
-        layout.Design.CommandLinkContentSetting =
+        layout.Design.LinkContentSetting =
           Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( value );
       }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );

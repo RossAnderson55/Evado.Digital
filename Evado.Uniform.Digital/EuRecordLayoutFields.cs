@@ -614,7 +614,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Title );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       //
@@ -625,7 +625,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Identifier_Field_Label,
         this.Session.RecordField.FieldId,
         20 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       if ( bEditType == false )
       {
@@ -643,7 +643,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Type_Field_Label,
         this.Session.RecordField.TypeId.ToString ( ),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       if ( bEditType == false )
       {
@@ -662,7 +662,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Subject_Field_Label,
         this.Session.RecordField.Design.Title,
         150 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Create the Section list list,
@@ -689,7 +689,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Form_Field_Section_Field_Label,
           this.Session.RecordField.Design.SectionNo,
           optionList );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -710,7 +710,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Order,
         0,
         200 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form field static text Fill the instruction field with text
@@ -722,7 +722,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Form_Field_Read_Only_Text_Field_Label,
           this.Session.RecordField.Design.Instructions,
           150, 20 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         String instructions = EdLabels.Form_Field_Instruction_Field_Description;
 
@@ -738,7 +738,7 @@ namespace Evado.UniForm.Digital
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
           this.Session.RecordField.Design.HideField );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         return;
       }//END read only field.
@@ -754,7 +754,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Form_Field_External_URL_Field_Label,
           this.Session.RecordField.Design.Instructions,
           100 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         this.Session.RecordField.Design.AiDataPoint = false;
         this.Session.RecordField.Design.Mandatory = false;
@@ -785,7 +785,7 @@ namespace Evado.UniForm.Digital
           iWidth,
           0,
           1000 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         //
         // Form field image or video height
         //
@@ -795,7 +795,7 @@ namespace Evado.UniForm.Digital
           iHeight,
           0,
           1000 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Form hide hidden field
@@ -804,7 +804,7 @@ namespace Evado.UniForm.Digital
           EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
           this.Session.RecordField.Design.HideField );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         this.Session.RecordField.Design.AiDataPoint = false;
         this.Session.RecordField.Design.Mandatory = false;
@@ -820,7 +820,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Instructions_Field_Label,
         this.Session.RecordField.Design.Instructions,
         150, 5 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form reference
@@ -830,7 +830,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Reference_Field_Label,
         this.Session.RecordField.Design.HttpReference,
         50 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form field category
@@ -843,7 +843,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Form_Field_Category_Field_Title,
           this.Session.RecordField.Design.FieldCategory,
           20 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -881,14 +881,14 @@ namespace Evado.UniForm.Digital
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.RecordField.Design.AnalogueLegendStart,
           50 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         groupField = pageGroup.createTextField (
           EdRecordField.FieldClassFieldNames.AnalogueLegendFinish.ToString ( ),
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.RecordField.Design.AnalogueLegendFinish,
           50 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -908,7 +908,7 @@ namespace Evado.UniForm.Digital
           stOptions,
           90,
           10 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
 
@@ -926,7 +926,7 @@ namespace Evado.UniForm.Digital
           EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
           EdLabels.Form_Field_Summary_Field_Label,
           this.Session.RecordField.Design.SummaryField );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -938,7 +938,7 @@ namespace Evado.UniForm.Digital
           EdRecordField.FieldClassFieldNames.Mandatory.ToString ( ),
           EdLabels.Form_Field_Mandatory_Field_Label,
           this.Session.RecordField.Design.Mandatory );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Form hide ResultData point field
@@ -951,7 +951,7 @@ namespace Evado.UniForm.Digital
             EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
             EdLabels.Form_Field_Date_Point_Field_Label,
             this.Session.RecordField.Design.AiDataPoint );
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
         }
       }
       //
@@ -961,7 +961,7 @@ namespace Evado.UniForm.Digital
         EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
         EdLabels.Form_Field_Hide_Field_Label,
         this.Session.RecordField.Design.HideField );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END createGeneralFieldGroup Method
 
@@ -1181,7 +1181,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.RecordField.Design.UnitScaling,
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // form field numeric unit
@@ -1191,7 +1191,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.RecordField.Design.Unit,
         10 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form lower validation range value 
@@ -1202,7 +1202,7 @@ namespace Evado.UniForm.Digital
         0,
         -1000000,
         1000000 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.Value = this.Session.RecordField.Design.DefaultValue;
 
@@ -1220,7 +1220,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Design.ValidationLowerLimit,
         -1000000,
         1000000 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form upper validation range value 
@@ -1231,7 +1231,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Design.ValidationUpperLimit,
         -1000000,
         1000000 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form lower Alert range value 
@@ -1242,7 +1242,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Design.AlertLowerLimit,
         -1000000,
         1000000 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form upper Alert range value 
@@ -1253,7 +1253,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Design.AlertUpperLimit,
         -1000000,
         1000000 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form lower Alert range value 
@@ -1264,7 +1264,7 @@ namespace Evado.UniForm.Digital
           this.Session.RecordField.Design.NormalRangeLowerLimit,
           -1000000,
           1000000 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Form upper Alert range value 
@@ -1275,7 +1275,7 @@ namespace Evado.UniForm.Digital
           this.Session.RecordField.Design.NormalRangeUpperLimit,
           -1000000,
           1000000 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
 
     }//END createFieldNumericValidationGroup Method

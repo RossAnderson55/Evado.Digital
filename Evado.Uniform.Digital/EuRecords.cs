@@ -813,7 +813,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordSelectionLayoutId,
         optionList );
 
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
       selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       // 
@@ -827,7 +827,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordSelectionState,
         optionList );
 
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
       selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       // 
@@ -1186,7 +1186,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordSelectionLayoutId,
         this.Session.IssueFormList );
 
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Define the include draft record selection option.
@@ -1195,7 +1195,7 @@ namespace Evado.UniForm.Digital
         EuRecords.CONST_INCLUDE_TEST_SITES,
         EdLabels.Record_Export_Include_Test_Sites_Field_Title,
         this.Session.FormRecords_IncludeTestSites );
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Define the include draft record selection option.
@@ -1204,7 +1204,7 @@ namespace Evado.UniForm.Digital
         EuRecords.CONST_INCLUDE_DRAFT_RECORDS,
         EdLabels.Record_Export_Include_Draft_Record_Field_Title,
         this.Session.FormRecords_IncludeDraftRecords );
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Define the include free text ResultData selection option.
@@ -1213,7 +1213,7 @@ namespace Evado.UniForm.Digital
         EuRecords.CONST_INCLUDE_FREE_TEXT_DATA,
         EdLabels.Record_Export_Include_FreeText_data_Field_Title,
         this.Session.FormRecords_IncludeFreeTextData );
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Add the selection groupCommand
@@ -1868,7 +1868,7 @@ namespace Evado.UniForm.Digital
       // 
       // Call the page generation method
       // 
-      bool result = pageGenerator.generateForm (
+      bool result = pageGenerator.generateLayout (
         this.Session.Record,
         ClientDataObject.Page,
         this.UniForm_BinaryFilePath );

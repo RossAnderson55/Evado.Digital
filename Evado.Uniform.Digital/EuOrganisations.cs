@@ -647,7 +647,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         this.Session.AdminOrganisation.OrgId, 10 );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -671,7 +671,7 @@ namespace Evado.UniForm.Digital
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminOrganisation.OrgType ),
         typeList );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.Mandatory = true;
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true )
@@ -691,7 +691,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Organisation_Name_Field_Label,
         this.Session.AdminOrganisation.Name,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.Mandatory = true;
 
       pageField.setBackgroundColor (
@@ -705,7 +705,7 @@ namespace Evado.UniForm.Digital
         EvOrganisation.OrganisationFieldNames.Address,
         EdLabels.Organisation_Address_Field_Label,
         this.Session.AdminOrganisation.Address );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the organisation telephone number object
@@ -714,7 +714,7 @@ namespace Evado.UniForm.Digital
         EvOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
         EdLabels.Organisation_Telephone_Field_Label,
         this.Session.AdminOrganisation.Telephone );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -723,7 +723,7 @@ namespace Evado.UniForm.Digital
         EvOrganisation.OrganisationFieldNames.Fax_Phone.ToString ( ),
         EdLabels.Organisation_Fax_Number_Field_Label,
         this.Session.AdminOrganisation.FaxPhone );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the organisation fax number object
@@ -732,7 +732,7 @@ namespace Evado.UniForm.Digital
         EvOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
         EdLabels.Organisation_Email_Field_Label,
         this.Session.AdminOrganisation.EmailAddress );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the organisation current object
@@ -741,7 +741,7 @@ namespace Evado.UniForm.Digital
         EuOrganisations.CONST_CURRENT_FIELD_ID,
         EdLabels.Organisation_Current_Field_Label,
         this.Session.AdminOrganisation.Current );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getDataObject_DetailsGroup" );
 

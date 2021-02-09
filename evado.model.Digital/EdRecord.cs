@@ -596,11 +596,58 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this._LinkText;
-      }
-      set
-      {
-        this._LinkText = value;
+        //
+        // select the link display 
+        //
+        switch ( this.Design.LinkContentSetting )
+        {
+          default:
+            {
+              if ( this.RecordId == String.Empty )
+              {
+                string link = String.Format (
+                    EdLabels.Record_Page_Header_Text,
+                     "RECORD-ID",
+                    this.LayoutId,
+                    this.Title );
+
+                if ( this.Design.DisplayAuthorDetails == true )
+                {
+                  link += " " + this.Updated;
+                }
+
+                return link;
+              }
+              else
+              {
+                string link = String.Format (
+                    EdLabels.Record_Page_Header_Text,
+                    this.RecordId,
+                    this.LayoutId,
+                    this.Title );
+
+                if ( this.Design.DisplayAuthorDetails == true )
+                {
+                  link += " " + this.Updated;
+                }
+
+                return link;
+              }
+            }//END default case
+          case LinkConsentSetting.Display_Summary:
+            {
+              return this.RecordSummary;
+            }
+          case LinkConsentSetting.First_Field:
+            {
+              String description = this.RecordSummary;
+              if ( this.Fields.Count > 1 )
+              {
+                description = this.Fields [ 0 ].ItemValue;
+              }
+              return description;
+            }
+        }//END switch statement
       }
     }
 
@@ -1134,7 +1181,7 @@ namespace Evado.Model.Digital
               this.Design.ReadAccessRoles,
               UserRoleIds );
 
-            if( bReadRole == true )
+            if ( bReadRole == true )
             {
               this.FormAccessRole = FormAccessRoles.Record_Reader;
             }
@@ -1142,8 +1189,8 @@ namespace Evado.Model.Digital
             bool bEditRole = EvStatics.CompareDelimtedStrings (
               this.Design.EditAccessRoles,
               UserRoleIds );
-            
-            if( bReadRole == true )
+
+            if ( bReadRole == true )
             {
               this.FormAccessRole = FormAccessRoles.Record_Author;
             }
@@ -1506,7 +1553,7 @@ namespace Evado.Model.Digital
           return this._Design.DefaultPageLayout.ToString ( );
 
         case RecordFieldNames.LinkConsentSetting:
-          return this._Design.CommandLinkContentSetting.ToString ( );
+          return this._Design.LinkContentSetting.ToString ( );
 
         case RecordFieldNames.DisplayRelatedEntities:
           return this._Design.DisplayRelatedEntities.ToString ( );
@@ -1705,7 +1752,7 @@ namespace Evado.Model.Digital
           }
         case RecordFieldNames.LinkConsentSetting:
           {
-            this.Design.CommandLinkContentSetting = 
+            this.Design.LinkContentSetting =
               EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( Value );
             return;
           }

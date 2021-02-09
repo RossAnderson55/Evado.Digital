@@ -392,7 +392,7 @@ namespace Evado.UniForm.Digital
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
     }//END getReports_List_Selection_Group method

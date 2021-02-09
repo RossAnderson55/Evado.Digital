@@ -949,7 +949,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Label_Project_Id,
         this.Session.BinaryFile.TrialId );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the project id object
@@ -967,31 +967,31 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Binary_File_Id_Field_Title,
         this.Session.BinaryFile.FileId );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Title_Field_Title,
         this.Session.BinaryFile.Title );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Comment_Field_Title,
         this.Session.BinaryFile.Comments );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Version_Field_Title,
         this.Session.BinaryFile.Version.ToString ( "##" ) );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Status_Field_Title,
          EvStatics.Enumerations.enumValueToString ( this.Session.BinaryFile.Status ) );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       if ( this.Session.BinaryFile.UploadDate != EvStatics.CONST_DATE_NULL )
       {
@@ -999,7 +999,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
           EdLabels.Binary_File_Upload_Date_Field_Title,
           this.Session.BinaryFile.UploadDate.ToString ( "dd MMM yyyy" ) );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       if ( this.Session.BinaryFile.ReleaseDate != EvStatics.CONST_DATE_NULL )
@@ -1008,7 +1008,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
           EdLabels.Binary_File_Release_Date_Field_Title,
           this.Session.BinaryFile.ReleaseDate.ToString ( "dd MMM yyyy" ) );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       if ( this.Session.BinaryFile.SupersededDate != EvStatics.CONST_DATE_NULL )
@@ -1017,20 +1017,20 @@ namespace Evado.UniForm.Digital
         String.Empty,
           EdLabels.Binary_File_Superseded_Date_Field_Title,
           this.Session.BinaryFile.SupersededDate.ToString ( "dd MMM yyyy" ) );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Name_Field_Title,
         this.Session.BinaryFile.FileName );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_MineType_Field_Title,
         this.Session.BinaryFile.MimeType );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getFileMetadata_Group" );
 
@@ -1143,7 +1143,7 @@ namespace Evado.UniForm.Digital
         EvBinaryFileMetaData.ClassFieldNames.FileId.ToString ( ),
         EdLabels.Binary_File_Id_Field_Title,
         this.Session.BinaryFile.FileId, 20 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the file title field
@@ -1152,7 +1152,7 @@ namespace Evado.UniForm.Digital
         EvBinaryFileMetaData.ClassFieldNames.Title.ToString ( ),
         EdLabels.Binary_File_Title_Field_Title,
         this.Session.BinaryFile.Title, 100 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the file comments/description field.
@@ -1161,7 +1161,7 @@ namespace Evado.UniForm.Digital
         EvBinaryFileMetaData.ClassFieldNames.Comments.ToString ( ),
         EdLabels.Binary_File_Comment_Field_Title,
         String.Empty, 100 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the binary file upload group.
@@ -1170,7 +1170,7 @@ namespace Evado.UniForm.Digital
         EvBinaryFileMetaData.ClassFieldNames.FileName.ToString ( ),
         EdLabels.Binary_File_Name_Field_Title,
         this.Session.BinaryFile.FileName );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       //Add the group UPLOAD command.

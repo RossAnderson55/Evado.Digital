@@ -385,7 +385,7 @@ namespace Evado.UniForm.Digital
         "Platform identifier: ",
         this.Session.MenuPlatformId,
         optionList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       // 
@@ -399,7 +399,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Menu_Group_ID,
         this.Session.MenuGroupIdentifier,
         groupList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -745,7 +745,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Menu_Page_Id_Field_Label,
         this.Session.MenuItem.PageId.ToString ( ),
         optionList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the customer name object
@@ -756,7 +756,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         this.Session.MenuItem.Title,
         20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the customer name object
@@ -767,7 +767,7 @@ namespace Evado.UniForm.Digital
         this.Session.MenuItem.Order,
         0,
         200 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the customer name object
@@ -783,7 +783,7 @@ namespace Evado.UniForm.Digital
         roles,
         roleList );
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = EdLabels.Menu_Role_List_Field_Description;
 

@@ -465,7 +465,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Upload_Field_Title,
         this.Session.ReportFileName );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Add the normal save.
@@ -706,7 +706,7 @@ namespace Evado.UniForm.Digital
         this.Session.ReportScope.ToString ( ),
         optionList );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -1581,7 +1581,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         fieldTitle,
         linkUrl );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.Description = EdLabels.ReportTemplate_Project_ID_Description ;
 
@@ -1643,7 +1643,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Source_ID_Field_Title,
         this.Session.ReportTemplate.SourceId,
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.Description = EdLabels.ReportTemplate_Source_ID_Description ;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
@@ -1658,7 +1658,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createReadOnlyTextField (
           EdLabels.ReportTemplate_Source_Description_Field_Title,
           this.Session.ReportSource.Description );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -1669,7 +1669,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Report_ID_Field_Title,
         this.Session.ReportTemplate.ReportId,
         20 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Add the report title field.
@@ -1679,7 +1679,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Report_Title_Field_Title,
         this.Session.ReportTemplate.ReportTitle,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Add the report sub title field.
@@ -1689,7 +1689,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Report_Sub_Title_Field_Title,
         this.Session.ReportTemplate.ReportSubTitle,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Layout options.
@@ -1703,7 +1703,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Layout_Field_Title,
         this.Session.ReportTemplate.LayoutTypeId,
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Define the report type options.
@@ -1736,7 +1736,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Scope_Field_Title,
         this.Session.ReportTemplate.ReportScope,
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.Description = 
         EdLabels.ReportTemplate_Scope_Field_Description ;
@@ -1748,7 +1748,7 @@ namespace Evado.UniForm.Digital
         EvReport.ReportClassFieldNames.IsAggregated,
         EdLabels.ReportTemplate_IsAgregated_Field_Title,
         this.Session.ReportTemplate.IsAggregated );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // A refresh command to update the report source Id.
@@ -1974,7 +1974,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ReportTemplate_Column_Selection_Field_Title,
         currentSelection,
         columnOptionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // A refresh command to update the report source Id.

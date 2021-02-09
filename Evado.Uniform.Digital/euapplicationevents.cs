@@ -353,7 +353,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ApplicationEvent_Event_Id_Selection_Field_Label,
         this.Session.EventId.ToString ( ),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -370,7 +370,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ApplicationEvent_Type_Selection_Field_Label,
         this.Session.EventType,
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -382,7 +382,7 @@ namespace Evado.UniForm.Digital
         EdLabels.ApplicationEvent_UserName_Selection_Field_Label,
         this.Session.EventUserName,
         this.Session.EventUserSelectionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -395,7 +395,7 @@ namespace Evado.UniForm.Digital
         this.Session.EventStartDate ,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -408,7 +408,7 @@ namespace Evado.UniForm.Digital
         this.Session.EventFinishDate,
         EvStatics.getDateTime( "1 jan 2010"),
         DateTime.Now.AddYears( 1 ) );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -637,7 +637,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.ApplicationEvent_Date_Time_Field_Label,
         this._ApplicationEvent.DateTime.ToString ( "dd MMM yyyy HH:mm:ss" ) );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the event id object
@@ -658,7 +658,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.ApplicationEvent_Event_Id_Field_Label,
         content );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the type id object
@@ -667,7 +667,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.ApplicationEvent_Type_Field_Label,
          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this._ApplicationEvent.Type ) );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the Category id object
@@ -676,7 +676,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.ApplicationEvent_Category_Field_Label,
         this._ApplicationEvent.Category );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the description object
@@ -687,7 +687,7 @@ namespace Evado.UniForm.Digital
         this._ApplicationEvent.Description,
         80,
         40 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the user object
@@ -696,7 +696,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.ApplicationEvent_UserName_Field_Label,
         this._ApplicationEvent.UserName );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END Method
 

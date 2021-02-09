@@ -437,7 +437,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.UserAdmin_Email_Title_Field_Label,
         Title );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home page title
@@ -446,7 +446,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.UserAdmin_Email_Body_Field_Label,
         Body );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END create_Display_Group method
 
@@ -497,7 +497,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Email_Title_Field_Label,
         this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title,
         80 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home page title
@@ -506,7 +506,7 @@ namespace Evado.UniForm.Digital
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
         this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body, 80, 30 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = EdLabels.UserAdmin_Email_Body_Description_Field_Label ;
 
@@ -558,7 +558,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Email_Title_Field_Label,
         this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Title,
         80 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home page title
@@ -567,7 +567,7 @@ namespace Evado.UniForm.Digital
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
         this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body, 80, 20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
         EdLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
@@ -620,7 +620,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Email_Title_Field_Label,
         this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title,
         80 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home page title
@@ -629,7 +629,7 @@ namespace Evado.UniForm.Digital
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
         this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body, 80, 40 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
         EdLabels.UserAdmin_PasswordReset_Body_Description_Field_Label ;
@@ -683,7 +683,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Email_Title_Field_Label,
         this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title,
         80 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home page title
@@ -692,7 +692,7 @@ namespace Evado.UniForm.Digital
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
         this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body, 80, 20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
         EdLabels.UserAdmin_PasswordChange_Body_Description_Field_Label ;
@@ -736,7 +736,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Demo_Registration_Instructions_Field_Label,
         this.GlobalObjects.ContentTemplates.DemoRegistrationInstuctions,
         80, 20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create instructions field
@@ -746,7 +746,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Demo_Registration_Confirmation_Field_Label,
         this.GlobalObjects.ContentTemplates.DemoRegistrationConfirmation,
         80, 20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create instructions field
@@ -756,7 +756,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserAdmin_Demo_Registration_Error_Field_Label,
         this.GlobalObjects.ContentTemplates.DemoRegistrationError,
         80, 20 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END create_PasswordChangeEmail_Group Method
 

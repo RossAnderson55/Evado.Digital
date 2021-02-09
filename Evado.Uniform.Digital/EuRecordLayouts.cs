@@ -205,7 +205,7 @@ namespace Evado.UniForm.Digital
               {
                 case EvPageIds.Form_Properties_Page:
                   {
-                    clientDataObject = this.GetLayoutPropoerties_Object ( PageCommand );
+                    clientDataObject = this.GetLayoutProperties_Object ( PageCommand );
                     break;
                   }
                 case EvPageIds.Form_Properties_Section_Page:
@@ -694,7 +694,7 @@ namespace Evado.UniForm.Digital
        this.Session.FormType.ToString ( ),
        optionList );
 
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
       selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       // 
@@ -709,7 +709,7 @@ namespace Evado.UniForm.Digital
         this.Session.FormState.ToString ( ),
         optionList );
 
-      selectionField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      selectionField.Layout = EuAdapter.DefaultFieldLayout;
       selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
 
@@ -1368,7 +1368,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Template_File_Selection_Field_Title,
         String.Empty,
         this.Session.UploadFileName );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
 
@@ -1692,7 +1692,6 @@ namespace Evado.UniForm.Digital
       {
         case EdRecordObjectStates.Form_Draft:
           {
-
             //
             // Add the same groupCommand.
             //
@@ -2292,7 +2291,7 @@ namespace Evado.UniForm.Digital
       // 
       // Call the page generation method
       // 
-      pageGenerator.generateForm (
+      pageGenerator.generateLayout (
         this.Session.RecordLayout,
         ClientDataObject.Page,
         this.UniForm_BinaryFilePath );
@@ -2402,7 +2401,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Label_Form_Id,
         this.Session.RecordLayout.LayoutId );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form title
@@ -2411,7 +2410,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Design.Title );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
       //
@@ -2423,7 +2422,7 @@ namespace Evado.UniForm.Digital
           String.Empty,
           EdLabels.Form_Instructions_Field_Title,
           this.Session.RecordLayout.Design.Instructions );
-        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -2435,7 +2434,7 @@ namespace Evado.UniForm.Digital
           String.Empty,
           EdLabels.Form_Reference_Field_Label,
           this.Session.RecordLayout.Design.HttpReference );
-        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -2447,7 +2446,7 @@ namespace Evado.UniForm.Digital
           String.Empty,
           EdLabels.Form_Category_Field_Title,
           this.Session.RecordLayout.Design.RecordCategory );
-        pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -2457,7 +2456,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Form_Status_Field_Title,
         this.Session.RecordLayout.StateDesc );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form Version
@@ -2466,7 +2465,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Form_Version_Field_Title,
         this.Session.RecordLayout.Design.stVersion );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       return;
 

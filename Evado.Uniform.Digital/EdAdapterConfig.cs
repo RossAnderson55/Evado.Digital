@@ -386,7 +386,7 @@ namespace Evado.UniForm.Digital
         optionlist );
 
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "1" );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the version selectoin field.
@@ -399,7 +399,7 @@ namespace Evado.UniForm.Digital
         this.Session.DataBaseUpdateOrderBy.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "1" );
 
       //
@@ -739,7 +739,7 @@ namespace Evado.UniForm.Digital
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
 
@@ -766,7 +766,7 @@ namespace Evado.UniForm.Digital
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -870,7 +870,7 @@ namespace Evado.UniForm.Digital
           String.Empty,
           EdLabels.Label_Project_Id,
           dataChange.TrialId );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Create the table of audit changes.
@@ -951,7 +951,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Audit_Data_User_Field_Title,
           dataChange.UserId );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Define the user that updated the datachange object.
@@ -961,7 +961,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Audit_Data_Date_Field_Title,
           dataChange.DateStamp.ToString ( "dd-MMM-yyy HH:mm:ss" ) );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
 
       }//End Data change iteration loop
@@ -1665,7 +1665,7 @@ namespace Evado.UniForm.Digital
         this.Session.AuditTableName.ToString ( ),
         optionlist );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
@@ -1685,7 +1685,7 @@ namespace Evado.UniForm.Digital
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1712,7 +1712,7 @@ namespace Evado.UniForm.Digital
             this.Session.AuditRecordItemGuid.ToString ( ),
             optionlist );
 
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
           groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
         }//END option list exists.
@@ -1927,7 +1927,7 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Version.ToString ( ),
         EdLabels.Application_Profile_Version_Field_Label,
         this.GlobalObjects.AdapterSettings.Version, 30 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       // 
@@ -1937,7 +1937,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Application_Profile_Application_Url_Field_Title,
         this.GlobalObjects.ApplicationUrl );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home Reset url
@@ -1946,7 +1946,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Application_Profile_Reset_Url_Field_Title,
         this.GlobalObjects.PasswordResetUrl );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home support email address
@@ -1955,7 +1955,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Application_Support_Email_Address_Field_Title,
         this.GlobalObjects.SupportEmailAddress );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the home support email address
@@ -1964,7 +1964,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         EdLabels.Application_NoReply_Email_Address_Field_Title,
         this.GlobalObjects.NoReplyEmailAddress );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
     }//END createGeneralGroup Method
@@ -2006,7 +2006,7 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Roles.ToString ( ),
         EdLabels.Config_Role_List_Field_Label,
         this.GlobalObjects.AdapterSettings.Roles, 50, 10);
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays );
       //
@@ -2016,7 +2016,7 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.DemoAccountExpiryDays.ToString ( ),
         EdLabels.Settings_Demo_Account_Expiry_Field_Label,
         this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays, 0, 365 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the demonstratoin page video URL .
@@ -2025,7 +2025,7 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.DemoRegistrationVideoUrl.ToString ( ),
         EdLabels.Settings_Demo_Video_URL_Field_Label,
         this.GlobalObjects.AdapterSettings.DemoRegistrationVideoUrl, 100 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the help url field
@@ -2035,7 +2035,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Application_Profile_Help_Url_Field_Label,
         this.GlobalObjects.AdapterSettings.HelpUrl,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "createEmailGroup" );
 
@@ -2080,7 +2080,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Application_Profile_SMTP_Server_Field_Label,
         this.GlobalObjects.AdapterSettings.SmtpServer,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the SMTP Server
@@ -2089,7 +2089,7 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.SmtpServerPort.ToString ( ),
         EdLabels.Application_Profile_SMTP_Port_Field_Label,
         this.GlobalObjects.AdapterSettings.SmtpServerPort, 0, 650000 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the SMTP user
@@ -2099,7 +2099,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Application_Profile_SMTP_User_Field_Label,
         this.GlobalObjects.AdapterSettings.SmtpUserId,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the SMTP user
@@ -2109,7 +2109,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Application_Profile_SMTP_Password_Field_Label,
         this.GlobalObjects.AdapterSettings.SmtpPassword,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "createEmailGroup" );
     }//END createEmailGroup Method

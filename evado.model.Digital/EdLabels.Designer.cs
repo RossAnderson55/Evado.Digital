@@ -3135,6 +3135,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Field Layout:.
+        /// </summary>
+        public static string Form_Llink_Default_Layout_Field_Title {
+            get {
+                return ResourceManager.GetString("Form_Llink_Default_Layout_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new form field .
         /// </summary>
         public static string Form_New_Field_Page_Command_Title {
@@ -5994,6 +6003,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  by: {0} on {1}.
+        /// </summary>
+        public static string Record_Link_Author_Text {
+            get {
+                return ResourceManager.GetString("Record_Link_Author_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link Content Settings:.
+        /// </summary>
+        public static string Record_Link_Content_Setting_Field_Title {
+            get {
+                return ResourceManager.GetString("Record_Link_Content_Setting_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Administration Group.
         /// </summary>
         public static string Record_List_Admin_Group_Title {
@@ -6062,6 +6089,24 @@ namespace Evado.Model.Digital {
         public static string Record_My_Records_Page_Title {
             get {
                 return ResourceManager.GetString("Record_My_Records_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} : {1}.
+        /// </summary>
+        public static string Record_Page_First_Field_Header_Text {
+            get {
+                return ResourceManager.GetString("Record_Page_First_Field_Header_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record {0} &gt; {1} - {2}.
+        /// </summary>
+        public static string Record_Page_Header_Text {
+            get {
+                return ResourceManager.GetString("Record_Page_Header_Text", resourceCulture);
             }
         }
         

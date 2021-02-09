@@ -226,19 +226,19 @@ namespace Evado.Model.Digital
     /// </summary>
     public object DefaultPageLayout { get; set; }
 
-    private EdRecord.LinkConsentSetting _CommandLinkContentSetting = EdRecord.LinkConsentSetting.Default;
+    private EdRecord.LinkConsentSetting _LinkContentSetting = EdRecord.LinkConsentSetting.Default;
     /// <summary>
     /// This property indicated whether record summary content is to be displayed in command titles of the page.
     /// </summary>
-    public EdRecord.LinkConsentSetting CommandLinkContentSetting
+    public EdRecord.LinkConsentSetting LinkContentSetting
     {
       get
       {
-        return this._CommandLinkContentSetting;
+        return this._LinkContentSetting;
       }
       set
       {
-        this._CommandLinkContentSetting = value;
+        this._LinkContentSetting = value;
       }
     }
 

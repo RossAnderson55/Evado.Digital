@@ -74,10 +74,6 @@ namespace Evado.UniForm.Digital
     public const string CONST_FORM_DISP_SOF_FIELD_ID = "sof_dsp";
 
     private string RecordQueryAnnotation = String.Empty;
-    // <summary>
-    // This constant defines the eClinical application field layout default setting.
-    // </summary>
-    public const Evado.Model.UniForm.FieldLayoutCodes ApplicationFieldLayout = Evado.Model.UniForm.FieldLayoutCodes.Left_Justified;
 
     //
     // Initialise the page labels
@@ -174,7 +170,7 @@ namespace Evado.UniForm.Digital
     /// 
     /// </summary>
     /// <param name="Form">  Evado.Model.Digital.EvForm object</param>
-    /// <param name="ClientPage">Evado.Model.UniForm.Page object</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
     /// <remarks>
@@ -187,24 +183,25 @@ namespace Evado.UniForm.Digital
     /// 5. Add javascripts to the form
     /// </remarks>
     // ---------------------------------------------------------------------------------
-    public bool generateForm (
+    public bool generateLayout (
        Evado.Model.Digital.EdRecord Form,
-      Evado.Model.UniForm.Page ClientPage,
+      Evado.Model.UniForm.Page PageObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "generateForm public" );
       this.LogDebug ( "Form.Title: " + Form.Title );
       this.LogDebug ( "Form.State: " + Form.State );
-      Form.setFormRole ( this.Session.UserProfile );
 
+      Form.setFormRole ( this.Session.UserProfile );
       this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
       this.LogDebug ( "FormAccessRole: " + Form.FormAccessRole );
+
       // 
       // Set the default pageMenuGroup type to annotated fields.  This will enable the 
       // client annotation functions and initiate the service to including fields for
       // earlier uniform clients.
       // 
-      ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
+      PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
       this._FormAccessRole = Form.FormAccessRole;
       this._FormState = Form.State;
       this._Fields = Form.Fields;
@@ -216,7 +213,7 @@ namespace Evado.UniForm.Digital
       if ( Form.Design.TypeId == EdRecordTypes.Questionnaire )
       {
         this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
-        ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
+        PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
 
         //
         // Hide signature from all non-record editors.
@@ -239,45 +236,45 @@ namespace Evado.UniForm.Digital
         case Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author:
           {
             //this.LogDebug ( "Record Author "  );
-            ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+            PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
             break;
           }
         default:
           {
             //this.LogDebug ( "default" );
-            ClientPage.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-            ClientPage.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
+            PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+            PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
             break;
           }
       }//END view state switch
 
-      this.LogDebug ( "Final: ClientPage.DefaultGroupType: " + ClientPage.DefaultGroupType );
+      this.LogDebug ( "Final: ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
       this.LogDebug ( "Final: HideSignatureField: " + this._HideSignatureField );
 
 
       // 
       // Create the form record header groups
       //  
-      this.createFormHeader ( Form, ClientPage );
+      this.createFormHeader ( Form, PageObject );
 
       // 
       // Call the form section create method.
       // 
-      this.createFormSections ( Form, ClientPage );
+      this.createFormSections ( Form, PageObject );
 
       // 
       // if there is more that one pageMenuGroup create pageMenuGroup category indexes.
       // 
-      if ( ClientPage.GroupList.Count > 0 )
+      if ( PageObject.GroupList.Count > 0 )
       {
-        this.getFieldCategories ( Form, ClientPage.GroupList [ 0 ] );
+        this.getFieldCategories ( Form, PageObject.GroupList [ 0 ] );
       }
 
       // 
       // Create the form record fooder groups.
       // 
-      this.createFormFooter ( Form, ClientPage );
+      this.createFormFooter ( Form, PageObject );
 
       // 
       // Add the form specific java scripts
@@ -285,7 +282,7 @@ namespace Evado.UniForm.Digital
       this.getFormJavaScript (
         Form.Guid,
         Form.Fields,
-        ClientPage,
+        PageObject,
         BinaryFilePath );
 
       // 
@@ -322,83 +319,33 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Group formHeaderGroup;
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
 
+      if ( Form.RecordId == String.Empty )
+      {
+        Form.RecordId = "RECORD-ID";
+      }
+
       // 
       // Initialise the group if the user is not a patient.
       //
-      formHeaderGroup = PageObject.AddGroup (
-        String.Empty,
-        String.Empty,
-        Evado.Model.UniForm.EditAccess.Inherited );
+      formHeaderGroup = PageObject.AddGroup ( String.Empty );
       formHeaderGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
       formHeaderGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
-
-      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Reader )
+      // 
+      // if the design reference object exists include the 
+      // link using markdown markup.
+      // 
+      if ( Form.Design.HttpReference != String.Empty )
       {
-        if ( Form.RecordId == String.Empty )
-        {
-          Form.RecordId = "RECORD-ID";
-        }
-        // 
-        // if the design reference object exists include the 
-        // reference as a html link in the header.
-        // 
-        if ( Form.Design.HttpReference != String.Empty )
-        {
-          groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EdRecord.RecordFieldNames.Title,
-            Form.RecordId
-            + EdLabels.Space_Arrow_Right
-            + Form.LayoutId
-            + EdLabels.Space_Hypen
-            + Form.Title,
-            Form.Design.HttpReference );
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-        }
-        else
-        {
-          groupField = formHeaderGroup.createTextField (
-            String.Empty,
-            EdLabels.Label_Form_Id,
-            Form.RecordId
-            + EdLabels.Space_Arrow_Right
-            + Form.LayoutId
-            + EdLabels.Space_Hypen
-            + Form.Title, 50 );
-          groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-          groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
-        }
+        formHeaderGroup.Description = "[[a href='" + Form.Design.HttpReference + "' target='_link']]"+ Form.LinkText + "[[/a]]";
+        formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
       else
       {
-        // 
-        // if the design reference object exists include the 
-        // reference as a html link in the header.
-        // 
-        if ( Form.Design.HttpReference != String.Empty )
-        {
-          groupField = formHeaderGroup.createHtmlLinkField (
-            EuRecordGenerator.CONST_DISPLAY_PREFIX + EdRecord.RecordFieldNames.Title,
-            Form.LayoutId
-            + EdLabels.Space_Hypen
-            + Form.Title,
-            Form.Design.HttpReference );
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
-        }
-        else
-        {
-          groupField = formHeaderGroup.createTextField (
-            String.Empty,
-            EdLabels.Label_Form_Id,
-            Form.RecordId
-            + EdLabels.Space_Arrow_Right
-            + Form.LayoutId
-            + EdLabels.Space_Hypen
-            + Form.Title, 50 );
-          groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-          groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
-        }
+        formHeaderGroup.Description = Form.LinkText;
+        formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
+
       // 
       // Add form record instructions if they exist.
       // 
@@ -602,7 +549,7 @@ namespace Evado.UniForm.Digital
             EdLabels.Label_Comments,
              Evado.Model.Digital.EdFormRecordComment.getCommentMD ( Form.CommentList, false ) );
 
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
         }
 
         // 
@@ -618,7 +565,7 @@ namespace Evado.UniForm.Digital
             50,
             5 );
 
-          groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
           groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
         }//END new comment to be added.
@@ -667,7 +614,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Label_Signoff_Log_Field_Title,
           sbSignoffLog.ToString ( ) );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       // 
@@ -811,7 +758,7 @@ namespace Evado.UniForm.Digital
       //
       foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
       {
-        if ( field.Design.SectionNo == -1)
+        if ( field.Design.SectionNo == -1 )
         {
           sectionFieldCount++;
         }
@@ -894,7 +841,7 @@ namespace Evado.UniForm.Digital
         Evado.Model.EvDataTypes.Text,
         Field.ItemValue );
 
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // IF the field had static readonly field display them across the entire page.
@@ -1155,7 +1102,7 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "createFormFieldHeader" );
 
     }//END getFormFieldHeader
- 
+
     //  =================================================================================
     /// <summary>
     /// Description:
@@ -2122,7 +2069,7 @@ namespace Evado.UniForm.Digital
         // 
         // Proces the Options or Unit field value.
         // 
-        if ( Field.Table.Header [ column ].TypeId ==  EvDataTypes.Special_Matrix )
+        if ( Field.Table.Header [ column ].TypeId == EvDataTypes.Special_Matrix )
         {
           GroupField.Table.Header [ column ].TypeId = EvDataTypes.Read_Only_Text;
         }
@@ -2133,7 +2080,7 @@ namespace Evado.UniForm.Digital
         }
 
         if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Radio_Button_List
-          || GroupField.Table.Header [ column ].TypeId == EvDataTypes .Selection_List)
+          || GroupField.Table.Header [ column ].TypeId == EvDataTypes.Selection_List )
         {
           GroupField.Table.Header [ column ].OptionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
             Field.Table.Header [ column ].OptionsOrUnit );
@@ -2326,7 +2273,7 @@ namespace Evado.UniForm.Digital
       // 
       // Get the static test comment field value.
       // 
-      if (  this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
       {
         stValue = this.GetParameterValue ( CommandParameters, EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID );
 

@@ -49,7 +49,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData GetLayoutPropoerties_Object (
+    private Evado.Model.UniForm.AppData GetLayoutProperties_Object (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "GetLayoutPropoerties_Object" );
@@ -254,7 +254,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Type_Field_Label,
         this.Session.RecordLayout.Design.TypeId.ToString ( ),
         optionList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -272,7 +272,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Label_Form_Id,
         this.Session.RecordLayout.LayoutId,
         10 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -290,7 +290,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Design.Title,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form Instructions
@@ -300,7 +300,43 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Instructions_Field_Title,
         this.Session.RecordLayout.Design.Instructions,
         50, 4 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Default field layout 
+      //
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
+
+      if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
+      {
+        this.Session.RecordLayout.Design.DefaultPageLayout = Evado.Model.UniForm.FieldLayoutCodes.Default.ToString ( );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.DefaultPageLayout.ToString ( ),
+        EdLabels.Form_Llink_Default_Layout_Field_Title,
+        this.Session.RecordLayout.Design.DefaultPageLayout,
+        optionList );
+
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Record heaader setting
+      //
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
+
+      if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
+      {
+        this.Session.RecordLayout.Design.DefaultPageLayout = Evado.Model.UniForm.FieldLayoutCodes.Default.ToString ( );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.LinkConsentSetting,
+        EdLabels.Record_Link_Content_Setting_Field_Title,
+        this.Session.RecordLayout.Design.LinkContentSetting,
+        optionList );
+
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
       //
@@ -311,7 +347,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Record_Layout_Record_Prefix_Field_Label,
         this.Session.RecordLayout.Design.RecordPrefix,
         5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -341,7 +377,7 @@ namespace Evado.UniForm.Digital
         pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
       }
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.EditAccessRoles.ToString ( ),
@@ -349,7 +385,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.ReadAccessRoles,
         optionList );
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -367,10 +403,10 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.LinkConsentSetting.ToString ( ),
         EdLabels.Form_Llink_Content_Setting_Field_Title,
-        this.Session.RecordLayout.Design.CommandLinkContentSetting,
+        this.Session.RecordLayout.Design.LinkContentSetting,
         optionList );
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -390,7 +426,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.UpdateReason,
         optionList );
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -417,7 +453,7 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.Description,
         90, 5 );
 
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -435,7 +471,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Reference_Field_Label,
         this.Session.RecordLayout.Design.HttpReference,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form category
@@ -445,7 +481,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Category_Field_Title,
         this.Session.RecordLayout.Design.RecordCategory,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form CS Script
@@ -454,7 +490,7 @@ namespace Evado.UniForm.Digital
         EdRecord.RecordFieldNames.HasCsScript.ToString ( ),
         EdLabels.Form_Cs_Script_Field_Title,
         this.Session.RecordLayout.Design.hasCsScript );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // disable edit acces to fields that should not be accessed once issued.
@@ -693,7 +729,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_No_Field_Label,
         this.Session.FormSection.No.ToString ( ),
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       //
@@ -704,7 +740,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_Title_Field_Label,
         this.Session.FormSection.Title,
         50 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
 
       //
@@ -716,7 +752,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_Instructions_Field_Description,
         this.Session.FormSection.Instructions,
         90, 5 );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       optionList = new List<EvOption> ( );
 
@@ -753,7 +789,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_Order_Field_Label,
         this.Session.FormSection.Order.ToString ( ),
         optionList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       /*
       //
@@ -812,7 +848,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_User_Display_Roles_Field_Description,
         this.Session.FormSection.UserDisplayRoles,
         optionList );
-      pageField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Add the command to save the page content.

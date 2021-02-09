@@ -508,7 +508,7 @@ namespace Evado.UniForm.Digital
         EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
 
@@ -520,7 +520,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Dem_Registration_CommonName_Field_Label,
         this.Session.AdminUserProfile.CommonName,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
 
       // 
@@ -530,7 +530,7 @@ namespace Evado.UniForm.Digital
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
         EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.AdminUserProfile.Telephone );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
 
       // 
@@ -540,7 +540,7 @@ namespace Evado.UniForm.Digital
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,

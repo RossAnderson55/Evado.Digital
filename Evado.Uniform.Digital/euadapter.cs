@@ -336,6 +336,11 @@ namespace Evado.UniForm.Digital
       }
     }
 
+    // <summary>
+    // This constant defines the eClinical application field layout default setting.
+    // </summary>
+    public const Evado.Model.UniForm.FieldLayoutCodes DefaultFieldLayout = Evado.Model.UniForm.FieldLayoutCodes.Left_Justified;
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 

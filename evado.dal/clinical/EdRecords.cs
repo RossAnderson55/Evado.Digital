@@ -628,14 +628,6 @@ namespace Evado.Dal.Clinical
             inResultCount++;
 
             // 
-            // Generate the link text for views.
-            // 
-            record.LinkText = record.RecordId;
-
-
-            record.LinkText += " > " + record.Design.Title + " ( " + record.StateDesc + " ) ";
-
-            // 
           }//END query selection state not set.
 
           view.Add ( record );

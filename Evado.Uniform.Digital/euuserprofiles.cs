@@ -576,7 +576,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_Upload_Field_Title,
         String.Empty,
         this.Session.UploadFileName );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
 
@@ -802,7 +802,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.SelectedUserType.ToString(),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
@@ -826,7 +826,7 @@ namespace Evado.UniForm.Digital
         EdLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.SelectedUserType.ToString ( ),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       // 
@@ -1181,7 +1181,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.SelectedUserType.ToString(),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1206,7 +1206,7 @@ namespace Evado.UniForm.Digital
         EdLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.SelectedUserType.ToString ( ),
         optionList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the user id object
@@ -1216,7 +1216,7 @@ namespace Evado.UniForm.Digital
         EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1261,7 +1261,7 @@ namespace Evado.UniForm.Digital
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
         EdLabels.UserProfile_GivenName_Field_Label,
         this.Session.AdminUserProfile.GivenName, 50 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1271,7 +1271,7 @@ namespace Evado.UniForm.Digital
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
         EdLabels.UserProfile_FamilyName_Field_Label,
         this.Session.AdminUserProfile.FamilyName, 50 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1286,7 +1286,7 @@ namespace Evado.UniForm.Digital
         String.Empty,
         this.Session.AdminUserProfile.CommonName,
         80 );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1315,7 +1315,7 @@ namespace Evado.UniForm.Digital
           this.Session.UserProfile.AddressState,
           this.Session.UserProfile.AddressPostCode,
           this.Session.UserProfile.AddressCountry );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         this.LogDebug ( "AddresS:" + groupField.Value );
       }
@@ -1327,7 +1327,7 @@ namespace Evado.UniForm.Digital
          Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
       // Create the user role id object
@@ -1351,7 +1351,7 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_Role_Field_Description,
         this.Session.AdminUserProfile.Roles ,
         roleList );
-      groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
@@ -1365,7 +1365,7 @@ namespace Evado.UniForm.Digital
           EdLabels.UserProfile_Expiry_Date_Field_Label,
           EvStatics.getDateAsString( this.Session.AdminUserProfile.ExpiryDate ),
           15 );
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
     }//END getDataObject_FieldGroup Method

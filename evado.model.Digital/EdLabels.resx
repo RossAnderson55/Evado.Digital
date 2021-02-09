@@ -2787,7 +2787,22 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Record_Layout_EditRole_Field_Label" xml:space="preserve">
     <value>Record Edit Roles:</value>
   </data>
+  <data name="Form_Llink_Default_Layout_Field_Title" xml:space="preserve">
+    <value>Default Field Layout:</value>
+  </data>
   <data name="Record_Layout_Record_Prefix_Field_Label" xml:space="preserve">
     <value>Record Prefix: </value>
+  </data>
+  <data name="Record_Link_Author_Text" xml:space="preserve">
+    <value> by: {0} on {1}</value>
+  </data>
+  <data name="Record_Link_Content_Setting_Field_Title" xml:space="preserve">
+    <value>Link Content Settings:</value>
+  </data>
+  <data name="Record_Page_First_Field_Header_Text" xml:space="preserve">
+    <value>{0} : {1}</value>
+  </data>
+  <data name="Record_Page_Header_Text" xml:space="preserve">
+    <value>Record {0} &gt; {1} - {2}</value>
   </data>
 </root>

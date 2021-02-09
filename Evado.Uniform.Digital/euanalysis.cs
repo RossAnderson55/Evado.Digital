@@ -629,7 +629,7 @@ namespace Evado.UniForm.Digital
           this.Session.Chart.QueryItems [ index ].ItemId,
           this.Session.ChartSourceOptionList );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         //
         // Define the report Type selection
@@ -642,7 +642,7 @@ namespace Evado.UniForm.Digital
           this.Session.Chart.QueryItems [ index ].Aggregation.ToString ( ),
           optionList );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       }//END iteration loop.
 
@@ -1327,7 +1327,7 @@ namespace Evado.UniForm.Digital
           this.Session.AnalysisQueryFormId,
           this.Session.AnalysisFormSelectionList );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1342,7 +1342,7 @@ namespace Evado.UniForm.Digital
           this.Session.AnalysisQueryFormFieldId,
           this.Session.AnalysisFormFieldSelectionList );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
@@ -1357,7 +1357,7 @@ namespace Evado.UniForm.Digital
           this.Session.AnalysisQueryFormFieldValue,
           this.Session.AnalysisFormFieldValueSelectionList );
 
-        groupField.Layout = EuRecordGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
