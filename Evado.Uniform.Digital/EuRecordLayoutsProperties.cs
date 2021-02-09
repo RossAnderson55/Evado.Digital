@@ -323,11 +323,11 @@ namespace Evado.UniForm.Digital
       //
       // Record heaader setting
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkConsentSetting ), false );
 
       if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
       {
-        this.Session.RecordLayout.Design.DefaultPageLayout = Evado.Model.UniForm.FieldLayoutCodes.Default.ToString ( );
+        this.Session.RecordLayout.Design.DefaultPageLayout = EdRecord.LinkConsentSetting.Default.ToString ( );
       }
 
       pageField = pageGroup.createSelectionListField (
