@@ -28,7 +28,7 @@ using System.Configuration;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 
 

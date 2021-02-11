@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
@@ -85,7 +85,7 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EdRecordFields _Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( );
+    private Evado.Bll.Digital.EdRecordFields _Bll_FormFields = new Evado.Bll.Digital.EdRecordFields ( );
 
     public const string CONST_REFRESH = "RFSH";
     public const string CONST_TABLE_ROW_FIELD = "ROWS";

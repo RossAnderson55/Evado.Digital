@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -100,7 +100,7 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EdRecordLayouts _Bll_RecordLayouts = new Evado.Bll.Clinical.EdRecordLayouts ( );
+    private Evado.Bll.Digital.EdRecordLayouts _Bll_RecordLayouts = new Evado.Bll.Digital.EdRecordLayouts ( );
     private EvServerPageScript _ServerPageScript = new EvServerPageScript ( );
 
     public const string CONST_REFRESH = "RFSH";
@@ -1223,7 +1223,7 @@ namespace Evado.UniForm.Digital
       //
       // initialise the methods variables and objects.
       //
-      Evado.Bll.Clinical.EdRecordFields bll_Formfields = new EdRecordFields ( );
+      Evado.Bll.Digital.EdRecordFields bll_Formfields = new EdRecordFields ( );
       Guid formGuid = Guid.Empty;
       StringBuilder processLog = new StringBuilder ( );
       Evado.Model.EvEventCodes result = EvEventCodes.Ok;

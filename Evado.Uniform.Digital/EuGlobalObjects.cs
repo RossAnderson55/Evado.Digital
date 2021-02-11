@@ -26,7 +26,7 @@ using System.Diagnostics;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
@@ -424,11 +424,11 @@ namespace Evado.UniForm.Digital
       // 
       // Load the Web Site Properties
       // 
-      Bll.Clinical.EdAdapterConfig adapterConfig = new Bll.Clinical.EdAdapterConfig (  );
+      Evado.Bll.Digital.EdAdapterConfig adapterConfig = new Evado.Bll.Digital.EdAdapterConfig (  );
 
       if ( this.Settings != null )
       {
-        adapterConfig = new Bll.Clinical.EdAdapterConfig ( this.Settings );
+        adapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( this.Settings );
       }
 
       //

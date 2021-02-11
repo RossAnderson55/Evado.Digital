@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -77,7 +77,7 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( this.ClassParameters );
+      this._Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
 
     }//END Method
 
@@ -96,7 +96,7 @@ namespace Evado.UniForm.Digital
 
     public const String CONST_DEMO_ORGANISATION = "DEMO01";
 
-    private Evado.Bll.Clinical.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( );
+    private Evado.Bll.Digital.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( );
 
     private System.Text.StringBuilder _ProcessLog = null;
 

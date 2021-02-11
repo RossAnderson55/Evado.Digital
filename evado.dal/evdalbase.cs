@@ -417,4 +417,4 @@ namespace Evado.Dal
 
   }//END EvDalBase Class.
 
-}//END namespace Evado.Dal.Clinical 
+}//END namespace Evado.Dal.Digital 

@@ -23,7 +23,7 @@ using System.IO;
 using Evado.Model;
 using Evado.Bll;
 using  Evado.Model.Digital;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 
 using CSScriptLibrary;
 

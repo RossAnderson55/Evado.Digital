@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
@@ -74,8 +74,8 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "UniForm BinaryFilePath: " + this.UniForm_BinaryFilePath );
       this.LogInit ( "UniForm BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
 
-      this._Bll_Reports = new Evado.Bll.Clinical.EvReports ( this.ClassParameters );
-      this._Bll_ReportTemplates = new Evado.Bll.Clinical.EvReportTemplates ( this.ClassParameters );
+      this._Bll_Reports = new Evado.Bll.Digital.EvReports ( this.ClassParameters );
+      this._Bll_ReportTemplates = new Evado.Bll.Digital.EvReportTemplates ( this.ClassParameters );
 
     }//END Method
 
@@ -84,8 +84,8 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EvReports _Bll_Reports = new Evado.Bll.Clinical.EvReports ( );
-    private Evado.Bll.Clinical.EvReportTemplates _Bll_ReportTemplates = new Evado.Bll.Clinical.EvReportTemplates ( );
+    private Evado.Bll.Digital.EvReports _Bll_Reports = new Evado.Bll.Digital.EvReports ( );
+    private Evado.Bll.Digital.EvReportTemplates _Bll_ReportTemplates = new Evado.Bll.Digital.EvReportTemplates ( );
     private bool _OutputReport = false;
     //
     // Initialise the page labels

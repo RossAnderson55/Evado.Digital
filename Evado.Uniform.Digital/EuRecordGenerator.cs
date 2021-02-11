@@ -24,7 +24,7 @@ using Newtonsoft.Json;
 // Evado specific references
 using Evado.Model;
 using Evado.Bll;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 
 namespace Evado.UniForm.Digital

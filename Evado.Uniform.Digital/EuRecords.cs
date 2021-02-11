@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -129,7 +129,7 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EdRecords _Bll_FormRecords = new EdRecords ( );
+    private Evado.Bll.Digital.EdRecords _Bll_FormRecords = new EdRecords ( );
     private EvServerPageScript _ServerPageScript = new EvServerPageScript ( );
 
     //

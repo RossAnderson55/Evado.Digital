@@ -28,7 +28,7 @@ using System.Configuration;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 /// using Evado.Web;
 
@@ -54,8 +54,8 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Bll.Clinical.EvUserProfiles userProfiles =
-        new Evado.Bll.Clinical.EvUserProfiles ( this.ClassParameters );
+      Evado.Bll.Digital.EvUserProfiles userProfiles =
+        new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
       //
       // if an anonoymous command is encountered create a user profile for a patient.
       //

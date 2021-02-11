@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
@@ -79,7 +79,7 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_Organisations = new Evado.Bll.Clinical.EdOrganisations ( this.ClassParameters );
+      this._Bll_Organisations = new Evado.Bll.Digital.EdOrganisations ( this.ClassParameters );
 
     }//END Method
 
@@ -92,7 +92,7 @@ namespace Evado.UniForm.Digital
     private const String CONST_CURRENT_FIELD_ID = "CURRENT";
     private const String CONST_NEW_FIELD_ID = "NEW";
 
-    private Evado.Bll.Clinical.EdOrganisations _Bll_Organisations = new Evado.Bll.Clinical.EdOrganisations ( );
+    private Evado.Bll.Digital.EdOrganisations _Bll_Organisations = new Evado.Bll.Digital.EdOrganisations ( );
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

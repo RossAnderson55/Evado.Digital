@@ -378,4 +378,4 @@ namespace Evado.Bll
 
   }//END EvActivities Class.
 
-}//END namespace Evado.Bll.Clinical 
+}//END namespace Evado.Bll.Digital 

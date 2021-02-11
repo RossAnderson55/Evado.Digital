@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -111,7 +111,7 @@ namespace Evado.UniForm.Digital
     public const string CONST_DEFAULT_IMAGE_EXTENSION = ".jpg";
 
 
-    private Evado.Bll.Clinical.EvBinaryFiles _Bll_BinaryFiles = new Evado.Bll.Clinical.EvBinaryFiles ( );
+    private Evado.Bll.Digital.EvBinaryFiles _Bll_BinaryFiles = new Evado.Bll.Digital.EvBinaryFiles ( );
     List<EvOption> _MimeList = new List<EvOption> ( );
     private Evado.Model.Digital.EvBinaryFileMetaData _BinaryFile = new EvBinaryFileMetaData ( );
     private int _NoPageFileUploadFields = 5;

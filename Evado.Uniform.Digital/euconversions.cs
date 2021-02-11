@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 
 using Evado.Bll;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital

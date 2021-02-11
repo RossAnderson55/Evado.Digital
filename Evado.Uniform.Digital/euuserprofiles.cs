@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using  Evado.Model.Digital;
 // using Evado.Web;
 
@@ -85,7 +85,7 @@ namespace Evado.UniForm.Digital
         this.Session.OrganisationList = new List<EvOrganisation> ( );
       }
 
-      this._Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( this.ClassParameters );
+      this._Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
 
     }//END Method
 
@@ -101,7 +101,7 @@ namespace Evado.UniForm.Digital
     private const String CONST_DELETE_ACTION = "DELETE";
     private const String CONST_DOWNLOAD_EXTENSION = "user-profiles.csv";
 
-    private Evado.Bll.Clinical.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Clinical.EvUserProfiles ( );
+    private Evado.Bll.Digital.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( );
 
     private EvPageIds PageId = EvPageIds.Null;
 

@@ -308,4 +308,4 @@ namespace Evado.Dal
 
   }//END EvActivityForms class
 
-}//END namespace Evado.Dal.Clinical
+}//END namespace Evado.Dal.Digital

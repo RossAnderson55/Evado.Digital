@@ -122,50 +122,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clinical\EdRecordEntities.cs" />
-    <Compile Include="Clinical\EvAncillaryRecords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EdRecordFieldSelectionLists.cs" />
-    <Compile Include="Clinical\EdOrganisations.cs" />
+    <Compile Include="digital\EdAdapterConfig.cs" />
+    <Compile Include="digital\EdEntities.cs" />
+    <Compile Include="digital\EdEntityFields.cs" />
+    <Compile Include="digital\EdEntityLayouts.cs" />
+    <Compile Include="digital\EdentitySections.cs" />
+    <Compile Include="digital\EdOrganisations.cs" />
+    <Compile Include="digital\EdRecordComments.cs" />
+    <Compile Include="digital\EdRecordEntities.cs" />
+    <Compile Include="digital\EdRecordFields.cs" />
+    <Compile Include="digital\EdRecordFieldSelectionLists.cs" />
+    <Compile Include="digital\EdRecordLayouts.cs" />
+    <Compile Include="digital\EdRecords.cs" />
+    <Compile Include="digital\EdRecordSections.cs" />
+    <Compile Include="digital\EdRecordValues.cs" />
+    <Compile Include="digital\evalerts.cs" />
+    <Compile Include="digital\evancillaryrecords.cs" />
+    <Compile Include="digital\evbinaryfiles.cs" />
+    <Compile Include="digital\evdatachanges.cs" />
+    <Compile Include="digital\evmenus.cs" />
+    <Compile Include="digital\evreports.cs" />
+    <Compile Include="digital\evreportsaved.cs" />
+    <Compile Include="digital\evreporttemplates.cs" />
+    <Compile Include="digital\evuserprofiles.cs" />
     <Compile Include="EvObjectParameters.cs" />
-    <Compile Include="Clinical\EdRecordSections.cs" />
     <Compile Include="EvDalBase.cs" />
     <Compile Include="EvStaticSetting.cs" />
-    <Compile Include="Clinical\EdRecordComments.cs" />
-    <Compile Include="Clinical\EvBinaryFiles.cs" />
     <Compile Include="EvDataBaseUpdates.cs" />
     <Compile Include="EvApplicationEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clinical\EdRecordValues.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvReportSaved.cs" />
-    <Compile Include="Clinical\EvReports.cs" />
-    <Compile Include="Clinical\EvReportTemplates.cs" />
     <Compile Include="EvEncrypt.cs" />
-    <Compile Include="Clinical\EdRecordFields.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EdRecordLayouts.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EdAdapterConfig.cs" />
-    <Compile Include="Clinical\EvDataChanges.cs" />
-    <Compile Include="Clinical\EvMenus.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="EvSqlMethods.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvAlerts.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EdRecords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Clinical\EvUserProfiles.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\assemblyinfo.cs" />

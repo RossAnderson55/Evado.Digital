@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -78,7 +78,7 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._bll_AdapterConfig = new Bll.Clinical.EdAdapterConfig ( Settings );
+      this._bll_AdapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( Settings );
 
     }//END Method
 
@@ -91,7 +91,7 @@ namespace Evado.UniForm.Digital
     private const String CONST_ADDRESS_FIELD_ID = "ADDRESS";
     private const String CONST_CURRENT_FIELD_ID = "CURRENT";
 
-    private Evado.Bll.Clinical.EdAdapterConfig _bll_AdapterConfig = new Evado.Bll.Clinical.EdAdapterConfig ( );
+    private Evado.Bll.Digital.EdAdapterConfig _bll_AdapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( );
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -1502,7 +1502,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       List<EvOption> optionlist = new List<EvOption> ( );
-      Evado.Bll.Clinical.EvDataChanges bllDataChanges = new Evado.Bll.Clinical.EvDataChanges ( );
+      Evado.Bll.Digital.EvDataChanges bllDataChanges = new Evado.Bll.Digital.EvDataChanges ( );
 
 
       return;
@@ -1644,7 +1644,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       List<EvOption> optionlist = new List<EvOption> ( );
-      Evado.Bll.Clinical.EvDataChanges bllDataChanges = new Evado.Bll.Clinical.EvDataChanges ( );
+      Evado.Bll.Digital.EvDataChanges bllDataChanges = new Evado.Bll.Digital.EvDataChanges ( );
 
       //
       // create the selection pageMenuGroup.

@@ -144,7 +144,7 @@ namespace Evado.Bll.Integration
     /// <summary>
     /// This method executes a CSV import or export query. 
     /// </summary>
-    /// <param name="UserProfile">Evado.Model.Digital.EvUserProfile object.</param>
+    /// <param name="UserProfile">Evado.Model.Digital.EdUserProfile object.</param>
     /// <param name="QueryType">EiQueryTypes: Csv encoded data object.</param>
     /// <param name="CsvDataList">List of String: Csv encoded data object.</param>
     /// <returns>Evado.Model.Integration.EiData object</returns>

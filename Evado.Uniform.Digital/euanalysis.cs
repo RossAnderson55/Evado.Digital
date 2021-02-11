@@ -25,7 +25,7 @@ using System.Web.SessionState;
 
 using Evado.Bll;
 using Evado.Model;
-using Evado.Bll.Clinical;
+using Evado.Bll.Digital;
 using Evado.Model.Digital;
 // using Evado.Web;
 
@@ -80,9 +80,9 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
 
-      this._Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( this.ClassParameters );
-      this._Bll_FormRecords = new Evado.Bll.Clinical.EdRecords ( this.ClassParameters );
-      this._Bll_DataAnalysis = new Evado.Bll.Clinical.EvDataAnalysis ( this.ClassParameters );
+      this._Bll_FormFields = new Evado.Bll.Digital.EdRecordFields ( this.ClassParameters );
+      this._Bll_FormRecords = new Evado.Bll.Digital.EdRecords ( this.ClassParameters );
+      this._Bll_DataAnalysis = new Evado.Bll.Digital.EvDataAnalysis ( this.ClassParameters );
 
     }//END Method
 
@@ -91,10 +91,10 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Clinical.EdRecordFields _Bll_FormFields = new Evado.Bll.Clinical.EdRecordFields ( );
-    private Evado.Bll.Clinical.EdRecords _Bll_FormRecords = new Evado.Bll.Clinical.EdRecords ( );
+    private Evado.Bll.Digital.EdRecordFields _Bll_FormFields = new Evado.Bll.Digital.EdRecordFields ( );
+    private Evado.Bll.Digital.EdRecords _Bll_FormRecords = new Evado.Bll.Digital.EdRecords ( );
 
-    private Evado.Bll.Clinical.EvDataAnalysis _Bll_DataAnalysis = new Evado.Bll.Clinical.EvDataAnalysis ( );
+    private Evado.Bll.Digital.EvDataAnalysis _Bll_DataAnalysis = new Evado.Bll.Digital.EvDataAnalysis ( );
 
     private bool _RunQuery = false;
     private bool _ExportData = false;
@@ -1080,9 +1080,9 @@ namespace Evado.UniForm.Digital
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
-      Evado.Bll.Clinical.EdRecordLayouts bllForms = new Evado.Bll.Clinical.EdRecordLayouts ( );
-      Evado.Bll.Clinical.EdRecordFields bllEvFormFields = new Evado.Bll.Clinical.EdRecordFields ( );
-      Evado.Bll.Clinical.EvFormRecordFields trialRecordFields = new Evado.Bll.Clinical.EvFormRecordFields ( );
+      Evado.Bll.Digital.EdRecordLayouts bllForms = new Evado.Bll.Digital.EdRecordLayouts ( );
+      Evado.Bll.Digital.EdRecordFields bllEvFormFields = new Evado.Bll.Digital.EdRecordFields ( );
+      Evado.Bll.Digital.EvFormRecordFields trialRecordFields = new Evado.Bll.Digital.EvFormRecordFields ( );
 
       //
       // Get the form selection list.
@@ -1151,7 +1151,7 @@ namespace Evado.UniForm.Digital
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
-      Evado.Bll.Clinical.EdRecords trialRecords = new Evado.Bll.Clinical.EdRecords ( );
+      Evado.Bll.Digital.EdRecords trialRecords = new Evado.Bll.Digital.EdRecords ( );
 
       if ( this.Session.AnalysisQueryFormId != String.Empty
         && this.Session.AnalysisQueryFormFieldId != String.Empty
