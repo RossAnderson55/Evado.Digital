@@ -303,6 +303,24 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
+      // Layout author only draft record access
+      //
+      pageField = pageGroup.createBooleanField (
+        EdRecord.RecordFieldNames.AuthorOnlyDraftAccess.ToString ( ),
+        EdLabels.Record_Layout_Author_Only_Draft_Access_Field_Title,
+        this.Session.RecordLayout.Design.AuthorOnlyDraftAccess );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Layout author only edit record access
+      //
+      pageField = pageGroup.createBooleanField (
+        EdRecord.RecordFieldNames.AuthorOnlyEditAccess.ToString ( ),
+        EdLabels.Record_Layout_Author_Only_Edit_Access_Field_Title,
+        this.Session.RecordLayout.Design.AuthorOnlyEditAccess );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
       // Default field layout 
       //
       optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
@@ -323,11 +341,11 @@ namespace Evado.UniForm.Digital
       //
       // Record heaader setting
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkConsentSetting ), false );
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
 
       if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
       {
-        this.Session.RecordLayout.Design.DefaultPageLayout = EdRecord.LinkConsentSetting.Default.ToString ( );
+        this.Session.RecordLayout.Design.DefaultPageLayout = EdRecord.LinkContentSetting.Default.ToString ( );
       }
 
       pageField = pageGroup.createSelectionListField (
@@ -361,7 +379,7 @@ namespace Evado.UniForm.Digital
       // Form Update reason
       //
       optionList = EdUserProfile.getRoleOptionList( 
-        this.GlobalObjects.AdapterSettings.RoleList, false ) ;
+        this.AdapterObjects.AdapterSettings.RoleList, false ) ;
 
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
@@ -398,7 +416,7 @@ namespace Evado.UniForm.Digital
       //
       // Form Update reason
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkConsentSetting), false );
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting), false );
 
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.LinkConsentSetting.ToString ( ),
@@ -437,14 +455,6 @@ namespace Evado.UniForm.Digital
       }
 
       //
-      // disable edit acces to fields that should not be accessed once issued.
-      //
-      if ( bInDesign == false )
-      {
-        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
-      }
-
-      //
       // Form Change description
       //
       pageField = pageGroup.createFreeTextField (
@@ -454,14 +464,6 @@ namespace Evado.UniForm.Digital
         90, 5 );
 
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      //
-      // disable edit acces to fields that should not be accessed once issued.
-      //
-      if ( bInDesign == false )
-      {
-        pageField.EditAccess = Model.UniForm.EditAccess.Disabled;
-      }
 
       //
       // Form reference

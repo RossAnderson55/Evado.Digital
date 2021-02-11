@@ -49,14 +49,14 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuMenus (
-      EuAdapterObjects ApplicationObject,
+      EuGlobalObjects ApplicationObject,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuMenus.";
-      this.GlobalObjects = ApplicationObject;
+      this.AdapterObjects = ApplicationObject;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -116,7 +116,7 @@ namespace Evado.UniForm.Digital
         //
         if ( this.Session.MenuPlatformId == null )
         {
-          this.Session.MenuPlatformId = this.GlobalObjects.PlatformId;
+          this.Session.MenuPlatformId = this.AdapterObjects.PlatformId;
         }
 
         // 
@@ -231,7 +231,7 @@ namespace Evado.UniForm.Digital
         //
         if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
         {
-          this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
+          this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
         }
 
         // 
@@ -325,7 +325,7 @@ namespace Evado.UniForm.Digital
       {
         EvMenus _Bll_Menus = new EvMenus ( this.ClassParameters );
 
-        if ( this.GlobalObjects.MenuList.Count > 0 )
+        if ( this.AdapterObjects.MenuList.Count > 0 )
         {
           this.LogMethodEnd ( "loadGlobalMenu" );
           return;
@@ -334,17 +334,17 @@ namespace Evado.UniForm.Digital
         // 
         // Get the site setMenu.
         // 
-        this.GlobalObjects.MenuList = _Bll_Menus.getView ( this.ClassParameters.PlatformId, String.Empty );
+        this.AdapterObjects.MenuList = _Bll_Menus.getView ( this.ClassParameters.PlatformId, String.Empty );
 
         this.LogDebugClass ( "menus.DebugLog: " + _Bll_Menus.Log );
-        this.LogValue ( "GlobalMenuList.Count: " + this.GlobalObjects.MenuList.Count );
+        this.LogValue ( "GlobalMenuList.Count: " + this.AdapterObjects.MenuList.Count );
 
       }
       catch ( Exception Ex )
       {
         this.LogDebug ( "loadGlobalMenu exception:  " + Evado.Model.Digital.EvcStatics.getException ( Ex ) );
       }
-      this.LogDebug ( "Global Menu list count: " + this.GlobalObjects.MenuList.Count );
+      this.LogDebug ( "Global Menu list count: " + this.AdapterObjects.MenuList.Count );
 
       this.LogMethodEnd ( "loadGlobalMenu" );
     }//END loadMenu method
@@ -475,7 +475,7 @@ namespace Evado.UniForm.Digital
         // 
         // get the list of customers.
         // 
-        foreach ( EvMenuItem item in this.GlobalObjects.MenuList )
+        foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
         {
           if ( item.Group.ToLower ( ) == GroupId.ToLower ( ) )
           {
@@ -664,9 +664,9 @@ namespace Evado.UniForm.Digital
     //  ------------------------------------------------------------------------------
     private Evado.Model.Digital.EvMenuItem getMenuItem ( Guid MenuItemGuid )
     {
-      if ( this.GlobalObjects.MenuList.Count > 0 )
+      if ( this.AdapterObjects.MenuList.Count > 0 )
       {
-        foreach ( EvMenuItem item in this.GlobalObjects.MenuList )
+        foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
         {
           if ( item.Guid == MenuItemGuid )
           {
@@ -773,7 +773,7 @@ namespace Evado.UniForm.Digital
       // Create the customer name object
       // 
       List<EvOption> roleList = EdUserProfile.getRoleOptionList( 
-        this.GlobalObjects.AdapterSettings.RoleList,
+        this.AdapterObjects.AdapterSettings.RoleList,
         false );
       string roles = this.Session.MenuItem.RoleList;
 
@@ -867,7 +867,7 @@ namespace Evado.UniForm.Digital
         this.Session.MenuItem.Group = this.Session.MenuGroupIdentifier;
         this.Session.MenuItem.Platform = this.Session.MenuPlatformId;
 
-        this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
+        this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
 
         this.getClientData ( clientDataObject );
 
@@ -1005,7 +1005,7 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }
 
-        this.GlobalObjects.MenuList = new List<EvMenuItem> ( );
+        this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
 
         this.LogMethodEnd ( "updateObject" );
         return new Model.UniForm.AppData ( );

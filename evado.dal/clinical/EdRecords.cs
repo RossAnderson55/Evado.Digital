@@ -392,6 +392,24 @@ namespace Evado.Dal.Clinical
         record.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
         record.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
 
+        record.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES );
+        record.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
+
+        record.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RELATED_ENTITIES );
+        record.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_DEFAULT_PAGE_LAYOUT );
+
+        string value = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LINK_CONTENT_SETTING );
+        if ( value != String.Empty )
+        {
+          record.Design.LinkContentSetting =
+            Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( value );
+        }
+        record.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );
+        record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
+        record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
+        record.Design.AuthorOnlyEditAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_EDIT_ACCESS );
+        record.Design.AuthorOnlyDraftAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_DRAFT_ACCESS );
+
         record.Updated = EvSqlMethods.getString ( Row, EdRecords.DB_UPDATED_BY );
         if ( record.Updated != string.Empty )
         {
@@ -926,7 +944,6 @@ namespace Evado.Dal.Clinical
     {
       this.LogMethod ( "getOptionList method. " );
       this.LogValue ( "EvQueryParameters parameters:" );
-      this.LogValue ( "- ProjectId: " + Query.ApplicationId );
 
       //
       // Initialize the debug log, a return list of options and an option object.
@@ -1407,7 +1424,7 @@ namespace Evado.Dal.Clinical
       for ( int i = 0; i < fieldlist.Count; i++ )
       {
         EdRecordField field = fieldlist [ i ];
-        field.FormFieldGuid = field.Guid;
+        field.RecordFieldGuid = field.Guid;
         field.Guid = Guid.NewGuid ( );
 
         Record.Fields.Add ( field );

@@ -210,7 +210,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a form field global unique identifier of a form field.
     /// </summary>
-    public Guid FormFieldGuid { get; set; }
+    public Guid RecordFieldGuid { get; set; }
 
     /// <summary>
     /// This property contains a record global unique identifier of a form field.
@@ -253,7 +253,6 @@ namespace Evado.Model.Digital
       }
     }
 
-    private Evado.Model.EvDataTypes _TypeId = Evado.Model.EvDataTypes.Null;
     /// <summary>
     /// This property contains a type identifier of a form field.
     /// </summary>
@@ -261,19 +260,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this._TypeId;
-      }
-      set
-      {
-        this._TypeId = value;
-        this.Design.TypeId = this._TypeId;
-
-        //
-        // if the data point type false turnoff data point output.
-        //
-        if ( this.isDataPoint == true )
-        {
-        }
+        return this.Design.TypeId;
       }
     }
 
@@ -372,7 +359,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        switch ( this._TypeId )
+        switch ( this.TypeId )
         {
           case Evado.Model.EvDataTypes.Computed_Field:
           case Evado.Model.EvDataTypes.Read_Only_Text:
@@ -404,7 +391,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        switch ( this._TypeId )
+        switch ( this.TypeId )
         {
           case Evado.Model.EvDataTypes.Read_Only_Text:
           case Evado.Model.EvDataTypes.Sound:
@@ -450,7 +437,7 @@ namespace Evado.Model.Digital
             for ( int i = 0; i < 10; i++ )
             {
               if ( this.Table.Header [ i ].TypeId == EvDataTypes.Special_Matrix
-                || ( this._TypeId == EvDataTypes.Special_Matrix && i == 0 ) )
+                || ( this.TypeId == EvDataTypes.Special_Matrix && i == 0 ) )
               {
                 continue;
               }
@@ -498,7 +485,7 @@ namespace Evado.Model.Digital
       {
         float Value = float.MinValue;
 
-        if ( this._TypeId == EvDataTypes.Numeric )
+        if ( this.TypeId == EvDataTypes.Numeric )
         {
 
           if ( float.TryParse ( this._ItemValue, out Value ) == false )
@@ -664,7 +651,7 @@ namespace Evado.Model.Digital
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
-            this.TypeId = type;
+            this.Design.TypeId = type;
             break;
           }
 

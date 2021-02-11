@@ -514,17 +514,11 @@ namespace Evado.UniForm.Digital
 
     public List<EdRecord> AdminEntityList { get; set; }
 
-    public List<EdRecord> EntityList { get; set; }
-
-    private List<EdRecord> _RecordLayoutList = new List<EdRecord> ( );
+    private List<EdRecord> _EntityList = new List<EdRecord> ( );
     /// <summary>
-    /// This property object contains a list of eClinical evForm object for the currently selected record.
+    /// This property object contains a list of entitys in the application
     /// </summary>
-    public List<EdRecord> RecordLayoutList
-    {
-      get { return _RecordLayoutList; }
-      set { _RecordLayoutList = value; }
-    }
+    public List<EdRecord> EntityList { get; set; }
 
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.

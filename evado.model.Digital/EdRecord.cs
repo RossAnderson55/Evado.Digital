@@ -29,6 +29,16 @@ namespace Evado.Model.Digital
   [Serializable]
   public class EdRecord
   {
+    #region class initialisation 
+
+    public EdRecord ( )
+    {
+      this.Design.AuthorOnlyDraftAccess = true;
+      this.Design.AuthorOnlyEditAccess = true;
+    }
+
+    #endregion
+
     #region Class Enumerators
 
     //  ===================================================================================
@@ -153,7 +163,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list 
     /// </summary>
-    public enum LinkConsentSetting
+    public enum LinkContentSetting
     {
       /// <summary>
       /// This enumeration set the command link to display the default content.
@@ -380,6 +390,16 @@ namespace Evado.Model.Digital
       /// This enumeration indicates the author field 
       /// </summary>
       DisplayAuthorDetails,
+
+      /// <summary>
+      /// This enumeration identifies the form AuthorOnlyEditAccess field.
+      /// </summary>
+      AuthorOnlyEditAccess,
+
+      /// <summary>
+      /// This enumeration identifies the form AuthorDraftEditAccess  field.
+      /// </summary>
+      AuthorOnlyDraftAccess
 
     }
 
@@ -634,11 +654,11 @@ namespace Evado.Model.Digital
                 return link;
               }
             }//END default case
-          case LinkConsentSetting.Display_Summary:
+          case LinkContentSetting.Display_Summary:
             {
               return this.RecordSummary;
             }
-          case LinkConsentSetting.First_Field:
+          case LinkContentSetting.First_Field:
             {
               String description = this.RecordSummary;
               if ( this.Fields.Count > 1 )
@@ -1353,7 +1373,9 @@ namespace Evado.Model.Digital
         this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
       }
 
-      if ( UserProfile.hasDesignAccess == true )
+      if ( UserProfile.hasDesignAccess == true
+        && ( this.State == EdRecordObjectStates.Form_Draft
+        || this.State == EdRecordObjectStates.Form_Reviewed ) )
       {
         this.FormAccessRole = EdRecord.FormAccessRoles.Form_Designer;
       }
@@ -1753,7 +1775,7 @@ namespace Evado.Model.Digital
         case RecordFieldNames.LinkConsentSetting:
           {
             this.Design.LinkContentSetting =
-              EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( Value );
+              EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( Value );
             return;
           }
         case RecordFieldNames.DisplayRelatedEntities:
@@ -1764,6 +1786,16 @@ namespace Evado.Model.Digital
         case RecordFieldNames.DisplayAuthorDetails:
           {
             this.Design.DisplayAuthorDetails = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.AuthorOnlyDraftAccess:
+          {
+            this.Design.AuthorOnlyDraftAccess = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.AuthorOnlyEditAccess:
+          {
+            this.Design.AuthorOnlyEditAccess = EvcStatics.getBool ( Value );
             return;
           }
         default:

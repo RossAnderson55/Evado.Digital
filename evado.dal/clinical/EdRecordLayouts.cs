@@ -111,6 +111,8 @@ namespace Evado.Dal.Clinical
     public const string DB_DISPLAY_ENTITIES = "EDRL_DISPLAY_ENTITIES";
     public const string DB_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
     public const string DB_RECORD_PREFIX = "EDRL_RECORD_PREFIX";
+    public const string DB_AUTHOR_ONLY_EDIT_ACCESS = "EDRL_AUTHOR_ONLY_EDIT_ACCESS";
+    public const string DB_AUTHOR_ONLY_DRAFT_ACCESS = "EDRL_AUTHOR_ONLY_DRAFT_ACCESS";
 
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
@@ -144,11 +146,13 @@ namespace Evado.Dal.Clinical
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
     private const string PARM_DISPLAY_AUTHOR_DETAILS = "@DISPLAY_AUTHOR_DETAILS";
     private const string PARM_RECORD_PREFIX = "@RECORD_PREFIX";
+    private const string PARM_AUTHOR_ONLY_EDIT_ACCESS = "@AUTHOR_ONLY_EDIT_ACCESS";
+    private const string PARM_AUTHOR_ONLY_DRAFT_ACCESS = "@AUTHOR_ONLY_DRAFT_ACCESS";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
     private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
-    
+
     private const string PARM_Copy = "@Copy";
 
     // 
@@ -203,6 +207,8 @@ namespace Evado.Dal.Clinical
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecordLayouts.PARM_AUTHOR_ONLY_EDIT_ACCESS, SqlDbType.Bit),
+        new SqlParameter( EdRecordLayouts.PARM_AUTHOR_ONLY_DRAFT_ACCESS, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -263,9 +269,11 @@ namespace Evado.Dal.Clinical
       cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
       cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
       cmdParms [ 22 ].Value = Form.Design.RecordPrefix;
-      cmdParms [ 23 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 25 ].Value = DateTime.Now;
+      cmdParms [ 23 ].Value = Form.Design.AuthorOnlyEditAccess;
+      cmdParms [ 24 ].Value = Form.Design.AuthorOnlyDraftAccess;
+      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 27 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -304,6 +312,7 @@ namespace Evado.Dal.Clinical
       // Extract the compatible data row values to the form object. 
       // 
       layout.Guid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
+      layout.LayoutGuid = layout.Guid;
       layout.LayoutId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LAYOUT_ID );
       layout.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, DB_STATE ) );
@@ -323,7 +332,7 @@ namespace Evado.Dal.Clinical
       layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_HAS_CS_SCRIPT );
       layout.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
       layout.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
-      layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES);
+      layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES );
       layout.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
 
       layout.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RELATED_ENTITIES );
@@ -333,11 +342,13 @@ namespace Evado.Dal.Clinical
       if ( value != String.Empty )
       {
         layout.Design.LinkContentSetting =
-          Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkConsentSetting> ( value );
+          Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( value );
       }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
       layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
+      layout.Design.AuthorOnlyEditAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_EDIT_ACCESS );
+      layout.Design.AuthorOnlyDraftAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_DRAFT_ACCESS );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdRecordLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
@@ -458,7 +469,7 @@ namespace Evado.Dal.Clinical
 
       }
 
-      _sqlQueryString += ") ORDER BY " + EdRecordLayouts.DB_LAYOUT_ID + "," + EdRecordLayouts.DB_STATE+ ";";
+      _sqlQueryString += ") ORDER BY " + EdRecordLayouts.DB_LAYOUT_ID + "," + EdRecordLayouts.DB_STATE + ";";
 
       this.LogDebug ( _sqlQueryString );
 
@@ -534,7 +545,7 @@ namespace Evado.Dal.Clinical
       // 
       // Retrieve the instrument items.
       // 
-      Layout.Entities = dal_RecordEntities.getEntityList( Layout );
+      Layout.Entities = dal_RecordEntities.getEntityList ( Layout );
       this.LogClass ( dal_RecordEntities.Log );
     }
 
@@ -583,30 +594,30 @@ namespace Evado.Dal.Clinical
       // 
       recordList = this.getLayoutList ( TypeId, State, false );
 
-        // 
-        // Iterate through the results extracting the role information.
-        // 
-        foreach( EdRecord record in recordList )
+      // 
+      // Iterate through the results extracting the role information.
+      // 
+      foreach ( EdRecord record in recordList )
+      {
+        //
+        // If SelectByGuid = True then optionId is to be the objects Checklist UID
+        //
+        if ( SelectByGuid == true )
         {
-          //
-          // If SelectByGuid = True then optionId is to be the objects Checklist UID
-          //
-          if ( SelectByGuid == true )
-          {
-            option = new EvOption ( record.Guid.ToString(),
-              record.LayoutId + " - " + record.Title );
-          }
-          //
-          // If SelectByGuid = False then optionId is to be the objects FieldId.
-          //
-          else
-          {
-            option = new EvOption ( record.LayoutId,
-              record.LayoutId + " - " + record.Title );
-          }
-          list.Add ( option );
+          option = new EvOption ( record.Guid.ToString ( ),
+            record.LayoutId + " - " + record.Title );
+        }
+        //
+        // If SelectByGuid = False then optionId is to be the objects FieldId.
+        //
+        else
+        {
+          option = new EvOption ( record.LayoutId,
+            record.LayoutId + " - " + record.Title );
+        }
+        list.Add ( option );
 
-        }//END iteration loop
+      }//END iteration loop
 
       //
       // Return the ArrayList.
@@ -661,7 +672,7 @@ namespace Evado.Dal.Clinical
         + "WHERE (" + EdRecordLayouts.DB_TYPE_ID + " = " + EdRecordLayouts.PARM_TYPE_ID + " ) "
         + " AND ( (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Draft + "' ) "
         + "  OR (" + EdRecordLayouts.DB_STATE + " = '" + EdRecordObjectStates.Form_Reviewed + "') ) "
-        + " ORDER BY "+ EdRecordLayouts.DB_LAYOUT_ID + ";";
+        + " ORDER BY " + EdRecordLayouts.DB_LAYOUT_ID + ";";
 
       this.LogValue ( _sqlQueryString );
 
@@ -683,7 +694,7 @@ namespace Evado.Dal.Clinical
 
           EvOption option = new EvOption (
               EvSqlMethods.getString ( row, EdRecordLayouts.DB_LAYOUT_ID ),
-              EvSqlMethods.getString ( row, EdRecordLayouts.DB_LAYOUT_ID ) 
+              EvSqlMethods.getString ( row, EdRecordLayouts.DB_LAYOUT_ID )
               + " - " + EvSqlMethods.getString ( row, EdRecordLayouts.DB_TITLE ) );
 
           this.LogValue ( " " + option.Value + " " + option.Description );
@@ -754,7 +765,7 @@ namespace Evado.Dal.Clinical
       // 
       // Generate the Selection query string.
       // 
-      this._sqlQueryString = _sqlQuery_View 
+      this._sqlQueryString = _sqlQuery_View
         + " WHERE (" + EdRecordLayouts.DB_LAYOUT_GUID + " = " + EdRecordLayouts.PARM_LAYOUT_GUID + ");";
 
 

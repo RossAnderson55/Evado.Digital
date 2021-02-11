@@ -163,6 +163,16 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property indicates that only the author has edit access to the record.
+    /// </summary>
+    public bool AuthorOnlyEditAccess { get; set; }
+
+    /// <summary>
+    /// This property indicates that only the author has access to draft of the record.
+    /// </summary>
+    public bool AuthorOnlyDraftAccess { get; set; }
+
+    /// <summary>
     /// This property contains a record id prefix.
     /// </summary>
     public string RecordPrefix { get; set; }
@@ -226,11 +236,11 @@ namespace Evado.Model.Digital
     /// </summary>
     public object DefaultPageLayout { get; set; }
 
-    private EdRecord.LinkConsentSetting _LinkContentSetting = EdRecord.LinkConsentSetting.Default;
+    private EdRecord.LinkContentSetting _LinkContentSetting = EdRecord.LinkContentSetting.Default;
     /// <summary>
     /// This property indicated whether record summary content is to be displayed in command titles of the page.
     /// </summary>
-    public EdRecord.LinkConsentSetting LinkContentSetting
+    public EdRecord.LinkContentSetting LinkContentSetting
     {
       get
       {

@@ -49,13 +49,13 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuUserProfiles (
-      EuAdapterObjects AdapterObjects,
+      EuGlobalObjects AdapterObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings)
     {
-      this.GlobalObjects = AdapterObjects;
+      this.AdapterObjects = AdapterObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -1339,7 +1339,7 @@ namespace Evado.UniForm.Digital
       // Generate the user role list.
       //
       List<EvOption> roleList =  Evado.Model.Digital.EdUserProfile.getRoleOptionList (
-        this.GlobalObjects.AdapterSettings.RoleList,
+        this.AdapterObjects.AdapterSettings.RoleList,
         false );
 
       //

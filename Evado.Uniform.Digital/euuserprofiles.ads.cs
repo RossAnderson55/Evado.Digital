@@ -220,7 +220,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getAdsCustomerGroup" );
       this.LogDebug ( "Customer Group Name: " +
-        this.GlobalObjects.AdapterSettings.AdsGroupName );
+        this.AdapterObjects.AdapterSettings.AdsGroupName );
 
       //
       // if ADS is not enabled then set the AdsCustomerGroup to null 
@@ -233,7 +233,7 @@ namespace Evado.UniForm.Digital
         return EvEventCodes.Active_Directory_Not_Enabled;
       }
 
-      if (  this.GlobalObjects.AdapterSettings.AdsGroupName == String.Empty )
+      if (  this.AdapterObjects.AdapterSettings.AdsGroupName == String.Empty )
       {
         return EvEventCodes.Active_Directory_Group_Not_Found;
       }
@@ -241,9 +241,9 @@ namespace Evado.UniForm.Digital
       if ( this.Session.AdsCustomerGroup != null )
       {
         this.LogValue ( "Customer Group Name: " +
-           this.GlobalObjects.AdapterSettings.AdsGroupName + " EXISTS." );
+           this.AdapterObjects.AdapterSettings.AdsGroupName + " EXISTS." );
 
-        if ( this.Session.AdsCustomerGroup.Name ==  this.GlobalObjects.AdapterSettings.AdsGroupName )
+        if ( this.Session.AdsCustomerGroup.Name ==  this.AdapterObjects.AdapterSettings.AdsGroupName )
         {
           this.LogMethodEnd ( "getAdsCustomerGroup" );
           return EvEventCodes.Ok;
@@ -261,7 +261,7 @@ namespace Evado.UniForm.Digital
       // Get the customer's Group name.
       //
       resultGroup = adsProfiles.GetGroup (
-         this.GlobalObjects.AdapterSettings.AdsGroupName );
+         this.AdapterObjects.AdapterSettings.AdsGroupName );
 
       //
       // If the user does not exist add them as a new user.
@@ -305,7 +305,7 @@ namespace Evado.UniForm.Digital
       //
       // Skip update if a new user.
       //
-      if (  this.GlobalObjects.AdapterSettings.AdsGroupName == null
+      if (  this.AdapterObjects.AdapterSettings.AdsGroupName == null
         || this.Session.AdsEnabled == false )
       {
         this.LogValue ( "Debug Authenication or AD Group is null" );
@@ -490,7 +490,7 @@ namespace Evado.UniForm.Digital
       //
       if ( ( AdUserProfile.EvGroups.Count == 0
         || hasCustomerGroup == false )
-        && (  this.GlobalObjects.AdapterSettings.AdsGroupName != null ) )
+        && (  this.AdapterObjects.AdapterSettings.AdsGroupName != null ) )
       {
         AdUserProfile.EvGroups.Add ( this.Session.AdsCustomerGroup );
         this.LogValue ( "ADS Customer group added" );
@@ -511,8 +511,8 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "sendUserNotificationEmail" );
       this.LogDebug ( "Notification: " + Notification );
-      this.LogDebug ( "ApplicationParameters.ApplicationUrl: " + this.GlobalObjects.ApplicationUrl );
-      this.LogDebug ( "SupportEmailAddress: " + this.GlobalObjects.SupportEmailAddress );
+      this.LogDebug ( "ApplicationParameters.ApplicationUrl: " + this.AdapterObjects.ApplicationUrl );
+      this.LogDebug ( "SupportEmailAddress: " + this.AdapterObjects.SupportEmailAddress );
       this.LogDebug ( "AdminUserProfile.UserId: " + this.Session.AdminUserProfile.UserId );
       this.LogDebug ( "AdminUserProfile.Password: " + this.Session.AdminUserProfile.Password );
       this.LogDebug ( "AdminUserProfile.EmailAddress: " + this.Session.AdminUserProfile.EmailAddress );
@@ -527,9 +527,9 @@ namespace Evado.UniForm.Digital
       //
       // Validate that the necessary parametes exist.
       //
-      if ( this.GlobalObjects.ApplicationUrl == String.Empty
+      if ( this.AdapterObjects.ApplicationUrl == String.Empty
         || this.Session.AdminUserProfile.EmailAddress == String.Empty
-        || this.GlobalObjects.SupportEmailAddress == String.Empty )
+        || this.AdapterObjects.SupportEmailAddress == String.Empty )
       {
         this.LogValue ( "Parameters Missing" );
         this.LogMethodEnd ( "sendUserNotificationEmail" );
@@ -540,27 +540,27 @@ namespace Evado.UniForm.Digital
       {
         case EvStaticContentTemplates.NotiificationTypes.Update_Password_Email:
           {
-            EmailTitle = this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title;
-            EmailBody = this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body;
+            EmailTitle = this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Title;
+            EmailBody = this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Reset_Password_Email:
           {
-            EmailTitle = this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Title;
-            EmailBody = this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body;
+            EmailTitle = this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Title;
+            EmailBody = this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Password_Change_Email:
           {
-            EmailTitle = this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title;
-            EmailBody = this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body;
+            EmailTitle = this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Title;
+            EmailBody = this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Body;
             break;
           }
         case EvStaticContentTemplates.NotiificationTypes.Introductory_Email:
         default:
           {
-            EmailTitle = this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title;
-            EmailBody = this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body;
+            EmailTitle = this.AdapterObjects.ContentTemplates.IntroductoryEmail_Title;
+            EmailBody = this.AdapterObjects.ContentTemplates.IntroductoryEmail_Body;
             break;
           }
       }//End switch statementf
@@ -573,7 +573,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.FamilyName );
 
       EmailTitle = EmailTitle.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE,
-         this.GlobalObjects.AdapterSettings.Title );
+         this.AdapterObjects.AdapterSettings.Title );
 
       EmailBody = EmailBody.Replace ( "\r\n\r\n", "\r\n \r\n" );
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_FIRST_NAME,
@@ -597,11 +597,11 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.OrganisationName );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE,
-        this.GlobalObjects.AdapterSettings.Title );
+        this.AdapterObjects.AdapterSettings.Title );
 
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_PASSWORD_RESET_URL,
-        this.GlobalObjects.PasswordResetUrl );
+        this.AdapterObjects.PasswordResetUrl );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_DATE_STAMP,
         DateTime.Now.ToLongDateString ( ) + " at " + DateTime.Now.ToShortTimeString ( ) );
@@ -633,10 +633,10 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the report alert class
       //
-      email.SmtpServer = this.GlobalObjects.AdapterSettings.SmtpServer;
-      email.SmtpServerPort = this.GlobalObjects.AdapterSettings.SmtpServerPort;
-      email.SmtpUserId = this.GlobalObjects.AdapterSettings.SmtpUserId;
-      email.SmtpPassword = this.GlobalObjects.AdapterSettings.SmtpPassword;
+      email.SmtpServer = this.AdapterObjects.AdapterSettings.SmtpServer;
+      email.SmtpServerPort = this.AdapterObjects.AdapterSettings.SmtpServerPort;
+      email.SmtpUserId = this.AdapterObjects.AdapterSettings.SmtpUserId;
+      email.SmtpPassword = this.AdapterObjects.AdapterSettings.SmtpPassword;
 
       //
       // Set the email alert to the recipents
@@ -644,7 +644,7 @@ namespace Evado.UniForm.Digital
       emailStatus = email.sendEmail (
         EmailTitle,
         EmailBody,
-        this.GlobalObjects.SupportEmailAddress,
+        this.AdapterObjects.SupportEmailAddress,
         this.Session.AdminUserProfile.EmailAddress,
         String.Empty );
 

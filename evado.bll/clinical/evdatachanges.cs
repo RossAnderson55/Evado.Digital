@@ -198,7 +198,7 @@ namespace Evado.Bll.Clinical
     /// This method gets a list of record for the record table QueryType
     /// </summary>
     /// <param name="Application">String: (Mandatory) The trial identifier.</param>
-    /// <param name="SubjectId">String: the milestone identifier</param>
+    /// <param name="EntityId">String: the milestone identifier</param>
     /// <param name="RecordTable">EvDataChange.DataChangeTableNames: The table name</param>
     /// <returns>List of EvOption: the list of selection options</returns>
     /// <remarks>
@@ -209,8 +209,8 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of options. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getRecordSelectionList ( String Application,
-      String SubjectId,
+    public List<EvOption> getRecordSelectionList ( 
+      String EntityId,
       EvDataChange.DataChangeTableNames RecordTable )
     {
       // 
@@ -218,8 +218,7 @@ namespace Evado.Bll.Clinical
       // 
       this._DebugLog.AppendLine (  Evado.Model.Digital.EvcStatics.CONST_METHOD_START
         + "Evado.Bll.Clinical.EvDataChanges.getRecordSelectionList" );
-      this._DebugLog.AppendLine (  "ProjectId: " + Application );
-      this._DebugLog.AppendLine (  "SubjectId: " + SubjectId );
+      this._DebugLog.AppendLine ( "EntityId: " + EntityId );
       this._DebugLog.AppendLine (  "RecordTable: " + RecordTable );
 
       // 
@@ -229,11 +228,11 @@ namespace Evado.Bll.Clinical
       {
         case EvDataChange.DataChangeTableNames.EvRecords:
           {
-            return this.GetRecordList ( Application, SubjectId );
+            return this.GetRecordList ( EntityId );
           }
         case EvDataChange.DataChangeTableNames.EvAncilliaryRecords:
           {
-            return this.GetSubjectRecordsList ( Application, SubjectId );
+            return this.GetSubjectRecordsList ( EntityId );
           }
       }
       return new List<EvOption> ( );
@@ -449,13 +448,13 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of record objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetRecordList ( string ApplicationId, string EntityId )
+    private List<EvOption> GetRecordList ( string EntityId )
     {
       //
       // Initialise the method variables and objects.
       // 
       EdRecords trialRecords = new EdRecords ( );
-      EdQueryParameters query = new EdQueryParameters ( ApplicationId );
+      EdQueryParameters query = new EdQueryParameters (  );
       query.EntityId = EntityId;
 
       List<EvOption> list = trialRecords.getOptionList ( query, true );
@@ -481,11 +480,11 @@ namespace Evado.Bll.Clinical
     /// 2. Return the list of milestone record objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private List<EvOption> GetSubjectRecordsList ( string ProjectId, string SubjectId )
+    private List<EvOption> GetSubjectRecordsList (  string SubjectId )
     {
       EvAncillaryRecords trialSubjectRecords = new EvAncillaryRecords ( );
 
-      return trialSubjectRecords.getList ( ProjectId, SubjectId, true );
+      return trialSubjectRecords.getList ( SubjectId, true );
     }//END GetSubjectRecordsList class
 
     #endregion

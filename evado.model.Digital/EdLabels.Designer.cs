@@ -5985,6 +5985,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author Only Draft Access:.
+        /// </summary>
+        public static string Record_Layout_Author_Only_Draft_Access_Field_Title {
+            get {
+                return ResourceManager.GetString("Record_Layout_Author_Only_Draft_Access_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Record_Layout_Author_Only_Edit_Access_Field_Title {
+            get {
+                return ResourceManager.GetString("Record_Layout_Author_Only_Edit_Access_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Edit Roles:.
         /// </summary>
         public static string Record_Layout_EditRole_Field_Label {

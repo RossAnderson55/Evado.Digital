@@ -164,7 +164,7 @@ namespace Evado.Bll.Clinical
     /// This class returns a list of options for FirstSubject record objects based on the passed parameters
     /// </summary>
     /// <param name="TrialId">string: (Mandatory) trial identifier</param>
-    /// <param name="SubjectId">string: (Optional) milestone identifier.</param>
+    /// <param name="EntityId">string: (Optional) milestone identifier.</param>
     /// <param name="useGuid">Boolean: true, if the Guid is used</param>
     /// <returns>List of EvSubjectRecord: a list of milestone record objects</returns>
     /// <remarks>
@@ -176,11 +176,11 @@ namespace Evado.Bll.Clinical
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     public List<EvOption> getList (
-      string TrialId, string SubjectId, bool useGuid )
+      string EntityId, bool useGuid )
     {
       this._DebugLog.AppendLine ( "Evado.Bll.AncillaryRecords.getList method. " );
 
-      List<EvOption> List = this._dalSubjectRecords.getList ( TrialId, SubjectId, useGuid );
+      List<EvOption> List = this._dalSubjectRecords.getList ( EntityId, useGuid );
       this._DebugLog.AppendLine ( this._dalSubjectRecords.Log );
 
       return List;

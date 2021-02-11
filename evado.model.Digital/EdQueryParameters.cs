@@ -37,14 +37,6 @@ namespace Evado.Model.Digital
     public EdQueryParameters( )
     { }
 
-    /// <summary>
-    /// This method initialise teh query parameter object with defined values.
-    /// </summary>
-    /// <param name="ApplicationId">String Project identifier</param>
-    public EdQueryParameters( String ApplicationId )
-    {
-      this.ApplicationId = ApplicationId;
-    }
     #endregion
 
     #region Public member variables
@@ -59,11 +51,6 @@ namespace Evado.Model.Digital
       get { return _States; }
       set { _States = value; }
     }
-
-    /// <summary>
-    /// This field defines the project identifier
-    /// </summary>
-    public string ApplicationId = String.Empty;
 
     /// <summary>
     /// This field defines the layout identifier.

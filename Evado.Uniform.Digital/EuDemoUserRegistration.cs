@@ -49,13 +49,13 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuDemoUserRegistration (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -215,7 +215,7 @@ namespace Evado.UniForm.Digital
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + this.ClassNameSpace + "getDataObject_RegistrationPage" );
       this.LogDebug ( "AdminOrganisation.OrgId: " +this.Session.SelectedUserType.ToString() );
-      this.LogDebug ( "Demo Expiry {0}", this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays.ToString() );
+      this.LogDebug ( "Demo Expiry {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays.ToString() );
       try
       {
         // 
@@ -229,7 +229,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile = new Evado.Model.Digital.EdUserProfile ( );
         this.Session.AdminUserProfile.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.AdminUserProfile.ExpiryDate = DateTime.Now.AddDays (
-          this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays );
+          this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
@@ -405,7 +405,7 @@ namespace Evado.UniForm.Digital
       //
       // perform the html body transformation.
       //
-      string description = markDown.Transform ( this.GlobalObjects.ContentTemplates.DemoRegistrationInstuctions );
+      string description = markDown.Transform ( this.AdapterObjects.ContentTemplates.DemoRegistrationInstuctions );
 
       pageGroup.Description = description;
 
@@ -432,7 +432,7 @@ namespace Evado.UniForm.Digital
       //
       // if there is not video donot create the video field.
       //
-      if ( this.GlobalObjects.AdapterSettings.DemoRegistrationVideoUrl == String.Empty )
+      if ( this.AdapterObjects.AdapterSettings.DemoRegistrationVideoUrl == String.Empty )
       {
         return;
       }
@@ -442,7 +442,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Field groupField = PageGroup.createField ( );
       groupField.Type = Evado.Model.EvDataTypes.Streamed_Video;
-      groupField.Value = this.GlobalObjects.AdapterSettings.DemoRegistrationVideoUrl;
+      groupField.Value = this.AdapterObjects.AdapterSettings.DemoRegistrationVideoUrl;
       groupField.Description = String.Empty;
 
       int iWidth = 800;
@@ -759,13 +759,13 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       //
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-      String groupDescription = this.GlobalObjects.ContentTemplates.DemoRegistrationConfirmation;
+      String groupDescription = this.AdapterObjects.ContentTemplates.DemoRegistrationConfirmation;
 
       if ( UpdateResult != EvEventCodes.Ok )
       {
         this.LogDebug ( "ERROR: Update Result Error: {0}", UpdateResult );
 
-        groupDescription = this.GlobalObjects.ContentTemplates.DemoRegistrationError;
+        groupDescription = this.AdapterObjects.ContentTemplates.DemoRegistrationError;
       }
 
       //

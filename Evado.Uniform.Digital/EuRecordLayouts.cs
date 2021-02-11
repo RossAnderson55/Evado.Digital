@@ -52,13 +52,13 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuRecordLayouts (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -77,6 +77,11 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
       this._Bll_RecordLayouts = new EdRecordLayouts ( Settings );
+
+      if ( this.Session.AdminRecordList == null )
+      {
+        this.Session.AdminRecordList = new List<EdRecord> ( );
+      }
 
       if ( this.Session.RecordLayout == null )
       {
@@ -339,7 +344,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the page to retrieve the script
         //
-        this._ServerPageScript.CsScriptPath = this.GlobalObjects.ApplicationPath + @"csscripts\";
+        this._ServerPageScript.CsScriptPath = this.AdapterObjects.ApplicationPath + @"csscripts\";
 
 
         // 
@@ -402,7 +407,6 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
         this.Session.PageId = EvPageIds.Null;
 
         // 
@@ -465,12 +469,12 @@ namespace Evado.UniForm.Digital
         //
         // execute the form list query.
         //
-        this.loadTrialFormList ( );
+        this.loadRecordLayoutList ( );
 
         // 
         // Create the pageMenuGroup containing commands to open the records.
         // 
-        this.createFormList_Group ( clientDataObject.Page, this.Session.RecordLayoutList );
+        this.createFormList_Group ( clientDataObject.Page, this.Session.AdminRecordList );
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
@@ -502,14 +506,13 @@ namespace Evado.UniForm.Digital
     /// This method loads the form list.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    private void loadTrialFormList ( )
+    private void loadRecordLayoutList ( )
     {
-      this.LogMethod ( "loadTrialFormList method" );
+      this.LogMethod ( "loadRecordLayoutList method" );
 
-      if ( this.Session.RecordLayoutList.Count > 0  
-        && this.Session.FormsAdaperLoaded  == false ) 
+      if ( this.Session.AdminRecordList.Count > 0 ) 
       {
-        this.LogMethod ( "loadTrialFormList method" );
+        this.LogMethod ( "loadRecordLayoutList method" );
         return;
       }
 
@@ -528,17 +531,17 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.RecordLayoutList = this._Bll_RecordLayouts.getLayoutList (
+      this.Session.AdminRecordList = this._Bll_RecordLayouts.getLayoutList (
         this.Session.FormType,
         this.Session.FormState );
 
       this.LogDebugClass ( this._Bll_RecordLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.Session.RecordLayoutList.Count );
+      this.LogDebug ( "Form list count: " + this.Session.AdminRecordList.Count );
 
       this.Session.FormsAdaperLoaded = false;
 
-      this.LogMethod ( "loadTrialFormList method" );
-    }//ENd loadTrialFormList method
+      this.LogMethod ( "loadRecordLayoutList method" );
+    }//ENd loadRecordLayoutList method
 
     // ==============================================================================
     /// <summary>
@@ -635,7 +638,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
+        this.Session.AdminRecordList = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -1230,15 +1233,15 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.RecordLayoutList.Count == 0 )
+      if ( this.Session.AdminRecordList.Count == 0 )
       {
-        this.loadTrialFormList ( );
+        this.loadRecordLayoutList ( );
       }
 
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.Session.RecordLayoutList )
+      foreach ( EdRecord form in this.Session.AdminRecordList )
       {
         //
         // get the list issued version of the form.
@@ -2253,7 +2256,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
-        this.GlobalObjects,
+        this.AdapterObjects,
         this.Session,
         this.ClassParameters );
 
@@ -2871,7 +2874,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
+        this.Session.AdminRecordList = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -2911,7 +2914,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.Session.RecordLayoutList )
+      foreach ( EdRecord form in this.Session.AdminRecordList )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

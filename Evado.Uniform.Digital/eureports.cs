@@ -52,14 +52,14 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuReports (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl,
       EvClassParameters Settings )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.ClassParameters = Settings;
@@ -1096,7 +1096,7 @@ namespace Evado.UniForm.Digital
       //
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      String CssDirectorypath = this.GlobalObjects.ApplicationPath +@"\css\";
+      String CssDirectorypath = this.AdapterObjects.ApplicationPath +@"\css\";
 
       if ( this._OutputReport == false )
       {

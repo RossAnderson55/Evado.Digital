@@ -71,11 +71,11 @@ namespace Evado.UniForm.Digital
       set { this._ServiceUserProfile = value; }
     }
 
-    private EuAdapterObjects _GlobalObjects = new EuAdapterObjects ( );
+    private EuGlobalObjects _GlobalObjects = new EuGlobalObjects ( );
     /// <summary>
     /// This property contains the global application parameters.
     /// </summary>
-    public EuAdapterObjects GlobalObjects
+    public EuGlobalObjects AdapterObjects
     {
       get { return _GlobalObjects; }
       set { _GlobalObjects = value; }

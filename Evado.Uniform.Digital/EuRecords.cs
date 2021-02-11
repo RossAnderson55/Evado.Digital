@@ -65,7 +65,7 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuRecords (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects AdapterObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
@@ -73,7 +73,7 @@ namespace Evado.UniForm.Digital
       EvClassParameters Settings )
     {
       this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = AdapterObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
@@ -419,7 +419,7 @@ namespace Evado.UniForm.Digital
       //
       // Do not lock the record is the user does not have update access.
       //
-      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
+      if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
       {
         return false;
       }
@@ -520,10 +520,17 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "updateSessionValue" );
 
-
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString() ) == true )
+      //
+      // if the command has a customer method parameter it is a selection update command so reset the record layouts.
+      //
+      if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
       {
-        this.Session.RecordSelectionLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString() );
+        this.Session.RecordList = new List<EdRecord> ( );
+      }
+
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) ) == true )
+      {
+        this.Session.RecordSelectionLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) );
       }
       this.LogValue ( "RecordSelectionFormId: " + this.Session.RecordSelectionLayoutId );
 
@@ -541,9 +548,9 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "RecordType: " + this.Session.RecordType );
 
 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString() ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
       {
-        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString() );
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
 
         if ( this.Session.RecordSelectionState != stateValue )
         {
@@ -717,6 +724,7 @@ namespace Evado.UniForm.Digital
     private void executeRecordQuery ( )
     {
       this.LogMethod ( "executeRecordQuery" );
+      this.LogValue ( "FormRecordType: " + this.Session.RecordSelectionLayoutId );
       this.LogValue ( "FormRecordType: " + this.Session.RecordType );
       this.LogValue ( "RecordSelectionState: " + this.Session.RecordSelectionState );
       //
@@ -741,14 +749,12 @@ namespace Evado.UniForm.Digital
         queryParameters.NotSelectedState = false;
       }
 
-      this.LogValue ( "TrialId: '" + queryParameters.ApplicationId + "'" );
       this.LogValue ( "FormId: '" + queryParameters.LayoutId + "'" );
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      if ( queryParameters.ApplicationId != String.Empty
-        && queryParameters.LayoutId != String.Empty )
+      if (  queryParameters.LayoutId != String.Empty )
       {
         this.LogValue ( "FormRecordType: " + this.Session.RecordType );
 
@@ -778,7 +784,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page Page )
     {
       this.LogMethod ( "getList_SelectionGroup" );
-      this.LogDebug ( "FormList.Count {0}. ", this.Session.RecordLayoutList.Count );
+      this.LogDebug ( "RecordLayoutList.Count {0}. ", this.AdapterObjects.IssuedRecordLayouts.Count );
       //
       // Initialise the methods variables and objects.
       //
@@ -801,7 +807,7 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
-      foreach ( EdRecord layout in this.Session.RecordLayoutList )
+      foreach ( EdRecord layout in this.AdapterObjects.IssuedRecordLayouts )
       {
         optionList.Add ( new EvOption ( layout.LayoutId,
           String.Format ( "{0} - {1}", layout.LayoutId, layout.Title ) ) );
@@ -822,7 +828,7 @@ namespace Evado.UniForm.Digital
       optionList = EdRecord.getRecordStates ( false );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Status.ToString(),
+        EdRecord.RecordFieldNames.Status.ToString ( ),
         EdLabels.Record_State_Selection,
         this.Session.RecordSelectionState,
         optionList );
@@ -836,7 +842,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Records.ToString ( ),
-         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
       selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
@@ -860,8 +866,6 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
 
-      List<EdRecord> RecordList = this.Session.RecordList;
-
       // 
       // Create the record display pageMenuGroup.
       // 
@@ -872,7 +876,7 @@ namespace Evado.UniForm.Digital
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EdLabels.List_Count_Label + RecordList.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + this.Session.RecordList.Count;
 
       //
       // Add a create record command.
@@ -890,7 +894,7 @@ namespace Evado.UniForm.Digital
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EdRecord formRecord in RecordList )
+      foreach ( Evado.Model.Digital.EdRecord formRecord in this.Session.RecordList )
       {
         //
         // Create the group list groupCommand object.
@@ -936,7 +940,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.Title = String.Empty;
 
-      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
+      if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
       {
         //
         // Switch to determine the icons and background colours.
@@ -951,7 +955,7 @@ namespace Evado.UniForm.Digital
                Model.UniForm.CommandParameters.Image_Url,
                EuRecords.ICON_RECORD_DRAFT );
 
-              if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
+              if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
               {
 
                 groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Yellow );
@@ -1071,7 +1075,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
+        if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getRecordExport_Object",
@@ -1583,7 +1587,7 @@ namespace Evado.UniForm.Digital
       //
       this._Bll_FormRecords = new EdRecords ( this.ClassParameters );
       Guid recordGuid = PageCommand.GetGuid ( );
-      String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString() );
+      String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString ( ) );
 
       //
       // If the record ids match then the record is loaded so exit.
@@ -1677,7 +1681,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the page to retrieve the script
         //
-        this._ServerPageScript.CsScriptPath = this.GlobalObjects.ApplicationPath + @"\csScripts\";
+        this._ServerPageScript.CsScriptPath = this.AdapterObjects.ApplicationPath + @"\csScripts\";
 
 
         // 
@@ -1725,7 +1729,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "setUserRecordAccess" );
       this.LogValue ( "RoleId: " + this.Session.UserProfile.Roles );
       this.LogValue ( "ActiveDirectoryUserId: " + this.Session.UserProfile.ActiveDirectoryUserId );
-      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) );
+      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) );
       this.LogValue ( "Record state: " + this.Session.Record.StateDesc );
 
       // 
@@ -1737,7 +1741,7 @@ namespace Evado.UniForm.Digital
         case EdRecordObjectStates.Empty_Record:
         case EdRecordObjectStates.Completed_Record:
           {
-            if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
+            if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is draft of queried, and the user has Record Edit role
@@ -1749,7 +1753,7 @@ namespace Evado.UniForm.Digital
           }
         case EdRecordObjectStates.Submitted_Record:
           {
-            if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == true )
+            if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is SubmittedRecords, and the user has Record Edit role
@@ -1825,7 +1829,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
-        this.GlobalObjects,
+        this.AdapterObjects,
         this.Session,
         this.ClassParameters );
 
@@ -2224,7 +2228,7 @@ namespace Evado.UniForm.Digital
         // 
         EvEventCodes result = this._Bll_FormRecords.saveRecord (
           this.Session.Record,
-          this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) );
+          this.Session.UserProfile.hasEndUserRole ( this.Session.Record.Design.ReadAccessRoles ) );
 
         this.LogClass ( this._Bll_FormRecords.Log );
 
@@ -2313,7 +2317,7 @@ namespace Evado.UniForm.Digital
       // Initialise method variables and objects.
       // 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
-        this.GlobalObjects,
+        this.AdapterObjects,
         this.Session,
         this.ClassParameters );
 

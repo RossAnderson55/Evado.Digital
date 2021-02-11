@@ -125,7 +125,7 @@ namespace Evado.UniForm.Digital
         this.ClassParameters.UserProfile = new EdUserProfile ( this.ServiceUserProfile );
         this.ClassParameters.LoggingLevel = 5;
 
-        this._AdapterObjects = new EuAdapterObjects ( this.ClassParameters );
+        this._AdapterObjects = new EuGlobalObjects ( this.ClassParameters );
         this._AdapterObjects.LoggingLevel = 5;
         //
         // Delete the old application objects.
@@ -246,7 +246,7 @@ namespace Evado.UniForm.Digital
 
     public static readonly EdRecordObjectStates CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn;
 
-    private EuAdapterObjects _AdapterObjects = new EuAdapterObjects ( );
+    private EuGlobalObjects _AdapterObjects = new EuGlobalObjects ( );
 
     private EuSession Session = new EuSession ( );
 
@@ -448,7 +448,11 @@ namespace Evado.UniForm.Digital
         this.loadOrganisationList ( );
 
         //
-        // set the current project
+        // load the list of issued entity layouts in the application.
+        this.loadEnityLayoutList ( );
+
+        //
+        // load the list of issued record layouts in the application
         //
         this.loadRecordLayoutList ( );
 
@@ -556,7 +560,7 @@ namespace Evado.UniForm.Digital
       //
       // Update the application and session objects.
       //
-      this._AdapterObjects = demonstrationUserRegistration.GlobalObjects;
+      this._AdapterObjects = demonstrationUserRegistration.AdapterObjects;
       this.Session = demonstrationUserRegistration.Session;
 
       //
@@ -1260,7 +1264,7 @@ namespace Evado.UniForm.Digital
       if ( this.GlobalObjectList.ContainsKey ( EuAdapter.GLOBAL_OBJECT ) == true )
       {
         this._AdapterObjects =
-          (EuAdapterObjects) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
+          (EuGlobalObjects) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
       }
 
       //  

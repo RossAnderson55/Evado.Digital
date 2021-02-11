@@ -107,7 +107,6 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod ( "getRecordCount method. " );
       this.LogValue ( "EvQueryParameters parameters." );
-      this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
@@ -148,7 +147,6 @@ namespace Evado.Bll.Clinical
     {
       this.LogMethod ( "getRecordList method. " );
       this.LogDebug ( "EvQueryParameters parameters." );
-      this.LogValue ( "- ProjectId: " + QueryParameters.ApplicationId );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
@@ -196,7 +194,6 @@ namespace Evado.Bll.Clinical
       bool ByUid )
     {
       this.LogMethod ( "getOptionList" );
-      this.LogValue ( "ApplicationId: " + Query.ApplicationId);
 
       List<EvOption> List = this._DalRecords.getOptionList ( Query, ByUid );
 

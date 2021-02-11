@@ -135,7 +135,7 @@ namespace Evado.UniForm.Digital
       return true;
 
     }///END loadUserProfile method.
-     ///
+    ///
     //===================================================================================
     /// <summary>
     /// This method executes the form list query 
@@ -165,7 +165,7 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.OrganisationList = bll_Organisations.getOrganisationList(
+      this.Session.OrganisationList = bll_Organisations.getOrganisationList (
          this.Session.OrganisationType, false );
 
       this.LogDebugClass ( bll_Organisations.Log );
@@ -181,14 +181,53 @@ namespace Evado.UniForm.Digital
     /// This method executes the form list query 
     /// </summary>
     //-----------------------------------------------------------------------------------
+    private void loadEnityLayoutList ( )
+    {
+      this.LogMethod ( "loadEnityLayoutList" );
+
+      if ( this._AdapterObjects.AllEntityLayouts.Count > 0 )
+      {
+        this.LogDebug ( "Entity layouts loaded." );
+        this.LogMethodEnd ( "loadRecordLayoutList" );
+        return;
+      }
+
+      //
+      // Initialise the methods variables and object.
+      //
+      /*
+      EdRecordLayouts EntityLayoutList = new EdRecordLayouts ( this.ClassParameters );
+      this.Session.FormType = EdRecordTypes.Null;
+      this.Session.FormState = EdRecordObjectStates.Form_Issued;
+      this.Session.FormsAdaperLoaded = true;
+
+      // 
+      // Query the database to retrieve a list of the records matching the query parameter values.
+      // 
+      this._AdapterObjects.RecordLayoutList = bll_RecordLayouts.GetRecordLayoutListWithFields (
+        this.Session.FormType,
+        this.Session.FormState );
+      this.LogDebugClass ( bll_RecordLayouts.Log );
+      */
+
+      this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+
+      this.LogMethodEnd ( "loadEnityLayoutList" );
+
+    }//END loadEnityLayoutList method
+
+    //===================================================================================
+    /// <summary>
+    /// This method executes the form list query 
+    /// </summary>
+    //-----------------------------------------------------------------------------------
     private void loadRecordLayoutList ( )
     {
       this.LogMethod ( "loadRecordLayoutList" );
 
-      if ( this.Session.RecordLayoutList.Count > 0
-        || this.Session.FormsAdaperLoaded == false )
+      if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
       {
-        this.LogDebug ( "Record layout loaded." );
+        this.LogDebug ( "Record layouts loaded." );
         this.LogMethodEnd ( "loadRecordLayoutList" );
         return;
       }
@@ -198,23 +237,24 @@ namespace Evado.UniForm.Digital
       //
       EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
       this.Session.FormType = EdRecordTypes.Null;
-      this.Session.FormState = EdRecordObjectStates.Form_Issued;
+      this.Session.FormState = EdRecordObjectStates.Null;
       this.Session.FormsAdaperLoaded = true;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.RecordLayoutList = bll_RecordLayouts.GetRecordLayoutListWithFields (
+      this._AdapterObjects.AllRecordLayouts = bll_RecordLayouts.GetRecordLayoutListWithFields (
         this.Session.FormType,
         this.Session.FormState );
 
       this.LogDebugClass ( bll_RecordLayouts.Log );
 
-      this.LogDebug ( " list count: " + this.Session.RecordLayoutList.Count );
+      this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
       this.LogMethodEnd ( "loadRecordLayoutList" );
 
-    }//END loadTrialFormList method
+    }//END loadRecordLayoutList method
+
   }///END EuAdapter class
 
 }///END NAMESPACE

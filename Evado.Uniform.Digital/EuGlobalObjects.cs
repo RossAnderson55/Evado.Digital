@@ -36,7 +36,7 @@ namespace Evado.UniForm.Digital
   /// This class contains the session ResultData object
   /// </summary>
   [Serializable]
-  public class EuAdapterObjects 
+  public class EuGlobalObjects 
   {
     #region Class Initialisation
 
@@ -45,7 +45,7 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    public EuAdapterObjects ( )
+    public EuGlobalObjects ( )
     {
       this.Settings = new EvClassParameters ( );
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
@@ -56,7 +56,7 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    public EuAdapterObjects (
+    public EuGlobalObjects (
       EvClassParameters Settings )
     {
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
@@ -193,20 +193,6 @@ namespace Evado.UniForm.Digital
       set { _ExportFilePath = value; }
     }
 
-    /// <summary>
-    /// This value contains the path to teh XSL transform file name, OBSOLETE
-    /// </summary>
-    private string relativelXslCrfFilePath = @"xsl\crf.xsl";
-
-    /// <summary>
-    /// This property contains the relavive CRF Xsl File path 
-    /// </summary>
-    public string RelativelXslCrfFilePath
-    {
-      get { return relativelXslCrfFilePath; }
-      set { relativelXslCrfFilePath = value; }
-    }
-
     private List<EdExternalSelectionList> _ExternalSelectionLists = new List<EdExternalSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
@@ -306,6 +292,68 @@ namespace Evado.UniForm.Digital
     {
       get { return _MenuList; }
       set { _MenuList = value; }
+    }
+
+    private List<EdRecord> _AllEntityLayouts = new List<EdRecord> ( );
+    /// <summary>
+    /// This property object contains a list of entitys in the application
+    /// </summary>
+    public List<EdRecord> AllEntityLayouts
+    {
+      get { return this._AllEntityLayouts; }
+      set { this._AllEntityLayouts = value; }
+    }
+
+    /// <summary>
+    /// This property object contains a list of form templates 
+    /// </summary>
+    public List<EdRecord> IssuedEntityLayouts
+    {
+      get
+      {
+        List<EdRecord> recordLayoutList = new List<EdRecord> ( );
+
+        foreach ( EdRecord layout in _AllEntityLayouts )
+        {
+          if ( layout.State == EdRecordObjectStates.Form_Issued )
+          {
+            recordLayoutList.Add ( layout );
+          }
+        }
+
+        return recordLayoutList;
+      }
+    }
+
+    private List<EdRecord> _AllRecordLayoutList = new List<EdRecord> ( );
+    /// <summary>
+    /// This property object contains a list of form templates 
+    /// </summary>
+    public List<EdRecord> AllRecordLayouts
+    {
+      get { return _AllRecordLayoutList; }
+      set { _AllRecordLayoutList = value; }
+    }
+
+    /// <summary>
+    /// This property object contains a list of form templates 
+    /// </summary>
+    public List<EdRecord> IssuedRecordLayouts
+    {
+      get
+      {
+        List<EdRecord> recordLayoutList = new List<EdRecord> ( );
+
+        foreach ( EdRecord layout in _AllRecordLayoutList )
+        {
+          if ( layout.State == EdRecordObjectStates.Form_Issued )
+          {
+            recordLayoutList.Add ( layout );
+          }
+        }
+
+        return  recordLayoutList;
+      }
     }
 
     private int _AlertListLength = 20;

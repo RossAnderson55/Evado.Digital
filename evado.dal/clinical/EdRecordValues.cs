@@ -182,12 +182,12 @@ namespace Evado.Dal.Clinical
       recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_VALUES_GUID );
       recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
       recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      recordField.FormFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
+      recordField.RecordFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
 
 
       recordField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
       String value = EvSqlMethods.getString ( Row, EdRecordFields.DB_TYPE_ID );
-      recordField.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      recordField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
       recordField.Design.Title = EvSqlMethods.getString ( Row, EdRecordFields.DB_TITLE );
       recordField.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordFields.DB_INSTRUCTIONS );
@@ -305,7 +305,7 @@ namespace Evado.Dal.Clinical
       //
       // Reset the formfield type to be selectionlist.
       //
-      Field.TypeId = Evado.Model.EvDataTypes.Selection_List;
+      Field.Design.TypeId = Evado.Model.EvDataTypes.Selection_List;
 
     }//END getExternalSelectionList method
 
@@ -883,7 +883,7 @@ namespace Evado.Dal.Clinical
         {
           field.Guid = Guid.NewGuid ( );
         }
-        this.LogDebug ( "field.FormFieldGuid: " + field.FormFieldGuid );
+        this.LogDebug ( "field.FormFieldGuid: " + field.RecordFieldGuid );
         this.LogDebug ( "field.Guid: " + field.Guid );
 
         //
@@ -996,7 +996,7 @@ namespace Evado.Dal.Clinical
       // Define the record field Guid
       // 
       SqlParameter prm = new SqlParameter ( EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = RecordField.FormFieldGuid;
+      prm.Value = RecordField.RecordFieldGuid;
       ParmList.Add ( prm );
 
       // 

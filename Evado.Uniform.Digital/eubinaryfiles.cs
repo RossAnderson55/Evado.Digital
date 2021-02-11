@@ -62,7 +62,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     //  ----------------------------------------------------------------------------------
     public EuBinaryFiles (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String BinaryFilePath,
@@ -70,7 +70,7 @@ namespace Evado.UniForm.Digital
       String FileRepositoryPath,
       EvClassParameters Settings )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = BinaryFilePath;
@@ -739,7 +739,7 @@ namespace Evado.UniForm.Digital
         Guid orgGuid = Guid.Empty;
 
         this._BinaryFile.FileGuid = Guid.NewGuid ( );
-        this._BinaryFile.TrialGuid = this.GlobalObjects.AdapterSettings.Guid;
+        this._BinaryFile.TrialGuid = this.AdapterObjects.AdapterSettings.Guid;
         this._BinaryFile.GroupId = this.Session.BinaryFileOrgId;
         this._BinaryFile.GroupGuid = orgGuid;
       }//END emtpty binary object.
@@ -2039,10 +2039,10 @@ namespace Evado.UniForm.Digital
       // 
       EvBinaryFileMetaData binaryFile = new EvBinaryFileMetaData (
         FileGuid,
-        this.GlobalObjects.AdapterSettings.Guid,
+        this.AdapterObjects.AdapterSettings.Guid,
         GroupGuid,
         SubGroupGuid,
-        this.GlobalObjects.AdapterSettings.ApplicationId,
+        this.AdapterObjects.AdapterSettings.ApplicationId,
         GroupId,
         SubGroupId,
         FileId,

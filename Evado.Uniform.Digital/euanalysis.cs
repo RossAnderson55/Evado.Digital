@@ -50,7 +50,7 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuAnalysis (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
@@ -59,7 +59,7 @@ namespace Evado.UniForm.Digital
     {
 
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuAnalysis.";
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
@@ -134,11 +134,6 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
-        //
-        // load the trial form list.
-        //
-        this.loadTrialFormList ( );
 
         // 
         // Set the page type to control the DB query type.
@@ -220,58 +215,6 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END getClientDataObject method
-
-
-    //===================================================================================
-    /// <summary>
-    /// This method loads the form list.
-    /// </summary>
-    //-----------------------------------------------------------------------------------
-    private void loadTrialFormList ( )
-    {
-      this.LogMethod ( "loadTrialFormList" );
-      this.LogDebug ( "FormsAdaperLoaded: '{0}'", this.Session.FormsAdaperLoaded );
-      this.LogDebug ( "FormState: '{0}'", this.Session.FormState );
-      this.LogDebug ( "FormType: '{0}'", this.Session.FormType );
-      this.LogDebug ( "FormList.Count: {0}", this.Session.RecordLayoutList.Count );
-
-      if ( this.Session.RecordLayoutList.Count > 0
-        && this.Session.FormsAdaperLoaded == true
-        && this.Session.FormState == EdRecordObjectStates.Form_Issued
-        && this.Session.FormType == EdRecordTypes.Null )
-      {
-        this.LogDebug ( "FormList loaded" );
-        this.LogMethodEnd ( "loadTrialFormList" );
-        return;
-      }
-
-      if ( this.Session.RecordLayoutList [ 0 ].Fields.Count > 0 )
-      {
-        this.LogDebug ( "Forms have fields" );
-        this.LogMethodEnd ( "loadTrialFormList" );
-        return;
-      }
-
-      //
-      // Initialise the methods variables and object.
-      //
-      EdRecordLayouts bll_Forms = new EdRecordLayouts ( this.ClassParameters );
-      this.Session.FormType = EdRecordTypes.Null;
-      this.Session.FormState = EdRecordObjectStates.Form_Issued;
-
-      // 
-      // Query the database to retrieve a list of the records matching the query parameter values.
-      // 
-      this.Session.RecordLayoutList = bll_Forms.GetRecordLayoutListWithFields (
-        this.Session.FormType,
-        this.Session.FormState );
-
-      this.LogValue ( bll_Forms.Log );
-      this.LogValue ( " list count: " + this.Session.RecordLayoutList.Count );
-
-      this.Session.FormsAdaperLoaded = false;
-      this.LogMethodEnd ( "loadTrialFormList" );
-    }//ENd loadTrialFormList method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -664,7 +607,7 @@ namespace Evado.UniForm.Digital
       this.Session.ChartSourceOptionList = new List<EvOption> ( );
       this.Session.ChartSourceOptionList.Add ( new EvOption ( ) );
 
-      foreach ( EdRecord form in this.Session.RecordLayoutList )
+      foreach ( EdRecord form in this.AdapterObjects.IssuedRecordLayouts )
       {
         if ( form.State != EdRecordObjectStates.Form_Issued )
         {

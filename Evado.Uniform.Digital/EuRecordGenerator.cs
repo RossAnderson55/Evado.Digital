@@ -45,12 +45,12 @@ namespace Evado.UniForm.Digital
     /// <param name="ModuleList">String: encoded list of loaded application modules.</param>
     //-----------------------------------------------------------------------------------
     public EuRecordGenerator (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EuSession Session,
       EvClassParameters Settings )
     {
-      this.ClassNameSpace = "Evado.Model.UniForm.EuFormGenerator.";
-      this.GlobalObjects = ApplicationObjects;
+      this.ClassNameSpace = "Evado.Model.UniForm.EuRecordGenerator.";
+      this.AdapterObjects = ApplicationObjects;
       this.Session = Session;
       this.ClassParameters = Settings;
       this._ModuleList = new List<EdModuleCodes> ( );
@@ -165,17 +165,163 @@ namespace Evado.UniForm.Digital
     //  =================================================================================
     /// <summary>
     /// Description:
-    ///   This method generates an instance of the form object. Using class library 
-    ///   methods.
-    /// 
+    ///   This method generates an instance of the Entity object, merging entity data with 
+    ///   the entity definition.  
     /// </summary>
-    /// <param name="Form">  Evado.Model.Digital.EvForm object</param>
+    /// <param name="Entity"> Evado.Model.Digital.EdRecord object</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
+    /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
+    /// <returns>bool:  true = page generated without error.</returns>
+    /// <remarks>
+    /// This method consists of following steps: 
+    /// 1. Find the matching record layout
+    /// 2. Update the record's layout descriptions and field definitions.
+    /// 3. Call the generateLayout method to generate the page layout.
+    /// </remarks>
+    // ---------------------------------------------------------------------------------
+    public bool generateEntityLayout (
+       Evado.Model.Digital.EdRecord Entity,
+      Evado.Model.UniForm.Page PageObject,
+      String BinaryFilePath )
+    {
+      this.LogMethod ( "generateEntityLayout" );
+      this.LogDebug ( "Entity.Title: " + Entity.Title );
+      this.LogDebug ( "Entity.State: " + Entity.State );
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdRecord layout = new EdRecord ( );
+
+      foreach ( EdRecord lay in this.AdapterObjects.AllEntityLayouts )
+      {
+        if ( Entity.LayoutGuid == lay.Guid )
+        {
+          layout = lay;
+          break;
+        }
+      }//End layout selection iteration loop.
+
+      this.LogDebug ( "G: {0}, T: {1}.", layout.Guid, layout.Title );
+
+      //
+      // Merge the layout with the record.
+      //
+      Entity.cDashMetadata = layout.cDashMetadata;
+      Entity.Design = layout.Design;
+
+      for ( int i = 0; i < Entity.Fields.Count; i++ )
+      {
+        for ( int j = 0; j < layout.Fields.Count; j++ )
+        {
+          if ( Entity.Fields [ i ].RecordFieldGuid == layout.Fields [ j ].Guid )
+          {
+            Entity.Fields [ i ].LayoutId = layout.Fields [ j ].LayoutId;
+            Entity.Fields [ i ].FieldId = layout.Fields [ j ].FieldId;
+            Entity.Fields [ i ].Design = layout.Fields [ j ].Design;
+            if ( Entity.Fields [ i ].Table != null )
+            {
+              Entity.Fields [ i ].Table.Header = layout.Fields [ j ].Table.Header;
+            }
+          }//END field match 
+        }//END layout field iteration loop
+      }//END record field interatoin loop.
+
+      //
+      // generate the record layout.
+      //
+      bool result =  this.generateLayout ( Entity, PageObject, BinaryFilePath );
+
+      this.LogMethodEnd  ( "generateEntityLayout" );
+      return result;
+    }//END public generateEntityLayout Method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates an instance of the Record object, merging entity data with 
+    ///   the record definition.  
+    /// </summary>
+    /// <param name="Entity">  Evado.Model.Digital.EdRecord object</param>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
     /// <remarks>
     /// This method consists of following steps:
-    /// 
+    /// 1. Find the matching record layout
+    /// 2. Update the record's layout descriptions and field definitions.
+    /// 3. Call the generateLayout method to generate the page layout.
+    /// </remarks>
+    // ---------------------------------------------------------------------------------
+    public bool generateRecordLayout (
+       Evado.Model.Digital.EdRecord Record,
+      Evado.Model.UniForm.Page PageObject,
+      String BinaryFilePath )
+    {
+      this.LogMethod ( "generateRecordLayout" );
+      this.LogDebug ( "Record.Title: " + Record.Title );
+      this.LogDebug ( "Record.State: " + Record.State );
+
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdRecord layout = new EdRecord ( );
+
+      foreach ( EdRecord lay in this.AdapterObjects.AllRecordLayouts )
+      {
+        if ( Record.LayoutGuid == lay.Guid )
+        {
+          layout = lay;
+          break;
+        }
+      }//End layout selection iteration loop.
+
+      this.LogDebug ( "G: {0}, T: {1}.", layout.Guid, layout.Title );
+
+      //
+      // Merge the layout with the record.
+      //
+      Record.cDashMetadata = layout.cDashMetadata;
+      Record.Design = layout.Design;
+
+      for ( int i = 0; i < Record.Fields.Count; i++ )
+      {
+        for ( int j = 0; j < layout.Fields.Count; j++ )
+        {
+          if ( Record.Fields [ i ].RecordFieldGuid == layout.Fields [ j ].Guid )
+          {
+            Record.Fields [ i ].LayoutId = layout.Fields [ j ].LayoutId;
+            Record.Fields [ i ].FieldId = layout.Fields [ j ].FieldId;
+            Record.Fields [ i ].Design = layout.Fields [ j ].Design;
+            if ( Record.Fields [ i ].Table != null )
+            {
+              Record.Fields [ i ].Table.Header = layout.Fields [ j ].Table.Header;
+            }
+          }//END field match 
+        }//END layout field iteration loop
+      }//END record field interatoin loop.
+
+
+      //
+      // generate the record layout.
+      //
+      bool result = this.generateLayout ( Record, PageObject, BinaryFilePath );
+
+      this.LogMethodEnd ( "generateRecordLayout" );
+      return result;
+
+    }//END public generateRecordLayout Method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates an instance of the form object.
+    /// </summary>
+    /// <param name="Record">  Evado.Model.Digital.EdRecord object</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
+    /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
+    /// <returns>bool:  true = page generated without error.</returns>
+    /// <remarks>
+    /// This method consists of following steps:
     /// 1. Display the form based on the current view state.
     /// 2. Set the global value field from form field values.
     /// 3. create form record header group.
@@ -184,17 +330,19 @@ namespace Evado.UniForm.Digital
     /// </remarks>
     // ---------------------------------------------------------------------------------
     public bool generateLayout (
-       Evado.Model.Digital.EdRecord Form,
+       Evado.Model.Digital.EdRecord Record,
       Evado.Model.UniForm.Page PageObject,
       String BinaryFilePath )
     {
-      this.LogMethod ( "generateForm public" );
-      this.LogDebug ( "Form.Title: " + Form.Title );
-      this.LogDebug ( "Form.State: " + Form.State );
+      this.LogMethod ( "generateLayout" );
+      this.LogDebug ( "Form.Title: " + Record.Title );
+      this.LogDebug ( "Form.State: " + Record.State );
 
-      Form.setFormRole ( this.Session.UserProfile );
-      this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
-      this.LogDebug ( "FormAccessRole: " + Form.FormAccessRole );
+      this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
+      this.LogDebug ( "Form.ReadAccessRoles: " + Record.Design.ReadAccessRoles );
+      this.LogDebug ( "Form.EditAccessRoles: " + Record.Design.EditAccessRoles );
+      Record.setFormRole ( this.Session.UserProfile );
+      this.LogDebug ( "FormAccessRole: " + Record.FormAccessRole );
 
       // 
       // Set the default pageMenuGroup type to annotated fields.  This will enable the 
@@ -202,15 +350,15 @@ namespace Evado.UniForm.Digital
       // earlier uniform clients.
       // 
       PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
-      this._FormAccessRole = Form.FormAccessRole;
-      this._FormState = Form.State;
-      this._Fields = Form.Fields;
+      this._FormAccessRole = Record.FormAccessRole;
+      this._FormState = Record.State;
+      this._Fields = Record.Fields;
 
       //
       // IF the form does not display annotations when being completed
       // hide the annotations by setting hide annotations to true
       //
-      if ( Form.Design.TypeId == EdRecordTypes.Questionnaire )
+      if ( Record.Design.TypeId == EdRecordTypes.Questionnaire )
       {
         this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
         PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
@@ -256,32 +404,32 @@ namespace Evado.UniForm.Digital
       // 
       // Create the form record header groups
       //  
-      this.createFormHeader ( Form, PageObject );
+      this.createFormHeader ( Record, PageObject );
 
       // 
       // Call the form section create method.
       // 
-      this.createFormSections ( Form, PageObject );
+      this.createFormSections ( Record, PageObject );
 
       // 
       // if there is more that one pageMenuGroup create pageMenuGroup category indexes.
       // 
       if ( PageObject.GroupList.Count > 0 )
       {
-        this.getFieldCategories ( Form, PageObject.GroupList [ 0 ] );
+        this.getFieldCategories ( Record, PageObject.GroupList [ 0 ] );
       }
 
       // 
       // Create the form record fooder groups.
       // 
-      this.createFormFooter ( Form, PageObject );
+      this.createFormFooter ( Record, PageObject );
 
       // 
       // Add the form specific java scripts
       // 
       this.getFormJavaScript (
-        Form.Guid,
-        Form.Fields,
+        Record.Guid,
+        Record.Fields,
         PageObject,
         BinaryFilePath );
 
@@ -290,9 +438,19 @@ namespace Evado.UniForm.Digital
       //  
       //this.debugGroup ( Form, ClientPage, ViewState );
 
+      this.LogMethodEnd ( "generateLayout" );
       return true;
 
     }//END public generateForm Method.
+
+    // ***********************************************************************************
+    #endregion
+
+    #region Private Layout Integrate methods
+
+    private void MergeRecordLayout ( EdRecord Record )
+    {
+    }
 
     // ***********************************************************************************
     #endregion

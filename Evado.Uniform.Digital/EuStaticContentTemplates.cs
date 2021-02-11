@@ -52,12 +52,12 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EuStaticContentTemplates (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -129,29 +129,29 @@ namespace Evado.UniForm.Digital
           this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
-        if ( this.GlobalObjects.ContentTemplates == null )
+        if ( this.AdapterObjects.ContentTemplates == null )
         {
-          this.GlobalObjects.ContentTemplates = new EvStaticContentTemplates ( );
+          this.AdapterObjects.ContentTemplates = new EvStaticContentTemplates ( );
 
-          this.GlobalObjects.ContentTemplates =
+          this.AdapterObjects.ContentTemplates =
             EvStatics.Files.readXmlFile<EvStaticContentTemplates> (
-            this.GlobalObjects.ApplicationPath, EuStaticContentTemplates.CONST_EMAIL_TEMPLATE_FILENAME );
+            this.AdapterObjects.ApplicationPath, EuStaticContentTemplates.CONST_EMAIL_TEMPLATE_FILENAME );
         }
 
-        if ( this.GlobalObjects.ContentTemplates == null )
+        if ( this.AdapterObjects.ContentTemplates == null )
         {
-          this.GlobalObjects.ContentTemplates = new EvStaticContentTemplates ( );
+          this.AdapterObjects.ContentTemplates = new EvStaticContentTemplates ( );
         }
-        if ( this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title == null )
+        if ( this.AdapterObjects.ContentTemplates.IntroductoryEmail_Title == null )
         {
-          this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title = String.Empty;
-          this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body = String.Empty;
-          this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title = String.Empty;
-          this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body = String.Empty;
-          this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body = String.Empty;
-          this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body = String.Empty;
-          this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title = String.Empty;
-          this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body = String.Empty;
+          this.AdapterObjects.ContentTemplates.IntroductoryEmail_Title = String.Empty;
+          this.AdapterObjects.ContentTemplates.IntroductoryEmail_Body = String.Empty;
+          this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Title = String.Empty;
+          this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Body = String.Empty;
+          this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Body = String.Empty;
+          this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Body = String.Empty;
+          this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Title = String.Empty;
+          this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Body = String.Empty;
         }
 
         _displayPage = false;
@@ -483,8 +483,8 @@ namespace Evado.UniForm.Digital
       if ( this._displayPage == true )
       {
         this.create_Display_Group ( pageGroup,
-          this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title,
-          this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body );
+          this.AdapterObjects.ContentTemplates.IntroductoryEmail_Title,
+          this.AdapterObjects.ContentTemplates.IntroductoryEmail_Body );
 
         return;
       }
@@ -495,7 +495,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Title,
         EdLabels.UserAdmin_Email_Title_Field_Label,
-        this.GlobalObjects.ContentTemplates.IntroductoryEmail_Title,
+        this.AdapterObjects.ContentTemplates.IntroductoryEmail_Title,
         80 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -505,7 +505,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Introductory_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
-        this.GlobalObjects.ContentTemplates.IntroductoryEmail_Body, 80, 30 );
+        this.AdapterObjects.ContentTemplates.IntroductoryEmail_Body, 80, 30 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = EdLabels.UserAdmin_Email_Body_Description_Field_Label ;
@@ -544,8 +544,8 @@ namespace Evado.UniForm.Digital
       if ( this._displayPage == true )
       {
         this.create_Display_Group ( pageGroup,
-          this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Title,
-          this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body );
+          this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Title,
+          this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Body );
 
         return;
       }
@@ -556,7 +556,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Title,
         EdLabels.UserAdmin_Email_Title_Field_Label,
-        this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Title,
+        this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Title,
         80 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -566,7 +566,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Reset_Password_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
-        this.GlobalObjects.ContentTemplates.ResetPasswordEmail_Body, 80, 20 );
+        this.AdapterObjects.ContentTemplates.ResetPasswordEmail_Body, 80, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
@@ -606,8 +606,8 @@ namespace Evado.UniForm.Digital
       if ( this._displayPage == true )
       {
         this.create_Display_Group ( pageGroup,
-          this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title,
-          this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body );
+          this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Title,
+          this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Body );
 
         return;
       }
@@ -618,7 +618,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Title,
         EdLabels.UserAdmin_Email_Title_Field_Label,
-        this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Title,
+        this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Title,
         80 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -628,7 +628,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Update_Password_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
-        this.GlobalObjects.ContentTemplates.UpdatePasswordEmail_Body, 80, 40 );
+        this.AdapterObjects.ContentTemplates.UpdatePasswordEmail_Body, 80, 40 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
@@ -668,8 +668,8 @@ namespace Evado.UniForm.Digital
       if ( this._displayPage == true )
       {
         this.create_Display_Group ( pageGroup,
-          this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title,
-          this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body );
+          this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Title,
+          this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Body );
 
         return;
       }
@@ -681,7 +681,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Title,
         EdLabels.UserAdmin_Email_Title_Field_Label,
-        this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Title,
+        this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Title,
         80 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -691,7 +691,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.Password_Confirmation_Email_Body,
         EdLabels.UserAdmin_Email_Body_Field_Label,
-        this.GlobalObjects.ContentTemplates.PasswordConfirmationEmail_Body, 80, 20 );
+        this.AdapterObjects.ContentTemplates.PasswordConfirmationEmail_Body, 80, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       pageField.Description = 
@@ -734,7 +734,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationInstuctions,
         EdLabels.UserAdmin_Demo_Registration_Instructions_Field_Label,
-        this.GlobalObjects.ContentTemplates.DemoRegistrationInstuctions,
+        this.AdapterObjects.ContentTemplates.DemoRegistrationInstuctions,
         80, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -744,7 +744,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationConfirmation,
         EdLabels.UserAdmin_Demo_Registration_Confirmation_Field_Label,
-        this.GlobalObjects.ContentTemplates.DemoRegistrationConfirmation,
+        this.AdapterObjects.ContentTemplates.DemoRegistrationConfirmation,
         80, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -754,7 +754,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         EvStaticContentTemplates.ClassFieldNames.DemoRegistrationError,
         EdLabels.UserAdmin_Demo_Registration_Error_Field_Label,
-        this.GlobalObjects.ContentTemplates.DemoRegistrationError,
+        this.AdapterObjects.ContentTemplates.DemoRegistrationError,
         80, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -873,7 +873,7 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.GlobalObjects.ContentTemplates = new EvStaticContentTemplates ( );
+        this.AdapterObjects.ContentTemplates = new EvStaticContentTemplates ( );
 
         this.getDataObject ( clientDataObject );
 
@@ -945,9 +945,9 @@ namespace Evado.UniForm.Digital
 
 
         bool result = EvStatics.Files.saveFile<EvStaticContentTemplates> (
-          this.GlobalObjects.ApplicationPath,
+          this.AdapterObjects.ApplicationPath,
           EuStaticContentTemplates.CONST_EMAIL_TEMPLATE_FILENAME,
-          this.GlobalObjects.ContentTemplates );
+          this.AdapterObjects.ContentTemplates );
 
         return true;
 
@@ -1000,7 +1000,7 @@ namespace Evado.UniForm.Digital
                Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvStaticContentTemplates.ClassFieldNames> (
               parameter.Name );
 
-            this.GlobalObjects.ContentTemplates.setValue ( fieldName, parameter.Value );
+            this.AdapterObjects.ContentTemplates.setValue ( fieldName, parameter.Value );
 
           }
           catch ( Exception Ex )

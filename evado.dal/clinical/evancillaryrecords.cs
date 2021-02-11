@@ -396,7 +396,7 @@ namespace Evado.Dal.Clinical
     /// This method returns a list of Subject Record object based on TrialId, SubjectId and useGuid condition
     /// </summary>
     /// <param name="ProjectId">String: A Project identifier</param>
-    /// <param name="SubjectId">String: A Subject identifier</param>
+    /// <param name="EntityId">String: A Subject identifier</param>
     /// <param name="useGuid">Boolean: true, if the Guid is used</param>
     /// <returns>List of EvOption: A list containing an Option object.</returns>
     /// <remarks>
@@ -411,11 +411,10 @@ namespace Evado.Dal.Clinical
     /// 4. Add the Option object's values to the Options list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EvOption> getList( string ProjectId, string SubjectId, bool useGuid )
+    public List<EvOption> getList( string EntityId, bool useGuid )
     {
       this.LogMethod ( "getList, " );
-      this.LogValue ( "ProjectId: " + ProjectId );
-      this.LogValue ( "SubjectId: " + SubjectId );
+      this.LogValue ( "SubjectId: " + EntityId );
       // 
       // Define the local variables and objects.
       // 
@@ -437,18 +436,16 @@ namespace Evado.Dal.Clinical
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_TrialId, SqlDbType.NVarChar, 10),
         new SqlParameter(PARM_SubjectId, SqlDbType.NVarChar, 20),
       };
-      cmdParms [ 0 ].Value = ProjectId;
-      cmdParms [ 1 ].Value = SubjectId;
+      cmdParms [ 0 ].Value =  EntityId;
 
       // 
       // Generate the SQL query string.
       // 
       _sqlQueryString = _sqlQuery_View + " WHERE ( TrialId = @TrialId ) ";
 
-      if ( SubjectId.Length > 0 )
+      if ( EntityId.Length > 0 )
       {
         _sqlQueryString += " AND ( SubjectId = @SubjectId ) ";
       }
@@ -487,7 +484,7 @@ namespace Evado.Dal.Clinical
               EvSqlMethods.getString( row, "RecordId" ) + " - " + EvSqlMethods.getDateTime( row, "TSR_Subject" ) );
           }
 
-          if ( SubjectId == String.Empty )
+          if ( EntityId == String.Empty )
           {
             option.Description = "(" + EvSqlMethods.getString( row, "SubjectId" ) + ") " + option.Description;
           }

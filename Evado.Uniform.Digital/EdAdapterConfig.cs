@@ -52,13 +52,13 @@ namespace Evado.UniForm.Digital
     /// This method initialises the class and passs in the user profile.
     /// </summary>
     public EdAdapterConfig (
-      EuAdapterObjects ApplicationObjects,
+      EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
-      this.GlobalObjects = ApplicationObjects;
+      this.AdapterObjects = ApplicationObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
@@ -71,7 +71,7 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "-SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "-UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
-      this.LogInit ( "-Version: " + this.GlobalObjects.AdapterSettings.Version );
+      this.LogInit ( "-Version: " + this.AdapterObjects.AdapterSettings.Version );
 
       this.LogInit ( "Settings:" );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
@@ -326,7 +326,7 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.GlobalObjects.AdapterSettings.Guid;
+      ClientDataObject.Id = this.AdapterObjects.AdapterSettings.Guid;
       ClientDataObject.Title = EdLabels.DataBase_Update_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -679,7 +679,7 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.GlobalObjects.AdapterSettings.Guid;
+      ClientDataObject.Id = this.AdapterObjects.AdapterSettings.Guid;
       ClientDataObject.Title = EdLabels.Audit_Config_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -1464,7 +1464,7 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.GlobalObjects.AdapterSettings.Guid;
+      ClientDataObject.Id = this.AdapterObjects.AdapterSettings.Guid;
       ClientDataObject.Title = EdLabels.Audit_Record_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -1601,7 +1601,7 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the client ResultData object.
       //
-      ClientDataObject.Id = this.GlobalObjects.AdapterSettings.Guid;
+      ClientDataObject.Id = this.AdapterObjects.AdapterSettings.Guid;
       ClientDataObject.Title = EdLabels.Audit_Config_Item_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -1783,13 +1783,13 @@ namespace Evado.UniForm.Digital
 
       try
       {
-        this.GlobalObjects.AdapterSettings = this._bll_AdapterConfig.getItem ( "A" );
+        this.AdapterObjects.AdapterSettings = this._bll_AdapterConfig.getItem ( "A" );
 
         this.LogClass ( this._bll_AdapterConfig.Log );
 
-        this.GlobalObjects.AdapterSettings.Version = this.GlobalObjects.FullVersion;
+        this.AdapterObjects.AdapterSettings.Version = this.AdapterObjects.FullVersion;
 
-        this.LogValue ( "Version: " + this.GlobalObjects.AdapterSettings.Version );
+        this.LogValue ( "Version: " + this.AdapterObjects.AdapterSettings.Version );
         // 
         // return the client ResultData object for the customer.
         // 
@@ -1830,7 +1830,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
-      ClientDataObject.Id = this.GlobalObjects.AdapterSettings.Guid;
+      ClientDataObject.Id = this.AdapterObjects.AdapterSettings.Guid;
       ClientDataObject.Title = EdLabels.ApplicationProfile_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
@@ -1900,7 +1900,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createGeneralGroup" );
-      this.LogValue ( " version: " + this.GlobalObjects.AdapterSettings.Version );
+      this.LogValue ( " version: " + this.AdapterObjects.AdapterSettings.Version );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1926,7 +1926,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Version.ToString ( ),
         EdLabels.Application_Profile_Version_Field_Label,
-        this.GlobalObjects.AdapterSettings.Version, 30 );
+        this.AdapterObjects.AdapterSettings.Version, 30 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
@@ -1936,7 +1936,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Application_Profile_Application_Url_Field_Title,
-        this.GlobalObjects.ApplicationUrl );
+        this.AdapterObjects.ApplicationUrl );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -1945,7 +1945,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Application_Profile_Reset_Url_Field_Title,
-        this.GlobalObjects.PasswordResetUrl );
+        this.AdapterObjects.PasswordResetUrl );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -1954,7 +1954,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Application_Support_Email_Address_Field_Title,
-        this.GlobalObjects.SupportEmailAddress );
+        this.AdapterObjects.SupportEmailAddress );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -1963,7 +1963,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Application_NoReply_Email_Address_Field_Title,
-        this.GlobalObjects.NoReplyEmailAddress );
+        this.AdapterObjects.NoReplyEmailAddress );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
@@ -2005,17 +2005,17 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createFreeTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Roles.ToString ( ),
         EdLabels.Config_Role_List_Field_Label,
-        this.GlobalObjects.AdapterSettings.Roles, 50, 10);
+        this.AdapterObjects.AdapterSettings.Roles, 50, 10);
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-      this.LogDebug ( "DemoAccountExpiryDays {0}", this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays );
+      this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
       //
       // create the demonstration account expiry period in days.
       //
       pageField = pageGroup.createNumericField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.DemoAccountExpiryDays.ToString ( ),
         EdLabels.Settings_Demo_Account_Expiry_Field_Label,
-        this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays, 0, 365 );
+        this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays, 0, 365 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
@@ -2024,7 +2024,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.DemoRegistrationVideoUrl.ToString ( ),
         EdLabels.Settings_Demo_Video_URL_Field_Label,
-        this.GlobalObjects.AdapterSettings.DemoRegistrationVideoUrl, 100 );
+        this.AdapterObjects.AdapterSettings.DemoRegistrationVideoUrl, 100 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -2033,7 +2033,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.HelpUrl.ToString ( ),
         EdLabels.Application_Profile_Help_Url_Field_Label,
-        this.GlobalObjects.AdapterSettings.HelpUrl,
+        this.AdapterObjects.AdapterSettings.HelpUrl,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -2078,7 +2078,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.SmtpServer.ToString ( ),
         EdLabels.Application_Profile_SMTP_Server_Field_Label,
-        this.GlobalObjects.AdapterSettings.SmtpServer,
+        this.AdapterObjects.AdapterSettings.SmtpServer,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -2088,7 +2088,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createNumericField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.SmtpServerPort.ToString ( ),
         EdLabels.Application_Profile_SMTP_Port_Field_Label,
-        this.GlobalObjects.AdapterSettings.SmtpServerPort, 0, 650000 );
+        this.AdapterObjects.AdapterSettings.SmtpServerPort, 0, 650000 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -2097,7 +2097,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.SmtpUserId.ToString ( ),
         EdLabels.Application_Profile_SMTP_User_Field_Label,
-        this.GlobalObjects.AdapterSettings.SmtpUserId,
+        this.AdapterObjects.AdapterSettings.SmtpUserId,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -2107,7 +2107,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createTextField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.SmtpPassword.ToString ( ),
         EdLabels.Application_Profile_SMTP_Password_Field_Label,
-        this.GlobalObjects.AdapterSettings.SmtpPassword,
+        this.AdapterObjects.AdapterSettings.SmtpPassword,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -2163,8 +2163,8 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.GlobalObjects.AdapterSettings = new Model.Digital.EdAdapterSettings ( );
-        this.GlobalObjects.AdapterSettings.Guid = Guid.NewGuid ( );
+        this.AdapterObjects.AdapterSettings = new Model.Digital.EdAdapterSettings ( );
+        this.AdapterObjects.AdapterSettings.Guid = Guid.NewGuid ( );
 
         this.getDataObject ( clientDataObject );
 
@@ -2232,17 +2232,17 @@ namespace Evado.UniForm.Digital
         // 
         this.updateObjectValue ( PageCommand.Parameters );
 
-        foreach ( EvObjectParameter parm in this.GlobalObjects.AdapterSettings.Parameters )
+        foreach ( EvObjectParameter parm in this.AdapterObjects.AdapterSettings.Parameters )
         {
           this.LogDebug ( "Parameter N: {0}, V: {1}", parm.Name, parm.Value );
         }
 
-        this.LogDebug ( "DemoAccountExpiryDays {0}", this.GlobalObjects.AdapterSettings.DemoAccountExpiryDays );
+        this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
 
         // 
         // update the object.
         // 
-        EvEventCodes result = this._bll_AdapterConfig.updateItem ( this.GlobalObjects.AdapterSettings );
+        EvEventCodes result = this._bll_AdapterConfig.updateItem ( this.AdapterObjects.AdapterSettings );
 
         // 
         // get the debug ResultData.
@@ -2300,7 +2300,7 @@ namespace Evado.UniForm.Digital
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + " Evado.UniForm.Clinical.ApplicationProperties.updateObjectValue method. "
         + " Parameters.Count: " + Parameters.Count
-        + " Customer.Guid: " + this.GlobalObjects.AdapterSettings.Guid );
+        + " Customer.Guid: " + this.AdapterObjects.AdapterSettings.Guid );
 
       /// 
       /// Iterate through the parameter values updating the ResultData object
@@ -2324,7 +2324,7 @@ namespace Evado.UniForm.Digital
              Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Model.Digital.EdAdapterSettings.AdapterFieldNames> (
             parameter.Name );
 
-          this.GlobalObjects.AdapterSettings.setValue ( fieldName, parameter.Value );
+          this.AdapterObjects.AdapterSettings.setValue ( fieldName, parameter.Value );
 
         }
         catch ( Exception Ex )
