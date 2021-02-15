@@ -404,7 +404,7 @@ namespace Evado.UniForm.Digital
       groupCommand = PageGroup.addCommand (
         EdLabels.Form_Field_Refresh_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+        EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
@@ -422,7 +422,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the save groupCommand for the page.
       //
-      switch ( this.Session.RecordLayout.State )
+      switch (this.Session.EntityLayout.State )
       {
         case EdRecordObjectStates.Form_Draft:
         case EdRecordObjectStates.Form_Reviewed:
@@ -433,7 +433,7 @@ namespace Evado.UniForm.Digital
             groupCommand = PageGroup.addCommand (
               EdLabels.Form_Field_Save_Command_Title,
               EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+              EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
             // 
@@ -448,13 +448,13 @@ namespace Evado.UniForm.Digital
             //
             // Add the same groupCommand.
             //
-            int majorVersion = ( int ) this.Session.RecordLayout.Design.Version;
+            int majorVersion = ( int )this.Session.EntityLayout.Design.Version;
             if ( this.Session.EntityField.Design.InitialVersion == majorVersion )
             {
               groupCommand = PageGroup.addCommand (
                 EdLabels.Form_Field_Delete_Command_Title,
                 EuAdapter.ADAPTER_ID,
-                EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+                EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
               // 
               // Define the save groupCommand parameters.
@@ -517,9 +517,14 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "Field TypeId: " + this.Session.EntityField.TypeId );
 
       //
-      // add a pageMenuGroup with fields that are not allocated to a section.
+      // add a field generate group
       //
-      this.createGeneralFieldGroup ( ClientDataObject.Page );
+      this.createFieldGeneral_Group ( ClientDataObject.Page );
+
+      //
+      // Add the properties field group.
+
+      this.createFieldProperties_Group ( ClientDataObject.Page );
 
       //
       // add a pageMenuGroup with fields for custom field validations.
@@ -566,7 +571,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void createGeneralFieldGroup (
+    private void createFieldGeneral_Group (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createGeneralFieldGroup" );
@@ -579,7 +584,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      int formVersion = (int) this.Session.RecordLayout.Design.Version;
+      int formVersion = (int)this.Session.EntityLayout.Design.Version;
       bool bEditType = this.Session.EntityField.Design.InitialVersion == formVersion;
 
       this.LogValue ( "formVersion: " + formVersion );
@@ -613,7 +618,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Form_Title_Field_Label,
-        this.Session.RecordLayout.Title );
+       this.Session.EntityLayout.Title );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
@@ -635,8 +640,7 @@ namespace Evado.UniForm.Digital
       //
       // Create the form field type selection.
       //
-      optionList = EdRecordField.getDataTypes ( 
-        this.Session.RecordLayout.Design.TypeId );
+      optionList = EdRecordField.getDataTypes ( );
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
@@ -670,7 +674,7 @@ namespace Evado.UniForm.Digital
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
 
-      foreach ( EdRecordSection section in this.Session.RecordLayout.Design.FormSections )
+      foreach ( EdRecordSection section in this.Session.EntityLayout.Design.FormSections )
       {
         if ( section.Title != String.Empty )
         {
@@ -692,6 +696,46 @@ namespace Evado.UniForm.Digital
         groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
+      //
+      // Create the form field layout selection.
+      //
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), true );
+
+      if ( this.Session.EntityField.Design.FieldLayout == null )
+      {
+        this.Session.EntityField.Design.FieldLayout = this.Session.EntityLayout.Design.DefaultPageLayout;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecordField.FieldClassFieldNames.Field_Layout.ToString ( ),
+        EdLabels.LayoutField_Field_Layout_Field_Label,
+        this.Session.EntityField.Design.FieldLayout.ToString ( ),
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+    }//END createGeneralFieldGroup Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates the general pageMenuGroup for the field properties.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void createFieldProperties_Group (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "createPropertiesFieldGroup" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      List<EvOption> optionList = new List<EvOption> ( );
+      int formVersion = (int) this.Session.EntityLayout.Design.Version;
+      bool bEditType = this.Session.EntityField.Design.InitialVersion == formVersion;
       //
       // Define the general properties pageMenuGroup.
       //
@@ -726,7 +770,7 @@ namespace Evado.UniForm.Digital
 
         String instructions = EdLabels.Form_Field_Instruction_Field_Description;
 
-        groupField.Description =  instructions ;
+        groupField.Description = instructions;
         this.Session.EntityField.Design.AiDataPoint = false;
         this.Session.EntityField.Design.Mandatory = false;
         this.Session.EntityField.Design.Mandatory = false;
@@ -964,6 +1008,7 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END createGeneralFieldGroup Method
+
 
     // ==============================================================================
     /// <summary>
@@ -1547,7 +1592,7 @@ namespace Evado.UniForm.Digital
         //
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
         int order = 0;
-        int initialVersion = (int) this.Session.RecordLayout.Design.Version;
+        int initialVersion = (int)this.Session.EntityLayout.Design.Version;
 
         // 
         // Log access to page.
@@ -1584,8 +1629,8 @@ namespace Evado.UniForm.Digital
 
         this.Session.EntityField = new  Evado.Model.Digital.EdRecordField ( );
         this.Session.EntityField.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.EntityField.LayoutGuid = this.Session.RecordLayout.Guid;
-        this.Session.EntityField.LayoutId = this.Session.RecordLayout.LayoutId;
+        this.Session.EntityField.LayoutGuid =this.Session.EntityLayout.Guid;
+        this.Session.EntityField.LayoutId =this.Session.EntityLayout.LayoutId;
         this.Session.EntityField.Design.InitialVersion = initialVersion;
         this.Session.EntityField.Order = order;
         this.Session.EntityField.Design.SectionNo = EvStatics.getInteger (stSectionNo );
@@ -1669,7 +1714,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EntityField.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
           this.Session.EntityField.Guid = Guid.Empty;
-          this.Session.RecordLayout.Fields = new List<EdRecordField> ( );
+         this.Session.EntityLayout.Fields = new List<EdRecordField> ( );
         }
 
         // 
@@ -1784,7 +1829,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecordField field in this.Session.RecordLayout.Fields )
+      foreach ( EdRecordField field in this.Session.EntityLayout.Fields )
       {
         this.LogValue ( "FormField.Guid: " + field.Guid + ", FieldId: " + field.FieldId );
 

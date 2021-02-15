@@ -60,10 +60,15 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EuEntities.cs" />
-    <Compile Include="EuEntityLayoutFields.cs" />
-    <Compile Include="EuEntityLayouts.cs" />
-    <Compile Include="EuEntityLayoutsProperties.cs" />
+    <Compile Include="EuEntityFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuEntityLayouts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EuEntityLayoutsProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="EuOrganisations.cs" />
     <Compile Include="EuRecordLayoutsProperties.cs" />
     <Compile Include="EuDemoUserRegistration.ads.cs">
@@ -96,7 +101,7 @@
     <Compile Include="EuMenusUtility.cs" />
     <Compile Include="EuUserProfiles.cs" />
     <Compile Include="EvServerPageScript.cs" />
-    <Compile Include="EuRecordLayoutFields.cs">
+    <Compile Include="EuRecordFields.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuRecordLayouts.cs" />

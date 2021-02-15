@@ -485,6 +485,11 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property contains the page layout enumerated value 
+    /// </summary>
+    public object FieldLayout { get; set; }
+
+    /// <summary>
     /// This property indicates a data point of form field design
     /// </summary>
     public bool AiDataPoint

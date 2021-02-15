@@ -869,7 +869,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayoutFields recordLayoutFields = new EuRecordLayoutFields ( this._AdapterObjects,
+            EuRecordFields recordLayoutFields = new EuRecordFields ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -908,7 +908,6 @@ namespace Evado.UniForm.Digital
         case EuAdapterClasses.Entity_Layout_Fields:
           {
             this.LogDebug ( "ENTITY LAYOUT FIELDS CLASS SELECTED." );
-            /*
             // 
             // Initialise the methods variables and objects.
             // 
@@ -923,7 +922,6 @@ namespace Evado.UniForm.Digital
             clientDataObject = entityLayoutFields.getDataObject ( PageCommand );
             this.ErrorMessage = entityLayoutFields.ErrorMessage;
             LogAdapter ( entityLayoutFields.Log );
-            */
             break;
           }
 

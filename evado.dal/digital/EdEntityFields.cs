@@ -128,6 +128,7 @@ namespace Evado.Dal.Digital
     public const string DB_INITIAL_VERSION = "EDELF_INITIAL_VERSION";
     public const string DB_DELETED = "EDELF_DELETED";
     private const string DB_LAYOUT_STATE = "EDEL_STATE";
+    private const string DB_FIELD_LAYOUT = "EDELF_FIELD_LAYOUT";
 
     // query parmeters.
     private const string PARM_GUID = "@GUID";
@@ -164,6 +165,7 @@ namespace Evado.Dal.Digital
     private const string PARM_TABLE = "@TABLE";
     private const string PARM_INITIAL_OPTION_LIST = "@INITIAL_OPTION_LIST";
     private const string PARM_INITIAL_VERSION = "@INITIAL_VERSION";
+    private const string PARM_FIELD_LAYOUT = "@FIELD_LAYOUT";
     private const string PARM_DELETED = "@DELETED";
 
     #endregion
@@ -226,6 +228,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityFields.PARM_TABLE, SqlDbType.NText),
         new SqlParameter( EdEntityFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
         new SqlParameter(EdEntityFields. PARM_INITIAL_VERSION, SqlDbType.Int),
+        new SqlParameter( EdEntityFields.PARM_FIELD_LAYOUT, SqlDbType.NVarChar, 250),
 
       };
 
@@ -322,6 +325,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 31 ].Value = serialisedTableStructure;
       cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
       cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
+      cmdParms [ 34 ].Value = FormField.Design.FieldLayout;
 
     }//END setParameters class.
     #endregion
@@ -403,6 +407,7 @@ namespace Evado.Dal.Digital
       xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
       formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
       formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
+      formField.Design.FieldLayout = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_LAYOUT);
 
       //
       // if the data type is a table then deseriallise the formfield data table.

@@ -123,10 +123,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="digital\EdAdapterConfig.cs" />
-    <Compile Include="digital\EdEntities.cs" />
-    <Compile Include="digital\EdEntityFields.cs" />
-    <Compile Include="digital\EdEntityLayouts.cs" />
-    <Compile Include="digital\EdentitySections.cs" />
+    <Compile Include="digital\EdEntityFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital\EdEntityLayouts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital\EdentitySections.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="digital\EdOrganisations.cs" />
     <Compile Include="digital\EdRecordComments.cs" />
     <Compile Include="digital\EdRecordEntities.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="AssemblyAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="invision.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

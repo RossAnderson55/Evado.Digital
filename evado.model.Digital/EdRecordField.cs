@@ -186,6 +186,11 @@ namespace Evado.Model.Digital
       /// </summary>
       Unit_Scaling,
 
+      /// <summary>
+      /// This enumeration defines field layout enumeration
+      /// </summary>
+      Field_Layout,
+
     }
 
     #endregion
@@ -851,6 +856,12 @@ namespace Evado.Model.Digital
             break;
           }
 
+        case FieldClassFieldNames.Field_Layout:
+          {
+            this._Design.FieldLayout = Value;
+            break;
+          }
+
       }//End switch
 
       return 0;
@@ -875,7 +886,7 @@ namespace Evado.Model.Digital
     /// 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public static List<EvOption> getDataTypes ( EdRecordTypes FormType )
+    public static List<EvOption> getDataTypes ( )
     {
       //
       // Initialize a return list and an option object.

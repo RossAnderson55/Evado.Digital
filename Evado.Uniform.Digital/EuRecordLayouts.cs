@@ -2531,10 +2531,10 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
         EvPageIds.Form_Field_Page.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.RecordLayout.Fields.Count.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FORM_SECTION,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
         FormSection.No.ToString ( ) );
 
       groupCommand.SetBackgroundColour (
@@ -2612,10 +2612,10 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
         EvPageIds.Form_Field_Page.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.RecordLayout.Fields.Count.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FORM_SECTION,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
         "-1" );
 
       groupCommand.SetBackgroundColour (

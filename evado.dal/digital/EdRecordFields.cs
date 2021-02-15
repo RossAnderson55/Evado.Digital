@@ -131,9 +131,9 @@ namespace Evado.Dal.Digital
     public const string DB_TABLE = "EDRLF_TABLE";
     public const string DB_INITIAL_OPTION_LIST = "EDRLF_INITIAL_OPTION_LIST";
     public const string DB_INITIAL_VERSION = "EDRLF_INITIAL_VERSION";
+    public const string DB_FIELD_LAYOUT = "EDRLF_FIELD_LAYOUT";
     public const string DB_DELETED = "EDRLF_DELETED";
 
-    private const string DB_APPLICATION_ID = "APPLICATION_ID";
     private const string DB_LAYOUT_STATE = "EDRL_STATE";
 
     // query parmeters.
@@ -172,6 +172,7 @@ namespace Evado.Dal.Digital
     private const string PARM_TABLE = "@TABLE";
     private const string PARM_INITIAL_OPTION_LIST = "@INITIAL_OPTION_LIST";
     private const string PARM_INITIAL_VERSION = "@INITIAL_VERSION";
+    private const string PARM_FIELD_LAYOUT = "@FIELD_LAYOUT";
     private const string PARM_DELETED = "@DELETED";
 
     #endregion
@@ -233,7 +234,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdRecordFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
         new SqlParameter( EdRecordFields.PARM_TABLE, SqlDbType.NText),
         new SqlParameter( EdRecordFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
-        new SqlParameter(EdRecordFields. PARM_INITIAL_VERSION, SqlDbType.Int),
+        new SqlParameter( EdRecordFields.PARM_INITIAL_VERSION, SqlDbType.Int),
+        new SqlParameter( EdRecordFields.PARM_FIELD_LAYOUT, SqlDbType.NVarChar, 250),
 
       };
 
@@ -330,6 +332,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 31 ].Value = serialisedTableStructure;
       cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
       cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
+      cmdParms [ 34 ].Value = FormField.Design.FieldLayout;
 
     }//END setParameters class.
     #endregion
@@ -411,6 +414,7 @@ namespace Evado.Dal.Digital
       xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
       formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdRecordFields.DB_INITIAL_OPTION_LIST );
       formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_INITIAL_VERSION );
+      formField.Design.FieldLayout = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_LAYOUT );
 
       //
       // if the data type is a table then deseriallise the formfield data table.
@@ -1103,8 +1107,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string.
       //
       _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdRecordFields.DB_APPLICATION_ID + "=" + EdRecordFields.PARM_APPLICATION_ID + ") "
-          + " AND (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
+          + "WHERE (" + EdRecordFields.DB_LAYOUT_ID + "=" + EdRecordFields.PARM_LAYOUT_ID + ") "
           + " AND (" + EdRecordFields.DB_FIELD_ID + "=" + EdRecordFields.PARM_FIELD_ID + ") "
           + " AND (" + EdRecordFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
           + " ORDER BY " + EdRecordFields.DB_ORDER + ";";

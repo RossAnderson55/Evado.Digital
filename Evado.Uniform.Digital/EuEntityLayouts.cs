@@ -1686,7 +1686,8 @@ namespace Evado.UniForm.Digital
     private void setFormPageCommands (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "setFormSavePageCommands" );
+      this.LogMethod ( "setFormPageCommands" );
+      this.LogDebug ( "Layout Design State {0}. ", this.Session.EntityLayout.State );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1697,10 +1698,12 @@ namespace Evado.UniForm.Digital
       // IF the user does not have edit access only display the annotation and full 
       // layout commands
       //
-      if ( this.Session.UserProfile.hasManagementAccess == false )
+      if ( this.Session.UserProfile.hasDesignAccess == false )
       {
+        this.LogDebug ( "User does not have design access.");
         this.setFormPageLayoutCommands ( PageObject );
 
+        this.LogMethodEnd ( "setFormPageCommands" );
         return;
 
       }//END non edit commands.
@@ -1946,8 +1949,11 @@ namespace Evado.UniForm.Digital
           {
             return;
           }
-      }
-    }//END setFormSaveCommands method
+      }//END Switch statement 
+
+      this.LogMethodEnd ( "setFormPageCommands" );
+
+    }//END setFormPageCommands method
 
     // ==============================================================================
     /// <summary>
@@ -2047,7 +2053,9 @@ namespace Evado.UniForm.Digital
         pageCommand.SetPageId ( EvPageIds.Form_Draft_Page );
       }
 
-    }//END method
+      this.LogMethodEnd ( "setFormPageLayoutCommands" );
+
+    }//END setFormPageLayoutCommands method
 
     // ==============================================================================
     /// <summary>
@@ -2540,7 +2548,7 @@ namespace Evado.UniForm.Digital
       groupCommand = pageGroup.addCommand (
         EdLabels.Form_New_Field_Page_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+        EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Get_Object );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
@@ -2548,10 +2556,10 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
         EvPageIds.Form_Field_Page.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.EntityLayout.Fields.Count.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FORM_SECTION,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
         FormSection.No.ToString ( ) );
 
       groupCommand.SetBackgroundColour (
@@ -2579,7 +2587,7 @@ namespace Evado.UniForm.Digital
         groupCommand = pageGroup.addCommand (
           field.LinkText,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+         EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
           Model.UniForm.ApplicationMethods.Get_Object );
 
         groupCommand.SetGuid ( field.Guid );
@@ -2621,7 +2629,7 @@ namespace Evado.UniForm.Digital
       groupCommand = pageGroup.addCommand (
         EdLabels.Form_New_Field_Page_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+       EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
         Model.UniForm.ApplicationMethods.Get_Object );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
@@ -2629,10 +2637,10 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
         EvPageIds.Form_Field_Page.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.EntityLayout.Fields.Count.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordLayoutFields.CONST_FORM_SECTION,
+      groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
         "-1" );
 
       groupCommand.SetBackgroundColour (
@@ -2660,7 +2668,7 @@ namespace Evado.UniForm.Digital
         groupCommand = pageGroup.addCommand (
           field.LinkText,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+         EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
           Model.UniForm.ApplicationMethods.Get_Object );
 
         groupCommand.SetGuid ( field.Guid );

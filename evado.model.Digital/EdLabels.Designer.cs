@@ -4606,6 +4606,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The field layout:.
+        /// </summary>
+        public static string LayoutField_Field_Layout_Field_Label {
+            get {
+                return ResourceManager.GetString("LayoutField_Field_Layout_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  list count: .
         /// </summary>
         public static string List_Count_Label {

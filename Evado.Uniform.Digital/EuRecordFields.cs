@@ -37,13 +37,13 @@ namespace Evado.UniForm.Digital
   /// 
   /// This class terminates the Customer object.
   /// </summary>
-  public class EuRecordLayoutFields : EuClassAdapterBase
+  public class EuRecordFields : EuClassAdapterBase
   {
     #region Class Initialisation
     /// <summary>
     /// This method initialises the class.
     /// </summary>
-    public EuRecordLayoutFields ( )
+    public EuRecordFields ( )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuFormFields.";
     }
@@ -51,7 +51,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method initialises the class and passs in the user profile.
     /// </summary>
-    public EuRecordLayoutFields (
+    public EuRecordFields (
       EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
@@ -517,9 +517,14 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "Field TypeId: " + this.Session.RecordField.TypeId );
 
       //
-      // add a pageMenuGroup with fields that are not allocated to a section.
+      // create the field general group.
       //
-      this.createGeneralFieldGroup ( ClientDataObject.Page );
+      this.createFieldGeneral_Group ( ClientDataObject.Page );
+
+      //
+      // create the field properties group.
+      //
+      this.createFieldProperties_Group ( ClientDataObject.Page );
 
       //
       // add a pageMenuGroup with fields for custom field validations.
@@ -566,10 +571,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void createGeneralFieldGroup (
+    private void createFieldGeneral_Group (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "createGeneralFieldGroup" );
+      this.LogMethod ( "createFieldGeneral_Group" );
 
       // 
       // Initialise the methods variables and objects.
@@ -635,8 +640,7 @@ namespace Evado.UniForm.Digital
       //
       // Create the form field type selection.
       //
-      optionList = EdRecordField.getDataTypes ( 
-        this.Session.RecordLayout.Design.TypeId );
+      optionList = EdRecordField.getDataTypes (  );
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
@@ -693,6 +697,50 @@ namespace Evado.UniForm.Digital
       }
 
       //
+      // Create the form field layout selection.
+      //
+      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), true );
+
+
+      if ( this.Session.RecordField.Design.FieldLayout == null )
+      {
+        this.Session.RecordField.Design.FieldLayout = this.Session.RecordLayout.Design.DefaultPageLayout;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecordField.FieldClassFieldNames.Field_Layout.ToString ( ),
+        EdLabels.LayoutField_Field_Layout_Field_Label,
+        this.Session.RecordField.Design.FieldLayout.ToString ( ),
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogMethodEnd ( "createFieldGeneral_Group" );
+
+    }//END createFieldGeneral_Group Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates the general pageMenuGroup for the field properties.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void createFieldProperties_Group (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "createFieldProperties_Group" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      List<EvOption> optionList = new List<EvOption> ( );
+      int formVersion = (int) this.Session.RecordLayout.Design.Version;
+      bool bEditType = this.Session.RecordField.Design.InitialVersion == formVersion;
+
+      //
       // Define the general properties pageMenuGroup.
       //
       pageGroup = PageObject.AddGroup (
@@ -726,7 +774,7 @@ namespace Evado.UniForm.Digital
 
         String instructions = EdLabels.Form_Field_Instruction_Field_Description;
 
-        groupField.Description =  instructions ;
+        groupField.Description = instructions;
         this.Session.RecordField.Design.AiDataPoint = false;
         this.Session.RecordField.Design.Mandatory = false;
         this.Session.RecordField.Design.Mandatory = false;
@@ -780,7 +828,7 @@ namespace Evado.UniForm.Digital
         // Form field image or video width
         //
         groupField = pageGroup.createNumericField (
-          EuRecordLayoutFields.CONST_VIDEO_IMAGE_WIDTH,
+          EuRecordFields.CONST_VIDEO_IMAGE_WIDTH,
           EdLabels.Form_Field_Image_Video_Width_Field_Label,
           iWidth,
           0,
@@ -790,7 +838,7 @@ namespace Evado.UniForm.Digital
         // Form field image or video height
         //
         groupField = pageGroup.createNumericField (
-          EuRecordLayoutFields.CONST_VIDEO_IMAGE_HEIGHT,
+          EuRecordFields.CONST_VIDEO_IMAGE_HEIGHT,
           EdLabels.Form_Field_Image_Video_Height_Field_Label,
           iHeight,
           0,
@@ -963,7 +1011,8 @@ namespace Evado.UniForm.Digital
         this.Session.RecordField.Design.HideField );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-    }//END createGeneralFieldGroup Method
+      this.LogMethodEnd ( "createFieldProperties_Group" );
+    }//END createFieldPropertiesGroup Method
 
     // ==============================================================================
     /// <summary>
@@ -1338,7 +1387,7 @@ namespace Evado.UniForm.Digital
       optionList = EdRecordTableHeader.getRowLengthList ( );
 
       groupField = pageGroup.createSelectionListField (
-        EuRecordLayoutFields.CONST_TABLE_ROW_FIELD,
+        EuRecordFields.CONST_TABLE_ROW_FIELD,
         EdLabels.Form_Field_Table_Row_Field_Label,
         this.Session.RecordField.Table.Rows.Count.ToString ( ),
         optionList );
@@ -1348,7 +1397,7 @@ namespace Evado.UniForm.Digital
       // Field disabled form male subjects.
       //
       groupField = pageGroup.createTableField (
-        EuRecordLayoutFields.CONST_TABLE_FIELD_ID,
+        EuRecordFields.CONST_TABLE_FIELD_ID,
         String.Empty, 5 );
 
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
@@ -1456,7 +1505,7 @@ namespace Evado.UniForm.Digital
       // Field disabled form male subjects.
       //
       groupField = pageGroup.createTableField (
-        EuRecordLayoutFields.CONST_MATRIX_FIELD_ID,
+        EuRecordFields.CONST_MATRIX_FIELD_ID,
         String.Empty,
         10 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
@@ -1560,8 +1609,8 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         //    
         string FormId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
-        string stCount = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FIELD_COUNT );
-        string stSectionNo = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_FORM_SECTION );
+        string stCount = PageCommand.GetParameter ( EuRecordFields.CONST_FIELD_COUNT );
+        string stSectionNo = PageCommand.GetParameter ( EuRecordFields.CONST_FORM_SECTION );
 
         this.LogValue ( "FormId: " + FormId );
         this.LogValue ( "Count: " + stCount );
@@ -1823,10 +1872,10 @@ namespace Evado.UniForm.Digital
         if ( parameter.Name.Contains (  Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == false
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
           && parameter.Name !=  Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
-          && parameter.Name != EuRecordLayoutFields.CONST_TABLE_ROW_FIELD
-          && parameter.Name != EuRecordLayoutFields.CONST_MATIX_COL_FIELD
-          && parameter.Name != EuRecordLayoutFields.CONST_VIDEO_IMAGE_WIDTH
-          && parameter.Name != EuRecordLayoutFields.CONST_VIDEO_IMAGE_HEIGHT
+          && parameter.Name != EuRecordFields.CONST_TABLE_ROW_FIELD
+          && parameter.Name != EuRecordFields.CONST_MATIX_COL_FIELD
+          && parameter.Name != EuRecordFields.CONST_VIDEO_IMAGE_WIDTH
+          && parameter.Name != EuRecordFields.CONST_VIDEO_IMAGE_HEIGHT
           && parameter.Name != EuRecordLayouts.CONST_REFRESH )
         {
           this.LogText ( " >> UPDATED" );
@@ -1869,8 +1918,8 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      string stWidth = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_VIDEO_IMAGE_WIDTH );
-      string stHeight = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_VIDEO_IMAGE_HEIGHT );
+      string stWidth = PageCommand.GetParameter ( EuRecordFields.CONST_VIDEO_IMAGE_WIDTH );
+      string stHeight = PageCommand.GetParameter ( EuRecordFields.CONST_VIDEO_IMAGE_HEIGHT );
 
       this.Session.RecordField.Design.JavaScript = String.Empty;
 
@@ -1919,7 +1968,7 @@ namespace Evado.UniForm.Digital
       // 
       // Iterate through the parameter values updating the ResultData object
       //
-      string stRowCount = PageCommand.GetParameter ( EuRecordLayoutFields.CONST_TABLE_ROW_FIELD );
+      string stRowCount = PageCommand.GetParameter ( EuRecordFields.CONST_TABLE_ROW_FIELD );
 
       this.LogValue ( "stRowCount: " + stRowCount );
 
@@ -1934,7 +1983,7 @@ namespace Evado.UniForm.Digital
       //
       for ( int iCol = 0; iCol < this.Session.RecordField.Table.Header.Length; iCol++ )
       {
-        String stParameterName = EuRecordLayoutFields.CONST_TABLE_FIELD_ID + "_" + ( iCol + 1 );
+        String stParameterName = EuRecordFields.CONST_TABLE_FIELD_ID + "_" + ( iCol + 1 );
 
         this.LogValue ( "stParameterName: " + stParameterName );
 
@@ -1994,7 +2043,7 @@ namespace Evado.UniForm.Digital
       // Get the list of prefilled columns
       //
       this.Session.RecordField.Table.PreFilledColumnList =
-        PageCommand.GetParameter ( EuRecordLayoutFields.CONST_MATIX_COL_FIELD );
+        PageCommand.GetParameter ( EuRecordFields.CONST_MATIX_COL_FIELD );
       this.LogValue ( "PreFilledColumnList: " + this.Session.RecordField.Table.PreFilledColumnList );
 
       //
@@ -2010,7 +2059,7 @@ namespace Evado.UniForm.Digital
         for ( int iCol = 0; iCol < this.Session.RecordField.Table.Header.Length; iCol++ )
         {
           String indexCol = ( iCol + 1 ).ToString ( );
-          String stParmeterName = EuRecordLayoutFields.CONST_MATRIX_FIELD_ID + "_" + indexRow + "_" + indexCol;
+          String stParmeterName = EuRecordFields.CONST_MATRIX_FIELD_ID + "_" + indexRow + "_" + indexCol;
 
           //
           // if the column is included in the prefil list add the value to the table.
