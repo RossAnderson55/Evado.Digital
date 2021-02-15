@@ -26,12 +26,12 @@ using System.Text;
 using Evado.Model;
 using Evado.Model.Digital;
 
-namespace Evado.Bll.Clinical
+namespace Evado.Bll.Digital
 {
   /// <summary>
   /// This business object manages the EvRecords in the system.
   /// </summary>
-  public class EdRecords : EvBllBase
+  public class EdEntities : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -39,7 +39,7 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdRecords ( )
+    public EdEntities ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
     }
@@ -50,17 +50,16 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdRecords ( EvClassParameters Settings )
+    public EdEntities ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
 
-      this._DalRecords = new Evado.Dal.Clinical.EdRecords ( Settings );
+      this._DalRecords = new Evado.Dal.Digital.EdEntities ( Settings );
 
-      this._DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
+      this._DalForms = new Evado.Dal.Digital.EdEntityLayouts ( Settings );
     }
     #endregion
-
 
     #region Class constant
     /// <summary>
@@ -75,8 +74,8 @@ namespace Evado.Bll.Clinical
     //
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecords _DalRecords = new Evado.Dal.Clinical.EdRecords ( );
-    private Evado.Dal.Clinical.EdRecordLayouts _DalForms = new Evado.Dal.Clinical.EdRecordLayouts ( );
+    private Evado.Dal.Digital.EdEntities _DalRecords = new Evado.Dal.Digital.EdEntities ( );
+    private Evado.Dal.Digital.EdEntityLayouts _DalForms = new Evado.Dal.Digital.EdEntityLayouts ( );
 
     //
     // Instantiate the Business Logic.
@@ -744,4 +743,4 @@ namespace Evado.Bll.Clinical
 
   }//END EvFormRecords Class.
 
-}//END namespace Evado.Bll.Clinical
+}//END namespace Evado.Bll.Digital

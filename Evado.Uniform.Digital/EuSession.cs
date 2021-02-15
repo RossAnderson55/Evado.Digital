@@ -521,6 +521,31 @@ namespace Evado.UniForm.Digital
     public List<EdRecord> EntityList { get; set; }
 
     /// <summary>
+    /// This property contains the list of Form Versions.
+    /// </summary>
+    public List<EvOption> FormVersionList { get; set; }
+
+    EdRecordObjectStates _EntityFormState = EdRecordObjectStates.Null;
+    /// <summary>
+    /// COntains the currently selected form state.
+    /// </summary>
+    public EdRecordObjectStates EntityFormState
+    {
+      get { return _EntityFormState; }
+      set { _EntityFormState = value; }
+    }
+
+    String _EntitySelectionLayoutId = String.Empty;
+    /// <summary>
+    /// COntains the currently selected form type.
+    /// </summary>
+    public String EntitySelectionLayoutId
+    {
+      get { return _EntitySelectionLayoutId; }
+      set { _EntitySelectionLayoutId = value; }
+    }
+
+    /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
     public EdRecord RecordLayout { get; set; }
@@ -642,88 +667,6 @@ namespace Evado.UniForm.Digital
       set { _FormSection = value; }
     }
 
-    /// <summary>
-    /// This property contains the list of Form Versions.
-    /// </summary>
-    public List<EvOption> FormVersionList { get; set; }
-
-    List<EdRecord> _CommonFormList = new List<EdRecord> ( );
-    /// <summary>
-    /// This property object contains a list of eClinical evForm object for the currently selected record.
-    /// </summary>
-    public List<EdRecord> CommonFormList
-    {
-      get { return _CommonFormList; }
-      set { _CommonFormList = value; }
-    }
-
-    EdRecord _CommonForm = new EdRecord ( );
-    /// <summary>
-    /// This property object contains the eClinical evForm object for the currently selected record.
-    /// </summary>
-    public EdRecord CommonForm
-    {
-      get { return _CommonForm; }
-      set { _CommonForm = value; }
-    }
-
-    EdRecordSection _CommonFormSection = new EdRecordSection ( );
-    /// <summary>
-    /// This property object contains the eClinical EvFormSeciotn object for the currently selected record.
-    /// </summary>
-    public EdRecordSection CommonFormSection
-    {
-      get { return _CommonFormSection; }
-      set { _CommonFormSection = value; }
-    }
-
-    EdRecordField _CommonFormField = new EdRecordField ( );
-    /// <summary>
-    /// This property object contains the eClinical evFormField object for the currently selected record.
-    /// </summary>
-    public EdRecordField CommonFormField
-    {
-      get { return _CommonFormField; }
-      set { _CommonFormField = value; }
-    }
-
-    EdRecordTypes _CommonFormType = EdRecordTypes.Null;
-    /// <summary>
-    /// COntains the currently selected form type.
-    /// </summary>
-    public EdRecordTypes CommonFormType
-    {
-      get { return _CommonFormType; }
-      set { _CommonFormType = value; }
-    }
-
-    //===================================================================================
-    /// <summary>
-    /// This method set the common form type.
-    /// </summary>
-    /// <param name="FormType">EvFormRecordTypes enumerated list</param>
-    //-----------------------------------------------------------------------------------
-    public void setCommonFormType ( String FormType )
-    {
-      EdRecordTypes recordType = EdRecordTypes.Null;
-
-      if ( EvStatics.Enumerations.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
-      {
-        this._CommonFormType = recordType;
-      }
-
-      this._CommonFormType = EdRecordTypes.Null;
-    }
-
-    EdRecordObjectStates _CommonFormState = EdRecordObjectStates.Null;
-    /// <summary>
-    /// COntains the currently selected form state.
-    /// </summary>
-    public EdRecordObjectStates CommonFormState
-    {
-      get { return _CommonFormState; }
-      set { _CommonFormState = value; }
-    }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

@@ -230,7 +230,7 @@ namespace Evado.UniForm.Digital
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       #endregion
 
-      #region project configuration
+      #region applilcation configuration
       //
       // Project configuration menu commands.
       //
@@ -263,26 +263,25 @@ namespace Evado.UniForm.Digital
           }
 
 
-        case EvPageIds.Data_Point_Export_Page:
+        case EvPageIds.Record_Layout_View:
           {
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Applications.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Get_Object );
+              EuAdapterClasses.Record_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );
 
             return pageCommand;
           }
 
-
-        case EvPageIds.Form_View:
+        case EvPageIds.Entity_Layout_View:
           {
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
               EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Record_Layouts.ToString ( ),
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
             pageCommand.SetPageId ( MenuItem.PageId );

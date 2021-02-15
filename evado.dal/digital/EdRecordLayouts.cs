@@ -41,7 +41,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdRecordLayouts ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvForms.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordLayouts.";
     }
 
     // ==================================================================================
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EdRecordLayouts ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvForms.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordLayouts.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

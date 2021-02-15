@@ -1086,13 +1086,24 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] cmdParms = GetParameters ( );
       SetParameters ( cmdParms, Layout );
 
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ADD_ITEM, cmdParms ) == 0 )
+      try
       {
-        this.LogValue ( "Errors adding the form object to the database." );
-        this.LogValue ( EvSqlMethods.Log );
+        if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ADD_ITEM, cmdParms ) == 0 )
+        {
+          this.LogValue ( "Errors adding the form object to the database." );
+          this.LogValue ( EvSqlMethods.Log );
+
+          return EvEventCodes.Database_Record_Update_Error;
+        }
+      }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
 
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -1138,7 +1149,7 @@ namespace Evado.Dal.Digital
       //
       // Initialise the methods variables and objects.
       //
-      EdRecordFields dal_LayoutFields = new EdRecordFields ( );
+      EdRecordFields dal_LayoutFields = new EdRecordFields ( this.ClassParameters );
 
       //
       // update the layout sections.
@@ -1163,7 +1174,7 @@ namespace Evado.Dal.Digital
       //
       // Initialise the methods variables and objects.
       //
-      EdRecordSections dal_LayoutSections = new EdRecordSections ( );
+      EdEntitySections dal_LayoutSections = new EdEntitySections ( this.ClassParameters );
 
       //
       // update the layout sections.

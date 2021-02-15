@@ -60,6 +60,10 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EuEntities.cs" />
+    <Compile Include="EuEntityLayoutFields.cs" />
+    <Compile Include="EuEntityLayouts.cs" />
+    <Compile Include="EuEntityLayoutsProperties.cs" />
     <Compile Include="EuOrganisations.cs" />
     <Compile Include="EuRecordLayoutsProperties.cs" />
     <Compile Include="EuDemoUserRegistration.ads.cs">

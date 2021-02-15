@@ -34,7 +34,7 @@ namespace Evado.Dal.Digital
   /// <summary>
   /// This class is handles the data access layer for the form field data object.
   /// </summary>
-  public class EdentityFields : EvDalBase
+  public class EdEntityFields : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -42,9 +42,9 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdentityFields ( )
+    public EdEntityFields ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EdentityFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityFields.";
     }
 
     // ==================================================================================
@@ -53,10 +53,10 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdentityFields ( EvClassParameters ClassParameters )
+    public EdEntityFields ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Digital.EdentityFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityFields.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {
@@ -189,43 +189,43 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter( EdentityFields.PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdentityFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( EdentityFields.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
-        new SqlParameter( EdentityFields.PARM_FIELD_ID, SqlDbType.NVarChar, 20),
-        new SqlParameter( EdentityFields.PARM_TYPE_ID, SqlDbType.VarChar, 50),
-        new SqlParameter( EdentityFields.PARM_ORDER, SqlDbType.Int),
-        new SqlParameter( EdentityFields.PARM_TITLE, SqlDbType.VarChar, 150),
-        new SqlParameter( EdentityFields.PARM_INSTRUCTIONS, SqlDbType.NText),
-        new SqlParameter( EdentityFields.PARM_HTTP_REFERENCE, SqlDbType.VarChar, 250),
-        new SqlParameter( EdentityFields.PARM_SECTION_ID, SqlDbType.SmallInt),
+        new SqlParameter( EdEntityFields.PARM_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntityFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntityFields.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntityFields.PARM_FIELD_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdEntityFields.PARM_TYPE_ID, SqlDbType.VarChar, 50),
+        new SqlParameter( EdEntityFields.PARM_ORDER, SqlDbType.Int),
+        new SqlParameter( EdEntityFields.PARM_TITLE, SqlDbType.VarChar, 150),
+        new SqlParameter( EdEntityFields.PARM_INSTRUCTIONS, SqlDbType.NText),
+        new SqlParameter( EdEntityFields.PARM_HTTP_REFERENCE, SqlDbType.VarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_SECTION_ID, SqlDbType.SmallInt),
 
-        new SqlParameter( EdentityFields.PARM_OPTIONS, SqlDbType.VarChar, 250),
-        new SqlParameter( EdentityFields.PARM_SUMMARY_FIELD, SqlDbType.Bit),
-        new SqlParameter( EdentityFields.PARM_MANDATORY, SqlDbType.Bit),
-        new SqlParameter( EdentityFields.PARM_AI_DATA_POINT, SqlDbType.Bit),
-        new SqlParameter( EdentityFields.PARM_ANALYTICS_DATA_POINT, SqlDbType.Bit),
-        new SqlParameter( EdentityFields.PARM_HIDDEN, SqlDbType.Bit),
-        new SqlParameter( EdentityFields.PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdentityFields.PARM_EX_SELECTION_LIST_CATEGOR, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdentityFields.PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 15),
-        new SqlParameter( EdentityFields.PARM_UNIT, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdEntityFields.PARM_OPTIONS, SqlDbType.VarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_SUMMARY_FIELD, SqlDbType.Bit),
+        new SqlParameter( EdEntityFields.PARM_MANDATORY, SqlDbType.Bit),
+        new SqlParameter( EdEntityFields.PARM_AI_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdEntityFields.PARM_ANALYTICS_DATA_POINT, SqlDbType.Bit),
+        new SqlParameter( EdEntityFields.PARM_HIDDEN, SqlDbType.Bit),
+        new SqlParameter( EdEntityFields.PARM_EX_SELECTION_LIST_ID, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_EX_SELECTION_LIST_CATEGOR, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_DEFAULT_VALUE, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdEntityFields.PARM_UNIT, SqlDbType.NVarChar, 15),
 
-        new SqlParameter( EdentityFields.PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdentityFields.PARM_VALIDATION_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_VALIDATION_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_ALERT_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_ALERT_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_NORMAL_LOWER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_NORMAL_UPPER_LIMIT, SqlDbType.Float),
-        new SqlParameter( EdentityFields.PARM_FIELD_CATEGORY, SqlDbType.VarChar, 50),
-        new SqlParameter( EdentityFields.PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
-        new SqlParameter( EdentityFields.PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
+        new SqlParameter( EdEntityFields.PARM_UNIT_SCALING, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_VALIDATION_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_VALIDATION_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_ALERT_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_ALERT_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_NORMAL_LOWER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_NORMAL_UPPER_LIMIT, SqlDbType.Float),
+        new SqlParameter( EdEntityFields.PARM_FIELD_CATEGORY, SqlDbType.VarChar, 50),
+        new SqlParameter( EdEntityFields.PARM_ANALOGUE_LEGEND_START, SqlDbType.VarChar, 30),
+        new SqlParameter( EdEntityFields.PARM_ANALOGUE_LEGEND_FINISH, SqlDbType.VarChar, 30),
 
-        new SqlParameter( EdentityFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
-        new SqlParameter( EdentityFields.PARM_TABLE, SqlDbType.NText),
-        new SqlParameter( EdentityFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
-        new SqlParameter(EdentityFields. PARM_INITIAL_VERSION, SqlDbType.Int),
+        new SqlParameter( EdEntityFields.PARM_JAVA_SCRIPT, SqlDbType.NText),
+        new SqlParameter( EdEntityFields.PARM_TABLE, SqlDbType.NText),
+        new SqlParameter( EdEntityFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
+        new SqlParameter(EdEntityFields. PARM_INITIAL_VERSION, SqlDbType.Int),
 
       };
 
@@ -366,43 +366,43 @@ namespace Evado.Dal.Digital
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.Guid = EvSqlMethods.getGuid ( Row, EdentityFields.DB_GUID );
+      formField.Guid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_GUID );
       formField.RecordFieldGuid = formField.Guid;
-      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdentityFields.DB_LAYOUT_GUID );
-      formField.LayoutId = EvSqlMethods.getString ( Row, EdentityFields.DB_LAYOUT_ID );
-      formField.FieldId = EvSqlMethods.getString ( Row, EdentityFields.DB_FIELD_ID );
-      String value = EvSqlMethods.getString ( Row, EdentityFields.DB_TYPE_ID );
+      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_LAYOUT_GUID );
+      formField.LayoutId = EvSqlMethods.getString ( Row, EdEntityFields.DB_LAYOUT_ID );
+      formField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
+      String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
       formField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      formField.Design.Title = EvSqlMethods.getString ( Row, EdentityFields.DB_TITLE );
-      formField.Design.Instructions = EvSqlMethods.getString ( Row, EdentityFields.DB_INSTRUCTIONS );
-      formField.Design.HttpReference = EvSqlMethods.getString ( Row, EdentityFields.DB_HTTP_REFERENCE );
-      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdentityFields.DB_SECTION_ID );
-      formField.Design.Options = EvSqlMethods.getString ( Row, EdentityFields.DB_OPTIONS );
-      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdentityFields.DB_SUMMARY_FIELD );
-      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdentityFields.DB_MANDATORY );
-      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdentityFields.DB_AI_DATA_POINT );
-      formField.Design.HideField = EvSqlMethods.getBool ( Row, EdentityFields.DB_HIDDEN );
-      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdentityFields.DB_EX_SELECTION_LIST_ID );
-      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdentityFields.DB_EX_SELECTION_LIST_CATEGORY );
-      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdentityFields.DB_DEFAULT_VALUE );
-      formField.Design.Unit = EvSqlMethods.getString ( Row, EdentityFields.DB_UNIT );
-      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdentityFields.DB_UNIT_SCALING );
+      formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
+      formField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
+      formField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
+      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
+      formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
+      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
+      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
+      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
+      formField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
+      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
+      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
+      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
+      formField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
+      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
 
-      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_VALIDATION_LOWER_LIMIT );
-      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_VALIDATION_UPPER_LIMIT );
-      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_ALERT_LOWER_LIMIT );
-      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_ALERT_UPPER_LIMIT );
-      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_NORMAL_LOWER_LIMITD );
-      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdentityFields.DB_NORMAL_UPPER_LIMIT );
+      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
+      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
+      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
+      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
+      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
+      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
 
-      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdentityFields.DB_FIELD_CATEGORY );
-      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdentityFields.DB_ANALOGUE_LEGEND_START );
-      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdentityFields.DB_ANALOGUE_LEGEND_FINISH );
-      formField.Design.JavaScript = EvSqlMethods.getString ( Row, EdentityFields.DB_JAVA_SCRIPT );
+      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
+      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
+      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
+      formField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
       xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
-      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdentityFields.DB_INITIAL_OPTION_LIST );
-      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdentityFields.DB_INITIAL_VERSION );
+      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
+      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
 
       //
       // if the data type is a table then deseriallise the formfield data table.
@@ -524,11 +524,11 @@ namespace Evado.Dal.Digital
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.FieldId = EvSqlMethods.getString ( Row, EdentityFields.DB_FIELD_ID );
-      formField.Design.Title = EvSqlMethods.getString ( Row, EdentityFields.DB_TITLE );
-      String value = EvSqlMethods.getString ( Row, EdentityFields.DB_TYPE_ID );
+      formField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
+      formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
+      String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
       formField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
-      formField.Design.Options = EvSqlMethods.getString ( Row, EdentityFields.DB_OPTIONS );
+      formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
 
       // 
       // Return the formfield object.
@@ -576,7 +576,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter(EdentityFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(EdEntityFields.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = FormGuid;
 
@@ -584,8 +584,8 @@ namespace Evado.Dal.Digital
       // Define the query string.
       // 
       _sqlQueryString = SQL_FIELD_QUERY_VIEW 
-        + " WHERE (" + EdentityFields.DB_LAYOUT_GUID + "="+ EdentityFields.PARM_LAYOUT_GUID + ") ";
-      _sqlQueryString += " ORDER BY "+EdentityFields.DB_ORDER +";";
+        + " WHERE (" + EdEntityFields.DB_LAYOUT_GUID + "="+ EdEntityFields.PARM_LAYOUT_GUID + ") ";
+      _sqlQueryString += " ORDER BY "+EdEntityFields.DB_ORDER +";";
 
       //_Status += "\r\n" + sqlQueryString;
 
@@ -741,23 +741,23 @@ namespace Evado.Dal.Digital
       if ( OnlySingleValueFields == false )
       {
         _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdentityFields.DB_DELETED + "= 0 ) "
-          + " AND (" + EdentityFields.DB_LAYOUT_ID + "=" + EdentityFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdentityFields.DB_FIELD_ID + "=" + EdentityFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdentityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " ORDER BY " + EdentityFields.DB_ORDER + ";";
+          + "WHERE (" + EdEntityFields.DB_DELETED + "= 0 ) "
+          + " AND (" + EdEntityFields.DB_LAYOUT_ID + "=" + EdEntityFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdEntityFields.DB_FIELD_ID + "=" + EdEntityFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdEntityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdEntityFields.DB_ORDER + ";";
       }
       else
       {
         _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdentityFields.DB_LAYOUT_ID + "=" + EdentityFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdentityFields.DB_FIELD_ID + "=" + EdentityFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdentityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " AND (" + EdentityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
-          + " AND (" + EdentityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Table + "') "
-          + " AND (" + EdentityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
-          + " AND (TCI_" + EdentityFields.DB_TYPE_ID + "TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
-          + " ORDER BY " + EdentityFields.DB_ORDER + ";";
+          + "WHERE (" + EdEntityFields.DB_LAYOUT_ID + "=" + EdEntityFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdEntityFields.DB_FIELD_ID + "=" + EdEntityFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdEntityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " AND (" + EdEntityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Check_Box_List + "') "
+          + " AND (" + EdEntityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Table + "') "
+          + " AND (" + EdEntityFields.DB_TYPE_ID + " <> '" + Evado.Model.EvDataTypes.Special_Matrix + "') "
+          + " AND (TCI_" + EdEntityFields.DB_TYPE_ID + "TypeId <> '" + Evado.Model.EvDataTypes.Free_Text + "') "
+          + " ORDER BY " + EdEntityFields.DB_ORDER + ";";
       }
 
       this.LogValue ( _sqlQueryString );
@@ -781,9 +781,9 @@ namespace Evado.Dal.Digital
           // Process the results into the newField.
           // 
           option = new EvOption (
-              EvSqlMethods.getString ( row, EdentityFields.DB_FIELD_ID ),
-              EvSqlMethods.getString ( row, EdentityFields.DB_FIELD_ID )
-              + " - " + EvSqlMethods.getString ( row, EdentityFields.DB_TITLE ) );
+              EvSqlMethods.getString ( row, EdEntityFields.DB_FIELD_ID ),
+              EvSqlMethods.getString ( row, EdEntityFields.DB_FIELD_ID )
+              + " - " + EvSqlMethods.getString ( row, EdEntityFields.DB_TITLE ) );
 
           if ( option.Description.Length > 80 )
           {
@@ -854,8 +854,8 @@ namespace Evado.Dal.Digital
       // Define the query string.
       // 
       _sqlQueryString = _sqlDataAnalysisQuery_List
-          + "WHERE (" + EdentityFields.DB_LAYOUT_ID + "=" + EdentityFields.PARM_LAYOUT_ID + ") "
-          + " ORDER BY " + EdentityFields.DB_ORDER + ";";
+          + "WHERE (" + EdEntityFields.DB_LAYOUT_ID + "=" + EdEntityFields.PARM_LAYOUT_ID + ") "
+          + " ORDER BY " + EdEntityFields.DB_ORDER + ";";
 
       this.LogDebug ( _sqlQueryString );
 
@@ -1089,10 +1089,10 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string.
       //
       _sqlQueryString = SQL_FIELD_QUERY_VIEW
-          + "WHERE (" + EdentityFields.DB_LAYOUT_ID + "=" + EdentityFields.PARM_LAYOUT_ID + ") "
-          + " AND (" + EdentityFields.DB_FIELD_ID + "=" + EdentityFields.PARM_FIELD_ID + ") "
-          + " AND (" + EdentityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
-          + " ORDER BY " + EdentityFields.DB_ORDER + ";";
+          + "WHERE (" + EdEntityFields.DB_LAYOUT_ID + "=" + EdEntityFields.PARM_LAYOUT_ID + ") "
+          + " AND (" + EdEntityFields.DB_FIELD_ID + "=" + EdEntityFields.PARM_FIELD_ID + ") "
+          + " AND (" + EdEntityFields.DB_LAYOUT_STATE + "'" + EdRecordObjectStates.Form_Issued + "') "
+          + " ORDER BY " + EdEntityFields.DB_ORDER + ";";
 
       this.LogValue ( "SQL QUERY: " + _sqlQueryString );
 
@@ -1245,13 +1245,13 @@ namespace Evado.Dal.Digital
       // 
       // Define the query parameters.
       // 
-      SqlParameter cmdParms = new SqlParameter ( EdentityFields.PARM_GUID, SqlDbType.UniqueIdentifier );
+      SqlParameter cmdParms = new SqlParameter ( EdEntityFields.PARM_GUID, SqlDbType.UniqueIdentifier );
       cmdParms.Value = FieldGuid;
 
       // 
       // Define the query string.
       // 
-      _sqlQueryString = SQL_FIELD_QUERY_VIEW + " WHERE (" + EdentityFields.DB_GUID + " = " + EdentityFields.PARM_GUID + "); ";
+      _sqlQueryString = SQL_FIELD_QUERY_VIEW + " WHERE (" + EdEntityFields.DB_GUID + " = " + EdEntityFields.PARM_GUID + "); ";
 
       // 
       // Execute the query against the database.

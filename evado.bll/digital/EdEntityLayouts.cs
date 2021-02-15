@@ -31,12 +31,12 @@ using System.Xml.XPath;
 using Evado.Model;
 using Evado.Model.Digital;
 
-namespace Evado.Bll.Clinical
+namespace Evado.Bll.Digital
 {
   /// <summary>
   /// This business object manages the Forms objects in the system.
   /// </summary>
-  public class EdRecordLayouts : EvBllBase
+  public class EdEntityLayouts : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -44,9 +44,9 @@ namespace Evado.Bll.Clinical
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdRecordLayouts ( )
+    public EdEntityLayouts ( )
     {
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdRecordLayouts.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdEntityLayouts.";
     }
 
     // ==================================================================================
@@ -55,12 +55,12 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdRecordLayouts ( EvClassParameters Settings )
+    public EdEntityLayouts ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdRecordLayouts.";
+      this.ClassNameSpace = "Evado.Bll.Clinical.EdEntityLayouts.";
 
-      this._Dal_RecordLayouts = new Evado.Dal.Clinical.EdRecordLayouts ( Settings );
+      this._Dal_RecordLayouts = new Evado.Dal.Digital.EdEntityLayouts ( Settings );
     }
     #endregion
 
@@ -69,7 +69,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordLayouts _Dal_RecordLayouts = new Evado.Dal.Clinical.EdRecordLayouts ( );
+    private Evado.Dal.Digital.EdEntityLayouts _Dal_RecordLayouts = new Evado.Dal.Digital.EdEntityLayouts ( );
 
     #endregion
 
@@ -318,8 +318,7 @@ namespace Evado.Bll.Clinical
       // 
       // Initialise the local variables
       // 
-      EdRecords records = new EdRecords ( this.ClassParameter);
-      EdRecordFields formFields = new EdRecordFields ( this.ClassParameter );
+      EdEntityFields formFields = new EdEntityFields ( this.ClassParameter );
       EvEventCodes iReturn = EvEventCodes.Ok;
 
       if ( Layout.LayoutId == String.Empty )
@@ -599,4 +598,4 @@ namespace Evado.Bll.Clinical
 
   }//END EvForms class
 
-}//END namespace Evado.Bll.Clinical
+}//END namespace Evado.Bll.Digital

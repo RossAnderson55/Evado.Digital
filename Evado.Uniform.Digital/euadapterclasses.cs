@@ -34,7 +34,7 @@ namespace Evado.UniForm.Digital
       /// <summary>
       /// This option is used to define demonstration Registration.
       /// </summary>
-      Demo_Registration,
+      User_Registration,
 
       /// <summary>
       /// This option identifies the Home Page Class object.
@@ -45,11 +45,6 @@ namespace Evado.UniForm.Digital
       /// This option identifies the Menu class object.
       /// </summary>
       Menu,
-
-      /// <summary>
-      /// This option identifies the Customers class object.
-      /// </summary>
-      Customers,
 
       /// <summary>
       /// This option identifies the Organisation class object.
@@ -67,24 +62,9 @@ namespace Evado.UniForm.Digital
       Events,
 
       /// <summary>
-      /// This option identifies the project class object.
+      /// This option identifies the application class object.
       /// </summary>
       Applications,
-
-      /// <summary>
-      /// This option identifies the schedule class object.
-      /// </summary>
-      Schedules,
-
-      /// <summary>
-      /// This option identifies the milestones class milestones object.
-      /// </summary>
-      Milestones,
-
-      /// <summary>
-      /// This option identifies the activies class object.
-      /// </summary>
-      Activities,
 
       /// <summary>
       /// This option identifies the project forms class object.
@@ -95,6 +75,16 @@ namespace Evado.UniForm.Digital
       /// This option identifies the project form fields class object.
       /// </summary>
       Record_Layout_Fields,
+
+      /// <summary>
+      /// This option identifies the project forms class object.
+      /// </summary>
+      Entity_Layouts,
+
+      /// <summary>
+      /// This option identifies the project form fields class object.
+      /// </summary>
+      Entity_Layout_Fields,
 
       /// <summary>
       /// This option identifies the project alert class object.
@@ -125,6 +115,11 @@ namespace Evado.UniForm.Digital
       /// This option identifies the project record class object.
       /// </summary>
       Records,
+
+      /// <summary>
+      /// This option identifies the project record class object.
+      /// </summary>
+      Entities,
 
       /// <summary>
       /// This option identifies the binary files class object.

@@ -524,14 +524,24 @@ namespace Evado.Model.Digital
 
     //FormRecord Design
     /// <summary>
-    /// This enumeration value is the form view page identifier.
+    /// This enumeration value is the record layout view page identifier.
     /// </summary>
-    Form_View,
+    Record_Layout_View,
 
     /// <summary>
-    /// This enumeration value is the form page identifier.
+    /// This enumeration value is the record layout page identifier.
     /// </summary>
-    Form_Page,
+    Record_Layout_Page,
+
+    /// <summary>
+    /// This enumeration value is the entity layout view page identifier.
+    /// </summary>
+    Entity_Layout_View,
+
+    /// <summary>
+    /// This enumeration value is the entity layout page identifier.
+    /// </summary>
+    Entity_Layout_Page,
 
     /// <summary>
     /// This enumeration value is the form annotated page identifier.

@@ -29,21 +29,20 @@ using Evado.Model;
 using Evado.Dal;
 using Evado.Model.Digital;
 
-namespace Evado.Bll.Clinical
+namespace Evado.Bll.Digital
 {
   /// <summary>
   /// A business to manage EvFormFields. This class uses ChecklistItem ResultData object for its content.
   /// </summary>
-  public class EdRecordFields : EvBllBase
-  {
-    
+  public class EdEntityFields : EvBllBase
+  {    
     #region class initialisation methods
     // ==================================================================================
     /// <summary>
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdRecordFields ( )
+    public EdEntityFields ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormFields.";
     }
@@ -54,7 +53,7 @@ namespace Evado.Bll.Clinical
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdRecordFields ( EvClassParameters Settings )
+    public EdEntityFields ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvFormFields.";
@@ -64,7 +63,7 @@ namespace Evado.Bll.Clinical
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._DalFormFields = new Evado.Dal.Clinical.EdRecordFields ( Settings );
+      this._DalFormFields = new Evado.Dal.Digital.EdEntityFields ( Settings );
     }
     #endregion
 
@@ -84,7 +83,7 @@ namespace Evado.Bll.Clinical
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Clinical.EdRecordFields _DalFormFields = new Evado.Dal.Clinical.EdRecordFields ( );
+    private Evado.Dal.Digital.EdEntityFields _DalFormFields = new Evado.Dal.Digital.EdEntityFields ( );
 
     #endregion
 

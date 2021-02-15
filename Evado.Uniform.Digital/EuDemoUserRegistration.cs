@@ -353,7 +353,7 @@ namespace Evado.UniForm.Digital
       pageCommand = Page.addCommand (
         EdLabels.Demo_Registration_Save_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Demo_Registration.ToString ( ),
+        EuAdapterClasses.User_Registration.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
       pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
@@ -569,7 +569,7 @@ namespace Evado.UniForm.Digital
       groupCommand = PageGroup.addCommand (
         EdLabels.Demo_Registration_Save_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Demo_Registration.ToString ( ),
+        EuAdapterClasses.User_Registration.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );

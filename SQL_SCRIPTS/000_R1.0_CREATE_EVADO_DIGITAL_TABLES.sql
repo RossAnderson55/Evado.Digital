@@ -26,7 +26,6 @@ IF NOT EXISTS( SELECT 1 FROM sys.columns
 BEGIN
 
 CREATE TABLE [dbo].[ED_RECORD_LAYOUTS](
-	[CU_GUID] [uniqueidentifier] NOT NULL,
 	[EDRL_GUID] [uniqueidentifier] NOT NULL,
 	[EDR_LAYOUT_ID] [nvarchar](20) NULL,
 	[EDRL_STATE] [varchar](50) NULL,
@@ -261,7 +260,6 @@ GO
 /****** Object:  Table [dbo].[ED_ENTITY_LAYOUTS]    Script Date: 12/24/2020 10:45:30 ******/
 
 CREATE TABLE [dbo].[ED_ENTITY_LAYOUTS](
-	[CU_GUID] [uniqueidentifier] NOT NULL,
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
 	[EDE_LAYOUT_ID] [nvarchar](20) NULL,
 	[EDEL_STATE] [varchar](50) NULL,

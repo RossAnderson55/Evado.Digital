@@ -428,7 +428,7 @@ namespace Evado.UniForm.Digital
         //
         // Process a demonstration user registration request. 
         //
-        if ( PageCommand.Object == EuAdapterClasses.Demo_Registration.ToString ( ) )
+        if ( PageCommand.Object == EuAdapterClasses.User_Registration.ToString ( ) )
         {
           this.LogDebug ( "Demonstration User Registation" );
 
@@ -612,7 +612,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
       this.ErrorMessage = String.Empty;
 
-      EuRecords formRecords = new EuRecords (
+      EuRecords records = new EuRecords (
               this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -620,9 +620,9 @@ namespace Evado.UniForm.Digital
               this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
-      formRecords.unLockRecord ( );
+      records.unLockRecord ( );
 
-      formRecords.LoggingLevel = this.LoggingLevel;
+      records.LoggingLevel = this.LoggingLevel;
 
       // 
       // Save the application parameters to global objects.
@@ -638,6 +638,14 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "adapterClass: " + adapterClass );
 
       //
+      // Log command and exit for illegal access attempty.
+      //
+      if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
+      {
+        return this.IllegalAnonymousAccessAttempt ( adapterClass );
+      }
+
+      //
       // Select the class object to be displayed.
       //
       switch ( adapterClass )
@@ -645,14 +653,6 @@ namespace Evado.UniForm.Digital
         case EuAdapterClasses.Application_Properties:
           {
             this.LogDebug ( " APPLICATION PROFILE CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
 
             // 
             // Initialise the methods variables and objects.
@@ -677,14 +677,6 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( " APPLICATION EVENTS CLASS SELECTED." );
 
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
             // 
             // Initialise the methods variables and objects.
             // 
@@ -706,14 +698,6 @@ namespace Evado.UniForm.Digital
         case EuAdapterClasses.Email_Templates:
           {
             this.LogDebug ( " APPLICATION EMAIL TEMPLATES CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
 
             // 
             // Initialise the methods variables and objects.
@@ -737,14 +721,6 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( " USERS CLASS SELECTED." );
 
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
             // 
             // Initialise the methods variables and objects.
             // 
@@ -767,14 +743,6 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( " USERS CLASS SELECTED." );
 
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
             // 
             // Initialise the methods variables and objects.
             // 
@@ -796,14 +764,6 @@ namespace Evado.UniForm.Digital
         case EuAdapterClasses.Menu:
           {
             this.LogDebug ( "MENU CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
 
             // 
             // Initialise the methods variables and objects.
@@ -833,14 +793,6 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( "PROJECT CLASS SELECTED." );
 
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
-
             // 
             // Initialise the methods variables and objects.
             // 
@@ -868,14 +820,6 @@ namespace Evado.UniForm.Digital
         {
           this.LogDebug ( "ALERT CLASS SELECTED." );
 
-          //
-          // Log command and exit for illegal access attempty.
-          //
-          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-          {
-            return this.IllegalAnonymousAccessAttempt ( adapterClass );
-          }
-
           // 
           // Initialise the methods variables and objects.
           // 
@@ -897,152 +841,92 @@ namespace Evado.UniForm.Digital
          */
         case EuAdapterClasses.Record_Layouts:
           {
-            this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
-
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
+            this.LogDebug ( "RECORD LAYOUTS CLASS SELECTED." );
 
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayouts forms = new EuRecordLayouts ( this._AdapterObjects,
+            EuRecordLayouts recordLayouts = new EuRecordLayouts ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
               this.ClassParameters );
 
-            forms.LoggingLevel = this.LoggingLevel;
+            recordLayouts.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = forms.getDataObject ( PageCommand );
-            this.ErrorMessage = forms.ErrorMessage;
-            LogAdapter ( forms.Log );
+            clientDataObject = recordLayouts.getDataObject ( PageCommand );
+            this.ErrorMessage = recordLayouts.ErrorMessage;
+            LogAdapter ( recordLayouts.Log );
 
             break;
           }
 
         case EuAdapterClasses.Record_Layout_Fields:
           {
-            this.LogDebug ( "PROJECT FORMS CLASS SELECTED." );
+            this.LogDebug ( "RECOR LAYOUT FIELDS CLASS SELECTED." );
 
-            //
-            // Log command and exit for illegal access attempty.
-            //
-            if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-            {
-              return this.IllegalAnonymousAccessAttempt ( adapterClass );
-            }
 
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayoutFields formFields = new EuRecordLayoutFields ( this._AdapterObjects,
+            EuRecordLayoutFields recordLayoutFields = new EuRecordLayoutFields ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
               this.ClassParameters );
 
-            formFields.LoggingLevel = this.LoggingLevel;
+            recordLayoutFields.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = formFields.getDataObject ( PageCommand );
-            this.ErrorMessage = formFields.ErrorMessage;
-            LogAdapter ( formFields.Log );
+            clientDataObject = recordLayoutFields.getDataObject ( PageCommand );
+            this.ErrorMessage = recordLayoutFields.ErrorMessage;
+            LogAdapter ( recordLayoutFields.Log );
 
             break;
           }
-        /*
-      case EuAdapterClasses.Activities:
-        {
-          this.LogDebug ( "ACTIVITIES CLASS SELECTED." );
-
-          //
-          // Log command and exit for illegal access attempty.
-          //
-          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
+        case EuAdapterClasses.Entity_Layouts:
           {
-            return this.IllegalAnonymousAccessAttempt ( adapterClass );
+            this.LogDebug ( "ENTITY LAYOUTS CLASS SELECTED." );
+
+            // 
+            // Initialise the methods variables and objects.
+            // 
+            EuEntityLayouts entityLayouts = new EuEntityLayouts ( this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.ClassParameters );
+
+            entityLayouts.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = entityLayouts.getDataObject ( PageCommand );
+            this.ErrorMessage = entityLayouts.ErrorMessage;
+            LogAdapter ( entityLayouts.Log );
+    
+            break;
           }
 
-          // 
-          // Initialise the methods variables and objects.
-          // 
-          EuActivities actvities = new EuActivities ( this._ApplicationObjects,
-            this.ServiceUserProfile,
-            this.Session,
-            this.UniForm_BinaryFilePath,
-            this.ClassParameters );
-
-          actvities.LoggingLevel = this.LoggingLevel;
-
-          clientDataObject = actvities.getDataObject ( PageCommand );
-          this.ErrorMessage = actvities.ErrorMessage;
-          LogAdapter ( actvities.Log );
-
-          break;
-        }
-      case EuAdapterClasses.Schedules:
-        {
-          this.LogDebug ( "SCHEDULES CLASS SELECTED." );
-
-          //
-          // Log command and exit for illegal access attempty.
-          //
-          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
+        case EuAdapterClasses.Entity_Layout_Fields:
           {
-            return this.IllegalAnonymousAccessAttempt ( adapterClass );
+            this.LogDebug ( "ENTITY LAYOUT FIELDS CLASS SELECTED." );
+            /*
+            // 
+            // Initialise the methods variables and objects.
+            // 
+            EuEntityFields entityLayoutFields = new EuEntityFields ( this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.ClassParameters );
+
+            entityLayoutFields.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = entityLayoutFields.getDataObject ( PageCommand );
+            this.ErrorMessage = entityLayoutFields.ErrorMessage;
+            LogAdapter ( entityLayoutFields.Log );
+            */
+            break;
           }
 
-          // 
-          // Initialise the methods variables and objects.
-          // 
-          EuSchedules schedules = new EuSchedules ( this._ApplicationObjects,
-            this.ServiceUserProfile,
-            this.Session,
-            this.UniForm_BinaryFilePath,
-            this.ClassParameters );
-
-          schedules.LoggingLevel = this.LoggingLevel;
-
-          clientDataObject = schedules.getDataObject ( PageCommand );
-          this.ErrorMessage = schedules.ErrorMessage;
-          LogAdapter ( schedules.Log );
-
-          break;
-        }
-      case EuAdapterClasses.Milestones:
-        {
-          this.LogDebug ( "MILESTONES CLASS SELECTED." );
-
-          //
-          // Log command and exit for illegal access attempty.
-          //
-          if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command )
-          {
-            return this.IllegalAnonymousAccessAttempt ( adapterClass );
-          }
-
-          // 
-          // Initialise the methods variables and objects.
-          // 
-          EuMilestones milestones = new EuMilestones ( this._ApplicationObjects,
-            this.ServiceUserProfile,
-            this.Session,
-            this.UniForm_BinaryFilePath,
-            this.ClassParameters );
-
-          milestones.LoggingLevel = this.LoggingLevel;
-
-          clientDataObject = milestones.getDataObject ( PageCommand );
-          this.ErrorMessage = milestones.ErrorMessage;
-          LogAdapter ( milestones.Log );
-
-          break;
-        }
-         */
         case EuAdapterClasses.ReportTemplates:
           {
             this.LogDebug ( "REPORT TEMPLATESS CLASS SELECTED." );
@@ -1149,11 +1033,11 @@ namespace Evado.UniForm.Digital
             // 
             // Create the common record object.
             // 
-            formRecords.LoggingLevel = this.LoggingLevel;
+            records.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = formRecords.getDataObject ( PageCommand );
-            this.ErrorMessage = formRecords.ErrorMessage;
-            this.LogAdapter ( formRecords.Log );
+            clientDataObject = records.getDataObject ( PageCommand );
+            this.ErrorMessage = records.ErrorMessage;
+            this.LogAdapter ( records.Log );
 
             break;
           }
