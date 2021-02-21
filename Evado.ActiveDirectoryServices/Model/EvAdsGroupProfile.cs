@@ -203,7 +203,7 @@ namespace Evado.ActiveDirectoryServices
         case GroupMemberNames.GroupScope:
           {
             this.GroupScope =
-              Evado.Model.EvStatics.Enumerations.parseEnumValue
+              Evado.Model.EvStatics.parseEnumValue
               <System.DirectoryServices.AccountManagement.GroupScope> ( value );
             break;
           }

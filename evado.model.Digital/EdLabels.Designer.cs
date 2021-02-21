@@ -5994,20 +5994,11 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Author Only Draft Access:.
+        ///   Looks up a localized string similar to Author Access Setting:.
         /// </summary>
-        public static string Record_Layout_Author_Only_Draft_Access_Field_Title {
+        public static string Record_Layout_Author_Access_Setting_Field_Title {
             get {
-                return ResourceManager.GetString("Record_Layout_Author_Only_Draft_Access_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Record_Layout_Author_Only_Edit_Access_Field_Title {
-            get {
-                return ResourceManager.GetString("Record_Layout_Author_Only_Edit_Access_Field_Title", resourceCulture);
+                return ResourceManager.GetString("Record_Layout_Author_Access_Setting_Field_Title", resourceCulture);
             }
         }
         
@@ -6017,6 +6008,24 @@ namespace Evado.Model.Digital {
         public static string Record_Layout_EditRole_Field_Label {
             get {
                 return ResourceManager.GetString("Record_Layout_EditRole_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Parent Entities:.
+        /// </summary>
+        public static string Record_Layout_Parent_Entity_Selection_Field_Title {
+            get {
+                return ResourceManager.GetString("Record_Layout_Parent_Entity_Selection_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent Object Type:.
+        /// </summary>
+        public static string Record_Layout_Parent_Object_Type_Field_Title {
+            get {
+                return ResourceManager.GetString("Record_Layout_Parent_Object_Type_Field_Title", resourceCulture);
             }
         }
         

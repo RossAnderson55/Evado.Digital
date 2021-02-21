@@ -105,7 +105,9 @@ namespace Evado.Dal.Digital
     public const string DB_CDASH_METADATA = "EDEL_CDASH_METADATA";
     public const string DB_READ_ACCESS_ROLES = "EDEL_READ_ACCESS_ROLES";
     public const string DB_EDIT_ACCESS_ROLES = "EDEL_EDIT_ACCESS_ROLES";
-    public const string DB_RELATED_ENTITIES = "EDEL_RELATED_ENTITIES";
+    public const string DB_PARENT_TYPE = "EDEL_PARENT_TYPE";
+    public const string DB_AUTHOR_ACCESS = "EDEL_AUTHOR_ACCESS";
+    public const string DB_PARENT_ENTITIES = "EDEL_PARENT_ENTITIES";
     public const string DB_DEFAULT_PAGE_LAYOUT = "EDEL_DEFAULT_PAGE_LAYOUT";
     public const string DB_LINK_CONTENT_SETTING = "EDEL_LINK_CONTENT_SETTING";
     public const string DB_DISPLAY_ENTITIES = "EDEL_DISPLAY_ENTITIES";
@@ -140,14 +142,14 @@ namespace Evado.Dal.Digital
     private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
     private const string PARM_READ_ACCESS_ROLES = "@READ_ACCESS_ROLES";
     private const string PARM_EDIT_ACCESS_ROLES = "@EDIT_ACCESS_ROLES";
-    private const string PARM_RELATED_ENTITIES = "@RELATED_ENTITIES";
+    private const string PARM_PARENT_ENTITIES = "EDRL_PARENT_ENTITIES";
     private const string PARM_DEFAULT_PAGE_LAYOUT = "@DEFAULT_PAGE_LAYOUT";
     private const string PARM_LINK_CONTENT_SETTING = "@LINK_CONTENT_SETTING";
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
     private const string PARM_DISPLAY_AUTHOR_DETAILS = "@DISPLAY_AUTHOR_DETAILS";
     private const string PARM_RECORD_PREFIX = "@RECORD_PREFIX";
-    private const string PARM_AUTHOR_ONLY_EDIT_ACCESS = "@AUTHOR_ONLY_EDIT_ACCESS";
-    private const string PARM_AUTHOR_ONLY_DRAFT_ACCESS = "@AUTHOR_ONLY_DRAFT_ACCESS";
+    private const string PARM_PARENT_TYPE = "EDRL_PARENT_TYPE";
+    private const string PARM_AUTHOR_ACCESS = "EDRL_AUTHOR_ACCESS";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -200,15 +202,15 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_READ_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
-        new SqlParameter( EdEntityLayouts.PARM_RELATED_ENTITIES, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntityLayouts.PARM_PARENT_ENTITIES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_LINK_CONTENT_SETTING, SqlDbType.NVarChar, 50),
 
         new SqlParameter( EdEntityLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
         new SqlParameter( EdEntityLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
         new SqlParameter( EdEntityLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
-        new SqlParameter( EdEntityLayouts.PARM_AUTHOR_ONLY_EDIT_ACCESS, SqlDbType.Bit),
-        new SqlParameter( EdEntityLayouts.PARM_AUTHOR_ONLY_DRAFT_ACCESS, SqlDbType.Bit),
+        new SqlParameter( EdEntityLayouts.PARM_PARENT_TYPE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdEntityLayouts.PARM_AUTHOR_ACCESS, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -262,15 +264,15 @@ namespace Evado.Dal.Digital
       cmdParms [ 14 ].Value = Form.cDashMetadata;
       cmdParms [ 15 ].Value = Form.Design.ReadAccessRoles;
       cmdParms [ 16 ].Value = Form.Design.EditAccessRoles;
-      cmdParms [ 17 ].Value = Form.Design.RelatedEntities;
+      cmdParms [ 17 ].Value = Form.Design.ParentEntities;
       cmdParms [ 18 ].Value = Form.Design.DefaultPageLayout;
       cmdParms [ 19 ].Value = Form.Design.LinkContentSetting;
 
       cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
       cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
       cmdParms [ 22 ].Value = Form.Design.RecordPrefix;
-      cmdParms [ 23 ].Value = Form.Design.AuthorOnlyEditAccess;
-      cmdParms [ 24 ].Value = Form.Design.AuthorOnlyDraftAccess;
+      cmdParms [ 23 ].Value = Form.Design.ParentType;
+      cmdParms [ 24 ].Value = Form.Design.AuthorAccess;
       cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 27 ].Value = DateTime.Now;
@@ -314,17 +316,17 @@ namespace Evado.Dal.Digital
       layout.Guid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
       layout.LayoutGuid = layout.Guid;
       layout.LayoutId = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LAYOUT_ID );
-      layout.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
+      layout.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, DB_STATE ) );
       layout.Design.Title = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TITLE );
       layout.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
       layout.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
       layout.Design.Description = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DESCRIPTION );
-      layout.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
+      layout.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
         EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATE_REASON ) );
       layout.Design.RecordCategory = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_CATEGORY );
 
-      layout.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> (
+      layout.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> (
          EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TYPE_ID ) );
       layout.Design.Version = EvSqlMethods.getFloat ( Row, EdEntityLayouts.DB_VERSION );
 
@@ -335,20 +337,21 @@ namespace Evado.Dal.Digital
       layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_READ_ACCESS_ROLES );
       layout.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_EDIT_ACCESS_ROLES );
 
-      layout.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RELATED_ENTITIES );
+      layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
       layout.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DEFAULT_PAGE_LAYOUT );
 
       string value = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LINK_CONTENT_SETTING );
       if ( value != String.Empty )
       {
         layout.Design.LinkContentSetting =
-          Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( value );
+          Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
       }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
       layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_PREFIX );
-      layout.Design.AuthorOnlyEditAccess = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_AUTHOR_ONLY_EDIT_ACCESS );
-      layout.Design.AuthorOnlyDraftAccess = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_AUTHOR_ONLY_DRAFT_ACCESS );
+      layout.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
+      layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_AUTHOR_ACCESS );
+      layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntityLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );

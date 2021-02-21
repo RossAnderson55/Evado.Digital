@@ -1036,7 +1036,7 @@ namespace Evado.Dal.Digital
         // 
         // Strip out illegal characters
         // 
-        FilePath = Evado.Model.Digital.EvStatics.StripIllegalDirChars ( FilePath );
+        FilePath = Evado.Model.EvStatics.StripIllegalDirChars ( FilePath );
 
         this._DebugLog.AppendLine( "\r\n FilePath: " + FilePath;
 

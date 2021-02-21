@@ -583,7 +583,7 @@ namespace Evado.Model.Digital
       {
         if ( this._Description == String.Empty )
         {
-          this._Description = EvStatics.Enumerations.enumValueToString ( Type );
+          this._Description = EvStatics.enumValueToString ( Type );
         }
 
         return this._Description;

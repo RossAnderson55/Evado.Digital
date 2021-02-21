@@ -847,7 +847,7 @@ namespace Evado.UniForm.Digital
           try
           {
             Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
-              Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
+              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
              parameter.Name );
 
             this.Session.AdminUserProfile.setValue ( fieldName, parameter.Value );

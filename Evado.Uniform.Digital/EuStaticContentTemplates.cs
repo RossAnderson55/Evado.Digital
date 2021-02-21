@@ -997,7 +997,7 @@ namespace Evado.UniForm.Digital
           try
           {
             EvStaticContentTemplates.ClassFieldNames fieldName =
-               Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvStaticContentTemplates.ClassFieldNames> (
+               Evado.Model.EvStatics.parseEnumValue<EvStaticContentTemplates.ClassFieldNames> (
               parameter.Name );
 
             this.AdapterObjects.ContentTemplates.setValue ( fieldName, parameter.Value );

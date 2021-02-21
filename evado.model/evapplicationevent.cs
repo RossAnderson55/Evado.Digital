@@ -369,7 +369,7 @@ namespace Evado.Model
           }
         }
 
-        String stContent = EvStatics.Enumerations.enumValueToString ( code )
+        String stContent = EvStatics.enumValueToString ( code )
           + " > "
           + this._DateTime.ToString ( "dd MMM yyyy HH:mm" )
           + " >> "

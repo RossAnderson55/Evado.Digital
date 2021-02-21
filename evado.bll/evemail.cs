@@ -260,7 +260,7 @@ using Evado.Model;
         //
         if ( RecipantEmailAddresses == String.Empty )
         {
-            this.LogDebug(  EvStatics.Enumerations.enumValueToString( EmailStatus.No_Reciever_Addresses) );
+            this.LogDebug(  EvStatics.enumValueToString( EmailStatus.No_Reciever_Addresses) );
 
           return EmailStatus.No_Reciever_Addresses;
         }
@@ -270,7 +270,7 @@ using Evado.Model;
         //
         if ( SenderEmailAddress == String.Empty )
         {
-            this.LogDebug(  EvStatics.Enumerations.enumValueToString( EmailStatus.No_Sender_Address ) );
+            this.LogDebug(  EvStatics.enumValueToString( EmailStatus.No_Sender_Address ) );
 
           return EmailStatus.No_Sender_Address;
         }
@@ -437,7 +437,7 @@ using Evado.Model;
         //
         if ( this._SmtpServer == String.Empty )
         {
-            this.LogDebug(  EvStatics.Enumerations.enumValueToString( EmailStatus.No_SMTP_Url ) );
+            this.LogDebug(  EvStatics.enumValueToString( EmailStatus.No_SMTP_Url ) );
           return EmailStatus.No_SMTP_Url;
         }
 
@@ -446,7 +446,7 @@ using Evado.Model;
         //
         if ( RecipantEmailAddresses == String.Empty )
         {
-            this.LogDebug(  EvStatics.Enumerations.enumValueToString( EmailStatus.No_Reciever_Addresses ) );
+            this.LogDebug(  EvStatics.enumValueToString( EmailStatus.No_Reciever_Addresses ) );
           return EmailStatus.No_Reciever_Addresses;
         }
 

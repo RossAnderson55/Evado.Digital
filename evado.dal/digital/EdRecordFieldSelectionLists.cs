@@ -356,7 +356,7 @@ namespace Evado.Dal.Digital
         Item.ApprovedByUserId = EvSqlMethods.getString( Row, "FSL_ApproverUserId" );
         Item.ApprovalDate = EvSqlMethods.getDateTime( Row, "FSL_ApprovalDate" );
         Item.Version = EvSqlMethods.getString( Row, "FSL_Version" );
-        Item.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdExternalSelectionList.SelectionListStates>(
+        Item.State = Evado.Model.EvStatics.parseEnumValue<EdExternalSelectionList.SelectionListStates>(
           EvSqlMethods.getString( Row, "FSL_State" ) );
         Item.UpdatedByUserId = EvSqlMethods.getString( Row, "FSL_UpdatedByUserId" );
         Item.UpdatedBy = EvSqlMethods.getString( Row, "FSL_UpdatedBy" );

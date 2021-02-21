@@ -2805,13 +2805,16 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Record_Page_Header_Text" xml:space="preserve">
     <value>Record {0} &gt; {1} - {2}</value>
   </data>
-  <data name="Record_Layout_Author_Only_Draft_Access_Field_Title" xml:space="preserve">
-    <value>Author Only Draft Access:</value>
+  <data name="Record_Layout_Author_Access_Setting_Field_Title" xml:space="preserve">
+    <value>Author Access Setting:</value>
   </data>
-  <data name="Record_Layout_Author_Only_Edit_Access_Field_Title" xml:space="preserve">
-    <value />
+  <data name="Record_Layout_Parent_Object_Type_Field_Title" xml:space="preserve">
+    <value>Parent Object Type:</value>
   </data>
   <data name="LayoutField_Field_Layout_Field_Label" xml:space="preserve">
     <value>The field layout:</value>
+  </data>
+  <data name="Record_Layout_Parent_Entity_Selection_Field_Title" xml:space="preserve">
+    <value>Selected Parent Entities:</value>
   </data>
 </root>

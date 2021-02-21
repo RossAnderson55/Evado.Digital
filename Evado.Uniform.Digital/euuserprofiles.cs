@@ -146,7 +146,7 @@ namespace Evado.UniForm.Digital
 
         if ( stPageType != String.Empty )
         {
-          this.PageId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvPageIds> ( stPageType );
+          this.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( stPageType );
         }
         this.LogValue ( "SessionObjects.PageType: " + this.PageId );
 
@@ -1730,7 +1730,7 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Column: " + value + ", Value: " + DataRow [ columnCount ] );
 
-        if ( EvStatics.Enumerations.tryParseEnumValue<EdUserProfile.UserProfileFieldNames> (
+        if ( EvStatics.tryParseEnumValue<EdUserProfile.UserProfileFieldNames> (
           value, out field ) == true )
         {
           uploadedUserProfile.setValue ( field, DataRow [ columnCount ] );
@@ -2019,7 +2019,7 @@ namespace Evado.UniForm.Digital
           try
           {
              Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
-               Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue< Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
+               Evado.Model.EvStatics.parseEnumValue< Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
               parameter.Name );
 
             this.Session.AdminUserProfile.setValue ( fieldName, parameter.Value );

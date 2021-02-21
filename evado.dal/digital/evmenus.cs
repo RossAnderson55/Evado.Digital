@@ -260,7 +260,7 @@ namespace Evado.Dal.Digital
       {
         try
         {
-          menu.PageId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.Digital.EvPageIds> ( stPageId );
+          menu.PageId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EvPageIds> ( stPageId );
         }
         catch
         {

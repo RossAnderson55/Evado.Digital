@@ -280,7 +280,7 @@ namespace Evado.UniForm.Digital
         //
         if ( RecipantEmailAddresses == String.Empty )
         {
-          this._DebugLog.AppendLine ( EvStatics.Enumerations.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
 
           return EmailStatus.No_Reciever_Addresses;
         }
@@ -290,7 +290,7 @@ namespace Evado.UniForm.Digital
         //
         if ( SenderEmailAddress == String.Empty )
         {
-          this._DebugLog.AppendLine ( EvStatics.Enumerations.enumValueToString ( EmailStatus.No_Sender_Address ) );
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_Sender_Address ) );
 
           return EmailStatus.No_Sender_Address;
         }
@@ -457,7 +457,7 @@ namespace Evado.UniForm.Digital
         //
         if ( this._SmtpServer == String.Empty )
         {
-          this._DebugLog.AppendLine ( EvStatics.Enumerations.enumValueToString ( EmailStatus.No_SMTP_Url ) );
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_SMTP_Url ) );
           return EmailStatus.No_SMTP_Url;
         }
 
@@ -466,7 +466,7 @@ namespace Evado.UniForm.Digital
         //
         if ( RecipantEmailAddresses == String.Empty )
         {
-          this._DebugLog.AppendLine ( EvStatics.Enumerations.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
           return EmailStatus.No_Reciever_Addresses;
         }
 

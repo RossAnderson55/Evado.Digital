@@ -105,7 +105,7 @@ namespace Evado.Model.Digital
     //  ---------------------------------------------------------------------------------
     public static List<Evado.Model.EvOption> getPageIdSList ( bool IsSelectionList)
     {
-      return EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( EvPageIds ), IsSelectionList ); 
+      return EvStatics.getOptionsFromEnum ( typeof ( EvPageIds ), IsSelectionList ); 
     }
 
 

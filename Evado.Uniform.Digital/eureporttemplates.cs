@@ -1866,7 +1866,7 @@ namespace Evado.UniForm.Digital
       mandatoryOptionList.Add ( new EvOption ( "True", "Yes" ) );
       mandatoryOptionList.Add ( new EvOption ( "False", "No" ) );
 
-      operationOptionList = Evado.Model.EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EvReport.Operators ), false );
+      operationOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvReport.Operators ), false );
 
       this.LogDebug ( "optionList.Count: " + sourceOptionList.Count );
 
@@ -2074,7 +2074,7 @@ namespace Evado.UniForm.Digital
         groupHeaderOptionList.Add ( new EvOption ( "True", "Yes" ) );
         groupHeaderOptionList.Add ( new EvOption ( "False", "No" ) );
 
-        groupingTypeOptionList = Evado.Model.EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EvReport.GroupingTypes ), true );
+        groupingTypeOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvReport.GroupingTypes ), true );
 
         sectionLevelOptionList.Add ( new EvOption ( "0", "Detail Level" ) );
         for ( int i = 1; i <= 5; i++ )
@@ -2420,7 +2420,7 @@ namespace Evado.UniForm.Digital
         try
         {
           EvReport.ReportClassFieldNames fieldName =
-             Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvReport.ReportClassFieldNames> ( parameter.Name );
+             Evado.Model.EvStatics.parseEnumValue<EvReport.ReportClassFieldNames> ( parameter.Name );
 
           this.Session.ReportTemplate.setValue ( fieldName, parameter.Value );
         }
@@ -2527,7 +2527,7 @@ namespace Evado.UniForm.Digital
           if ( tableValue != String.Empty )
           {
             this.Session.ReportTemplate.Queries [ iCount ].Operator =
-              Evado.Model.EvStatics.Enumerations.parseEnumValue<EvReport.Operators> ( tableValue );
+              Evado.Model.EvStatics.parseEnumValue<EvReport.Operators> ( tableValue );
           }
 
 
@@ -2638,7 +2638,7 @@ namespace Evado.UniForm.Digital
         columnObject.GroupingIndex = groupingIndex;
         if ( groupingType != String.Empty )
         {
-          columnObject.GroupingType = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvReport.GroupingTypes> ( groupingType );
+          columnObject.GroupingType = Evado.Model.EvStatics.parseEnumValue<EvReport.GroupingTypes> ( groupingType );
         }
         columnObject.SectionLvl = sectionLevel;
 

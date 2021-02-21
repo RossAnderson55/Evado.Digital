@@ -376,7 +376,7 @@ namespace Evado.UniForm.Digital
 
           parameterValue = PageCommand.GetParameter ( EuAnalysis.CONST_AGGREGATION + index );
           this.Session.Chart.QueryItems [ index ].Aggregation =
-             Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvChart.AggregationOptions> (
+             Evado.Model.EvStatics.parseEnumValue<EvChart.AggregationOptions> (
             parameterValue );
 
           this.LogValue ( "[ " + index + " ].ItemId: " + this.Session.Chart.QueryItems [ index ].ItemId );
@@ -577,7 +577,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the report Type selection
         //
-        optionList = Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.Digital.EvChart.AggregationOptions ), true );
+        optionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( Evado.Model.Digital.EvChart.AggregationOptions ), true );
 
         groupField = pageGroup.createSelectionListField (
           EuAnalysis.CONST_AGGREGATION + index,

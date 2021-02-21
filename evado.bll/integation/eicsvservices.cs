@@ -468,7 +468,7 @@ namespace Evado.Bll.Integration
         //  CsvColumnIndex, DataObject.Columns [ dataIndex ].EvadoFieldId, csvRowArray [ CsvColumnIndex ] ) );
 
         EiDataTypes type = EiDataTypes.Null;
-        if ( Evado.Model.EvStatics.Enumerations.tryParseEnumValue<EiDataTypes> ( csvRowArray [ CsvColumnIndex ], out type ) == true )
+        if ( Evado.Model.EvStatics.tryParseEnumValue<EiDataTypes> ( csvRowArray [ CsvColumnIndex ], out type ) == true )
         {
           DataObject.Columns [ dataIndex ].DataType = type;
         }

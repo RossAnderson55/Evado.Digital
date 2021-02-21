@@ -791,7 +791,7 @@ namespace Evado.Model.UniForm
         //
         if (value != String.Empty )
         {
-          colour = EuStatics.Enumerations.parseEnumValue<Background_Colours> ( parameter.Value );
+          colour = EvStatics.parseEnumValue<Background_Colours> ( parameter.Value );
 
           return colour;
         }
@@ -823,7 +823,7 @@ namespace Evado.Model.UniForm
       //
       if ( value != String.Empty )
       {
-        if ( EuStatics.Enumerations.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
+        if ( EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
         {
           return colour;
         }
@@ -863,7 +863,7 @@ namespace Evado.Model.UniForm
       //
       if ( value != String.Empty )
       {
-        if ( EuStatics.Enumerations.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
+        if ( EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
         {
           return colour;
         }
@@ -911,7 +911,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EvStatics.Enumerations.parseEnumValue<FieldValueWidths> ( value );
+        return EvStatics.parseEnumValue<FieldValueWidths> ( value );
       }
 
       return FieldValueWidths.Default;

@@ -868,7 +868,7 @@ namespace Evado.Dal
     {
       if ( Row [ FieldName ] != DBNull.Value )
       {
-        return Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EnumerationType> ( Row [ FieldName ].ToString ( ) );
+        return Evado.Model.EvStatics.parseEnumValue<EnumerationType> ( Row [ FieldName ].ToString ( ) );
       }
       return default ( EnumerationType ); 
 

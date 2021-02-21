@@ -699,7 +699,7 @@ namespace Evado.UniForm.Digital
       //
       // Create the form field layout selection.
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), true );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), true );
 
 
       if ( this.Session.RecordField.Design.FieldLayout == null )
@@ -1881,7 +1881,7 @@ namespace Evado.UniForm.Digital
           this.LogText ( " >> UPDATED" );
           try
           {
-            EdRecordField.FieldClassFieldNames fieldName =  Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordField.FieldClassFieldNames> ( parameter.Name );
+            EdRecordField.FieldClassFieldNames fieldName =  Evado.Model.EvStatics.parseEnumValue<EdRecordField.FieldClassFieldNames> ( parameter.Name );
 
             this.Session.RecordField.setValue ( fieldName, parameter.Value );
 

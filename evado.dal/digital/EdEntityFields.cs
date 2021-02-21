@@ -376,7 +376,7 @@ namespace Evado.Dal.Digital
       formField.LayoutId = EvSqlMethods.getString ( Row, EdEntityFields.DB_LAYOUT_ID );
       formField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
       String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
-      formField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      formField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
       formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
       formField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
@@ -532,7 +532,7 @@ namespace Evado.Dal.Digital
       formField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
       formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
       String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
-      formField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      formField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
       formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
 
       // 

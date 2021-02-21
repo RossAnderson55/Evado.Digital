@@ -975,7 +975,7 @@ namespace Evado.UniForm.Digital
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction =  Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvOrganisation.ActionCodes> ( stSaveAction );
+          saveAction =  Evado.Model.EvStatics.parseEnumValue<EvOrganisation.ActionCodes> ( stSaveAction );
         }
         this.Session.AdminOrganisation.Action = saveAction;
 
@@ -1123,7 +1123,7 @@ namespace Evado.UniForm.Digital
           try
           {
             EvOrganisation.OrganisationFieldNames fieldName =
-               Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvOrganisation.OrganisationFieldNames> (
+               Evado.Model.EvStatics.parseEnumValue<EvOrganisation.OrganisationFieldNames> (
               parameter.Name );
 
             this.Session.AdminOrganisation.setValue ( fieldName, parameter.Value );

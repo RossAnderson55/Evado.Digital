@@ -314,7 +314,7 @@ namespace Evado.UniForm.Digital
       //
       try
       {
-        this.PageId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvPageIds> ( PageId );
+        this.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( PageId );
       }
       catch
       {
@@ -639,7 +639,7 @@ namespace Evado.UniForm.Digital
     {
       EdRecordTypes recordType = EdRecordTypes.Null;
 
-      if ( EvStatics.Enumerations.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
+      if ( EvStatics.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
       {
         this.FormType = recordType;
       }

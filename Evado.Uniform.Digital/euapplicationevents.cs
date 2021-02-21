@@ -253,7 +253,7 @@ namespace Evado.UniForm.Digital
         value = PageCommand.GetParameter ( EuApplicationEvents.CONST_EVENT_FIELD_ID );
         if ( value != String.Empty )
         {
-          this.Session.EventId =  Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvEventCodes> ( value );
+          this.Session.EventId =  Evado.Model.EvStatics.parseEnumValue<EvEventCodes> ( value );
         }
 
         this.Session.EventType = PageCommand.GetParameter ( EuApplicationEvents.CONST_TYPE_FIELD_ID );
@@ -341,7 +341,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of event ids.
       //
-      optionList =  Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( EvEventCodes ), true );
+      optionList =  Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvEventCodes ), true );
 
        Evado.Model.Digital.EvcStatics.sortOptionList ( optionList );
 
@@ -361,7 +361,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of event ids.
       //
-      optionList =  Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( EvApplicationEvent.EventType ), true );
+      optionList =  Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvApplicationEvent.EventType ), true );
       // 
       // Set the selection to the type id
       // 
@@ -652,7 +652,7 @@ namespace Evado.UniForm.Digital
 
       String content = this._ApplicationEvent.EventId.ToString ( "000000" )
         + " > " +
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( code );
+         Evado.Model.EvStatics.enumValueToString ( code );
 
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
@@ -666,7 +666,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.ApplicationEvent_Type_Field_Label,
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this._ApplicationEvent.Type ) );
+         Evado.Model.EvStatics.enumValueToString ( this._ApplicationEvent.Type ) );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 

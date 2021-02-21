@@ -276,7 +276,7 @@ namespace Evado.Dal.Digital
       dataChange.Uid = EvSqlMethods.getLong ( Row, "DC_Uid" );
       dataChange.RecordUid = EvSqlMethods.getLong ( Row, "DC_RecordUid" );
       dataChange.TableName =
-        Evado.Model.EvStatics.Enumerations.parseEnumValue<EvDataChange.DataChangeTableNames> (
+        Evado.Model.EvStatics.parseEnumValue<EvDataChange.DataChangeTableNames> (
         EvSqlMethods.getString ( Row, "DC_TableName" ) );
       string encrypted = EvSqlMethods.getString ( Row, "DC_DataChange" );
       dataChange.UserId = EvSqlMethods.getString ( Row, "DC_UserId" );

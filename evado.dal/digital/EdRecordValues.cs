@@ -187,7 +187,7 @@ namespace Evado.Dal.Digital
 
       recordField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
       String value = EvSqlMethods.getString ( Row, EdRecordFields.DB_TYPE_ID );
-      recordField.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      recordField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
       recordField.Design.Title = EvSqlMethods.getString ( Row, EdRecordFields.DB_TITLE );
       recordField.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordFields.DB_INSTRUCTIONS );

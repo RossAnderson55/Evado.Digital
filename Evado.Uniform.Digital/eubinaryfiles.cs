@@ -826,7 +826,7 @@ namespace Evado.UniForm.Digital
         try
         {
           EvBinaryFileMetaData.ClassFieldNames fieldName =
-            Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvBinaryFileMetaData.ClassFieldNames> ( parameter.Name );
+            Evado.Model.EvStatics.parseEnumValue<EvBinaryFileMetaData.ClassFieldNames> ( parameter.Name );
 
           this._BinaryFile.setValue ( fieldName, parameter.Value );
         }
@@ -990,7 +990,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Binary_File_Status_Field_Title,
-         EvStatics.Enumerations.enumValueToString ( this.Session.BinaryFile.Status ) );
+         EvStatics.enumValueToString ( this.Session.BinaryFile.Status ) );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       if ( this.Session.BinaryFile.UploadDate != EvStatics.CONST_DATE_NULL )
@@ -1103,7 +1103,7 @@ namespace Evado.UniForm.Digital
         Evado.Model.UniForm.TableRow row = groupField.Table.addRow ( );
 
         row.Column [ 0 ] = file.Version.ToString ( "##" );
-        row.Column [ 1 ] = EvStatics.Enumerations.enumValueToString ( file.Status );
+        row.Column [ 1 ] = EvStatics.enumValueToString ( file.Status );
         row.Column [ 2 ] = file.Comments;
         row.Column [ 3 ] = EvStatics.getDateAsString ( file.UpdatedByDate );
       }

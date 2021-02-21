@@ -857,7 +857,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EvStatics.Enumerations.parseEnumValue<FieldValueWidths> ( value );
+        return EvStatics.parseEnumValue<FieldValueWidths> ( value );
       }
 
       return FieldValueWidths.Default;
@@ -1022,7 +1022,7 @@ namespace Evado.Model.UniForm
 
       try
       {
-        BgColour = EuStatics.Enumerations.parseEnumValue<Background_Colours> ( value );
+        BgColour = EvStatics.parseEnumValue<Background_Colours> ( value );
         CssColour = BgColour.ToString ( );
         CssColour = CssColour.Replace ( "BG_", String.Empty );
         CssColour = CssColour.ToLower ( );

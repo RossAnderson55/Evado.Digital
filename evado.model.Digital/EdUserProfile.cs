@@ -644,7 +644,7 @@ namespace Evado.Model.Digital
           }
         case UserProfileFieldNames.User_Type_Id:
           {
-            this.TypeId  = EvStatics.Enumerations.parseEnumValue<UserTypesList>(  value );
+            this.TypeId  = EvStatics.parseEnumValue<UserTypesList>(  value );
             break;
           }
         case UserProfileFieldNames.ActiveDirectoryUserId:

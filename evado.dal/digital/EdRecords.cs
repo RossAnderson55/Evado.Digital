@@ -367,7 +367,7 @@ namespace Evado.Dal.Digital
       record.LayoutId = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LAYOUT_ID );
       record.RecordId = EvSqlMethods.getString ( Row, EdRecords.DB_RECORD_ID );
       record.Design.Title = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_TITLE );
-      record.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
+      record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, EdRecords.DB_STATE ) );
       record.RecordDate = EvSqlMethods.getDateTime ( Row, EdRecords.DB_RECORD_DATE );
 
@@ -379,11 +379,11 @@ namespace Evado.Dal.Digital
         record.Design.HttpReference = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_HTTP_REFERENCE );
         record.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_INSTRUCTIONS );
         record.Design.Description = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_DESCRIPTION );
-        record.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
+        record.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
           EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATE_REASON ) );
         record.Design.RecordCategory = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_CATEGORY );
 
-        record.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> (
+        record.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> (
            EvSqlMethods.getString ( Row, EdRecordLayouts.DB_TYPE_ID ) );
         record.Design.Version = EvSqlMethods.getFloat ( Row, EdRecordLayouts.DB_VERSION );
 
@@ -395,20 +395,21 @@ namespace Evado.Dal.Digital
         record.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES );
         record.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
 
-        record.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RELATED_ENTITIES );
+        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_PARENT_ENTITIES );
         record.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_DEFAULT_PAGE_LAYOUT );
 
         string value = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LINK_CONTENT_SETTING );
         if ( value != String.Empty )
         {
           record.Design.LinkContentSetting =
-            Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( value );
+            Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
         }
         record.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_ENTITIES );
         record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
         record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
-        record.Design.AuthorOnlyEditAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_EDIT_ACCESS );
-        record.Design.AuthorOnlyDraftAccess = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_AUTHOR_ONLY_DRAFT_ACCESS );
+        record.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdRecordLayouts.DB_PARENT_TYPE );
+        record.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdRecordLayouts.DB_AUTHOR_ACCESS );
+        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_PARENT_ENTITIES );
 
         record.Updated = EvSqlMethods.getString ( Row, EdRecords.DB_UPDATED_BY );
         if ( record.Updated != string.Empty )

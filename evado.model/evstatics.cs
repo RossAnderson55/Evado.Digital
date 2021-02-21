@@ -550,7 +550,7 @@ namespace Evado.Model
       //
       // Try the conversion
       //
-      if ( Enumerations.tryParseEnumValue<EvEventCodes> ( eventCode, out outEventCode ) == true )
+      if ( EvStatics.tryParseEnumValue<EvEventCodes> ( eventCode, out outEventCode ) == true )
       {
         return outEventCode;
       }
@@ -580,7 +580,7 @@ namespace Evado.Model
       //
       // Try the conversion
       //
-      if ( Enumerations.tryParseEnumValue<T> ( eventCode, out outEventCode ) == true )
+      if ( EvStatics.tryParseEnumValue<T> ( eventCode, out outEventCode ) == true )
       {
         return outEventCode;
       }

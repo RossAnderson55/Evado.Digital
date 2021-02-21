@@ -273,7 +273,7 @@ namespace Evado.Dal.Digital
       record.ReviewDate = EvSqlMethods.getDateTime( Row, "TSR_ReviewDate" );
       record.Approver = EvSqlMethods.getString( Row, "TSR_Approver" );
       record.ApprovalDate = EvSqlMethods.getDateTime( Row, "TSR_ApprovalDate" );
-      record.State = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( EvSqlMethods.getString ( Row, "TSR_State" ) );
+      record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( EvSqlMethods.getString ( Row, "TSR_State" ) );
       record.UpdatedByUserId = EvSqlMethods.getString( Row, "TSR_UpdatedByUserId" );
       record.UpdatedBy = EvSqlMethods.getString( Row, "TSR_UpdatedBy" );
       record.UpdatedDate = EvSqlMethods.getDateTime( Row, "TSR_UpdateDate" );

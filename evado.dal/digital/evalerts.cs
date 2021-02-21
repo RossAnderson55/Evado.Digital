@@ -442,9 +442,9 @@ namespace Evado.Dal.Digital
         stAlertTypeId = EvAlert.AlertTypes.Null.ToString ( );
       }
 
-      alert.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvAlert.AlertTypes> ( stAlertTypeId );
+      alert.TypeId = Evado.Model.EvStatics.parseEnumValue<EvAlert.AlertTypes> ( stAlertTypeId );
 
-      alert.State = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvAlert.AlertStates> ( EvSqlMethods.getString ( Row, "TAL_State" ) );
+      alert.State = Evado.Model.EvStatics.parseEnumValue<EvAlert.AlertStates> ( EvSqlMethods.getString ( Row, "TAL_State" ) );
       alert.UpdatedByUserId = EvSqlMethods.getString ( Row, "TAL_UpdatedByUserId" );
       alert.Updated = EvSqlMethods.getString ( Row, "TAL_UpdatedBy" );
       alert.Updated += " on " + EvSqlMethods.getDateTime ( Row, "TAL_UpdateDate" ).ToString ( "dd MMM yyyy HH:mm" );

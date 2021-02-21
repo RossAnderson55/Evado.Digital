@@ -491,7 +491,7 @@ namespace Evado.UniForm.Digital
           this.LogValue ( "P: " + menuItem.PageId + ", N: " + menuItem.Title + ", R: " + menuItem.RoleList );
 
           System.Text.StringBuilder sbTitle = new StringBuilder ( );
-          sbTitle.Append ( Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( menuItem.PageId )
+          sbTitle.Append ( Evado.Model.EvStatics.enumValueToString ( menuItem.PageId )
            + EdLabels.Space_Hypen + menuItem.Title
            + EdLabels.Space_Arrow_Right
            + EdLabels.Menu_List_Order_Label
@@ -734,7 +734,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer id object
       // 
-      optionList = Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum (
+      optionList = Evado.Model.EvStatics.getOptionsFromEnum (
         typeof ( EvPageIds ),
         true );
 
@@ -1105,7 +1105,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( " >> UPDATED" );
         try
         {
-          EvMenuItem.MenuFieldNames fieldName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EvMenuItem.MenuFieldNames> (
+          EvMenuItem.MenuFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EvMenuItem.MenuFieldNames> (
             parameter.Name );
 
           this.Session.MenuItem.setValue ( fieldName, parameter.Value );

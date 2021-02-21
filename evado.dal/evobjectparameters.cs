@@ -100,7 +100,7 @@ namespace Evado.Dal
       parameter.Guid = EvSqlMethods.getGuid ( Row, "OBJ_GUID" );
       parameter.Order = EvSqlMethods.getInteger ( Row, "OBP_ORDER" );
       parameter.Name = EvSqlMethods.getString ( Row, "OBP_NAME" );
-      parameter.DataType = EvStatics.Enumerations.parseEnumValue<EvDataTypes> ( EvSqlMethods.getString ( Row, "OBP_TYPE" ) );
+      parameter.DataType = EvStatics.parseEnumValue<EvDataTypes> ( EvSqlMethods.getString ( Row, "OBP_TYPE" ) );
       parameter.Value = EvSqlMethods.getString ( Row, "OBP_VALUE" );
       parameter.Options = EvSqlMethods.getString ( Row, "OBP_OPTIONS" );
 

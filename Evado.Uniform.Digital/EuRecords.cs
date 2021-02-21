@@ -602,15 +602,15 @@ namespace Evado.UniForm.Digital
       // Fill the TestReport selection types
       // 
       option = new EvOption ( EdRecordTypes.Normal_Record.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Normal_Record ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Normal_Record ) );
 
       recordTypes.Add ( option );
       option = new EvOption ( EdRecordTypes.Questionnaire.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Questionnaire ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Questionnaire ) );
 
       recordTypes.Add ( option );
       option = new EvOption ( EdRecordTypes.Updatable_Record.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Updatable_Record ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Updatable_Record ) );
 
       return recordTypes;
     }
@@ -1697,7 +1697,7 @@ namespace Evado.UniForm.Digital
         {
           this.ErrorMessage =
             "CsScript:" + ScriptType + " method failed \r\n"
-            + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( iReturn ) + "\r\n";
+            + Evado.Model.EvStatics.enumValueToString ( iReturn ) + "\r\n";
 
           this.LogError ( EvEventCodes.Business_Logic_General_Process_Error,
             this.ErrorMessage );
@@ -2191,7 +2191,7 @@ namespace Evado.UniForm.Digital
         // Get the save action message value.
         // 
         this.Session.Record.SaveAction =
-           Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.SaveActionCodes> ( stSaveAction );
+           Evado.Model.EvStatics.parseEnumValue<EdRecord.SaveActionCodes> ( stSaveAction );
 
         this.LogDebug ( "Command Save Action: " + this.Session.Record.SaveAction );
 
@@ -2298,7 +2298,7 @@ namespace Evado.UniForm.Digital
       this.Session.Record.RecordDate = Evado.Model.Digital.EvcStatics.getDateTime ( stDate );
 
       String stState = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status );
-      this.Session.Record.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( stState );
+      this.Session.Record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.
 

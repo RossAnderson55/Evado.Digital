@@ -427,7 +427,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvcStatics.Enumerations.enumValueToString(this._State);
+        return EvStatics.enumValueToString(this._State);
       }
       set
       {

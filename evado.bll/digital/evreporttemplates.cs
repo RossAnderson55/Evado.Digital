@@ -465,13 +465,13 @@ namespace Evado.Bll.Digital
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Null ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Null ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.General ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.General ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Entity ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Entity ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportTypeCode.Record ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Record ) );
 
       // 
       // Return the repot QueryType currentSchedule.
@@ -504,13 +504,13 @@ namespace Evado.Bll.Digital
 
       list.Add ( new EvOption ( EvReport.ReportScopeTypes.Null, String.Empty ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Operational_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Operational_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Monitoring_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Monitoring_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Data_Management_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Data_Management_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.Enumerations.getOption ( EvReport.ReportScopeTypes.Site_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Site_Reports ) );
 
       // 
       // Return the repot QueryType currentSchedule.

@@ -437,7 +437,7 @@ namespace Evado.Bll.Digital
         this.LogClass ( this._DalRecords.Log );
 
         this.LogDebug ( "Record Event Code: " + record.EventCode
-          + " > " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
+          + " > " + Evado.Model.EvStatics.enumValueToString ( record.EventCode ) );
 
         // 
         // Return the new record.
@@ -454,7 +454,7 @@ namespace Evado.Bll.Digital
       record = this._DalRecords.createRecord ( Record );
       this.LogClass ( this._DalRecords.Log );
 
-      this.LogDebug ( "Record Event Code: " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
+      this.LogDebug ( "Record Event Code: " + Evado.Model.EvStatics.enumValueToString ( record.EventCode ) );
 
       // 
       // Return the new record.

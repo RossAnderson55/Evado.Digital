@@ -239,7 +239,7 @@ namespace Evado.Dal.Digital
       comment.RecordFieldGuid = EvSqlMethods.getGuid ( Row, "FRC_RECORD_FIELD_GUID" );
 
       comment.AuthorType =
-        Evado.Model.EvStatics.Enumerations.parseEnumValue<EdFormRecordComment.AuthorTypeCodes> (
+        Evado.Model.EvStatics.parseEnumValue<EdFormRecordComment.AuthorTypeCodes> (
         EvSqlMethods.getString ( Row, "FRC_AUTHOR_TYPE" ) );
 
       comment.Content = EvSqlMethods.getString( Row, "FRC_Content" );

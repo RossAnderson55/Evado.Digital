@@ -652,7 +652,7 @@ namespace Evado.Model.Digital
         case FieldClassFieldNames.TypeId:
           {
             EvDataTypes type = EvDataTypes.Null;
-            if ( EvcStatics.Enumerations.tryParseEnumValue<EvDataTypes> ( Value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<EvDataTypes> ( Value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -898,55 +898,55 @@ namespace Evado.Model.Digital
       //
       // Add the data types for normal forms.
       //
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Boolean ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Boolean ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EvDataTypes.Yes_No ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Yes_No ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Read_Only_Text ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Read_Only_Text ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Text ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Text ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Free_Text ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Free_Text ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Numeric ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Numeric ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Integer_Range ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Integer_Range ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Float_Range ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Float_Range ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Date ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Date ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Time ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Time ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Selection_List ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Selection_List ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Radio_Button_List ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Radio_Button_List ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Check_Box_List ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Check_Box_List ) );
 
-      //list.Add(EvStatics.Enumerations.getOption ( EvDataTypes.External_Selection_List ));
+      //list.Add(EvStatics.getOption ( EvDataTypes.External_Selection_List ));
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Html_Link ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Html_Link ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Computed_Field ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Computed_Field ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Horizontal_Radio_Buttons ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Horizontal_Radio_Buttons ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Analogue_Scale ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Analogue_Scale ) );
 
-      //list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Signature ) );
+      //list.Add ( EvStatics.getOption ( EvDataTypes.Signature ) );
 
-      //list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.User_Endorsement ) );
+      //list.Add ( EvStatics.getOption ( EvDataTypes.User_Endorsement ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Table ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Table ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Matrix ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Special_Matrix ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Special_Subsitute_Data ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Special_Subsitute_Data ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.Streamed_Video ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Streamed_Video ) );
 
-      list.Add ( EvcStatics.Enumerations.getOption ( EvDataTypes.External_Image ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.External_Image ) );
 
       return list;
 

@@ -165,12 +165,37 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates that only the author has edit access to the record.
     /// </summary>
-    public bool AuthorOnlyEditAccess { get; set; }
+    public EdRecord.ParentTypeList ParentType { get; set; }
 
     /// <summary>
     /// This property indicates that only the author has access to draft of the record.
     /// </summary>
-    public bool AuthorOnlyDraftAccess { get; set; }
+    public EdRecord.AuthorAccessList AuthorAccess { get; set; }
+
+    private string _ParentEntities = String.Empty;
+    /// <summary>
+    /// This property contains a list of edit acces roles
+    /// </summary>
+    public string ParentEntities
+    {
+      get
+      {
+        //
+        // If the parenttype is not an entity empty the string.
+        //
+        if ( ParentType != EdRecord.ParentTypeList.Entity )
+        {
+          _ParentEntities = String.Empty;
+        }
+
+        return this._ParentEntities;
+
+      }
+      set
+      {
+        this._ParentEntities = value;
+      }
+    }
 
     /// <summary>
     /// This property contains a record id prefix.
@@ -181,23 +206,6 @@ namespace Evado.Model.Digital
     /// This property contains a form approval for display on records.
     /// </summary>
     public string Approval { get; set; }
-
-
-    private string _RelatedEntities = String.Empty;
-    /// <summary>
-    /// This property contains a form category of a form design.
-    /// </summary>
-    public string RelatedEntities
-    {
-      get
-      {
-        return this._RelatedEntities;
-      }
-      set
-      {
-        this._RelatedEntities = value;
-      }
-    }
     
     private string _RecordCategory = String.Empty;
     /// <summary>

@@ -241,7 +241,7 @@ namespace Evado.Dal.Digital
       organisation.OrgType = EvOrganisation.OrganisationTypes.Null;
       if ( stOrgType != String.Empty )
       {
-        organisation.OrgType = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvOrganisation.OrganisationTypes> (
+        organisation.OrgType = Evado.Model.EvStatics.parseEnumValue<EvOrganisation.OrganisationTypes> (
           stOrgType );
       }
       organisation.Order = EvSqlMethods.getInteger ( Row, "O_OrgOrder" );

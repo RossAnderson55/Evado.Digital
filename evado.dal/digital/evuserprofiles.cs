@@ -305,7 +305,7 @@ namespace Evado.Dal.Digital
       profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, DB_AD_NAME );
       profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
       profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
-      profile.TypeId = EvStatics.Enumerations.parseEnumValue<EdUserProfile.UserTypesList> (
+      profile.TypeId = EvStatics.parseEnumValue<EdUserProfile.UserTypesList> (
         EvSqlMethods.getString ( Row, DB_TYPE ) );
 
       profile.Prefix = EvSqlMethods.getString ( Row, DB_PREFIX );

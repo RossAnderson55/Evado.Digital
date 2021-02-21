@@ -757,14 +757,14 @@ namespace Evado.Model.UniForm
 
       try
       {
-        return EuStatics.Enumerations.parseEnumValue<EnumeratedList> ( value );
+        return EvStatics.parseEnumValue<EnumeratedList> ( value );
       }
       catch
       {
         // Try and return enumeration 'Null' value
         try
         {
-          return EuStatics.Enumerations.parseEnumValue<EnumeratedList> ( "Null" );
+          return EvStatics.parseEnumValue<EnumeratedList> ( "Null" );
         }
         catch
         {
@@ -812,7 +812,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EuStatics.Enumerations.parseEnumValue<ApplicationMethods> ( value );
+        return EvStatics.parseEnumValue<ApplicationMethods> ( value );
       }
 
       //
@@ -1039,7 +1039,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( CommandParameters.Page_Id );
 
-      return EvStatics.Enumerations.parseEnumValue<EnumeratedList> ( value );
+      return EvStatics.parseEnumValue<EnumeratedList> ( value );
 
     }//END GetPageType method.
 
@@ -1203,7 +1203,7 @@ namespace Evado.Model.UniForm
       //
       // Return an empty string 
       //
-      return EvStatics.Enumerations.parseEnumValue<Background_Colours> ( value );
+      return EvStatics.parseEnumValue<Background_Colours> ( value );
 
     }//END GetParameter method
 

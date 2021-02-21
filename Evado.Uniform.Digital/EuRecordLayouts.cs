@@ -164,7 +164,7 @@ namespace Evado.UniForm.Digital
 
         if ( stPageType != String.Empty )
         {
-          this.Session.PageId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvPageIds> ( stPageType );
+          this.Session.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( stPageType );
         }
         this.LogValue ( "SessionObjects.PageType: " + this.Session.PageId );
 
@@ -362,7 +362,7 @@ namespace Evado.UniForm.Digital
         {
           this.ErrorMessage =
             "CsScript:" + ScriptType + " method failed \r\n"
-            + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( iReturn ) + "\r\n";
+            + Evado.Model.EvStatics.enumValueToString ( iReturn ) + "\r\n";
 
           this.LogError ( EvEventCodes.Business_Logic_General_Process_Error,
             this.ErrorMessage );
@@ -751,7 +751,7 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.FormType = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordTypes> ( parameterValue );
+        this.Session.FormType = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormType: "
         + this.Session.FormType );
@@ -765,7 +765,7 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.FormState = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.FormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
         + this.Session.FormState );
@@ -1271,7 +1271,7 @@ namespace Evado.UniForm.Digital
           else
           {
             processLog.AppendLine ( "Deletion process returned the following error: " +
-              Evado.Model.EvStatics.Enumerations.enumValueToString ( result ) );
+              Evado.Model.EvStatics.enumValueToString ( result ) );
 
             return processLog.ToString ( );
           }
@@ -1301,7 +1301,7 @@ namespace Evado.UniForm.Digital
       else
       {
         processLog.AppendLine ( "Save process returned the following error: " +
-          Evado.Model.EvStatics.Enumerations.enumValueToString ( result ) );
+          Evado.Model.EvStatics.enumValueToString ( result ) );
       }
 
       return processLog.ToString ( );
@@ -2830,7 +2830,7 @@ namespace Evado.UniForm.Digital
         if ( saveAction != String.Empty )
         {
           this.Session.RecordLayout.SaveAction =
-             Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.SaveActionCodes> ( saveAction );
+             Evado.Model.EvStatics.parseEnumValue<EdRecord.SaveActionCodes> ( saveAction );
         }
         this.LogValue ( "Save Action: " + this.Session.RecordLayout.SaveAction );
 
@@ -2969,7 +2969,7 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
         try
         {
-          EdRecord.RecordFieldNames fieldName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.RecordFieldNames> ( parameter.Name );
+          EdRecord.RecordFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecord.RecordFieldNames> ( parameter.Name );
 
           this.Session.RecordLayout.setValue ( fieldName, parameter.Value );
 

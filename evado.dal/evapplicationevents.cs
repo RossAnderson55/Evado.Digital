@@ -135,7 +135,7 @@ namespace Evado.Dal
       if ( sType == "W" ) { sType = "Warning"; }
       if ( sType == "E" ) { sType = "Error"; }
 
-      Event.Type = Evado.Model.EvStatics.Enumerations.parseEnumValue<EvApplicationEvent.EventType> ( sType );
+      Event.Type = Evado.Model.EvStatics.parseEnumValue<EvApplicationEvent.EventType> ( sType );
 
       Event.Category = EvSqlMethods.getString ( Row, DB_EVENT_CATEGORY );
       Event.UserName = EvSqlMethods.getString ( Row, DB_USER_NAME );

@@ -633,7 +633,7 @@ namespace Evado.UniForm.Digital
       // Get the application object enumeration value.
       // 
       EuAdapterClasses adapterClass =
-        Evado.Model.UniForm.EuStatics.Enumerations.parseEnumValue<EuAdapterClasses> ( PageCommand.Object );
+        Evado.Model.EvStatics.parseEnumValue<EuAdapterClasses> ( PageCommand.Object );
 
       this.LogDebug ( "adapterClass: " + adapterClass );
 

@@ -33,8 +33,8 @@ namespace Evado.Model.Digital
 
     public EdRecord ( )
     {
-      this.Design.AuthorOnlyDraftAccess = true;
-      this.Design.AuthorOnlyEditAccess = true;
+      this.Design.AuthorAccess = AuthorAccessList.Only_Author;
+      this.Design.ParentType = ParentTypeList.User;
     }
 
     #endregion
@@ -158,6 +158,74 @@ namespace Evado.Model.Digital
       /// This enumeration defines a major change for a regulatory change.
       /// </summary>
       Regulatory_Change,
+    }
+
+    /// <summary>
+    /// This enumeration list 
+    /// </summary>
+    public enum ParentTypeList
+    {
+      /// <summary>
+      /// This enumeration defines the form role is not set the user does not have access.
+      /// </summary>
+      Null = 0,
+
+      /// <summary>
+      /// This enumeration defines the object parent type to be a user.
+      /// </summary>
+      User = 0,
+
+      /// <summary>
+      /// This enumeration defines the object parent type to be an organsiation.
+      /// This enables all user within that organisation to access and edit the object.
+      /// </summary>
+      Organisation = 1,
+
+      /// <summary>
+      /// This enumeration defines the object parent is another entity.
+      /// this selection enables the 
+      /// </summary>
+      Entity = 2,
+    }  
+    /// <summary>
+    /// This enumeration list defines the record author access
+    /// </summary>
+    public enum AuthorAccessList
+    {
+      /// <summary>
+      /// This enumeration defines the form role is not set the user does not have access.
+      /// </summary>
+      Null = 0,
+
+      /// <summary>
+      /// This enumeration defines the only the author can edit the object content.
+      /// </summary>
+      Only_Author = 0,
+
+      /// <summary>
+      /// This enumeration defines the all organisatino users associated with an object can edit the object content..
+      /// </summary>
+      Only_Organisation = 1,
+
+      /// <summary>
+      /// This enumeration defines all edit accss roles have edit access to the object.
+      /// </summary>
+      Edit_Access_Roles = 2,
+
+      /// <summary>
+      /// This enumeration defines the only the parent's author can edit the object content.
+      /// </summary>
+      Parent_Author = 3,
+
+      /// <summary>
+      /// This enumeration defines the all user associated with an object can edi the object content.
+      /// </summary>
+      Parent_Organisation = 4,
+
+      /// <summary>
+      /// This enumeration defines the all parent access users have can edit the object content.
+      /// </summary>
+      Parent_Access = 5,
     }
 
     /// <summary>
@@ -392,14 +460,19 @@ namespace Evado.Model.Digital
       DisplayAuthorDetails,
 
       /// <summary>
-      /// This enumeration identifies the form AuthorOnlyEditAccess field.
+      /// This enumeration identifies the form Parent type field.
       /// </summary>
-      AuthorOnlyEditAccess,
+      ParentType,
 
       /// <summary>
-      /// This enumeration identifies the form AuthorDraftEditAccess  field.
+      /// This enumeration identifies the form Author Access  field.
       /// </summary>
-      AuthorOnlyDraftAccess
+      AuthorAccess,
+
+      /// <summary>
+      /// This enumeration identifies the form delimited ';' list of possible parent entities.  field.
+      /// </summary>
+      ParentEntities
 
     }
 
@@ -555,7 +628,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvcStatics.Enumerations.enumValueToString ( this._State );
+        return EvcStatics.enumValueToString ( this._State );
       }
     }
 
@@ -1569,7 +1642,7 @@ namespace Evado.Model.Digital
           return this._Design.EditAccessRoles.ToString ( );
 
         case RecordFieldNames.RelatedEntities:
-          return this._Design.RelatedEntities.ToString ( );
+          return this._Design.ParentEntities.ToString ( );
 
         case RecordFieldNames.DefaultPageLayout:
           return this._Design.DefaultPageLayout.ToString ( );
@@ -1722,7 +1795,7 @@ namespace Evado.Model.Digital
 
         case RecordFieldNames.UpdateReason:
           {
-            this._Design.UpdateReason = EvStatics.Enumerations.parseEnumValue<UpdateReasonList> ( Value );
+            this._Design.UpdateReason = EvStatics.parseEnumValue<UpdateReasonList> ( Value );
             return;
           }
         case RecordFieldNames.EditAccessRoles:
@@ -1749,7 +1822,7 @@ namespace Evado.Model.Digital
           }
         case RecordFieldNames.TypeId:
           {
-            this._Design.TypeId = EvcStatics.Enumerations.parseEnumValue<EdRecordTypes> ( Value );
+            this._Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( Value );
             return;
           }
         case RecordFieldNames.HasCsScript:
@@ -1759,7 +1832,7 @@ namespace Evado.Model.Digital
           }
         case RecordFieldNames.RelatedEntities:
           {
-            this._Design.RelatedEntities = Value;
+            this._Design.ParentEntities = Value;
             return;
           }
         case RecordFieldNames.DefaultPageLayout:
@@ -1775,7 +1848,7 @@ namespace Evado.Model.Digital
         case RecordFieldNames.LinkConsentSetting:
           {
             this.Design.LinkContentSetting =
-              EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( Value );
+              Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( Value );
             return;
           }
         case RecordFieldNames.DisplayRelatedEntities:
@@ -1788,14 +1861,19 @@ namespace Evado.Model.Digital
             this.Design.DisplayAuthorDetails = EvcStatics.getBool ( Value );
             return;
           }
-        case RecordFieldNames.AuthorOnlyDraftAccess:
+        case RecordFieldNames.AuthorAccess:
           {
-            this.Design.AuthorOnlyDraftAccess = EvcStatics.getBool ( Value );
+            this.Design.AuthorAccess = Evado.Model.EvStatics.parseEnumValue<EdRecord.AuthorAccessList> ( Value );
             return;
           }
-        case RecordFieldNames.AuthorOnlyEditAccess:
+        case RecordFieldNames.ParentType:
           {
-            this.Design.AuthorOnlyEditAccess = EvcStatics.getBool ( Value );
+            this.Design.ParentType = Evado.Model.EvStatics.parseEnumValue<EdRecord.ParentTypeList> ( Value );
+            return;
+          }
+        case RecordFieldNames.ParentEntities:
+          {
+            this._Design.ParentEntities = Value;
             return;
           }
         default:
@@ -1869,11 +1947,11 @@ namespace Evado.Model.Digital
       //
       // Add items from option object to the return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Normal_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Normal_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Updatable_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Updatable_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Questionnaire ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Questionnaire ) );
 
       return list;
     }//END getRecordTypes method
@@ -1906,11 +1984,11 @@ namespace Evado.Model.Digital
       //
       // Pull items' value from optoin object and add to the return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Normal_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Normal_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Questionnaire ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Questionnaire ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordTypes.Updatable_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Updatable_Record ) );
 
       return list;
     }//END getCommonFormTypes method
@@ -1942,13 +2020,13 @@ namespace Evado.Model.Digital
       //
       // Pull items' value from option object and add them to a return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Form_Draft ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Form_Draft ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Form_Reviewed ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Form_Reviewed ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Form_Issued ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Form_Issued ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Withdrawn ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Withdrawn ) );
 
       return list;
     }//END getFormStates method.
@@ -1980,12 +2058,12 @@ namespace Evado.Model.Digital
       //
       // Retrieve an option object and append the items' value to the return list.
       //
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Draft_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Draft_Record ) );
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Submitted_Record ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Submitted_Record ) );
 
 
-      list.Add ( EvStatics.Enumerations.getOption ( EdRecordObjectStates.Withdrawn ) );
+      list.Add ( EvStatics.getOption ( EdRecordObjectStates.Withdrawn ) );
 
       return list;
     }//END getSubjectRecordStates method.
@@ -2055,11 +2133,11 @@ namespace Evado.Model.Digital
       // Pull items' value from an option object and add them to the return list.
       //
       Option = new EvOption ( EdRecordObjectStates.Draft_Record.ToString ( ),
-        EvcStatics.Enumerations.enumValueToString ( EdRecordObjectStates.Draft_Record ) );
+        Evado.Model.EvStatics.enumValueToString ( EdRecordObjectStates.Draft_Record ) );
       list.Add ( Option );
 
       Option = new EvOption ( EdRecordObjectStates.Submitted_Record.ToString ( ),
-        EvcStatics.Enumerations.enumValueToString ( EdRecordObjectStates.Submitted_Record ) );
+        Evado.Model.EvStatics.enumValueToString ( EdRecordObjectStates.Submitted_Record ) );
       list.Add ( Option );
 
       return list;

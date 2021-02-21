@@ -305,25 +305,47 @@ namespace Evado.UniForm.Digital
       //
       // Layout author only draft record access
       //
-      pageField = pageGroup.createBooleanField (
-        EdRecord.RecordFieldNames.AuthorOnlyDraftAccess.ToString ( ),
-        EdLabels.Record_Layout_Author_Only_Draft_Access_Field_Title,
-        this.Session.RecordLayout.Design.AuthorOnlyDraftAccess );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.AuthorAccessList ), false ); 
+
+      pageField = pageGroup.createRadioButtonListField (
+        EdRecord.RecordFieldNames.AuthorAccess.ToString ( ),
+        EdLabels.Record_Layout_Author_Access_Setting_Field_Title,
+        this.Session.RecordLayout.Design.AuthorAccess,
+        optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Layout author only edit record access
       //
-      pageField = pageGroup.createBooleanField (
-        EdRecord.RecordFieldNames.AuthorOnlyEditAccess.ToString ( ),
-        EdLabels.Record_Layout_Author_Only_Edit_Access_Field_Title,
-        this.Session.RecordLayout.Design.AuthorOnlyEditAccess );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
+
+      pageField = pageGroup.createRadioButtonListField (
+        EdRecord.RecordFieldNames.ParentType.ToString ( ),
+        EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
+        this.Session.RecordLayout.Design.ParentType,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Layout parent entity selection list.
+      //
+      optionList = new List<EvOption> ( );
+      foreach ( EdRecord layout in this.AdapterObjects.IssuedEntityLayouts )
+      {
+        optionList.Add ( new EvOption ( layout.LayoutId, layout.LayoutId = " - " + layout.Title ) );
+      }
+
+      pageField = pageGroup.createCheckBoxListField (
+        EdRecord.RecordFieldNames.RelatedEntities.ToString ( ),
+        EdLabels.Record_Layout_Parent_Entity_Selection_Field_Title,
+        this.Session.RecordLayout.Design.ParentEntities,
+        optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Default field layout 
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( Evado.Model.UniForm.FieldLayoutCodes ), false );
 
       if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
       {
@@ -341,7 +363,7 @@ namespace Evado.UniForm.Digital
       //
       // Record heaader setting
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
 
       if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
       {
@@ -416,7 +438,7 @@ namespace Evado.UniForm.Digital
       //
       // Form Update reason
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting), false );
 
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.LinkConsentSetting.ToString ( ),
@@ -436,7 +458,7 @@ namespace Evado.UniForm.Digital
       //
       // Form Update reason
       //
-      optionList = EvStatics.Enumerations.getOptionsFromEnum ( typeof ( EdRecord.UpdateReasonList ), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.UpdateReasonList ), false );
 
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.UpdateReason.ToString ( ),
@@ -838,8 +860,8 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
 
-      optionList.Add ( EvStatics.Enumerations.getOption ( EdRecord.FormAccessRoles.Record_Author ) );
-      optionList.Add ( EvStatics.Enumerations.getOption ( EdRecord.FormAccessRoles.Record_Reader ) );
+      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Author ) );
+      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Reader ) );
 
       //
       // The form section user display roles 
@@ -910,7 +932,7 @@ namespace Evado.UniForm.Digital
 
         try
         {
-          EdRecordSection.FormSectionClassFieldNames fieldName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordSection.FormSectionClassFieldNames> ( parameter.Name );
+          EdRecordSection.FormSectionClassFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecordSection.FormSectionClassFieldNames> ( parameter.Name );
 
           this.Session.FormSection.setValue ( fieldName, parameter.Value );
         }

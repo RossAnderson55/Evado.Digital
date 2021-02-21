@@ -377,7 +377,7 @@ namespace Evado.UniForm.Digital
       //
       // create the version selectoin field.
       //
-      optionlist = Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( EvDataBaseUpdate.UpdateVersionList ), true );
+      optionlist = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvDataBaseUpdate.UpdateVersionList ), true );
 
       groupField = pageGroup.createSelectionListField (
         EdAdapterConfig.CONST_UPDATE_VERSION,
@@ -391,7 +391,7 @@ namespace Evado.UniForm.Digital
       //
       // create the version selectoin field.
       //
-      optionlist = Evado.Model.Digital.EvcStatics.Enumerations.getOptionsFromEnum ( typeof ( EvDataBaseUpdate.UpdateOrderBy ), true );
+      optionlist = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvDataBaseUpdate.UpdateOrderBy ), true );
 
       groupField = pageGroup.createSelectionListField (
         CONST_UPDATE_ORDER,
@@ -547,7 +547,7 @@ namespace Evado.UniForm.Digital
 
         if ( parameterValue != this.Session.AuditTableName.ToString ( ) )
         {
-          this.Session.AuditTableName = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<
+          this.Session.AuditTableName = Evado.Model.EvStatics.parseEnumValue<
             EvDataChange.DataChangeTableNames> ( parameterValue );
 
           this.Session.AuditRecordGuid = Guid.Empty;
@@ -2321,7 +2321,7 @@ namespace Evado.UniForm.Digital
         try
         {
           Model.Digital.EdAdapterSettings.AdapterFieldNames fieldName =
-             Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<Model.Digital.EdAdapterSettings.AdapterFieldNames> (
+             Evado.Model.EvStatics.parseEnumValue<Model.Digital.EdAdapterSettings.AdapterFieldNames> (
             parameter.Name );
 
           this.AdapterObjects.AdapterSettings.setValue ( fieldName, parameter.Value );

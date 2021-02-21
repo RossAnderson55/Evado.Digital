@@ -356,7 +356,7 @@ namespace Evado.Model.Digital
       {
         case MenuFieldNames.Page_Id:
           {
-            if ( EvcStatics.Enumerations.tryParseEnumValue<EvPageIds> ( value, out pageId ) == false )
+            if ( EvStatics.tryParseEnumValue<EvPageIds> ( value, out pageId ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }

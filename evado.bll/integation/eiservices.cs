@@ -182,7 +182,7 @@ namespace Evado.Bll.Integration
         default:
           {
             resultData.EventCode = EiEventCodes.Integration_Import_Type_Id_Error;
-            resultData.ErrorMessage = Evado.Model.EvStatics.Enumerations.enumValueToString( EiEventCodes.Integration_Import_Type_Id_Error );
+            resultData.ErrorMessage = Evado.Model.EvStatics.enumValueToString( EiEventCodes.Integration_Import_Type_Id_Error );
             break;
           }
 

@@ -696,7 +696,7 @@ namespace Evado.Model
       var parameter = this.getParameterObject ( Name );
       T iValue = default ( T );
 
-      if ( EvStatics.Enumerations.tryParseEnumValue<T> ( parameter.Value, out iValue ) == true )
+      if ( EvStatics.tryParseEnumValue<T> ( parameter.Value, out iValue ) == true )
       {
         return iValue;
       }

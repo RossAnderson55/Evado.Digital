@@ -898,16 +898,16 @@ namespace Evado.Model
       // Add items from option list to the return list
       //
 
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvAlerts );
+      option = EvStatics.getOption( DataChangeTableNames.EvAlerts );
       list.Add( option );
 
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvForms );
+      option = EvStatics.getOption( DataChangeTableNames.EvForms );
       list.Add( option );
 
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EdApplicationSettings );
+      option = EvStatics.getOption( DataChangeTableNames.EdApplicationSettings );
       list.Add( option );
 
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvUserProfiles );
+      option = EvStatics.getOption( DataChangeTableNames.EvUserProfiles );
       list.Add( option );
 
       // 
@@ -947,7 +947,7 @@ namespace Evado.Model
 
       // Add items from the option list to the return list
 
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvRecords );
+      option = EvStatics.getOption( DataChangeTableNames.EvRecords );
       list.Add ( option );
 
       // 
@@ -988,7 +988,7 @@ namespace Evado.Model
       //
       // Add items from the option list to the return list
       //
-      option = EvStatics.Enumerations.getOption( DataChangeTableNames.EvFormFields );
+      option = EvStatics.getOption( DataChangeTableNames.EvFormFields );
       list.Add( option );
 
 

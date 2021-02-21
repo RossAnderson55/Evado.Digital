@@ -1109,7 +1109,7 @@ namespace Evado.UniForm
           //
           // validate that the parameter is valid.
           //
-          if ( EvStatics.Enumerations.tryParseEnumValue<EutCommandParameters> ( parmeterName, out enParameter ) == false )
+          if ( EvStatics.tryParseEnumValue<EutCommandParameters> ( parmeterName, out enParameter ) == false )
           {
             this.Result = EutCommandResults.Parameter_Validation_Failure;
             this.AddResponse = "Parameter : " + parmeterName + " failed type validation. ";
@@ -1390,7 +1390,7 @@ namespace Evado.UniForm
             }
           case EuTestCaseMembers.Action:
             {
-              if ( EvStatics.Enumerations.tryParseEnumValue<EutCommand> ( Value, out testType ) == false )
+              if ( EvStatics.tryParseEnumValue<EutCommand> ( Value, out testType ) == false )
               {
                 return false;
               }
@@ -1417,7 +1417,7 @@ namespace Evado.UniForm
             }
           case EuTestCaseMembers.TestResult:
             {
-              if ( EvStatics.Enumerations.tryParseEnumValue<EutCommandResults> ( Value, out result ) == false )
+              if ( EvStatics.tryParseEnumValue<EutCommandResults> ( Value, out result ) == false )
               {
                 return false;
               }

@@ -395,7 +395,7 @@ namespace Evado.Model.Digital
     /// </summary>
     public string StateDesc
     {
-      get { return EvcStatics.Enumerations.enumValueToString(this._State); }
+      get { return EvStatics.enumValueToString(this._State); }
       set { string v = value; }
     }
 

@@ -304,7 +304,7 @@ namespace Evado.Dal.Digital
       String value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SOURCE );
 
       reportSource.ReportSource =
-        Evado.Model.EvStatics.Enumerations.parseEnumValue<EvReport.ReportSourceCode> (
+        Evado.Model.EvStatics.parseEnumValue<EvReport.ReportSourceCode> (
         EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SOURCE ) );
 
       reportSource.SqlQuery = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_SQL_QUERY );
@@ -481,14 +481,14 @@ namespace Evado.Dal.Digital
       value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_TYPE );
       if ( value != String.Empty )
       {
-        report.ReportType = Evado.Model.EvStatics.Enumerations.
+        report.ReportType = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportTypeCode> ( value );
       }
 
       value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SCOPE );
       if ( value != String.Empty )
       {
-        report.ReportScope = Evado.Model.EvStatics.Enumerations.
+        report.ReportScope = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportScopeTypes> ( value );
       }
 
@@ -497,7 +497,7 @@ namespace Evado.Dal.Digital
       value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_DATA_SOURCE_ID );
       if ( value != String.Empty )
       {
-        report.DataSourceId = Evado.Model.EvStatics.Enumerations.
+        report.DataSourceId = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportSourceCode> ( value );
       }
 
@@ -510,7 +510,7 @@ namespace Evado.Dal.Digital
       value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_LAYOUT_TYPE_ID );
       if ( value != String.Empty )
       {
-        report.LayoutTypeId = Evado.Model.EvStatics.Enumerations.
+        report.LayoutTypeId = Evado.Model.EvStatics.
           parseEnumValue<EvReport.LayoutTypeCode> ( value );
       }
 

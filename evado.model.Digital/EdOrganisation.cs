@@ -727,7 +727,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvcStatics.Enumerations.enumValueToString ( _OrgType );
+        return EvStatics.enumValueToString ( _OrgType );
       }
     }
 
@@ -794,7 +794,7 @@ namespace Evado.Model.Digital
         {
           stLinkText += evado.model.Properties.Resources.Space_Coma
             + evado.model.Properties.Resources.Organisation_Type_Label
-            + EvcStatics.Enumerations.enumValueToString ( this._OrgType );
+            + EvStatics.enumValueToString ( this._OrgType );
         }
 
         return stLinkText;
@@ -1258,7 +1258,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvcStatics.Enumerations.enumValueToString ( this._State );
+        return EvStatics.enumValueToString ( this._State );
       }
       set
       {
@@ -1530,7 +1530,7 @@ namespace Evado.Model.Digital
 
         case EvOrganisation.OrganisationFieldNames.Org_Type:
           {
-            this._OrgType = EvcStatics.Enumerations.parseEnumValue<OrganisationTypes> ( Value );
+            this._OrgType = EvStatics.parseEnumValue<OrganisationTypes> ( Value );
             return;
           }
         case EvOrganisation.OrganisationFieldNames.TrialSite:
@@ -1701,22 +1701,22 @@ namespace Evado.Model.Digital
       {
         case OrganisationTypes.Evado:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption (
+            optionList.Add ( EvStatics.getOption (
               OrganisationTypes.Management ) );
 
-            optionList.Add ( EvcStatics.Enumerations.getOption (
+            optionList.Add ( EvStatics.getOption (
               OrganisationTypes.Management ) );
             return optionList;
           }
         case OrganisationTypes.Management:
           {
-            optionList.Add ( EvcStatics.Enumerations.getOption (
+            optionList.Add ( EvStatics.getOption (
               OrganisationTypes.Management ) );
             return optionList;
           }
         default:
           {
-            return EvcStatics.Enumerations.getOptionsFromEnum ( 
+            return EvStatics.getOptionsFromEnum ( 
               typeof ( OrganisationTypes ), true );
           }
       }

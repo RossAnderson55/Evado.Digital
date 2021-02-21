@@ -847,7 +847,7 @@ namespace Evado.UniForm.Digital
       }
       profile += String.Format (
          EdLabels.HomePage_User_Role_Message,
-          Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( this.Session.UserProfile.Roles ) );
+          Evado.Model.EvStatics.enumValueToString ( this.Session.UserProfile.Roles ) );
       
       */
       group.Description = profile;

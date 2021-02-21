@@ -34,16 +34,6 @@ namespace Evado.Model
 
     #region Enumeration Methods
 
-    //============================================================================================
-
-    /// <summary>
-    /// This class provides help methods to handle transformations on enumeration objects.
-    /// 
-    /// Author: Andres Castano
-    /// Date: 8 Dic 2009
-    /// </summary>
-    public class Enumerations
-    {
 
       //  =============================================================
       /// <summary>
@@ -133,46 +123,6 @@ namespace Evado.Model
         return elements;
       }// END getElementAsStringList method
 
-
-      //  =========================================================================================
-      /// <summary>
-      /// This class transforms an enum value to a string. It replaces any _ character with a blank space.
-      /// </summary>
-      /// <param name="enumObject">Object: an enumeration object</param>
-      /// <returns>String: a string</returns>
-      /// <remarks>
-      /// This class consists of the following steps:
-      /// 
-      /// 1. Create a name string of enumObject
-      /// 
-      /// 2. if the name string is "null" get returned empty string.
-      /// 
-      /// 3. If not replace "_" in the name string with a blank character. 
-      /// </remarks>
-      //  -----------------------------------------------------------------------------------------
-      public static String enumValueToString( Object enumObject )
-      {
-        //
-        // Define an internal string with enumeration object value
-        //
-        String name = Enum.GetName( enumObject.GetType( ), enumObject );
-
-        //
-        // Set the string to empty if it does not exist
-        //
-        if ( name.ToLower( ) == "null" )
-        {
-          name = string.Empty;
-        }
-
-        //
-        // Return a string with a blank character
-        //
-        return name.Replace( "_", " " );
-
-      }//END enumValueToString method
-
-
       //  =========================================================================================
       /// <summary>
       /// This class returns the representation of the value inside an Enumeration.
@@ -248,11 +198,11 @@ namespace Evado.Model
               {
                 if ( index == value )
                 {
-                  return Enumerations.parseEnumValue<T> ( names [ index ] );
+                  return EvStatics.parseEnumValue<T> ( names [ index ] );
                 }
               }
 
-              return Enumerations.parseEnumValue<T> ( names [ 0 ] );
+              return EvStatics.parseEnumValue<T> ( names [ 0 ] );
             }//END getEnumValue method
        * 
             //  =========================================================================================
@@ -615,8 +565,6 @@ namespace Evado.Model
         return option;
 
       }//END getEvOption method
-
-    }//END getEvOption method
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

@@ -884,7 +884,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvcStatics.Enumerations.enumValueToString ( this._State );
+        return EvStatics.enumValueToString ( this._State );
       }
       set
       {
@@ -1087,7 +1087,7 @@ namespace Evado.Model.Digital
         case EvAlert.AlertFieldNames.Type_Id:
           {
 
-            if ( EvcStatics.Enumerations.tryParseEnumValue<EvAlert.AlertTypes> ( Value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<EvAlert.AlertTypes> ( Value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1099,7 +1099,7 @@ namespace Evado.Model.Digital
         case EvAlert.AlertFieldNames.Alert_State:
           {
 
-            if ( EvcStatics.Enumerations.tryParseEnumValue<EvAlert.AlertStates> ( Value, out status ) == false )
+            if ( EvStatics.tryParseEnumValue<EvAlert.AlertStates> ( Value, out status ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1145,13 +1145,13 @@ namespace Evado.Model.Digital
       //
       options.Add ( new EvOption ( EvAlert.AlertStates.Null.ToString ( ), String.Empty ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertStates.Raised ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertStates.Raised ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertStates.Acknowledged ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertStates.Acknowledged ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertStates.Closed ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertStates.Closed ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertStates.Not_Closed ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertStates.Not_Closed ) );
 
       //
       // Return an option list.
@@ -1182,13 +1182,13 @@ namespace Evado.Model.Digital
       //
       options.Add ( new EvOption ( EvAlert.AlertStates.Null.ToString ( ), String.Empty ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertTypes.Query_Alert ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertTypes.Query_Alert ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertTypes.Notiifcation_Alert ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertTypes.Notiifcation_Alert ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertTypes.SAE_Notification_Alert ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertTypes.SAE_Notification_Alert ) );
 
-      options.Add ( EvcStatics.Enumerations.getOption ( EvAlert.AlertTypes.AE_Notification_Alert ) );
+      options.Add ( EvStatics.getOption ( EvAlert.AlertTypes.AE_Notification_Alert ) );
 
       //
       // Return a type option list

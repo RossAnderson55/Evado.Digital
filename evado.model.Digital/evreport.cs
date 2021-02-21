@@ -1398,7 +1398,7 @@ namespace Evado.Model.Digital
         case ReportClassFieldNames.ReportType:
           {
             ReportTypeCode type = ReportTypeCode.General;
-            if ( EvcStatics.Enumerations.tryParseEnumValue<ReportTypeCode> ( value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<ReportTypeCode> ( value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1412,7 +1412,7 @@ namespace Evado.Model.Digital
         case ReportClassFieldNames.ReportScope:
           {
             ReportScopeTypes type = ReportScopeTypes.Operational_Reports;
-            if ( EvcStatics.Enumerations.tryParseEnumValue<ReportScopeTypes> ( value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<ReportScopeTypes> ( value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1426,7 +1426,7 @@ namespace Evado.Model.Digital
         case ReportClassFieldNames.DataSourceId:
           {
             ReportSourceCode type = ReportSourceCode.SqlQuery;
-            if ( EvcStatics.Enumerations.tryParseEnumValue<ReportSourceCode> ( value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<ReportSourceCode> ( value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1440,7 +1440,7 @@ namespace Evado.Model.Digital
         case ReportClassFieldNames.LayoutTypeId:
           {
             LayoutTypeCode type = LayoutTypeCode.FlatTable;
-            if ( EvcStatics.Enumerations.tryParseEnumValue<LayoutTypeCode> ( value, out type ) == false )
+            if ( EvStatics.tryParseEnumValue<LayoutTypeCode> ( value, out type ) == false )
             {
               return EvEventCodes.Data_Enumeration_Casting_Error;
             }
@@ -1653,10 +1653,10 @@ namespace Evado.Model.Digital
       //
       List<EvOption> optionList = new List<EvOption> ( );
 
-      optionList.Add ( Evado.Model.EvStatics.Enumerations.getOption (
+      optionList.Add ( Evado.Model.EvStatics.getOption (
         EvReport.LayoutTypeCode.FlatTable.ToString ( ) ) );
 
-      optionList.Add ( Evado.Model.EvStatics.Enumerations.getOption (
+      optionList.Add ( Evado.Model.EvStatics.getOption (
         EvReport.LayoutTypeCode.GroupedTable.ToString ( ) ) );
 
       return optionList;
