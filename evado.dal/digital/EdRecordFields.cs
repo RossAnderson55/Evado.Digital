@@ -85,9 +85,9 @@ namespace Evado.Dal.Digital
 
     #region Define the class storeprocedure.
 
-    private const string STORED_PROCEDURE_ADD_ITEM = "USR_RECORD_LAYOUT_FIELD_ADD";
-    private const string STORED_PROCEDURE_UPDATE_ITEM = "USR_RECORD_LAYOUT_FIELD_UPDATE";
-    private const string STORED_PROCEDURE_DELTE_ITEM = "USR_RECORD_LAYOUT_FIELD_DELETE";
+    private const string STORED_PROCEDURE_ADD_ITEM = "USR_RECORD_FIELD_ADD";
+    private const string STORED_PROCEDURE_UPDATE_ITEM = "USR_RECORD_FIELD_UPDATE";
+    private const string STORED_PROCEDURE_DELTE_ITEM = "USR_RECORD_FIELD_DELETE";
     #endregion
 
     #region Define the class parameters

@@ -73,7 +73,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This constant defines a sql query string for selecting all items from form field view. 
     /// </summary>
-    private const string _sqlQueryView = "Select * FROM ED_ENTITY_LAYOUT_SECTIONS ";
+    private const string _sqlQueryView = "Select * FROM ED_ENTITY_SECTIONS ";
 
     private const string DB_LAYOUT_SECTION_GUID = "EDELS_Guid";
     private const string DB_LAYOUT_GUID = "EDEL_Guid";
@@ -296,7 +296,7 @@ namespace Evado.Dal.Digital
       //
       // Delete the sections
       //
-      sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_ENTITY_LAYOUT_SECTIONS "
+      sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_ENTITY_SECTIONS "
       + "WHERE " + EdRecordSections.DB_LAYOUT_GUID + "= '" + Form.Guid + "';  \r\n\r\n" );
 
       for ( int count = 0; count < Form.Design.FormSections.Count; count++ )
@@ -367,7 +367,7 @@ namespace Evado.Dal.Digital
         //
         // Create the add query .
         //
-        sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_ENTITY_LAYOUT_SECTIONS  "
+        sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_ENTITY_SECTIONS  "
         + "(" + DB_LAYOUT_SECTION_GUID
         + ", " + DB_LAYOUT_GUID
         + ", " + DB_NUMBER
