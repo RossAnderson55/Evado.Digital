@@ -85,40 +85,117 @@ namespace Evado.Dal.Digital
     private const string STORED_PROCEDURE_WithdrawItem = "USR_ENTITY_LAYOUT_WITHDRAWN";
     private const string STORED_PROCEDURE_COPY_ITEM = "USR_ENTITY_LAYOUT_COPY";
 
-    //
-    // The field and parameter values for the SQl customer filter 
-    //
+    /// <summary>
+    /// The database entity layout guid column name
+    /// </summary>
     public const string DB_LAYOUT_GUID = "EDEL_GUID";
+    /// <summary>
+    /// The database entity layout identifier column name
+    /// </summary>
     public const string DB_LAYOUT_ID = "EDE_LAYOUT_ID";
+    /// <summary>
+    /// The database entity layout state column name
+    /// </summary>
     public const string DB_STATE = "EDEL_STATE";
+    /// <summary>
+    /// The database entity layout title column name
+    /// </summary>
     public const string DB_TITLE = "EDEL_TITLE";
+    /// <summary>
+    /// The database entity http reference guid column name
+    /// </summary>
     public const string DB_HTTP_REFERENCE = "EDEL_HTTP_REFERENCE";
+    /// <summary>
+    /// The database entity layout instructions column name
+    /// </summary>
     public const string DB_INSTRUCTIONS = "EDEL_INSTRUCTIONS";
+    /// <summary>
+    /// The database entity layout update description  column name
+    /// </summary>
     public const string DB_DESCRIPTION = "EDEL_DESCRIPTION";
+    /// <summary>
+    /// The database entity layout update reason  column name
+    /// </summary>
     public const string DB_UPDATE_REASON = "EDEL_UPDATE_REASON";
+    /// <summary>
+    /// The database entity layout record category  column name
+    /// </summary>
     public const string DB_RECORD_CATEGORY = "EDEL_RECORD_CATEGORY";
+    /// <summary>
+    /// The database entity layout  type column name
+    /// </summary>
     public const string DB_TYPE_ID = "EDEL_TYPE_ID";
+    /// <summary>
+    /// The database entity layout version  column name
+    /// </summary>
     public const string DB_VERSION = "EDEL_VERSION";
+    /// <summary>
+    /// The database entity layout java script column name
+    /// </summary>
     public const string DB_JAVA_SCRIPT = "EDEL_JAVA_SCRIPT";
+    /// <summary>
+    /// The database entity layout has CS script column name
+    /// </summary>
     public const string DB_HAS_CS_SCRIPT = "EDEL_HAS_CS_SCRIPT";
+    /// <summary>
+    /// The database entity layout language column name
+    /// </summary>
     public const string DB_LANGUAGE = "EDEL_LANGUAGE";
-    public const string DB_CDASH_METADATA = "EDEL_CDASH_METADATA";
+    /// <summary>
+    /// The database entity layout read access roles column name
+    /// </summary>
     public const string DB_READ_ACCESS_ROLES = "EDEL_READ_ACCESS_ROLES";
+    /// <summary>
+    /// The database entity layout edit access roles column name
+    /// </summary>
     public const string DB_EDIT_ACCESS_ROLES = "EDEL_EDIT_ACCESS_ROLES";
+    /// <summary>
+    /// The database entity layout parent type column name
+    /// </summary>
     public const string DB_PARENT_TYPE = "EDEL_PARENT_TYPE";
-    public const string DB_AUTHOR_ACCESS = "EDEL_AUTHOR_ACCESS";
+    /// <summary>
+    /// The database entity layout parent access column name
+    /// </summary>
+    public const string DB_PARENT_ACCESS = "EDEL_PARENT_ACCESS";
+    /// <summary>
+    /// The database entity layout parent entities column name
+    /// </summary>
     public const string DB_PARENT_ENTITIES = "EDEL_PARENT_ENTITIES";
+    /// <summary>
+    /// The database entity layout default page layout column name
+    /// </summary>
     public const string DB_DEFAULT_PAGE_LAYOUT = "EDEL_DEFAULT_PAGE_LAYOUT";
+    /// <summary>
+    /// The database entity layout link content setting column name
+    /// </summary>
     public const string DB_LINK_CONTENT_SETTING = "EDEL_LINK_CONTENT_SETTING";
+    /// <summary>
+    /// The database entity layout display entities column name
+    /// </summary>
     public const string DB_DISPLAY_ENTITIES = "EDEL_DISPLAY_ENTITIES";
+    /// <summary>
+    /// The database entity layout display author details column name
+    /// </summary>
     public const string DB_DISPLAY_AUTHOR_DETAILS = "EDEL_DISPLAY_AUTHOR_DETAILS";
-    public const string DB_RECORD_PREFIX = "EDEL_RECORD_PREFIX";
-    public const string DB_AUTHOR_ONLY_EDIT_ACCESS = "EDEL_AUTHOR_ONLY_EDIT_ACCESS";
-    public const string DB_AUTHOR_ONLY_DRAFT_ACCESS = "EDEL_AUTHOR_ONLY_DRAFT_ACCESS";
-
+    /// <summary>
+    /// The database entity layout prefix column name
+    /// </summary>
+    public const string DB_ENTITY_PREFIX = "EDEL_ENTITY_PREFIX";
+    /// <summary>
+    /// The database entity updates by user identifier column name
+    /// </summary>
     public const string DB_UPDATED_BY_USER_ID = "EDEL_UPDATED_BY_USER_ID";
+    /// <summary>
+    /// The database entity update by user common name column name
+    /// </summary>
     public const string DB_UPDATED_BY = "EDEL_UPDATED_BY";
+    /// <summary>
+    /// The database entity update date column name
+    /// </summary>
     public const string DB_UPDATED_DATE = "EDEL_UPDATED_DATE";
+    /// <summary>
+    /// The database entity deleted column name
+    /// </summary>
     public const string DB_DELETED = "EDEL_DELETED";
 
 
@@ -126,6 +203,9 @@ namespace Evado.Dal.Digital
     /// Define the query parameter names.
     /// </summary>
     private const string PARM_LAYOUT_GUID = "@GUID";
+    /// <summary>
+    /// This constant defines the layuout identifier parameter
+    /// </summary>
     public const string PARM_LAYOUT_ID = "@LAYOUT_ID";
     private const string PARM_STATE = "@STATE";
     private const string PARM_TITLE = "@TITLE";
@@ -139,17 +219,16 @@ namespace Evado.Dal.Digital
     private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
     private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
     private const string PARM_LANGUAGE = "@LANGUAGE";
-    private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
     private const string PARM_READ_ACCESS_ROLES = "@READ_ACCESS_ROLES";
     private const string PARM_EDIT_ACCESS_ROLES = "@EDIT_ACCESS_ROLES";
-    private const string PARM_PARENT_ENTITIES = "EDRL_PARENT_ENTITIES";
+    private const string PARM_PARENT_ENTITIES = "@PARENT_ENTITIES";
     private const string PARM_DEFAULT_PAGE_LAYOUT = "@DEFAULT_PAGE_LAYOUT";
     private const string PARM_LINK_CONTENT_SETTING = "@LINK_CONTENT_SETTING";
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
     private const string PARM_DISPLAY_AUTHOR_DETAILS = "@DISPLAY_AUTHOR_DETAILS";
-    private const string PARM_RECORD_PREFIX = "@RECORD_PREFIX";
-    private const string PARM_PARENT_TYPE = "EDRL_PARENT_TYPE";
-    private const string PARM_AUTHOR_ACCESS = "EDRL_AUTHOR_ACCESS";
+    private const string PARM_ENTITY_PREFIX = "@ENTITY_PREFIX";
+    private const string PARM_PARENT_TYPE = "@PARENT_TYPE";
+    private const string PARM_PARENT_ACCESS = "@PARENT_ACCESS";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -199,18 +278,17 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_JAVA_SCRIPT, SqlDbType.NText),   
         new SqlParameter( EdEntityLayouts.PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
         new SqlParameter( EdEntityLayouts.PARM_LANGUAGE, SqlDbType.VarChar, 5),
-        new SqlParameter( EdEntityLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_READ_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_PARENT_ENTITIES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntityLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_LINK_CONTENT_SETTING, SqlDbType.NVarChar, 50),
-
         new SqlParameter( EdEntityLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
+
         new SqlParameter( EdEntityLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
-        new SqlParameter( EdEntityLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntityLayouts.PARM_ENTITY_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdEntityLayouts.PARM_PARENT_TYPE, SqlDbType.NVarChar, 50),
-        new SqlParameter( EdEntityLayouts.PARM_AUTHOR_ACCESS, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdEntityLayouts.PARM_PARENT_ACCESS, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -261,21 +339,20 @@ namespace Evado.Dal.Digital
       cmdParms [ 11 ].Value = Form.Design.JavaScript;
       cmdParms [ 12 ].Value = Form.Design.hasCsScript;
       cmdParms [ 13 ].Value = Form.Design.Language;
-      cmdParms [ 14 ].Value = Form.cDashMetadata;
-      cmdParms [ 15 ].Value = Form.Design.ReadAccessRoles;
-      cmdParms [ 16 ].Value = Form.Design.EditAccessRoles;
-      cmdParms [ 17 ].Value = Form.Design.ParentEntities;
-      cmdParms [ 18 ].Value = Form.Design.DefaultPageLayout;
-      cmdParms [ 19 ].Value = Form.Design.LinkContentSetting;
+      cmdParms [ 14 ].Value = Form.Design.ReadAccessRoles;
+      cmdParms [ 15 ].Value = Form.Design.EditAccessRoles;
+      cmdParms [ 16 ].Value = Form.Design.ParentEntities;
+      cmdParms [ 17 ].Value = Form.Design.DefaultPageLayout;
+      cmdParms [ 18 ].Value = Form.Design.LinkContentSetting;
+      cmdParms [ 19 ].Value = Form.Design.DisplayRelatedEntities;
 
-      cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
-      cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
-      cmdParms [ 22 ].Value = Form.Design.RecordPrefix;
-      cmdParms [ 23 ].Value = Form.Design.ParentType;
-      cmdParms [ 24 ].Value = Form.Design.AuthorAccess;
-      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 27 ].Value = DateTime.Now;
+      cmdParms [ 20 ].Value = Form.Design.DisplayAuthorDetails;
+      cmdParms [ 21 ].Value = Form.Design.RecordPrefix;
+      cmdParms [ 22 ].Value = Form.Design.ParentType;
+      cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
+      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 26 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -333,7 +410,6 @@ namespace Evado.Dal.Digital
       layout.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_JAVA_SCRIPT );
       layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HAS_CS_SCRIPT );
       layout.Design.Language = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LANGUAGE );
-      layout.cDashMetadata = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_CDASH_METADATA );
       layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_READ_ACCESS_ROLES );
       layout.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_EDIT_ACCESS_ROLES );
 
@@ -348,9 +424,9 @@ namespace Evado.Dal.Digital
       }
       layout.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
-      layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_PREFIX );
+      layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_ENTITY_PREFIX );
       layout.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
-      layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_AUTHOR_ACCESS );
+      layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
       layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATED_BY );
@@ -369,7 +445,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class extracts the content of the reader and loads the Checklist object 
     /// </summary>
-    /// <param name="Row">EdRecord: a data row object containing the query results</param>
+    /// <param name="Layout">EdRecord: a data row object containing the query results</param>
     //  ---------------------------------------------------------------------------------
     private void getSections ( EdRecord Layout )
     {
@@ -377,7 +453,7 @@ namespace Evado.Dal.Digital
       //
       // Initialise the methods object and variables.
       //
-      EdRecordSections dal_FormSections = new EdRecordSections ( this.ClassParameters );
+      EdEntitySections dal_FormSections = new EdEntitySections ( this.ClassParameters );
 
       //
       // Retrieve the form selection list.
@@ -520,36 +596,19 @@ namespace Evado.Dal.Digital
     //  ---------------------------------------------------------------------------------
     private void getLayoutFields ( EdRecord Layout )
     {
+      this.LogMethod ( "getLayoutFields" );
       //
       // initialise the methods variables and objects.
       //
-      EdRecordFields dal_FormFields = new EdRecordFields ( this.ClassParameters );
+      EdEntityFields dal_EntityFields = new EdEntityFields ( this.ClassParameters );
 
       // 
       // Retrieve the instrument items.
       // 
-      Layout.Fields = dal_FormFields.GetFieldList ( Layout.Guid );
-      this.LogClass ( dal_FormFields.Log );
-    }
+      Layout.Fields = dal_EntityFields.GetFieldList ( Layout.Guid );
+      this.LogClass ( dal_EntityFields.Log );
 
-    // ==================================================================================
-    /// <summary>
-    /// This method retrieves the layout's field objects.
-    /// </summary>
-    /// <param name="Layout">EdRecord object</param>
-    //  ---------------------------------------------------------------------------------
-    private void getEntities ( EdRecord Layout )
-    {
-      //
-      // initialise the methods variables and objects.
-      //
-      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
-
-      // 
-      // Retrieve the instrument items.
-      // 
-      Layout.Entities = dal_RecordEntities.getEntityList ( Layout );
-      this.LogClass ( dal_RecordEntities.Log );
+      this.LogMethodEnd ( "getLayoutFields" );
     }
 
     // =====================================================================================
@@ -1149,6 +1208,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     private EvEventCodes updateFields ( EdRecord Layout )
     {
+      this.LogMethod ( "updateFields" );
       //
       // Initialise the methods variables and objects.
       //
@@ -1159,8 +1219,9 @@ namespace Evado.Dal.Digital
       //
       EvEventCodes result = dal_LayoutFields.UpdateFields ( Layout );
 
-      this.LogValue ( dal_LayoutFields.Log );
-
+      this.LogDebugClass ( dal_LayoutFields.Log );
+      this.LogDebug ( "Result {0}.", result );
+      this.LogMethodEnd ( "updateSections" );
       return result;
 
     }
@@ -1169,11 +1230,13 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method updates the record layout sections.
     /// </summary>
-    /// <param name="Record">EdRecord objecty.</param>
+    /// <param name="Layout">EdRecord objecty.</param>
     /// <returns>EvEventCode enumerated value.</returns>
     // ----------------------------------------------------------------------------------
-    private EvEventCodes updateSections ( EdRecord Record )
+    private EvEventCodes updateSections ( EdRecord Layout )
     {
+      this.LogMethod ( "updateSections" );
+      this.LogDebug ( "Section Count: " + Layout.Design.FormSections.Count );
       //
       // Initialise the methods variables and objects.
       //
@@ -1182,10 +1245,11 @@ namespace Evado.Dal.Digital
       //
       // update the layout sections.
       //
-      EvEventCodes result = dal_LayoutSections.UpdateItem ( Record );
+      EvEventCodes result = dal_LayoutSections.UpdateItem ( Layout );
 
-      this.LogValue ( dal_LayoutSections.Log );
-
+      this.LogDebugClass ( dal_LayoutSections.Log );
+      this.LogDebug ( "Result {0}.", result );
+      this.LogMethodEnd ( "updateSections" );
       return result;
 
     }

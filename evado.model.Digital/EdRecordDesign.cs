@@ -30,6 +30,12 @@ namespace Evado.Model.Digital
   [Serializable]
   public class EdRecordDesign
   {
+    public EdRecordDesign ( )
+    {
+      this.AuthorAccess = EdRecord.AuthorAccessList.Null;
+      this.ParentType = EdRecord.ParentTypeList.Null;
+      this.ParentEntities = String.Empty;
+    }
     #region Globals and constants.
     /// <summary>
     /// This field define the number of section in a form.

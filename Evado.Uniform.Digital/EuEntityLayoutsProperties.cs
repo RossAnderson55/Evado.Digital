@@ -231,6 +231,11 @@ namespace Evado.UniForm.Digital
       //
       optionList = EdRecord.getFormTypes ( );
 
+      if ( this.Session.EntityLayout.Design.TypeId == EdRecordTypes.Null )
+      {
+        this.Session.EntityLayout.Design.TypeId = EdRecordTypes.Normal_Record;
+      }
+
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.TypeId.ToString ( ),
         EdLabels.Form_Type_Field_Label,
@@ -289,10 +294,13 @@ namespace Evado.UniForm.Digital
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.AuthorAccessList ), false );
 
+      this.LogDebug ( "Author Access option list length: ", optionList );
+      this.LogDebug ( "RecordLayout.Design.AuthorAccess: ", this.Session.EntityLayout.Design.AuthorAccess );
+
       pageField = pageGroup.createRadioButtonListField (
         EdRecord.RecordFieldNames.AuthorAccess.ToString ( ),
         EdLabels.Record_Layout_Author_Access_Setting_Field_Title,
-        this.Session.RecordLayout.Design.AuthorAccess,
+        this.Session.EntityLayout.Design.AuthorAccess,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -304,7 +312,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createRadioButtonListField (
         EdRecord.RecordFieldNames.ParentType.ToString ( ),
         EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
-        this.Session.RecordLayout.Design.ParentType,
+        this.Session.EntityLayout.Design.ParentType,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -320,7 +328,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.RelatedEntities.ToString ( ),
         EdLabels.Record_Layout_Parent_Entity_Selection_Field_Title,
-        this.Session.RecordLayout.Design.ParentEntities,
+        this.Session.EntityLayout.Design.ParentEntities,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -961,6 +969,7 @@ namespace Evado.UniForm.Digital
           }
       );
 
+      this.LogDebug ( "EntityLayout.Design.FormSections.Count.Count: " + this.Session.EntityLayout.Design.FormSections.Count );
       this.LogMethodEnd ( "updateSectionValues" );
 
     }//END updateObjectValue method.

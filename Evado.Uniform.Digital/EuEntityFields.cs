@@ -1637,7 +1637,6 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Field.InitialVersion: " + this.Session.EntityField.Design.InitialVersion );
         this.LogValue ( "Field.LayoutGuid: " + this.Session.EntityField.LayoutGuid );
         this.LogValue ( "Field.LayoutId: " + this.Session.EntityField.LayoutId );
-
         // 
         // Generate the new page layout 
         // 
@@ -1744,6 +1743,11 @@ namespace Evado.UniForm.Digital
           this.Session.LastPage.Message = this.ErrorMessage;
           return this.Session.LastPage;
         }
+
+        //
+        // Add the new entity to the field list.
+        //
+        this.Session.EntityLayout.Fields.Add ( this.Session.EntityField );
 
         // 
         // Execute the save record groupCommand to save the record values to the 

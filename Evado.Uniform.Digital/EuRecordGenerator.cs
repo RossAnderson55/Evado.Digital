@@ -206,7 +206,7 @@ namespace Evado.UniForm.Digital
       //
       // Merge the layout with the record.
       //
-      Entity.cDashMetadata = layout.cDashMetadata;
+      Entity.AiIndex = layout.AiIndex;
       Entity.Design = layout.Design;
 
       for ( int i = 0; i < Entity.Fields.Count; i++ )
@@ -280,7 +280,7 @@ namespace Evado.UniForm.Digital
       //
       // Merge the layout with the record.
       //
-      Record.cDashMetadata = layout.cDashMetadata;
+      Record.AiIndex = layout.AiIndex;
       Record.Design = layout.Design;
 
       for ( int i = 0; i < Record.Fields.Count; i++ )

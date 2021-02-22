@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdEntities ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EdEntities.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EdEntities ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Digital.EdEntities.";
+      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
 
     }
 
@@ -70,7 +70,7 @@ namespace Evado.Dal.Digital
     private static string _maximumListLength = ConfigurationManager.AppSettings [ "MaximumSelectionListLength" ];
     private int _MaxViewLength = 1000;
 
-    private const string SQL_QUERY_RECORD_VIEW = "Select * FROM ED_ENTITY_VIEW ";
+    private const string SQL_QUERY_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
 
     // 
     // Define the stored procedure names.
@@ -84,40 +84,115 @@ namespace Evado.Dal.Digital
     //
     // This constant defines the table fields/columns
     //
-    public const string DB_RECORD_GUID = "EDE_GUID";
+    /// <summary>
+    /// The database entity guid column name
+    /// </summary>
+    public const string DB_ENTITY_GUID = "EDE_GUID";
+    /// <summary>
+    /// The database entity state column name
+    /// </summary>
     public const string DB_STATE = "EDE_STATE";
-    public const string DB_ENTITY_ID = "ENTITY_ID";
+    /// <summary>
+    /// The database entity entity identifier column name
+    /// </summary>
+    public const string DB_ENTITY_ID = "EDE_ENTITY_ID";
+    /// <summary>
+    /// The database entity source identifier column name
+    /// </summary>
     public const string DB_SOURCE_ID = "EDE_SOURCE_ID";
-    public const string DB_RECORD_DATE = "EDE_RECORD_DATE";
+    /// <summary>
+    /// The database entity entity date column name
+    /// </summary>
+    public const string DB_ENTITY_DATE = "EDE_ENTITY_DATE";
+    /// <summary>
+    /// The database entity parent organisatin identifier column name
+    /// </summary>
+    public const string DB_PARENT_ORG_ID = "EDE_PARENT_ORG_ID";
+    /// <summary>
+    /// The database entity author user identifier column name
+    /// </summary>
+    public const string DB_AUTHOR_USER_ID = "EDE_AUTHOR_USER_ID";
+    /// <summary>
+    /// The database entity author common name  column name
+    /// </summary>
+    public const string DB_AUTHOR = "EDE_AUTHOR";
+    /// <summary>
+    /// The database entity parent layout identifier column name
+    /// </summary>
+    public const string DB_PARENT_LAYOUT_ID = "EDE_PARENT_LAYOUT_ID";
+
+    /// <summary>
+    /// The database entity parent object guid column name
+    /// </summary>
+    public const string DB_PARENT_GUID = "EDE_PARENT_GUID";
+    /// <summary>
+    /// The database entity entity access column name
+    /// </summary>
+    public const string DB_ENTITY_ACCESS = "EDE_ENTITY_ACCESS";
+    /// <summary>
+    /// The database entity data collection event identifer column name
+    /// </summary>
+    public const string DB_COLLECTION_EVENT_ID = "EDE_COLLECTION_EVENT_ID";
+    /// <summary>
+    /// The database entity AI index column name
+    /// </summary>
+    public const string DB_AI_DATA_INDEX = "EDE_AI_DATA_INDEX";
+    /// <summary>
+    /// The database entity entity visibility column name
+    /// </summary>
+    public const string DB_VISABILITY = "EDE_VISABILITY";
+    /// <summary>
+    /// The database entity signoff column name
+    /// </summary>
     public const string DB_SIGN_OFFS = "EDE_SIGN_OFFS";
+    /// <summary>
+    /// The database entity booked out user identifier column name
+    /// </summary>
     public const string DB_BOOKED_OUT_USER_ID = "EDE_BOOKED_OUT_USER_ID";
+    /// <summary>
+    /// The database entity booked out user common name column name
+    /// </summary>
     public const string DB_BOOKED_OUT = "EDE_BOOKED_OUT";
+    /// <summary>
+    /// The database entity updates by user identifier column name
+    /// </summary>
     public const string DB_UPDATED_BY_USER_ID = "EDE_UPDATED_BY_USER_ID";
+    /// <summary>
+    /// The database entity update by user common name column name
+    /// </summary>
     public const string DB_UPDATED_BY = "EDE_UPDATED_BY";
+    /// <summary>
+    /// The database entity update date column name
+    /// </summary>
     public const string DB_UPDATED_DATE = "EDE_UPDATED_DATE";
-    public const string DB_SERIAL_ID = "EDE_SERIAL_ID";
+    /// <summary>
+    /// The database entity deleted column name
+    /// </summary>
     public const string DB_DELETED = "EDE_DELETED";
-    // 
-    // Define the query parameter constants.
-    // 
 
     //
     // The field and parameter values for the SQl customer filter 
     //
-    private const string DB_CUSTOMER_GUID = "CU_GUID";
-    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
-
-    private const string PARM_RECORD_GUID = "@GUID";
-    private const string PARM_LAYOUT_GUID = "@LAYOUT_GUID";
-    private const string PARM_STATE = "@STATE";
-    private const string PARM_ENTITY_ID = "@ENTITY_ID";
-    private const string PARM_SOURCE_ID = "@SOURCE_ID";
-    private const string PARM_RECORD_DATE = "@RECORD_DATE";
-    private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
-    private const string PARM_UPDATED_BY = "@UPDATED_BY";
-    private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
-    private const string PARM_BOOKED_OUT = "@BOOKED_OUT";
-    private const string PARM_SIGN_OFFS = "@SIGN_OFFS";
+   private const string PARM_ENTITY_GUID = "@GUID";
+   private const string PARM_STATE = "@STATE";
+   private const string PARM_ENTITY_ID = "@ENTITY_ID";
+   private const string PARM_SOURCE_ID = "@SOURCE_ID";
+   private const string PARM_ENTITY_DATE = "@ENTITY_DATE";
+   private const string PARM_PARENT_ORG_ID = "@PARENT_ORG_ID";
+   private const string PARM_AUTHOR_USER_ID = "@AUTHOR_USER_ID";
+   private const string PARM_AUTHOR = "@AUTHOR";
+   private const string PARM_PARENT_LAYOUT_ID = "@PARENT_LAYOUT_ID";
+   private const string PARM_PARENT_GUID = "@PARENT_GUID";
+   private const string PARM_ENTITY_ACCESS = "@ENTITY_ACCESS";
+   private const string PARM_COLLECTION_EVENT_ID = "@COLLECTION_EVENT_ID";
+   private const string PARM_AI_DATA_INDEX = "@AI_DATA_INDEX";
+   private const string PARM_VISABILITY = "@VISABILITY";
+   private const string PARM_SIGN_OFFS = "@SIGN_OFFS";
+   private const string PARM_BOOKED_OUT_USER_ID = "@BOOKED_OUT_USER_ID";
+   private const string PARM_BOOKED_OUT = "@BOOKED_OUT";
+   private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
+   private const string PARM_UPDATED_BY = "@UPDATED_BY";
+   private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
 
     // 
     // Used for the ItemQuery
@@ -136,8 +211,8 @@ namespace Evado.Dal.Digital
     // 
     private string _sqlQueryString = String.Empty;
 
-    EdEntitySections _Dal_FormSections = new EdEntitySections ( );
 
+    EdRecordSections _Dal_FormSections = new EdRecordSections ( );
     #endregion
 
     #region Set Query Parameters
@@ -157,10 +232,13 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdEntities.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdEntities.PARM_STATE, SqlDbType.VarChar, 20),
         new SqlParameter( EdEntities.PARM_SOURCE_ID, SqlDbType.NVarChar, 40), 
-        new SqlParameter( EdEntities.PARM_RECORD_DATE, SqlDbType.DateTime),
+        new SqlParameter( EdEntities.PARM_ENTITY_DATE, SqlDbType.DateTime),
+        new SqlParameter( EdEntities.PARM_VISABILITY, SqlDbType.NVarChar, 30), 
+        new SqlParameter( EdEntities.PARM_ENTITY_ACCESS, SqlDbType.VarChar, 1000),
+        new SqlParameter( EdEntities.PARM_AI_DATA_INDEX, SqlDbType.NVarChar, 1000), 
         new SqlParameter( EdEntities.PARM_SIGN_OFFS, SqlDbType.NVarChar),
         new SqlParameter( EdEntities.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
@@ -212,10 +290,13 @@ namespace Evado.Dal.Digital
       CommandParameters [ 1 ].Value = Record.State;
       CommandParameters [ 2 ].Value = Record.SourceId;
       CommandParameters [ 3 ].Value = Record.RecordDate;
-      CommandParameters [ 4 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
-      CommandParameters [ 5 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 6 ].Value = this.ClassParameters.UserProfile.CommonName;
-      CommandParameters [ 7 ].Value = DateTime.Now;
+      CommandParameters [ 4 ].Value = Record.Visabilty;
+      CommandParameters [ 5 ].Value = Record.EntityAccess;
+      CommandParameters [ 6 ].Value = Record.AiIndex;
+      CommandParameters [ 7 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
+      CommandParameters [ 8 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 10 ].Value = DateTime.Now;
 
 
     }//END SetParameters class.
@@ -235,8 +316,14 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdEntities.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_PARENT_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_PARENT_ORG_ID, SqlDbType.VarChar, 20),
+        new SqlParameter( EdEntities.PARM_AUTHOR_USER_ID, SqlDbType.VarChar, 100),
+        new SqlParameter( EdEntities.PARM_AUTHOR, SqlDbType.VarChar, 100),
+        new SqlParameter( EdEntities.PARM_COLLECTION_EVENT_ID, SqlDbType.NVarChar, 20),
         new SqlParameter( EdEntities.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -266,9 +353,15 @@ namespace Evado.Dal.Digital
       // 
       CommandParameters [ 0 ].Value = Record.Guid;
       CommandParameters [ 1 ].Value = Record.LayoutId;
-      CommandParameters [ 2 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 3 ].Value = this.ClassParameters.UserProfile.CommonName;
-      CommandParameters [ 4 ].Value = DateTime.Now;
+      CommandParameters [ 2 ].Value = Record.ParentLayoutId;
+      CommandParameters [ 3 ].Value = Record.ParentGuid;
+      CommandParameters [ 4 ].Value = Record.ParentOrgId;
+      CommandParameters [ 5 ].Value = Record.AuthorUserId;
+      CommandParameters [ 6 ].Value = Record.Author;
+      CommandParameters [ 7 ].Value = Record.DataCollectEventId;
+      CommandParameters [ 8 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 10 ].Value = DateTime.Now;
 
     }//END SetCreateParameters class.
 
@@ -287,7 +380,7 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdEntities.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdEntities.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -355,21 +448,30 @@ namespace Evado.Dal.Digital
       // Initialise the return form object and the form selected condition.
       // 
       EdRecord record = new EdRecord ( );
-      record.Selected = false;
 
       // 
       // Update the trial record object with compatible values from datarow.
       // 
-      record.CustomerGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_CUSTOMER_GUID );
-      record.Guid = EvSqlMethods.getGuid ( Row, EdEntities.DB_RECORD_GUID );
+      record.Guid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
       record.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
       record.SourceId = EvSqlMethods.getString ( Row, EdEntities.DB_SOURCE_ID );
       record.LayoutId = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LAYOUT_ID );
       record.RecordId = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ID );
       record.Design.Title = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TITLE );
-      record.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> (
+      record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, EdEntities.DB_STATE ) );
-      record.RecordDate = EvSqlMethods.getDateTime ( Row, EdEntities.DB_RECORD_DATE );
+      record.RecordDate = EvSqlMethods.getDateTime ( Row, EdEntities.DB_ENTITY_DATE );
+
+      record.Author = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
+      record.AuthorUserId = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
+      record.ParentOrgId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_ORG_ID );
+
+      record.Visabilty = EvSqlMethods.getString<EdRecord.VisabilityList> ( Row, EdEntities.DB_VISABILITY );
+      record.EntityAccess = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ACCESS );
+
+      record.ParentLayoutId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_LAYOUT_ID );
+      record.ParentGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_PARENT_GUID );
+      record.DataCollectEventId = EvSqlMethods.getString ( Row, EdEntities.DB_COLLECTION_EVENT_ID );
 
       //
       // Skip detailed content if a queryState query
@@ -379,36 +481,35 @@ namespace Evado.Dal.Digital
         record.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
         record.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
         record.Design.Description = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DESCRIPTION );
-        record.Design.UpdateReason = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.UpdateReasonList> (
+        record.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
           EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATE_REASON ) );
         record.Design.RecordCategory = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_CATEGORY );
 
-        record.Design.TypeId = Evado.Model.EvStatics.Enumerations.parseEnumValue<EdRecordTypes> (
+        record.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> (
            EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TYPE_ID ) );
         record.Design.Version = EvSqlMethods.getFloat ( Row, EdEntityLayouts.DB_VERSION );
 
         record.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_JAVA_SCRIPT );
         record.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HAS_CS_SCRIPT );
         record.Design.Language = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LANGUAGE );
-        record.cDashMetadata = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_CDASH_METADATA );
-
         record.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_READ_ACCESS_ROLES );
         record.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_EDIT_ACCESS_ROLES );
 
-        record.Design.RelatedEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RELATED_ENTITIES );
+        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
         record.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DEFAULT_PAGE_LAYOUT );
 
         string value = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LINK_CONTENT_SETTING );
         if ( value != String.Empty )
         {
           record.Design.LinkContentSetting =
-            Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.LinkContentSetting> ( value );
+            Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
         }
         record.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
         record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
-        record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_PREFIX );
-        record.Design.AuthorOnlyEditAccess = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_AUTHOR_ONLY_EDIT_ACCESS );
-        record.Design.AuthorOnlyDraftAccess = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_AUTHOR_ONLY_DRAFT_ACCESS );
+        record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_ENTITY_PREFIX );
+        record.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
+        record.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
+        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
 
         record.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
         if ( record.Updated != string.Empty )
@@ -689,7 +790,7 @@ namespace Evado.Dal.Digital
       //
       StringBuilder sqlQueryString = new StringBuilder ( );
 
-      sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
       sqlQueryString.AppendLine ( " WHERE ( ( " + EdEntities.DB_DELETED + " = 0 )" );
 
       if ( QueryParameters.LayoutId != String.Empty )
@@ -841,7 +942,7 @@ namespace Evado.Dal.Digital
       // 
       // Generate the SQL query string.
       // 
-      sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
       sqlQueryString.AppendLine ( " WHERE  ( " + EdEntityLayouts.DB_DELETED + " = 0 )" );
 
       if ( LayoutId != String.Empty )
@@ -1053,13 +1154,13 @@ namespace Evado.Dal.Digital
       // 
       // Set the query parameter values
       // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_RECORD_GUID, SqlDbType.UniqueIdentifier );
+      SqlParameter cmdParms = new SqlParameter ( PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier );
       cmdParms.Value = RecordGuid;
 
       // 
       // Generate SQL query string
       // 
-      _sqlQueryString = SQL_QUERY_RECORD_VIEW + " WHERE ( " + EdEntities.DB_RECORD_GUID + "=" + EdEntities.PARM_RECORD_GUID + ") ;";
+      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_GUID + "=" + EdEntities.PARM_ENTITY_GUID + ") ;";
 
       //
       // Execute the query against the database.
@@ -1160,7 +1261,7 @@ namespace Evado.Dal.Digital
       SqlParameter cmdParms = new SqlParameter ( PARM_SOURCE_ID, SqlDbType.NVarChar, 20 );
       cmdParms.Value = SourceId;
 
-      _sqlQueryString = SQL_QUERY_RECORD_VIEW + " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + PARM_SOURCE_ID + " );";
+      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + PARM_SOURCE_ID + " );";
 
       //
       // Execute the query against the database.
@@ -1263,7 +1364,7 @@ namespace Evado.Dal.Digital
       };
       cmdParms [ 0 ].Value = RecordId;
 
-      _sqlQueryString = SQL_QUERY_RECORD_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );";
+      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );";
 
       //
       // Execute the query against the database.
@@ -2357,7 +2458,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter(PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter(PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
         new SqlParameter(PARM_UPDATED_DATE, SqlDbType.DateTime)
@@ -2422,7 +2523,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter(PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter(PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
         new SqlParameter(PARM_UPDATED_DATE, SqlDbType.DateTime),

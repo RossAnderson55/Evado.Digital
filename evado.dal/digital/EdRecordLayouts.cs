@@ -102,11 +102,10 @@ namespace Evado.Dal.Digital
     public const string DB_JAVA_SCRIPT = "EDRL_JAVA_SCRIPT";
     public const string DB_HAS_CS_SCRIPT = "EDRL_HAS_CS_SCRIPT";
     public const string DB_LANGUAGE = "EDRL_LANGUAGE";
-    public const string DB_CDASH_METADATA = "EDRL_CDASH_METADATA";
     public const string DB_READ_ACCESS_ROLES = "EDRL_READ_ACCESS_ROLES";
     public const string DB_EDIT_ACCESS_ROLES = "EDRL_EDIT_ACCESS_ROLES";
     public const string DB_PARENT_TYPE = "EDRL_PARENT_TYPE";
-    public const string DB_AUTHOR_ACCESS = "EDRL_AUTHOR_ACCESS";
+    public const string DB_PARENT_ACCESS = "EDRL_PARENT_ACCESS";
     public const string DB_PARENT_ENTITIES = "EDRL_PARENT_ENTITIES";
     public const string DB_DEFAULT_PAGE_LAYOUT = "EDRL_DEFAULT_PAGE_LAYOUT";
     public const string DB_LINK_CONTENT_SETTING = "EDRL_LINK_CONTENT_SETTING";
@@ -137,12 +136,11 @@ namespace Evado.Dal.Digital
     private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
     private const string PARM_HAS_CS_SCRIPT = "@HAS_CS_SCRIPT";
     private const string PARM_LANGUAGE = "@LANGUAGE";
-    private const string PARM_CDASH_METADATA = "@CDASH_METADATA";
     private const string PARM_READ_ACCESS_ROLES = "@READ_ACCESS_ROLES";
     private const string PARM_EDIT_ACCESS_ROLES = "@EDIT_ACCESS_ROLES";
-    private const string PARM_PARENT_TYPE = "EDRL_PARENT_TYPE";
-    private const string PARM_AUTHOR_ACCESS = "EDRL_AUTHOR_ACCESS";
-    private const string PARM_PARENT_ENTITIES = "EDRL_PARENT_ENTITIES";
+    private const string PARM_PARENT_TYPE = "@PARENT_TYPE";
+    private const string PARM_PARENT_ACCESS = "@PARENT_ACCESS";
+    private const string PARM_PARENT_ENTITIES = "@PARENT_ENTITIES";
     private const string PARM_DEFAULT_PAGE_LAYOUT = "@DEFAULT_PAGE_LAYOUT";
     private const string PARM_LINK_CONTENT_SETTING = "@LINK_CONTENT_SETTING";
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
@@ -197,18 +195,17 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdRecordLayouts.PARM_JAVA_SCRIPT, SqlDbType.NText),   
         new SqlParameter( EdRecordLayouts.PARM_HAS_CS_SCRIPT, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_LANGUAGE, SqlDbType.VarChar, 5),
-        new SqlParameter( EdRecordLayouts.PARM_CDASH_METADATA, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_READ_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_EDIT_ACCESS_ROLES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_PARENT_ENTITIES, SqlDbType.NVarChar, 250),
         new SqlParameter( EdRecordLayouts.PARM_DEFAULT_PAGE_LAYOUT, SqlDbType.NVarChar, 50),
         new SqlParameter( EdRecordLayouts.PARM_LINK_CONTENT_SETTING, SqlDbType.NVarChar, 50),
-
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_ENTITIES, SqlDbType.Bit),
+
         new SqlParameter( EdRecordLayouts.PARM_DISPLAY_AUTHOR_DETAILS, SqlDbType.Bit),
         new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_PARENT_TYPE, SqlDbType.NVarChar, 50),
-        new SqlParameter( EdRecordLayouts.PARM_AUTHOR_ACCESS, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdRecordLayouts.PARM_PARENT_ACCESS, SqlDbType.NVarChar, 50),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -259,21 +256,20 @@ namespace Evado.Dal.Digital
       cmdParms [ 11 ].Value = Form.Design.JavaScript;
       cmdParms [ 12 ].Value = Form.Design.hasCsScript;
       cmdParms [ 13 ].Value = Form.Design.Language;
-      cmdParms [ 14 ].Value = Form.cDashMetadata;
-      cmdParms [ 15 ].Value = Form.Design.ReadAccessRoles;
-      cmdParms [ 16 ].Value = Form.Design.EditAccessRoles;
-      cmdParms [ 17 ].Value = Form.Design.ParentEntities;
-      cmdParms [ 18 ].Value = Form.Design.DefaultPageLayout;
-      cmdParms [ 19 ].Value = Form.Design.LinkContentSetting;
+      cmdParms [ 14 ].Value = Form.Design.ReadAccessRoles;
+      cmdParms [ 15 ].Value = Form.Design.EditAccessRoles;
+      cmdParms [ 16 ].Value = Form.Design.ParentEntities;
+      cmdParms [ 17 ].Value = Form.Design.DefaultPageLayout;
+      cmdParms [ 18 ].Value = Form.Design.LinkContentSetting;
+      cmdParms [ 19 ].Value = Form.Design.DisplayRelatedEntities;
 
-      cmdParms [ 20 ].Value = Form.Design.DisplayRelatedEntities;
-      cmdParms [ 21 ].Value = Form.Design.DisplayAuthorDetails;
-      cmdParms [ 22 ].Value = Form.Design.RecordPrefix;
-      cmdParms [ 23 ].Value = Form.Design.ParentType;
-      cmdParms [ 24 ].Value = Form.Design.AuthorAccess;
-      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 27 ].Value = DateTime.Now;
+      cmdParms [ 20 ].Value = Form.Design.DisplayAuthorDetails;
+      cmdParms [ 21 ].Value = Form.Design.RecordPrefix;
+      cmdParms [ 22 ].Value = Form.Design.ParentType;
+      cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
+      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 26 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -331,7 +327,6 @@ namespace Evado.Dal.Digital
       layout.Design.JavaScript = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_JAVA_SCRIPT );
       layout.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_HAS_CS_SCRIPT );
       layout.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
-      layout.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
       layout.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES );
       layout.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
 
@@ -348,7 +343,7 @@ namespace Evado.Dal.Digital
       layout.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
       layout.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
       layout.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdRecordLayouts.DB_PARENT_TYPE );
-      layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdRecordLayouts.DB_AUTHOR_ACCESS );
+      layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdRecordLayouts.DB_PARENT_ACCESS );
       layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_PARENT_ENTITIES );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_UPDATED_BY );

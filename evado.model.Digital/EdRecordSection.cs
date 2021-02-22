@@ -122,35 +122,19 @@ namespace Evado.Model.Digital
 
     #region Class property
 
-    private Guid _Guid = Guid.Empty;
-    /// <summary>
-    /// This property contains a global unique identifier of a section. 
-    /// </summary>
-    public Guid Guid
-    {
-      get
-      {
-        return this._Guid;
-      }
-      set
-      {
-        this._Guid = value;
-      }
-    }
-
-    private Guid _FormGuid = Guid.Empty;
+    private Guid _LayoutGuid = Guid.Empty;
     /// <summary>
     /// This property contains a global unique identifier of a form. 
     /// </summary>
-    public Guid FormGuid
+    public Guid LayoutGuid
     {
       get
       {
-        return this._FormGuid;
+        return this._LayoutGuid;
       }
       set
       {
-        this._FormGuid = value;
+        this._LayoutGuid = value;
       }
     }
 

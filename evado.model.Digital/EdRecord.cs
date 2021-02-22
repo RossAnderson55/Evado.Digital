@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="model\EvForm.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="model\EdRecord.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
@@ -13,7 +13,7 @@
  * </copyright>
  * 
  * Description: 
- *  This class contains the EvForm data object.
+ *  This class contains the EdRecord data object.
  *
  ****************************************************************************************/
 
@@ -35,6 +35,7 @@ namespace Evado.Model.Digital
     {
       this.Design.AuthorAccess = AuthorAccessList.Only_Author;
       this.Design.ParentType = ParentTypeList.User;
+      this.Visabilty = VisabilityList.Public;
     }
 
     #endregion
@@ -168,24 +169,24 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the form role is not set the user does not have access.
       /// </summary>
-      Null = 0,
+      Null,
 
       /// <summary>
       /// This enumeration defines the object parent type to be a user.
       /// </summary>
-      User = 0,
+      User,
 
       /// <summary>
       /// This enumeration defines the object parent type to be an organsiation.
       /// This enables all user within that organisation to access and edit the object.
       /// </summary>
-      Organisation = 1,
+      Organisation,
 
       /// <summary>
       /// This enumeration defines the object parent is another entity.
       /// this selection enables the 
       /// </summary>
-      Entity = 2,
+      Entity,
     }  
     /// <summary>
     /// This enumeration list defines the record author access
@@ -195,37 +196,63 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the form role is not set the user does not have access.
       /// </summary>
-      Null = 0,
+      Null,
 
       /// <summary>
       /// This enumeration defines the only the author can edit the object content.
       /// </summary>
-      Only_Author = 0,
+      Only_Author,
 
       /// <summary>
       /// This enumeration defines the all organisatino users associated with an object can edit the object content..
       /// </summary>
-      Only_Organisation = 1,
+      Only_Organisation,
 
       /// <summary>
       /// This enumeration defines all edit accss roles have edit access to the object.
       /// </summary>
-      Edit_Access_Roles = 2,
+      Edit_Access_Roles,
 
       /// <summary>
       /// This enumeration defines the only the parent's author can edit the object content.
       /// </summary>
-      Parent_Author = 3,
+      Parent_Author,
 
       /// <summary>
       /// This enumeration defines the all user associated with an object can edi the object content.
       /// </summary>
-      Parent_Organisation = 4,
+      Parent_Organisation,
 
       /// <summary>
       /// This enumeration defines the all parent access users have can edit the object content.
       /// </summary>
-      Parent_Access = 5,
+      Parent_Access,
+    }
+
+    /// <summary>
+    /// This enumeration list defines the record author access
+    /// </summary>
+    public enum VisabilityList
+    {
+      /// <summary>
+      /// This enumeration defines the form role is not set the user does not have access.
+      /// </summary>
+      Null,
+
+      /// <summary>
+      /// This enumeration defines the only the author can edit the object content.
+      /// </summary>
+      Public,
+
+      /// <summary>
+      /// This enumeration defines the all organisatino users associated with an object can edit the object content..
+      /// </summary>
+      Private,
+
+      /// <summary>
+      /// This enumeration defines the all organisatino users associated with an object can edit the object content..
+      /// </summary>
+      Visible_Private,
     }
 
     /// <summary>
@@ -260,19 +287,9 @@ namespace Evado.Model.Digital
       Null,
 
       /// <summary>
-      /// This enumeration identifies the trial identifier field.
-      /// </summary>
-      ApplivcationId,
-
-      /// <summary>
       /// This enumeration identifies the form identifier field.
       /// </summary>
       Layout_Id,
-
-      /// <summary>
-      /// This enumeration identifies the milestone identifier field
-      /// </summary>
-      MilestoneId,
 
       /// <summary>
       /// This enumeration identified the organisation identifier field.
@@ -280,54 +297,14 @@ namespace Evado.Model.Digital
       OrgId,
 
       /// <summary>
-      /// This enumeration identifies the subject identifier field.
-      /// </summary>
-      SubjectId,
-
-      /// <summary>
       /// This enumeration identifies the record identifier field.
       /// </summary>
       RecordId,
 
       /// <summary>
-      /// This enumeration identifies the visit identifier field.
-      /// </summary>
-      VisitId,
-
-      /// <summary>
-      /// This enumeration identifies the schedule identifier field.
-      /// </summary>
-      ScheduleId,
-
-      /// <summary>
       /// This enumeration identifies the record date field.
       /// </summary>
       RecordDate,
-
-      /// <summary>
-      /// This enumeration identifies the record subject field.
-      /// </summary>
-      RecordSubject,
-
-      /// <summary>
-      /// This enumeration identifies the start date field.
-      /// </summary>
-      StartDate,
-
-      /// <summary>
-      /// This enumeration identifies the finish date field.
-      /// </summary>
-      FinishDate,
-
-      /// <summary>
-      /// This enumeration identifies the visit date field.
-      /// </summary>
-      VisitDate,
-
-      /// <summary>
-      /// This enumeration identifies the form annotation field.
-      /// </summary>
-      Annotation,
 
       /// <summary>
       /// This enumeration identifies the form comments field.
@@ -350,29 +327,9 @@ namespace Evado.Model.Digital
       Status,
 
       /// <summary>
-      /// This enumeration identifies the reference identifier field.
-      /// </summary>
-      ReferenceId,
-
-      /// <summary>
-      /// This enumeration identifies the activity identifier field.
-      /// </summary>
-      ActivityId,
-
-      /// <summary>
-      /// This enumeration identifies the activity is mandatory field.
-      /// </summary>
-      IsMandatoryActivity,
-
-      /// <summary>
       /// This enumeration identifies the form record is mandatory field.
       /// </summary>
       IsMandatory,
-
-      /// <summary>
-      /// This enumeration identifies the form layout parameter value
-      /// </summary>
-      Form_Layout,
 
       /// <summary>
       /// This enumeration identifies the form title field.
@@ -420,6 +377,26 @@ namespace Evado.Model.Digital
       HasCsScript,
 
       /// <summary>
+      /// This enumeration identifies the record subject field.
+      /// </summary>
+      Author,
+
+      /// <summary>
+      /// This enumeration identifies the record subject field.
+      /// </summary>
+      AuthorUserId,
+
+      /// <summary>
+      /// This enumeration parent layout idnetifier  field.
+      /// </summary>
+      ParentLayoutId,
+
+      /// <summary>
+      /// This enumeration parent layout guid field.
+      /// </summary>
+      ParentGuid,
+
+      /// <summary>
       /// This enumeration identifies the form user access role field
       /// </summary>
       ReadAccessRoles,
@@ -428,6 +405,11 @@ namespace Evado.Model.Digital
       /// This enumeration identifies the form user edit role field
       /// </summary>
       EditAccessRoles,
+
+      /// <summary>
+      /// This enumeration identifies the record subject field.
+      /// </summary>
+      Viaibility,
 
       /// <summary>
       /// This enumeration identifies the related entities fielsd
@@ -487,11 +469,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Class Properties
-
-    /// <summary>
-    /// This property contains a global unique identifier of a Customer . 
-    /// </summary>
-    public Guid CustomerGuid { get; set; }
 
     private Guid _Guid = Guid.Empty;
     /// <summary>
@@ -572,35 +549,105 @@ namespace Evado.Model.Digital
         this._RecordId = value;
       }
     }
-    private string _OrgId = String.Empty;
+    private string _ParentOrgId = String.Empty;
     /// <summary>
-    /// This property contains the organisation ID of the organisation associated with this record.
+    /// This property contains the organisation ID of the parent organisation associated with this object.
     /// </summary>
-    public string OrgId
+    public string ParentOrgId
     {
       get
       {
-        return this._OrgId;
+        return this._ParentOrgId;
       }
       set
       {
-        this._OrgId = value;
+        this._ParentOrgId = value;
       }
     }
 
-    private string _UserId = String.Empty;
+    private string _AuthorUserId = String.Empty;
     /// <summary>
     /// This property contains a user id of the user associated with this record. 
     /// </summary>
-    public string UserId
+    public string AuthorUserId
     {
       get
       {
-        return this._UserId;
+        return this._AuthorUserId;
       }
       set
       {
-        this._UserId = value;
+        this._AuthorUserId = value;
+      }
+    }
+
+    private string _Author = String.Empty;
+    /// <summary>
+    /// This property contains a user id of the author associated with this record. 
+    /// </summary>
+    public string Author
+    {
+      get
+      {
+        return this._Author;
+      }
+      set
+      {
+        this._Author = value;
+      }
+    }
+
+    private string _ParentLayoutId = String.Empty;
+    /// <summary>
+    /// This property contains the parent object layout id with this object.
+    /// </summary>
+    public string ParentLayoutId
+    {
+      get
+      {
+        return this._ParentLayoutId;
+      }
+      set
+      {
+        this._ParentLayoutId = value;
+      }
+    }
+
+    private Guid _ParentGuid = Guid.Empty;
+    /// <summary>
+    /// This property contains the parent object Guid associated with this object.
+    /// </summary>
+    public Guid ParentGuid
+    {
+      get
+      {
+        return this._ParentGuid;
+      }
+      set
+      {
+        this._ParentGuid = value;
+      }
+    }
+
+    private string _EntityAccess = String.Empty;
+    /// <summary>
+    /// This property contains a delimited list ';' of entities that have access to this object. 
+    /// And is enabled if visibility is set to 
+    /// </summary>
+    public string EntityAccess
+    {
+      get
+      {
+        if ( this.Visabilty == VisabilityList.Public )
+        {
+          this._EntityAccess = String.Empty;
+        }
+
+        return this._EntityAccess;
+      }
+      set
+      {
+        this._EntityAccess = value;
       }
     }
 
@@ -632,6 +679,10 @@ namespace Evado.Model.Digital
       }
     }
 
+    /// <summary>
+    /// This property defines the visibility of the record objects content to platform users.
+    /// </summary>
+    public EdRecord.VisabilityList Visabilty { get; set; }
 
     private EdRecordDesign _Design = new EdRecordDesign ( );
     /// <summary>
@@ -900,19 +951,19 @@ namespace Evado.Model.Digital
 
     public FormAccessRoles FormAccessRole { set; get; }
 
-    String _cDashMetadata = String.Empty;
+    String _AiIndex = String.Empty;
     /// <summary>
     /// This property contains cDash metadata values. 
     /// </summary>
-    public string cDashMetadata
+    public string AiIndex
     {
       get
       {
-        return this._cDashMetadata;
+        return this._AiIndex;
       }
       set
       {
-        this._cDashMetadata = value;
+        this._AiIndex = value;
       }
     }
 
@@ -945,23 +996,6 @@ namespace Evado.Model.Digital
       set
       {
         this._BookedOutBy = value;
-      }
-    }
-
-
-    private bool _Selected = false;
-    /// <summary>
-    /// This property indicates whether a form is selected. 
-    /// </summary>
-    public bool Selected
-    {
-      get
-      {
-        return this._Selected;
-      }
-      set
-      {
-        this._Selected = value;
       }
     }
 
@@ -1306,7 +1340,6 @@ namespace Evado.Model.Digital
 
     }
 
-
     //  =================================================================================
     /// <summary>
     ///  This method updates the form record state based on current data content.
@@ -1530,144 +1563,6 @@ namespace Evado.Model.Digital
 
     // =====================================================================================
     /// <summary>
-    /// This class provides a list of trial types.
-    /// </summary>
-    /// <param name="FieldName">string: a field name</param>
-    /// <returns>string: a value based on the Fieldname</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Initialize an internal fieldname as enumerated object
-    /// 
-    /// 2. Try convert a string FieldName into an enumerated object fieldname
-    /// 
-    /// 3. Switch fieldname and update value for the property defined by form class field names.
-    /// </remarks>
-    //  ------------------------------------------------------------------------------------
-    public string getValue ( string FieldName )
-    {
-      // 
-      // Initialise the fieldname as enumerated object
-      // 
-      RecordFieldNames fieldname = RecordFieldNames.Null;
-
-      //
-      // Try convert the FieldName into fieldname 
-      //
-      try
-      {
-        fieldname = (RecordFieldNames) Enum.Parse ( typeof ( RecordFieldNames ), FieldName );
-      }
-      catch
-      {
-        fieldname = RecordFieldNames.Null;
-      }
-
-      return getValue ( fieldname );
-    }
-
-    // =====================================================================================
-    /// <summary>
-    /// This class provides a list of trial types.
-    /// </summary>
-    /// <param name="FieldName">string: a field name</param>
-    /// <returns>string: a value based on the Fieldname</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Initialize an internal fieldname as enumerated object
-    /// 
-    /// 2. Try convert a string FieldName into an enumerated object fieldname
-    /// 
-    /// 3. Switch fieldname and update value for the property defined by form class field names.
-    /// </remarks>
-    //  ------------------------------------------------------------------------------------
-    public string getValue ( RecordFieldNames FieldName )
-    {
-      // 
-      // Switch to the fieldname and return the related value.
-      // 
-      switch ( FieldName )
-      {
-
-        case RecordFieldNames.Layout_Id:
-          return this.LayoutId;
-
-        case RecordFieldNames.SourceId:
-          return this._SourceId;
-
-        case RecordFieldNames.Status:
-          return this.StateDesc;
-
-        case RecordFieldNames.IsMandatory:
-          return this._IsMandatory.ToString ( );
-
-        case RecordFieldNames.Title:
-          return this._Design.Title;
-
-        case RecordFieldNames.Instructions:
-          return this._Design.Instructions;
-
-        case RecordFieldNames.Description:
-          {
-            return this._Design.Description;
-          }
-
-        case RecordFieldNames.UpdateReason:
-          {
-            return this._Design.UpdateReason.ToString ( );
-          }
-        case RecordFieldNames.ReadAccessRoles:
-          {
-            return this.FormAccessRole.ToString ( );
-          }
-
-
-        case RecordFieldNames.Reference:
-          return this._Design.HttpReference;
-
-        case RecordFieldNames.FormCategory:
-          return this._Design.RecordCategory;
-
-        case RecordFieldNames.TypeId:
-          return this._Design.TypeId.ToString ( );
-
-        case RecordFieldNames.JavaScript:
-          return this._Design.JavaScript;
-
-        case RecordFieldNames.HasCsScript:
-          return this._Design.hasCsScript.ToString ( );
-
-        case RecordFieldNames.EditAccessRoles:
-          return this._Design.EditAccessRoles.ToString ( );
-
-        case RecordFieldNames.RelatedEntities:
-          return this._Design.ParentEntities.ToString ( );
-
-        case RecordFieldNames.DefaultPageLayout:
-          return this._Design.DefaultPageLayout.ToString ( );
-
-        case RecordFieldNames.LinkConsentSetting:
-          return this._Design.LinkContentSetting.ToString ( );
-
-        case RecordFieldNames.DisplayRelatedEntities:
-          return this._Design.DisplayRelatedEntities.ToString ( );
-
-        case RecordFieldNames.DisplayAuthorDetails:
-          return this._Design.DisplayAuthorDetails.ToString ( );
-
-        default:
-          {
-            return String.Empty;
-
-          }//END Default
-
-      }//END Switch
-
-    }//END getValue method
-
-    // =====================================================================================
-    /// <summary>
     ///   This method sets the field value.
     /// </summary>
     /// <param name="FieldName">string: a field name</param>
@@ -1808,6 +1703,26 @@ namespace Evado.Model.Digital
             this.Design.ReadAccessRoles = Value;
             return;
           }
+        case RecordFieldNames.AuthorAccess:
+          {
+            this.Design.AuthorAccess = Evado.Model.EvStatics.parseEnumValue<EdRecord.AuthorAccessList> ( Value );
+            return;
+          }
+        case RecordFieldNames.ParentType:
+          {
+            this.Design.ParentType = Evado.Model.EvStatics.parseEnumValue<EdRecord.ParentTypeList> ( Value );
+            return;
+          }
+        case RecordFieldNames.ParentEntities:
+          {
+            this._Design.ParentEntities = Value;
+            return;
+          }
+        case RecordFieldNames.Viaibility:
+          {
+            this.Visabilty = EvStatics.parseEnumValue<EdRecord.VisabilityList>(  Value );
+            return;
+          }
 
         case RecordFieldNames.Reference:
           {
@@ -1859,21 +1774,6 @@ namespace Evado.Model.Digital
         case RecordFieldNames.DisplayAuthorDetails:
           {
             this.Design.DisplayAuthorDetails = EvcStatics.getBool ( Value );
-            return;
-          }
-        case RecordFieldNames.AuthorAccess:
-          {
-            this.Design.AuthorAccess = Evado.Model.EvStatics.parseEnumValue<EdRecord.AuthorAccessList> ( Value );
-            return;
-          }
-        case RecordFieldNames.ParentType:
-          {
-            this.Design.ParentType = Evado.Model.EvStatics.parseEnumValue<EdRecord.ParentTypeList> ( Value );
-            return;
-          }
-        case RecordFieldNames.ParentEntities:
-          {
-            this._Design.ParentEntities = Value;
             return;
           }
         default:

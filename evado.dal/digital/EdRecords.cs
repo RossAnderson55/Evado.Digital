@@ -89,6 +89,8 @@ namespace Evado.Dal.Digital
     public const string DB_RECORD_ID = "RECORD_ID";
     public const string DB_SOURCE_ID = "EDR_SOURCE_ID";
     public const string DB_RECORD_DATE = "EDR_RECORD_DATE";
+    public const string DB_VISABILITY = "EDR_VISABILITY";
+    public const string DB_AI_DATA_INDEX = "EDR_AI_DATA_INDEX";
     public const string DB_SIGN_OFFS = "EDR_SIGN_OFFS";
     public const string DB_BOOKED_OUT_USER_ID = "EDR_BOOKED_OUT_USER_ID";
     public const string DB_BOOKED_OUT = "EDR_BOOKED_OUT";
@@ -113,6 +115,8 @@ namespace Evado.Dal.Digital
     private const string PARM_RECORD_ID = "@RECORD_ID";
     private const string PARM_SOURCE_ID = "@SOURCE_ID";
     private const string PARM_RECORD_DATE = "@RECORD_DATE";
+    private const string PARM_VISABILITY = "@VISABILITY";
+    private const string PARM_AI_DATA_INDEX = "@AI_DATA_INDEX";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
     private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
@@ -161,6 +165,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdRecords.PARM_STATE, SqlDbType.VarChar, 20),
         new SqlParameter( EdRecords.PARM_SOURCE_ID, SqlDbType.NVarChar, 40), 
         new SqlParameter( EdRecords.PARM_RECORD_DATE, SqlDbType.DateTime),
+        new SqlParameter( EdRecords.PARM_VISABILITY, SqlDbType.NVarChar, 30), 
+        new SqlParameter( EdRecords.PARM_AI_DATA_INDEX, SqlDbType.NVarChar, 1000), 
         new SqlParameter( EdRecords.PARM_SIGN_OFFS, SqlDbType.NVarChar),
         new SqlParameter( EdRecords.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdRecords.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
@@ -355,12 +361,10 @@ namespace Evado.Dal.Digital
       // Initialise the return form object and the form selected condition.
       // 
       EdRecord record = new EdRecord ( );
-      record.Selected = false;
 
       // 
       // Update the trial record object with compatible values from datarow.
       // 
-      record.CustomerGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_CUSTOMER_GUID );
       record.Guid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
       record.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
       record.SourceId = EvSqlMethods.getString ( Row, EdRecords.DB_SOURCE_ID );
@@ -390,7 +394,6 @@ namespace Evado.Dal.Digital
         record.Design.JavaScript = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_JAVA_SCRIPT );
         record.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_HAS_CS_SCRIPT );
         record.Design.Language = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_LANGUAGE );
-        record.cDashMetadata = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_CDASH_METADATA );
 
         record.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_READ_ACCESS_ROLES );
         record.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_EDIT_ACCESS_ROLES );
@@ -408,7 +411,6 @@ namespace Evado.Dal.Digital
         record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdRecordLayouts.DB_DISPLAY_AUTHOR_DETAILS );
         record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_RECORD_PREFIX );
         record.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdRecordLayouts.DB_PARENT_TYPE );
-        record.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdRecordLayouts.DB_AUTHOR_ACCESS );
         record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdRecordLayouts.DB_PARENT_ENTITIES );
 
         record.Updated = EvSqlMethods.getString ( Row, EdRecords.DB_UPDATED_BY );

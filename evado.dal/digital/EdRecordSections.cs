@@ -75,18 +75,17 @@ namespace Evado.Dal.Digital
     /// </summary>
     private const string _sqlQueryView = "Select * FROM ED_ENTITY_SECTIONS ";
 
-    private const string DB_LAYOUT_SECTION_GUID = "EDELS_Guid";
-    private const string DB_LAYOUT_GUID = "EDEL_Guid";
-    private const string DB_NUMBER = "EDELS_NUMBER";
-    private const string DB_ORDER = "EDELS_ORDER";
-    private const string DB_NAME = "EDELS_NAME";
-    private const string DB_INSTRUCTIONS = "EDELS_INSTRUCTIONS";
-    private const string DB_FIELD_NAME = "EDELS_FIELD_NAME";
-    private const string DB_FIELD_VALUE = "EDELS_FIELD_VALUE";
-    private const string DB_ON_MATCH_VISIBLE = "EDELS_ON_MATCH_VISIBLE";
-    private const string DB_VISIBLE = "EDELS_VISIBLE";
-    private const string DB_DEFAULT_DISPLAY_ROLES = "EDELS_DEFAULT_DISPLAY_ROLES";
-    private const string DB_DEFAULT_EDIT_ROLES = "EDELS_DEFAULT_EDIT_ROLES";
+    private const string DB_LAYOUT_GUID = "EDRL_Guid";
+    private const string DB_NUMBER = "EDRLS_NUMBER";
+    private const string DB_ORDER = "EDRLS_ORDER";
+    private const string DB_NAME = "EDRLS_NAME";
+    private const string DB_INSTRUCTIONS = "EDRLS_INSTRUCTIONS";
+    private const string DB_FIELD_NAME = "EDRLS_FIELD_NAME";
+    private const string DB_FIELD_VALUE = "EDRLS_FIELD_VALUE";
+    private const string DB_ON_MATCH_VISIBLE = "EDRLS_ON_MATCH_VISIBLE";
+    private const string DB_VISIBLE = "EDRLS_VISIBLE";
+    private const string DB_DEFAULT_DISPLAY_ROLES = "EDRLS_DEFAULT_DISPLAY_ROLES";
+    private const string DB_DEFAULT_EDIT_ROLES = "EDRLS_DEFAULT_EDIT_ROLES";
 
 
     //
@@ -152,8 +151,7 @@ namespace Evado.Dal.Digital
       //
       // Update formfield object with the compatible data row items. 
       //
-      formSection.Guid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_SECTION_GUID );
-      formSection.FormGuid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_GUID );
+      formSection.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_GUID );
       formSection.No = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_NUMBER );
       formSection.Order = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_ORDER );
       formSection.FieldId = EvSqlMethods.getString ( Row, EdRecordSections.DB_FIELD_NAME );
@@ -368,8 +366,7 @@ namespace Evado.Dal.Digital
         // Create the add query .
         //
         sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_ENTITY_SECTIONS  "
-        + "(" + DB_LAYOUT_SECTION_GUID
-        + ", " + DB_LAYOUT_GUID
+        + "(" +  DB_LAYOUT_GUID
         + ", " + DB_NUMBER
         + ", " + DB_ORDER
         + ", " + DB_NAME

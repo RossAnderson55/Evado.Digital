@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="digital\EdEntities.cs" />
     <Compile Include="digital\EdAdapterConfig.cs" />
     <Compile Include="digital\EdEntityFields.cs">
       <SubType>Code</SubType>
@@ -129,7 +130,7 @@
     <Compile Include="digital\EdEntityLayouts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="digital\EdentitySections.cs">
+    <Compile Include="digital\EdEntitySections.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="digital\EdOrganisations.cs" />
