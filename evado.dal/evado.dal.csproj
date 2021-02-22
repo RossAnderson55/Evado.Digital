@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="digital\EdEntityObjects.cs" />
     <Compile Include="digital\EdEntities.cs" />
     <Compile Include="digital\EdAdapterConfig.cs" />
     <Compile Include="digital\EdEntityFields.cs">

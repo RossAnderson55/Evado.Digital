@@ -3234,6 +3234,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Layout Settings.
+        /// </summary>
+        public static string Form_Properties_Settings_Group_Title {
+            get {
+                return ResourceManager.GetString("Form_Properties_Settings_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xml form design.
         /// </summary>
         public static string Form_Properties_Xml_Form_Field_Title {

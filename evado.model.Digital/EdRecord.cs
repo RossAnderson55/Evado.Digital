@@ -429,7 +429,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the displkay record summary field
       /// </summary>
-      LinkConsentSetting,
+      LinkContentSetting,
 
       /// <summary>
       /// This enumeration identifies the display related entities field
@@ -1760,7 +1760,7 @@ namespace Evado.Model.Digital
             this._Design.RecordPrefix = Value;
             return;
           }
-        case RecordFieldNames.LinkConsentSetting:
+        case RecordFieldNames.LinkContentSetting:
           {
             this.Design.LinkContentSetting =
               Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( Value );

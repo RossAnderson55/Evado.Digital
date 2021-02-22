@@ -371,7 +371,7 @@ namespace Evado.UniForm.Digital
       }
 
       pageField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.LinkConsentSetting,
+        EdRecord.RecordFieldNames.LinkContentSetting,
         EdLabels.Record_Link_Content_Setting_Field_Title,
         this.Session.RecordLayout.Design.LinkContentSetting,
         optionList );
@@ -441,7 +441,7 @@ namespace Evado.UniForm.Digital
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting), false );
 
       pageField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.LinkConsentSetting.ToString ( ),
+        EdRecord.RecordFieldNames.LinkContentSetting.ToString ( ),
         EdLabels.Form_Llink_Content_Setting_Field_Title,
         this.Session.RecordLayout.Design.LinkContentSetting,
         optionList );
