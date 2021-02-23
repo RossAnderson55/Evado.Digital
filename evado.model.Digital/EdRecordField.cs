@@ -200,11 +200,6 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a global unique identifier of a form field.
     /// </summary>
-    public Guid CustomerGuid { get; set; }
-
-    /// <summary>
-    /// This property contains a global unique identifier of a form field.
-    /// </summary>
     public Guid Guid { get; set; }
 
     /// <summary>
@@ -215,7 +210,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a form field global unique identifier of a form field.
     /// </summary>
-    public Guid RecordFieldGuid { get; set; }
+    public Guid FieldGuid { get; set; }
 
     /// <summary>
     /// This property contains a record global unique identifier of a form field.
@@ -561,10 +556,6 @@ namespace Evado.Model.Digital
     public bool Visible = true;
 
     #endregion
-
-    #endregion
-
-    #region Format Value code
 
     #endregion
 

@@ -47,7 +47,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdRecordComments ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecordComments.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordComments.";
     }
 
     // ==================================================================================
@@ -59,19 +59,12 @@ namespace Evado.Dal.Digital
     public EdRecordComments ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecordComments.";
-
-      if ( this.ClassParameters.LoggingLevel == 0 )
-      {
-        this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordComments.";
     }
 
     #endregion
 
     #region Initialise class objects and constants
-
-    private static string _eventLogSource = ConfigurationManager.AppSettings [ "EventLogSource" ];
 
     /// <summary>
     /// This constant defines the sql query string for selecting all items from form record comments table.
@@ -523,8 +516,6 @@ namespace Evado.Dal.Digital
         //
         string eventMessage = "DebugLog: + " + this.Log
           + "\r\n Exception: \r\n" + Evado.Model.Digital.EvcStatics.getException( Ex );
-
-        Evado.Model.Digital.EvcStatics.WriteToEventLog( _eventLogSource, eventMessage, EventLogEntryType.Error );
 
         throw ( Ex );
       }

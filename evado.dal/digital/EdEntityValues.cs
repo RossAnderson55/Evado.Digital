@@ -155,9 +155,9 @@ namespace Evado.Dal.Digital
       // Fill the evForm object.l
       //
       recordField.Guid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_VALUES_GUID );
-      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
-      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      recordField.RecordFieldGuid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_FIELD_GUID );
+      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
+      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
+      recordField.FieldGuid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_FIELD_GUID );
 
 
       recordField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
@@ -429,7 +429,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class returns a list of formfield object retrieved by the record Guid. 
     /// </summary>
-    /// <param name="Record">EvForm: (Mandatory) The record object.</param>
+    /// <param name="Entity">EvForm: (Mandatory) The record object.</param>
     /// <param name="IncludeComments">bool: true = include field comments.</param>
     /// <returns>List of EvFormField: a formfield object.</returns>
     /// <remarks>
@@ -448,11 +448,11 @@ namespace Evado.Dal.Digital
     /// 6. Return the formfields list.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EdRecordField> getRecordFieldList (
-      EdRecord Record )
+    public List<EdRecordField> GetlEntityValues (
+      EdRecord Entity )
     {
-      this.LogMethod ( "getRecordFieldList method. " );
-      this.LogDebug ( "Record.Guid: " + Record.Guid );
+      this.LogMethod ( "GetlEntityValues" );
+      this.LogDebug ( "Entity.Guid: " + Entity.Guid );
       //
       // Initialise the methods variables and objects.
       //
@@ -463,8 +463,9 @@ namespace Evado.Dal.Digital
       // 
       // Validate whether the record Guid is not empty. 
       // 
-      if ( Record.Guid == Guid.Empty )
+      if ( Entity.Guid == Guid.Empty )
       {
+        this.LogMethodEnd ( "GetlEntityValues" );
         return recordFieldList;
       }
 
@@ -475,7 +476,7 @@ namespace Evado.Dal.Digital
       {
         new SqlParameter(PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
       };
-      cmdParms [ 0 ].Value = Record.Guid;
+      cmdParms [ 0 ].Value = Entity.Guid;
 
       // 
       // Define the query string.
@@ -492,6 +493,8 @@ namespace Evado.Dal.Digital
       {
         if ( table.Rows.Count == 0 )
         {
+          this.LogDebug ( "Not returned values " );
+          this.LogMethodEnd ( "GetlEntityValues" );
           return recordFieldList;
         }
 
@@ -507,8 +510,6 @@ namespace Evado.Dal.Digital
 
           Guid recordValueGuid = EvSqlMethods.getGuid ( row, EdEntityValues.DB_VALUES_GUID );
 
-          this.LogDebug ( "previousValueGuid: {0}, recordValueGuid: {1}.", previousValueGuid, recordValueGuid );
-
           //
           // Empty fields are skipped.
           //
@@ -517,6 +518,8 @@ namespace Evado.Dal.Digital
             this.LogDebug ( "Skip the value Guid is empty." );
             continue;
           }
+
+          this.LogDebug ( "previousValueGuid: {0}, recordValueGuid: {1}.", previousValueGuid, recordValueGuid );
 
           // If the field guid has changed then it is a new field.
           // So add the previous field then get the data for the new field.
@@ -530,6 +533,7 @@ namespace Evado.Dal.Digital
             if ( recordField.Guid != Guid.Empty )
             {
               this.LogDebug ( "Add field to record field list." );
+
               recordFieldList.Add ( recordField );
             }
 
@@ -605,7 +609,6 @@ namespace Evado.Dal.Digital
               }
           }
 
-
         }//ENR record iteration loop.
 
       }//ENd using statement
@@ -621,9 +624,11 @@ namespace Evado.Dal.Digital
       // 
       // Return the formfields list.
       // 
+      this.LogDebug ( "recordFieldList.Count {0}. ", recordFieldList.Count );
+      this.LogMethodEnd ( "GetlEntityValues" );
       return recordFieldList;
 
-    }//END getRecordFieldList method.
+    }//END GetlEntityValues method.
 
     // =====================================================================================
     /// <summary>
@@ -711,7 +716,6 @@ namespace Evado.Dal.Digital
 
       LogMethodEnd ( "getTableCellValue" );
     }//END getTableCellValue method
-
 
     // =====================================================================================
     /// <summary>
@@ -858,7 +862,7 @@ namespace Evado.Dal.Digital
         {
           field.Guid = Guid.NewGuid ( );
         }
-        this.LogDebug ( "field.FormFieldGuid: " + field.RecordFieldGuid );
+        this.LogDebug ( "field.FormFieldGuid: " + field.FieldGuid );
         this.LogDebug ( "field.Guid: " + field.Guid );
 
         //
@@ -982,7 +986,7 @@ namespace Evado.Dal.Digital
       // Define the record field Guid
       // 
       SqlParameter prm = new SqlParameter ( EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = RecordField.RecordFieldGuid;
+      prm.Value = RecordField.FieldGuid;
       ParmList.Add ( prm );
 
       // 
@@ -1180,7 +1184,7 @@ namespace Evado.Dal.Digital
       // Define the record field Guid
       // 
       SqlParameter prm = new SqlParameter ( EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = EntityField.RecordFieldGuid;
+      prm.Value = EntityField.FieldGuid;
       ParmList.Add ( prm );
 
       // 

@@ -1427,7 +1427,7 @@ namespace Evado.Dal.Digital
       for ( int i = 0; i < fieldlist.Count; i++ )
       {
         EdRecordField field = fieldlist [ i ];
-        field.RecordFieldGuid = field.Guid;
+        field.FieldGuid = field.Guid;
         field.Guid = Guid.NewGuid ( );
 
         Record.Fields.Add ( field );

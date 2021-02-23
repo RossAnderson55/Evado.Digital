@@ -184,6 +184,7 @@ namespace Evado.UniForm.Digital
     private void loadEnityLayoutList ( )
     {
       this.LogMethod ( "loadEnityLayoutList" );
+      this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
       if ( this._AdapterObjects.AllEntityLayouts.Count > 0 )
       {
@@ -222,6 +223,7 @@ namespace Evado.UniForm.Digital
     private void loadRecordLayoutList ( )
     {
       this.LogMethod ( "loadRecordLayoutList" );
+      this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
       if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
       {

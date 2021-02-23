@@ -182,7 +182,7 @@ namespace Evado.Dal.Digital
       recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_VALUES_GUID );
       recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
       recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      recordField.RecordFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
+      recordField.FieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
 
 
       recordField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
@@ -883,7 +883,7 @@ namespace Evado.Dal.Digital
         {
           field.Guid = Guid.NewGuid ( );
         }
-        this.LogDebug ( "field.FormFieldGuid: " + field.RecordFieldGuid );
+        this.LogDebug ( "field.FormFieldGuid: " + field.FieldGuid );
         this.LogDebug ( "field.Guid: " + field.Guid );
 
         //
@@ -996,7 +996,7 @@ namespace Evado.Dal.Digital
       // Define the record field Guid
       // 
       SqlParameter prm = new SqlParameter ( EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
-      prm.Value = RecordField.RecordFieldGuid;
+      prm.Value = RecordField.FieldGuid;
       ParmList.Add ( prm );
 
       // 

@@ -1512,7 +1512,7 @@ namespace Evado.UniForm.Digital
         //
         // Get the record.
 
-        var result = this.GetRecord ( PageCommand );
+        var result = this.GetEntity ( PageCommand );
         // 
         // if the guid is empty the parameter was not found to exit.
         // 
@@ -1573,67 +1573,69 @@ namespace Evado.UniForm.Digital
     /// 
     /// </summary>
     //  ---------------------------------------------------------------------------------
-    private EvEventCodes GetRecord (
+    private EvEventCodes GetEntity (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "GetRecord" );
+      this.LogMethod ( "GetEntity" );
       //
       // Initialise the methods variables and objects.
       //
-      Guid recordGuid = PageCommand.GetGuid ( );
-      String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString ( ) );
+      Guid entityGuid = PageCommand.GetGuid ( );
+      String entityId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString ( ) );
 
       //
       // If the record ids match then the record is loaded so exit.
       //
-      if ( recordId == this.Session.Entity.RecordId
-        && recordId != String.Empty )
+      if ( entityId == this.Session.Entity.RecordId
+        && entityId != String.Empty )
       {
-        this.LogMethodEnd ( "GetRecord" );
+        this.LogDebug ( "Entity Loaded" );
+        this.LogMethodEnd ( "GetEntity" );
         return EvEventCodes.Ok;
       }
 
       //
       // If the record Guid match then the record is loaded so exit.
       //
-      if ( recordGuid == this.Session.Entity.Guid
-        && recordGuid != Guid.Empty )
+      if ( entityGuid == this.Session.Entity.Guid
+        && entityGuid != Guid.Empty )
       {
-        this.LogMethodEnd ( "GetRecord" );
+        this.LogDebug ( "Entity Loaded" );
+        this.LogMethodEnd ( "GetEntity" );
         return EvEventCodes.Ok;
       }
 
       //
       // Retrieve the record using the record identifier.
       //
-      if ( recordId != String.Empty )
+      if ( entityGuid != Guid.Empty )
       {
-        this.LogValue ( "recordId: " + recordId );
         // 
-        // Retrieve the customer object from the database via the DAL and BLL layers.
+        // Retrieve the record object from the database via the DAL and BLL layers.
         // 
-        this.Session.Entity = this._Bll_Entities.GetEntity ( recordId );
+        this.Session.Entity = this._Bll_Entities.GetEntity ( entityGuid );
       }
       else
       {
         // 
         // return if not trial id
         // 
-        if ( recordGuid == Guid.Empty )
+        if ( entityId == String.Empty )
         {
-          this.LogDebug ( "recordGuid is EMPTY" );
-          this.LogMethodEnd ( "GetRecord" );
-          return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
+          this.LogDebug ( "entityId is EMPTY" );
+          this.LogMethodEnd ( "GetEntity" );
+          return EvEventCodes.Identifier_Entity_Id_Error;
         }
-
+        this.LogValue ( "recordId: " + entityId );
         // 
-        // Retrieve the record object from the database via the DAL and BLL layers.
+        // Retrieve the customer object from the database via the DAL and BLL layers.
         // 
-        this.Session.Entity = this._Bll_Entities.GetEntity ( recordGuid );
+        this.Session.Entity = this._Bll_Entities.GetEntity ( entityId );
       }
 
       this.LogClass ( this._Bll_Entities.Log );
 
+      this.LogDebug ( "Entity {0}, Title {1}.", this.Session.Entity.RecordId, this.Session.Entity.Title );
       this.LogDebug ( "There are {0} of fields in the record.", this.Session.Entity.Fields.Count );
 
       //
@@ -1645,7 +1647,7 @@ namespace Evado.UniForm.Digital
       }
 
 
-      this.LogMethodEnd ( "GetRecord" );
+      this.LogMethodEnd ( "GetEntity" );
       return EvEventCodes.Ok;
     }
 

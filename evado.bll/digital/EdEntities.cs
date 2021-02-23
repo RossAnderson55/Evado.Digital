@@ -228,7 +228,7 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalEntities.getRecord ( RecordGuid );
+      record = this._DalEntities.GetEntity ( RecordGuid );
       this.LogClass ( this._DalEntities.Log );
 
       this.LogMethodEnd ( "GetEntity" );
@@ -240,7 +240,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class retrieves a form object based on RecordId
     /// </summary>
-    /// <param name="RecordId">String record identifier</param>
+    /// <param name="EntityId">String record identifier</param>
     /// <returns>EvForm: a form object</returns>
     /// <remarks>
     /// This class consists of the following steps: 
@@ -250,10 +250,10 @@ namespace Evado.Bll.Digital
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord GetEntity ( String RecordId )
+    public EdRecord GetEntity ( String EntityId )
     {
       this.LogMethod ( "GetEntity method. " );
-      this.LogValue ( "RecordId: " + RecordId );
+      this.LogValue ( "EntityId: " + EntityId );
       // 
       // Initialise the method variables and objects.
       // 
@@ -262,7 +262,7 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalEntities.getRecord ( RecordId );
+      record = this._DalEntities.GetEntity ( EntityId );
       this.LogClass ( this._DalEntities.Log );
 
       this.LogMethodEnd ( "GetEntity" );

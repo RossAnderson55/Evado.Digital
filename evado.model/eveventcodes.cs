@@ -558,6 +558,10 @@ namespace Evado.Model
     /// This enumeration defines that a schedule identifier error event occured.
     /// </summary>
     Identifier_Report_Identifier_Error = -444,
+    /// <summary>
+    /// This enumeration defines that a activity identifier error event occured.
+    /// </summary>
+    Identifier_Entity_Id_Error = -445,
 
     /// <summary>
     /// This enumeration defines that a global unique identifier error event occured.

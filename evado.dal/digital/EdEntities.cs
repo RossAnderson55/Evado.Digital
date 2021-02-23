@@ -729,7 +729,7 @@ namespace Evado.Dal.Digital
             // 
             // Get the trial record fields
             // 
-            this.GetEntityData ( record );
+            this.GetEntityValues ( record );
 
             //
             // Attach the entity list.
@@ -981,7 +981,7 @@ namespace Evado.Dal.Digital
           // 
           // Get the trial record items
           // 
-          this.GetEntityData ( record );
+          this.GetEntityValues ( record );
 
           //
           // Attach the entity list.
@@ -1114,7 +1114,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method retrieves a form object based on Guid
     /// </summary>
-    /// <param name="RecordGuid">Guid: (Mandatory) Global Unique object identifier (long integer).</param>
+    /// <param name="EntityGuid">Guid: (Mandatory) Global Unique object identifier (long integer).</param>
     /// <returns>EvForm: a form data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1132,30 +1132,30 @@ namespace Evado.Dal.Digital
     /// 6. Return the form data object. 
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public EdRecord getRecord (
-      Guid RecordGuid )
+    public EdRecord GetEntity (
+      Guid EntityGuid )
     {
-      this.LogMethod ( "getRecord method." );
-      this.LogDebug ( "Guid: " + RecordGuid );
+      this.LogMethod ( "GetEntity" );
+      this.LogDebug ( "EntityGuid: " + EntityGuid );
 
       //
       // Initialize the debug log, a return form object and a formfield object.
       //
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
 
       // 
       // Validate whether the Guid is not metpy. 
       // 
-      if ( RecordGuid == Guid.Empty )
+      if ( EntityGuid == Guid.Empty )
       {
-        return record;
+        return entity;
       }
 
       // 
       // Set the query parameter values
       // 
       SqlParameter cmdParms = new SqlParameter ( PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier );
-      cmdParms.Value = RecordGuid;
+      cmdParms.Value = EntityGuid;
 
       // 
       // Generate SQL query string
@@ -1172,7 +1172,7 @@ namespace Evado.Dal.Digital
         // 
         if ( table.Rows.Count == 0 )
         {
-          return record;
+          return entity;
         }
 
         // 
@@ -1183,34 +1183,34 @@ namespace Evado.Dal.Digital
         // 
         // Fill the role object.
         // 
-        record = this.getRowData ( row, false );
+        entity = this.getRowData ( row, false );
 
       }//END Using method
 
       // 
       // Attach fields and other trial data.
       // 
-      this.GetEntityData ( record );
-
-      //
-      // load layout fields if record field list is empty.
-      //
-      this.getLayoutFields ( record );
-
-      //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
+      this.GetEntityValues ( entity );
 
       //
       // Update the form record section references.
       //
-      this.GetRecordSections ( record );
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getEntities ( entity );
 
       // 
       // Return the trial record.
       // 
-      return record;
+      return entity;
 
     }//END getRecord method
 
@@ -1245,14 +1245,14 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "GetEntityBySource method. " );
       this.LogDebug ( "SourceId: " + SourceId );
 
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
 
       // 
       // Validate whether the RecordId is not empty. 
       // 
       if ( SourceId == String.Empty )
       {
-        return record;
+        return entity;
       }
 
       // 
@@ -1273,7 +1273,7 @@ namespace Evado.Dal.Digital
         // 
         if ( table.Rows.Count == 0 )
         {
-          return record;
+          return entity;
         }
 
         // 
@@ -1284,35 +1284,35 @@ namespace Evado.Dal.Digital
         // 
         // Fill the role object.
         // 
-        record = this.getRowData ( row, true );
+        entity = this.getRowData ( row, true );
 
       }//END Using method
-
-      // 
-      // Attach fields and other trial data.
-      // 
-      this.GetEntityData ( record );
-
-      //
-      // load layout fields if record field list is empty.
-      //
-      this.getLayoutFields ( record );
-
-      //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
 
       //
       // Update the form record section references.
       //
-      this.GetRecordSections ( record );
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getEntities ( entity );
 
       // 
       // Return the trial record.
       // 
       this.LogMethodEnd ( "GetEntityBySource" );
-      return record;
+      return entity;
 
     }//END getItem method
 
@@ -1320,7 +1320,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class gets a record object using RecordId and the form state. 
     /// </summary>
-    /// <param name="RecordId">string: (Mandatory) record identifier.</param>
+    /// <param name="EntityId">string: (Mandatory) record identifier.</param>
     /// <returns>EvForm: a form data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1338,22 +1338,22 @@ namespace Evado.Dal.Digital
     /// 6. Return the form data object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord getRecord ( String RecordId )
+    public EdRecord GetEntity ( String EntityId )
     {
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
-      this.LogMethod ( "getRecord method. " );
-      this.LogDebug ( "RecordId: " + RecordId );
+      this.LogMethod ( "GetEntity method. " );
+      this.LogDebug ( "EntityId: " + EntityId );
 
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
 
       // 
       // TestReport that the data object has a valid record identifier.
       // 
-      if ( RecordId == String.Empty )
+      if ( EntityId == String.Empty )
       {
-        return record;
+        return entity;
       }
 
       // 
@@ -1363,7 +1363,7 @@ namespace Evado.Dal.Digital
       {
         new SqlParameter(PARM_ENTITY_ID, SqlDbType.NVarChar, 20),
       };
-      cmdParms [ 0 ].Value = RecordId;
+      cmdParms [ 0 ].Value = EntityId;
 
       _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );";
 
@@ -1377,7 +1377,7 @@ namespace Evado.Dal.Digital
         // 
         if ( table.Rows.Count == 0 )
         {
-          return record;
+          return entity;
         }
 
         // 
@@ -1388,34 +1388,34 @@ namespace Evado.Dal.Digital
         // 
         // Fill the role object.
         // 
-        record = this.getRowData ( row, false );
+        entity = this.getRowData ( row, false );
 
       }//END Using method
-
-      // 
-      // Attach fields and other trial data.
-      // 
-      this.GetEntityData ( record );
-
-      //
-      // load layout fields if record field list is empty.
-      //
-      this.getLayoutFields ( record );
-
-      //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
 
       //
       // Update the form record section references.
       //
-      this.GetRecordSections ( record );
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getEntities ( entity );
 
       // 
       // Return the trial record.
       // 
-      return record;
+      return entity;
 
     }//END getRecord method
 
@@ -1437,6 +1437,7 @@ namespace Evado.Dal.Digital
       Entity.Design.FormSections = sections.getSectionList ( Entity.LayoutGuid );
 
       this.LogClass ( sections.Log );
+      this.LogDebug ( "Section Count {0}.", Entity.Design.FormSections.Count );
 
       this.LogMethodEnd ( "GetRecordSections" );
     }//END UpdateFieldSectionReferences method.
@@ -1450,7 +1451,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Entity">EvForm: (Mandatory) a form data object.</param>
     //  ----------------------------------------------------------------------------------
-    private void GetEntityData (
+    private void GetEntityValues (
       EdRecord Entity )
     {
       this.LogMethod ( "GetnEntityData." );
@@ -1463,7 +1464,7 @@ namespace Evado.Dal.Digital
       // 
       // Get the record fields
       // 
-      Entity.Fields = dal_EntityValues.getRecordFieldList ( Entity );
+      Entity.Fields = dal_EntityValues.GetlEntityValues ( Entity );
       this.LogClass ( dal_EntityValues.Log );
       this.LogValue ( "Field count: " + Entity.Fields.Count );
       this.LogMethodEnd ( "GetnEntityData" );
@@ -1477,7 +1478,7 @@ namespace Evado.Dal.Digital
     /// This data is only to be attached if the record state is editable.  As newField validation
     ///  is not necessary in any other state.
     /// </summary>
-    /// <param name="Record">EvForm: (Mandatory) a form data object.</param>
+    /// <param name="Entity">EvForm: (Mandatory) a form data object.</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -1492,37 +1493,41 @@ namespace Evado.Dal.Digital
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void getLayoutFields (
-      EdRecord Record )
+      EdRecord Entity )
     {
       this.LogMethod ( "getLayoutFields." );
-      this.LogDebug ( "State: " + Record.StateDesc );
+      this.LogDebug ( "Entity Guid {0}, LayoutGuid: {1} ", Entity.Guid, Entity.LayoutGuid );
 
-      if ( Record.Fields.Count > 0
-         || Record.State != EdRecordObjectStates.Empty_Record )
+      if ( Entity.Fields.Count > 0 )
       {
+        this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
+        this.LogMethodEnd ( "getLayoutFields" );
         return;
       }
 
       // 
       // Initialise the methods variables and objects.
       // 
-      EdRecordFields dal_RecordFields = new EdRecordFields ( this.ClassParameters );
+      EdEntityFields dal_EntityFields = new EdEntityFields ( this.ClassParameters );
       // 
       // Get the record fields
       // 
-      var fieldlist = dal_RecordFields.GetFieldList ( Record.LayoutGuid );
+      var fieldList = dal_EntityFields.GetFieldList ( Entity.LayoutGuid );
+      this.LogDebugClass ( dal_EntityFields.Log );
 
-      for ( int i = 0; i < fieldlist.Count; i++ )
+      for ( int i = 0; i < fieldList.Count; i++ )
       {
-        EdRecordField field = fieldlist [ i ];
-        field.RecordFieldGuid = field.Guid;
+        EdRecordField field = fieldList [ i ];
+        field.FieldGuid = field.Guid;
+        field.RecordGuid = Entity.Guid;
         field.Guid = Guid.NewGuid ( );
 
-        Record.Fields.Add ( field );
+        Entity.Fields.Add ( field );
+
+        this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
       }
 
-      this.LogClass ( dal_RecordFields.Log );
-      this.LogValue ( "Field count: " + Record.Fields.Count );
+      this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
       this.LogMethodEnd ( "getLayoutFields" );
 
     }//END getRecordData method
@@ -1531,9 +1536,9 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method retrieves the layout's field objects.
     /// </summary>
-    /// <param name="Record">EdRecord object</param>
+    /// <param name="Entity">EdRecord object</param>
     //  ---------------------------------------------------------------------------------
-    private void getEntities ( EdRecord Record )
+    private void getEntities ( EdRecord Entity )
     {
       //
       // initialise the methods variables and objects.
@@ -1543,7 +1548,7 @@ namespace Evado.Dal.Digital
       //
       // if no entities exit.
       //
-      if ( Record.Entities.Count == 0 )
+      if ( Entity.Entities.Count == 0 )
       {
         return;
       }
@@ -1551,7 +1556,7 @@ namespace Evado.Dal.Digital
       // 
       // Retrieve the instrument items.
       // 
-      Record.Entities = dal_RecordEntities.getEntityList ( Record );
+      Entity.Entities = dal_RecordEntities.getEntityList ( Entity );
       this.LogClass ( dal_RecordEntities.Log );
     }
 
@@ -1610,7 +1615,7 @@ namespace Evado.Dal.Digital
       // 
       // Return unique identifier of the new data object.
       // 
-      EdRecord record =  this.getRecord ( Record.Guid );
+      EdRecord record =  this.GetEntity ( Record.Guid );
 
       //
       // Get the empty field objects for the new record.
@@ -1986,7 +1991,7 @@ namespace Evado.Dal.Digital
       // Validate whether the record object exists.
       // 
       this.LogDebug ( "Get previous record" );
-      EdRecord previousRecord = this.getRecord ( Record.RecordId );
+      EdRecord previousRecord = this.GetEntity ( Record.RecordId );
       if ( previousRecord.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Record_Id_Error;

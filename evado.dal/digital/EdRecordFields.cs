@@ -378,7 +378,7 @@ namespace Evado.Dal.Digital
       // Update formfield object with the compatible data row items. 
       //
       formField.Guid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_GUID );
-      formField.RecordFieldGuid = formField.Guid;
+      formField.FieldGuid = formField.Guid;
       formField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordFields.DB_LAYOUT_GUID );
       formField.LayoutId = EvSqlMethods.getString ( Row, EdRecordFields.DB_LAYOUT_ID );
       formField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );

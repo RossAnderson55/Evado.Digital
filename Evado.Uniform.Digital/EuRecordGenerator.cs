@@ -213,7 +213,7 @@ namespace Evado.UniForm.Digital
       {
         for ( int j = 0; j < layout.Fields.Count; j++ )
         {
-          if ( Entity.Fields [ i ].RecordFieldGuid == layout.Fields [ j ].Guid )
+          if ( Entity.Fields [ i ].FieldGuid == layout.Fields [ j ].Guid )
           {
             Entity.Fields [ i ].LayoutId = layout.Fields [ j ].LayoutId;
             Entity.Fields [ i ].FieldId = layout.Fields [ j ].FieldId;
@@ -287,7 +287,7 @@ namespace Evado.UniForm.Digital
       {
         for ( int j = 0; j < layout.Fields.Count; j++ )
         {
-          if ( Record.Fields [ i ].RecordFieldGuid == layout.Fields [ j ].Guid )
+          if ( Record.Fields [ i ].FieldGuid == layout.Fields [ j ].Guid )
           {
             Record.Fields [ i ].LayoutId = layout.Fields [ j ].LayoutId;
             Record.Fields [ i ].FieldId = layout.Fields [ j ].FieldId;
