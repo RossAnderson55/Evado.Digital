@@ -416,7 +416,7 @@ namespace Evado.UniForm.Digital
       // Create the new list group.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EdLabels.Project_List_Of_Projects_Group_Label,
+        "File List",
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -1065,7 +1065,7 @@ namespace Evado.UniForm.Digital
       // create the page versioned file group.
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EdLabels.Project_General_Group_Title,
+       "Binary Group Title",
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 

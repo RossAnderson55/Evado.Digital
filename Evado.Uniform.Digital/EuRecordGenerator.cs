@@ -341,7 +341,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
       this.LogDebug ( "Form.ReadAccessRoles: " + Record.Design.ReadAccessRoles );
       this.LogDebug ( "Form.EditAccessRoles: " + Record.Design.EditAccessRoles );
-      Record.setFormRole ( this.Session.UserProfile );
+      Record.setUserAccess ( this.Session.UserProfile );
       this.LogDebug ( "FormAccessRole: " + Record.FormAccessRole );
 
       // 
@@ -2328,7 +2328,7 @@ namespace Evado.UniForm.Digital
       //
       // Set the form role for this user.
       //
-      Form.setFormRole ( this.Session.UserProfile );
+      Form.setUserAccess ( this.Session.UserProfile );
       this._FormAccessRole = Form.FormAccessRole;
       this.LogDebug ( "FormAccessRole: " + Form.FormAccessRole );
 

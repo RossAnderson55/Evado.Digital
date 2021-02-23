@@ -29,7 +29,7 @@ namespace Evado.Model.Digital
   [Serializable]
   public class EdRecord
   {
-    #region class initialisation 
+    #region class initialisation
 
     public EdRecord ( )
     {
@@ -187,7 +187,7 @@ namespace Evado.Model.Digital
       /// this selection enables the 
       /// </summary>
       Entity,
-    }  
+    }
     /// <summary>
     /// This enumeration list defines the record author access
     /// </summary>
@@ -212,7 +212,7 @@ namespace Evado.Model.Digital
       /// This enumeration defines all edit accss roles have edit access to the object.
       /// </summary>
       Edit_Access_Roles,
-
+      /*
       /// <summary>
       /// This enumeration defines the only the parent's author can edit the object content.
       /// </summary>
@@ -227,6 +227,7 @@ namespace Evado.Model.Digital
       /// This enumeration defines the all parent access users have can edit the object content.
       /// </summary>
       Parent_Access,
+       */
     }
 
     /// <summary>
@@ -1267,78 +1268,108 @@ namespace Evado.Model.Digital
 
     #region class methods
 
-
-    //  =================================================================================
+    //=====================================================================================
     /// <summary>
-    ///  This method updates the form record state based on current data content.
+    /// This method sets the Form Role property 
     /// </summary>
-    //  ---------------------------------------------------------------------------------
-    public void SetUserAccess ( String UserRoleIds )
+    /// <param name="UserProfile">EvUserProfile Object</param>
+    //-------------------------------------------------------------------------------------
+    public void setUserAccess ( EdUserProfile UserProfile )
     {
       //
-      // Initialise the methods objects and variables.
+      // Swtich roleid to select the form role for the user.
       //
-      String [ ] arUserRoleIds = UserRoleIds.Split ( ';' );
-      this.FormAccessRole = FormAccessRoles.None;
+      this.FormAccessRole = EdRecord.FormAccessRoles.Null;
 
       //
-      // User the state switch to determine the user's access to the record.@
+      // Set the designer access.
       //
-      switch ( this.State )
+      if ( UserProfile.hasDesignAccess == true
+        && ( this.State == EdRecordObjectStates.Form_Draft
+          || this.State == EdRecordObjectStates.Form_Reviewed ) )
       {
-        case EdRecordObjectStates.Form_Draft:
-        case EdRecordObjectStates.Form_Reviewed:
-        case EdRecordObjectStates.Form_Issued:
+        this.FormAccessRole = EdRecord.FormAccessRoles.Form_Designer;
+        return;
+      }
+
+      //
+      // Set author only access.
+      //
+      if ( this.Design.AuthorAccess == AuthorAccessList.Only_Author
+        && this.AuthorUserId == UserProfile.UserId )
+      {
+        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
+        return;
+      }
+
+      //
+      // Set the object author access
+      //
+      switch ( this.Design.AuthorAccess )
+      {
+        case AuthorAccessList.Only_Author:
           {
-            this.FormAccessRole = FormAccessRoles.Record_Reader;
-
-            if ( UserRoleIds.Contains ( EdRole.CONST_DESIGNER ) == true )
+            //
+            // Set Record Author access when organisation only access is set and 
+            // the user organisation is the same as the parent organsiations.
+            //
+            if ( this.ParentOrgId == UserProfile.OrgId )
             {
-              this.FormAccessRole = FormAccessRoles.Form_Designer;
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
             }
-
+            else if ( this.State != EdRecordObjectStates.Submitted_Record )
+            {
+              this.FormAccessRole = EdRecord.FormAccessRoles.None;
+            }
+            else
+            {
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
+            }
             return;
           }
-        case EdRecordObjectStates.Empty_Record:
-        case EdRecordObjectStates.Draft_Record:
-        case EdRecordObjectStates.Completed_Record:
-        case EdRecordObjectStates.Submitted_Record:
+        case AuthorAccessList.Only_Organisation:
           {
-            bool bReadRole = EvStatics.CompareDelimtedStrings (
-              this.Design.ReadAccessRoles,
-              UserRoleIds );
-
-            if ( bReadRole == true )
+            //
+            // Set Record Author access when organisation only access is set and 
+            // the user organisation is the same as the parent organsiations.
+            //
+            if ( this.ParentOrgId == UserProfile.OrgId )
             {
-              this.FormAccessRole = FormAccessRoles.Record_Reader;
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
             }
-
-            bool bEditRole = EvStatics.CompareDelimtedStrings (
-              this.Design.EditAccessRoles,
-              UserRoleIds );
-
-            if ( bReadRole == true )
+            else if ( this.State != EdRecordObjectStates.Submitted_Record )
             {
-              this.FormAccessRole = FormAccessRoles.Record_Author;
+              this.FormAccessRole = EdRecord.FormAccessRoles.None;
+            }
+            else
+            {
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             }
             return;
           }
 
         default:
           {
-            bool bReadRole = EvStatics.CompareDelimtedStrings (
-              this.Design.ReadAccessRoles,
-              UserRoleIds );
-
-            if ( bReadRole == true )
+            //
+            // Set the reader access 
+            //
+            if ( UserProfile.hasEndUserRole ( this.Design.ReadAccessRoles ) == true )
             {
-              this.FormAccessRole = FormAccessRoles.Record_Reader;
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             }
-            break;
-          }
-      }
 
-    }
+            //
+            // Set the default edit access 
+            //
+            if ( UserProfile.hasEndUserRole ( this.Design.EditAccessRoles ) == true )
+            {
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
+            }
+            return;
+          }
+      }//END switch statement
+
+    }//END setFormRole method
 
     //  =================================================================================
     /// <summary>
@@ -1461,37 +1492,6 @@ namespace Evado.Model.Digital
       return String.Empty;
     }
 
-    //=====================================================================================
-    /// <summary>
-    /// This method sets the Form Role property 
-    /// </summary>
-    /// <param name="UserProfile">EvUserProfile Object</param>
-    //-------------------------------------------------------------------------------------
-    public void setFormRole ( EdUserProfile UserProfile )
-    {
-      //
-      // Swtich roleid to select the form role for the user.
-      //
-      this.FormAccessRole = EdRecord.FormAccessRoles.Null;
-
-      if ( UserProfile.hasEndUserRole ( this.Design.ReadAccessRoles ) == true )
-      {
-        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-      }
-
-      if ( UserProfile.hasDesignAccess == true
-        && ( this.State == EdRecordObjectStates.Form_Draft
-        || this.State == EdRecordObjectStates.Form_Reviewed ) )
-      {
-        this.FormAccessRole = EdRecord.FormAccessRoles.Form_Designer;
-      }
-
-      if ( UserProfile.hasEndUserRole ( this.Design.EditAccessRoles ) == true )
-      {
-        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
-      }
-
-    }//END setFormRole method
 
     //  =================================================================================
     /// <summary>
@@ -1720,7 +1720,7 @@ namespace Evado.Model.Digital
           }
         case RecordFieldNames.Viaibility:
           {
-            this.Visabilty = EvStatics.parseEnumValue<EdRecord.VisabilityList>(  Value );
+            this.Visabilty = EvStatics.parseEnumValue<EdRecord.VisabilityList> ( Value );
             return;
           }
 

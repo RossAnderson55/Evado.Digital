@@ -42,7 +42,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdEntityObjects ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EdEntityObjects.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityObjects.";
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ namespace Evado.Dal.Digital
     public EdEntityObjects ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EdEntityObjects.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityObjects.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

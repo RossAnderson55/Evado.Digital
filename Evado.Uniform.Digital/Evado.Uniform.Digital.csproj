@@ -60,6 +60,7 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EuEntities.cs" />
     <Compile Include="EuEntityFields.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdEntities ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EdEntities ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
 
     }
 
@@ -729,7 +729,7 @@ namespace Evado.Dal.Digital
             // 
             // Get the trial record fields
             // 
-            this.getRecordData ( record );
+            this.GetEntityData ( record );
 
             //
             // Attach the entity list.
@@ -981,7 +981,7 @@ namespace Evado.Dal.Digital
           // 
           // Get the trial record items
           // 
-          this.getRecordData ( record );
+          this.GetEntityData ( record );
 
           //
           // Attach the entity list.
@@ -1027,7 +1027,7 @@ namespace Evado.Dal.Digital
     /// This class retrieves an option list based on query parameters and the useGuid condition
     /// </summary>
     /// <param name="Query">EvQueryParameters: The Query selection values.</param>
-    /// <param name="useGuid">Boolean: true, if the option uses Guid.</param>
+    /// <param name="UseGuid">Boolean: true, if the option uses Guid.</param>
     /// <returns>List of EvOption: a list of option object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -1041,7 +1041,7 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public List<EvOption> getOptionList (
       EdQueryParameters Query,
-      bool useGuid )
+      bool UseGuid )
     {
       this.LogMethod ( "getOptionList method. " );
       this.LogValue ( "EvQueryParameters parameters:" );
@@ -1055,7 +1055,7 @@ namespace Evado.Dal.Digital
       // Add the null first option to the selection visitSchedule.
       // 
       EvOption option = new EvOption ( );
-      if ( useGuid )
+      if ( UseGuid )
       {
         option = new EvOption ( Guid.Empty.ToString ( ), String.Empty );
       }
@@ -1078,7 +1078,7 @@ namespace Evado.Dal.Digital
         {
           option = new EvOption ( record.RecordId, String.Empty );
 
-          if ( useGuid == true )
+          if ( UseGuid == true )
           {
             option.Value = record.Guid.ToString ( );
           }
@@ -1190,7 +1190,7 @@ namespace Evado.Dal.Digital
       // 
       // Attach fields and other trial data.
       // 
-      this.getRecordData ( record );
+      this.GetEntityData ( record );
 
       //
       // load layout fields if record field list is empty.
@@ -1236,13 +1236,13 @@ namespace Evado.Dal.Digital
     /// 6. Return the Form data object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord getRecordBySource (
+    public EdRecord GetEntityBySource (
       String SourceId )
     {
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
-      this.LogMethod ( "getRecord method. " );
+      this.LogMethod ( "GetEntityBySource method. " );
       this.LogDebug ( "SourceId: " + SourceId );
 
       EdRecord record = new EdRecord ( );
@@ -1291,7 +1291,7 @@ namespace Evado.Dal.Digital
       // 
       // Attach fields and other trial data.
       // 
-      this.getRecordData ( record );
+      this.GetEntityData ( record );
 
       //
       // load layout fields if record field list is empty.
@@ -1311,6 +1311,7 @@ namespace Evado.Dal.Digital
       // 
       // Return the trial record.
       // 
+      this.LogMethodEnd ( "GetEntityBySource" );
       return record;
 
     }//END getItem method
@@ -1394,7 +1395,7 @@ namespace Evado.Dal.Digital
       // 
       // Attach fields and other trial data.
       // 
-      this.getRecordData ( record );
+      this.GetEntityData ( record );
 
       //
       // load layout fields if record field list is empty.
@@ -1422,18 +1423,18 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method updates the form field section references.
     /// </summary>
-    /// <param name="FormRecord">EvForm: a form record object</param>
+    /// <param name="Entity">EvForm: a form record object</param>
     // ----------------------------------------------------------------------------------
     private void GetRecordSections (
-      EdRecord FormRecord )
+      EdRecord Entity )
     {
       this.LogMethod ( "GetRecordSections method." );
       //
       // Initialise the methods variables and objects.
       //
-      EdRecordSections sections = new EdRecordSections ( this.ClassParameters );
+      EdEntitySections sections = new EdEntitySections ( this.ClassParameters );
 
-      FormRecord.Design.FormSections = sections.getSectionList ( FormRecord.LayoutGuid );
+      Entity.Design.FormSections = sections.getSectionList ( Entity.LayoutGuid );
 
       this.LogClass ( sections.Log );
 
@@ -1447,36 +1448,25 @@ namespace Evado.Dal.Digital
     /// This data is only to be attached if the record state is editable.  As newField validation
     ///  is not necessary in any other state.
     /// </summary>
-    /// <param name="Record">EvForm: (Mandatory) a form data object.</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Get the form record fields 
-    /// 
-    /// 2. Attach the trial data and milestone data to the form record object. 
-    /// 
-    /// 3. If the record is in an editable state attach the 
-    /// other trial data for record validation
-    /// 
-    /// 4. If the milestone object exists set the prior to attribute.
-    /// </remarks>
+    /// <param name="Entity">EvForm: (Mandatory) a form data object.</param>
     //  ----------------------------------------------------------------------------------
-    private void getRecordData (
-      EdRecord Record )
+    private void GetEntityData (
+      EdRecord Entity )
     {
-      this.LogMethod ( "getRecordData." );
-      this.LogDebug ( "State: " + Record.StateDesc );
+      this.LogMethod ( "GetnEntityData." );
+      this.LogDebug ( "State: " + Entity.StateDesc );
       // 
       // Initialise the methods variables and objects.
       // 
-      EdRecordValues dal_RecordValues = new EdRecordValues ( this.ClassParameters );
+      EdEntityValues dal_EntityValues = new EdEntityValues ( this.ClassParameters );
+
       // 
       // Get the record fields
       // 
-      Record.Fields = dal_RecordValues.getRecordFieldList ( Record );
-      this.LogClass ( dal_RecordValues.Log );
-      this.LogValue ( "Field count: " + Record.Fields.Count );
-      this.LogMethodEnd ( "getRecordData" );
+      Entity.Fields = dal_EntityValues.getRecordFieldList ( Entity );
+      this.LogClass ( dal_EntityValues.Log );
+      this.LogValue ( "Field count: " + Entity.Fields.Count );
+      this.LogMethodEnd ( "GetnEntityData" );
 
     }//END getRecordData method
 
@@ -1970,7 +1960,7 @@ namespace Evado.Dal.Digital
     /// 6. Return the event code for updating items. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes updateRecord ( EdRecord Record )
+    public EvEventCodes UpdateItem ( EdRecord Record )
     {
       //
       // Initialize the method debug log, internal variables and objects. 
@@ -2051,29 +2041,30 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method update the records values.
     /// </summary>
-    /// <param name="Record">EdRecord: object.</param>
+    /// <param name="Entity">EdRecord: object.</param>
     //  ----------------------------------------------------------------------------------
     private EvEventCodes updateRecordData (
-      EdRecord Record )
+      EdRecord Entity )
     {
       this.LogMethod ( "updateRecordData." );
-      this.LogDebug ( "State: " + Record.StateDesc );
+      this.LogDebug ( "State: " + Entity.StateDesc );
       // 
       // Initialise the methods variables and objects.
       // 
-      EdRecordValues dal_RecordValues = new EdRecordValues ( this.ClassParameters );
+      EdEntityValues dal_EntityValues = new EdEntityValues ( this.ClassParameters );
 
       // 
-      this.LogValue ( "Record.Fields.Count: " + Record.Fields.Count );
-      if ( Record.Fields.Count == 0 )
+      this.LogValue ( "Entity.Fields.Count: " + Entity.Fields.Count );
+      if ( Entity.Fields.Count == 0 )
       {
         return EvEventCodes.Ok;
       }
+
       // 
       // update record values
       // 
-      var result = dal_RecordValues.UpdateFields ( Record );
-      this.LogClass ( dal_RecordValues.Log );
+      var result = dal_EntityValues.UpdateFields ( Entity );
+      this.LogClass ( dal_EntityValues.Log );
 
       if ( result != EvEventCodes.Ok )
       {

@@ -381,6 +381,7 @@ namespace Evado.Dal.Digital
       formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
       formField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
       formField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
+      formField.Order = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_ORDER );
       formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
       formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
       formField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );

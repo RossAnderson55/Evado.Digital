@@ -47,7 +47,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvBinaryFiles ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvBinaryFiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvBinaryFiles.";
     }
 
     // ==================================================================================
@@ -59,7 +59,7 @@ namespace Evado.Dal.Digital
     public EvBinaryFiles ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvBinaryFiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvBinaryFiles.";
     }
     #endregion
 

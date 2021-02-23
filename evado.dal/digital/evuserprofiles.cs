@@ -45,7 +45,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvUserProfiles ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvUserProfiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
     }
 
     // ==================================================================================
@@ -57,7 +57,7 @@ namespace Evado.Dal.Digital
     public EvUserProfiles ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvUserProfiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
 
       this.LogMethod ( "EvUserProfiles initialisation method." );
       this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.AdapterGuid );

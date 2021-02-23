@@ -997,7 +997,7 @@ namespace Evado.UniForm.Digital
         {
           groupField = pageGroup.createBooleanField (
             EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
-            EdLabels.Form_Field_Date_Point_Field_Label,
+            EdLabels.LayoutFields_Enable_AI_Field_Label,
             this.Session.RecordField.Design.AiDataPoint );
           groupField.Layout = EuAdapter.DefaultFieldLayout;
         }
@@ -1160,16 +1160,6 @@ namespace Evado.UniForm.Digital
       {
         return;
       }
-
-
-      //
-      // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
-      //
-      pageGroup = PageObject.AddGroup (
-        EdLabels.Form_Field_Sex_Validation_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.EditAccess = PageObject.EditAccess;
 
       //
       // Add the group commands
@@ -1776,11 +1766,6 @@ namespace Evado.UniForm.Digital
             case EvEventCodes.Data_Duplicate_Id_Error:
               {
                 this.ErrorMessage = EdLabels.Form_Field_Duplicate_ID_Error_Message;
-                break;
-              }
-            case EvEventCodes.Identifier_Project_Id_Error:
-              {
-                this.ErrorMessage = EdLabels.Project_Identifier_Empty_Error_Message;
                 break;
               }
             default:

@@ -69,7 +69,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvReportTemplates ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvReportTemplates.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvReportTemplates.";
     }
 
     // ==================================================================================
@@ -81,7 +81,7 @@ namespace Evado.Dal.Digital
     public EvReportTemplates ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvReportTemplates.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvReportTemplates.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

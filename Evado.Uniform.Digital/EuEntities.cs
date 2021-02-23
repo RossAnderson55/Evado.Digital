@@ -87,13 +87,12 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "UniForm BinaryFilePath: " + this.UniForm_BinaryFilePath );
       this.LogInit ( "UniForm BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
 
-
       this.LogInit ( "Settings" );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_FormRecords = new EdRecords ( Settings );
+      this._Bll_Entities = new EdEntities ( Settings );
 
       if ( this.Session.Entity == null )
       {
@@ -105,7 +104,7 @@ namespace Evado.UniForm.Digital
       }
       if ( this.Session.EntitySelectionLayoutId == null )
       {
-       this.Session.EntitySelectionLayoutId = String.Empty;
+        this.Session.EntitySelectionLayoutId = String.Empty;
       }
 
 
@@ -129,7 +128,7 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Digital.EdRecords _Bll_FormRecords = new EdRecords ( );
+    private Evado.Bll.Digital.EdEntities _Bll_Entities = new Evado.Bll.Digital.EdEntities ( );
     private EvServerPageScript _ServerPageScript = new EvServerPageScript ( );
 
     //
@@ -403,7 +402,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.Command pageCommand = PageObject.addCommand (
             EdLabels.Form_UnLock_Command_Title,
             EuAdapter.ADAPTER_ID,
-            EuAdapterClasses.Records.ToString ( ),
+            EuAdapterClasses.Entities.ToString ( ),
              Model.UniForm.ApplicationMethods.Save_Object );
 
           pageCommand.SetGuid ( this.Session.Entity.Guid );
@@ -427,7 +426,7 @@ namespace Evado.UniForm.Digital
       //
       // Execute the record lock method.
       //
-      EvEventCodes iReturn = this._Bll_FormRecords.lockItem ( this.Session.Entity );
+      EvEventCodes iReturn = this._Bll_Entities.lockItem ( this.Session.Entity );
 
       if ( iReturn != EvEventCodes.Ok )
       {
@@ -462,7 +461,7 @@ namespace Evado.UniForm.Digital
       // 
       // Execute the unlock method to the database.
       // 
-      EvEventCodes iReturn = this._Bll_FormRecords.unlockItem ( this.Session.Entity );
+      EvEventCodes iReturn = this._Bll_Entities.unlockItem ( this.Session.Entity );
 
       if ( iReturn != EvEventCodes.Ok )
       {
@@ -492,7 +491,7 @@ namespace Evado.UniForm.Digital
       // 
       // Execute the unlock method to the database.
       // 
-      EvEventCodes iReturn = this._Bll_FormRecords.unlockItem ( this.Session.Entity );
+      EvEventCodes iReturn = this._Bll_Entities.unlockItem ( this.Session.Entity );
 
       if ( iReturn != EvEventCodes.Ok )
       {
@@ -602,15 +601,15 @@ namespace Evado.UniForm.Digital
       // Fill the TestReport selection types
       // 
       option = new EvOption ( EdRecordTypes.Normal_Record.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Normal_Record ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Normal_Record ) );
 
       recordTypes.Add ( option );
       option = new EvOption ( EdRecordTypes.Questionnaire.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Questionnaire ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Questionnaire ) );
 
       recordTypes.Add ( option );
       option = new EvOption ( EdRecordTypes.Updatable_Record.ToString ( ),
-         Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( EdRecordTypes.Updatable_Record ) );
+         Evado.Model.EvStatics.enumValueToString ( EdRecordTypes.Updatable_Record ) );
 
       return recordTypes;
     }
@@ -631,8 +630,8 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getListObject" );
-      this.LogValue ( "RecordSelectionState: " + this.Session.EntitySelectionState );
-      this.LogValue ( "RecordSelectionLayoutId: " + this.Session.EntitySelectionLayoutId );
+      this.LogValue ( "EntitySelectionState: " + this.Session.EntitySelectionState );
+      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.EntitySelectionLayoutId );
       try
       {
         // 
@@ -724,9 +723,9 @@ namespace Evado.UniForm.Digital
     private void executeRecordQuery ( )
     {
       this.LogMethod ( "executeRecordQuery" );
-      this.LogValue ( "FormRecordType: " + this.Session.EntitySelectionLayoutId );
-      this.LogValue ( "FormRecordType: " + this.Session.EntityType );
-      this.LogValue ( "RecordSelectionState: " + this.Session.EntitySelectionState );
+      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.EntitySelectionLayoutId );
+      this.LogValue ( "EntityType: " + this.Session.EntityType );
+      this.LogValue ( "EntitySelectionState: " + this.Session.EntitySelectionState );
       //
       // Initialise the methods variables and objects.
       //
@@ -759,9 +758,9 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "FormRecordType: " + this.Session.EntityType );
 
         this.LogValue ( "Querying form records" );
-        this.Session.EntityList = this._Bll_FormRecords.getRecordList ( queryParameters );
+        this.Session.EntityList = this._Bll_Entities.GetEntityList ( queryParameters );
 
-        this.LogDebugClass ( this._Bll_FormRecords.Log );
+        this.LogDebugClass ( this._Bll_Entities.Log );
         this.LogValue ( "list count: " + this.Session.EntityList.Count );
       }
 
@@ -807,7 +806,7 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
-      foreach ( EdRecord layout in this.AdapterObjects.IssuedRecordLayouts )
+      foreach ( EdRecord layout in this.AdapterObjects.IssuedEntityLayouts )
       {
         optionList.Add ( new EvOption ( layout.LayoutId,
           String.Format ( "{0} - {1}", layout.LayoutId, layout.Title ) ) );
@@ -841,7 +840,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Records.ToString ( ),
+        EuAdapterClasses.Entities.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
       selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
@@ -859,7 +858,7 @@ namespace Evado.UniForm.Digital
     private void getRecord_ListGroup (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "createRecordViewGroup" );
+      this.LogMethod ( "getRecord_ListGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -886,7 +885,7 @@ namespace Evado.UniForm.Digital
         groupCommand = pageGroup.addCommand (
           "New Record",
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Records, Model.UniForm.ApplicationMethods.Create_Object );
+          EuAdapterClasses.Entities, Model.UniForm.ApplicationMethods.Create_Object );
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
       }
 
@@ -907,6 +906,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "Group command count: " + pageGroup.CommandList.Count );
 
+      this.LogMethodEnd ( "getRecord_ListGroup" );
     }//END createViewCommandList method
 
     // ==============================================================================
@@ -929,7 +929,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
           FormRecord.RecordId,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Records,
+          EuAdapterClasses.Entities,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
       groupCommand.SetGuid ( FormRecord.Guid );
@@ -978,10 +978,7 @@ namespace Evado.UniForm.Digital
           String.Format ( EdLabels.Form_Record_General_View_Title,
             FormRecord.RecordId,
             FormRecord.LayoutId,
-            FormRecord.Title,
-            String.Empty,
-            String.Empty,
-            String.Empty );
+            FormRecord.Title );
 
       }
       else
@@ -1037,9 +1034,7 @@ namespace Evado.UniForm.Digital
         //
         groupCommand.Title = String.Format ( EdLabels.Form_Record_Site_View_Title,
             FormRecord.LayoutId,
-            FormRecord.Title,
-            String.Empty,
-            String.Empty );
+            FormRecord.Title);
 
       }//END site users
 
@@ -1162,7 +1157,7 @@ namespace Evado.UniForm.Digital
       {
         this.LogDebug ( "Issued Forms is empty so create list." );
 
-        EdEntityLayouts forms = new EdEntityLayouts ( this.ClassParameters );
+        EdRecordLayouts forms = new EdRecordLayouts ( this.ClassParameters );
 
         this.Session.IssueFormList = forms.getList (
           EdRecordTypes.Null,
@@ -1225,7 +1220,7 @@ namespace Evado.UniForm.Digital
       command = pageGroup.addCommand (
         EdLabels.Record_Export_Selection_Group_Command_Title,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Records.ToString ( ),
+        EuAdapterClasses.Entities.ToString ( ),
          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
       command.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
@@ -1294,9 +1289,9 @@ namespace Evado.UniForm.Digital
       //
       // Create the export ResultData file.
       //
-      int inResultCount = this._Bll_FormRecords.getRecordCount ( queryParameters );
+      int inResultCount = this._Bll_Entities.geyEntityCount ( queryParameters );
 
-      this.LogClass ( this._Bll_FormRecords.Log );
+      this.LogClass ( this._Bll_Entities.Log );
 
       this.LogDebug ( "inResultCount: " + inResultCount );
       // 
@@ -1585,7 +1580,6 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the methods variables and objects.
       //
-      this._Bll_FormRecords = new EdRecords ( this.ClassParameters );
       Guid recordGuid = PageCommand.GetGuid ( );
       String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString ( ) );
 
@@ -1618,7 +1612,7 @@ namespace Evado.UniForm.Digital
         // 
         // Retrieve the customer object from the database via the DAL and BLL layers.
         // 
-        this.Session.Entity = this._Bll_FormRecords.getRecord ( recordId );
+        this.Session.Entity = this._Bll_Entities.GetEntity ( recordId );
       }
       else
       {
@@ -1635,10 +1629,10 @@ namespace Evado.UniForm.Digital
         // 
         // Retrieve the record object from the database via the DAL and BLL layers.
         // 
-        this.Session.Entity = this._Bll_FormRecords.getRecord ( recordGuid );
+        this.Session.Entity = this._Bll_Entities.GetEntity ( recordGuid );
       }
 
-      this.LogClass ( this._Bll_FormRecords.Log );
+      this.LogClass ( this._Bll_Entities.Log );
 
       this.LogDebug ( "There are {0} of fields in the record.", this.Session.Entity.Fields.Count );
 
@@ -1697,7 +1691,7 @@ namespace Evado.UniForm.Digital
         {
           this.ErrorMessage =
             "CsScript:" + ScriptType + " method failed \r\n"
-            + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( iReturn ) + "\r\n";
+            + Evado.Model.EvStatics.enumValueToString ( iReturn ) + "\r\n";
 
           this.LogError ( EvEventCodes.Business_Logic_General_Process_Error,
             this.ErrorMessage );
@@ -1795,7 +1789,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command saveCommand = new Evado.Model.UniForm.Command (
         SaveCommandTitle,
         EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Records.ToString ( ),
+        EuAdapterClasses.Entities.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
       // 
@@ -1974,7 +1968,7 @@ namespace Evado.UniForm.Digital
             pageCommand = PageObject.addCommand (
               EdLabels.Record_Save_Command_Title,
               EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Records.ToString ( ),
+              EuAdapterClasses.Entities.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
             pageCommand.SetGuid ( this.Session.Entity.Guid );
@@ -1989,7 +1983,7 @@ namespace Evado.UniForm.Digital
             pageCommand = PageObject.addCommand (
               EdLabels.Record_Submit_Command,
               EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Records.ToString ( ),
+              EuAdapterClasses.Entities.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
             pageCommand.SetGuid ( this.Session.Entity.Guid );
@@ -2009,7 +2003,7 @@ namespace Evado.UniForm.Digital
               pageCommand = PageObject.addCommand (
                 EdLabels.Record_Withdraw_Command,
                 EuAdapter.ADAPTER_ID,
-                EuAdapterClasses.Records.ToString ( ),
+                EuAdapterClasses.Entities.ToString ( ),
                 Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
               pageCommand.SetGuid ( this.Session.Entity.Guid );
@@ -2085,9 +2079,9 @@ namespace Evado.UniForm.Digital
         // 
         // Create the record.
         // 
-        this.Session.Entity = this._Bll_FormRecords.createRecord ( newRecord );
+        this.Session.Entity = this._Bll_Entities.CreateEntity ( newRecord );
 
-        this.LogClass ( this._Bll_FormRecords.Log );
+        this.LogClass ( this._Bll_Entities.Log );
 
         if ( this.Session.Entity.Guid == Guid.Empty )
         {
@@ -2191,7 +2185,7 @@ namespace Evado.UniForm.Digital
         // Get the save action message value.
         // 
         this.Session.Entity.SaveAction =
-           Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecord.SaveActionCodes> ( stSaveAction );
+           Evado.Model.EvStatics.parseEnumValue<EdRecord.SaveActionCodes> ( stSaveAction );
 
         this.LogDebug ( "Command Save Action: " + this.Session.Entity.SaveAction );
 
@@ -2226,18 +2220,17 @@ namespace Evado.UniForm.Digital
         // Execute the save record groupCommand to save the record values to the 
         // Evado database.
         // 
-        EvEventCodes result = this._Bll_FormRecords.saveRecord (
-          this.Session.Entity,
-          this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) );
+        EvEventCodes result = this._Bll_Entities.UpdateEntity (
+          this.Session.Entity );
 
-        this.LogClass ( this._Bll_FormRecords.Log );
+        this.LogClass ( this._Bll_Entities.Log );
 
         // 
         // If an error state is returned log the event.
         // 
         if ( result != EvEventCodes.Ok )
         {
-          string stEvent = this._Bll_FormRecords.Log + " returned error message: "
+          string stEvent = this._Bll_Entities.Log + " returned error message: "
             + result + " = " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
 
           this.LogValue ( stEvent );
@@ -2298,7 +2291,7 @@ namespace Evado.UniForm.Digital
       this.Session.Entity.RecordDate = Evado.Model.Digital.EvcStatics.getDateTime ( stDate );
 
       String stState = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status );
-      this.Session.Entity.State = Evado.Model.Digital.EvcStatics.Enumerations.parseEnumValue<EdRecordObjectStates> ( stState );
+      this.Session.Entity.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.
 

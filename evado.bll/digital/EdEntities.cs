@@ -41,7 +41,7 @@ namespace Evado.Bll.Digital
     // ----------------------------------------------------------------------------------
     public EdEntities ( )
     {
-      this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Bll.Digital.EdEntities.";
     }
 
     // ==================================================================================
@@ -53,11 +53,11 @@ namespace Evado.Bll.Digital
     public EdEntities ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
-      this.ClassNameSpace = "Evado.Bll.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Bll.Digital.EdEntities.";
 
-      this._DalRecords = new Evado.Dal.Digital.EdEntities ( Settings );
+      this._DalEntities = new Evado.Dal.Digital.EdEntities ( Settings );
 
-      this._DalForms = new Evado.Dal.Digital.EdEntityLayouts ( Settings );
+      this._DalLayouts = new Evado.Dal.Digital.EdEntityLayouts ( Settings );
     }
     #endregion
 
@@ -74,18 +74,13 @@ namespace Evado.Bll.Digital
     //
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Digital.EdEntities _DalRecords = new Evado.Dal.Digital.EdEntities ( );
-    private Evado.Dal.Digital.EdEntityLayouts _DalForms = new Evado.Dal.Digital.EdEntityLayouts ( );
+    private Evado.Dal.Digital.EdEntities _DalEntities = new Evado.Dal.Digital.EdEntities ( );
+    private Evado.Dal.Digital.EdEntityLayouts _DalLayouts = new Evado.Dal.Digital.EdEntityLayouts ( );
 
-    //
-    // Instantiate the Business Logic.
-    //
-    //TrialSamples BllTrialSamples = new TrialSamples();
-   //private EvAlerts _BllTrialAlerts = new EvAlerts ( );
 
     #endregion
 
-    #region project record List queries
+    #region entity List queries
 
     // =====================================================================================
     /// <summary>
@@ -101,11 +96,11 @@ namespace Evado.Bll.Digital
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public int getRecordCount (
+    public int geyEntityCount (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordCount method. " );
-      this.LogValue ( "EvQueryParameters parameters." );
+      this.LogMethod ( "geyEntityCount method. " );
+      this.LogValue ( "EdQueryParameters parameters." );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
@@ -115,11 +110,11 @@ namespace Evado.Bll.Digital
       // 
       // Execute the query.
       // 
-      int inResultCount = this._DalRecords.getRecordCount ( QueryParameters );
+      int inResultCount = this._DalEntities.getRecordCount ( QueryParameters );
 
-      this.LogClass ( this._DalRecords.Log );
+      this.LogClass ( this._DalEntities.Log );
 
-      this.LogMethodEnd ( "getRecordCount" );
+      this.LogMethodEnd ( "geyEntityCount" );
       //
       // Return selectionList to UI
       //
@@ -141,13 +136,13 @@ namespace Evado.Bll.Digital
     /// 2. Return the list of form objects. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
+    public List<EdRecord> GetEntityList (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordList method. " );
-      this.LogDebug ( "EvQueryParameters parameters." );
+      this.LogMethod ( "GetEntityList method. " );
+      this.LogDebug ( "Parameters." );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
-      this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
+      this.LogValue ( "- IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
 
@@ -161,15 +156,15 @@ namespace Evado.Bll.Digital
       // 
       // Execute the query.
       // 
-      List<EdRecord> view = this._DalRecords.getRecordList ( QueryParameters );
+      List<EdRecord> entityList = this._DalEntities.getRecordList ( QueryParameters );
 
-      this.LogClass ( this._DalRecords.Log );
+      this.LogClass ( this._DalEntities.Log );
 
-      this.LogMethodEnd ( "getRecordList" );
       //
       // Return selectionList to UI
       //
-      return view;
+      this.LogMethodEnd ( "GetEntityList" );
+      return entityList;
 
     }//END getRecordList method.
 
@@ -177,8 +172,8 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class returns a list of option for selected form objects based on query object and ByUid condition. 
     /// </summary>
-    /// <param name="Query">EvQueryParameters: a query parameter object</param>
-    /// <param name="ByUid">Boolean: true, if the list is selected by Uid</param>
+    /// <param name="QueryParameters">EvQueryParameters: a query parameter object</param>
+    /// <param name="UseGuid">Boolean: true, if the list is selected by Uid</param>
     /// <returns>List of EvOption: a list of option objects</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -188,22 +183,23 @@ namespace Evado.Bll.Digital
     /// 2. Return the list of option objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getOptionList (
-      EdQueryParameters Query,
-      bool ByUid )
+    public List<EvOption> GetOptionList (
+      EdQueryParameters QueryParameters,
+      bool UseGuid )
     {
       this.LogMethod ( "getOptionList" );
 
-      List<EvOption> List = this._DalRecords.getOptionList ( Query, ByUid );
+      List<EvOption> List = this._DalEntities.getOptionList ( QueryParameters, UseGuid );
 
-      this.LogClass ( this._DalRecords.Log );
+      this.LogClass ( this._DalEntities.Log );
 
+      this.LogMethodEnd ( "getOptionList" );
       return List;
     }//END GetList method.
 
     #endregion
 
-    #region project record retrieval queries
+    #region Entity retrieval queries
 
     // =====================================================================================
     /// <summary>
@@ -219,9 +215,9 @@ namespace Evado.Bll.Digital
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord getRecord ( Guid RecordGuid )
+    public EdRecord GetEntity ( Guid RecordGuid )
     {
-      this.LogMethod( "getRecord method. " );
+      this.LogMethod ( "GetEntity method. " );
       this.LogValue ( "RecordGuid: " + RecordGuid );
 
       // 
@@ -232,9 +228,10 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecord ( RecordGuid );
-      this.LogClass ( this._DalRecords.Log );
+      record = this._DalEntities.getRecord ( RecordGuid );
+      this.LogClass ( this._DalEntities.Log );
 
+      this.LogMethodEnd ( "GetEntity" );
       return record;
 
     }//END getRecord method
@@ -253,9 +250,9 @@ namespace Evado.Bll.Digital
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord getRecord ( String RecordId )
+    public EdRecord GetEntity ( String RecordId )
     {
-      this.LogMethod ( "GetRecord method. " );
+      this.LogMethod ( "GetEntity method. " );
       this.LogValue ( "RecordId: " + RecordId );
       // 
       // Initialise the method variables and objects.
@@ -265,10 +262,10 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecord ( RecordId );
-      this.LogClass ( this._DalRecords.Log );
+      record = this._DalEntities.getRecord ( RecordId );
+      this.LogClass ( this._DalEntities.Log );
 
-      this.LogMethodEnd ( "etRecord" );
+      this.LogMethodEnd ( "GetEntity" );
       return record;
 
     }//END getRecord method
@@ -288,11 +285,11 @@ namespace Evado.Bll.Digital
     /// 2. Return a form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord getRecordBySource (
+    public EdRecord GetEntityBySource (
       String SourceId )
     {
-      this.LogValue ( "DAL:EvRecord:getRecord method. " );
-      this.LogValue ( "RecordId: " + SourceId );
+      this.LogMethod ( "GetnEntityBySource method. " );
+      this.LogValue ( "SourceId: " + SourceId );
       // 
       // Initialise the method variables and objects.
       // 
@@ -301,9 +298,10 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalRecords.getRecordBySource ( SourceId);
-      this.LogClass ( this._DalRecords.Log );
+      record = this._DalEntities.GetEntityBySource ( SourceId);
+      this.LogClass ( this._DalEntities.Log );
 
+      this.LogMethodEnd ( "GetnEntityBySource" );
       return record;
 
     }//END getRecord method
@@ -316,7 +314,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class locks the form record for single user update.
     /// </summary>
-    /// <param name="Record">EvForm: a form object</param>
+    /// <param name="Entity">EvForm: a form object</param>
     /// <returns>EvEventCodes: an event code for locking items</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -326,19 +324,19 @@ namespace Evado.Bll.Digital
     /// 2. Return an event code for locking form records.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes lockItem ( EdRecord Record )
+    public EvEventCodes lockItem ( EdRecord Entity )
     {
       // 
       // Initialise method variables
       // 
-      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.lockItem method. " );
+      this.LogMethod ( "lockItem method. " );
       EvEventCodes iReturn = EvEventCodes.Ok;
 
       // 
       // Update the trial record.
       // 
-      iReturn = this._DalRecords.lockRecord ( Record );
-      this.LogValue ( "" + this._DalRecords.Log );
+      iReturn = this._DalEntities.lockRecord ( Entity );
+      this.LogDebugClass ( this._DalEntities.Log );
       return iReturn;
 
     }//END lockItem method
@@ -347,7 +345,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class unlocks the form record for single user update.
     /// </summary>
-    /// <param name="Record">EvForm: a form object</param>
+    /// <param name="Entity">EvForm: a form object</param>
     /// <returns>EvEventCodes: an event code for locking items</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -357,18 +355,18 @@ namespace Evado.Bll.Digital
     /// 2. Return an event code for locking form records.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes unlockItem ( EdRecord Record )
+    public EvEventCodes unlockItem ( EdRecord Entity )
     {
       // 
       // Initialise method variables
       // 
-      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.unlockItem method. " );
+      this.LogMethod ( "unlockItem method. " );
       EvEventCodes iReturn = EvEventCodes.Ok;
       // 
       // Update the trial record.
       // 
-      iReturn = this._DalRecords.unlockRecord ( Record );
-      this.LogValue ( "" + this._DalRecords.Log );
+      iReturn = this._DalEntities.unlockRecord ( Entity );
+      this.LogDebugClass ( this._DalEntities.Log );
       return iReturn;
 
     }//END unlockItem method
@@ -381,7 +379,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class creates new form record to database. 
     /// </summary>
-    /// <param name="Record">EvForm: The form object</param>
+    /// <param name="Entity">EvForm: The form object</param>
     /// <returns>EvForm: a form object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -394,17 +392,17 @@ namespace Evado.Bll.Digital
     /// 3. Return the form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord createRecord ( EdRecord Record )
+    public EdRecord CreateEntity ( EdRecord Entity )
     {
-      this.LogMethod ( "createRecord method." );
-      this.LogDebug ( "LayoutId: " + Record.LayoutId );
+      this.LogMethod ( "CreateEntity method." );
+      this.LogDebug ( "LayoutId: " + Entity.LayoutId );
 
       // 
       // Instantiate the local variables
       //
       EdRecord record = new EdRecord ( );
 
-      if ( Record.LayoutId == String.Empty )
+      if ( Entity.LayoutId == String.Empty )
       {
         this.LogValue ( " FormId Empty " );
         record.EventCode = EvEventCodes.Identifier_Form_Id_Error;
@@ -415,50 +413,26 @@ namespace Evado.Bll.Digital
       //
       // Retrieve the specified form to determine the form QueryType.
       //
-      EdRecord form = this._DalForms.GetLayout (Record.LayoutId, true );
+      EdRecord entity = this._DalLayouts.GetLayout (Entity.LayoutId, true );
 
-      this.LogDebugClass ( this._DalForms.Log );
-      this.LogDebug ( "form Id: " + form.LayoutId );
-      this.LogDebug ( "form title: " + form.Title );
-      this.LogDebug ( "form TypeId: " + form.Design.TypeId );
-
-      //
-      // If the form QueryType is 'Updateable' then create a new copy of the record.
-      // else create a new empty record.
-      //
-      if ( form.Design.TypeId == EdRecordTypes.Updatable_Record )
-      {
-        // 
-        // Create a new copy of the record.
-        // 
-        this.LogDebug ( "UPDATEABLE RECORD: Create New Record." );
-        record = this._DalRecords.createNewUpdateableRecord ( Record );
-        this.LogClass ( this._DalRecords.Log );
-
-        this.LogDebug ( "Record Event Code: " + record.EventCode
-          + " > " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
-
-        // 
-        // Return the new record.
-        // 
-        this.LogMethodEnd ( "createRecord" );
-        return record;
-
-      }//END Updateable form QueryType. 
+      this.LogDebugClass ( this._DalLayouts.Log );
+      this.LogDebug ( "LayoutId: " + entity.LayoutId );
+      this.LogDebug ( "Title: " + entity.Title );
+      this.LogDebug ( "TypeId: " + entity.Design.TypeId );
 
       // 
       // Create a new trial Report to the database
       // 
       this.LogDebug ( "Create New Record." );
-      record = this._DalRecords.createRecord ( Record );
-      this.LogClass ( this._DalRecords.Log );
+      record = this._DalEntities.createRecord ( Entity );
+      this.LogClass ( this._DalEntities.Log );
 
-      this.LogDebug ( "Record Event Code: " + Evado.Model.Digital.EvcStatics.Enumerations.enumValueToString ( record.EventCode ) );
+      this.LogDebug ( "Record Event Code: " + Evado.Model.Digital.EvcStatics.enumValueToString ( record.EventCode ) );
 
       // 
       // Return the new record.
       // 
-      this.LogMethodEnd ( "createRecord" );
+      this.LogMethodEnd ( "CreateEntity" );
       return record;
 
     }//END createRecord method
@@ -467,7 +441,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class saves form records to the database. 
     /// </summary>
-    /// <param name="FormRecord">EvRForm: The trial form record object</param>
+    /// <param name="Entity">EvRForm: The trial form record object</param>
     /// <param name="HadEditAccess">EvRole: a user role object</param>
     /// <returns>EvEventCodes: an event code for saving form records</returns>
     /// <remarks>
@@ -482,15 +456,13 @@ namespace Evado.Bll.Digital
     /// 4. Return an event code of method execution. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes saveRecord (
-      EdRecord FormRecord,
-      bool HadEditAccess )
+    public EvEventCodes UpdateEntity (
+      EdRecord Entity )
     {
       this.LogMethod ( "saveItem method. " );
-      this.LogValue ( "FormRecord.Guid: " + FormRecord.Guid );
-      this.LogValue ( "FormGuid: " + FormRecord.LayoutGuid );
-      this.LogValue ( "Action: " + FormRecord.SaveAction );
-      this.LogValue ( "UserRole.Edit: " + HadEditAccess );
+      this.LogValue ( "Entity.Guid: " + Entity.Guid );
+      this.LogValue ( "LayoutGuid: " + Entity.LayoutGuid );
+      this.LogValue ( "SaveAction: " + Entity.SaveAction );
       // 
       // Define the local variables.
       // 
@@ -499,12 +471,12 @@ namespace Evado.Bll.Digital
       // 
       // Check that the ResultData object has valid identifiers to add it to the database.
       // 
-      if ( FormRecord.Guid == Guid.Empty )
+      if ( Entity.Guid == Guid.Empty )
       {
         this.LogValue ( "Record Guid is empty" );
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
-      if ( FormRecord.LayoutGuid == Guid.Empty )
+      if ( Entity.LayoutGuid == Guid.Empty )
       {
         this.LogValue ( "Form ID is empty" );
         return EvEventCodes.Identifier_Form_Id_Error;
@@ -513,20 +485,20 @@ namespace Evado.Bll.Digital
       // 
       // Update the state information in the trial Report.
       // 
-      this.updateFormState ( FormRecord, HadEditAccess );
+      this.updateFormState ( Entity );
 
-      this.LogValue ( "Status: " + FormRecord.State );
+      this.LogValue ( "Status: " + Entity.State );
 
       // 
       // Update the instrument newField states.
       // 
-      this.processFormFields ( FormRecord );
+      this.processFormFields ( Entity );
 
       // 
       // Update the trial record.
       // 
-      iReturn = this._DalRecords.updateRecord ( FormRecord );
-      this.LogClass ( this._DalRecords.Log );
+      iReturn = this._DalEntities.UpdateItem ( Entity );
+      this.LogClass ( this._DalEntities.Log );
 
       // 
       // error encountered return eror.
@@ -552,7 +524,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class updates the form Record state and approve records for the FirstSubject.
     /// </summary>
-    /// <param name="FormRecord">EvForm: a form object.</param>
+    /// <param name="Entity">EvForm: a form object.</param>
     /// <param name="HadEditAccess">EvRole: a user role object</param>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -566,12 +538,11 @@ namespace Evado.Bll.Digital
     /// </remarks>
     //  ----------------------------------------------------------------------------------
     private void updateFormState (
-      EdRecord FormRecord,
-      bool HadEditAccess )
+      EdRecord Entity )
     {
       this.LogMethod ( "updateState method. " );
-      this.LogValue ( "RecordId: " + FormRecord.RecordId );
-      this.LogValue ( "Action: " + FormRecord.SaveAction );
+      this.LogValue ( "RecordId: " + Entity.RecordId );
+      this.LogValue ( "Action: " + Entity.SaveAction );
       //
       // Initialise the methods variables and objects.
       //
@@ -582,19 +553,19 @@ namespace Evado.Bll.Digital
       // 
       // If state is null set it to created.
       // 
-      if ( FormRecord.State == EdRecordObjectStates.Null )
+      if ( Entity.State == EdRecordObjectStates.Null )
       {
-        FormRecord.State = EdRecordObjectStates.Empty_Record;
+        Entity.State = EdRecordObjectStates.Empty_Record;
       }
 
       // 
       // If the Author edits the record reset the review and approval states.
       // 
-      if ( ( HadEditAccess == true )
-        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Save_Record )
-        && ( FormRecord.State == EdRecordObjectStates.Submitted_Record ) )
+      if ( ( Entity.FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
+        && ( Entity.SaveAction == EdRecord.SaveActionCodes.Save_Record )
+        && ( Entity.State == EdRecordObjectStates.Submitted_Record ) )
       {
-        this.setDraftRecordStatus ( FormRecord );
+        this.setDraftRecordStatus ( Entity );
 
         return;
 
@@ -603,25 +574,25 @@ namespace Evado.Bll.Digital
       // 
       // Perform author signoff of the record and save it to the database.
       // 
-      if ( ( HadEditAccess == true )
-        && ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Submit_Record ) )
+      if ( ( Entity.FormAccessRole == EdRecord.FormAccessRoles.Record_Author )
+        && ( Entity.SaveAction == EdRecord.SaveActionCodes.Submit_Record ) )
       {
         this.LogValue ( "Author submitting a record." );
 
-        this.submitRecordSignoff ( FormRecord );
+        this.submitRecordSignoff ( Entity );
 
       }
 
       // 
       // Perform withdrawn of the trial record and save it to the database.
       // 
-      if ( FormRecord.SaveAction == EdRecord.SaveActionCodes.Withdrawn_Record
-        && ( FormRecord.State == EdRecordObjectStates.Empty_Record
-          || FormRecord.State == EdRecordObjectStates.Draft_Record
-          || FormRecord.State == EdRecordObjectStates.Completed_Record ) )
+      if ( Entity.SaveAction == EdRecord.SaveActionCodes.Withdrawn_Record
+        && ( Entity.State == EdRecordObjectStates.Empty_Record
+          || Entity.State == EdRecordObjectStates.Draft_Record
+          || Entity.State == EdRecordObjectStates.Completed_Record ) )
       {
         this.LogValue ( " Withdrawn Record." );
-        FormRecord.State = EdRecordObjectStates.Withdrawn;
+        Entity.State = EdRecordObjectStates.Withdrawn;
 
         return;
       }

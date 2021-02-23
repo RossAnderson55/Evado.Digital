@@ -47,7 +47,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdRecordComments ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordComments.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecordComments.";
     }
 
     // ==================================================================================
@@ -59,7 +59,7 @@ namespace Evado.Dal.Digital
     public EdRecordComments ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecordComments.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecordComments.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

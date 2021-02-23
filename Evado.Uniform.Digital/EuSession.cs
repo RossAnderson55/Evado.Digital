@@ -486,7 +486,7 @@ namespace Evado.UniForm.Digital
     //
     // this indicates if the forms where adapter loaded.
     //
-    public bool FormsAdaperLoaded { get; set; }
+    public bool EntityAdaperLoaded { get; set; }
 
     private List<EdRecord> _EntityLayoutList = new List<EdRecord> ( );
     /// <summary>
@@ -520,6 +520,11 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EdRecord> EntityList { get; set; }
 
+
+    //
+    // this indicates if the forms where adapter loaded.
+    //
+    public bool FormsAdaperLoaded { get; set; }
     /// <summary>
     /// This property contains the list of Form Versions.
     /// </summary>
@@ -651,7 +656,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// COntains the currently selected form state.
     /// </summary>
-    public EdRecordObjectStates FormState
+    public EdRecordObjectStates RecordFormState
     {
       get { return _FormState; }
       set { _FormState = value; }

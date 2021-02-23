@@ -522,10 +522,10 @@ namespace Evado.UniForm.Digital
       if ( this.Session.FormsAdaperLoaded == true )
       {
         this.Session.FormType = EdRecordTypes.Null;
-        this.Session.FormState = EdRecordObjectStates.Null;
+        this.Session.RecordFormState = EdRecordObjectStates.Null;
       }
 
-      this.LogDebug ( "FormState: '" + this.Session.FormState + "'" );
+      this.LogDebug ( "FormState: '" + this.Session.RecordFormState + "'" );
       this.LogDebug ( "FormType: '" + this.Session.FormType + "'" );
 
       // 
@@ -533,7 +533,7 @@ namespace Evado.UniForm.Digital
       // 
       this.Session.AdminRecordList = this._Bll_RecordLayouts.getLayoutList (
         this.Session.FormType,
-        this.Session.FormState );
+        this.Session.RecordFormState );
 
       this.LogDebugClass ( this._Bll_RecordLayouts.Log );
       this.LogDebug ( "Form list count: " + this.Session.AdminRecordList.Count );
@@ -709,7 +709,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
-        this.Session.FormState.ToString ( ),
+        this.Session.RecordFormState.ToString ( ),
         optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -765,10 +765,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.FormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.RecordFormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
-        + this.Session.FormState );
+        + this.Session.RecordFormState );
 
     }//END updateSessionObjects method
 

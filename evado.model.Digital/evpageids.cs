@@ -595,51 +595,6 @@ namespace Evado.Model.Digital
     Data_Dictionary_Upload,
 
     /// <summary>
-    /// This enumeration value is the common form page identifier.
-    /// </summary>
-    Common_Form_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form properties page identifier.
-    /// </summary>
-    Common_Form_Properties_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form properties page identifier.
-    /// </summary>
-    Common_Form_Properties_Section_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form properties page identifier.
-    /// </summary>
-    Common_Form_Annotated_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form properties page identifier.
-    /// </summary>
-    Common_Form_Draft_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form template upload page identifier.
-    /// </summary>
-    Common_Form_Template_Upload,
-
-    /// <summary>
-    /// This enumeration value is the common form template download page identifier.
-    /// </summary>
-    Common_Form_Template_Download,
-
-    /// <summary>
-    /// This enumeration value is the common form field page identifier.
-    /// </summary>
-    Common_Form_Field_Page,
-
-    /// <summary>
-    /// This enumeration value is the common form view page identifier.
-    /// </summary>
-    Common_Form_View,
-
-    /// <summary>
     /// This enumeration value is the external selection list upload page identifier.
     /// </summary>
     External_Selection_List_Upload,
@@ -654,146 +609,32 @@ namespace Evado.Model.Digital
     /// </summary>
     External_Selection_List_View,
 
-    /// <summary>
-    /// This enumeration value is the registry patient page identifier.
-    /// </summary>
-    Patient_Page,
 
     /// <summary>
-    /// This enumeration value is the subject patient page identifier.
+    /// This enumeration value is the entity page identifier.
     /// </summary>
-    Subject_Patient_Page,
+    Entity_Page,
 
     /// <summary>
-    /// This enumeration value is the patient view page identifier.
+    /// This enumeration value is the entity page identifier.
     /// </summary>
-    Patient_View_Page,
+    Entity_Admin_Page,
 
     /// <summary>
-    /// This enumeration value is the patient record view page identifier.
+    /// This enumeration value is the entity list view page identifier.
     /// </summary>
-    Patient_Record_View_Page,
+    Entity_View,
 
     /// <summary>
-    /// This enumeration value is the patient record  page identifier.
+    /// This enumeration value is the Entity query llist view page identifier.
     /// </summary>
-    Patient_Record_Page,
+    Entity_Query_View,
 
     /// <summary>
-    /// This enumeration value is the next patient record page identifier.
+    /// This enumeration value is the Entity query llist view page identifier.
     /// </summary>
-    Next_Patient_Record_Page,
+    Entity_Export_Page,
 
-    /// <summary>
-    /// This enumeration value is the patient record exit page identifier.
-    /// </summary>
-    Patient_Record_Exit_Page,
-    /*
-    /// <summary>
-    /// This enumeration value is the patient record outcomes view page identifier.
-    /// </summary>
-    Patient_Outcomes_View,
-
-    /// <summary>
-    /// This enumeration value is the patient record outcomes review  page identifier.
-    /// </summary>
-    Patient_Outcomes_Review_Page,
-
-    /// <summary>
-    /// This enumeration value is thepatient record outcomes page identifier.
-    /// </summary>
-    Patient_Outcomes_Page,
-    */
-
-    /// <summary>
-    /// This enumeration value is the questionnaire page identifier.
-    /// </summary>
-    Patient_Outcomes_Selection_Page,
-
-    /// <summary>
-    /// This enumeration value is the Patient_Recorded_Outcomes_Exit_Page_Title record page identifier.
-    /// </summary>
-    Patient_Outcomes_Record_Page,
-
-    /// <summary>
-    /// This enumeration value is the Patient_Recorded_Outcomes_Exit_Page_Title exit page identifier.
-    /// </summary>
-    Patient_Outcomes_Exit_Page,
-
-    /// <summary>
-    /// This enumeration value is the subject demographics page identifier.
-    /// </summary>
-    Subject_Demographics,
-
-    /// <summary>
-    /// This enumeration value is the subject patient view identifier.
-    /// </summary>
-    Subject_Patient_View,
-
-    /// <summary>
-    /// This enumeration value is the subject summary page identifier.
-    /// </summary>
-    Subject_Summary_Page,
-
-    /// <summary>
-    /// This enumeration value is the subject selection page identifier.
-    /// </summary>
-    Subject_Selection_Page,
-
-    /// <summary>
-    /// This enumeration value is the subject view page identifier.
-    /// </summary>
-    Subject_View,
-
-    /// <summary>
-    /// This enumeration value is the subject view 1 page identifier.
-    /// </summary>
-    Subject_View1,
-
-    /// <summary>
-    /// This enumeration value is the subject view 2 page identifier.
-    /// </summary>
-    Subject_View2,
-
-    /// <summary>
-    /// This enumeration value is the subject view 2 page identifier.
-    /// </summary>
-    Subject_Upload,
-
-    /// <summary>
-    /// This enumeration value is the subject visit page identifier.
-    /// </summary>
-    Subject_Milestone_Page,
-
-    /// <summary>
-    /// This enumeration value is the multiple subject milestone data collection page identifier.
-    /// </summary>
-    Multi_Subject_Milestone_Page,
-
-    /// <summary>
-    /// This enumeration value is the subject visit view page identifier.
-    /// </summary>
-    Subject_Milestone_View,
-
-    /// <summary>
-    /// This enumeration value is the subject visit by date page identifier.
-    /// </summary>
-    Subject_Visit_By_Date,
-
-    /// <summary>
-    /// This enumeration value is the subject visit today page identifier.
-    /// </summary>
-    Subject_Visit_Today,
-
-    /// <summary>
-    /// This enumeration value is the subject schedule page identifier.
-    /// </summary>
-    Subject_Schedule_Page,
-
-    /// <summary>
-    /// This enumeration value is the subject visit calendar page identifier.
-    /// </summary>
-    Subject_Calendar_Page,
 
     //Trial Records
     /// <summary>

@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdRecordFields ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormFields.";
     }
 
     // ==================================================================================
@@ -56,7 +56,7 @@ namespace Evado.Dal.Digital
     public EdRecordFields ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormFields.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

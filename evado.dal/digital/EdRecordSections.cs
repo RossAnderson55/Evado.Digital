@@ -42,7 +42,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdRecordSections ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordSections.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordSections.";
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ namespace Evado.Dal.Digital
     public EdRecordSections ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EdRecordSections.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordSections.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

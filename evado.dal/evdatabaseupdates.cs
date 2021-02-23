@@ -41,7 +41,7 @@ namespace Evado.Dal
     // ----------------------------------------------------------------------------------
     public EvDataBaseUpdates ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvDataBaseUpdates.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvDataBaseUpdates.";
     }
 
     // ==================================================================================
@@ -53,7 +53,7 @@ namespace Evado.Dal
     public EvDataBaseUpdates ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvDataBaseUpdates.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvDataBaseUpdates.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

@@ -47,7 +47,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdAdapterConfig ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvApplicationProfiles.";
     }
 
     // ==================================================================================
@@ -59,7 +59,7 @@ namespace Evado.Dal.Digital
     public EdAdapterConfig ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationProfiles.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvApplicationProfiles.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

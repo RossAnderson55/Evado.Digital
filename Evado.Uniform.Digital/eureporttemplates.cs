@@ -2350,11 +2350,6 @@ namespace Evado.UniForm.Digital
                     this.Session.ReportTemplate.ReportId );
                 break;
               }
-            case EvEventCodes.Identifier_Project_Id_Error:
-              {
-                this.ErrorMessage = EdLabels.Project_Identifier_Empty_Error_Message;
-                break;
-              }
             case EvEventCodes.Identifier_Schedule_Identifier_Error:
               {
                 this.ErrorMessage = EdLabels.Report_Identifier_Empty_Error_Message;

@@ -45,7 +45,7 @@ namespace Evado.Dal
     /// </summary>
     public EvObjectParameters ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvObjectParameters.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvObjectParameters.";
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ namespace Evado.Dal
     {
       this.ClassParameters = Settings;
 
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvObjectParameters.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvObjectParameters.";
     }
 
     #endregion

@@ -46,7 +46,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvAncillaryRecords ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvAncillaryRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvAncillaryRecords.";
     }
 
     // ==================================================================================
@@ -58,7 +58,7 @@ namespace Evado.Dal.Digital
     public EvAncillaryRecords ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvAncillaryRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvAncillaryRecords.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

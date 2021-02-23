@@ -43,7 +43,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvReportSaved ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvReportSaved.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvReportSaved.";
     }
 
     // ==================================================================================
@@ -55,7 +55,7 @@ namespace Evado.Dal.Digital
     public EvReportSaved ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvReportSaved.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvReportSaved.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

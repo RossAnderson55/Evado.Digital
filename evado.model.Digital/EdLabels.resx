@@ -567,7 +567,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>An error was encountered generating the record audit page.</value>
   </data>
   <data name="Audit_Record_Page_Title" xml:space="preserve">
-    <value>Trial record audit page.</value>
+    <value>Record audit page.</value>
   </data>
   <data name="Audit_Record_Selection_Field_Title" xml:space="preserve">
     <value>Database Record: </value>
@@ -855,7 +855,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>Select any of the following if you have any questions.</value>
   </data>
   <data name="FormField_Retrieve_Error_Message" xml:space="preserve">
-    <value>Error raised retriveing the form field.</value>
+    <value>Error raised retriveing the layout field.</value>
   </data>
   <data name="FormField_YesNo_Query_Legend" xml:space="preserve">
     <value>Select Yes if you have a query regarding this section.</value>
@@ -870,7 +870,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>Comments</value>
   </data>
   <data name="FormGenerator_Common_Fields_Label" xml:space="preserve">
-    <value> Common Fields</value>
+    <value>Common Fields</value>
   </data>
   <data name="FormGenerator_Early_Withdrawal_Label1" xml:space="preserve">
     <value>Early Withdrawal </value>
@@ -894,7 +894,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value />
   </data>
   <data name="FormProperties_Section_Page_Title" xml:space="preserve">
-    <value>Form {0} - {1} Section: {2}</value>
+    <value>Layout {0} - {1} Section: {2}</value>
   </data>
   <data name="FormRecord_Page_Generation_Error" xml:space="preserve">
     <value>An error was raised when generating the form record layout.</value>
@@ -930,13 +930,13 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>ERROR: This project has another form with {0} form identifier.</value>
   </data>
   <data name="Form_Field_Analogue_Legend_Finish_Field_Label" xml:space="preserve">
-    <value>Analogue FinishLegend:</value>
+    <value>Analogue Finish Legend:</value>
   </data>
   <data name="Form_Field_Analogue_Legend_Start_Field_Label" xml:space="preserve">
     <value>Analogue Start Legend:</value>
   </data>
   <data name="Form_Field_Category_Field_Title" xml:space="preserve">
-    <value>Form Field Category:</value>
+    <value>Layout Field Category:</value>
   </data>
   <data name="Form_Field_Computed_Field_Group_Title" xml:space="preserve">
     <value>Computed Script</value>
@@ -950,14 +950,11 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
   <data name="Form_Field_Custom_Validation_Group_Title" xml:space="preserve">
     <value>Customised field validation</value>
   </data>
-  <data name="Form_Field_Date_Point_Field_Label" xml:space="preserve">
-    <value>Data Point Field: </value>
-  </data>
   <data name="Form_Field_Default_Value_Field_Label" xml:space="preserve">
     <value>Default numeric value: </value>
   </data>
   <data name="Form_Field_Delete_Command_Title" xml:space="preserve">
-    <value>Delete Form Field</value>
+    <value>Delete Layout Field</value>
   </data>
   <data name="Form_Field_Description_Field_Label" xml:space="preserve">
     <value>Field Description:</value>
@@ -966,7 +963,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>{0} - {1} (Type: {2}) (Order: {3}) </value>
   </data>
   <data name="Form_Field_Duplicate_ID_Error_Message" xml:space="preserve">
-    <value>ERROR: This form has another field with {0} field identifier.</value>
+    <value>ERROR: This layout has another field with {0} field identifier.</value>
   </data>
   <data name="Form_Field_External_Selection_Category_Field_Label" xml:space="preserve">
     <value>External Selection catagory:</value>
@@ -978,7 +975,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>URL to External Image or Video:</value>
   </data>
   <data name="Form_Field_General_Group_Title" xml:space="preserve">
-    <value>Form Field - General</value>
+    <value>Layout Field - General</value>
   </data>
   <data name="Form_Field_Hide_Field_Label" xml:space="preserve">
     <value>Hidden Field:</value>
@@ -987,7 +984,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>HTTP link to an external document:</value>
   </data>
   <data name="Form_Field_Identifier_Field_Label" xml:space="preserve">
-    <value>Form Field Id:</value>
+    <value>Layout Field Id:</value>
   </data>
   <data name="Form_Field_Image_Video_Height_Field_Label" xml:space="preserve">
     <value>Image or video height in pixels.</value>
@@ -1024,9 +1021,6 @@ A [link](http://example.com "Title").
 Most browsers show the title text when hovering over a link.
 </value>
   </data>
-  <data name="Form_Field_Is_Data_Point_List_Label" xml:space="preserve">
-    <value> ( Data Point ) </value>
-  </data>
   <data name="Form_Field_Is_Hidden_List_Label" xml:space="preserve">
     <value> ( Hidden Field ) </value>
   </data>
@@ -1049,7 +1043,7 @@ Most browsers show the title text when hovering over a link.
     <value>Refilled columns</value>
   </data>
   <data name="Form_Field_Matrix_Group_Title" xml:space="preserve">
-    <value>Form Field Matrix propeties</value>
+    <value>Layout Field Matrix propeties</value>
   </data>
   <data name="Form_Field_Not_Valid_for_Females_Field_Label" xml:space="preserve">
     <value>Field disabled form females:</value>
@@ -1064,25 +1058,10 @@ Most browsers show the title text when hovering over a link.
     <value>Field Order: </value>
   </data>
   <data name="Form_Field_Page_Title_Prefix" xml:space="preserve">
-    <value>Form Field: </value>
-  </data>
-  <data name="Form_Field_Properteis_Group_Title" xml:space="preserve">
-    <value>Form Field - Properties</value>
+    <value>Layout Field: </value>
   </data>
   <data name="Form_Field_Properties_Group_Title" xml:space="preserve">
-    <value>Form Field - Properties</value>
-  </data>
-  <data name="Form_Field_Quiz_Answer_Field_Title" xml:space="preserve">
-    <value>The quiz answer description:</value>
-  </data>
-  <data name="Form_Field_Quiz_Options_Field_Description" xml:space="preserve">
-    <value>Each of the quz's quections should have a coding value to enable the field to determine whether the user has selected the correct answer.</value>
-  </data>
-  <data name="Form_Field_Quiz_Options_Field_Title" xml:space="preserve">
-    <value>The quiz option list values:</value>
-  </data>
-  <data name="Form_Field_Quiz_Value_Field_Title" xml:space="preserve">
-    <value>The correct quiz answer value: </value>
+    <value>Layout Field - Properties</value>
   </data>
   <data name="Form_Field_Read_Only_Text_Field_Label" xml:space="preserve">
     <value>Static Text: </value>
@@ -1097,7 +1076,7 @@ Most browsers show the title text when hovering over a link.
     <value>Save Form Field</value>
   </data>
   <data name="Form_Field_Section_Field_Label" xml:space="preserve">
-    <value>Form Section: </value>
+    <value>Layout Section: </value>
   </data>
   <data name="Form_Field_Selection_By_Value_Field_Label" xml:space="preserve">
     <value>Selection by field value:</value>
@@ -1116,9 +1095,6 @@ __Note__: all of the options must be either a simple or complex options and spac
   </data>
   <data name="Form_Field_Selection_Options_Field_Title" xml:space="preserve">
     <value>Selection options: </value>
-  </data>
-  <data name="Form_Field_Sex_Validation_Group_Title" xml:space="preserve">
-    <value>Subject sex validation settings</value>
   </data>
   <data name="Form_Field_Subject_Field_Label" xml:space="preserve">
     <value>Field Title:</value>
@@ -1176,67 +1152,67 @@ __Note__: all of the options must be either a simple or complex options and spac
     <value>Full layout</value>
   </data>
   <data name="Form_Header_Group_Title" xml:space="preserve">
-    <value>Form Properties: </value>
+    <value>Layout Properties: </value>
   </data>
   <data name="Form_Hide_Annotation_Field_Title" xml:space="preserve">
     <value>Hide Field Annotation when editing</value>
   </data>
   <data name="Form_Identifier_Field_Label" xml:space="preserve">
-    <value>Form Id: </value>
+    <value>Layout Id: </value>
   </data>
   <data name="Form_Instructions_Field_Title" xml:space="preserve">
-    <value>Form Instructions: </value>
+    <value>Layout Instructions: </value>
   </data>
   <data name="Form_Layout_Field_Desciption" xml:space="preserve">
     <value>This parameter sets the value width as a percentage of the form field width.  Default is 60/40 ratio of label to value width,  Twenty Percent is a 80/20 ratio of label to value width.</value>
   </data>
   <data name="Form_Layout_Field_Title" xml:space="preserve">
-    <value>Form layout setting:</value>
+    <value>Layout layout setting:</value>
   </data>
   <data name="Form_List_Label" xml:space="preserve">
-    <value>Selected Forms</value>
+    <value>Selected Layout</value>
   </data>
   <data name="Form_List_New_Form_Command_Title" xml:space="preserve">
     <value>Create a new project form</value>
   </data>
   <data name="Form_List_Page_Title_Prefix" xml:space="preserve">
-    <value>Forms </value>
+    <value>Layouts</value>
   </data>
   <data name="Form_List_Template_Page_Command_Title" xml:space="preserve">
-    <value>Upload Form</value>
+    <value>Upload Layout</value>
   </data>
   <data name="Form_New_Field_Page_Command_Title" xml:space="preserve">
-    <value>Add a new form field </value>
+    <value>Add a new layout field </value>
   </data>
   <data name="Form_No_Section_Field_Group_Title" xml:space="preserve">
     <value>Fields not associated with a section</value>
   </data>
   <data name="Form_Page_New_Form_Title" xml:space="preserve">
-    <value>New Form</value>
+    <value>New Layout</value>
   </data>
   <data name="Form_Page_Title" xml:space="preserve">
-    <value>Form:  {0} - {1} </value>
+    <value>Layout: {0} - {1} </value>
   </data>
   <data name="Form_Properties_Command_Title" xml:space="preserve">
-    <value>Form Properties</value>
+    <value>Layout Properties</value>
   </data>
   <data name="Form_Properties_Export_Group_Title" xml:space="preserve">
-    <value>Form design import/export group</value>
+    <value>Layout design import/export group</value>
   </data>
   <data name="Form_Properties_General_Group_Title" xml:space="preserve">
-    <value>Form Properties - General</value>
+    <value>Layout Properties - General</value>
   </data>
   <data name="Form_Properties_Import_Field_Title" xml:space="preserve">
-    <value>Import form design</value>
+    <value>Import layout m design</value>
   </data>
   <data name="Form_Properties_Sections_Group_Title" xml:space="preserve">
-    <value>Form Properties - Sections</value>
+    <value>Layout Properties - Sections</value>
   </data>
   <data name="Form_Properties_Section_Save_Command_Title" xml:space="preserve">
     <value>Save Section</value>
   </data>
   <data name="Form_Properties_Xml_Form_Field_Title" xml:space="preserve">
-    <value>Xml form design</value>
+    <value>Xml layout design</value>
   </data>
   <data name="Form_Record_Admin_Unlock_Error_Message" xml:space="preserve">
     <value>Record Administration Unlock Failed</value>
@@ -1257,7 +1233,7 @@ __Note__: all of the options must be either a simple or complex options and spac
     <value>Record export query returned zero records.</value>
   </data>
   <data name="Form_Record_General_View_Title" xml:space="preserve">
-    <value>{0} &gt;  {1} - {2}, Visit: {3} &gt; Milestone: {4} - {5}  </value>
+    <value>{0} &gt;  {1} - {2}  </value>
   </data>
   <data name="Form_Record_Locked_Message" xml:space="preserve">
     <value>Record {0} has been locked by user {1}.</value>
@@ -1272,7 +1248,7 @@ __Note__: all of the options must be either a simple or complex options and spac
     <value>Source Data Reviewed: </value>
   </data>
   <data name="Form_Record_Site_View_Title" xml:space="preserve">
-    <value>{0} - {1}  Milestone: {2} - {3}  </value>
+    <value>{0} - {1} </value>
   </data>
   <data name="Form_Record_Source_Data_Locked_Message" xml:space="preserve">
     <value>This record has been source data verified.</value>
@@ -1287,13 +1263,13 @@ __Note__: all of the options must be either a simple or complex options and spac
     <value>Error raised when retrieving a form</value>
   </data>
   <data name="Form_Review_Command_Title" xml:space="preserve">
-    <value>Review Form</value>
+    <value>Review Layout</value>
   </data>
   <data name="Form_Revise_Form_Command_Title" xml:space="preserve">
-    <value>Revise Form</value>
+    <value>Revise Layout</value>
   </data>
   <data name="Form_Save_Command_Title" xml:space="preserve">
-    <value>Save Form</value>
+    <value>Save Layout</value>
   </data>
   <data name="Form_Section_Field_ID_Field_Label" xml:space="preserve">
     <value>Display Section for field:</value>
@@ -1351,25 +1327,25 @@ Select the roles who can edit this section's content.</value>
     <value>Section is visible when opening the page:</value>
   </data>
   <data name="Form_Selection_Group_Title" xml:space="preserve">
-    <value>Form Selection</value>
+    <value>Layout Selection</value>
   </data>
   <data name="Form_Selection_Page_Title" xml:space="preserve">
-    <value>Form Selection</value>
+    <value>Layout Selection</value>
   </data>
   <data name="Form_State_Draft_Record" xml:space="preserve">
     <value>Draft Record</value>
   </data>
   <data name="Form_State_Form_Draft" xml:space="preserve">
-    <value>Form Draft</value>
+    <value>Layout Draft</value>
   </data>
   <data name="Form_State_Form_Issued" xml:space="preserve">
-    <value>Form Issued</value>
+    <value>Layout Issued</value>
   </data>
   <data name="Form_State_Form_Reviewed" xml:space="preserve">
     <value>Form Reviewed</value>
   </data>
   <data name="Form_State_Locked_Record" xml:space="preserve">
-    <value>Locked Record</value>
+    <value>Layout Record</value>
   </data>
   <data name="Form_State_Queried_Record" xml:space="preserve">
     <value>Queried Record</value>
@@ -1378,7 +1354,7 @@ Select the roles who can edit this section's content.</value>
     <value>Queried Record Copy</value>
   </data>
   <data name="Form_State_Selection_Label" xml:space="preserve">
-    <value>Form State:</value>
+    <value>Layout State:</value>
   </data>
   <data name="Form_State_Source_Data_Verified" xml:space="preserve">
     <value>Source Data Verified</value>
@@ -1390,7 +1366,7 @@ Select the roles who can edit this section's content.</value>
     <value>Withdrawn</value>
   </data>
   <data name="Form_Status_Field_Title" xml:space="preserve">
-    <value>Form Status: </value>
+    <value>Layout Status: </value>
   </data>
   <data name="Form_Template_Download_Command_Title" xml:space="preserve">
     <value>Download Form</value>
@@ -1399,10 +1375,10 @@ Select the roles who can edit this section's content.</value>
     <value>Select form template file:</value>
   </data>
   <data name="Form_Template_Name_Field_Title" xml:space="preserve">
-    <value>Form Template Name: </value>
+    <value>Layout Template Name: </value>
   </data>
   <data name="Form_Template_Page_Title" xml:space="preserve">
-    <value>Form Template Upload Page</value>
+    <value>Layout Template Upload Page</value>
   </data>
   <data name="Form_Template_Upload_Command_Title" xml:space="preserve">
     <value>Upload Template</value>
@@ -1411,13 +1387,13 @@ Select the roles who can edit this section's content.</value>
     <value>Upload process log</value>
   </data>
   <data name="Form_Title_Field_Label" xml:space="preserve">
-    <value>Form Title:</value>
+    <value>Layout Title:</value>
   </data>
   <data name="Form_Type_Field_Label" xml:space="preserve">
-    <value>Form Type:</value>
+    <value>Layout Type:</value>
   </data>
   <data name="Form_Type_Selection_Label" xml:space="preserve">
-    <value>Form Type:</value>
+    <value>Layout Type:</value>
   </data>
   <data name="Form_UnLock_Command_Title" xml:space="preserve">
     <value>Unlock Record</value>
@@ -1426,22 +1402,22 @@ Select the roles who can edit this section's content.</value>
     <value>Update error: a duplicate form identifier has been created.</value>
   </data>
   <data name="Form_Update_Error_Message" xml:space="preserve">
-    <value>Form design update error message: {0} </value>
+    <value>Layout design update error message: {0} </value>
   </data>
   <data name="Form_Update_Reason_Field_Title" xml:space="preserve">
     <value>Reason for the change:</value>
   </data>
   <data name="Form_Version_Field_Title" xml:space="preserve">
-    <value>Form Version:</value>
+    <value>Layout Version:</value>
   </data>
   <data name="Form_Version_Option_Description" xml:space="preserve">
-    <value>Form Version {0} </value>
+    <value>Layout Version {0} </value>
   </data>
   <data name="Form_View_Error_Message" xml:space="preserve">
-    <value>Error raised when generating a list of forms</value>
+    <value>Error raised when generating a list of layouts</value>
   </data>
   <data name="Form_Withdrawn_Command_Title" xml:space="preserve">
-    <value>Withdraw Form</value>
+    <value>Withdraw Layout</value>
   </data>
   <data name="Home_Page_Access_Denied_Header" xml:space="preserve">
     <value>Access Denied</value>
@@ -1790,161 +1766,6 @@ Select the roles who can edit this section's content.</value>
   </data>
   <data name="Page_Comment_Close_Label" xml:space="preserve">
     <value>Close </value>
-  </data>
-  <data name="Project_Add_Section_Command_Title" xml:space="preserve">
-    <value>Add Section</value>
-  </data>
-  <data name="Project_Binary_Data_Field_Label" xml:space="preserve">
-    <value>Enable Binary Data Collection:</value>
-  </data>
-  <data name="Project_Close_Recruitment_Command_Label" xml:space="preserve">
-    <value>Close Recruitment</value>
-  </data>
-  <data name="Project_Confirmation_Email_Body_Field_Description" xml:space="preserve">
-    <value>The confirmation fields are MarkDown enabled with text substitution for: 
-  
-* {FirstName} = Patient’s first name 
-* {FamilyName} = Patient’s family name 
-* {ProjectId} = The selection projects identifier. 
-* {ProjectTitle} = The selection projects’s title.
-* {ProjectDescription} = The selection project’s description.
-* {ProjectSponsor} = The selection projects’s description.
-* {SiteId} = The selection site identifier. 
-* {SiteName} = The selection organisation name.
-* {SiteAddress} = The selection site address.
-* {SitePhoneNo} = The selection site phone number.
-* {SiteEmailAddress} = The selection site email address.
-* {SiteInvestigator} = The selection site investigator name.
-
- 
-Leaving the email subject field blank will disable the confirmation email process.</value>
-  </data>
-  <data name="Project_Confirmation_Email_Body_Field_Title" xml:space="preserve">
-    <value>Confirmation email body content:</value>
-  </data>
-  <data name="Project_Confirmation_Email_Subject_Field_Title" xml:space="preserve">
-    <value>Confirmation email subject:</value>
-  </data>
-  <data name="Project_Confirmation_Group_Description" xml:space="preserve">
-    <value>This group defines the content of the confirmation email that is sent to patients when their PRO account is created.</value>
-  </data>
-  <data name="Project_Confirmation_Group_Title" xml:space="preserve">
-    <value>Patient confirmation email settings</value>
-  </data>
-  <data name="Project_Create_Project_Command_Title" xml:space="preserve">
-    <value>Create a new  clinical project </value>
-  </data>
-  <data name="Project_Create_Project_Description" xml:space="preserve">
-    <value>This Trial was initialised using the Global Project.</value>
-  </data>
-  <data name="Project_Creation_Error_Message" xml:space="preserve">
-    <value>Error generted when creating new trial object.</value>
-  </data>
-  <data name="Project_Delete_Command_Title" xml:space="preserve">
-    <value>Delete Project</value>
-  </data>
-  <data name="Project_Description_Field_Label" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Project_Duplicate_Identifier_Error_Message" xml:space="preserve">
-    <value>Error: Duplicated project identifier encountered.</value>
-  </data>
-  <data name="Project_File_Upload_Group_Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Project_File_Upload_Page_Title_Label" xml:space="preserve">
-    <value>Trial {0} - {1} File Uploads</value>
-  </data>
-  <data name="Project_File_Upload_Selection_Command_Title" xml:space="preserve">
-    <value>Update selection</value>
-  </data>
-  <data name="Project_General_Group_Title" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Project_Get_Export_Page_Error_Message" xml:space="preserve">
-    <value>Error raised generating the project export page.</value>
-  </data>
-  <data name="Project_Get_List_Error_Message" xml:space="preserve">
-    <value>Error raised when generating a list of trials.</value>
-  </data>
-  <data name="Project_Get_List_Of_Projects_Page_Label" xml:space="preserve">
-    <value>List of Trials</value>
-  </data>
-  <data name="Project_Get_Page_Error_Message" xml:space="preserve">
-    <value>Error raised when retrieving a trial page.</value>
-  </data>
-  <data name="Project_Identifiers_Empty_Error_Message" xml:space="preserve">
-    <value>Trial identifiers are not defined.</value>
-  </data>
-  <data name="Project_Identifier_Empty_Error_Message" xml:space="preserve">
-    <value>Trial identifier is not defined</value>
-  </data>
-  <data name="Project_List_Generation_Error" xml:space="preserve">
-    <value>Trial list generation error.</value>
-  </data>
-  <data name="Project_List_Of_Projects_Group_Label" xml:space="preserve">
-    <value>List of trials</value>
-  </data>
-  <data name="Project_Locked_Command_Label" xml:space="preserve">
-    <value>Lock Trial </value>
-  </data>
-  <data name="Project_Mode_Field_Label" xml:space="preserve">
-    <value>Trial Mode:</value>
-  </data>
-  <data name="Project_Offline_Enabled_Field_Label" xml:space="preserve">
-    <value>Offline data collection enabled:</value>
-  </data>
-  <data name="Project_On_Edit_Hide_Annotations_Field_Label" xml:space="preserve">
-    <value>Hide Annotations when editing form data:</value>
-  </data>
-  <data name="Project_Page_Title_Label" xml:space="preserve">
-    <value>Trial: {0} - {1} - Configuration </value>
-  </data>
-  <data name="Project_Patient_Record_Exit_Description" xml:space="preserve">
-    <value>The field description (instructions) are to state the field is MarkDown enabled with text substitution for: 
-  
-* {PatientName} = Patient’s  fullname 
-* {TrialId} = The selection projects identifier. 
-* {TrialTitle} = The selection project’s title.
-* {TrialDescription} = The selection project’s description.
-* {TrialSponsor} = The selection project’s description.
-* {SiteId} = The selection site identifier. 
-* {SiteName} = The organisation name.
-* {SiteAddress} = The site address.
-* {SitePhoneNo} = The site phone number.
-* {SiteEmailAddress} = The site email address.
-* {SiteInvestigator} = The site investigator name.
-* {MilestoneId} = The selected milestone’s identifier. 
-* {MilestoneTitle} = The selected milestone’s title.
-* {MilestoneDescription} = The selection milestone’s description.
-* {QuestionnaireUrl} is the questionnaire url.</value>
-  </data>
-  <data name="Project_Project" xml:space="preserve">
-    <value>Project</value>
-  </data>
-  <data name="Project_Properties_Group_Title" xml:space="preserve">
-    <value>Properties</value>
-  </data>
-  <data name="Project_Save_Command_Title" xml:space="preserve">
-    <value>Save Project</value>
-  </data>
-  <data name="Project_Selection_Command" xml:space="preserve">
-    <value>Update Selection</value>
-  </data>
-  <data name="Project_Settings_Group_Title" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Project_Site_Selection_Title" xml:space="preserve">
-    <value>Trial Site Selection:</value>
-  </data>
-  <data name="Project_Title_Field_Label" xml:space="preserve">
-    <value>Title:</value>
-  </data>
-  <data name="Project_UnLocked_Command_Label" xml:space="preserve">
-    <value>Unlock Trial </value>
-  </data>
-  <data name="Project_Update_Error_Message" xml:space="preserve">
-    <value>Error raised when updating a trial page.</value>
   </data>
   <data name="ReAuthentication_Command_Title" xml:space="preserve">
     <value>Authenticate</value>
@@ -2819,5 +2640,8 @@ __Note__: all of these text substitutions are case sensitive.
   </data>
   <data name="Form_Properties_Settings_Group_Title" xml:space="preserve">
     <value>Layout Settings</value>
+  </data>
+  <data name="LayoutFields_Enable_AI_Field_Label" xml:space="preserve">
+    <value>Enable AI Data:</value>
   </data>
 </root>

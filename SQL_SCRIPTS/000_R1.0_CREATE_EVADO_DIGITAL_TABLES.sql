@@ -71,7 +71,6 @@ BEGIN
 /****** Object:  Table [dbo].[ED_RECORD_SECTIONS]    Script Date: 01/04/2021 11:20:06 ******/
 
 CREATE TABLE [dbo].[ED_RECORD_SECTIONS](
-	[EDRLS_GUID] [uniqueidentifier] NOT NULL,
 	[EDRL_GUID] [uniqueidentifier] NOT NULL,
 	[EDRLS_NUMBER] [int] NULL,
 	[EDRLS_ORDER] [int] NULL,
@@ -256,7 +255,6 @@ IF NOT EXISTS( SELECT 1 FROM sys.columns
           AND Object_ID = Object_ID(N'ED_ENTITY_SECTIONS' ))
 BEGIN
 CREATE TABLE [dbo].[ED_ENTITY_SECTIONS](
-	[EDELS_GUID] [uniqueidentifier] NOT NULL,
 	[EDEL_GUID] [uniqueidentifier] NOT NULL,
 	[EDELS_NUMBER] [int] NULL,
 	[EDELS_ORDER] [int] NULL,

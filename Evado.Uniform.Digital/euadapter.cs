@@ -611,7 +611,9 @@ namespace Evado.UniForm.Digital
       //
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
       this.ErrorMessage = String.Empty;
-
+      //
+      // Define the records class
+      //
       EuRecords records = new EuRecords (
               this._AdapterObjects,
               this.ServiceUserProfile,
@@ -622,7 +624,18 @@ namespace Evado.UniForm.Digital
 
       records.unLockRecord ( );
 
-      records.LoggingLevel = this.LoggingLevel;
+      //
+      // Initialise the entities class
+      //
+      EuEntities entities = new EuEntities (
+              this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.UniForm_BinaryServiceUrl,
+              this.ClassParameters );
+
+      entities.unLockRecord ( );
 
       // 
       // Save the application parameters to global objects.
@@ -922,6 +935,17 @@ namespace Evado.UniForm.Digital
             clientDataObject = entityLayoutFields.getDataObject ( PageCommand );
             this.ErrorMessage = entityLayoutFields.ErrorMessage;
             LogAdapter ( entityLayoutFields.Log );
+            break;
+          }
+        case EuAdapterClasses.Entities:
+          {
+            this.LogDebug ( "ENTITY CLASS SELECTED." );
+
+            entities.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = entities.getDataObject ( PageCommand );
+            this.ErrorMessage = entities.ErrorMessage;
+            LogAdapter ( entities.Log );
             break;
           }
 

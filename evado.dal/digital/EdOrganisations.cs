@@ -43,7 +43,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdOrganisations ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvOrganisations.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvOrganisations.";
     }
 
     // ==================================================================================
@@ -55,7 +55,7 @@ namespace Evado.Dal.Digital
     public EdOrganisations ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvOrganisations.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvOrganisations.";
 
       this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.AdapterGuid );
 

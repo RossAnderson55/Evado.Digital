@@ -35,24 +35,24 @@ namespace Evado.Dal.Digital
   /// <summary>
   /// This class is handles the data access layer for the form record field data object.
   /// </summary>
-  public class EdRecordValues : EvDalBase
+  public class EdEntityValues : EvDalBase
   {
     #region class initialisation method.
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EdRecordValues ( )
+    public EdEntityValues ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityValues.";
     }
 
     /// <summary>
     /// This method initialises the schedule DAL class.
     /// </summary>
-    public EdRecordValues ( EvClassParameters Settings )
+    public EdEntityValues ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Digital.EdRecordFields.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntityValues.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {
@@ -72,41 +72,25 @@ namespace Evado.Dal.Digital
     // 
     // selectionList query string.
     // 
-    private const string SQL_QUERY_VALUES_VIEW = "Select *  FROM ED_RECORD_VALUE_VIEW ";
+    private const string SQL_QUERY_VALUES_VIEW = "Select *  FROM ED_ENTITY_VALUE_VIEW ";
 
-    #region Define the stored procedure names.
-    /// <summary>
-    /// This coanstant defines a storeprocedure for adding items to record field table.
-    /// </summary>
-    public const string _storedProcedureAddItem = "usr_RecordField_add";
-
-    /// <summary>
-    /// This coanstant defines a storeprocedure for updating items on record field table.
-    /// </summary>
-    private const string _storedProcedureUpdateItem = "usr_RecordField_update";
-
-    /// <summary>
-    /// This coanstant defines a storeprocedure for deleting items from record field table.
-    /// </summary>
-    private const string _storedProcedureDeleteItem = "usr_RecordField_delete";
-    #endregion
 
     #region Define the query parameter constants.
 
     // SQL database column names
-    private const string DB_RECORD_GUID = "EDR_GUID";
-    private const string DB_VALUES_GUID = "EDRV_GUID";
-    private const string DB_FIELD_GUID = "EDRLF_GUID";
+    private const string DB_ENTITY_GUID = "EDE_GUID";
+    private const string DB_VALUES_GUID = "EDEV_GUID";
+    private const string DB_FIELD_GUID = "EDELF_GUID";
 
-    private const string DB_VALUES_COLUMN_ID = "EDRV_COLUMN_ID";
-    private const string DB_VALUES_ROW = "EDRV_ROW";
-    private const string DB_VALUES_STRING = "EDRV_STRING";
-    private const string DB_VALUES_NUMERIC = "EDRV_NUMERIC";
-    private const string DB_VALUES_DATE = "EDRV_DATE";
-    private const string DB_VALUES_TEXT = "EDRV_TEXT";
+    private const string DB_VALUES_COLUMN_ID = "EDEV_COLUMN_ID";
+    private const string DB_VALUES_ROW = "EDEV_ROW";
+    private const string DB_VALUES_STRING = "EDEV_STRING";
+    private const string DB_VALUES_NUMERIC = "EDEV_NUMERIC";
+    private const string DB_VALUES_DATE = "EDEV_DATE";
+    private const string DB_VALUES_TEXT = "EDEV_TEXT";
 
     // SQL parameter strings.
-    private const string PARM_RECORD_GUID = "@RECORD_GUID";
+    private const string PARM_ENTITY_GUID = "@ENTITY_GUID";
     private const string PARM_VALUE_GUID = "@GUID";
     private const string PARM_FIELD_GUID = "@FIELD_GUID";
     private const string PARM_VALUE_COLUMN_ID = "@COLUMN_ID";
@@ -122,15 +106,6 @@ namespace Evado.Dal.Digital
     //  Define the SQL query string variable.
     //
     private string _Sql_QueryString = String.Empty;
-
-    private List<EdFormRecordComment> _FieldCommandList = new List<EdFormRecordComment> ( );
-
-    //
-    // This variable is used to skip retrieving comments when updating the form record.
-    //
-    private bool _SkipRetrievingComments = false;
-
-    private String _AnnotationText = String.Empty;
 
     #endregion
 
@@ -179,44 +154,44 @@ namespace Evado.Dal.Digital
       // 
       // Fill the evForm object.l
       //
-      recordField.Guid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_VALUES_GUID );
+      recordField.Guid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_VALUES_GUID );
       recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdRecords.DB_RECORD_GUID );
       recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordLayouts.DB_LAYOUT_GUID );
-      recordField.RecordFieldGuid = EvSqlMethods.getGuid ( Row, EdRecordValues.DB_FIELD_GUID );
+      recordField.RecordFieldGuid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_FIELD_GUID );
 
 
-      recordField.FieldId = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_ID );
-      String value = EvSqlMethods.getString ( Row, EdRecordFields.DB_TYPE_ID );
+      recordField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
+      String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
       recordField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      recordField.Design.Title = EvSqlMethods.getString ( Row, EdRecordFields.DB_TITLE );
-      recordField.Design.Instructions = EvSqlMethods.getString ( Row, EdRecordFields.DB_INSTRUCTIONS );
-      recordField.Design.HttpReference = EvSqlMethods.getString ( Row, EdRecordFields.DB_HTTP_REFERENCE );
-      recordField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_SECTION_ID );
-      recordField.Design.Options = EvSqlMethods.getString ( Row, EdRecordFields.DB_OPTIONS );
-      recordField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_SUMMARY_FIELD );
-      recordField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdRecordFields.DB_MANDATORY );
-      recordField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdRecordFields.DB_AI_DATA_POINT );
-      recordField.Design.HideField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_HIDDEN );
-      recordField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdRecordFields.DB_EX_SELECTION_LIST_ID );
-      recordField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdRecordFields.DB_EX_SELECTION_LIST_CATEGORY );
-      recordField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdRecordFields.DB_DEFAULT_VALUE );
-      recordField.Design.Unit = EvSqlMethods.getString ( Row, EdRecordFields.DB_UNIT );
-      recordField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdRecordFields.DB_UNIT_SCALING );
+      recordField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
+      recordField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
+      recordField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
+      recordField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
+      recordField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
+      recordField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
+      recordField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
+      recordField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
+      recordField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
+      recordField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
+      recordField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
+      recordField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
+      recordField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
+      recordField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
 
-      recordField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_VALIDATION_LOWER_LIMIT );
-      recordField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_VALIDATION_UPPER_LIMIT );
-      recordField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_ALERT_LOWER_LIMIT );
-      recordField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_ALERT_UPPER_LIMIT );
-      recordField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_NORMAL_LOWER_LIMITD );
-      recordField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdRecordFields.DB_NORMAL_UPPER_LIMIT );
+      recordField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
+      recordField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
+      recordField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
+      recordField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
+      recordField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
+      recordField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
 
-      recordField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdRecordFields.DB_FIELD_CATEGORY );
-      recordField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdRecordFields.DB_ANALOGUE_LEGEND_START );
-      recordField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdRecordFields.DB_ANALOGUE_LEGEND_FINISH );
-      recordField.Design.JavaScript = EvSqlMethods.getString ( Row, EdRecordFields.DB_JAVA_SCRIPT );
-      recordField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdRecordFields.DB_INITIAL_OPTION_LIST );
-      recordField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_INITIAL_VERSION );
+      recordField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
+      recordField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
+      recordField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
+      recordField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
+      recordField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
+      recordField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
       //
       // if the field is a signature then decrypt the field.
       //
@@ -352,7 +327,7 @@ namespace Evado.Dal.Digital
       if ( Field.ItemText == String.Empty )
       {
         //this.LogDebugValue ( "Reset table value to form default." );
-        Field.ItemText = EvSqlMethods.getString ( Row, EdRecordFields.DB_TABLE );
+        Field.ItemText = EvSqlMethods.getString ( Row, EdEntityFields.DB_TABLE );
       }
       // 
       // Deserialize the formfield item text to the formfield table. 
@@ -498,15 +473,15 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_RECORD_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = Record.Guid;
 
       // 
       // Define the query string.
       // 
-      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE ( " + EdRecordValues.DB_RECORD_GUID + " =" + EdRecordValues.PARM_RECORD_GUID + ") "
-        + "ORDER BY " + EdRecordFields.DB_ORDER + "; ";
+      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE ( " + EdEntityValues.DB_ENTITY_GUID + " =" + EdEntityValues.PARM_ENTITY_GUID + ") "
+        + "ORDER BY " + EdEntityFields.DB_ORDER + "; ";
 
       this.LogDebug ( _Sql_QueryString );
 
@@ -530,7 +505,7 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ count ];
 
-          Guid recordValueGuid = EvSqlMethods.getGuid ( row, EdRecordValues.DB_VALUES_GUID );
+          Guid recordValueGuid = EvSqlMethods.getGuid ( row, EdEntityValues.DB_VALUES_GUID );
 
           this.LogDebug ( "previousValueGuid: {0}, recordValueGuid: {1}.", previousValueGuid, recordValueGuid );
 
@@ -587,14 +562,14 @@ namespace Evado.Dal.Digital
               }
             case Evado.Model.EvDataTypes.Numeric:
               {
-                recordField.ItemValue = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_NUMERIC );
+                recordField.ItemValue = EvSqlMethods.getString ( row, EdEntityValues.DB_VALUES_NUMERIC );
                 this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
                 break;
               }
             case Evado.Model.EvDataTypes.Boolean:
             case Evado.Model.EvDataTypes.Yes_No:
               {
-                bool bValue = EvSqlMethods.getBool ( row, EdRecordValues.DB_VALUES_NUMERIC);
+                bool bValue = EvSqlMethods.getBool ( row, EdEntityValues.DB_VALUES_NUMERIC);
                 this.LogDebug ( "bValue: {0}.", bValue );
                 recordField.ItemValue = "No";
                 if ( bValue == true )
@@ -607,14 +582,14 @@ namespace Evado.Dal.Digital
               }
             case Evado.Model.EvDataTypes.Date:
               {
-                var dtValue = EvSqlMethods.getDateTime ( row, EdRecordValues.DB_VALUES_DATE );
+                var dtValue = EvSqlMethods.getDateTime ( row, EdEntityValues.DB_VALUES_DATE );
                 recordField.ItemValue = EvStatics.getDateAsString ( dtValue );
                 this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
                 break;
               }
             case Evado.Model.EvDataTypes.Free_Text:
               {
-                recordField.ItemText = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_TEXT );
+                recordField.ItemText = EvSqlMethods.getString ( row, EdEntityValues.DB_VALUES_TEXT );
                 this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemText );
                 break;
               }
@@ -624,7 +599,7 @@ namespace Evado.Dal.Digital
                 {
                   break;
                 }
-                recordField.ItemValue = EvSqlMethods.getString ( row, EdRecordValues.DB_VALUES_STRING );
+                recordField.ItemValue = EvSqlMethods.getString ( row, EdEntityValues.DB_VALUES_STRING );
                 this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
                 break;
               }
@@ -663,8 +638,8 @@ namespace Evado.Dal.Digital
       //
       // Get the field value.
       //
-      String columnId = EvSqlMethods.getString ( Row, EdRecordValues.DB_VALUES_COLUMN_ID );
-      bool value = EvSqlMethods.getBool ( Row, EdRecordValues.DB_VALUES_NUMERIC );
+      String columnId = EvSqlMethods.getString ( Row, EdEntityValues.DB_VALUES_COLUMN_ID );
+      bool value = EvSqlMethods.getBool ( Row, EdEntityValues.DB_VALUES_NUMERIC );
 
       this.LogDebug ( " columnId: " + columnId + ", value: " + value );
 
@@ -711,8 +686,8 @@ namespace Evado.Dal.Digital
       //
       // Get the field row values.
       //
-      int row = EvSqlMethods.getInteger ( Row, EdRecordValues.DB_VALUES_ROW );
-      String columnId = EvSqlMethods.getString ( Row, EdRecordValues.DB_VALUES_COLUMN_ID );
+      int row = EvSqlMethods.getInteger ( Row, EdEntityValues.DB_VALUES_ROW );
+      String columnId = EvSqlMethods.getString ( Row, EdEntityValues.DB_VALUES_COLUMN_ID );
 
       //
       // get the colum no
@@ -780,12 +755,12 @@ namespace Evado.Dal.Digital
       {
         case EvDataTypes.Numeric:
           {
-            float fltValue = EvSqlMethods.getFloat ( Row, EdRecordValues.DB_VALUES_NUMERIC );
+            float fltValue = EvSqlMethods.getFloat ( Row, EdEntityValues.DB_VALUES_NUMERIC );
             return fltValue.ToString ( );
           }
         case EvDataTypes.Yes_No:
           {
-            bool bYesNo = EvSqlMethods.getBool ( Row, EdRecordValues.DB_VALUES_NUMERIC );
+            bool bYesNo = EvSqlMethods.getBool ( Row, EdEntityValues.DB_VALUES_NUMERIC );
             string value = "No";
             if ( bYesNo == true )
             {
@@ -795,7 +770,7 @@ namespace Evado.Dal.Digital
           }
         case EvDataTypes.Date:
           {
-            DateTime dtValue = EvSqlMethods.getDateTime ( Row, EdRecordValues.DB_VALUES_DATE );
+            DateTime dtValue = EvSqlMethods.getDateTime ( Row, EdEntityValues.DB_VALUES_DATE );
 
             if ( dtValue == Evado.Model.EvStatics.CONST_DATE_NULL )
             {
@@ -809,7 +784,7 @@ namespace Evado.Dal.Digital
           }
         default:
           {
-            return EvSqlMethods.getString ( Row, EdRecordValues.DB_VALUES_STRING );
+            return EvSqlMethods.getString ( Row, EdEntityValues.DB_VALUES_STRING );
           }
       }//END table column type switch.
 
@@ -828,7 +803,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class updates the fields on formfield table using field list, RecordUid and usercommon name.
     /// </summary>
-    /// <param name="FormRecord">EvForm object</param>
+    /// <param name="Entity">EvForm object</param>
     /// <returns>EvEventCodes: an event code for updating fields</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -841,11 +816,11 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes UpdateFields (
-      EdRecord FormRecord )
+      EdRecord Entity )
     {
       this.LogMethod ( "UpdateFields method " );
-      this.LogDebug ( "RecordFieldList.Count: " + FormRecord.Fields.Count );
-      this.LogDebug ( "SubmitRecord: " + FormRecord.State );
+      this.LogDebug ( "RecordFieldList.Count: " + Entity.Fields.Count );
+      this.LogDebug ( "SubmitRecord: " + Entity.State );
       // 
       // Initialize the method debug log and the return event code. 
       // 
@@ -855,20 +830,20 @@ namespace Evado.Dal.Digital
       //
       // Define the record Guid value for the update queies
       //
-      SqlParameter prm = new SqlParameter ( EdRecordValues.PARM_RECORD_GUID, SqlDbType.UniqueIdentifier );
-      prm.Value = FormRecord.Guid;
+      SqlParameter prm = new SqlParameter ( EdEntityValues.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier );
+      prm.Value = Entity.Guid;
       ParmList.Add ( prm );
 
       //
       // Delete the sections
       //
-      SqlUpdateStatement.AppendLine ( "DELETE FROM ED_RECORD_VALUES "
-      + "WHERE " + EdRecordValues.DB_RECORD_GUID + "= " + EdRecordValues.PARM_RECORD_GUID + ";  \r\n\r\n" );
+      SqlUpdateStatement.AppendLine ( "DELETE FROM ED_ENTITY_VALUES "
+      + "WHERE " + EdEntityValues.DB_ENTITY_GUID + "= " + EdEntityValues.PARM_ENTITY_GUID + ";  \r\n\r\n" );
 
       // 
       // Iterate through the formfields object. 
       // 
-      foreach ( EdRecordField field in FormRecord.Fields )
+      foreach ( EdRecordField field in Entity.Fields )
       {
         if ( field == null )
         {
@@ -956,16 +931,29 @@ namespace Evado.Dal.Digital
         return;
       }
 
+      //
+      // Swithc the select the field storage structure
       switch ( RecordField.TypeId )
       {
-
+        case EvDataTypes.Check_Box_List:
+          {
+            this.updateCheckBoxValueField (
+               SqlUpdateStatement,
+               ParmList,
+               RecordField );
+            break;
+          }
+        case EvDataTypes.Table:
+        case EvDataTypes.Special_Matrix:
+          {
+            break;
+          }
         default:
           {
             this.updateSingleValueField (
               SqlUpdateStatement,
               ParmList,
-              RecordField,
-              "", 0 );
+              RecordField);
             break;
           }
       }
@@ -985,9 +973,7 @@ namespace Evado.Dal.Digital
     private void updateSingleValueField (
       StringBuilder SqlUpdateStatement,
       List<SqlParameter> ParmList,
-      EdRecordField RecordField,
-      String ColumnId,
-      int Row )
+      EdRecordField RecordField )
     {
       this.LogMethod ( "updateField method. " );
       this.LogDebug ( "ValueCount: " + _ValueCount );
@@ -995,28 +981,28 @@ namespace Evado.Dal.Digital
       // 
       // Define the record field Guid
       // 
-      SqlParameter prm = new SqlParameter ( EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+      SqlParameter prm = new SqlParameter ( EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
       prm.Value = RecordField.RecordFieldGuid;
       ParmList.Add ( prm );
 
       // 
       // Define the record field Guid
       // 
-      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+      prm = new SqlParameter ( EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
       prm.Value = RecordField.Guid;
       ParmList.Add ( prm );
       // 
       // Define the record column identifier
       // 
-      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
-      prm.Value = ColumnId;
+      prm = new SqlParameter ( EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
+      prm.Value = String.Empty ;
       ParmList.Add ( prm );
 
       // 
       // Define the record field Guid
       // 
-      prm = new SqlParameter ( EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount, SqlDbType.SmallInt );
-      prm.Value = Row;
+      prm = new SqlParameter ( EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount, SqlDbType.SmallInt );
+      prm.Value = 0;
       ParmList.Add ( prm );
 
 
@@ -1032,54 +1018,54 @@ namespace Evado.Dal.Digital
               value = "1";
             }
 
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
+            prm = new SqlParameter ( EdEntityValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
             prm.Value = value;
             ParmList.Add ( prm );
             //
             // Create the add query .
             //
-            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-            + "(" + EdRecordValues.DB_RECORD_GUID
-            + ", " + EdRecordValues.DB_FIELD_GUID
-            + ", " + EdRecordValues.DB_VALUES_GUID
-            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-            + ", " + EdRecordValues.DB_VALUES_ROW
-            + ", " + EdRecordValues.DB_VALUES_NUMERIC
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+            + "(" + EdEntityValues.DB_ENTITY_GUID
+            + ", " + EdEntityValues.DB_FIELD_GUID
+            + ", " + EdEntityValues.DB_VALUES_GUID
+            + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+            + ", " + EdEntityValues.DB_VALUES_ROW
+            + ", " + EdEntityValues.DB_VALUES_NUMERIC
             + "  ) " );
             SqlUpdateStatement.AppendLine ( "VALUES (" );
             SqlUpdateStatement.AppendLine (
-              " " + EdRecordValues.PARM_RECORD_GUID
-             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
+              " " + EdEntityValues.PARM_ENTITY_GUID
+             + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
             break;
           }
         case EvDataTypes.Numeric:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
+            prm = new SqlParameter ( EdEntityValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
             //
             // Create the add query .
             //
-            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-            + "(" + EdRecordValues.DB_RECORD_GUID
-            + ", " + EdRecordValues.DB_FIELD_GUID
-            + ", " + EdRecordValues.DB_VALUES_GUID
-            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-            + ", " + EdRecordValues.DB_VALUES_ROW
-            + ", " + EdRecordValues.DB_VALUES_NUMERIC
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+            + "(" + EdEntityValues.DB_ENTITY_GUID
+            + ", " + EdEntityValues.DB_FIELD_GUID
+            + ", " + EdEntityValues.DB_VALUES_GUID
+            + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+            + ", " + EdEntityValues.DB_VALUES_ROW
+            + ", " + EdEntityValues.DB_VALUES_NUMERIC
             + "  ) " );
             SqlUpdateStatement.AppendLine ( "VALUES (" );
             SqlUpdateStatement.AppendLine (
-              " " + EdRecordValues.PARM_RECORD_GUID
-             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
+              " " + EdEntityValues.PARM_ENTITY_GUID
+             + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
             break;
           }
         case EvDataTypes.Date:
@@ -1089,86 +1075,173 @@ namespace Evado.Dal.Digital
               RecordField.ItemValue = EvStatics.CONST_DATE_NULL.ToString ( "dd-MMM-yyyy" );
             }
 
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.DateTime );
+            prm = new SqlParameter ( EdEntityValues.PARM_VALUE_DATE + "_" + this._ValueCount, SqlDbType.DateTime );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
             //
             // Create the add query .
             //
-            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-            + "(" + EdRecordValues.DB_RECORD_GUID
-            + ", " + EdRecordValues.DB_FIELD_GUID
-            + ", " + EdRecordValues.DB_VALUES_GUID
-            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-            + ", " + EdRecordValues.DB_VALUES_ROW
-            + ", " + EdRecordValues.DB_VALUES_DATE
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+            + "(" + EdEntityValues.DB_ENTITY_GUID
+            + ", " + EdEntityValues.DB_FIELD_GUID
+            + ", " + EdEntityValues.DB_VALUES_GUID
+            + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+            + ", " + EdEntityValues.DB_VALUES_ROW
+            + ", " + EdEntityValues.DB_VALUES_DATE
             + "  ) " );
             SqlUpdateStatement.AppendLine ( "VALUES (" );
             SqlUpdateStatement.AppendLine (
-              " " + EdRecordValues.PARM_RECORD_GUID
-             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_DATE + "_" + this._ValueCount + " );\r\n" );
+              " " + EdEntityValues.PARM_ENTITY_GUID
+             + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_DATE + "_" + this._ValueCount + " );\r\n" );
 
             break;
           }
         case EvDataTypes.Free_Text:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount, SqlDbType.NText );
+            prm = new SqlParameter ( EdEntityValues.PARM_VALUE_TEXT + "_" + this._ValueCount, SqlDbType.NText );
             prm.Value = RecordField.ItemText;
             ParmList.Add ( prm );
             //
             // Create the add query .
             //
-            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-            + "(" + EdRecordValues.DB_RECORD_GUID
-            + ", " + EdRecordValues.DB_FIELD_GUID
-            + ", " + EdRecordValues.DB_VALUES_GUID
-            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-            + ", " + EdRecordValues.DB_VALUES_ROW
-            + ", " + EdRecordValues.DB_VALUES_TEXT
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+            + "(" + EdEntityValues.DB_ENTITY_GUID
+            + ", " + EdEntityValues.DB_FIELD_GUID
+            + ", " + EdEntityValues.DB_VALUES_GUID
+            + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+            + ", " + EdEntityValues.DB_VALUES_ROW
+            + ", " + EdEntityValues.DB_VALUES_TEXT
             + "  ) " );
             SqlUpdateStatement.AppendLine ( "VALUES (" );
             SqlUpdateStatement.AppendLine (
-              " " + EdRecordValues.PARM_RECORD_GUID
-             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_TEXT + "_" + this._ValueCount + " );\r\n" );
+              " " + EdEntityValues.PARM_ENTITY_GUID
+             + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_TEXT + "_" + this._ValueCount + " );\r\n" );
 
             break;
           }
         default:
           {
-            prm = new SqlParameter ( EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount, SqlDbType.NVarChar, 100 );
+            prm = new SqlParameter ( EdEntityValues.PARM_VALUE_STRING + "_" + this._ValueCount, SqlDbType.NVarChar, 100 );
             prm.Value = RecordField.ItemValue;
             ParmList.Add ( prm );
             //
             // Create the add query .
             //
-            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_RECORD_VALUES  "
-            + "(" + EdRecordValues.DB_RECORD_GUID
-            + ", " + EdRecordValues.DB_FIELD_GUID
-            + ", " + EdRecordValues.DB_VALUES_GUID
-            + ", " + EdRecordValues.DB_VALUES_COLUMN_ID
-            + ", " + EdRecordValues.DB_VALUES_ROW
-            + ", " + EdRecordValues.DB_VALUES_STRING
+            SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+            + "(" + EdEntityValues.DB_ENTITY_GUID
+            + ", " + EdEntityValues.DB_FIELD_GUID
+            + ", " + EdEntityValues.DB_VALUES_GUID
+            + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+            + ", " + EdEntityValues.DB_VALUES_ROW
+            + ", " + EdEntityValues.DB_VALUES_STRING
             + "  ) " );
             SqlUpdateStatement.AppendLine ( "VALUES (" );
             SqlUpdateStatement.AppendLine (
-              " " + EdRecordValues.PARM_RECORD_GUID
-             + ", " + EdRecordValues.PARM_FIELD_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_GUID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_ROW + "_" + this._ValueCount
-             + ", " + EdRecordValues.PARM_VALUE_STRING + "_" + this._ValueCount + " );\r\n" );
+              " " + EdEntityValues.PARM_ENTITY_GUID
+             + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+             + ", " + EdEntityValues.PARM_VALUE_STRING + "_" + this._ValueCount + " );\r\n" );
             break;
           }
       }//End switch statement
 
+    }//END method.
+
+    // =====================================================================================
+    /// <summary>
+    /// This class update fields on formfield table using formfield object. 
+    /// </summary>
+    /// <param name="SqlUpdateStatement">StringBuilder: containing the SQL update statemenet</param>
+    /// <param name="ParmList">list of SqlParameter objects</param>
+    /// <param name="EntityField">EvFormField: a formfield data object</param>
+    /// <param name="ColumnId">String: column identifier</param>
+    /// <param name="Row">Row: row index</param>
+    // -------------------------------------------------------------------------------------
+    private void updateCheckBoxValueField (
+      StringBuilder SqlUpdateStatement,
+      List<SqlParameter> ParmList,
+      EdRecordField EntityField )
+    {
+      this.LogMethod ( "updateCheckBoxValueField" );
+      this.LogDebug ( "ValueCount: {0}. ", this._ValueCount );
+      this.LogDebug ( "Field: {0}, V:{1}.", EntityField.FieldId, EntityField.ItemValue );
+
+      // 
+      // Define the record field Guid
+      // 
+      SqlParameter prm = new SqlParameter ( EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+      prm.Value = EntityField.RecordFieldGuid;
+      ParmList.Add ( prm );
+
+      // 
+      // Define the record field Guid
+      // 
+      prm = new SqlParameter ( EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount, SqlDbType.UniqueIdentifier );
+      prm.Value = EntityField.Guid;
+      ParmList.Add ( prm );
+
+      foreach ( EvOption option in EntityField.Design.OptionList )
+      {
+        // 
+        // Define the record column identifier
+        // 
+        prm = new SqlParameter ( EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
+        prm.Value = option.Value ;
+        ParmList.Add ( prm );
+
+        // 
+        // Define the record field Guid
+        // 
+        prm = new SqlParameter ( EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount, SqlDbType.SmallInt );
+        prm.Value = 0;
+        ParmList.Add ( prm );
+
+        //
+        // set the value to 1 if the option is in the field value.
+        //
+        string value = "0";
+        if( EntityField.ItemValue.Contains( option.Value ) == true )
+        {
+          value = "1";
+        }
+        this.LogDebug ( "Entity Value Col {0}, Value {1}.", option.Value, value );
+
+        prm = new SqlParameter ( EdEntityValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
+        prm.Value = value;
+        ParmList.Add ( prm );
+        //
+        // Create the add query .
+        //
+        SqlUpdateStatement.AppendLine ( " INSERT INTO ED_ENTITY_VALUES  "
+        + "(" + EdEntityValues.DB_ENTITY_GUID
+        + ", " + EdEntityValues.DB_FIELD_GUID
+        + ", " + EdEntityValues.DB_VALUES_GUID
+        + ", " + EdEntityValues.DB_VALUES_COLUMN_ID
+        + ", " + EdEntityValues.DB_VALUES_ROW
+        + ", " + EdEntityValues.DB_VALUES_NUMERIC
+        + "  ) " );
+        SqlUpdateStatement.AppendLine ( "VALUES (" );
+        SqlUpdateStatement.AppendLine (
+          " " + EdEntityValues.PARM_ENTITY_GUID
+         + ", " + EdEntityValues.PARM_FIELD_GUID + "_" + this._ValueCount
+         + ", " + EdEntityValues.PARM_VALUE_GUID + "_" + this._ValueCount
+         + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
+         + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
+         + ", " + EdEntityValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
+        
+      }//END ITERATION LOOP
+
+      this.LogMethodEnd ( "updateCheckBoxValueField" );
     }//END method.
 
     #endregion

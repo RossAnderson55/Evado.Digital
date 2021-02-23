@@ -41,7 +41,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvMenus ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvMenus.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvMenus.";
     }
 
     // ==================================================================================
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EvMenus ( Evado.Model.Digital.EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvMenus.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvMenus.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

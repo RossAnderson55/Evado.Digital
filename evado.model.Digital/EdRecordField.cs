@@ -343,11 +343,6 @@ namespace Evado.Model.Digital
           stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Mandatory_List_Label;
         }
 
-        if ( this.Design.AiDataPoint == true )
-        {
-          stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Data_Point_List_Label;
-        }
-
         if ( this.Design.HideField == true )
         {
           stTitle += Evado.Model.Digital.EdLabels.Form_Field_Is_Hidden_List_Label;
@@ -924,7 +919,15 @@ namespace Evado.Model.Digital
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Check_Box_List ) );
 
-      //list.Add(EvStatics.getOption ( EvDataTypes.External_Selection_List ));
+      list.Add ( EvStatics.getOption ( EvDataTypes.Address ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Telephone_Number ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Email_Address ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Name ) );
+
+      list.Add(EvStatics.getOption ( EvDataTypes.External_Selection_List ));
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Html_Link ) );
 

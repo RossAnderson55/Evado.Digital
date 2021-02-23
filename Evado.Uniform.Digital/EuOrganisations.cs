@@ -1008,11 +1008,6 @@ namespace Evado.UniForm.Digital
                     this.Session.Organisation.OrgId );
                 break;
               }
-            case EvEventCodes.Identifier_Project_Id_Error:
-              {
-                this.ErrorMessage = EdLabels.Project_Identifier_Empty_Error_Message;
-                break;
-              }
             case EvEventCodes.Identifier_Org_Id_Error:
               {
                 this.ErrorMessage = EdLabels.Organisation_Identifier_Empty_Error_Message;

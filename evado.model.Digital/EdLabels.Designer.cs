@@ -1422,7 +1422,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trial record audit page..
+        ///   Looks up a localized string similar to Record audit page..
         /// </summary>
         public static string Audit_Record_Page_Title {
             get {
@@ -2385,7 +2385,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Analogue FinishLegend:.
+        ///   Looks up a localized string similar to Analogue Finish Legend:.
         /// </summary>
         public static string Form_Field_Analogue_Legend_Finish_Field_Label {
             get {
@@ -2403,7 +2403,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field Category:.
+        ///   Looks up a localized string similar to Layout Field Category:.
         /// </summary>
         public static string Form_Field_Category_Field_Title {
             get {
@@ -2442,15 +2442,6 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Point Field: .
-        /// </summary>
-        public static string Form_Field_Date_Point_Field_Label {
-            get {
-                return ResourceManager.GetString("Form_Field_Date_Point_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Default numeric value: .
         /// </summary>
         public static string Form_Field_Default_Value_Field_Label {
@@ -2460,7 +2451,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Form Field.
+        ///   Looks up a localized string similar to Delete Layout Field.
         /// </summary>
         public static string Form_Field_Delete_Command_Title {
             get {
@@ -2487,7 +2478,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ERROR: This form has another field with {0} field identifier..
+        ///   Looks up a localized string similar to ERROR: This layout has another field with {0} field identifier..
         /// </summary>
         public static string Form_Field_Duplicate_ID_Error_Message {
             get {
@@ -2523,7 +2514,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field - General.
+        ///   Looks up a localized string similar to Layout Field - General.
         /// </summary>
         public static string Form_Field_General_Group_Title {
             get {
@@ -2550,7 +2541,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field Id:.
+        ///   Looks up a localized string similar to Layout Field Id:.
         /// </summary>
         public static string Form_Field_Identifier_Field_Label {
             get {
@@ -2624,15 +2615,6 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  ( Data Point ) .
-        /// </summary>
-        public static string Form_Field_Is_Data_Point_List_Label {
-            get {
-                return ResourceManager.GetString("Form_Field_Is_Data_Point_List_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to  ( Hidden Field ) .
         /// </summary>
         public static string Form_Field_Is_Hidden_List_Label {
@@ -2696,7 +2678,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field Matrix propeties.
+        ///   Looks up a localized string similar to Layout Field Matrix propeties.
         /// </summary>
         public static string Form_Field_Matrix_Group_Title {
             get {
@@ -2741,7 +2723,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field: .
+        ///   Looks up a localized string similar to Layout Field: .
         /// </summary>
         public static string Form_Field_Page_Title_Prefix {
             get {
@@ -2750,56 +2732,11 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Field - Properties.
-        /// </summary>
-        public static string Form_Field_Properteis_Group_Title {
-            get {
-                return ResourceManager.GetString("Form_Field_Properteis_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Form Field - Properties.
+        ///   Looks up a localized string similar to Layout Field - Properties.
         /// </summary>
         public static string Form_Field_Properties_Group_Title {
             get {
                 return ResourceManager.GetString("Form_Field_Properties_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The quiz answer description:.
-        /// </summary>
-        public static string Form_Field_Quiz_Answer_Field_Title {
-            get {
-                return ResourceManager.GetString("Form_Field_Quiz_Answer_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Each of the quz&apos;s quections should have a coding value to enable the field to determine whether the user has selected the correct answer..
-        /// </summary>
-        public static string Form_Field_Quiz_Options_Field_Description {
-            get {
-                return ResourceManager.GetString("Form_Field_Quiz_Options_Field_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The quiz option list values:.
-        /// </summary>
-        public static string Form_Field_Quiz_Options_Field_Title {
-            get {
-                return ResourceManager.GetString("Form_Field_Quiz_Options_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The correct quiz answer value: .
-        /// </summary>
-        public static string Form_Field_Quiz_Value_Field_Title {
-            get {
-                return ResourceManager.GetString("Form_Field_Quiz_Value_Field_Title", resourceCulture);
             }
         }
         
@@ -2840,7 +2777,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Section: .
+        ///   Looks up a localized string similar to Layout Section: .
         /// </summary>
         public static string Form_Field_Section_Field_Label {
             get {
@@ -2887,15 +2824,6 @@ namespace Evado.Model.Digital {
         public static string Form_Field_Selection_Options_Field_Title {
             get {
                 return ResourceManager.GetString("Form_Field_Selection_Options_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Subject sex validation settings.
-        /// </summary>
-        public static string Form_Field_Sex_Validation_Group_Title {
-            get {
-                return ResourceManager.GetString("Form_Field_Sex_Validation_Group_Title", resourceCulture);
             }
         }
         
@@ -3036,7 +2964,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Properties: .
+        ///   Looks up a localized string similar to Layout Properties: .
         /// </summary>
         public static string Form_Header_Group_Title {
             get {
@@ -3054,7 +2982,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Id: .
+        ///   Looks up a localized string similar to Layout Id: .
         /// </summary>
         public static string Form_Identifier_Field_Label {
             get {
@@ -3063,7 +2991,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Instructions: .
+        ///   Looks up a localized string similar to Layout Instructions: .
         /// </summary>
         public static string Form_Instructions_Field_Title {
             get {
@@ -3081,7 +3009,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form layout setting:.
+        ///   Looks up a localized string similar to Layout layout setting:.
         /// </summary>
         public static string Form_Layout_Field_Title {
             get {
@@ -3090,7 +3018,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected Forms.
+        ///   Looks up a localized string similar to Selected Layout.
         /// </summary>
         public static string Form_List_Label {
             get {
@@ -3108,7 +3036,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forms .
+        ///   Looks up a localized string similar to Layouts.
         /// </summary>
         public static string Form_List_Page_Title_Prefix {
             get {
@@ -3117,7 +3045,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload Form.
+        ///   Looks up a localized string similar to Upload Layout.
         /// </summary>
         public static string Form_List_Template_Page_Command_Title {
             get {
@@ -3144,7 +3072,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a new form field .
+        ///   Looks up a localized string similar to Add a new layout field .
         /// </summary>
         public static string Form_New_Field_Page_Command_Title {
             get {
@@ -3162,7 +3090,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Form.
+        ///   Looks up a localized string similar to New Layout.
         /// </summary>
         public static string Form_Page_New_Form_Title {
             get {
@@ -3171,7 +3099,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form:  {0} - {1} .
+        ///   Looks up a localized string similar to Layout: {0} - {1} .
         /// </summary>
         public static string Form_Page_Title {
             get {
@@ -3180,7 +3108,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Properties.
+        ///   Looks up a localized string similar to Layout Properties.
         /// </summary>
         public static string Form_Properties_Command_Title {
             get {
@@ -3189,7 +3117,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form design import/export group.
+        ///   Looks up a localized string similar to Layout design import/export group.
         /// </summary>
         public static string Form_Properties_Export_Group_Title {
             get {
@@ -3198,7 +3126,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Properties - General.
+        ///   Looks up a localized string similar to Layout Properties - General.
         /// </summary>
         public static string Form_Properties_General_Group_Title {
             get {
@@ -3207,7 +3135,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import form design.
+        ///   Looks up a localized string similar to Import layout m design.
         /// </summary>
         public static string Form_Properties_Import_Field_Title {
             get {
@@ -3225,7 +3153,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Properties - Sections.
+        ///   Looks up a localized string similar to Layout Properties - Sections.
         /// </summary>
         public static string Form_Properties_Sections_Group_Title {
             get {
@@ -3243,7 +3171,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xml form design.
+        ///   Looks up a localized string similar to Xml layout design.
         /// </summary>
         public static string Form_Properties_Xml_Form_Field_Title {
             get {
@@ -3306,7 +3234,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} &gt;  {1} - {2}, Visit: {3} &gt; Milestone: {4} - {5}  .
+        ///   Looks up a localized string similar to {0} &gt;  {1} - {2}  .
         /// </summary>
         public static string Form_Record_General_View_Title {
             get {
@@ -3351,7 +3279,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} - {1}  Milestone: {2} - {3}  .
+        ///   Looks up a localized string similar to {0} - {1} .
         /// </summary>
         public static string Form_Record_Site_View_Title {
             get {
@@ -3396,7 +3324,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Review Form.
+        ///   Looks up a localized string similar to Review Layout.
         /// </summary>
         public static string Form_Review_Command_Title {
             get {
@@ -3405,7 +3333,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Revise Form.
+        ///   Looks up a localized string similar to Revise Layout.
         /// </summary>
         public static string Form_Revise_Form_Command_Title {
             get {
@@ -3414,7 +3342,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save Form.
+        ///   Looks up a localized string similar to Save Layout.
         /// </summary>
         public static string Form_Save_Command_Title {
             get {
@@ -3580,7 +3508,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Selection.
+        ///   Looks up a localized string similar to Layout Selection.
         /// </summary>
         public static string Form_Selection_Group_Title {
             get {
@@ -3589,7 +3517,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Selection.
+        ///   Looks up a localized string similar to Layout Selection.
         /// </summary>
         public static string Form_Selection_Page_Title {
             get {
@@ -3607,7 +3535,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Draft.
+        ///   Looks up a localized string similar to Layout Draft.
         /// </summary>
         public static string Form_State_Form_Draft {
             get {
@@ -3616,7 +3544,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Issued.
+        ///   Looks up a localized string similar to Layout Issued.
         /// </summary>
         public static string Form_State_Form_Issued {
             get {
@@ -3634,7 +3562,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Locked Record.
+        ///   Looks up a localized string similar to Layout Record.
         /// </summary>
         public static string Form_State_Locked_Record {
             get {
@@ -3661,7 +3589,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form State:.
+        ///   Looks up a localized string similar to Layout State:.
         /// </summary>
         public static string Form_State_Selection_Label {
             get {
@@ -3697,7 +3625,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Status: .
+        ///   Looks up a localized string similar to Layout Status: .
         /// </summary>
         public static string Form_Status_Field_Title {
             get {
@@ -3724,7 +3652,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Template Name: .
+        ///   Looks up a localized string similar to Layout Template Name: .
         /// </summary>
         public static string Form_Template_Name_Field_Title {
             get {
@@ -3733,7 +3661,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Template Upload Page.
+        ///   Looks up a localized string similar to Layout Template Upload Page.
         /// </summary>
         public static string Form_Template_Page_Title {
             get {
@@ -3760,7 +3688,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Title:.
+        ///   Looks up a localized string similar to Layout Title:.
         /// </summary>
         public static string Form_Title_Field_Label {
             get {
@@ -3769,7 +3697,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Type:.
+        ///   Looks up a localized string similar to Layout Type:.
         /// </summary>
         public static string Form_Type_Field_Label {
             get {
@@ -3778,7 +3706,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Type:.
+        ///   Looks up a localized string similar to Layout Type:.
         /// </summary>
         public static string Form_Type_Selection_Label {
             get {
@@ -3805,7 +3733,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form design update error message: {0} .
+        ///   Looks up a localized string similar to Layout design update error message: {0} .
         /// </summary>
         public static string Form_Update_Error_Message {
             get {
@@ -3823,7 +3751,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Version:.
+        ///   Looks up a localized string similar to Layout Version:.
         /// </summary>
         public static string Form_Version_Field_Title {
             get {
@@ -3832,7 +3760,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Version {0} .
+        ///   Looks up a localized string similar to Layout Version {0} .
         /// </summary>
         public static string Form_Version_Option_Description {
             get {
@@ -3841,7 +3769,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error raised when generating a list of forms.
+        ///   Looks up a localized string similar to Error raised when generating a list of layouts.
         /// </summary>
         public static string Form_View_Error_Message {
             get {
@@ -3850,7 +3778,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Withdraw Form.
+        ///   Looks up a localized string similar to Withdraw Layout.
         /// </summary>
         public static string Form_Withdrawn_Command_Title {
             get {
@@ -3868,7 +3796,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error raised retriveing the form field..
+        ///   Looks up a localized string similar to Error raised retriveing the layout field..
         /// </summary>
         public static string FormField_Retrieve_Error_Message {
             get {
@@ -3913,7 +3841,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Common Fields.
+        ///   Looks up a localized string similar to Common Fields.
         /// </summary>
         public static string FormGenerator_Common_Fields_Label {
             get {
@@ -3985,7 +3913,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form {0} - {1} Section: {2}.
+        ///   Looks up a localized string similar to Layout {0} - {1} Section: {2}.
         /// </summary>
         public static string FormProperties_Section_Page_Title {
             get {
@@ -4620,6 +4548,15 @@ namespace Evado.Model.Digital {
         public static string LayoutField_Field_Layout_Field_Label {
             get {
                 return ResourceManager.GetString("LayoutField_Field_Layout_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable AI Data:.
+        /// </summary>
+        public static string LayoutFields_Enable_AI_Field_Label {
+            get {
+                return ResourceManager.GetString("LayoutFields_Enable_AI_Field_Label", resourceCulture);
             }
         }
         
@@ -5484,395 +5421,6 @@ namespace Evado.Model.Digital {
         public static string Page_Comment_Close_Label {
             get {
                 return ResourceManager.GetString("Page_Comment_Close_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add Section.
-        /// </summary>
-        public static string Project_Add_Section_Command_Title {
-            get {
-                return ResourceManager.GetString("Project_Add_Section_Command_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable Binary Data Collection:.
-        /// </summary>
-        public static string Project_Binary_Data_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_Binary_Data_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Close Recruitment.
-        /// </summary>
-        public static string Project_Close_Recruitment_Command_Label {
-            get {
-                return ResourceManager.GetString("Project_Close_Recruitment_Command_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The confirmation fields are MarkDown enabled with text substitution for: 
-        ///  
-        ///* {FirstName} = Patient’s first name 
-        ///* {FamilyName} = Patient’s family name 
-        ///* {ProjectId} = The selection projects identifier. 
-        ///* {ProjectTitle} = The selection projects’s title.
-        ///* {ProjectDescription} = The selection project’s description.
-        ///* {ProjectSponsor} = The selection projects’s description.
-        ///* {SiteId} = The selection site identifier. 
-        ///* {SiteName} = The selection organisation name.
-        ///* {SiteAddress} = The selectio [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Project_Confirmation_Email_Body_Field_Description {
-            get {
-                return ResourceManager.GetString("Project_Confirmation_Email_Body_Field_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirmation email body content:.
-        /// </summary>
-        public static string Project_Confirmation_Email_Body_Field_Title {
-            get {
-                return ResourceManager.GetString("Project_Confirmation_Email_Body_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirmation email subject:.
-        /// </summary>
-        public static string Project_Confirmation_Email_Subject_Field_Title {
-            get {
-                return ResourceManager.GetString("Project_Confirmation_Email_Subject_Field_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This group defines the content of the confirmation email that is sent to patients when their PRO account is created..
-        /// </summary>
-        public static string Project_Confirmation_Group_Description {
-            get {
-                return ResourceManager.GetString("Project_Confirmation_Group_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Patient confirmation email settings.
-        /// </summary>
-        public static string Project_Confirmation_Group_Title {
-            get {
-                return ResourceManager.GetString("Project_Confirmation_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create a new  clinical project .
-        /// </summary>
-        public static string Project_Create_Project_Command_Title {
-            get {
-                return ResourceManager.GetString("Project_Create_Project_Command_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This Trial was initialised using the Global Project..
-        /// </summary>
-        public static string Project_Create_Project_Description {
-            get {
-                return ResourceManager.GetString("Project_Create_Project_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error generted when creating new trial object..
-        /// </summary>
-        public static string Project_Creation_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Creation_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete Project.
-        /// </summary>
-        public static string Project_Delete_Command_Title {
-            get {
-                return ResourceManager.GetString("Project_Delete_Command_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string Project_Description_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_Description_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Duplicated project identifier encountered..
-        /// </summary>
-        public static string Project_Duplicate_Identifier_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Duplicate_Identifier_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Project_File_Upload_Group_Title {
-            get {
-                return ResourceManager.GetString("Project_File_Upload_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial {0} - {1} File Uploads.
-        /// </summary>
-        public static string Project_File_Upload_Page_Title_Label {
-            get {
-                return ResourceManager.GetString("Project_File_Upload_Page_Title_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update selection.
-        /// </summary>
-        public static string Project_File_Upload_Selection_Command_Title {
-            get {
-                return ResourceManager.GetString("Project_File_Upload_Selection_Command_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to General.
-        /// </summary>
-        public static string Project_General_Group_Title {
-            get {
-                return ResourceManager.GetString("Project_General_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error raised generating the project export page..
-        /// </summary>
-        public static string Project_Get_Export_Page_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Get_Export_Page_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error raised when generating a list of trials..
-        /// </summary>
-        public static string Project_Get_List_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Get_List_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List of Trials.
-        /// </summary>
-        public static string Project_Get_List_Of_Projects_Page_Label {
-            get {
-                return ResourceManager.GetString("Project_Get_List_Of_Projects_Page_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error raised when retrieving a trial page..
-        /// </summary>
-        public static string Project_Get_Page_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Get_Page_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial identifier is not defined.
-        /// </summary>
-        public static string Project_Identifier_Empty_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Identifier_Empty_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial identifiers are not defined..
-        /// </summary>
-        public static string Project_Identifiers_Empty_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Identifiers_Empty_Error_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial list generation error..
-        /// </summary>
-        public static string Project_List_Generation_Error {
-            get {
-                return ResourceManager.GetString("Project_List_Generation_Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List of trials.
-        /// </summary>
-        public static string Project_List_Of_Projects_Group_Label {
-            get {
-                return ResourceManager.GetString("Project_List_Of_Projects_Group_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Lock Trial .
-        /// </summary>
-        public static string Project_Locked_Command_Label {
-            get {
-                return ResourceManager.GetString("Project_Locked_Command_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial Mode:.
-        /// </summary>
-        public static string Project_Mode_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_Mode_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Offline data collection enabled:.
-        /// </summary>
-        public static string Project_Offline_Enabled_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_Offline_Enabled_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hide Annotations when editing form data:.
-        /// </summary>
-        public static string Project_On_Edit_Hide_Annotations_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_On_Edit_Hide_Annotations_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial: {0} - {1} - Configuration .
-        /// </summary>
-        public static string Project_Page_Title_Label {
-            get {
-                return ResourceManager.GetString("Project_Page_Title_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The field description (instructions) are to state the field is MarkDown enabled with text substitution for: 
-        ///  
-        ///* {PatientName} = Patient’s  fullname 
-        ///* {TrialId} = The selection projects identifier. 
-        ///* {TrialTitle} = The selection project’s title.
-        ///* {TrialDescription} = The selection project’s description.
-        ///* {TrialSponsor} = The selection project’s description.
-        ///* {SiteId} = The selection site identifier. 
-        ///* {SiteName} = The organisation name.
-        ///* {SiteAddress} = The site address.
-        ///* {SitePhoneNo} =  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Project_Patient_Record_Exit_Description {
-            get {
-                return ResourceManager.GetString("Project_Patient_Record_Exit_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Project.
-        /// </summary>
-        public static string Project_Project {
-            get {
-                return ResourceManager.GetString("Project_Project", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Properties.
-        /// </summary>
-        public static string Project_Properties_Group_Title {
-            get {
-                return ResourceManager.GetString("Project_Properties_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save Project.
-        /// </summary>
-        public static string Project_Save_Command_Title {
-            get {
-                return ResourceManager.GetString("Project_Save_Command_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update Selection.
-        /// </summary>
-        public static string Project_Selection_Command {
-            get {
-                return ResourceManager.GetString("Project_Selection_Command", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string Project_Settings_Group_Title {
-            get {
-                return ResourceManager.GetString("Project_Settings_Group_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trial Site Selection:.
-        /// </summary>
-        public static string Project_Site_Selection_Title {
-            get {
-                return ResourceManager.GetString("Project_Site_Selection_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Title:.
-        /// </summary>
-        public static string Project_Title_Field_Label {
-            get {
-                return ResourceManager.GetString("Project_Title_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unlock Trial .
-        /// </summary>
-        public static string Project_UnLocked_Command_Label {
-            get {
-                return ResourceManager.GetString("Project_UnLocked_Command_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error raised when updating a trial page..
-        /// </summary>
-        public static string Project_Update_Error_Message {
-            get {
-                return ResourceManager.GetString("Project_Update_Error_Message", resourceCulture);
             }
         }
         

@@ -68,7 +68,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvAlerts ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvAlerts.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvAlerts.";
     }
 
     // ==================================================================================
@@ -80,7 +80,7 @@ namespace Evado.Dal.Digital
     public EvAlerts ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvAlerts.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvAlerts.";
 
       if ( this.ClassParameters.LoggingLevel == 0 )
       {

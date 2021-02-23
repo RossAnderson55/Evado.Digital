@@ -41,7 +41,7 @@ namespace Evado.Dal
     // ----------------------------------------------------------------------------------
     public EvApplicationEvents ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationEvents.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvApplicationEvents.";
     }
 
     // ==================================================================================
@@ -53,7 +53,7 @@ namespace Evado.Dal
     public EvApplicationEvents ( EvClassParameters Settings )
     {
       this.Settings = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvApplicationEvents.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvApplicationEvents.";
 
     }
 

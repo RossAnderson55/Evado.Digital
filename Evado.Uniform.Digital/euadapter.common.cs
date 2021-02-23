@@ -195,20 +195,18 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the methods variables and object.
       //
-      /*
-      EdRecordLayouts EntityLayoutList = new EdRecordLayouts ( this.ClassParameters );
-      this.Session.FormType = EdRecordTypes.Null;
-      this.Session.FormState = EdRecordObjectStates.Form_Issued;
-      this.Session.FormsAdaperLoaded = true;
+      EdEntityLayouts bll_EntityLayouts = new EdEntityLayouts ( this.ClassParameters );
+      this.Session.EntityType = EdRecordTypes.Null;
+      this.Session.EntityFormState = EdRecordObjectStates.Form_Issued;
+      this.Session.EntityAdaperLoaded = true;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this._AdapterObjects.RecordLayoutList = bll_RecordLayouts.GetRecordLayoutListWithFields (
-        this.Session.FormType,
-        this.Session.FormState );
-      this.LogDebugClass ( bll_RecordLayouts.Log );
-      */
+      this._AdapterObjects.AllEntityLayouts = bll_EntityLayouts.GetRecordLayoutListWithFields (
+        this.Session.EntityType,
+        this.Session.EntityFormState );
+      this.LogDebugClass ( bll_EntityLayouts.Log );
 
       this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
@@ -237,7 +235,7 @@ namespace Evado.UniForm.Digital
       //
       EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
       this.Session.FormType = EdRecordTypes.Null;
-      this.Session.FormState = EdRecordObjectStates.Null;
+      this.Session.RecordFormState = EdRecordObjectStates.Null;
       this.Session.FormsAdaperLoaded = true;
 
       // 
@@ -245,7 +243,7 @@ namespace Evado.UniForm.Digital
       // 
       this._AdapterObjects.AllRecordLayouts = bll_RecordLayouts.GetRecordLayoutListWithFields (
         this.Session.FormType,
-        this.Session.FormState );
+        this.Session.RecordFormState );
 
       this.LogDebugClass ( bll_RecordLayouts.Log );
 

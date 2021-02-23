@@ -365,7 +365,6 @@ namespace Evado.UniForm.Digital
       clientDataObject.Page.PageDataGuid = clientDataObject.Id;
       clientDataObject.Title = EdLabels.User_Profile_Selection_Page_Title;
       clientDataObject.Page.Title = clientDataObject.Title;
-      clientDataObject.Page.PageId = EvPageIds.Subject_View.ToString ( );
       clientDataObject.Page.PageDataGuid = clientDataObject.Page.Id;
 
       // 

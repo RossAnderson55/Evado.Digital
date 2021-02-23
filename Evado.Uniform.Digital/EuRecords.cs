@@ -978,10 +978,7 @@ namespace Evado.UniForm.Digital
           String.Format ( EdLabels.Form_Record_General_View_Title,
             FormRecord.RecordId,
             FormRecord.LayoutId,
-            FormRecord.Title,
-            String.Empty,
-            String.Empty,
-            String.Empty );
+            FormRecord.Title );
 
       }
       else
@@ -1037,9 +1034,7 @@ namespace Evado.UniForm.Digital
         //
         groupCommand.Title = String.Format ( EdLabels.Form_Record_Site_View_Title,
             FormRecord.LayoutId,
-            FormRecord.Title,
-            String.Empty,
-            String.Empty );
+            FormRecord.Title);
 
       }//END site users
 

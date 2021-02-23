@@ -417,11 +417,6 @@ namespace Evado.UniForm.Digital
 
         case EvPageIds.Operational_Report_Page:
         case EvPageIds.Data_Management_Report_Page:
-        case EvPageIds.Site_Report_Page:
-        case EvPageIds.Monitoring_Report_Page:
-        case EvPageIds.Financial_Report_Page:
-        case EvPageIds.SAE_Correlation_Report:
-        case EvPageIds.Subject_Calendar_Page:
           {
             this.LogValue ( MenuItem.PageId + " ADDED" );
             pageCommand = new Model.UniForm.Command (
@@ -530,6 +525,69 @@ namespace Evado.UniForm.Digital
             pageCommand.SetPageId ( MenuItem.PageId );
 
             pageCommand.SetGuid ( this.Session.Record.Guid );
+
+            if ( this.Session.Entity != null )
+            {
+              pageCommand.AddParameter ( EdRecord.RecordFieldNames.TypeId,
+                this.Session.Entity.TypeId );
+            }
+            return pageCommand;
+          }
+
+          //
+          // Entitity menu commands
+          //
+        case EvPageIds.Entity_View:
+        case EvPageIds.Entity_Query_View:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            return pageCommand;
+          }
+
+        case EvPageIds.Entity_Export_Page:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            return pageCommand;
+          }
+
+        case EvPageIds.Entity_Admin_Page:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            return pageCommand;
+          }
+
+        case EvPageIds.Entity_Page:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            pageCommand.SetGuid ( this.Session.Entity.Guid );
 
             if ( this.Session.Entity != null )
             {

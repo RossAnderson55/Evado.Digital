@@ -270,8 +270,7 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData getObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getFormObject" );
-     this.LogValue ( "LoggingLevel: " + this.LoggingLevel );
+      this.LogMethod ( "getObject" );
 
       // 
       // Initialise the methods variables and objects.
@@ -364,6 +363,7 @@ namespace Evado.UniForm.Digital
         // 
         // Return the client ResultData object to the calling method.
         // 
+        this.LogMethodEnd ( "getObject" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -379,7 +379,8 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-      return null;
+      this.LogMethodEnd ( "getObject" );
+      return this.Session.LastPage;
 
     }//END getObject method
 
@@ -541,7 +542,7 @@ namespace Evado.UniForm.Digital
       //
       // display the field validation pageMenuGroup
       //
-      this.createFieldValidationGroup ( ClientDataObject.Page );
+      //this.createFieldValidationGroup ( ClientDataObject.Page );
 
       //
       // display the numeric field validation pageMenuGroup.
@@ -563,6 +564,7 @@ namespace Evado.UniForm.Digital
       //
       this.creatMatrixFieldGroup ( ClientDataObject.Page );
 
+      this.LogMethodEnd ( "getDataObject" );
     }//END getFormDataObject Method
 
     // ==============================================================================
@@ -993,7 +995,7 @@ namespace Evado.UniForm.Digital
         {
           groupField = pageGroup.createBooleanField (
             EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
-            EdLabels.Form_Field_Date_Point_Field_Label,
+            EdLabels.LayoutFields_Enable_AI_Field_Label,
             this.Session.EntityField.Design.AiDataPoint );
           groupField.Layout = EuAdapter.DefaultFieldLayout;
         }
@@ -1156,16 +1158,6 @@ namespace Evado.UniForm.Digital
       {
         return;
       }
-
-
-      //
-      // Define the Form_Field_Sex_Validation_Group_Title properties pageMenuGroup..
-      //
-      pageGroup = PageObject.AddGroup (
-        EdLabels.Form_Field_Sex_Validation_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.EditAccess = PageObject.EditAccess;
 
       //
       // Add the group commands
@@ -1776,11 +1768,6 @@ namespace Evado.UniForm.Digital
             case EvEventCodes.Data_Duplicate_Id_Error:
               {
                 this.ErrorMessage = EdLabels.Form_Field_Duplicate_ID_Error_Message;
-                break;
-              }
-            case EvEventCodes.Identifier_Project_Id_Error:
-              {
-                this.ErrorMessage = EdLabels.Project_Identifier_Empty_Error_Message;
                 break;
               }
             default:

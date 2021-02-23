@@ -576,7 +576,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormPropertiesSectionObject (
+    private Evado.Model.UniForm.AppData getPropertiesSectionObject (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getFormPropertiesSection" );

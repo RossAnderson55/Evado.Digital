@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EdRecordFieldSelectionLists ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFieldSelectionLists.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormFieldSelectionLists.";
       if ( int.TryParse ( _stMaximumListLength, out _MaximumListLength ) == false )
       {
         _MaximumListLength = 100;
@@ -60,7 +60,7 @@ namespace Evado.Dal.Digital
     public EdRecordFieldSelectionLists ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormFieldSelectionLists.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormFieldSelectionLists.";
       if ( int.TryParse ( _stMaximumListLength, out _MaximumListLength ) == false )
       {
         _MaximumListLength = 100;
@@ -1161,8 +1161,7 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes deleteItem( EdExternalSelectionList Item )
     {
-      this.LogDebug ( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
-        + "Evado.Dal.Clinical.EvFiledSelectionLists.deleteItem method. " );
+      this.LogMethod ( "deleteItem method. " );
 
       // 
       // Define the query parameters
@@ -1215,8 +1214,7 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     public EvEventCodes CopyList( EdExternalSelectionList Item )
     {
-      this._Log.AppendLine( Evado.Model.Digital.EvcStatics.CONST_METHOD_START 
-        +  "Evado.Dal.Clinical.EvFiledSelectionLists.CopyTest method " );
+      this.LogMethod( "CopyTest method " );
       this.LogDebug ( "UserCommonName " + Item.UserCommonName );
 
       // 

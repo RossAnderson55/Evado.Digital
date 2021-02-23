@@ -58,7 +58,7 @@ namespace Evado.Dal.Digital
     // ----------------------------------------------------------------------------------
     public EvDataChanges ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvDataChanges.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvDataChanges.";
     }
 
     // ==================================================================================
@@ -70,7 +70,7 @@ namespace Evado.Dal.Digital
     public EvDataChanges ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvDataChanges.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvDataChanges.";
 
     }
 

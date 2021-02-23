@@ -234,22 +234,22 @@ namespace Evado.UniForm.Digital
                   }
                 case EvPageIds.Form_Properties_Section_Page:
                   {
-                    clientDataObject = this.getFormPropertiesSectionObject ( PageCommand );
+                    clientDataObject = this.getPropertiesSectionObject ( PageCommand );
                     break;
                   }
                 case EvPageIds.Form_Draft_Page:
                   {
-                    clientDataObject = this.getFormDraftLayoutObject ( PageCommand );
+                    clientDataObject = this.getDraftLayoutObject ( PageCommand );
                     break;
                   }
                 case EvPageIds.Form_Template_Upload:
                   {
-                    clientDataObject = this.getFormTemplateUploadPage ( PageCommand );
+                    clientDataObject = this.getTemplateUploadPage ( PageCommand );
                     break;
                   }
                 case EvPageIds.Form_Template_Download:
                   {
-                    clientDataObject = this.getFormTemplateDownloadPage ( PageCommand );
+                    clientDataObject = this.getTemplateDownloadPage ( PageCommand );
                     break;
                   }
                 default:
@@ -541,7 +541,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.FormsAdaperLoaded == true )
       {
         this.Session.EntityType = EdRecordTypes.Null;
-        this.Session.FormState = EdRecordObjectStates.Null;
+        this.Session.RecordFormState = EdRecordObjectStates.Null;
       }
 
       this.LogDebug ( "EntityFormState: '" + this.Session.EntityFormState + "'" );
@@ -728,7 +728,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
-        this.Session.FormState.ToString ( ),
+        this.Session.RecordFormState.ToString ( ),
         optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -784,10 +784,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.FormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.RecordFormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
-        + this.Session.FormState );
+        + this.Session.RecordFormState );
 
     }//END updateSessionObjects method
 
@@ -947,7 +947,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormTemplateDownloadPage (
+    private Evado.Model.UniForm.AppData getTemplateDownloadPage (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getFormTemplateDownloadPage" );
@@ -1072,7 +1072,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormTemplateUploadPage (
+    private Evado.Model.UniForm.AppData getTemplateUploadPage (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getFormTemplateUploadPage" );
@@ -1537,7 +1537,7 @@ namespace Evado.UniForm.Digital
         //
         if ( this.Session.EntityLayout.Fields.Count == 0 )
         {
-          this.getFormDraftDataObject ( clientDataObject );
+          this.getDraftDataObject ( clientDataObject );
 
           return clientDataObject;
         }
@@ -1549,7 +1549,7 @@ namespace Evado.UniForm.Digital
           && this.Session.PageId == EvPageIds.Null )
         {
           this.Session.PageId = EvPageIds.Form_Draft_Page;
-          this.getFormDraftDataObject ( clientDataObject );
+          this.getDraftDataObject ( clientDataObject );
 
           return clientDataObject;
         }
@@ -1606,10 +1606,10 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormDraftLayoutObject (
+    private Evado.Model.UniForm.AppData getDraftLayoutObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getFormDraftLayoutObject" );
+      this.LogMethod ( "getDraftLayoutObject" );
 
       // 
       // Initialise the methods variables and objects.
@@ -1623,7 +1623,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
-          this.ClassNameSpace + "getFormDraftLayoutObject",
+          this.ClassNameSpace + "getDraftLayoutObject",
           this.Session.UserProfile );
 
         this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
@@ -1635,7 +1635,7 @@ namespace Evado.UniForm.Digital
       // Log access to page.
       // 
       this.LogPageAccess (
-        this.ClassNameSpace + "getFormDraftLayoutObject",
+        this.ClassNameSpace + "getDraftLayoutObject",
         this.Session.UserProfile );
 
 
@@ -1643,7 +1643,8 @@ namespace Evado.UniForm.Digital
       {
         if ( this.getLayoutObject ( PageCommand, true ) == false )
         {
-          return null;
+          this.LogMethodEnd ( "getDraftLayoutObject" );
+          return this.Session.LastPage;
         }
 
         // 
@@ -1654,11 +1655,12 @@ namespace Evado.UniForm.Digital
         //
         // generate the page layout.
         //
-        this.getFormDraftDataObject ( clientDataObject );
+        this.getDraftDataObject ( clientDataObject );
 
         // 
         // Return the client ResultData object to the calling method.
         // 
+        this.LogMethodEnd ( "getDraftLayoutObject" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -1674,7 +1676,8 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-      return null;
+      this.LogMethodEnd ( "getDraftLayoutObject" );
+      return this.Session.LastPage;
 
     }//END getLayoutObject method
 
@@ -2519,10 +2522,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getFormDraftDataObject (
+    private void getDraftDataObject (
       Evado.Model.UniForm.AppData ClientDataObject )
     {
-      this.LogMethod ( "getFormDataObject" );
+      this.LogMethod ( "getDraftDataObject" );
       this.LogDebug ( " Section count {0}.", this.Session.EntityLayout.Design.FormSections.Count );
       // 
       // Initialise the methods variables and objects.
@@ -2560,6 +2563,7 @@ namespace Evado.UniForm.Digital
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
+
       //
       // Add the save commandS for the page.
       //
@@ -2583,6 +2587,7 @@ namespace Evado.UniForm.Digital
       //
       this.createDraftNonSectionFields ( ClientDataObject.Page );
 
+      this.LogMethodEnd ( "getDraftDataObject" );
     }//END getFormDataObject Method
 
     // ==================================================================================    

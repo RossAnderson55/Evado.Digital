@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdRecords ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EdRecords ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Clinical.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
 
     }
 
