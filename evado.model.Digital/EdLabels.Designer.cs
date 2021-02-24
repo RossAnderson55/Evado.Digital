@@ -2295,6 +2295,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Entity Layout.
+        /// </summary>
+        public static string Entity_List_New_Layout_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_List_New_Layout_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to eClinical Mobile get Trial object error event..
         /// </summary>
         public static string Error_Log_Mobile_Project_Messge {
@@ -3027,7 +3036,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new project form.
+        ///   Looks up a localized string similar to Create a new record Layout.
         /// </summary>
         public static string Form_List_New_Form_Command_Title {
             get {
@@ -6676,6 +6685,15 @@ namespace Evado.Model.Digital {
         public static string Security_Illegal_Anonymoous_Access_Message {
             get {
                 return ResourceManager.GetString("Security_Illegal_Anonymoous_Access_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Layouts.
+        /// </summary>
+        public static string Select_Layout_Command_Title {
+            get {
+                return ResourceManager.GetString("Select_Layout_Command_Title", resourceCulture);
             }
         }
         

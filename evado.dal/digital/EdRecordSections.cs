@@ -73,7 +73,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This constant defines a sql query string for selecting all items from form field view. 
     /// </summary>
-    private const string _sqlQueryView = "Select * FROM ED_ENTITY_SECTIONS ";
+    private const string _sqlQueryView = "Select * FROM ED_RECORD_SECTIONS ";
 
     private const string DB_LAYOUT_GUID = "EDRL_Guid";
     private const string DB_NUMBER = "EDRLS_NUMBER";
@@ -294,8 +294,12 @@ namespace Evado.Dal.Digital
       //
       // Delete the sections
       //
-      sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_ENTITY_SECTIONS "
-      + "WHERE " + EdRecordSections.DB_LAYOUT_GUID + "= '" + Form.Guid + "';  \r\n\r\n" );
+      sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_RECORD_SECTIONS "
+      + "WHERE " + EdRecordSections.DB_LAYOUT_GUID + " = " + EdRecordSections.PARM_FORM_GUID + ";  \r\n" );
+
+      SqlParameter prm = new SqlParameter ( EdRecordSections.PARM_FORM_GUID, SqlDbType.UniqueIdentifier );
+      prm.Value = Form.Guid;
+      parmList.Add ( prm );
 
       for ( int count = 0; count < Form.Design.FormSections.Count; count++ )
       {
@@ -317,55 +321,53 @@ namespace Evado.Dal.Digital
           section.Order = count + 3;
         }
 
-
-        SqlParameter prm = new SqlParameter ( PARM_FORM_GUID + "_" + count, SqlDbType.UniqueIdentifier );
-        prm.Value = Form.Guid;
-        parmList.Add ( prm );
-
-        prm = new SqlParameter ( PARM_NUMBER + "_" + count, SqlDbType.Int );
+        //
+        // define the section parameters.
+        //
+        prm = new SqlParameter ( EdRecordSections.PARM_NUMBER + "_" + count, SqlDbType.Int );
         prm.Value = section.No;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_ORDER + "_" + count, SqlDbType.Int );
+        prm = new SqlParameter ( EdRecordSections.PARM_ORDER + "_" + count, SqlDbType.Int );
         prm.Value = section.Order;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_NAME + "_" + count, SqlDbType.VarChar, 30 );
+        prm = new SqlParameter ( EdRecordSections.PARM_NAME + "_" + count, SqlDbType.VarChar, 30 );
         prm.Value = section.Title;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_INSTRUCTIONS + "_" + count, SqlDbType.NText );
+        prm = new SqlParameter ( EdRecordSections.PARM_INSTRUCTIONS + "_" + count, SqlDbType.NText );
         prm.Value = section.Instructions;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_FIELD_NAME + "_" + count, SqlDbType.NVarChar, 20 );
+        prm = new SqlParameter ( EdRecordSections.PARM_FIELD_NAME + "_" + count, SqlDbType.NVarChar, 20 );
         prm.Value = section.FieldId;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_FIELD_VALUE + "_" + count, SqlDbType.NVarChar, 50 );
+        prm = new SqlParameter ( EdRecordSections.PARM_FIELD_VALUE + "_" + count, SqlDbType.NVarChar, 50 );
         prm.Value = section.FieldValue;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_ON_MATCH_VISIBLE + "_" + count, SqlDbType.Bit );
+        prm = new SqlParameter ( EdRecordSections.PARM_ON_MATCH_VISIBLE + "_" + count, SqlDbType.Bit );
         prm.Value = section.OnMatchVisible;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_VISIBLE + "_" + count, SqlDbType.Bit );
+        prm = new SqlParameter ( EdRecordSections.PARM_VISIBLE + "_" + count, SqlDbType.Bit );
         prm.Value = section.OnOpenVisible;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_DEFAULT_DISPLAY_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
+        prm = new SqlParameter ( EdRecordSections.PARM_DEFAULT_DISPLAY_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
         prm.Value = section.UserDisplayRoles;
         parmList.Add ( prm );
 
-        prm = new SqlParameter ( PARM_DEFAULT_EDIT_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
+        prm = new SqlParameter ( EdRecordSections.PARM_DEFAULT_EDIT_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
         prm.Value = section.UserEditRoles;
         parmList.Add ( prm );
 
         //
         // Create the add query .
         //
-        sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_ENTITY_SECTIONS  "
+        sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_RECORD_SECTIONS  "
         + "(" +  DB_LAYOUT_GUID
         + ", " + DB_NUMBER
         + ", " + DB_ORDER
@@ -379,8 +381,7 @@ namespace Evado.Dal.Digital
         + ", " + DB_DEFAULT_EDIT_ROLES
         + "  )  \r\n"
         + "VALUES ("
-        + " newid() "
-        + ", " + PARM_FORM_GUID + "_" + count
+        + "  " + PARM_FORM_GUID 
         + ", " + PARM_NUMBER + "_" + count
         + ", " + PARM_ORDER + "_" + count
         + ", " + PARM_NAME + "_" + count
@@ -393,44 +394,40 @@ namespace Evado.Dal.Digital
         + ", " + PARM_DEFAULT_EDIT_ROLES + "_" + count + " );  \r\n" );
       }
 
-      //
-      // Convert the list to an array of SqlPararmeters.
-      //
-      SqlParameter [ ] parms = new SqlParameter [ parmList.Count ];
-
-      for ( int i = 0; i < parmList.Count; i++ )
+      if ( parmList.Count > 1 )
       {
-        parms [ i ] = parmList [ i ];
-      }
+        //
+        // Convert the list to an array of SqlPararmeters.
+        //
+        SqlParameter [ ] parms = new SqlParameter [ parmList.Count ];
 
-
-      // 
-      // Extract the parameters
-      //
-      this.LogDebug ( "Parameters:" );
-      foreach ( SqlParameter prm in parms )
-      {
-        this.LogDebug ( "Typ: " + prm.DbType
-          + ", Parm: " + prm.ParameterName
-          + ", Val: " + prm.Value );
-      }
-      this.LogDebug ( sbSQL_AddQuery.ToString ( ) );
-
-      //
-      // Execute the update command.
-      //
-      try
-      {
-        if ( EvSqlMethods.QueryUpdate ( sbSQL_AddQuery.ToString ( ), parms ) == 0 )
+        for ( int i = 0; i < parmList.Count; i++ )
         {
-          return EvEventCodes.Database_Record_Update_Error;
+          parms [ i ] = parmList [ i ];
         }
-      }
-      catch ( Exception Ex )
-      {
-        this.LogDebug ( Evado.Model.EvStatics.getException ( Ex ) );
-      }
 
+        // 
+        // Extract the parameters
+        //
+        this.LogDebug ( sbSQL_AddQuery.ToString ( ) );
+        this.LogDebug ( EvSqlMethods.getParameterSqlText ( parms ) );
+
+        //
+        // Execute the update command.
+        //
+        try
+        {
+          if ( EvSqlMethods.QueryUpdate ( sbSQL_AddQuery.ToString ( ), parms ) == 0 )
+          {
+            return EvEventCodes.Database_Record_Update_Error;
+          }
+        }
+        catch ( Exception Ex )
+        {
+          this.LogDebug ( Evado.Model.EvStatics.getException ( Ex ) );
+        }
+
+      }//END parameter list greater then 1
       return EvEventCodes.Ok;
 
     }//END UpdateItem method

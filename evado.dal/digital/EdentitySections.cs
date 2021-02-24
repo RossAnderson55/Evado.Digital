@@ -293,8 +293,7 @@ namespace Evado.Dal.Digital
       sbSQL_AddQuery.AppendLine ( "DELETE FROM ED_ENTITY_SECTIONS "
       + "WHERE " + EdEntitySections.DB_LAYOUT_GUID + "=" + EdEntitySections.PARM_LAYOUT_GUID + ";\r\n" );
 
-
-      SqlParameter prm = new SqlParameter ( PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier );
+      SqlParameter prm = new SqlParameter ( EdEntitySections.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier );
       prm.Value = Layout.Guid;
       parmList.Add ( prm );
 
@@ -319,7 +318,9 @@ namespace Evado.Dal.Digital
           section.Order = count + 3;
         }
 
-
+        //
+        // define the section parameters.
+        //
         prm = new SqlParameter ( EdEntitySections.PARM_NUMBER + "_" + count, SqlDbType.Int );
         prm.Value = section.No;
         parmList.Add ( prm );
@@ -390,7 +391,7 @@ namespace Evado.Dal.Digital
         + ", " + EdEntitySections.PARM_DEFAULT_EDIT_ROLES + "_" + count + " );" );
       }
 
-      if ( parmList.Count > 2 )
+      if ( parmList.Count > 1 )
       {
         //
         // Convert the list to an array of SqlPararmeters.

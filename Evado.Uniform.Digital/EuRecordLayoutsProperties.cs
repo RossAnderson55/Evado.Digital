@@ -182,6 +182,10 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "GENERATE FORM" );
 
+      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+      //
+      // add the page layout selection commands.
+      //
       this.setFormPageLayoutCommands ( ClientDataObject.Page );
 
       //

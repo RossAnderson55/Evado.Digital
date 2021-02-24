@@ -186,7 +186,11 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "loadEnityLayoutList" );
       this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
-      if ( this._AdapterObjects.AllEntityLayouts.Count > 0 )
+      //
+      // Exit the method if the list exists or the loaded entiy layout is false.
+      //
+      if ( this._AdapterObjects.AllEntityLayouts.Count > 0
+        && this.Session.LoadEntityLayoutList == false )
       {
         this.LogDebug ( "Entity layouts loaded." );
         this.LogMethodEnd ( "loadRecordLayoutList" );
@@ -197,17 +201,17 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdEntityLayouts bll_EntityLayouts = new EdEntityLayouts ( this.ClassParameters );
-      this.Session.EntityType = EdRecordTypes.Null;
-      this.Session.EntityFormState = EdRecordObjectStates.Form_Issued;
-      this.Session.EntityAdaperLoaded = true;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
       this._AdapterObjects.AllEntityLayouts = bll_EntityLayouts.GetRecordLayoutListWithFields (
-        this.Session.EntityType,
-        this.Session.EntityFormState );
+        EdRecordTypes.Null,
+        EdRecordObjectStates.Null );
+
       this.LogDebugClass ( bll_EntityLayouts.Log );
+
+      this.Session.LoadEntityLayoutList = false;
 
       this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
@@ -225,7 +229,11 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "loadRecordLayoutList" );
       this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
-      if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
+      //
+      // Exit the method if the list exists or the loaded entiy layout is false.
+      //
+      if ( this._AdapterObjects.AllRecordLayouts.Count > 0
+        || this.Session.LoadRecordLayoutList == false )
       {
         this.LogDebug ( "Record layouts loaded." );
         this.LogMethodEnd ( "loadRecordLayoutList" );
@@ -236,18 +244,16 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
-      this.Session.FormType = EdRecordTypes.Null;
-      this.Session.RecordFormState = EdRecordObjectStates.Null;
-      this.Session.FormsAdaperLoaded = true;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
       this._AdapterObjects.AllRecordLayouts = bll_RecordLayouts.GetRecordLayoutListWithFields (
-        this.Session.FormType,
-        this.Session.RecordFormState );
+        EdRecordTypes.Null,
+        EdRecordObjectStates.Null );
 
       this.LogDebugClass ( bll_RecordLayouts.Log );
+      this.Session.LoadRecordLayoutList = false;
 
       this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 

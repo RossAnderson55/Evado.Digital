@@ -164,6 +164,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "GENERATE FORM" );
 
+      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
       this.setFormPageLayoutCommands ( ClientDataObject.Page );
 
       //

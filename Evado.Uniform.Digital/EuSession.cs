@@ -520,11 +520,11 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EdRecord> EntityList { get; set; }
 
+    ///<summary>
+    /// this indicates if the entity layout list is to be loaded or reloaded.
+    /// </summary>
+    public bool LoadEntityLayoutList { get; set; }
 
-    //
-    // this indicates if the forms where adapter loaded.
-    //
-    public bool FormsAdaperLoaded { get; set; }
     /// <summary>
     /// This property contains the list of Form Versions.
     /// </summary>
@@ -550,6 +550,12 @@ namespace Evado.UniForm.Digital
       set { _EntitySelectionLayoutId = value; }
     }
 
+
+
+    ///<summary>
+    /// this indicates if the entity layout list is to be loaded or reloaded.
+    /// </summary>
+    public bool LoadRecordLayoutList { get; set; }
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>

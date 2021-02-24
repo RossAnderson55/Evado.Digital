@@ -1173,7 +1173,7 @@ __Note__: all of the options must be either a simple or complex options and spac
     <value>Selected Layout</value>
   </data>
   <data name="Form_List_New_Form_Command_Title" xml:space="preserve">
-    <value>Create a new project form</value>
+    <value>Create a new record Layout</value>
   </data>
   <data name="Form_List_Page_Title_Prefix" xml:space="preserve">
     <value>Layouts</value>
@@ -2643,5 +2643,11 @@ __Note__: all of these text substitutions are case sensitive.
   </data>
   <data name="LayoutFields_Enable_AI_Field_Label" xml:space="preserve">
     <value>Enable AI Data:</value>
+  </data>
+  <data name="Entity_List_New_Layout_Command_Title" xml:space="preserve">
+    <value>New Entity Layout</value>
+  </data>
+  <data name="Select_Layout_Command_Title" xml:space="preserve">
+    <value>Select Layouts</value>
   </data>
 </root>
