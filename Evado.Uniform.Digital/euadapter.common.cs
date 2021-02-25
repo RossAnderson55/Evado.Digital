@@ -143,7 +143,7 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     private void loadOrganisationList ( )
     {
-      this.LogMethod ( "loadOrganisationList" );
+      this.LogInitMethod ( "loadOrganisationList" );
 
       if ( this.Session.OrganisationList == null )
       {
@@ -152,8 +152,7 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.OrganisationList.Count > 0 )
       {
-        this.LogDebug ( "Organistion layout loaded." );
-        this.LogMethodEnd ( "loadRecordLayoutList" );
+        this.LogInitValue ( "Organistion layout loaded." );
         return;
       }
 
@@ -168,11 +167,11 @@ namespace Evado.UniForm.Digital
       this.Session.OrganisationList = bll_Organisations.getOrganisationList (
          this.Session.OrganisationType, false );
 
-      this.LogDebugClass ( bll_Organisations.Log );
+      this.LogInit( bll_Organisations.Log );
 
-      this.LogDebug ( "Organisation list count: " + this.Session.OrganisationList.Count );
+      this.LogInitValue ( "Organisation list count: " + this.Session.OrganisationList.Count );
 
-      this.LogMethodEnd ( "loadOrganisationList" );
+      this.LogInitValue ( "END loadOrganisationList" );
 
     }//END loadTrialFormList method
 
@@ -183,7 +182,7 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     private void loadEnityLayoutList ( )
     {
-      this.LogMethod ( "loadEnityLayoutList" );
+      this.LogInitMethod ( "loadEnityLayoutList" );
       this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
       //
@@ -192,8 +191,8 @@ namespace Evado.UniForm.Digital
       if ( this._AdapterObjects.AllEntityLayouts.Count > 0
         && this.Session.LoadEntityLayoutList == false )
       {
-        this.LogDebug ( "Entity layouts loaded." );
-        this.LogMethodEnd ( "loadRecordLayoutList" );
+        this.LogInitValue ( "Entity layouts loaded." );
+        this.LogInitValue ( "END loadRecordLayoutList" );
         return;
       }
 
@@ -209,13 +208,13 @@ namespace Evado.UniForm.Digital
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
-      this.LogDebugClass ( bll_EntityLayouts.Log );
+      this.LogInit ( bll_EntityLayouts.Log );
 
       this.Session.LoadEntityLayoutList = false;
 
-      this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      this.LogInitValue ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
-      this.LogMethodEnd ( "loadEnityLayoutList" );
+      this.LogInitValue ( "END  loadEnityLayoutList" );
 
     }//END loadEnityLayoutList method
 
@@ -226,8 +225,8 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     private void loadRecordLayoutList ( )
     {
-      this.LogMethod ( "loadRecordLayoutList" );
-      this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInitMethod ( "loadRecordLayoutList" );
+      this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
@@ -235,8 +234,8 @@ namespace Evado.UniForm.Digital
       if ( this._AdapterObjects.AllRecordLayouts.Count > 0
         || this.Session.LoadRecordLayoutList == false )
       {
-        this.LogDebug ( "Record layouts loaded." );
-        this.LogMethodEnd ( "loadRecordLayoutList" );
+        this.LogInitValue ( "Record layouts loaded." );
+        this.LogInitValue ( "END loadRecordLayoutList" );
         return;
       }
 
@@ -252,12 +251,12 @@ namespace Evado.UniForm.Digital
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
-      this.LogDebugClass ( bll_RecordLayouts.Log );
+      this.LogInit ( bll_RecordLayouts.Log );
       this.Session.LoadRecordLayoutList = false;
 
-      this.LogDebug ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
-      this.LogMethodEnd ( "loadRecordLayoutList" );
+      this.LogInitValue ( "END loadRecordLayoutList" );
 
     }//END loadRecordLayoutList method
 

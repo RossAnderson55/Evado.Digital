@@ -369,12 +369,26 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( AdapterFieldNames.Hidden_User_Fields.ToString ( ) );
+        return this.getParameter ( AdapterFieldNames.Hidden_User_Fields );
       }
       set
       {
         this.setParameter ( AdapterFieldNames.Hidden_User_Fields, EvDataTypes.Text, value);
       }
+    }
+
+    /// <summary>
+    /// The method return true if the hidden field is selected.
+    /// </summary>
+    /// <param name="Field">EdUserProfile.UserProfileFieldNames</param>
+    /// <returns>bool</returns>
+    public bool hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames Field )
+    {
+      if ( this.HiddenUserFields.Contains ( Field.ToString ( ) ) == true )
+      {
+        return true;
+      }
+      return false;
     }
 
     /// <summary>
@@ -384,12 +398,25 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ) );
+        return this.getParameter ( AdapterFieldNames.Hidden_Organisation_Fields);
       }
       set
       {
         this.setParameter ( AdapterFieldNames.Hidden_Organisation_Fields, EvDataTypes.Text, value);
       }
+    }
+    /// <summary>
+    /// The method return true if the hidden field is selected.
+    /// </summary>
+    /// <param name="Field">EdOrganisation.OrganisationFieldNames value</param>
+    /// <returns>Bool</returns>
+    public bool hasHiddenOrganisationField ( EdOrganisation.OrganisationFieldNames Field )
+    {
+      if ( this.HiddenOrganisationFields.Contains ( Field.ToString ( ) ) == true )
+      {
+        return true;
+      }
+      return false;
     }
 
     #endregion
@@ -522,7 +549,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        var value = this.getParameter ( AdapterFieldNames.DemoAccountExpiryDays.ToString ( ) );
+        var value = this.getParameter ( AdapterFieldNames.DemoAccountExpiryDays );
 
         return EvStatics.getInteger ( value );
       }
@@ -540,7 +567,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( AdapterFieldNames.DemoRegistrationVideoUrl.ToString ( ) );
+        return this.getParameter ( AdapterFieldNames.DemoRegistrationVideoUrl );
 
       }
       set

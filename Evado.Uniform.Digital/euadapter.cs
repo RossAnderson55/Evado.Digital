@@ -116,7 +116,6 @@ namespace Evado.UniForm.Digital
         this.LogInitValue ( "-ApplicationPath: " + this.ApplicationPath );
         this.LogInitValue ( "-ExitCommand: " + this.ExitCommand.getAsString ( false, true ) );
 
-
         Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
         //
@@ -147,6 +146,21 @@ namespace Evado.UniForm.Digital
         // load the user's session object in to memory.
         //
         this.loadSessionObjects ( );
+
+        //
+        // Load the organisation list.
+        //
+        this.loadOrganisationList ( );
+
+        //
+        // load the list of issued entity layouts in the application.
+        //
+        this.loadEnityLayoutList ( );
+
+        //
+        // load the list of issued record layouts in the application
+        //
+        this.loadRecordLayoutList ( );
 
         this.LogInitValue ( "ServiceUserProfile" );
         this.LogInitValue ( "-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
@@ -262,7 +276,7 @@ namespace Evado.UniForm.Digital
 
     private String _ClientObjectKey = String.Empty;
 
-    //private String _PlatformId = String.Empty;
+    private String _PlatformId = String.Empty;
 
     private String _FileRepositoryPath = String.Empty;
 
@@ -420,20 +434,6 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 
         this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
-
-        //
-        // Load the organisation list.
-        //
-        this.loadOrganisationList ( );
-
-        //
-        // load the list of issued entity layouts in the application.
-        this.loadEnityLayoutList ( );
-
-        //
-        // load the list of issued record layouts in the application
-        //
-        this.loadRecordLayoutList ( );
 
         //
         // get the application object.
@@ -649,7 +649,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EdAdapterConfig applicationProfiles = new EdAdapterConfig (
+            EuAdapterConfig applicationProfiles = new EuAdapterConfig (
               this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -1129,19 +1129,6 @@ namespace Evado.UniForm.Digital
         this._FileRepositoryPath = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
       }
       this.LogInitValue ( "FileRepositoryPath: '" + this._FileRepositoryPath + "'" );
-      /*
-      // 
-      // Get the respository file path.
-      // 
-      this._PlatformId = "ADMIN";
-      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ] != null )
-      {
-        this._PlatformId = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
-      }
-      this.LogInitValue ( "PlatformId: '" + this._PlatformId + "'" );
-      this.Settings.PlatformId = this._PlatformId;
-      this._ApplicationObjects.PlatformId = this._PlatformId;
-      */
 
       // 
       // load the global object.
@@ -1151,6 +1138,17 @@ namespace Evado.UniForm.Digital
         this._AdapterObjects =
           (EuGlobalObjects) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
       }
+      // 
+      // Get the respository file path.
+      // 
+      this._PlatformId = "ADMIN";
+      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ] != null )
+      {
+        this._PlatformId = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
+      }
+      this.LogInitValue ( "PlatformId: '" + this._PlatformId + "'" );
+      this.ClassParameters.PlatformId = this._PlatformId;
+      this._AdapterObjects.PlatformId = this._PlatformId;
 
       //  
       // Load the paremeters from the web.config if not already loaded.
@@ -1178,6 +1176,8 @@ namespace Evado.UniForm.Digital
 
       this.LogInit ( this._AdapterObjects.Log );
       this.LogInitValue ( "Version: " + this._AdapterObjects.AdapterSettings.Version );
+      this.LogInitValue ( "HiddenOrganisationFields: " + this._AdapterObjects.AdapterSettings.HiddenOrganisationFields );
+      this.LogInitValue ( "HiddenUserFields: " + this._AdapterObjects.AdapterSettings.HiddenUserFields );
 
       // 
       // Save the application parameters to global objects.

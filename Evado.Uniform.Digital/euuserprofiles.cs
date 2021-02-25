@@ -1171,21 +1171,6 @@ namespace Evado.UniForm.Digital
       //
       this.getDataObject_GroupCommands ( pageGroup );
 
-      optionList = EdUserProfile.GetUserTypeOptionList ( true );
-      //
-      // Add the user's organisation
-      //
-      groupField = pageGroup.createSelectionListField (
-        EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
-        EdLabels.UserProfile_User_Type_Field_Label,
-        this.Session.SelectedUserType.ToString(),
-        optionList );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
-
       //
       // Create the organisation selection list.
       //
@@ -1249,32 +1234,47 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "Given Name:" + this.Session.AdminUserProfile.GivenName );
       this.LogValue ( "Family Name:" + this.Session.AdminUserProfile.FamilyName );
       /*
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EvUserProfile.UserProfileFieldNames.Prefix,
-        EdLabels.UserProfile_Prefix_Field_Label,
-        this.Session.AdminUserProfile.Prefix, 10 );
-      groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
       */
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Prefix ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Prefix,
+          EdLabels.UserProfile_Prefix_Field_Label,
+          this.Session.AdminUserProfile.Prefix, 10 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Given_Name ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
+          EdLabels.UserProfile_GivenName_Field_Label,
+          this.Session.AdminUserProfile.GivenName, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        groupField.setBackgroundColor (
+          Model.UniForm.FieldParameterList.BG_Mandatory,
+          Model.UniForm.Background_Colours.Red );
+      }
+      else
+      {
+        this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
+      }
 
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
-        EdLabels.UserProfile_GivenName_Field_Label,
-        this.Session.AdminUserProfile.GivenName, 50 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
-
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
-        EdLabels.UserProfile_FamilyName_Field_Label,
-        this.Session.AdminUserProfile.FamilyName, 50 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Family_Name ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
+          EdLabels.UserProfile_FamilyName_Field_Label,
+          this.Session.AdminUserProfile.FamilyName, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        groupField.Mandatory = true;
+        groupField.setBackgroundColor (
+          Model.UniForm.FieldParameterList.BG_Mandatory,
+          Model.UniForm.Background_Colours.Red );
+      }
+      else
+      {
+        this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
+      }
 
       // 
       // Create the comon name object
@@ -1296,27 +1296,30 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.CollectUserAddress == true )
       {
-        this.LogDebug ( "Address_1:" + this.Session.UserProfile.Address_1 );
-        this.LogDebug ( "Address_2:" + this.Session.UserProfile.Address_2 );
-        this.LogDebug ( "AddressCity:" + this.Session.UserProfile.AddressCity );
-        this.LogDebug ( "AddressState:" + this.Session.UserProfile.AddressState );
-        this.LogDebug ( "AddressPostCode:" + this.Session.UserProfile.AddressPostCode );
-        this.LogDebug ( "AddressCountry:" + this.Session.UserProfile.AddressCountry );
-        // 
-        // Create the customer name object
-        //
-        groupField = pageGroup.createAddressField (
-          EuUserProfiles.CONST_ADDRESS_FIELD_ID,
-          EdLabels.UserProfile_Address_Field_Label,
-          this.Session.UserProfile.Address_1,
-          this.Session.UserProfile.Address_2,
-          this.Session.UserProfile.AddressCity,
-          this.Session.UserProfile.AddressState,
-          this.Session.UserProfile.AddressPostCode,
-          this.Session.UserProfile.AddressCountry );
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Address_1 ) == false )
+        {
+          this.LogDebug ( "Address_1:" + this.Session.UserProfile.Address_1 );
+          this.LogDebug ( "Address_2:" + this.Session.UserProfile.Address_2 );
+          this.LogDebug ( "AddressCity:" + this.Session.UserProfile.AddressCity );
+          this.LogDebug ( "AddressState:" + this.Session.UserProfile.AddressState );
+          this.LogDebug ( "AddressPostCode:" + this.Session.UserProfile.AddressPostCode );
+          this.LogDebug ( "AddressCountry:" + this.Session.UserProfile.AddressCountry );
+          // 
+          // Create the customer name object
+          //
+          groupField = pageGroup.createAddressField (
+            EuUserProfiles.CONST_ADDRESS_FIELD_ID,
+            EdLabels.UserProfile_Address_Field_Label,
+            this.Session.UserProfile.Address_1,
+            this.Session.UserProfile.Address_2,
+            this.Session.UserProfile.AddressCity,
+            this.Session.UserProfile.AddressState,
+            this.Session.UserProfile.AddressPostCode,
+            this.Session.UserProfile.AddressCountry );
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-        this.LogDebug ( "AddresS:" + groupField.Value );
+          this.LogDebug ( "AddresS:" + groupField.Value );
+        }
       }
 
       // 

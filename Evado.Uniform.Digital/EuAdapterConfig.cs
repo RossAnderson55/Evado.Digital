@@ -37,13 +37,13 @@ namespace Evado.UniForm.Digital
   /// 
   /// This class terminates the Organisation object.
   /// </summary>
-  public class EdAdapterConfig : EuClassAdapterBase
+  public class EuAdapterConfig : EuClassAdapterBase
   {
     #region Class Initialisation
     /// <summary>
     /// This method initialises the class.
     /// </summary>
-    public EdAdapterConfig ( )
+    public EuAdapterConfig ( )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EdAdapterConfig.";
     }
@@ -51,7 +51,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method initialises the class and passs in the user profile.
     /// </summary>
-    public EdAdapterConfig (
+    public EuAdapterConfig (
       EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
@@ -265,16 +265,16 @@ namespace Evado.UniForm.Digital
         //
         // Update the selection parameters.
         //
-        if ( PageCommand.hasParameter ( EdAdapterConfig.CONST_UPDATE_VERSION ) == true )
+        if ( PageCommand.hasParameter ( EuAdapterConfig.CONST_UPDATE_VERSION ) == true )
         {
           this.Session.DatabaseUpdateVersion =
-            PageCommand.GetParameter<EvDataBaseUpdate.UpdateVersionList> ( EdAdapterConfig.CONST_UPDATE_VERSION );
+            PageCommand.GetParameter<EvDataBaseUpdate.UpdateVersionList> ( EuAdapterConfig.CONST_UPDATE_VERSION );
         }
 
-        if ( PageCommand.hasParameter ( EdAdapterConfig.CONST_UPDATE_ORDER ) == true )
+        if ( PageCommand.hasParameter ( EuAdapterConfig.CONST_UPDATE_ORDER ) == true )
         {
           this.Session.DataBaseUpdateOrderBy =
-            PageCommand.GetParameter<EvDataBaseUpdate.UpdateOrderBy> ( EdAdapterConfig.CONST_UPDATE_ORDER );
+            PageCommand.GetParameter<EvDataBaseUpdate.UpdateOrderBy> ( EuAdapterConfig.CONST_UPDATE_ORDER );
         }
 
         this.LogValue ( "UpdateVersion: " + this.Session.DatabaseUpdateVersion );
@@ -380,7 +380,7 @@ namespace Evado.UniForm.Digital
       optionlist = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvDataBaseUpdate.UpdateVersionList ), true );
 
       groupField = pageGroup.createSelectionListField (
-        EdAdapterConfig.CONST_UPDATE_VERSION,
+        EuAdapterConfig.CONST_UPDATE_VERSION,
         EdLabels.DataBase_Update_Version_Field_Title,
         this.Session.DatabaseUpdateVersion.ToString ( ),
         optionlist );
@@ -541,9 +541,9 @@ namespace Evado.UniForm.Digital
       //
       // Update the selection parameters.
       //
-      if ( PageCommand.hasParameter ( EdAdapterConfig.CONST_AUDIT_TABLE ) == true )
+      if ( PageCommand.hasParameter ( EuAdapterConfig.CONST_AUDIT_TABLE ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdAdapterConfig.CONST_AUDIT_TABLE );
+        parameterValue = PageCommand.GetParameter ( EuAdapterConfig.CONST_AUDIT_TABLE );
 
         if ( parameterValue != this.Session.AuditTableName.ToString ( ) )
         {
@@ -555,9 +555,9 @@ namespace Evado.UniForm.Digital
         }
       }
 
-      if ( PageCommand.hasParameter ( EdAdapterConfig.CONST_AUDIT_RECORD_GUID ) == true )
+      if ( PageCommand.hasParameter ( EuAdapterConfig.CONST_AUDIT_RECORD_GUID ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdAdapterConfig.CONST_AUDIT_RECORD_GUID );
+        parameterValue = PageCommand.GetParameter ( EuAdapterConfig.CONST_AUDIT_RECORD_GUID );
 
         if ( parameterValue != String.Empty
           && parameterValue != this.Session.AuditRecordGuid.ToString ( ) )
@@ -568,9 +568,9 @@ namespace Evado.UniForm.Digital
         }
       }
 
-      if ( PageCommand.hasParameter ( EdAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID ) == true )
+      if ( PageCommand.hasParameter ( EuAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID );
+        parameterValue = PageCommand.GetParameter ( EuAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID );
 
         if ( parameterValue != String.Empty )
         {
@@ -734,7 +734,7 @@ namespace Evado.UniForm.Digital
       optionlist = EvDataChange.getConfigurationTablesNameList ( );
 
       groupField = pageGroup.createSelectionListField (
-        EdAdapterConfig.CONST_AUDIT_TABLE,
+        EuAdapterConfig.CONST_AUDIT_TABLE,
         EdLabels.Audit_Table_Selection_Field_Title,
         this.Session.AuditTableName.ToString ( ),
         optionlist );
@@ -761,7 +761,7 @@ namespace Evado.UniForm.Digital
       if ( optionlist.Count > 1 )
       {
         groupField = pageGroup.createSelectionListField (
-          EdAdapterConfig.CONST_AUDIT_RECORD_GUID,
+          EuAdapterConfig.CONST_AUDIT_RECORD_GUID,
           EdLabels.Audit_Record_Selection_Field_Title,
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
@@ -1660,7 +1660,7 @@ namespace Evado.UniForm.Digital
       optionlist = EvDataChange.getRecordItemTablesNameList ( );
 
       groupField = pageGroup.createSelectionListField (
-        EdAdapterConfig.CONST_AUDIT_TABLE,
+        EuAdapterConfig.CONST_AUDIT_TABLE,
         EdLabels.Audit_Table_Selection_Field_Title,
         this.Session.AuditTableName.ToString ( ),
         optionlist );
@@ -1680,7 +1680,7 @@ namespace Evado.UniForm.Digital
         // create the record selection list.
         //
         groupField = pageGroup.createSelectionListField (
-          EdAdapterConfig.CONST_AUDIT_RECORD_GUID,
+          EuAdapterConfig.CONST_AUDIT_RECORD_GUID,
           EdLabels.Audit_Record_Selection_Field_Title,
           this.Session.AuditRecordGuid.ToString ( ),
           optionlist );
@@ -1707,7 +1707,7 @@ namespace Evado.UniForm.Digital
           // create the record selection list.
           //
           groupField = pageGroup.createSelectionListField (
-            EdAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID,
+            EuAdapterConfig.CONST_AUDIT_RECORD_ITEM_GUID,
             EdLabels.Audit_Record_Item_Selection_Field_Title,
             this.Session.AuditRecordItemGuid.ToString ( ),
             optionlist );
@@ -2016,11 +2016,6 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_1 ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_2 ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_City ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Post_Code ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_State ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Country) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Given_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Family_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Telephone ) );
@@ -2031,7 +2026,7 @@ namespace Evado.UniForm.Digital
       pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_User_Fields.ToString ( ),
         EdLabels.Config_HiddenUserFields_List_Field_Label,
-        this.AdapterObjects.AdapterSettings.Roles, optionList );
+        this.AdapterObjects.AdapterSettings.HiddenUserFields, optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
@@ -2040,17 +2035,13 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_1 ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_2 ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_City ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Post_Code ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_State ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Country ) );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Telephone ) );
 
-      pageField = pageGroup.createFreeTextField (
+      pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ),
         EdLabels.Config_HiddenOrgFields_List_Field_Label,
-        this.AdapterObjects.AdapterSettings.Roles, 50, 10 );
+        this.AdapterObjects.AdapterSettings.HiddenOrganisationFields,
+        optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
@@ -2355,8 +2346,8 @@ namespace Evado.UniForm.Digital
         if ( parameter.Name.Contains ( Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == true
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
           || parameter.Name == Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
-          || parameter.Name == EdAdapterConfig.CONST_ADDRESS_FIELD_ID
-          || parameter.Name == EdAdapterConfig.CONST_CURRENT_FIELD_ID )
+          || parameter.Name == EuAdapterConfig.CONST_ADDRESS_FIELD_ID
+          || parameter.Name == EuAdapterConfig.CONST_CURRENT_FIELD_ID )
         {
           continue;
         }

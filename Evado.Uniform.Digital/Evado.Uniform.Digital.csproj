@@ -91,7 +91,7 @@
     <Compile Include="EuApplicationEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EdAdapterConfig.cs" />
+    <Compile Include="EuAdapterConfig.cs" />
     <Compile Include="EuAdapter.cs" />
     <Compile Include="AssemblyAttributes.cs" />
     <Compile Include="EuBinaryFiles.cs" />
