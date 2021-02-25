@@ -334,7 +334,7 @@ namespace Evado.UniForm.Digital
         // 
         // generate the page links.
         // 
-        foreach ( EvOrganisation organisation in this.Session.OrganisationList )
+        foreach ( EdOrganisation organisation in this.Session.OrganisationList )
         {
           // 
           // Add the trial organisation to the list of organisations as a groupCommand.
@@ -585,7 +585,7 @@ namespace Evado.UniForm.Digital
         pageCommand.SetGuid ( this.Session.Organisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EvOrganisation.ActionCodes.Save.ToString ( ) );
+          EdOrganisation.ActionCodes.Save.ToString ( ) );
 
         //
         // Delete command
@@ -602,7 +602,7 @@ namespace Evado.UniForm.Digital
         pageCommand.SetGuid ( this.Session.Organisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EvOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+          EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
       }
 
       this.LogMethodEnd ( "getDataObject_PageCommands" );
@@ -642,7 +642,7 @@ namespace Evado.UniForm.Digital
       // Create the customer id object
       // 
       pageField = pageGroup.createTextField (
-        EvOrganisation.OrganisationFieldNames.OrgId.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.OrgId.ToString ( ),
         EdLabels.Label_Organisation_Id,
         String.Empty,
         this.Session.AdminOrganisation.OrgId, 10 );
@@ -658,14 +658,14 @@ namespace Evado.UniForm.Digital
       //
       // Generate the organisation type list.
       //
-      List<EvOption> typeList = EvOrganisation.getOrganisationTypeList (
+      List<EvOption> typeList = EdOrganisation.getOrganisationTypeList (
         this.Session.AdminOrganisation.OrgType );
 
       //
       // Generate the organisation type radio button list field object.
       //
       pageField = pageGroup.createRadioButtonListField (
-        EvOrganisation.OrganisationFieldNames.Org_Type.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.Org_Type.ToString ( ),
         EdLabels.Organisation_Type_Field_Label,
         EdLabels.Organisation_Type_Field_Description,
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminOrganisation.OrgType ),
@@ -687,7 +687,7 @@ namespace Evado.UniForm.Digital
       // Create the customer name object
       // 
       pageField = pageGroup.createTextField (
-        EvOrganisation.OrganisationFieldNames.Name.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.Name.ToString ( ),
         EdLabels.Organisation_Name_Field_Label,
         this.Session.AdminOrganisation.Name,
         50 );
@@ -702,7 +702,7 @@ namespace Evado.UniForm.Digital
       // Create the customer name object
       // 
       pageField = pageGroup.createAddressField (
-        EvOrganisation.OrganisationFieldNames.Address,
+        EdOrganisation.OrganisationFieldNames.Address,
         EdLabels.Organisation_Address_Field_Label,
         this.Session.AdminOrganisation.Address );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -711,7 +711,7 @@ namespace Evado.UniForm.Digital
       // Create the organisation telephone number object
       // 
       pageField = pageGroup.createTelephoneNumberField (
-        EvOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
         EdLabels.Organisation_Telephone_Field_Label,
         this.Session.AdminOrganisation.Telephone );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -720,7 +720,7 @@ namespace Evado.UniForm.Digital
       // Create the organisation fax number object
       // 
       pageField = pageGroup.createTelephoneNumberField (
-        EvOrganisation.OrganisationFieldNames.Fax_Phone.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.Fax_Phone.ToString ( ),
         EdLabels.Organisation_Fax_Number_Field_Label,
         this.Session.AdminOrganisation.FaxPhone );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -729,7 +729,7 @@ namespace Evado.UniForm.Digital
       // Create the organisation fax number object
       // 
       pageField = pageGroup.createEmailAddressField (
-        EvOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
+        EdOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
         EdLabels.Organisation_Email_Field_Label,
         this.Session.AdminOrganisation.EmailAddress );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -780,7 +780,7 @@ namespace Evado.UniForm.Digital
         pageCommand.SetGuid ( this.Session.Organisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EvOrganisation.ActionCodes.Save.ToString ( ) );
+          EdOrganisation.ActionCodes.Save.ToString ( ) );
 
         //
         // Delete command
@@ -797,7 +797,7 @@ namespace Evado.UniForm.Digital
         pageCommand.SetGuid ( this.Session.Organisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EvOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+          EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
       }
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
 
@@ -848,7 +848,7 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.Session.AdminOrganisation = new EvOrganisation ( );
+        this.Session.AdminOrganisation = new EdOrganisation ( );
         this.Session.AdminOrganisation.Guid =   Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
 
         this.LogDebug ( "Organisation CustomerGuid {0}. ", this.Session.AdminOrganisation.CustomerGuid );
@@ -912,7 +912,7 @@ namespace Evado.UniForm.Digital
           + " Guid: " + this.Session.AdminOrganisation.Guid
           + " OrgId: " + this.Session.AdminOrganisation.OrgId
           + " Title: " + this.Session.AdminOrganisation.Name );
-        EvOrganisation.ActionCodes saveAction = EvOrganisation.ActionCodes.Save;
+        EdOrganisation.ActionCodes saveAction = EdOrganisation.ActionCodes.Save;
 
         // 
         // Log access to page.
@@ -926,7 +926,7 @@ namespace Evado.UniForm.Digital
         // 
         this.Session.AdminOrganisation.UpdatedByUserId = this.Session.UserProfile.UserId;
         this.Session.AdminOrganisation.UserCommonName = this.Session.UserProfile.CommonName;
-        this.Session.OrganisationList = new List<EvOrganisation> ( );
+        this.Session.OrganisationList = new List<EdOrganisation> ( );
 
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.
@@ -975,7 +975,7 @@ namespace Evado.UniForm.Digital
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction =  Evado.Model.EvStatics.parseEnumValue<EvOrganisation.ActionCodes> ( stSaveAction );
+          saveAction =  Evado.Model.EvStatics.parseEnumValue<EdOrganisation.ActionCodes> ( stSaveAction );
         }
         this.Session.AdminOrganisation.Action = saveAction;
 
@@ -1061,7 +1061,7 @@ namespace Evado.UniForm.Digital
       //
       // Org type not defined.
       //
-      if ( this.Session.AdminOrganisation.OrgType  == EvOrganisation.OrganisationTypes.Null)
+      if ( this.Session.AdminOrganisation.OrgType  == EdOrganisation.OrganisationTypes.Null)
       {
         if ( this.ErrorMessage != String.Empty )
         {
@@ -1117,8 +1117,8 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
           try
           {
-            EvOrganisation.OrganisationFieldNames fieldName =
-               Evado.Model.EvStatics.parseEnumValue<EvOrganisation.OrganisationFieldNames> (
+            EdOrganisation.OrganisationFieldNames fieldName =
+               Evado.Model.EvStatics.parseEnumValue<EdOrganisation.OrganisationFieldNames> (
               parameter.Name );
 
             this.Session.AdminOrganisation.setValue ( fieldName, parameter.Value );

@@ -178,17 +178,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines a project dashboard components to be displayed to the user.
       /// </summary>
-      Project_Dashboard_Components,
+      Default_Display_Parameters,
 
       /// <summary>
       /// This enumeration defines a site dashboard components to be displayed to the user.
       /// </summary>
-      Site_Dashboard_Components,
-
-      /// <summary>
-      /// This enumeration defines a customer No associated with the user.
-      /// </summary>
-      Customer_No,
+      Current_Display_Parameters,
 
       /// <summary>
       /// This enumeration defines a exporty date for  the user.
@@ -295,34 +290,34 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property contains the project dashboard components to be displayed to the user.
+    /// This property contains the default display parameters to be displayed to the user.
     /// </summary>
-    public String ProjectDashboardComponents
+    public String DefaultDisplayParameters
     {
       get
       {
-        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Project_Dashboard_Components );
+        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Default_Display_Parameters );
       }
       set
       {
-        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Project_Dashboard_Components, value );
+        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Default_Display_Parameters, value );
 
         //this.debug += "\r\n"+ debug;
       }
     }
 
     /// <summary>
-    /// This property contains the site dashboard components to be displayed to the user.
+    /// This property contains the current display parameters displayed to the user.
     /// </summary>
-    public String SiteDashboardComponents
+    public String CurrentDisplayParameters
     {
       get
       {
-        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Site_Dashboard_Components );
+        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Current_Display_Parameters );
       }
       set
       {
-        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Site_Dashboard_Components, value );
+        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Current_Display_Parameters, value );
         //this.debug += "\r\n" + debug;
       }
     }
@@ -722,14 +717,14 @@ namespace Evado.Model.Digital
             this.MobilePhone = value;
             break;
           }
-        case UserProfileFieldNames.Project_Dashboard_Components:
+        case UserProfileFieldNames.Default_Display_Parameters:
           {
-            this.ProjectDashboardComponents = value;
+            this.DefaultDisplayParameters = value;
             break;
           }
-        case UserProfileFieldNames.Site_Dashboard_Components:
+        case UserProfileFieldNames.Current_Display_Parameters:
           {
-            this.SiteDashboardComponents = value;
+            this.CurrentDisplayParameters = value;
             break;
           }
         case UserProfileFieldNames.RoleId:

@@ -77,7 +77,7 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      this._Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
+      this._Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( this.ClassParameters );
 
     }//END Method
 
@@ -96,7 +96,7 @@ namespace Evado.UniForm.Digital
 
     public const String CONST_DEMO_ORGANISATION = "DEMO01";
 
-    private Evado.Bll.Digital.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( );
+    private Evado.Bll.Digital.EdUserprofiles _Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( );
 
     private System.Text.StringBuilder _ProcessLog = null;
 

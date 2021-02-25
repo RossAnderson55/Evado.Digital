@@ -1872,6 +1872,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hidden Organisation Fields:.
+        /// </summary>
+        public static string Config_HiddenOrgFields_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_HiddenOrgFields_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden User Profile Fields:.
+        /// </summary>
+        public static string Config_HiddenUserFields_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_HiddenUserFields_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adapte Roles:.
         /// </summary>
         public static string Config_Role_List_Field_Label {

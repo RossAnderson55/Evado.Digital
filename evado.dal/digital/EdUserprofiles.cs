@@ -35,7 +35,7 @@ namespace Evado.Dal.Digital
   /// The Evado.Evado.User is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EvUserProfiles : EvDalBase
+  public class EdUserprofiles : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -43,7 +43,7 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvUserProfiles ( )
+    public EdUserprofiles ( )
     {
       this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
     }
@@ -54,7 +54,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvUserProfiles ( EvClassParameters Settings )
+    public EdUserprofiles ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
@@ -322,7 +322,7 @@ namespace Evado.Dal.Digital
       profile.MobilePhone = EvSqlMethods.getString ( Row, DB_MOBILE_PHONE );
       profile.EmailAddress = EvSqlMethods.getString ( Row, DB_EMAIL_ADDRESS ).ToLower ( );
       profile.Title = EvSqlMethods.getString ( Row, DB_TITLE );
-      profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EvUserProfiles.DB_EXPIRY_DATE );
+      profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EdUserprofiles.DB_EXPIRY_DATE );
 
       profile.UpdatedByUserId = EvSqlMethods.getString ( Row, DB_UPDATED_BY_USER_ID );
       profile.UpdatedBy = EvSqlMethods.getString ( Row, DB_UPDATE_BY );
@@ -484,7 +484,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EvUserProfiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
+        new SqlParameter ( EdUserprofiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
       };
       cmdParms [ 0 ].Value = OrgId;
 
@@ -507,21 +507,21 @@ namespace Evado.Dal.Digital
       {
         PartialUserId = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EvUserProfiles.DB_ORG_ID + " = " + EvUserProfiles.PARM_ORG_ID + " ) \r\n";
+        sqlQueryString += " AND (" + EdUserprofiles.DB_ORG_ID + " = " + EdUserprofiles.PARM_ORG_ID + " ) \r\n";
       }
 
       if ( PartialUserId != String.Empty )
       {
         PartialUserId = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EvUserProfiles.DB_USER_ID + " LIKE '%" + PartialUserId + "%' ) \r\n";
+        sqlQueryString += " AND (" + EdUserprofiles.DB_USER_ID + " LIKE '%" + PartialUserId + "%' ) \r\n";
       }
 
       if ( PartialCommonName != String.Empty )
       {
         PartialCommonName = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EvUserProfiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
+        sqlQueryString += " AND (" + EdUserprofiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
       }
 
       sqlQueryString += " ORDER BY OrgId, UserId;";
@@ -676,7 +676,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EvUserProfiles.DB_USER_ID + " = " + EvUserProfiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserprofiles.DB_USER_ID + " = " + EdUserprofiles.PARM_UserId + ")\r\n";
 
       //
       // Execute the query against the database
@@ -747,7 +747,7 @@ namespace Evado.Dal.Digital
       if ( UserType != EdUserProfile.UserTypesList.Null )
       {
         sqlQueryString = SQL_SELECT_QUERY
-          + "WHERE (" + EvUserProfiles.DB_ORG_ID + " = " + EvUserProfiles.PARM_ORG_ID + ") ;";
+          + "WHERE (" + EdUserprofiles.DB_ORG_ID + " = " + EdUserprofiles.PARM_ORG_ID + ") ;";
       }
 
       //
@@ -824,7 +824,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EvUserProfiles.DB_USER_ID + " = " + EvUserProfiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserprofiles.DB_USER_ID + " = " + EdUserprofiles.PARM_UserId + ")\r\n";
 
       this.LogDebug ( sqlQueryString );
 
@@ -918,7 +918,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EvUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.Char, 100 )
+        new SqlParameter ( EdUserprofiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.Char, 100 )
       };
       cmdParms [ 0 ].Value = AdsUserId;
 
@@ -926,7 +926,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EvUserProfiles.DB_AD_NAME + " = " + EvUserProfiles.PARM_ACTIVE_DIRECTORY_NAME + ")\r\n";
+        + "WHERE (" + EdUserprofiles.DB_AD_NAME + " = " + EdUserprofiles.PARM_ACTIVE_DIRECTORY_NAME + ")\r\n";
 
       this.LogValue ( sqlQueryString );
 
@@ -1022,7 +1022,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EvUserProfiles.PARM_Guid, SqlDbType.UniqueIdentifier )
+        new SqlParameter ( EdUserprofiles.PARM_Guid, SqlDbType.UniqueIdentifier )
       };
       cmdParms [ 0 ].Value = UserProfileGuid;
 
@@ -1030,7 +1030,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EvUserProfiles.DB_USER_GUID + " = " + EvUserProfiles.PARM_Guid + ")";
+        + "WHERE (" + EdUserprofiles.DB_USER_GUID + " = " + EdUserprofiles.PARM_Guid + ")";
 
       this.LogValue ( sqlQueryString );
 
@@ -1198,7 +1198,7 @@ namespace Evado.Dal.Digital
       this.FlushLog ( );
       this.LogMethod ( "UpdateItem method. " );
       this.LogValue ( "UserId: " + UserProfile.UserId );
-      this.LogDebug ( "ProjectDashboardComponents: " + UserProfile.ProjectDashboardComponents );
+      this.LogDebug ( "ProjectDashboardComponents: " + UserProfile.DefaultDisplayParameters );
 
       // 
       // Define the local variables.

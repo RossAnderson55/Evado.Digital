@@ -26,7 +26,7 @@ namespace Evado.Model.Digital
   /// Business entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvOrganisation
+  public class EdOrganisation
   {
     #region Enumerators
     /// <summary>
@@ -1338,99 +1338,99 @@ namespace Evado.Model.Digital
     /// 1. Switch FieldName and get value defining by the organization field name.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public string getValue ( EvOrganisation.OrganisationFieldNames FieldName )
+    public string getValue ( EdOrganisation.OrganisationFieldNames FieldName )
     {
       //
       // Switch FieldName and get value defining by the organization field name.
       //
       switch ( FieldName )
       {
-        case EvOrganisation.OrganisationFieldNames.TrialId:
+        case EdOrganisation.OrganisationFieldNames.TrialId:
           return this._StudyId;
-        case EvOrganisation.OrganisationFieldNames.OrgId:
+        case EdOrganisation.OrganisationFieldNames.OrgId:
           return this._OrgId;
-        case EvOrganisation.OrganisationFieldNames.Name:
+        case EdOrganisation.OrganisationFieldNames.Name:
           return this._Name;
 
-        case EvOrganisation.OrganisationFieldNames.Address:
+        case EdOrganisation.OrganisationFieldNames.Address:
           return this.Address;
 
-        case EvOrganisation.OrganisationFieldNames.Address_1:
+        case EdOrganisation.OrganisationFieldNames.Address_1:
           return this.AddressStreet_1;
 
-        case EvOrganisation.OrganisationFieldNames.Address_2:
+        case EdOrganisation.OrganisationFieldNames.Address_2:
           return this.AddressStreet_2;
 
-        case EvOrganisation.OrganisationFieldNames.Address_City:
+        case EdOrganisation.OrganisationFieldNames.Address_City:
           return this.AddressCity;
 
-        case EvOrganisation.OrganisationFieldNames.Address_State:
+        case EdOrganisation.OrganisationFieldNames.Address_State:
           return this.AddressState;
 
-        case EvOrganisation.OrganisationFieldNames.Address_Post_Code:
+        case EdOrganisation.OrganisationFieldNames.Address_Post_Code:
           return this.AddressPostCode;
 
-        case EvOrganisation.OrganisationFieldNames.Address_Country:
+        case EdOrganisation.OrganisationFieldNames.Address_Country:
           return this.AddressCountry;
 
-        case EvOrganisation.OrganisationFieldNames.Telephone:
+        case EdOrganisation.OrganisationFieldNames.Telephone:
           return this._Telephone;
 
-        case EvOrganisation.OrganisationFieldNames.Fax_Phone:
+        case EdOrganisation.OrganisationFieldNames.Fax_Phone:
           return this._FaxPhone;
 
-        case EvOrganisation.OrganisationFieldNames.Email_Address:
+        case EdOrganisation.OrganisationFieldNames.Email_Address:
           return this._EmailAddress;
 
-        case EvOrganisation.OrganisationFieldNames.TrialSite:
+        case EdOrganisation.OrganisationFieldNames.TrialSite:
           return this._TrialSite.ToString ( );
 
-        case EvOrganisation.OrganisationFieldNames.Sponsor_Site:
+        case EdOrganisation.OrganisationFieldNames.Sponsor_Site:
           return this._SponsorSite.ToString ( );
 
-        case EvOrganisation.OrganisationFieldNames.Current:
+        case EdOrganisation.OrganisationFieldNames.Current:
           return this._Current.ToString ( );
 
-        case EvOrganisation.OrganisationFieldNames.Coordinating_User_Id:
+        case EdOrganisation.OrganisationFieldNames.Coordinating_User_Id:
           return this._CoordinatorUserId;
 
-        case EvOrganisation.OrganisationFieldNames.Order:
+        case EdOrganisation.OrganisationFieldNames.Order:
           return this._Order.ToString ( );
 
-        case EvOrganisation.OrganisationFieldNames.State:
+        case EdOrganisation.OrganisationFieldNames.State:
           return this.StateDesc;
 
-        case EvOrganisation.OrganisationFieldNames.Ethics_Approval_Date:
+        case EdOrganisation.OrganisationFieldNames.Ethics_Approval_Date:
           return this._EthicsApprovalDate.ToString ( "dd MMM yyyy" );
 
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Start_Date:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Start_Date:
           return this._RecruitmentStartDate.ToString ( "dd MMM yyyy" );
 
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Closed_Date:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Closed_Date:
           return this._RecruitmentClosedDate.ToString ( "dd MMM yyyy" );
 
-        case EvOrganisation.OrganisationFieldNames.LastTreated_Subject_Date:
+        case EdOrganisation.OrganisationFieldNames.LastTreated_Subject_Date:
           return this._LastTreatedSubjectDate.ToString ( "dd MMM yyyy" );
 
-        case EvOrganisation.OrganisationFieldNames.Closed_Date:
+        case EdOrganisation.OrganisationFieldNames.Closed_Date:
           return this._ClosedDate.ToString ( "dd MMM yyyy" );
 
-        case EvOrganisation.OrganisationFieldNames.Establishment_Cost:
+        case EdOrganisation.OrganisationFieldNames.Establishment_Cost:
           return this._EstablishmentCost.ToString ( "#######0" );
 
-        case EvOrganisation.OrganisationFieldNames.Default_Margin:
+        case EdOrganisation.OrganisationFieldNames.Default_Margin:
           return this._SiteDefaultMargin.ToString ( "##0" );
 
-        case EvOrganisation.OrganisationFieldNames.Budget_Cost_Total:
+        case EdOrganisation.OrganisationFieldNames.Budget_Cost_Total:
           return this._BudgetCostTotal.ToString ( "#######0" );
 
-        case EvOrganisation.OrganisationFieldNames.Budget_Price_Total:
+        case EdOrganisation.OrganisationFieldNames.Budget_Price_Total:
           return this._BudgetPriceTotal.ToString ( "#######0" );
 
-        case EvOrganisation.OrganisationFieldNames.Invoiced_Total:
+        case EdOrganisation.OrganisationFieldNames.Invoiced_Total:
           return this._InvoicedTotal.ToString ( "#######0" );
 
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Target:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Target:
           return this._RecruitmentTarget.ToString ( "#######0" );
         default:
           return String.Empty;
@@ -1453,7 +1453,7 @@ namespace Evado.Model.Digital
     /// 2. Switch the FieldName and update the Value on the organization field names.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public void setValue ( EvOrganisation.OrganisationFieldNames FieldName, string Value )
+    public void setValue ( EdOrganisation.OrganisationFieldNames FieldName, string Value )
     {
       //
       // Initialize the internal variables
@@ -1467,73 +1467,73 @@ namespace Evado.Model.Digital
       //
       switch ( FieldName )
       {
-        case EvOrganisation.OrganisationFieldNames.TrialId:
+        case EdOrganisation.OrganisationFieldNames.TrialId:
           this._StudyId = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.OrgId:
+        case EdOrganisation.OrganisationFieldNames.OrgId:
           this._OrgId = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Name:
+        case EdOrganisation.OrganisationFieldNames.Name:
           this._Name = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address:
+        case EdOrganisation.OrganisationFieldNames.Address:
           {
             this.Address = Value;
           } return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_1:
+        case EdOrganisation.OrganisationFieldNames.Address_1:
           this._AddressStreet_1 = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_2:
+        case EdOrganisation.OrganisationFieldNames.Address_2:
           this._AddressStreet_2 = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_City:
+        case EdOrganisation.OrganisationFieldNames.Address_City:
           this._AddressCity = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_State:
+        case EdOrganisation.OrganisationFieldNames.Address_State:
           this._AddressState = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_Post_Code:
+        case EdOrganisation.OrganisationFieldNames.Address_Post_Code:
           this._AddressPostCode = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Address_Country:
+        case EdOrganisation.OrganisationFieldNames.Address_Country:
           this._Country = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Telephone:
+        case EdOrganisation.OrganisationFieldNames.Telephone:
           this._Telephone = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Fax_Phone:
+        case EdOrganisation.OrganisationFieldNames.Fax_Phone:
           this._FaxPhone = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Email_Address:
+        case EdOrganisation.OrganisationFieldNames.Email_Address:
           this._EmailAddress = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Coordinating_User_Id:
+        case EdOrganisation.OrganisationFieldNames.Coordinating_User_Id:
           this._CoordinatorUserId = Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Site_Investigator:
+        case EdOrganisation.OrganisationFieldNames.Site_Investigator:
           this._SiteInvestigator= Value;
           return;
 
-        case EvOrganisation.OrganisationFieldNames.Org_Type:
+        case EdOrganisation.OrganisationFieldNames.Org_Type:
           {
             this._OrgType = EvStatics.parseEnumValue<OrganisationTypes> ( Value );
             return;
           }
-        case EvOrganisation.OrganisationFieldNames.TrialSite:
+        case EdOrganisation.OrganisationFieldNames.TrialSite:
           {
             this._TrialSite = false;
             if ( Value.ToLower ( ) == "true"
@@ -1545,7 +1545,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Sponsor_Site:
+        case EdOrganisation.OrganisationFieldNames.Sponsor_Site:
           {
             this._SponsorSite = false;
             if ( Value.ToLower ( ) == "true"
@@ -1557,7 +1557,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Current:
+        case EdOrganisation.OrganisationFieldNames.Current:
           {
             this._Current = false;
             if ( Value.ToLower ( ) == "true"
@@ -1569,13 +1569,13 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Order:
+        case EdOrganisation.OrganisationFieldNames.Order:
           {
             this.stOrder = Value;
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Ethics_Approval_Date:
+        case EdOrganisation.OrganisationFieldNames.Ethics_Approval_Date:
           {
             if ( DateTime.TryParse ( Value, out date ) == true )
             {
@@ -1584,7 +1584,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Start_Date:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Start_Date:
           {
             if ( DateTime.TryParse ( Value, out date ) == true )
             {
@@ -1593,7 +1593,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Closed_Date:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Closed_Date:
           {
             if ( DateTime.TryParse ( Value, out date ) == true )
             {
@@ -1602,7 +1602,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.LastTreated_Subject_Date:
+        case EdOrganisation.OrganisationFieldNames.LastTreated_Subject_Date:
           {
             if ( DateTime.TryParse ( Value, out date ) == true )
             {
@@ -1611,7 +1611,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Closed_Date:
+        case EdOrganisation.OrganisationFieldNames.Closed_Date:
           {
             if ( DateTime.TryParse ( Value, out date ) == true )
             {
@@ -1620,7 +1620,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Establishment_Cost:
+        case EdOrganisation.OrganisationFieldNames.Establishment_Cost:
           {
             if ( float.TryParse ( Value, out fltValue ) == true )
             {
@@ -1629,7 +1629,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Default_Margin:
+        case EdOrganisation.OrganisationFieldNames.Default_Margin:
           {
             if ( int.TryParse ( Value, out intValue ) == true )
             {
@@ -1638,7 +1638,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Budget_Cost_Total:
+        case EdOrganisation.OrganisationFieldNames.Budget_Cost_Total:
           {
             if ( float.TryParse ( Value, out fltValue ) == true )
             {
@@ -1647,7 +1647,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Budget_Price_Total:
+        case EdOrganisation.OrganisationFieldNames.Budget_Price_Total:
           {
             if ( float.TryParse ( Value, out fltValue ) == true )
             {
@@ -1656,7 +1656,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EvOrganisation.OrganisationFieldNames.Invoiced_Total:
+        case EdOrganisation.OrganisationFieldNames.Invoiced_Total:
           {
             if ( float.TryParse ( Value, out fltValue ) == true )
             {
@@ -1664,7 +1664,7 @@ namespace Evado.Model.Digital
             }
             return;
           }
-        case EvOrganisation.OrganisationFieldNames.Recruitment_Target:
+        case EdOrganisation.OrganisationFieldNames.Recruitment_Target:
           {
             if ( int.TryParse ( Value, out intValue ) == true )
             {

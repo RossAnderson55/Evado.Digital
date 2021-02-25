@@ -152,7 +152,7 @@
     <Compile Include="digital\evreports.cs" />
     <Compile Include="digital\evreportsaved.cs" />
     <Compile Include="digital\evreporttemplates.cs" />
-    <Compile Include="digital\evuserprofiles.cs" />
+    <Compile Include="digital\EdUserprofiles.cs" />
     <Compile Include="EvObjectParameters.cs" />
     <Compile Include="EvDalBase.cs" />
     <Compile Include="EvStaticSetting.cs" />

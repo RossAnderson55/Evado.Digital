@@ -236,21 +236,21 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains a list of organisations.
     /// </summary>
-    public EvOrganisation.OrganisationTypes OrganisationType { get; set; }
+    public EdOrganisation.OrganisationTypes OrganisationType { get; set; }
     /// <summary>
     /// This property contains a list of organisations.
     /// </summary>
-    public List<Evado.Model.Digital.EvOrganisation> OrganisationList { get; set; }
+    public List<Evado.Model.Digital.EdOrganisation> OrganisationList { get; set; }
 
     /// <summary>
     /// This property contains the Organisation
     /// </summary>
-    public Evado.Model.Digital.EvOrganisation Organisation { get; set; }
+    public Evado.Model.Digital.EdOrganisation Organisation { get; set; }
 
     /// <summary>
     /// This property contains the adminstration Organisation
     /// </summary>
-    public Evado.Model.Digital.EvOrganisation AdminOrganisation { get; set; }
+    public Evado.Model.Digital.EdOrganisation AdminOrganisation { get; set; }
 
 
     Evado.Model.Digital.EvExportParameters _ExportParameters = new EvExportParameters ( );
