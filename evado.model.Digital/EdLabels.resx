@@ -2650,4 +2650,7 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Select_Layout_Command_Title" xml:space="preserve">
     <value>Select Layouts</value>
   </data>
+  <data name="Layout_Design_Refresh" xml:space="preserve">
+    <value>Refresh Page</value>
+  </data>
 </root>

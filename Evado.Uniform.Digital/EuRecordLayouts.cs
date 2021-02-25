@@ -1809,6 +1809,23 @@ namespace Evado.UniForm.Digital
             //
             // Add the same groupCommand.
             //
+            pageCommand = PageObject.addCommand (
+              EdLabels.Form_Save_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Record_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+            // 
+            // Define the save groupCommand parameters.
+            // 
+            pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
+
+            pageCommand.AddParameter (
+              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+            //
+            // Add the same groupCommand.
+            //
             /*
             pageCommand = PageObject.addCommand (
               EdLabels.Form_Withdrawn_Command_Title,
@@ -2045,6 +2062,12 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "setFormSaveGroupCommands" );
       this.LogDebug ( "RecordLayout.State {0}.", this.Session.RecordLayout.State );
+
+      if ( PageGroup.EditAccess != Model.UniForm.EditAccess.Enabled )
+      {
+        return;
+      }
+
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2054,6 +2077,20 @@ namespace Evado.UniForm.Digital
       if ( PageGroup == null )
       {
         return;
+      }
+
+      //
+      // Add the property page refresh
+      //
+      if ( this.Session.PageId == EvPageIds.Form_Properties_Page )
+      {
+        pageCommand = PageGroup.addCommand (
+          EdLabels.Layout_Design_Refresh,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Record_Layouts.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+        pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
       }
 
       //

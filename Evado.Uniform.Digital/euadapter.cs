@@ -276,10 +276,6 @@ namespace Evado.UniForm.Digital
 
     private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
 
-    private String _LicensedModules = EdModuleCodes.Administration_Module + ";"
-      + EdModuleCodes.Management_Module + ";"
-      + EdModuleCodes.Integration_Module;
-
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -317,23 +313,6 @@ namespace Evado.UniForm.Digital
     {
       get { return _EventCode; }
       set { _EventCode = value; }
-    }
-
-    /// <summary>
-    /// This property contains an encoded ';' list of licenced modules for this instance.
-    /// </summary>
-    public String LicensedModules
-    {
-      get { return this._LicensedModules; }
-      set
-      {
-        this._LicensedModules = value;
-
-        if ( this._AdapterObjects.AdapterSettings != null )
-        {
-          this._AdapterObjects.LicensedModules = this._LicensedModules;
-        }
-      }
     }
 
     // <summary>

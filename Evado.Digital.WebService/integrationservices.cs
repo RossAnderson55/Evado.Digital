@@ -472,16 +472,6 @@ namespace Evado.UniForm
           this._UniForm_BinaryFilePath,
           this._UniForm_BinaryServiceUrl );
 
-        //
-        // define the licensed modules for this installation.
-        //
-        String licensedModules = Evado.Model.Digital.EdModuleCodes.Administration_Module + ";"
-         + Evado.Model.Digital.EdModuleCodes.Management_Module + ";"
-         + Evado.Model.Digital.EdModuleCodes.Imaging_Module + ";"
-         + Evado.Model.Digital.EdModuleCodes.Integration_Module;
-
-        this._ApplicationAdapter.LicensedModules = licensedModules;
-
         this._ApplicationAdapter.LoggingLevel = this.LoggingLevel;
 
         this.LogValue ( "ApplicationAdapter.LoggingLevel: " + this._ApplicationAdapter.LoggingLevel );
