@@ -54,8 +54,8 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Bll.Digital.EvUserProfiles userProfiles =
-        new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
+      Evado.Bll.Digital.EdUserprofiles userProfiles =
+        new Evado.Bll.Digital.EdUserprofiles ( this.ClassParameters );
       //
       // if an anonoymous command is encountered create a user profile for a patient.
       //
@@ -147,7 +147,7 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.OrganisationList == null )
       {
-        this.Session.OrganisationList = new List<EvOrganisation> ( );
+        this.Session.OrganisationList = new List<EdOrganisation> ( );
       }
 
       if ( this.Session.OrganisationList.Count > 0 )
@@ -161,7 +161,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
-      this.Session.OrganisationType = EvOrganisation.OrganisationTypes.Null;
+      this.Session.OrganisationType = EdOrganisation.OrganisationTypes.Null;
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 

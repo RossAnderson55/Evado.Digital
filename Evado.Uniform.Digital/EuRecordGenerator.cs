@@ -119,6 +119,8 @@ namespace Evado.UniForm.Digital
     // 
     private List<Evado.Model.Digital.EdRecordField> _Fields = new List<Evado.Model.Digital.EdRecordField> ( );
 
+    private Evado.Model.UniForm.FieldLayoutCodes _FieldLayout = EuAdapter.DefaultFieldLayout;
+
     private String _PageId = String.Empty;
 
 
@@ -354,6 +356,15 @@ namespace Evado.UniForm.Digital
       this._FormState = Record.State;
       this._Fields = Record.Fields;
 
+      this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
+      if ( Record.Design.DefaultPageLayout != null )
+      {
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Record.Design.DefaultPageLayout.ToString ( ), out this._FieldLayout ) == false )
+        {
+          this._FieldLayout = EuAdapter.DefaultFieldLayout;
+        }
+      }
+      this.LogDebug ( "FieldLayout {0}. ", this._FieldLayout );
       //
       // IF the form does not display annotations when being completed
       // hide the annotations by setting hide annotations to true
@@ -990,16 +1001,18 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      // 
-      // Initialise the UniFORm field object.
-      // 
-      Evado.Model.UniForm.Field groupField = FieldGroup.addField (
-        Field.FieldId,
-        Field.Title,
-        Evado.Model.EvDataTypes.Text,
-        Field.ItemValue );
+      //
+      // set the field layout setting.
+      //
+      Evado.Model.UniForm.FieldLayoutCodes layout = this._FieldLayout;
 
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      if ( Field.Design.FieldLayout != null )
+      {
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout.ToString(), out layout ) == false )
+        {
+          layout = this._FieldLayout;
+        }
+      }
 
       //
       // IF the field had static readonly field display them across the entire page.
@@ -1009,9 +1022,21 @@ namespace Evado.UniForm.Digital
         || Field.TypeId == EvDataTypes.Streamed_Video
         || Field.TypeId == EvDataTypes.Html_Content )
       {
-        groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+        layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
       }
 
+      // 
+      // Initialise the UniFORm field object.
+      // 
+      Evado.Model.UniForm.Field groupField = FieldGroup.addField (
+        Field.FieldId,
+        Field.Title,
+        Evado.Model.EvDataTypes.Text,
+        Field.ItemValue );
+
+      groupField.Layout = layout;
+
+      this.LogDebug ( "groupField.Layout {0}. ", groupField.Layout );
       //
       // If the field is mandatory and is empty then shade the background to identify
       // the field as a mandatory field.
@@ -1077,6 +1102,26 @@ namespace Evado.UniForm.Digital
         case Evado.Model.EvDataTypes.Time:
           {
             this.getTimeField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Telephone_Number:
+          {
+            this.getTelephoneField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Email_Address:
+          {
+            this.getEmailAddressField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Address:
+          {
+            this.getAddressField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Name:
+          {
+            this.getNameField ( Field, groupField );
             return;
           }
         case Evado.Model.EvDataTypes.Selection_List:
@@ -1778,7 +1823,7 @@ namespace Evado.UniForm.Digital
     private void getTimeField ( Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
-      this.LogMethod ( "getDateField" );
+      this.LogMethod ( "getTimeField" );
 
       // 
       // set the field properties and parameters.
@@ -1796,6 +1841,93 @@ namespace Evado.UniForm.Digital
       }
 
     }//END getTimeField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the telephone form  field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getTelephoneField ( Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getTelephoneField" );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Telephone_Number;
+      GroupField.Value = Field.ItemValue;
+
+    }//END getTelephoneField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the telephone field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getEmailAddressField ( Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getEmailAddressField" );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Email_Address;
+      GroupField.Value = Field.ItemValue;
+
+    }//END getEmailAddressField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the address field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getAddressField ( Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getAddressField" );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Address;
+      GroupField.Value = Field.ItemValue;
+
+    }//END getEmailAddressField method.
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the Name field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getNameField ( Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getNameField" );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Name;
+      GroupField.Value = Field.ItemValue;
+
+    }//END getEmailAddressField method.
 
     //  =================================================================================
     /// <summary>

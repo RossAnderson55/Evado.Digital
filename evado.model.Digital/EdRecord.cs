@@ -413,11 +413,6 @@ namespace Evado.Model.Digital
       Viaibility,
 
       /// <summary>
-      /// This enumeration identifies the related entities fielsd
-      /// </summary>
-      RelatedEntities,
-
-      /// <summary>
       /// This enumeration identifies the default page layout field
       /// </summary>
       DefaultPageLayout,
@@ -1743,11 +1738,6 @@ namespace Evado.Model.Digital
         case RecordFieldNames.HasCsScript:
           {
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
-            return;
-          }
-        case RecordFieldNames.RelatedEntities:
-          {
-            this._Design.ParentEntities = Value;
             return;
           }
         case RecordFieldNames.DefaultPageLayout:

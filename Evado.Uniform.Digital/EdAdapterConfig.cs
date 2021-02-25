@@ -1985,6 +1985,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       String stOptionListValue = String.Empty;
+      List<EvOption> optionList = new List<EvOption>();
 
       // 
       // create the page pageMenuGroup
@@ -2006,6 +2007,50 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Roles.ToString ( ),
         EdLabels.Config_Role_List_Field_Label,
         this.AdapterObjects.AdapterSettings.Roles, 50, 10);
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
+
+      //
+      // create the hidden user profile fields checkbox list.
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_2 ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Country) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Given_Name ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Family_Name ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Telephone ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Suffix ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Prefix ) );
+
+
+      pageField = pageGroup.createCheckBoxListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_User_Fields.ToString ( ),
+        EdLabels.Config_HiddenUserFields_List_Field_Label,
+        this.AdapterObjects.AdapterSettings.Roles, optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+
+      //
+      // create the hidden organisastion checkbox list.
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_2 ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Country ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Telephone ) );
+
+      pageField = pageGroup.createFreeTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ),
+        EdLabels.Config_HiddenOrgFields_List_Field_Label,
+        this.AdapterObjects.AdapterSettings.Roles, 50, 10 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );

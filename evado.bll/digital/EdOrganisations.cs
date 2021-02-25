@@ -76,11 +76,11 @@ namespace Evado.Bll.Digital
     /// </summary>
     /// <returns>list of Evado.Model.Digital.EvOrganisation objects</returns>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getView ( string ConnectionStringKey )
+    public List<EdOrganisation> getView ( string ConnectionStringKey )
     {
       Evado.Bll.EvStaticSetting.ConnectionStringKey = ConnectionStringKey;
 
-      List<EvOrganisation> organisationList = getView ( );
+      List<EdOrganisation> organisationList = getView ( );
 
       Evado.Bll.EvStaticSetting.ResetConnectionString ( );
 
@@ -99,12 +99,12 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of organization objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getView ()
+    public List<EdOrganisation> getView ()
     {
       this.LogMethod( "getView method." );
 
-      List<EvOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
-        EvOrganisation.OrganisationTypes.Null,
+      List<EdOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
+        EdOrganisation.OrganisationTypes.Null,
         false );
 
        this.LogDebug(  this._DalOrganisations.Log );
@@ -127,15 +127,15 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of organization objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getOrganisationList ( 
-      EvOrganisation.OrganisationTypes OrgType, 
+    public List<EdOrganisation> getOrganisationList ( 
+      EdOrganisation.OrganisationTypes OrgType, 
       bool NotOrgType )
     {
       this.LogMethod ( "getOrganisationList" );
        this.LogDebug(  "Type: " + OrgType );
        this.LogDebug(  "NotOrgType: " + NotOrgType );
 
-      List<EvOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
+      List<EdOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
         OrgType,
         NotOrgType );
 
@@ -160,7 +160,7 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of options for Organization objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( EvOrganisation.OrganisationTypes Type )
+    public List<EvOption> getList ( EdOrganisation.OrganisationTypes Type )
     {
       this.LogMethod ( "getList method. " );
        this.LogDebug(  "Type: " + Type );
@@ -189,12 +189,12 @@ namespace Evado.Bll.Digital
     /// 2. Return an Organization object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvOrganisation getItem ( Guid OrgGuid )
+    public EdOrganisation getItem ( Guid OrgGuid )
     {
       this.LogMethod ( "getItem method. " );
        this.LogDebug(  "Guid: '" + OrgGuid + "'" );
 
-      EvOrganisation organisation = this._DalOrganisations.getItem ( OrgGuid );
+      EdOrganisation organisation = this._DalOrganisations.getItem ( OrgGuid );
 
       this.LogDebugClass ( this._DalOrganisations.Log );
 
@@ -216,11 +216,11 @@ namespace Evado.Bll.Digital
     /// 2. Return an Organization object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvOrganisation getItem ( string OrgId )
+    public EdOrganisation getItem ( string OrgId )
     {
       this.LogMethod ( "getItem method. OrgId: '" + OrgId + "'" );
 
-      EvOrganisation organisation = this._DalOrganisations.getItem ( OrgId );
+      EdOrganisation organisation = this._DalOrganisations.getItem ( OrgId );
 
       this.LogDebugClass ( this._DalOrganisations.Log );
 
@@ -248,7 +248,7 @@ namespace Evado.Bll.Digital
     /// 5. Return an event code of the method execution
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveItem ( EvOrganisation Organisation )
+    public EvEventCodes saveItem ( EdOrganisation Organisation )
     {
       this.LogMethod ( "saveItem method." );
        this.LogDebug(  "Guid: " + Organisation.Guid );
@@ -272,7 +272,7 @@ namespace Evado.Bll.Digital
       // If Faciity Name is null the delete the Organisation ResultData object from the database.
       // 
       if ( Organisation.Name == String.Empty
-        || Organisation.Action == EvOrganisation.ActionCodes.Delete_Object )	
+        || Organisation.Action == EdOrganisation.ActionCodes.Delete_Object )	
       {
         iReturn = this._DalOrganisations.deleteItem ( Organisation );
         this.LogDebugClass ( this._DalOrganisations.Log );

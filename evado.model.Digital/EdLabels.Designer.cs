@@ -1872,6 +1872,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hidden Organisation Fields:.
+        /// </summary>
+        public static string Config_HiddenOrgFields_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_HiddenOrgFields_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden User Profile Fields:.
+        /// </summary>
+        public static string Config_HiddenUserFields_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_HiddenUserFields_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adapte Roles:.
         /// </summary>
         public static string Config_Role_List_Field_Label {
@@ -4548,6 +4566,15 @@ namespace Evado.Model.Digital {
         public static string Lavel_Close_Page {
             get {
                 return ResourceManager.GetString("Lavel_Close_Page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Page.
+        /// </summary>
+        public static string Layout_Design_Refresh {
+            get {
+                return ResourceManager.GetString("Layout_Design_Refresh", resourceCulture);
             }
         }
         

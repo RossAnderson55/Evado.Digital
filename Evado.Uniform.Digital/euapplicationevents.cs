@@ -216,7 +216,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        EvUserProfiles userProfiles = new EvUserProfiles ( );
+        EdUserprofiles userProfiles = new EdUserprofiles ( );
         String value = String.Empty;
 
         clientDataObject.Title = EdLabels.ApplicationEvent_List_Page_Title;

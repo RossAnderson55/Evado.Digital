@@ -82,10 +82,10 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.OrganisationList == null )
       {
-        this.Session.OrganisationList = new List<EvOrganisation> ( );
+        this.Session.OrganisationList = new List<EdOrganisation> ( );
       }
 
-      this._Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( this.ClassParameters );
+      this._Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( this.ClassParameters );
 
     }//END Method
 
@@ -101,7 +101,7 @@ namespace Evado.UniForm.Digital
     private const String CONST_DELETE_ACTION = "DELETE";
     private const String CONST_DOWNLOAD_EXTENSION = "user-profiles.csv";
 
-    private Evado.Bll.Digital.EvUserProfiles _Bll_UserProfiles = new Evado.Bll.Digital.EvUserProfiles ( );
+    private Evado.Bll.Digital.EdUserprofiles _Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( );
 
     private EvPageIds PageId = EvPageIds.Null;
 
@@ -812,7 +812,7 @@ namespace Evado.UniForm.Digital
       optionList = new List<Evado.Model.EvOption> ( );
       optionList.Add ( new EvOption());
 
-      foreach ( EvOrganisation org in this.Session.OrganisationList )
+      foreach ( EdOrganisation org in this.Session.OrganisationList )
       {
         optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
       }      
@@ -1192,7 +1192,7 @@ namespace Evado.UniForm.Digital
       optionList = new List<Evado.Model.EvOption> ( );
       optionList.Add ( new EvOption());
 
-      foreach ( EvOrganisation org in this.Session.OrganisationList )
+      foreach ( EdOrganisation org in this.Session.OrganisationList )
       {
         optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
       }      

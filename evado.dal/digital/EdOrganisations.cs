@@ -164,7 +164,7 @@ namespace Evado.Dal.Digital
     /// 1. Bind the values from Organization object to the arraylist of sql query parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EvOrganisation Organisation )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdOrganisation Organisation )
     {
       if ( Organisation.CustomerGuid == null )
       {
@@ -212,12 +212,12 @@ namespace Evado.Dal.Digital
     /// 2. Return the organization data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvOrganisation readQueryRow ( DataRow Row )
+    public EdOrganisation readQueryRow ( DataRow Row )
     {
       // 
       // Initialise the Organisation
       // 
-      EvOrganisation organisation = new EvOrganisation ( );
+      EdOrganisation organisation = new EdOrganisation ( );
 
       // 
       // Fill the object.
@@ -238,10 +238,10 @@ namespace Evado.Dal.Digital
       organisation.EmailAddress = EvSqlMethods.getString ( Row, "O_Email" );
       string stOrgType = EvSqlMethods.getString ( Row, "O_ORG_TYPE" );
 
-      organisation.OrgType = EvOrganisation.OrganisationTypes.Null;
+      organisation.OrgType = EdOrganisation.OrganisationTypes.Null;
       if ( stOrgType != String.Empty )
       {
-        organisation.OrgType = Evado.Model.EvStatics.parseEnumValue<EvOrganisation.OrganisationTypes> (
+        organisation.OrgType = Evado.Model.EvStatics.parseEnumValue<EdOrganisation.OrganisationTypes> (
           stOrgType );
       }
       organisation.Order = EvSqlMethods.getInteger ( Row, "O_OrgOrder" );
@@ -252,7 +252,7 @@ namespace Evado.Dal.Digital
 
       if ( organisation.OrgId.ToLower ( ) == "evado" )
       {
-        organisation.OrgType = EvOrganisation.OrganisationTypes.Evado;
+        organisation.OrgType = EdOrganisation.OrganisationTypes.Evado;
       }
 
       // 
@@ -287,8 +287,8 @@ namespace Evado.Dal.Digital
     /// 5. Return the organizations list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOrganisation> getOrganisationList (
-      EvOrganisation.OrganisationTypes Type,
+    public List<EdOrganisation> getOrganisationList (
+      EdOrganisation.OrganisationTypes Type,
       bool IsCurrent )
     {
       //
@@ -299,7 +299,7 @@ namespace Evado.Dal.Digital
       //
       // Initialise the methods variables and objects.
       //
-      List<EvOrganisation> organisationList = new List<EvOrganisation> ( );
+      List<EdOrganisation> organisationList = new List<EdOrganisation> ( );
 
       // 
       // Create the sql query string.
@@ -312,7 +312,7 @@ namespace Evado.Dal.Digital
         sqlQueryString += " AND (O_IsCurrent = 1) ";
       }
 
-      if ( Type != EvOrganisation.OrganisationTypes.Null )
+      if ( Type != EdOrganisation.OrganisationTypes.Null )
       {
         sqlQueryString += " AND (O_ORG_TYPE = '" + Type + "') ";
       }
@@ -336,9 +336,9 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
 
-          EvOrganisation organisation = this.readQueryRow ( row );
+          EdOrganisation organisation = this.readQueryRow ( row );
 
-          if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
+          if ( organisation.OrgType == EdOrganisation.OrganisationTypes.Evado
             && this.ClassParameters.UserProfile.hasEvadoAccess == false )
           {
             continue;
@@ -379,7 +379,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getList (
-      EvOrganisation.OrganisationTypes Type,
+      EdOrganisation.OrganisationTypes Type,
       bool IsCurrent )
     {
       this.LogMethod ( "getList" );
@@ -399,7 +399,7 @@ namespace Evado.Dal.Digital
       //
       // iterate through the organisation list creating the selection list.
       //
-      foreach ( EvOrganisation org in organisationList )
+      foreach ( EdOrganisation org in organisationList )
       {
         option = new EvOption (
           org.OrgId,
@@ -442,7 +442,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the organization data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvOrganisation getItem ( Guid OrgGuid )
+    public EdOrganisation getItem ( Guid OrgGuid )
     {
       //
       // Initialize the method status and a return organization object. 
@@ -450,7 +450,7 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "getItem method" );
       this.LogDebug ( "OrgGuid: " + OrgGuid );
 
-      EvOrganisation organisation = new EvOrganisation ( );
+      EdOrganisation organisation = new EdOrganisation ( );
 
       // 
       // Validate whether the Guid is not empty.
@@ -519,10 +519,10 @@ namespace Evado.Dal.Digital
         // if the use is not an Evado user and the organisation type is Evado 
         // return an empty organisation object.
         //
-        if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
+        if ( organisation.OrgType == EdOrganisation.OrganisationTypes.Evado
           && this.ClassParameters.UserProfile.hasEvadoAccess == false )
         {
-          organisation = new EvOrganisation();
+          organisation = new EdOrganisation();
         }
 
       }//END Using 
@@ -555,7 +555,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Organization data object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvOrganisation getItem ( string OrgId )
+    public EdOrganisation getItem ( string OrgId )
     {
       //
       // Initialize the method status and a return organization object. 
@@ -565,7 +565,7 @@ namespace Evado.Dal.Digital
       // 
       // Initialise the local variables
       // 
-      EvOrganisation organisation = new EvOrganisation ( );
+      EdOrganisation organisation = new EdOrganisation ( );
 
       // 
       // Validate whether the organizationId is not empty
@@ -621,10 +621,10 @@ namespace Evado.Dal.Digital
         // if the use is not an Evado user and the organisation type is Evado 
         // return an empty organisation object.
         //
-        if ( organisation.OrgType == EvOrganisation.OrganisationTypes.Evado
+        if ( organisation.OrgType == EdOrganisation.OrganisationTypes.Evado
           && this.ClassParameters.UserProfile.hasEvadoAccess == false )
         {
-          organisation = new EvOrganisation ( );
+          organisation = new EdOrganisation ( );
         }
 
       }//END Using 
@@ -663,7 +663,7 @@ namespace Evado.Dal.Digital
     /// 6. Return an event code for updating items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( EvOrganisation Organisation )
+    public EvEventCodes updateItem ( EdOrganisation Organisation )
     {
       //
       // Initialize the method status and an old organization object
@@ -671,7 +671,7 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "updateItem method." );
       this.LogDebug ( "OrgId: " + Organisation.OrgId );
 
-      EvOrganisation oldOrg = getItem ( Organisation.Guid );
+      EdOrganisation oldOrg = getItem ( Organisation.Guid );
 
       //
       // Validate whether the Old organization exists. 
@@ -687,7 +687,7 @@ namespace Evado.Dal.Digital
       // 
       if ( oldOrg.OrgId != Organisation.OrgId )
       {
-        EvOrganisation newOrg = getItem ( Organisation.OrgId );
+        EdOrganisation newOrg = getItem ( Organisation.OrgId );
         if ( newOrg.Guid != Guid.Empty )
         {
           this.LogDebug ( " DuplicateId error" );
@@ -791,7 +791,7 @@ namespace Evado.Dal.Digital
     /// 4. Return an event code for adding items.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes addItem ( EvOrganisation Organisation )
+    public EvEventCodes addItem ( EdOrganisation Organisation )
     {
       //
       // Initialize the method status and the old organization object. 
@@ -840,7 +840,7 @@ namespace Evado.Dal.Digital
     /// 3. Return the event code for deleting items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes deleteItem ( EvOrganisation organisation )
+    public EvEventCodes deleteItem ( EdOrganisation organisation )
     {
       //
       // Initialize the method status and a trial orgnaization object. 

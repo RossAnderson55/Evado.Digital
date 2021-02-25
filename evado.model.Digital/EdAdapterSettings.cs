@@ -137,6 +137,16 @@ namespace Evado.Model.Digital
       /// </summary>
       Default_User_Roles,
 
+      /// <summary>
+      /// this enumeration defines the hidden user fields the application.
+      /// </summary>
+      Hidden_User_Fields,
+
+      /// <summary>
+      /// this enumeration defines the hidden user fields the application.
+      /// </summary>
+      Hidden_Organisation_Fields,
+
     }
 
     #endregion
@@ -349,6 +359,36 @@ namespace Evado.Model.Digital
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data,
           EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    /// <summary>
+    /// This property contains demonstration account expiry in days
+    /// </summary>
+    public String HiddenUserFields
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.Hidden_User_Fields.ToString ( ) );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.Hidden_User_Fields, EvDataTypes.Text, value);
+      }
+    }
+
+    /// <summary>
+    /// This property contains demonstration account expiry in days
+    /// </summary>
+    public String HiddenOrganisationFields
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ) );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.Hidden_Organisation_Fields, EvDataTypes.Text, value);
       }
     }
 
@@ -808,6 +848,19 @@ namespace Evado.Model.Digital
             this.Roles = Value;
             return;
           }
+
+        case EdAdapterSettings.AdapterFieldNames.Hidden_User_Fields:
+          {
+            this.HiddenUserFields = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields:
+          {
+            this.HiddenOrganisationFields = Value;
+            return;
+          }
+
 
         default:
 

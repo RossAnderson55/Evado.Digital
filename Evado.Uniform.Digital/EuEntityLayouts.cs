@@ -183,7 +183,7 @@ namespace Evado.UniForm.Digital
         //
         if ( value == "1"
           && ( this.Session.PageId == EvPageIds.Form_Properties_Section_Page
-            || this.Session.PageId == EvPageIds.Form_Properties_Page) )
+            || this.Session.PageId == EvPageIds.Form_Properties_Page ) )
         {
           //
           // Update the section table values.
@@ -539,7 +539,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "EntityType '{0}'", this.Session.EntityType );
       this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordFormState );
 
-      if ( this.Session.AdminEntityList.Count > 0 ) 
+      if ( this.Session.AdminEntityList.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
@@ -833,7 +833,7 @@ namespace Evado.UniForm.Digital
     /// <returns>Evado.Model.UniForm.Group</returns>
     //  ------------------------------------------------------------------------------
     private void createFormList_Group (
-      Evado.Model.UniForm.Page Page)
+      Evado.Model.UniForm.Page Page )
     {
       this.LogMethod ( "createFormList_Group" );
       // 
@@ -1214,7 +1214,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "processLog: " + processLog );
 
-      pageGroup.Description = processLog ;
+      pageGroup.Description = processLog;
 
       //
       // reset the form template filename.
@@ -1296,7 +1296,7 @@ namespace Evado.UniForm.Digital
       processLog.AppendLine ( "Saving uploaded form to the database." );
       //
       // set the form's save parameters 
-      
+
       UploadedForm.State = EdRecordObjectStates.Form_Draft;
       UploadedForm.SaveAction = EdRecord.SaveActionCodes.Save;
       UploadedForm.Design.Version = version + 0.01F;
@@ -1473,6 +1473,7 @@ namespace Evado.UniForm.Digital
 
       this.LogDebug ( "SessionObjects.Form.LayoutId: " + this.Session.EntityLayout.LayoutId );
       this.LogDebug ( "Updated: Form.Fields.Count: " + this.Session.EntityLayout.Fields.Count );
+      this.LogDebug ( "Form.ParentEntities: " + this.Session.EntityLayout.Design.ParentEntities );
 
       // 
       // Save the session ResultData so it is available for the next user generated groupCommand.
@@ -1816,6 +1817,23 @@ namespace Evado.UniForm.Digital
             //
             // Add the same groupCommand.
             //
+            pageCommand = PageObject.addCommand (
+              EdLabels.Form_Save_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+            // 
+            // Define the save groupCommand parameters.
+            // 
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.AddParameter (
+              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+            //
+            // Add the same groupCommand.
+            //
             /*
             pageCommand = PageObject.addCommand (
               EdLabels.Form_Withdrawn_Command_Title,
@@ -2122,6 +2140,12 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Group PageGroup )
     {
       this.LogMethod ( "setFormSaveGroupCommands" );
+
+      if ( PageGroup.EditAccess != Model.UniForm.EditAccess.Enabled )
+      {
+        return;
+      }
+
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2131,6 +2155,20 @@ namespace Evado.UniForm.Digital
       if ( PageGroup == null )
       {
         return;
+      }
+
+      //
+      // Add the property page refresh
+      //
+      if ( this.Session.PageId == EvPageIds.Form_Properties_Page )
+      {
+        pageCommand = PageGroup.addCommand (
+          EdLabels.Layout_Design_Refresh,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entity_Layouts.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+        pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
       }
 
       //
@@ -2192,7 +2230,7 @@ namespace Evado.UniForm.Digital
               //
               // Add the same groupCommand.
               //
-              if ( this.Session.RecordLayout.Fields.Count > 0 )
+              if ( this.Session.EntityLayout.Fields.Count > 0 )
               {
                 pageCommand = PageGroup.addCommand (
                   EdLabels.Form_Review_Command_Title,
@@ -2372,6 +2410,11 @@ namespace Evado.UniForm.Digital
       //
       this.setLayoutSave_PageCommands ( ClientDataObject.Page );
 
+      //
+      // Add the page navigation commands.
+      //
+      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+
       this.LogValue ( "GENERATE FORM" );
 
       // 
@@ -2424,6 +2467,16 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "GENERATE FORM" );
 
       //
+      // Add the save commandS for the page.
+      //
+      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+
+      //
+      // add the page layout commands.
+      //
+      this.setFormPageLayoutCommands ( ClientDataObject.Page );
+
+      //
       // Add the form header pageMenuGroup.
       //
       this.createDraftHeaderFields ( ClientDataObject.Page );
@@ -2433,11 +2486,6 @@ namespace Evado.UniForm.Digital
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
-
-      //
-      // Add the save commandS for the page.
-      //
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
 
       //
       // Add the form sections groups.
@@ -2485,10 +2533,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the save commandS for the page.
       //
-      if ( this.Session.UserProfile.hasManagementAccess == true )
-      {
-        this.setFormSaveGroupCommands ( pageGroup );
-      }
+      this.setFormSaveGroupCommands ( pageGroup );
 
       //
       // Form title
@@ -2724,7 +2769,7 @@ namespace Evado.UniForm.Digital
         //
         // if the field is in a section skip to the next field.
         //
-        if ( field.Design.SectionNo != -1)
+        if ( field.Design.SectionNo != -1 )
         {
           continue;
         }
@@ -3051,13 +3096,13 @@ namespace Evado.UniForm.Digital
           || parameter.Name.Contains ( Evado.Model.UniForm.Field.CONST_FIELD_QUERY_SUFFIX ) == true
           || parameter.Name.Contains ( EuEntityLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER ) == true
           || parameter.Name.Contains ( "Sectn_" ) == true
-          || this.isFormField ( parameter.Name ) == true 
+          || this.isFormField ( parameter.Name ) == true
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Page_Id.ToString ( )
           || parameter.Name == Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
           || parameter.Name == EuEntityLayouts.CONST_IMPORT_FORM_DATA
           || parameter.Name == EuEntityLayouts.CONST_EXPORT_FORM_DATA
-          || parameter.Name == EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID)
+          || parameter.Name == EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID )
         {
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
           continue;

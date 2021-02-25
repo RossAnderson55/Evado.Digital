@@ -135,19 +135,6 @@ namespace Evado.UniForm.Digital
 
     }
 
-    private String _LicensedModules = EdModuleCodes.Administration_Module + ";"
-      + EdModuleCodes.Management_Module + ";"
-      + EdModuleCodes.Imaging_Module + ";"
-      + EdModuleCodes.Integration_Module ;
-    /// <summary>
-    /// This property contains an encoded ';' list of licenced modules for this instance.
-    /// </summary>
-    public String LicensedModules
-    {
-      get { return this._LicensedModules; }
-      set { this._LicensedModules = value; }
-    }
-
     String _PlatformId = String.Empty;
 
     /// <summary>

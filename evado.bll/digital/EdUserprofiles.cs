@@ -33,7 +33,7 @@ namespace Evado.Bll.Digital
   /// The m_xfs.Model.User is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EvUserProfiles : EvBllBase
+  public class EdUserprofiles : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -41,7 +41,7 @@ namespace Evado.Bll.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvUserProfiles ( )
+    public EdUserprofiles ( )
     {
       this.ClassNameSpace = "Evado.Bll.Clinical.EvUserProfiles.";
     }
@@ -52,7 +52,7 @@ namespace Evado.Bll.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvUserProfiles ( EvClassParameters Settings )
+    public EdUserprofiles ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvUserProfiles.";
@@ -62,7 +62,7 @@ namespace Evado.Bll.Digital
 
       this.LogMethodEnd ( "EvUserProfiles" );
 
-      this._Dal_UserProfiles = new Evado.Dal.Digital.EvUserProfiles ( Settings );
+      this._Dal_UserProfiles = new Evado.Dal.Digital.EdUserprofiles ( Settings );
     }
     #endregion
 
@@ -70,7 +70,7 @@ namespace Evado.Bll.Digital
     // 
     // Instantiate the DAL Class\
     // 
-    private Evado.Dal.Digital.EvUserProfiles _Dal_UserProfiles = new Evado.Dal.Digital.EvUserProfiles ( );
+    private Evado.Dal.Digital.EdUserprofiles _Dal_UserProfiles = new Evado.Dal.Digital.EdUserprofiles ( );
 
     #endregion
 
