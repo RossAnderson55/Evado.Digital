@@ -62,6 +62,23 @@ namespace Evado.Model.Digital
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
+
+    private int _MaxResultLength = 1000;
+    /// <summary>
+    /// This property contains the method debug log. 
+    /// </summary>
+    public int MaxResultLength
+    {
+      get
+      {
+        return _MaxResultLength;
+      }
+      set
+      {
+        this._MaxResultLength = value;
+      }
+    }
+
     #region Logging Level property
     private int _LoggingLevel = 0;
 

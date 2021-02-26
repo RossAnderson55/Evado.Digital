@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="digital\EdEntityValues.cs" />
-    <Compile Include="digital\EdEntityObjects.cs" />
     <Compile Include="digital\EdEntities.cs" />
     <Compile Include="digital\EdAdapterConfig.cs" />
     <Compile Include="digital\EdEntityFields.cs">
@@ -137,7 +136,6 @@
     </Compile>
     <Compile Include="digital\EdOrganisations.cs" />
     <Compile Include="digital\EdRecordComments.cs" />
-    <Compile Include="digital\EdRecordEntities.cs" />
     <Compile Include="digital\EdRecordFields.cs" />
     <Compile Include="digital\EdRecordFieldSelectionLists.cs" />
     <Compile Include="digital\EdRecordLayouts.cs" />

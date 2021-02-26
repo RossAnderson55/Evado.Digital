@@ -67,8 +67,6 @@ namespace Evado.Dal.Digital
     // Define the selectionList query string.
     // 
     // The max visitSchedule length setting. 
-    private static string _maximumListLength = ConfigurationManager.AppSettings [ "MaximumSelectionListLength" ];
-    private int _MaxViewLength = 1000;
 
     private const string SQL_QUERY_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
 
@@ -568,7 +566,7 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-    #region FormRecord views and query methods.
+    #region Entity views and query methods.
 
     // =====================================================================================
     /// <summary>
@@ -666,7 +664,7 @@ namespace Evado.Dal.Digital
     /// 7. Return the Forms list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
+    public List<EdRecord> getEntityList (
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getRecordList method." );
@@ -734,7 +732,7 @@ namespace Evado.Dal.Digital
             //
             // Attach the entity list.
             //
-            this.getEntities ( record );
+            this.getRecordEntities ( record );
 
             //
             // attach the record sections.
@@ -896,38 +894,20 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class returns a list of form object based on VisitId, VisitId, FormId and state
     /// </summary>
-    /// <param name="ApplicationId">string: (Mandatory) a trial identifier.</param>
-    /// <param name="LayoutId">string: (Optional) a form identifier.</param>
-    /// <param name="State">EvForm.FormObjecStates: (Optional) a form state.</param>
-    /// <returns>List of EvForm: a list of form object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Define the sql query parameters and the sql query string.
-    /// 
-    /// 2. Execute the sql query string and store the results on the data table. 
-    /// 
-    /// 3. Loop through the table and extract data row to the form object. 
-    /// 
-    /// 4. Add the formfield items to the form object. 
-    /// 
-    /// 5. Add the form object to the Forms list. 
-    /// 
-    /// 6. Return the Forms list. 
-    /// </remarks>
+    /// <param name="Entity">EdRecord Entity Object.</param>
+    /// <returns>List of EdRecord (Entity) objects</returns>
+    /// <returns>List of EdRecord  objects</returns>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      String LayoutId,
-      EdRecordObjectStates State )
+    public List<EdRecord> getChildEntityList ( EdRecord Entity )
     {
-      this.LogMethod ( "getRecordList method " );
-      this.LogValue ( "LayoutId: " + LayoutId );
-      this.LogValue ( "State: " + State );
+      this.LogMethod ( "getChildEntityList" );
+      this.LogDebug ( "LayoutId {0).", Entity.LayoutId );
+      this.LogDebug ( "EntityId {0).", Entity.EntityId );
 
       //
       // Initialize the debuglog, a return list of form object and a formRecord field object. 
       //
-      List<EdRecord> view = new List<EdRecord> ( );
+      List<EdRecord> entityList = new List<EdRecord> ( );
       StringBuilder sqlQueryString = new StringBuilder ( );
 
       // 
@@ -935,25 +915,15 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
       };
-      cmdParms [ 0 ].Value =LayoutId;
+      cmdParms [ 0 ].Value = Entity.Guid;
 
       // 
       // Generate the SQL query string.
       // 
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE  ( " + EdEntityLayouts.DB_DELETED + " = 0 )" );
-
-      if ( LayoutId != String.Empty )
-      {
-        sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
-      }
-
-      if ( State != EdRecordObjectStates.Null )
-      {
-        sqlQueryString.AppendLine ( " ( " + EdEntities.DB_STATE + " = '" + State + "') " );
-      }
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_PARENT_GUID + " = " + EdEntities.PARM_PARENT_GUID + " ) " );
 
       sqlQueryString.AppendLine ( ") ORDER BY RecordId" );
 
@@ -966,6 +936,14 @@ namespace Evado.Dal.Digital
       //
       using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
       {
+
+        if ( table.Rows.Count == 0 )
+        {
+          this.LogDebug ( "No Child Entities found." );
+          this.LogMethodEnd ( "getChildEntityList" );
+          return entityList;
+
+        }
         // 
         // Iterate through the results extracting the role information.
         // 
@@ -978,15 +956,25 @@ namespace Evado.Dal.Digital
 
           EdRecord record = this.getRowData ( row, true );
 
+          //
+          // id the user is the entity author then select all records.
+          //
+          if ( this.ClassParameters.UserProfile.UserId != Entity.AuthorUserId
+            && record.State != EdRecordObjectStates.Submitted_Record )
+          {
+            this.LogDebug ( "Entity {0} SKIPPED not an authors document and not submitted.", record.RecordId );
+            continue;
+          }
+
+          //
+          // set the entity to only retrieve summary fields.
+          //
+          record.SelectOnlySummaryFields = true;
+
           // 
           // Get the trial record items
           // 
           this.GetEntityValues ( record );
-
-          //
-          // Attach the entity list.
-          //
-          this.getEntities ( record );
 
           //
           // attach the record sections.
@@ -996,12 +984,12 @@ namespace Evado.Dal.Digital
           // 
           // Add the result to the arraylist.
           // 
-          view.Add ( record );
+          entityList.Add ( record );
 
           // 
           // TestReport the visitSchedule count is less than the max size.
           // 
-          if ( view.Count > _MaxViewLength )
+          if ( entityList.Count > this.ClassParameters.MaxResultLength )
           {
             break;
           }
@@ -1013,14 +1001,15 @@ namespace Evado.Dal.Digital
       // 
       // Get the array length
       // 
-      this.LogValue ( "Returned records: " + view.Count );
+      this.LogValue ( "Returned records: " + entityList.Count );
 
       // 
       // Return the result array.
       // 
-      return view;
+      this.LogMethodEnd ( "getChildEntityList" );
+      return entityList;
 
-    }//END getView method.
+    }//END getEntityList method.
 
     // =====================================================================================
     /// <summary>
@@ -1064,7 +1053,7 @@ namespace Evado.Dal.Digital
       // 
       // Execute method and return the values.
       // 
-      List<EdRecord> view = this.getRecordList ( Query );
+      List<EdRecord> view = this.getEntityList ( Query );
 
       // 
       // if the selectionList exits process it.
@@ -1108,7 +1097,7 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-    #region Retrieval methods
+    #region Entity retrieval methods
 
     // =====================================================================================
     /// <summary>
@@ -1203,9 +1192,14 @@ namespace Evado.Dal.Digital
       this.getLayoutFields ( entity );
 
       //
-      // Attache the entity list.
+      // get the child entities for this entity.
       //
-      this.getEntities ( entity );
+      this.getChildEntityList ( entity );
+
+      //
+      // Attache the child entity list.
+      //
+      this.getRecordEntities ( entity );
 
       // 
       // Return the trial record.
@@ -1306,7 +1300,7 @@ namespace Evado.Dal.Digital
       //
       // Attache the entity list.
       //
-      this.getEntities ( entity );
+      this.getRecordEntities ( entity );
 
       // 
       // Return the trial record.
@@ -1410,7 +1404,7 @@ namespace Evado.Dal.Digital
       //
       // Attache the entity list.
       //
-      this.getEntities ( entity );
+      this.getRecordEntities ( entity );
 
       // 
       // Return the trial record.
@@ -1538,17 +1532,17 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Entity">EdRecord object</param>
     //  ---------------------------------------------------------------------------------
-    private void getEntities ( EdRecord Entity )
+    private void getRecordEntities ( EdRecord Entity )
     {
       //
       // initialise the methods variables and objects.
       //
-      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
+      EdRecords dal_RecordEntities = new EdRecords ( this.ClassParameters );
 
       //
       // if no entities exit.
       //
-      if ( Entity.Entities.Count == 0 )
+      if ( Entity.ChildEntities.Count == 0 )
       {
         return;
       }
@@ -1556,7 +1550,7 @@ namespace Evado.Dal.Digital
       // 
       // Retrieve the instrument items.
       // 
-      Entity.Entities = dal_RecordEntities.getEntityList ( Entity );
+      Entity.ChildEntities = dal_RecordEntities.getChildRecordList ( Entity );
       this.LogClass ( dal_RecordEntities.Log );
     }
 

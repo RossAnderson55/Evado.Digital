@@ -86,8 +86,10 @@ namespace Evado.Dal.Digital
     //
     public const string DB_RECORD_GUID = "EDR_GUID";
     public const string DB_STATE = "EDR_STATE";
-    public const string DB_RECORD_ID = "RECORD_ID";
+    public const string DB_RECORD_ID = "EDR_RECORD_ID";
     public const string DB_SOURCE_ID = "EDR_SOURCE_ID";
+    public const string DB_PARENT_GUID = "EDR_PARENT_GUID";
+    public const string DB_PARENT_LAYOUT_ID = "EDR_PARENT_LAYOUT_ID";
     public const string DB_RECORD_DATE = "EDR_RECORD_DATE";
     public const string DB_VISABILITY = "EDR_VISABILITY";
     public const string DB_AI_DATA_INDEX = "EDR_AI_DATA_INDEX";
@@ -104,16 +106,15 @@ namespace Evado.Dal.Digital
     // 
 
     //
-    // The field and parameter values for the SQl customer filter 
-    //
-    private const string DB_CUSTOMER_GUID = "CU_GUID";
-    private const string PARM_CUSTOMER_GUID = "@CUSTOMER_GUID";
+    // The field and parameter values for the SQl customer 
 
     private const string PARM_RECORD_GUID = "@GUID";
     private const string PARM_LAYOUT_GUID = "@LAYOUT_GUID";
     private const string PARM_STATE = "@STATE";
     private const string PARM_RECORD_ID = "@RECORD_ID";
     private const string PARM_SOURCE_ID = "@SOURCE_ID";
+    private const string PARM_PARENT_GUID = "@PARENT_GUID";
+    private const string PARM_PARENT_LAYOUT_ID = "@PARENT_LAYOUT_ID";
     private const string PARM_RECORD_DATE = "@RECORD_DATE";
     private const string PARM_VISABILITY = "@VISABILITY";
     private const string PARM_AI_DATA_INDEX = "@AI_DATA_INDEX";
@@ -634,11 +635,6 @@ namespace Evado.Dal.Digital
             this.getRecordData ( record );
 
             //
-            // Attach the entity list.
-            //
-            this.getEntities ( record );
-
-            //
             // attach the record sections.
             //
             this.GetRecordSections ( record );
@@ -798,10 +794,8 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class returns a list of form object based on VisitId, VisitId, FormId and state
     /// </summary>
-    /// <param name="ApplicationId">string: (Mandatory) a trial identifier.</param>
-    /// <param name="LayoutId">string: (Optional) a form identifier.</param>
-    /// <param name="State">EvForm.FormObjecStates: (Optional) a form state.</param>
-    /// <returns>List of EvForm: a list of form object</returns>
+    /// <param name="Entity">EdRecord Entity Object.</param>
+    /// <returns>List of EdRecord objects</returns>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -818,18 +812,16 @@ namespace Evado.Dal.Digital
     /// 6. Return the Forms list. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getRecordList (
-      String LayoutId,
-      EdRecordObjectStates State )
+    public List<EdRecord> getChildRecordList ( EdRecord Entity )
     {
-      this.LogMethod ( "getRecordList method " );
-      this.LogValue ( "LayoutId: " + LayoutId );
-      this.LogValue ( "State: " + State );
+      this.LogMethod ( "getChildRecordList method " );
+      this.LogValue ( "LayoutId: " + Entity.LayoutId );
+      this.LogValue ( "EntityId: " + Entity.EntityId );
 
       //
       // Initialize the debuglog, a return list of form object and a formRecord field object. 
       //
-      List<EdRecord> view = new List<EdRecord> ( );
+      List<EdRecord> recordList = new List<EdRecord> ( );
       StringBuilder sqlQueryString = new StringBuilder ( );
 
       // 
@@ -837,26 +829,16 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdRecords.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
       };
-      cmdParms [ 0 ].Value =LayoutId;
+      cmdParms [ 0 ].Value = Entity.Guid;
 
       // 
       // Generate the SQL query string.
       // 
       sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
-      sqlQueryString.AppendLine ( " WHERE  ( " + EdRecordLayouts.DB_DELETED + " = 0 )" );
-
-      if ( LayoutId != String.Empty )
-      {
-        sqlQueryString.AppendLine ( " AND ( " + EdRecordLayouts.DB_LAYOUT_ID + " = " + EdRecordLayouts.PARM_LAYOUT_ID + " ) " );
-      }
-
-      if ( State != EdRecordObjectStates.Null )
-      {
-        sqlQueryString.AppendLine ( " ( " + EdRecords.DB_STATE + " = '" + State + "') " );
-      }
-
+      sqlQueryString.AppendLine ( " WHERE  AND ( " + EdEntities.DB_PARENT_GUID + " = " + EdRecords.PARM_PARENT_GUID + " ) " );
+ 
       sqlQueryString.AppendLine ( ") ORDER BY RecordId" );
 
       this.LogDebug ( sqlQueryString.ToString ( ) );
@@ -886,11 +868,6 @@ namespace Evado.Dal.Digital
           this.getRecordData ( record );
 
           //
-          // Attach the entity list.
-          //
-          this.getEntities ( record );
-
-          //
           // attach the record sections.
           //
           this.GetRecordSections ( record );
@@ -898,12 +875,12 @@ namespace Evado.Dal.Digital
           // 
           // Add the result to the arraylist.
           // 
-          view.Add ( record );
+          recordList.Add ( record );
 
           // 
           // TestReport the visitSchedule count is less than the max size.
           // 
-          if ( view.Count > _MaxViewLength )
+          if ( recordList.Count > _MaxViewLength )
           {
             break;
           }
@@ -915,12 +892,12 @@ namespace Evado.Dal.Digital
       // 
       // Get the array length
       // 
-      this.LogValue ( "Returned records: " + view.Count );
+      this.LogValue ( "Returned records: " + recordList.Count );
 
       // 
       // Return the result array.
       // 
-      return view;
+      return recordList;
 
     }//END getView method.
 
@@ -1100,11 +1077,6 @@ namespace Evado.Dal.Digital
       this.getLayoutFields ( record );
 
       //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
-
-      //
       // Update the form record section references.
       //
       this.GetRecordSections ( record );
@@ -1199,11 +1171,6 @@ namespace Evado.Dal.Digital
       // load layout fields if record field list is empty.
       //
       this.getLayoutFields ( record );
-
-      //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
 
       //
       // Update the form record section references.
@@ -1302,11 +1269,6 @@ namespace Evado.Dal.Digital
       // load layout fields if record field list is empty.
       //
       this.getLayoutFields ( record );
-
-      //
-      // Attache the entity list.
-      //
-      this.getEntities ( record );
 
       //
       // Update the form record section references.
@@ -1438,34 +1400,6 @@ namespace Evado.Dal.Digital
       this.LogMethodEnd ( "getLayoutFields" );
 
     }//END getRecordData method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method retrieves the layout's field objects.
-    /// </summary>
-    /// <param name="Record">EdRecord object</param>
-    //  ---------------------------------------------------------------------------------
-    private void getEntities ( EdRecord Record )
-    {
-      //
-      // initialise the methods variables and objects.
-      //
-      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
-
-      //
-      // if no entities exit.
-      //
-      if ( Record.Entities.Count == 0 )
-      {
-        return;
-      }
-
-      // 
-      // Retrieve the instrument items.
-      // 
-      Record.Entities = dal_RecordEntities.getEntityList ( Record );
-      this.LogClass ( dal_RecordEntities.Log );
-    }
 
     #endregion
 

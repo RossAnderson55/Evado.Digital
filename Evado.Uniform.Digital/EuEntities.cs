@@ -885,7 +885,9 @@ namespace Evado.UniForm.Digital
         groupCommand = pageGroup.addCommand (
           "New Record",
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Entities, Model.UniForm.ApplicationMethods.Create_Object );
+          EuAdapterClasses.Entities, 
+          Model.UniForm.ApplicationMethods.Create_Object );
+
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
       }
 
@@ -893,14 +895,15 @@ namespace Evado.UniForm.Digital
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EdRecord formRecord in this.Session.EntityList )
+      foreach ( Evado.Model.Digital.EdRecord entities in this.Session.EntityList )
       {
         //
         // Create the group list groupCommand object.
         //
         groupCommand = this.getGroupListCommand (
-          formRecord,
-          pageGroup );
+          entities,
+          pageGroup, 
+          EdRecord.LinkContentSetting.Null );
 
       }//END iteration loop
 
@@ -913,130 +916,75 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method appends the milestone groupCommand to the page milestone list pageMenuGroup
     /// </summary>
-    /// <param name="FormRecord">EvForm object</param>
+    /// <param name="CommandEntity">EvForm object</param>
     /// <param name="PageGroup"> Evado.Model.UniForm.Group</param>
     //  -----------------------------------------------------------------------------
     private Evado.Model.UniForm.Command getGroupListCommand (
-      EdRecord FormRecord,
-      Evado.Model.UniForm.Group PageGroup )
+      EdRecord CommandEntity,
+      Evado.Model.UniForm.Group PageGroup,
+      EdRecord.LinkContentSetting ParentLinkSetting )
     {
       this.LogMethod ( "getGroupListCommand" );
-      this.LogValue ( "FormRecord.RecordId: " + FormRecord.RecordId );
+      this.LogValue ( "FormRecord.RecordId: " + CommandEntity.RecordId );
+      this.LogValue ( "ParentLinkSetting: " + ParentLinkSetting );
+
+      //
+      // Set the link setting.
+      //
+      EdRecord.LinkContentSetting linkSetting = CommandEntity.Design.LinkContentSetting;
+
+      if ( ParentLinkSetting != EdRecord.LinkContentSetting.Null )
+      {
+        linkSetting = ParentLinkSetting;
+      }
 
       //
       // Define the pageMenuGroup groupCommand.
       //
       Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
-          FormRecord.RecordId,
+          CommandEntity.RecordId,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
-      groupCommand.SetGuid ( FormRecord.Guid );
+      groupCommand.SetGuid ( CommandEntity.Guid );
 
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Short_Title,
-        EdLabels.Label_Record_Id + FormRecord.RecordId );
+        EdLabels.Label_Record_Id + CommandEntity.RecordId );
 
       groupCommand.Title = String.Empty;
 
-      if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
+      //
+      // Select the method displaying the chiled entities.
+      //
+      switch ( this.Session.Entity.Design.LinkContentSetting )
       {
-        //
-        // Switch to determine the icons and background colours.
-        //
-        switch ( FormRecord.State )
-        {
-          case EdRecordObjectStates.Draft_Record:
-          case EdRecordObjectStates.Empty_Record:
-          case EdRecordObjectStates.Completed_Record:
+        case EdRecord.LinkContentSetting.Display_Summary:
+          {
+            groupCommand.Title = CommandEntity.RecordSummary;
+            break;
+          }
+        case EdRecord.LinkContentSetting.First_Field:
+          {
+            groupCommand.Title = CommandEntity.RecordSummary;
+             if( CommandEntity.Fields.Count > 0 )
             {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-               EuEntities.ICON_RECORD_DRAFT );
-
-              if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == true )
-              {
-
-                groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Yellow );
-              }
-              break;
+              groupCommand.Title = CommandEntity.Fields [ 0 ].ItemValue;
             }
-          case EdRecordObjectStates.Submitted_Record:
-            {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-               EuEntities.ICON_RECORD_SUBMITTED );
 
-              break;
-            }
-        }//END state switch.
-        //
-        // Display multi-site user content.
-        //
-        groupCommand.Title =
-          String.Format ( EdLabels.Form_Record_General_View_Title,
-            FormRecord.RecordId,
-            FormRecord.LayoutId,
-            FormRecord.Title );
-
+            break;
+          }
+        default:
+          {
+            groupCommand.Title =
+              String.Format ( EdLabels.Form_Record_General_View_Title,
+                CommandEntity.EntityId,
+                CommandEntity.LayoutId,
+                CommandEntity.Title );
+            break;
+          }
       }
-      else
-      {
-        //
-        // Switch to determine the icons and background colours.
-        //
-        switch ( FormRecord.State )
-        {
-          case EdRecordObjectStates.Draft_Record:
-          case EdRecordObjectStates.Empty_Record:
-          case EdRecordObjectStates.Completed_Record:
-            {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-               EuEntities.ICON_RECORD_DRAFT );
-
-              if ( FormRecord.IsMandatory == true )
-              {
-                groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Orange );
-              }
-              else
-              {
-                groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Yellow );
-              }
-              break;
-            }
-          case EdRecordObjectStates.Submitted_Record:
-            {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-               EuEntities.ICON_RECORD_SUBMITTED );
-              break;
-            }
-          case EdRecordObjectStates.Withdrawn:
-            {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-                EuEntities.ICON_RECORD_DELETED );
-              break;
-            }
-          default:
-            {
-              groupCommand.AddParameter (
-               Model.UniForm.CommandParameters.Image_Url,
-                EuEntities.ICON_RECORD_DRAFT );
-              break;
-            }
-        }//END state switch.
-
-        //
-        // Display site user content.
-        //
-        groupCommand.Title = String.Format ( EdLabels.Form_Record_Site_View_Title,
-            FormRecord.LayoutId,
-            FormRecord.Title);
-
-      }//END site users
 
       return groupCommand;
 
@@ -1876,6 +1824,11 @@ namespace Evado.UniForm.Digital
       this.LogClass ( pageGenerator.Log );
 
       //
+      // if the entity has child entities add a group to display them.
+      //
+      this.getDataObject_ChildEntities ( ClientDataObject.Page );
+
+      //
       // Return null and an error message if the page generator exits with an error.
       //
       if ( result == false )
@@ -1923,6 +1876,70 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getClientData" );
 
     }//END getClientData Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method displays the entity's chiled entities
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_ChildEntities (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_ChildEntities" );
+      this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
+
+      if ( this.Session.Entity.ChildEntities.Count == 0
+        || this.Session.Entity.Design.DisplayRelatedEntities == false )
+      {
+        this.LogDebug ( "No Child Entities" );
+        this.LogMethodEnd ( "getDataObject_ChildEntities" );
+        return;
+      }
+      //
+      // Initialise the methods variables and objects.
+      //
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+
+      pageGroup = PageObject.AddGroup( 
+        EdLabels.Entities_Child_Entity_Group_Title );
+
+      /*
+       * We need to create a list of entity/parent relationships to be able to identify an entity's children.
+       */
+
+      //
+      // Add a create record command.
+      //
+      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Entity.Design.EditAccessRoles) == true  )
+      {
+        groupCommand = pageGroup.addCommand (
+          EdLabels.Entity_New_Entity_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities, 
+          Model.UniForm.ApplicationMethods.Create_Object );
+
+        groupCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, "" );
+
+        groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
+      }
+
+      //
+      // Iterate through the child entities
+      //
+      foreach ( EdRecord child in this.Session.Entity.ChildEntities )
+      {
+         this.getGroupListCommand (
+          child,
+          pageGroup,
+          this.Session.Entity.Design.LinkContentSetting );
+
+      }
+      this.LogMethodEnd ( "getDataObject_ChildEntities" );
+
+    }//END getClientData_SaveCommands method
+
 
     // ==============================================================================
     /// <summary>

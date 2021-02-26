@@ -260,7 +260,7 @@ namespace Evado.Model.Digital
     /// This enumeration list 
     /// </summary>
     public enum LinkContentSetting
-    {
+    { 
       /// <summary>
       /// This enumeration set the command link to display the default content.
       /// </summary>
@@ -274,6 +274,10 @@ namespace Evado.Model.Digital
       /// This enumeration set the command link to display the first record field content.
       /// </summary>
       First_Field,
+      /// <summary>
+      /// The value is not set.
+      /// </summary>
+      Null,
     }
 
 
@@ -545,6 +549,21 @@ namespace Evado.Model.Digital
         this._RecordId = value;
       }
     }
+
+    /// <summary>
+    /// This property contains a record identifier of a form. 
+    /// </summary>
+    public string EntityId
+    {
+      get
+      {
+        return this._RecordId;
+      }
+      set
+      {
+        this._RecordId = value;
+      }
+    }
     private string _ParentOrgId = String.Empty;
     /// <summary>
     /// This property contains the organisation ID of the parent organisation associated with this object.
@@ -712,19 +731,35 @@ namespace Evado.Model.Digital
       }
     }
 
-    private List<EdRecordEntity> _Entities = new List<EdRecordEntity> ( );
+    private List<EdRecord> _ChildEntities = new List<EdRecord> ( );
     /// <summary>
     /// This property contains a list of related entities
     /// </summary>
-    public List<EdRecordEntity> Entities
+    public List<EdRecord> ChildEntities
     {
       get
       {
-        return this._Entities;
+        return this._ChildEntities;
       }
       set
       {
-        this._Entities = value;
+        this._ChildEntities = value;
+      }
+    }
+
+    private List<EdRecord> _ChildRecords = new List<EdRecord> ( );
+    /// <summary>
+    /// This property contains a list of related records
+    /// </summary>
+    public List<EdRecord> ChildRecords
+    {
+      get
+      {
+        return this._ChildRecords;
+      }
+      set
+      {
+        this._ChildRecords = value;
       }
     }
 
@@ -962,6 +997,11 @@ namespace Evado.Model.Digital
         this._AiIndex = value;
       }
     }
+
+    /// <summary>
+    /// This property indicates if a retreival is to get summary fields only.
+    /// </summary>
+    public bool SelectOnlySummaryFields { get; set; }
 
     private string _Updated = String.Empty;
     /// <summary>

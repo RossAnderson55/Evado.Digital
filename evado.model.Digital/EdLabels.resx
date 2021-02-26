@@ -2659,4 +2659,10 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Config_HiddenUserFields_List_Field_Label" xml:space="preserve">
     <value>Hidden User Profile Fields:</value>
   </data>
+  <data name="Entities_Child_Entity_Group_Title" xml:space="preserve">
+    <value>Children</value>
+  </data>
+  <data name="Entity_New_Entity_Command_Title" xml:space="preserve">
+    <value>Create a new {0} </value>
+  </data>
 </root>

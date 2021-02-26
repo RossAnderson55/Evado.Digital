@@ -543,6 +543,16 @@ namespace Evado.Dal.Digital
             recordField = this.getRowData ( row );
 
             //
+            // skip all non summary field if summary fields is selected.
+            //
+            if ( Entity.SelectOnlySummaryFields == true
+              && recordField.Design.SummaryField == false )
+            {
+              this.LogDebug ( "{0} is a summary field so SKIPPED.", recordField.FieldId );
+              continue;
+            }
+
+            //
             // Update the lst field guid to enable the other field values to be collected.
             //
             previousValueGuid = recordField.Guid;

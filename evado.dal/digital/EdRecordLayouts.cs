@@ -525,26 +525,6 @@ namespace Evado.Dal.Digital
       this.LogClass ( dal_FormFields.Log );
     }
 
-    // ==================================================================================
-    /// <summary>
-    /// This method retrieves the layout's field objects.
-    /// </summary>
-    /// <param name="Layout">EdRecord object</param>
-    //  ---------------------------------------------------------------------------------
-    private void getEntities ( EdRecord Layout )
-    {
-      //
-      // initialise the methods variables and objects.
-      //
-      EdRecordEntities dal_RecordEntities = new EdRecordEntities ( this.ClassParameters );
-
-      // 
-      // Retrieve the instrument items.
-      // 
-      Layout.Entities = dal_RecordEntities.getEntityList ( Layout );
-      this.LogClass ( dal_RecordEntities.Log );
-    }
-
     // =====================================================================================
     /// <summary>
     /// This class returns a list of option object based on the VisitId, RecordTypeId, state and selectByGuid condition

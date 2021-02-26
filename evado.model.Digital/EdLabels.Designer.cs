@@ -2313,11 +2313,29 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Children.
+        /// </summary>
+        public static string Entities_Child_Entity_Group_Title {
+            get {
+                return ResourceManager.GetString("Entities_Child_Entity_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Entity Layout.
         /// </summary>
         public static string Entity_List_New_Layout_Command_Title {
             get {
                 return ResourceManager.GetString("Entity_List_New_Layout_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new {0} .
+        /// </summary>
+        public static string Entity_New_Entity_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_New_Entity_Command_Title", resourceCulture);
             }
         }
         

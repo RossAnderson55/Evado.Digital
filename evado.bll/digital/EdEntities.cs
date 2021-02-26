@@ -156,7 +156,7 @@ namespace Evado.Bll.Digital
       // 
       // Execute the query.
       // 
-      List<EdRecord> entityList = this._DalEntities.getRecordList ( QueryParameters );
+      List<EdRecord> entityList = this._DalEntities.getEntityList ( QueryParameters );
 
       this.LogClass ( this._DalEntities.Log );
 
@@ -167,6 +167,37 @@ namespace Evado.Bll.Digital
       return entityList;
 
     }//END getRecordList method.
+
+    
+    // =====================================================================================
+    /// <summary>
+    /// This class returns a list of form object based on VisitId, VisitId, FormId and state
+    /// </summary>
+    /// <param name="LayoutId">string: (Mandatory) a layout identifier.</param>
+    /// <param name="EntityId">string: (Mandatory) a entity identifier.</param>
+    /// <param name="State">EvForm.FormObjecStates: (Optional) a form state.</param>
+    /// <returns>List of EdRecord  objects</returns>
+    //  ----------------------------------------------------------------------------------
+    public List<EdRecord> getChildEntityList ( EdRecord Entity )
+    {
+      this.LogMethod ( "getChildEntityList" );
+      this.LogDebug ( "LayoutId {0).", Entity.LayoutId );
+      this.LogDebug ( "EntityId {0).", Entity.EntityId );
+      //
+      // Initialize the debuglog, a return list of form object and a formRecord field object. 
+      //
+      List<EdRecord> entityList = new List<EdRecord> ( );
+      // 
+      // Execute the query.
+      // 
+      entityList = this._DalEntities.getChildEntityList ( Entity );
+
+      this.LogClass ( this._DalEntities.Log );
+
+      this.LogMethodEnd ( "getChildEntityList" );
+      return entityList;
+
+    }//END getEntityList method.
 
     // =====================================================================================
     /// <summary>
