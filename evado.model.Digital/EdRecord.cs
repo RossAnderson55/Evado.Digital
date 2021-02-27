@@ -1388,7 +1388,7 @@ namespace Evado.Model.Digital
             //
             // Set the reader access 
             //
-            if ( UserProfile.hasEndUserRole ( this.Design.ReadAccessRoles ) == true )
+            if ( UserProfile.hasRole ( this.Design.ReadAccessRoles ) == true )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             }
@@ -1396,7 +1396,7 @@ namespace Evado.Model.Digital
             //
             // Set the default edit access 
             //
-            if ( UserProfile.hasEndUserRole ( this.Design.EditAccessRoles ) == true )
+            if ( UserProfile.hasRole ( this.Design.EditAccessRoles ) == true )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
             }

@@ -230,7 +230,7 @@ namespace Evado.Model.Digital
     public const String CONT_STATIC_ROLES = CONST_ADMINISTRATOR_ROLE + ":"
       + CONST_MANAGER_ROLE + ":"
       + CONST_DESIGNER_ROLE + ":"
-      + CONST_STAFF_ROLE; 
+      + CONST_STAFF_ROLE;
     #endregion
 
     #region Class Properties
@@ -258,7 +258,7 @@ namespace Evado.Model.Digital
       {
         this._OrgId = value;
 
-        if( this._OrgId.ToLower() == "evado" )
+        if ( this._OrgId.ToLower ( ) == "evado" )
         {
           this._TypeId = UserTypesList.Evado;
         }
@@ -456,7 +456,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if (  ( this.TypeId == UserTypesList.Evado
+        if ( ( this.TypeId == UserTypesList.Evado
             || this.TypeId == UserTypesList.Customer )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
@@ -497,8 +497,12 @@ namespace Evado.Model.Digital
     /// <param name="Roles">';' delimted string of roles</param>
     /// <returns>True: if the role exists.</returns>
     // -------------------------------------------------------------------------------------
-    public bool hasEndUserRole ( String Roles )
+    public bool hasRole ( String Roles )
     {
+      if ( Roles == null )
+      {
+        return false;
+      }
       foreach ( String role in Roles.Split ( ';' ) )
       {
         foreach ( String role1 in this._Roles.Split ( ';' ) )
@@ -639,7 +643,7 @@ namespace Evado.Model.Digital
           }
         case UserProfileFieldNames.User_Type_Id:
           {
-            this.TypeId  = EvStatics.parseEnumValue<UserTypesList>(  value );
+            this.TypeId = EvStatics.parseEnumValue<UserTypesList> ( value );
             break;
           }
         case UserProfileFieldNames.ActiveDirectoryUserId:
@@ -753,19 +757,19 @@ namespace Evado.Model.Digital
     /// This methods listgs the static user roles.
     /// </summary>
     //  ---------------------------------------------------------------------------------
-    public static List<EvOption> GetUserTypeOptionList( bool IsSelectionList)
+    public static List<EvOption> GetUserTypeOptionList ( bool IsSelectionList )
     {
-        List<EvOption> optionList = new List<EvOption> ( );
-        if ( IsSelectionList == true )
-        {
-          optionList.Add ( new EvOption ( ) );
-        }
+      List<EvOption> optionList = new List<EvOption> ( );
+      if ( IsSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( ) );
+      }
 
-        optionList.Add ( new EvOption ( UserTypesList.End_User, UserTypesList.End_User.ToString().Replace( "_","") ) );
-        optionList.Add ( new EvOption ( UserTypesList.Customer,  UserTypesList.Customer.ToString()) );
-        optionList.Add ( new EvOption ( UserTypesList.Evado, UserTypesList.Evado.ToString()) );
+      optionList.Add ( new EvOption ( UserTypesList.End_User, UserTypesList.End_User.ToString ( ).Replace ( "_", "" ) ) );
+      optionList.Add ( new EvOption ( UserTypesList.Customer, UserTypesList.Customer.ToString ( ) ) );
+      optionList.Add ( new EvOption ( UserTypesList.Evado, UserTypesList.Evado.ToString ( ) ) );
 
-        return optionList;
+      return optionList;
     }
 
     //  ==================================================================================

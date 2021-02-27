@@ -171,26 +171,26 @@ namespace Evado.Dal.Digital
     //
     // The field and parameter values for the SQl customer filter 
     //
-   private const string PARM_ENTITY_GUID = "@GUID";
-   private const string PARM_STATE = "@STATE";
-   private const string PARM_ENTITY_ID = "@ENTITY_ID";
-   private const string PARM_SOURCE_ID = "@SOURCE_ID";
-   private const string PARM_ENTITY_DATE = "@ENTITY_DATE";
-   private const string PARM_PARENT_ORG_ID = "@PARENT_ORG_ID";
-   private const string PARM_AUTHOR_USER_ID = "@AUTHOR_USER_ID";
-   private const string PARM_AUTHOR = "@AUTHOR";
-   private const string PARM_PARENT_LAYOUT_ID = "@PARENT_LAYOUT_ID";
-   private const string PARM_PARENT_GUID = "@PARENT_GUID";
-   private const string PARM_ENTITY_ACCESS = "@ENTITY_ACCESS";
-   private const string PARM_COLLECTION_EVENT_ID = "@COLLECTION_EVENT_ID";
-   private const string PARM_AI_DATA_INDEX = "@AI_DATA_INDEX";
-   private const string PARM_VISABILITY = "@VISABILITY";
-   private const string PARM_SIGN_OFFS = "@SIGN_OFFS";
-   private const string PARM_BOOKED_OUT_USER_ID = "@BOOKED_OUT_USER_ID";
-   private const string PARM_BOOKED_OUT = "@BOOKED_OUT";
-   private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
-   private const string PARM_UPDATED_BY = "@UPDATED_BY";
-   private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
+    private const string PARM_ENTITY_GUID = "@GUID";
+    private const string PARM_STATE = "@STATE";
+    private const string PARM_ENTITY_ID = "@ENTITY_ID";
+    private const string PARM_SOURCE_ID = "@SOURCE_ID";
+    private const string PARM_ENTITY_DATE = "@ENTITY_DATE";
+    private const string PARM_PARENT_ORG_ID = "@PARENT_ORG_ID";
+    private const string PARM_AUTHOR_USER_ID = "@AUTHOR_USER_ID";
+    private const string PARM_AUTHOR = "@AUTHOR";
+    private const string PARM_PARENT_LAYOUT_ID = "@PARENT_LAYOUT_ID";
+    private const string PARM_PARENT_GUID = "@PARENT_GUID";
+    private const string PARM_ENTITY_ACCESS = "@ENTITY_ACCESS";
+    private const string PARM_COLLECTION_EVENT_ID = "@COLLECTION_EVENT_ID";
+    private const string PARM_AI_DATA_INDEX = "@AI_DATA_INDEX";
+    private const string PARM_VISABILITY = "@VISABILITY";
+    private const string PARM_SIGN_OFFS = "@SIGN_OFFS";
+    private const string PARM_BOOKED_OUT_USER_ID = "@BOOKED_OUT_USER_ID";
+    private const string PARM_BOOKED_OUT = "@BOOKED_OUT";
+    private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
+    private const string PARM_UPDATED_BY = "@UPDATED_BY";
+    private const string PARM_UPDATED_DATE = "@UPDATED_DATE";
 
     // 
     // Used for the ItemQuery
@@ -203,12 +203,6 @@ namespace Evado.Dal.Digital
     // This variable is used to skip retrieving comments when updating the form record.
     //
     bool _SkipRetrievingComments = false;
-
-    // 
-    // Instantiate the variables and properties.
-    // 
-    private string _sqlQueryString = String.Empty;
-
 
     EdRecordSections _Dal_FormSections = new EdRecordSections ( );
     #endregion
@@ -601,6 +595,7 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "getRecordCount method." );
 
       List<EdRecord> view = new List<EdRecord> ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
       int inResultCount = 0;
 
       // 
@@ -615,14 +610,14 @@ namespace Evado.Dal.Digital
       //
       // Generate the SQL query string.
       //
-      _sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
-      this.LogValue ( _sqlQueryString );
+      sqlQueryString.AppendLine ( this.createSqlQueryStatement ( QueryParameters ) );
+      this.LogValue ( sqlQueryString.ToString ( ) );
 
       this.LogValue ( " Execute Query" );
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
         inResultCount = table.Rows.Count;
 
@@ -672,6 +667,7 @@ namespace Evado.Dal.Digital
       // Initialize the method debug log, a return form list and a number of result count. 
       //
       List<EdRecord> view = new List<EdRecord> ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
       int inResultCount = 0;
 
       // 
@@ -685,14 +681,14 @@ namespace Evado.Dal.Digital
       //
       // Generate the SQL query string.
       //
-      _sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
-      this.LogDebug ( _sqlQueryString );
+      sqlQueryString.AppendLine ( this.createSqlQueryStatement ( QueryParameters ) );
+      this.LogDebug ( sqlQueryString.ToString ( ) );
 
       this.LogDebug ( " Execute Query" );
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
         // 
         // Iterate through the results extracting the role information.
@@ -901,8 +897,8 @@ namespace Evado.Dal.Digital
     public List<EdRecord> getChildEntityList ( EdRecord Entity )
     {
       this.LogMethod ( "getChildEntityList" );
-      this.LogDebug ( "LayoutId {0).", Entity.LayoutId );
-      this.LogDebug ( "EntityId {0).", Entity.EntityId );
+      this.LogDebug ( "LayoutId {0}.", Entity.LayoutId );
+      this.LogDebug ( "EntityId {0}.", Entity.EntityId );
 
       //
       // Initialize the debuglog, a return list of form object and a formRecord field object. 
@@ -925,16 +921,17 @@ namespace Evado.Dal.Digital
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
       sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_PARENT_GUID + " = " + EdEntities.PARM_PARENT_GUID + " ) " );
 
-      sqlQueryString.AppendLine ( ") ORDER BY RecordId" );
+      sqlQueryString.AppendLine ( " ORDER BY " + EdEntities.DB_ENTITY_ID + ";" );
 
       this.LogDebug ( sqlQueryString.ToString ( ) );
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
       this.LogDebug ( " Execute Query" );
 
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
 
         if ( table.Rows.Count == 0 )
@@ -942,8 +939,8 @@ namespace Evado.Dal.Digital
           this.LogDebug ( "No Child Entities found." );
           this.LogMethodEnd ( "getChildEntityList" );
           return entityList;
-
         }
+
         // 
         // Iterate through the results extracting the role information.
         // 
@@ -1131,6 +1128,7 @@ namespace Evado.Dal.Digital
       // Initialize the debug log, a return form object and a formfield object.
       //
       EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
 
       // 
       // Validate whether the Guid is not metpy. 
@@ -1149,12 +1147,13 @@ namespace Evado.Dal.Digital
       // 
       // Generate SQL query string
       // 
-      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_GUID + "=" + EdEntities.PARM_ENTITY_GUID + ") ;";
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_GUID + "=" + EdEntities.PARM_ENTITY_GUID + ") ;" );
 
       //
       // Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
         // 
         // If not rows the return
@@ -1233,13 +1232,13 @@ namespace Evado.Dal.Digital
     public EdRecord GetEntityBySource (
       String SourceId )
     {
+      this.LogMethod ( "GetEntityBySource method. " );
+      this.LogDebug ( "SourceId: " + SourceId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
-      this.LogMethod ( "GetEntityBySource method. " );
-      this.LogDebug ( "SourceId: " + SourceId );
-
       EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
 
       // 
       // Validate whether the RecordId is not empty. 
@@ -1255,12 +1254,13 @@ namespace Evado.Dal.Digital
       SqlParameter cmdParms = new SqlParameter ( PARM_SOURCE_ID, SqlDbType.NVarChar, 20 );
       cmdParms.Value = SourceId;
 
-      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + PARM_SOURCE_ID + " );";
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + PARM_SOURCE_ID + " );" );
 
       //
       // Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
         // 
         // If not rows the return
@@ -1334,13 +1334,13 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord GetEntity ( String EntityId )
     {
+      this.LogMethod ( "GetEntity method. " );
+      this.LogDebug ( "EntityId: " + EntityId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
-      this.LogMethod ( "GetEntity method. " );
-      this.LogDebug ( "EntityId: " + EntityId );
-
       EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
 
       // 
       // TestReport that the data object has a valid record identifier.
@@ -1359,12 +1359,13 @@ namespace Evado.Dal.Digital
       };
       cmdParms [ 0 ].Value = EntityId;
 
-      _sqlQueryString = SQL_QUERY_ENTITY_VIEW + " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );";
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );" );
 
       //
       // Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
       {
         // 
         // If not rows the return
@@ -1602,21 +1603,21 @@ namespace Evado.Dal.Digital
         //
         EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ENTITY_CREATE, cmdParms );
       }
-      catch( Exception ex )
+      catch ( Exception ex )
       {
         this.LogException ( ex );
       }
       // 
       // Return unique identifier of the new data object.
       // 
-      EdRecord record =  this.GetEntity ( Record.Guid );
+      EdRecord record = this.GetEntity ( Record.Guid );
 
       //
       // Get the empty field objects for the new record.
       //
       this.getLayoutFields ( record );
 
-      this.updateRecordData (record );
+      this.updateRecordData ( record );
 
       this.LogMethodEnd ( "createRecord" );
 

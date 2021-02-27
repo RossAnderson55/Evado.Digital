@@ -27,7 +27,7 @@ using System.Diagnostics;
 using Evado.Bll;
 using Evado.Model;
 using Evado.Bll.Digital;
-using  Evado.Model.Digital;
+using Evado.Model.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital
@@ -36,7 +36,7 @@ namespace Evado.UniForm.Digital
   /// This class contains the session ResultData object
   /// </summary>
   [Serializable]
-  public class EuGlobalObjects 
+  public class EuGlobalObjects
   {
     #region Class Initialisation
 
@@ -111,7 +111,7 @@ namespace Evado.UniForm.Digital
     public const string Static_DefaultEventSource = "Application";
 
 
-    Evado.UniForm.Digital.AssemblyAttributes _AssembyAttributes = new AssemblyAttributes();
+    Evado.UniForm.Digital.AssemblyAttributes _AssembyAttributes = new AssemblyAttributes ( );
 
     private string _ApplicationPath = String.Empty;
     /// <summary>
@@ -281,6 +281,8 @@ namespace Evado.UniForm.Digital
       set { _MenuList = value; }
     }
 
+
+
     private List<EdRecord> _AllEntityLayouts = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of entitys in the application
@@ -288,7 +290,85 @@ namespace Evado.UniForm.Digital
     public List<EdRecord> AllEntityLayouts
     {
       get { return this._AllEntityLayouts; }
-      set { this._AllEntityLayouts = value; }
+      set
+      {
+        this._AllEntityLayouts = value;
+
+        //
+        // Create the entiy parent list.
+        //
+        this.createEntityParents ( );
+      }
+    }
+
+
+    List<EdObjectParent> _EntityParents = new List<EdObjectParent> ( );
+    /// <summary>
+    /// This private method creates the entity parent list.
+    /// </summary>
+    private void createEntityParents ( )
+    {
+      this.LogInitMethod ( "createEntityParents" );
+
+      _EntityParents = new List<EdObjectParent> ( );
+
+      //
+      // Iterate through the entity list.
+      //
+      foreach ( EdRecord entity in this._AllEntityLayouts )
+      {
+
+        this.LogInitValue ( "L: " + entity.LayoutId + ",  T: " + entity.Title + ", R" + entity.Design.EditAccessRoles );
+
+
+        string [ ] parentEntities = entity.Design.ParentEntities.Split ( ';' );
+
+        foreach ( string parent in parentEntities )
+        {
+          this._EntityParents.Add ( new EdObjectParent (
+            parent, entity.LayoutId, entity.Title, entity.Design.EditAccessRoles ) );
+
+        }//END parent iteration loop
+      }//End entity iteration loop
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of string containing child layouts.
+    /// </summary>
+    /// <param name="ParentLayoutId">String parent LayoutID</param>
+    /// <returns>List of String containing child LaoutIds</returns>
+    // ----------------------------------------------------------------------------------
+    public List<EdObjectParent> GetEntityChildren ( String ParentLayoutId )
+    {
+      List<EdObjectParent> childrenLayouts = new List<EdObjectParent> ( );
+
+      //
+      // iterate through the list of entity parents to retriee the 
+      // children for a PatentLayout.
+      //
+      foreach ( EdObjectParent entity in this._EntityParents )
+      {
+        if ( entity.ParentLayoutId == ParentLayoutId )
+        {
+          childrenLayouts.Add ( entity );
+        }
+      }
+      //
+      // return the list of children.
+      //
+      return childrenLayouts;
+    }
+
+    /// <summary>
+    /// This property contains the list of entity parents  relationships
+    /// </summary>
+    public List<EdObjectParent> EntityParents
+    {
+      get
+      {
+        return this._EntityParents;
+      }
     }
 
     /// <summary>
@@ -339,7 +419,7 @@ namespace Evado.UniForm.Digital
           }
         }
 
-        return  recordLayoutList;
+        return recordLayoutList;
       }
     }
 
@@ -358,7 +438,7 @@ namespace Evado.UniForm.Digital
 
     #region class methods
 
-     ///
+    ///
     ///  =======================================================================================
     /// <summary>
     /// This method loades the global menu objects
@@ -392,7 +472,7 @@ namespace Evado.UniForm.Digital
       }
       catch ( Exception Ex )
       {
-        this.LogException( Ex  );
+        this.LogException ( Ex );
       }
 
       this.LogMethodEnd ( "loadGlobalMenu" );
@@ -411,7 +491,7 @@ namespace Evado.UniForm.Digital
       // 
       // Load the Web Site Properties
       // 
-      Evado.Bll.Digital.EdAdapterConfig adapterConfig = new Evado.Bll.Digital.EdAdapterConfig (  );
+      Evado.Bll.Digital.EdAdapterConfig adapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( );
 
       if ( this.Settings != null )
       {
@@ -503,9 +583,9 @@ namespace Evado.UniForm.Digital
         this._PlatformId = "PROD";
       }
 
-      if ( ConfigurationManager.AppSettings [  Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ] != null )
       {
-        this._PlatformId = (string) ConfigurationManager.AppSettings [  Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
+        this._PlatformId = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
       }
 
       this.LogDebug ( "PlatformId: " + this._PlatformId );
@@ -513,9 +593,9 @@ namespace Evado.UniForm.Digital
       // 
       // Set the connection string settings.
       // 
-      if ( ConfigurationManager.AppSettings [  Evado.Model.Digital.EvcStatics.CONFIG_HELP_URL_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_HELP_URL_KEY ] != null )
       {
-        this._HelpUrl = (String) ConfigurationManager.AppSettings [  Evado.Model.Digital.EvcStatics.CONFIG_HELP_URL_KEY ];
+        this._HelpUrl = (String) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_HELP_URL_KEY ];
 
       }
 
@@ -583,10 +663,10 @@ namespace Evado.UniForm.Digital
         }
         if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] != null )
         {
-          this._AdapterSettings.SmtpServerPort = 
+          this._AdapterSettings.SmtpServerPort =
             EvStatics.getInteger ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] );
         }
-        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY] != null )
+        if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ] != null )
         {
           this._AdapterSettings.SmtpUserId = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ];
         }
@@ -713,7 +793,7 @@ namespace Evado.UniForm.Digital
         _LoggingLevel = value;
         this.Settings.LoggingLevel = LoggingEventLevel;
 
-        if ( this.LoggingLevel < 1)
+        if ( this.LoggingLevel < 1 )
         {
           this.LoggingLevel = 0;
         }

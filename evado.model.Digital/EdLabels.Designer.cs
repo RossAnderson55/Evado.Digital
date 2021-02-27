@@ -2331,7 +2331,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new {0} .
+        ///   Looks up a localized string similar to Create a new {0} - {1}.
         /// </summary>
         public static string Entity_New_Entity_Command_Title {
             get {

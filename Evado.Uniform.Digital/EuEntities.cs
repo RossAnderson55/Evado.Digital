@@ -418,7 +418,7 @@ namespace Evado.UniForm.Digital
       //
       // Do not lock the record is the user does not have update access.
       //
-      if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
+      if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
       {
         return false;
       }
@@ -753,7 +753,7 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      if (  queryParameters.LayoutId != String.Empty )
+      if ( queryParameters.LayoutId != String.Empty )
       {
         this.LogValue ( "FormRecordType: " + this.Session.EntityType );
 
@@ -885,7 +885,7 @@ namespace Evado.UniForm.Digital
         groupCommand = pageGroup.addCommand (
           "New Record",
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Entities, 
+          EuAdapterClasses.Entities,
           Model.UniForm.ApplicationMethods.Create_Object );
 
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
@@ -902,7 +902,7 @@ namespace Evado.UniForm.Digital
         //
         groupCommand = this.getGroupListCommand (
           entities,
-          pageGroup, 
+          pageGroup,
           EdRecord.LinkContentSetting.Null );
 
       }//END iteration loop
@@ -968,7 +968,7 @@ namespace Evado.UniForm.Digital
         case EdRecord.LinkContentSetting.First_Field:
           {
             groupCommand.Title = CommandEntity.RecordSummary;
-             if( CommandEntity.Fields.Count > 0 )
+            if ( CommandEntity.Fields.Count > 0 )
             {
               groupCommand.Title = CommandEntity.Fields [ 0 ].ItemValue;
             }
@@ -1018,7 +1018,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
+        if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getRecordExport_Object",
@@ -1673,7 +1673,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "setUserRecordAccess" );
       this.LogValue ( "RoleId: " + this.Session.UserProfile.Roles );
       this.LogValue ( "ActiveDirectoryUserId: " + this.Session.UserProfile.ActiveDirectoryUserId );
-      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) );
+      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) );
       this.LogValue ( "Record state: " + this.Session.Entity.StateDesc );
 
       // 
@@ -1685,7 +1685,7 @@ namespace Evado.UniForm.Digital
         case EdRecordObjectStates.Empty_Record:
         case EdRecordObjectStates.Completed_Record:
           {
-            if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == true )
+            if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is draft of queried, and the user has Record Edit role
@@ -1697,7 +1697,7 @@ namespace Evado.UniForm.Digital
           }
         case EdRecordObjectStates.Submitted_Record:
           {
-            if ( this.Session.UserProfile.hasEndUserRole ( this.Session.Entity.Design.ReadAccessRoles ) == true )
+            if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == true )
             {
               // 
               // If the record state is SubmittedRecords, and the user has Record Edit role
@@ -1889,51 +1889,66 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getDataObject_ChildEntities" );
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
 
-      if ( this.Session.Entity.ChildEntities.Count == 0
-        || this.Session.Entity.Design.DisplayRelatedEntities == false )
+      if ( this.Session.Entity.Design.DisplayRelatedEntities == false )
       {
-        this.LogDebug ( "No Child Entities" );
+        this.LogDebug ( "No displaying related entities." );
         this.LogMethodEnd ( "getDataObject_ChildEntities" );
         return;
       }
+
       //
       // Initialise the methods variables and objects.
       //
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
 
-      pageGroup = PageObject.AddGroup( 
+      pageGroup = PageObject.AddGroup (
         EdLabels.Entities_Child_Entity_Group_Title );
-
-      /*
-       * We need to create a list of entity/parent relationships to be able to identify an entity's children.
-       */
 
       //
       // Add a create record command.
       //
-      if ( this.Session.UserProfile.hasEndUserRole( this.Session.Entity.Design.EditAccessRoles) == true  )
+      var entityChildren = this.AdapterObjects.GetEntityChildren ( this.Session.Entity.LayoutId );
+
+      this.LogDebug ( "Entity Children count {0}. ", entityChildren.Count );
+
+      //
+      // iterate through the list of children add a create commend for each child
+      // if the user has edit access to the child entity.
+      //
+      foreach ( EdObjectParent child in entityChildren )
       {
-        groupCommand = pageGroup.addCommand (
-          EdLabels.Entity_New_Entity_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Entities, 
-          Model.UniForm.ApplicationMethods.Create_Object );
+        //
+        // if the user had edit access toteh entity add a create command for the entity.
+        //
+        if ( this.Session.UserProfile.hasRole ( child.ChildEditAccess ) == true )
+        {
+          string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildLayoutId, child.ChildTitle );
+          //
+          // define the new entity command.
+          //
+          groupCommand = pageGroup.addCommand (
+            title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Entities,
+            Model.UniForm.ApplicationMethods.Create_Object );
 
-        groupCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, "" );
+          groupCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, child.ChildLayoutId );
 
-        groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
-      }
+          groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
+        }//ENd edit access
+      }//END child interation loop
 
       //
       // Iterate through the child entities
       //
       foreach ( EdRecord child in this.Session.Entity.ChildEntities )
       {
-         this.getGroupListCommand (
-          child,
-          pageGroup,
-          this.Session.Entity.Design.LinkContentSetting );
+       pageGroup.addCommand (
+        this.getGroupListCommand (
+         child,
+         pageGroup,
+         this.Session.Entity.Design.LinkContentSetting ) );
 
       }
       this.LogMethodEnd ( "getDataObject_ChildEntities" );

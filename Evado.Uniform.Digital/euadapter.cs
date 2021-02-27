@@ -370,7 +370,8 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
-        this.LogDebug ( "LastPage.Title: {0}. ", this.Session.LastPage.Title );
+        this.LogDebug ( "LastPage.Title {0}. ", this.Session.LastPage.Title );
+        this.LogDebug ( "AllEntityLayouts.Count {0}. ", this._AdapterObjects.AllEntityLayouts.Count );
 
         foreach ( EdRole role in this._AdapterObjects.AdapterSettings.RoleList )
         {

@@ -1899,7 +1899,7 @@ namespace Evado.UniForm.Digital
         //
         // Determine if the user has access to this page and log and error if they do not.
         //
-        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
+        if ( this.Session.UserProfile.hasRole( this.Session.Record.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "addBinaryData",
