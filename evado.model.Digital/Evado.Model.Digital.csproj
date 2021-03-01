@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EdObjectParent.cs" />
     <Compile Include="EdLabels.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

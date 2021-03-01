@@ -147,6 +147,21 @@ namespace Evado.Model.Digital
       /// </summary>
       Hidden_Organisation_Fields,
 
+      /// <summary>
+      /// this enumeration defines the primary entity that will be created when the user registers in the envronment.
+      /// </summary>
+      User_Primary_Entity,
+
+      /// <summary>
+      /// this enumeration indicates if a new organisation is created when a user registes in the platform.
+      /// </summary>
+      Create_Organisation_On_User_Registration,
+
+      /// <summary>
+      /// this enumeration defines the primary entity that will be create when the user creates a new organisation..
+      /// </summary>
+      Organisation_Primary_Entity,
+
     }
 
     #endregion
@@ -419,6 +434,50 @@ namespace Evado.Model.Digital
       return false;
     }
 
+    /// <summary>
+    /// This property defines the a user's primary entity to be created when registering.
+    /// </summary>
+    public String UserPrimaryEntity
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.User_Primary_Entity );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.User_Primary_Entity, EvDataTypes.Text, value );
+      }
+    }
+
+    /// <summary>
+    /// This property indicates if an organisation is to be created when a user registers.
+    /// </summary>
+    public bool CreateOrganisationOnUserRegistration
+    {
+      get
+      {
+        return EvStatics.getBool (this.getParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration ) );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration, EvDataTypes.Boolean, value.ToString() );
+      }
+    }
+
+    /// <summary>
+    /// This property defines the a organisation's primary entity to be created when registering.
+    /// </summary>
+    public String OrganisationPrimaryEntity
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.Organisation_Primary_Entity );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.Organisation_Primary_Entity, EvDataTypes.Text, value );
+      }
+    }
     #endregion
 
     #region Role Group
@@ -885,6 +944,24 @@ namespace Evado.Model.Digital
         case EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields:
           {
             this.HiddenOrganisationFields = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.User_Primary_Entity:
+          {
+            this.UserPrimaryEntity = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Create_Organisation_On_User_Registration:
+          {
+            this.CreateOrganisationOnUserRegistration = EvStatics.getBool( Value );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Organisation_Primary_Entity:
+          {
+            this.OrganisationPrimaryEntity = Value;
             return;
           }
 

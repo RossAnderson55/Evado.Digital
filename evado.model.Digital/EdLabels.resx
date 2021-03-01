@@ -2665,4 +2665,16 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Entity_New_Entity_Command_Title" xml:space="preserve">
     <value>Create a new {0} - {1}</value>
   </data>
+  <data name="Config_Create_Org_On_User_Field_Label" xml:space="preserve">
+    <value>Create organisation on user registration:</value>
+  </data>
+  <data name="Config_Org_Primary_Entity_Field_Label" xml:space="preserve">
+    <value>Entity to be created when an organisation is created:</value>
+  </data>
+  <data name="Config_User_Primary_Entity_Field_Label" xml:space="preserve">
+    <value>Entity to be created on user registration:</value>
+  </data>
+  <data name="Layout_Author_Format" xml:space="preserve">
+    <value>By {0} on {1}</value>
+  </data>
 </root>

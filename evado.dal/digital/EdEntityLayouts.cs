@@ -182,6 +182,14 @@ namespace Evado.Dal.Digital
     /// </summary>
     public const string DB_ENTITY_PREFIX = "EDEL_ENTITY_PREFIX";
     /// <summary>
+    /// The database entity layout header format column name
+    /// </summary>
+    public const string DB_HEADER_FORMAT = "EDEL_HEADER_FORMAT";
+    /// <summary>
+    /// The database entity layout footer format column name
+    /// </summary>
+    public const string DB_FOOTER_FORMAT = "EDEL_FOOTER_FORMAT";
+    /// <summary>
     /// The database entity updates by user identifier column name
     /// </summary>
     public const string DB_UPDATED_BY_USER_ID = "EDEL_UPDATED_BY_USER_ID";
@@ -229,6 +237,8 @@ namespace Evado.Dal.Digital
     private const string PARM_ENTITY_PREFIX = "@ENTITY_PREFIX";
     private const string PARM_PARENT_TYPE = "@PARENT_TYPE";
     private const string PARM_PARENT_ACCESS = "@PARENT_ACCESS";
+    private const string PARM_HEADER_FORMAT = "@HEADER_FORMAT";
+    private const string PARM_FOOTER_FORMAT = "@FOOTER_FORMAT";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -289,6 +299,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_ENTITY_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdEntityLayouts.PARM_PARENT_TYPE, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_PARENT_ACCESS, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdEntityLayouts.PARM_HEADER_FORMAT, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdEntityLayouts.PARM_FOOTER_FORMAT, SqlDbType.NVarChar, 30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -350,6 +362,8 @@ namespace Evado.Dal.Digital
       cmdParms [ 21 ].Value = Form.Design.RecordPrefix;
       cmdParms [ 22 ].Value = Form.Design.ParentType;
       cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
+      cmdParms [ 24 ].Value = Form.Design.HeaderFormat;
+      cmdParms [ 25 ].Value = Form.Design.FooterFormat;
       cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 26 ].Value = DateTime.Now;
@@ -428,6 +442,8 @@ namespace Evado.Dal.Digital
       layout.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
       layout.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
       layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
+      layout.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
+      layout.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntityLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );

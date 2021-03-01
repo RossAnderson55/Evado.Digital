@@ -231,9 +231,9 @@ namespace Evado.UniForm.Digital
       //
       // generate the record layout.
       //
-      bool result =  this.generateLayout ( Entity, PageObject, BinaryFilePath );
+      bool result = this.generateLayout ( Entity, PageObject, BinaryFilePath );
 
-      this.LogMethodEnd  ( "generateEntityLayout" );
+      this.LogMethodEnd ( "generateEntityLayout" );
       return result;
     }//END public generateEntityLayout Method.
 
@@ -318,7 +318,7 @@ namespace Evado.UniForm.Digital
     /// Description:
     ///   This method generates an instance of the form object.
     /// </summary>
-    /// <param name="Record">  Evado.Model.Digital.EdRecord object</param>
+    /// <param name="Layout">  Evado.Model.Digital.EdRecord object</param>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
@@ -332,19 +332,19 @@ namespace Evado.UniForm.Digital
     /// </remarks>
     // ---------------------------------------------------------------------------------
     public bool generateLayout (
-       Evado.Model.Digital.EdRecord Record,
+       Evado.Model.Digital.EdRecord Layout,
       Evado.Model.UniForm.Page PageObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "generateLayout" );
-      this.LogDebug ( "Form.Title: " + Record.Title );
-      this.LogDebug ( "Form.State: " + Record.State );
+      this.LogDebug ( "Layout.Title: " + Layout.Title );
+      this.LogDebug ( "Layout.State: " + Layout.State );
 
       this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
-      this.LogDebug ( "Form.ReadAccessRoles: " + Record.Design.ReadAccessRoles );
-      this.LogDebug ( "Form.EditAccessRoles: " + Record.Design.EditAccessRoles );
-      Record.setUserAccess ( this.Session.UserProfile );
-      this.LogDebug ( "FormAccessRole: " + Record.FormAccessRole );
+      this.LogDebug ( "Layout.ReadAccessRoles: " + Layout.Design.ReadAccessRoles );
+      this.LogDebug ( "Layout.EditAccessRoles: " + Layout.Design.EditAccessRoles );
+      Layout.setUserAccess ( this.Session.UserProfile );
+      this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
 
       // 
       // Set the default pageMenuGroup type to annotated fields.  This will enable the 
@@ -352,14 +352,14 @@ namespace Evado.UniForm.Digital
       // earlier uniform clients.
       // 
       PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
-      this._FormAccessRole = Record.FormAccessRole;
-      this._FormState = Record.State;
-      this._Fields = Record.Fields;
+      this._FormAccessRole = Layout.FormAccessRole;
+      this._FormState = Layout.State;
+      this._Fields = Layout.Fields;
 
       this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
-      if ( Record.Design.DefaultPageLayout != null )
+      if ( Layout.Design.DefaultPageLayout != null )
       {
-        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Record.Design.DefaultPageLayout.ToString ( ), out this._FieldLayout ) == false )
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Layout.Design.DefaultPageLayout.ToString ( ), out this._FieldLayout ) == false )
         {
           this._FieldLayout = EuAdapter.DefaultFieldLayout;
         }
@@ -369,7 +369,7 @@ namespace Evado.UniForm.Digital
       // IF the form does not display annotations when being completed
       // hide the annotations by setting hide annotations to true
       //
-      if ( Record.Design.TypeId == EdRecordTypes.Questionnaire )
+      if ( Layout.Design.TypeId == EdRecordTypes.Questionnaire )
       {
         this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
         PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
@@ -383,10 +383,9 @@ namespace Evado.UniForm.Digital
         }
       }
 
-      //this.LogDebug ( "ClientPage.DefaultGroupType: " + ClientPage.DefaultGroupType );
-      //this.LogDebug ( "Form.QueryState: " + Form.QueryState );
-      //this.LogDebug ( "Form.State: " + Form.State );
-      //this.LogDebug ( "HideSignatureField: " + this._HideSignatureField );
+      this.LogDebug ( "ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
+      this.LogDebug ( "Layout.State: " + Layout.State );
+      this.LogDebug ( "HideSignatureField: " + this._HideSignatureField );
       // 
       // Set all groups and field to inherited access
       // 
@@ -415,32 +414,36 @@ namespace Evado.UniForm.Digital
       // 
       // Create the form record header groups
       //  
-      this.createFormHeader ( Record, PageObject );
+      this.createPageHeader ( Layout, PageObject );
 
       // 
       // Call the form section create method.
       // 
-      this.createFormSections ( Record, PageObject );
+
+      this.createFormSections ( Layout, PageObject );
 
       // 
       // if there is more that one pageMenuGroup create pageMenuGroup category indexes.
       // 
       if ( PageObject.GroupList.Count > 0 )
       {
-        this.getFieldCategories ( Record, PageObject.GroupList [ 0 ] );
+        this.getFieldCategories ( Layout, PageObject.GroupList [ 0 ] );
       }
 
       // 
       // Create the form record fooder groups.
       // 
-      this.createFormFooter ( Record, PageObject );
+      this.LogDebug ( "PageObject.GroupList.Count: " + PageObject.GroupList.Count );
+      this.createPageFooter ( Layout, PageObject );
+
+      this.LogDebug ( "FINAL: PageObject.GroupList.Count: " + PageObject.GroupList.Count );
 
       // 
       // Add the form specific java scripts
       // 
       this.getFormJavaScript (
-        Record.Guid,
-        Record.Fields,
+        Layout.Guid,
+        Layout.Fields,
         PageObject,
         BinaryFilePath );
 
@@ -466,73 +469,385 @@ namespace Evado.UniForm.Digital
     // ***********************************************************************************
     #endregion
 
-    #region private form header generation method
+    #region private page header and footer generation method
 
     //  =================================================================================
     /// <summary>
     /// Description:
     ///   This method generates the page header form record page.
     /// </summary>
-    /// <param name="Form"> Evado.Model.Digital.EvForm object</param>
+    /// <param name="Layout"> Evado.Model.Digital.EvForm object</param>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     //  ---------------------------------------------------------------------------------
-    private void createFormHeader (
-       Evado.Model.Digital.EdRecord Form,
+    private void createPageHeader (
+       Evado.Model.Digital.EdRecord Layout,
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createFormHeader" );
-      this.LogDebug ( "Form.Design.TypeId: " + Form.Design.TypeId );
+      this.LogDebug ( "Layout.Design.HeaderFormat: " + Layout.Design.HeaderFormat );
       // 
       // Initialise local variables.
       // 
-      Evado.Model.UniForm.Group formHeaderGroup;
+      Evado.Model.UniForm.Group pageGroup;
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
 
-      if ( Form.RecordId == String.Empty )
+      if ( Layout.RecordId == String.Empty )
       {
-        Form.RecordId = "RECORD-ID";
+        Layout.RecordId = "RECORD-ID";
       }
+
+      //
+      // switch statement to select the header format for the layout.
+      //
+      switch ( Layout.Design.HeaderFormat )
+      {
+        case EdRecord.HeaderFormat.No_Header:
+          {
+            return;
+          }
+        case EdRecord.HeaderFormat.Author_Header:
+          {
+            this.createAuthorHeader ( Layout, PageObject );
+            return;
+          }
+        default:
+          {
+            this.createDefaultHeader ( Layout, PageObject );
+            break;
+          }
+      }//END Switch Statement
+
+      // 
+      // Add form record instructions if they exist.
+      // 
+      if ( Layout.Design.Instructions != String.Empty )
+      {
+        // 
+        // create the page header pageMenuGroup containing the instructions.
+        // 
+        pageGroup = PageObject.AddGroup (
+          String.Empty,
+          String.Empty,
+          Evado.Model.UniForm.EditAccess.Inherited );
+        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
+        pageGroup.Description = Layout.Design.Instructions;
+      }
+
+      this.LogMethodEnd ( "createFormHeader" );
+
+    }//END createPageHeader Method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates a form footer header as html markup.
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object .</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void createAuthorHeader (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      // 
+      // Initialise local variables.
+      // 
+      Evado.Model.UniForm.Group pageGroup;
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+
+      string header = String.Format (
+        EdLabels.Layout_Author_Format,
+        this.Session.UserProfile.CommonName,
+        this.Session.Entity.RecordDate.ToString ( "dd-MMM-yy HH:mm" ) );
+      // 
+      // Initialise the group if the user is not a patient.
+      //
+      pageGroup = PageObject.AddGroup ( String.Empty );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
+
+      pageGroup.Description = header;
+      pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
+    }
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates a form footer header as html markup.
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object .</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void createDefaultHeader (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      // 
+      // Initialise local variables.
+      // 
+      Evado.Model.UniForm.Group pageGroup;
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
 
       // 
       // Initialise the group if the user is not a patient.
       //
-      formHeaderGroup = PageObject.AddGroup ( String.Empty );
-      formHeaderGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-      formHeaderGroup.GroupType = Model.UniForm.GroupTypes.Default;
+      pageGroup = PageObject.AddGroup ( String.Empty );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
 
       // 
       // if the design reference object exists include the 
       // using markdown markup.
       // 
-      if ( Form.Design.HttpReference != String.Empty )
+      if ( Layout.Design.HttpReference != String.Empty )
       {
-        formHeaderGroup.Description = "[" + Form.LinkText + "] (" + Form.Design.HttpReference + ")";
-        formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
+        pageGroup.Description =
+          String.Format ( "<a href='{0}' target='_blank'>{1}</a>", Layout.Design.HttpReference, Layout.LinkText );
+        pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
       else
       {
-        formHeaderGroup.Description = Form.LinkText;
-        formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
+        pageGroup.Description = Layout.LinkText;
+        pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
+      }
+    }
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates a form footer header as html markup.
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object .</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void createPageFooter (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "createPageFooter" );
+      this.LogDebug ( "Layout.State: " + Layout.State );
+      this.LogDebug ( "Layout.Design.FooterFormat: " + Layout.Design.FooterFormat );
+
+      //
+      // swtich to select the footer layout format
+      //
+      switch ( this.Session.Entity.Design.FooterFormat )
+      {
+        case EdRecord.FooterFormat.No_Footer:
+          {
+            return;
+          }
+        case EdRecord.FooterFormat.Author_Footer:
+          {
+            this.createAuthorHeader ( Layout, PageObject );
+            return;
+          }
+        case EdRecord.FooterFormat.No_Comments:
+          //
+          // display the layout signoffs.
+          //
+          this.getSignatureFooter ( Layout, PageObject );
+          //
+          // display the layout appoval.
+          //
+          this.getApprovalFooter ( Layout, PageObject );
+          {
+            break;
+          }
+        case EdRecord.FooterFormat.No_Signatures:
+          {
+            this.getCommentFooter ( Layout, PageObject );
+            //
+            // display the layout appoval.
+            //
+            this.getApprovalFooter ( Layout, PageObject );
+            break;
+          }
+        default:
+          {
+            //
+            // display the layout comments.
+            //
+            this.getCommentFooter ( Layout, PageObject );
+            //
+            // display the layout signoffs.
+            //
+            this.getSignatureFooter ( Layout, PageObject );
+            //
+            // display the layout appoval.
+            //
+            this.getApprovalFooter ( Layout, PageObject );
+
+            break;
+          }//END defatult case.
+      }//END swtich statement.
+
+      this.LogMethodEnd ( "createPageFooter" );
+      return;
+
+    }//END public createPageFooter Method.
+
+    //  =================================================================================
+    /// <summary>
+    /// This method creates a comment footer group
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    private void getCommentFooter (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      // 
+      // Initialise local variables.
+      // 
+      Evado.Model.UniForm.Group pageGroup;
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+
+      // 
+      // Display the comments.
+      // 
+      if ( Layout.CommentList.Count > 0
+        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author )
+      {
+        this.LogDebug ( "display comments." );
+        // 
+        // Define the comment pageMenuGroup.
+        // 
+        pageGroup = PageObject.AddGroup (
+           String.Empty,
+           String.Empty,
+           Evado.Model.UniForm.EditAccess.Enabled );
+        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
+
+        // 
+        // Display the comment list.
+        // 
+        if ( Layout.CommentList.Count > 0 )
+        {
+          groupField = pageGroup.createReadOnlyTextField (
+            EuRecordGenerator.CONST_FORM_DISP_COMMENT_FIELD_ID,
+            EdLabels.Label_Comments,
+             Evado.Model.Digital.EdFormRecordComment.getCommentMD ( Layout.CommentList, false ) );
+
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
+        }
+
+        // 
+        // If in edit mode display a new comment field.
+        // 
+        if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author )
+        {
+          this.LogDebug ( "Add Comment Field" );
+          groupField = pageGroup.createFreeTextField (
+            EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID,
+            EdLabels.Label_New_Comment,
+            String.Empty,
+            50,
+            5 );
+
+          groupField.Layout = EuAdapter.DefaultFieldLayout;
+          groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+        }//END new comment to be added.
+
+      }//END Display Comments
+    }
+
+    //  =================================================================================
+    /// <summary>
+    /// This method creates a comment footer group
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    // ----------------------------------------------------------------------------------
+    private void getSignatureFooter (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      //
+      // edit if there are not signatures
+      //
+      if ( Layout.Signoffs.Count == 0 )
+      {
+        return;
       }
 
       // 
-      // Add form record instructions if they exist.
+      // Initialise local variables.
       // 
-      if ( Form.Design.Instructions != String.Empty )
+      Evado.Model.UniForm.Group pageGroup;
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+
+      // 
+      // Define the comment pageMenuGroup.
+      // 
+      pageGroup = PageObject.AddGroup (
+        String.Empty,
+        String.Empty,
+        Evado.Model.UniForm.EditAccess.Inherited );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
+
+      StringBuilder sbSignoffLog = new StringBuilder ( );
+
+      // 
+      // Interate through the signoff objects extracting the signoff content.
+      // 
+      foreach ( EdUserSignoff signoff in Layout.Signoffs )
       {
         // 
-        // create the page header pageMenuGroup containing the instructions.
+        // If the signoff has a description output it.
         // 
-        formHeaderGroup = PageObject.AddGroup (
-          String.Empty,
-          String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited );
-        formHeaderGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-        formHeaderGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
-        formHeaderGroup.Description = Form.Design.Instructions;
-      }
+        if ( signoff.SignedOffBy != String.Empty )
+        {
+          sbSignoffLog.AppendLine ( signoff.Description
+          + " " + EdLabels.Label_by + " "
+          + signoff.SignedOffBy
+           + " " + EdLabels.Label_on + " "
+          + signoff.stSignOffDate );
 
-    }//END public fillHeader Method.
+        }//END signoff exists.
+
+      }//END interation loop
+
+      groupField = pageGroup.createReadOnlyTextField (
+        "sol_dsp",
+        EdLabels.Label_Signoff_Log_Field_Title,
+        sbSignoffLog.ToString ( ) );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+    }//END method
+
+    //  =================================================================================
+    /// <summary>
+    /// This method creates a comment footer group
+    /// </summary>
+    /// <param name="Layout">   Evado.Model.Digital.EdRecord object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    // ----------------------------------------------------------------------------------
+    private void getApprovalFooter (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      // 
+      // Initialise pageMenuGroup object.
+      // 
+      Evado.Model.UniForm.Group footerGroup = PageObject.AddGroup (
+        String.Empty,
+        String.Empty,
+        Evado.Model.UniForm.EditAccess.Enabled );
+      footerGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      // 
+      // Add the form record approval as a readonly field.
+      // 
+     var groupField = footerGroup.createReadOnlyTextField (
+        String.Empty,
+        String.Empty,
+        Layout.Design.Approval );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
+
+    }//END method
 
     // ***********************************************************************************
     #endregion
@@ -660,155 +975,6 @@ namespace Evado.UniForm.Digital
 
     }//END public getFieldCategories Method.
 
-    //  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method generates a form footer header as html markup.
-    /// 
-    /// </summary>
-    /// <param name="Form">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
-    /// <param name="ClientDataObject">Evado.Model.UniForm.Page object.</param>
-    /// <returns>String containing HTML markup for the form.</returns>
-    //  ---------------------------------------------------------------------------------
-    private void createFormFooter (
-       Evado.Model.Digital.EdRecord Form,
-      Evado.Model.UniForm.Page ClientDataObject )
-    {
-      this.LogMethod ( "createFormFooter" );
-      this.LogDebug ( "Form.TypeId: " + Form.TypeId );
-      this.LogDebug ( "Form.State: " + Form.State );
-      // 
-      // Initialise local variables.
-      // 
-      Evado.Model.UniForm.Field groupField = null;
-
-      //
-      // if there are comment and hide field annotation then exit.
-      //
-      if ( Form.CommentList.Count == 0 )
-      {
-        this.LogDebug ( "EXIT: Hide annotations and no annotations to display." );
-        return;
-      }
-
-      // 
-      // Display the comments.
-      // 
-      if ( Form.CommentList.Count > 0
-        || this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author )
-      {
-        this.LogDebug ( "display comments." );
-        // 
-        // Define the comment pageMenuGroup.
-        // 
-        Evado.Model.UniForm.Group pageGroup = ClientDataObject.AddGroup (
-          String.Empty,
-          String.Empty,
-          Evado.Model.UniForm.EditAccess.Enabled );
-        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
-
-        // 
-        // Display the comment list.
-        // 
-        if ( Form.CommentList.Count > 0 )
-        {
-          groupField = pageGroup.createReadOnlyTextField (
-            EuRecordGenerator.CONST_FORM_DISP_COMMENT_FIELD_ID,
-            EdLabels.Label_Comments,
-             Evado.Model.Digital.EdFormRecordComment.getCommentMD ( Form.CommentList, false ) );
-
-          groupField.Layout = EuAdapter.DefaultFieldLayout;
-        }
-
-        // 
-        // If in edit mode display a new comment field.
-        // 
-        if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author )
-        {
-          this.LogDebug ( "Add Comment Field" );
-          groupField = pageGroup.createFreeTextField (
-            EuRecordGenerator.CONST_FORM_COMMENT_FIELD_ID,
-            EdLabels.Label_New_Comment,
-            String.Empty,
-            50,
-            5 );
-
-          groupField.Layout = EuAdapter.DefaultFieldLayout;
-          groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-
-        }//END new comment to be added.
-
-      }//END Display Comments
-
-      // 
-      // Enter the Signoff 
-      // 
-      if ( Form.Signoffs.Count > 0 )
-      {
-        // 
-        // Define the comment pageMenuGroup.
-        // 
-        Evado.Model.UniForm.Group pageGroup = ClientDataObject.AddGroup (
-          String.Empty,
-          String.Empty,
-          Evado.Model.UniForm.EditAccess.Inherited );
-        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.GroupType = Model.UniForm.GroupTypes.Default;
-
-        StringBuilder sbSignoffLog = new StringBuilder ( );
-
-        // 
-        // Interate through the signoff objects extracting the signoff content.
-        // 
-        foreach ( EdUserSignoff signoff in Form.Signoffs )
-        {
-          // 
-          // If the signoff has a description output it.
-          // 
-          if ( signoff.SignedOffBy != String.Empty )
-          {
-            sbSignoffLog.AppendLine ( signoff.Description
-            + " " + EdLabels.Label_by + " "
-            + signoff.SignedOffBy
-             + " " + EdLabels.Label_on + " "
-            + signoff.stSignOffDate );
-
-          }//END signoff exists.
-
-        }//END interation loop
-
-        groupField = pageGroup.createReadOnlyTextField (
-          "sol_dsp",
-          EdLabels.Label_Signoff_Log_Field_Title,
-          sbSignoffLog.ToString ( ) );
-
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
-      }
-
-      // 
-      // Initialise pageMenuGroup object.
-      // 
-      Evado.Model.UniForm.Group footerGroup = ClientDataObject.AddGroup (
-        String.Empty,
-        String.Empty,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      footerGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      // 
-      // Add the form record approval as a readonly field.
-      // 
-      groupField = footerGroup.createReadOnlyTextField (
-        String.Empty,
-        String.Empty,
-        Form.Design.Approval );
-      groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
-
-
-      return;
-
-    }//END public getFormFooter Method.
-
     // ***********************************************************************************
     #endregion
 
@@ -820,12 +986,12 @@ namespace Evado.UniForm.Digital
     ///   This method generates the form field objects as html markup.
     /// 
     /// </summary>
-    /// <param name="Form">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="Layout">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="PageObject">  Evado.Model.UniForm.Page Object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormSections (
-         Evado.Model.Digital.EdRecord Form,
+         Evado.Model.Digital.EdRecord Layout,
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "createFormSections" );
@@ -840,13 +1006,13 @@ namespace Evado.UniForm.Digital
       // 
       // Entering the form section iteration loop.
       // 
-      foreach ( Evado.Model.Digital.EdRecordSection section in Form.Design.FormSections )
+      foreach ( Evado.Model.Digital.EdRecordSection section in Layout.Design.FormSections )
       {
         sectionFieldCount = 0;
         // 
         // Determine how many fields are in this section.
         //
-        foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
+        foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
         {
           if ( field.Design.SectionNo == section.No )
           {
@@ -902,7 +1068,7 @@ namespace Evado.UniForm.Digital
         // 
         // Iterate through each form field in the section.
         // 
-        foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
+        foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
         {
           // 
           // If the field is in the section identified by its section name (backward compatibility) or
@@ -913,7 +1079,7 @@ namespace Evado.UniForm.Digital
             continue;
           }
 
-          this.createFormField ( field, fieldGroup, Form.State );
+          this.createFormField ( field, fieldGroup, Layout.State );
 
         }//END field iteration loop.
 
@@ -925,7 +1091,7 @@ namespace Evado.UniForm.Digital
       // 
       // Determine how many fields are in this section.
       //
-      foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
       {
         if ( field.Design.SectionNo == -1 )
         {
@@ -955,11 +1121,11 @@ namespace Evado.UniForm.Digital
       // 
       // Iterate through each form field in the section.
       // 
-      foreach ( Evado.Model.Digital.EdRecordField field in Form.Fields )
+      foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
       {
         if ( field.Design.SectionNo == -1 )
         {
-          this.createFormField ( field, fieldGroup, Form.State );
+          this.createFormField ( field, fieldGroup, Layout.State );
         }
 
       }//END field iteration loop.
@@ -1008,7 +1174,7 @@ namespace Evado.UniForm.Digital
 
       if ( Field.Design.FieldLayout != null )
       {
-        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout.ToString(), out layout ) == false )
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout.ToString ( ), out layout ) == false )
         {
           layout = this._FieldLayout;
         }

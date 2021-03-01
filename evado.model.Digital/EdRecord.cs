@@ -188,6 +188,7 @@ namespace Evado.Model.Digital
       /// </summary>
       Entity,
     }
+
     /// <summary>
     /// This enumeration list defines the record author access
     /// </summary>
@@ -212,22 +213,67 @@ namespace Evado.Model.Digital
       /// This enumeration defines all edit accss roles have edit access to the object.
       /// </summary>
       Edit_Access_Roles,
-      /*
+    }
+
+    /// <summary>
+    /// This enumeration list defines the layout header format
+    /// </summary>
+    public enum HeaderFormat
+    {
       /// <summary>
-      /// This enumeration defines the only the parent's author can edit the object content.
+      /// This enumeration defines the form role is not set the user does not have access.
       /// </summary>
-      Parent_Author,
+      Null = 0,
 
       /// <summary>
-      /// This enumeration defines the all user associated with an object can edi the object content.
+      /// This enumeration defines the only the author can edit the object content.
       /// </summary>
-      Parent_Organisation,
+      Default = 0,
 
       /// <summary>
-      /// This enumeration defines the all parent access users have can edit the object content.
+      /// This enumeration defines the not to display a layout header.
       /// </summary>
-      Parent_Access,
-       */
+      No_Header,
+
+      /// <summary>
+      /// This enumeration defines all edit accss roles have edit access to the object.
+      /// </summary>
+      Author_Header,
+    }
+    /// <summary>
+    /// This enumeration list defines the layout header format
+    /// </summary>
+    public enum FooterFormat
+    {
+      /// <summary>
+      /// This enumeration defines the form role is not set the user does not have access.
+      /// </summary>
+      Null = 0,
+
+      /// <summary>
+      /// This enumeration defines the only the author can edit the object content.
+      /// </summary>
+      Default = 0,
+
+      /// <summary>
+      /// This enumeration defines footer to not be displayed.
+      /// </summary>
+      No_Footer,
+
+      /// <summary>
+      /// This enumeration defines footer to not display comments but display signatures.
+      /// </summary>
+      No_Comments,
+
+      /// <summary>
+      /// This enumeration defines footer to not display signatures but display comments.
+      /// </summary>
+      No_Signatures,
+
+      /// <summary>
+      /// This enumeration defines footer to display author information.
+      /// </summary>
+      Author_Footer,
     }
 
     /// <summary>
@@ -260,11 +306,15 @@ namespace Evado.Model.Digital
     /// This enumeration list 
     /// </summary>
     public enum LinkContentSetting
-    { 
+    {
+      /// <summary>
+      /// The value is not set.
+      /// </summary>
+      Null = 0,
       /// <summary>
       /// This enumeration set the command link to display the default content.
       /// </summary>
-      Default,
+      Default = 0,
       /// <summary>
       /// This enumeration sets the command link to display the record summary.
       /// </summary>
@@ -274,10 +324,6 @@ namespace Evado.Model.Digital
       /// This enumeration set the command link to display the first record field content.
       /// </summary>
       First_Field,
-      /// <summary>
-      /// The value is not set.
-      /// </summary>
-      Null,
     }
 
 
@@ -771,6 +817,21 @@ namespace Evado.Model.Digital
     {
       get
       {
+        if ( this.RecordId == String.Empty )
+        {
+          this.RecordId = "RECORD-ID";
+        }
+        String link = link = String.Format (
+                    EdLabels.Record_Page_Header_Text,
+                    this.RecordId,
+                    this.LayoutId,
+                    this.Title );
+
+        if ( this.Design.DisplayAuthorDetails == true )
+        {
+          link += " " + this.Updated;
+        }
+
         //
         // select the link display 
         //
@@ -778,36 +839,7 @@ namespace Evado.Model.Digital
         {
           default:
             {
-              if ( this.RecordId == String.Empty )
-              {
-                string link = String.Format (
-                    EdLabels.Record_Page_Header_Text,
-                     "RECORD-ID",
-                    this.LayoutId,
-                    this.Title );
-
-                if ( this.Design.DisplayAuthorDetails == true )
-                {
-                  link += " " + this.Updated;
-                }
-
-                return link;
-              }
-              else
-              {
-                string link = String.Format (
-                    EdLabels.Record_Page_Header_Text,
-                    this.RecordId,
-                    this.LayoutId,
-                    this.Title );
-
-                if ( this.Design.DisplayAuthorDetails == true )
-                {
-                  link += " " + this.Updated;
-                }
-
-                return link;
-              }
+              return link;
             }//END default case
           case LinkContentSetting.Display_Summary:
             {
@@ -815,12 +847,11 @@ namespace Evado.Model.Digital
             }
           case LinkContentSetting.First_Field:
             {
-              String description = this.RecordSummary;
               if ( this.Fields.Count > 1 )
               {
-                description = this.Fields [ 0 ].ItemValue;
+                link = this.Fields [ 0 ].ItemValue;
               }
-              return description;
+              return link;
             }
         }//END switch statement
       }
@@ -1160,6 +1191,17 @@ namespace Evado.Model.Digital
         bool dummy = value;
       }
     }
+    /// <summary>
+    /// This property contains a selection list option object. 
+    /// </summary>
+    public EvOption SelectionOption
+    {
+      get
+      {
+        return new EvOption ( this.LayoutId, this.LayoutId + " - " + this.Title );
+      }
+    }
+
     /// <summary>
     /// This property contains a version of a form. 
     /// </summary>

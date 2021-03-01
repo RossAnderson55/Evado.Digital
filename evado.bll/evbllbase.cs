@@ -290,11 +290,27 @@ namespace Evado.Bll
     // ----------------------------------------------------------------------------------
     protected void LogValue ( String Value )
     {
-      if ( this._ClassParameter.LoggingLevel >= 4 )
+      if ( this._ClassParameter.LoggingLevel >= 3 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
     }//END LogValue class
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogValue ( String Format, params object [ ] args )
+    {
+      if ( this._ClassParameter.LoggingLevel >= 3 )
+      {
+        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+          String.Format ( Format, args ) );
+      }
+    }
 
     // ==================================================================================
     /// <summary>

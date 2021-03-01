@@ -44,7 +44,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     public EdEntities ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntities.";
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Evado.Dal.Digital
     public EdEntities ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Digital.EvFormRecords.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdEntities.";
 
     }
 
@@ -465,6 +465,13 @@ namespace Evado.Dal.Digital
       record.ParentGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_PARENT_GUID );
       record.DataCollectEventId = EvSqlMethods.getString ( Row, EdEntities.DB_COLLECTION_EVENT_ID );
 
+      string value = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LINK_CONTENT_SETTING );
+      if ( value != String.Empty )
+      {
+        record.Design.LinkContentSetting =
+          Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
+      }
+
       //
       // Skip detailed content if a queryState query
       //
@@ -489,19 +496,14 @@ namespace Evado.Dal.Digital
 
         record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
         record.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DEFAULT_PAGE_LAYOUT );
-
-        string value = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LINK_CONTENT_SETTING );
-        if ( value != String.Empty )
-        {
-          record.Design.LinkContentSetting =
-            Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
-        }
         record.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
         record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
         record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_ENTITY_PREFIX );
         record.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
         record.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
         record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
+        record.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
+        record.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
 
         record.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
         if ( record.Updated != string.Empty )
@@ -633,7 +635,7 @@ namespace Evado.Dal.Digital
       // 
       return inResultCount;
 
-    } // Close getRecordList method.
+    } // Close getRecordCount method.
 
     // =====================================================================================
     /// <summary>
@@ -702,10 +704,12 @@ namespace Evado.Dal.Digital
 
           EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
 
+          this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting  );
           // 
           // Attach fields and other trial data.
           // 
-          if ( QueryParameters.IncludeRecordValues == true )
+          if ( QueryParameters.IncludeRecordValues == true
+            || record.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Field )
           {
             if ( inResultCount < QueryParameters.RecordRangeStart
               || inResultCount >= ( QueryParameters.RecordRangeFinish ) )
@@ -905,6 +909,7 @@ namespace Evado.Dal.Digital
       //
       List<EdRecord> entityList = new List<EdRecord> ( );
       StringBuilder sqlQueryString = new StringBuilder ( );
+      Entity.ChildEntities = new List<EdRecord> ( );
 
       // 
       // Define the query parameters.
@@ -920,11 +925,10 @@ namespace Evado.Dal.Digital
       // 
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
       sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_PARENT_GUID + " = " + EdEntities.PARM_PARENT_GUID + " ) " );
-
       sqlQueryString.AppendLine ( " ORDER BY " + EdEntities.DB_ENTITY_ID + ";" );
 
-      this.LogDebug ( sqlQueryString.ToString ( ) );
       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+      this.LogDebug ( sqlQueryString.ToString ( ) );
 
       this.LogDebug ( " Execute Query" );
 
@@ -998,7 +1002,7 @@ namespace Evado.Dal.Digital
       // 
       // Get the array length
       // 
-      this.LogValue ( "Returned records: " + entityList.Count );
+      this.LogValue ( "entityList.Count {0}. ", entityList.Count );
 
       // 
       // Return the result array.
@@ -1193,7 +1197,7 @@ namespace Evado.Dal.Digital
       //
       // get the child entities for this entity.
       //
-      this.getChildEntityList ( entity );
+      entity.ChildEntities = this.getChildEntityList ( entity );
 
       //
       // Attache the child entity list.
@@ -1298,6 +1302,11 @@ namespace Evado.Dal.Digital
       this.GetEntityValues ( entity );
 
       //
+      // get the child entities for this entity.
+      //
+      entity.ChildEntities = this.getChildEntityList ( entity );
+
+      //
       // Attache the entity list.
       //
       this.getRecordEntities ( entity );
@@ -1334,7 +1343,7 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord GetEntity ( String EntityId )
     {
-      this.LogMethod ( "GetEntity method. " );
+      this.LogMethod ( "GetEntity" );
       this.LogDebug ( "EntityId: " + EntityId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
@@ -1403,6 +1412,12 @@ namespace Evado.Dal.Digital
       this.GetEntityValues ( entity );
 
       //
+      // get the child entities for this entity.
+      //
+      entity.ChildEntities = this.getChildEntityList ( entity );
+
+      this.LogDebug ( "Child Entity Count {0}.", entity.ChildEntities );
+      //
       // Attache the entity list.
       //
       this.getRecordEntities ( entity );
@@ -1449,8 +1464,8 @@ namespace Evado.Dal.Digital
     private void GetEntityValues (
       EdRecord Entity )
     {
-      this.LogMethod ( "GetnEntityData." );
-      this.LogDebug ( "State: " + Entity.StateDesc );
+      this.LogMethod ( "GetEntityData." );
+      this.LogDebug ( "State: " + Entity.State );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1462,7 +1477,7 @@ namespace Evado.Dal.Digital
       Entity.Fields = dal_EntityValues.GetlEntityValues ( Entity );
       this.LogClass ( dal_EntityValues.Log );
       this.LogValue ( "Field count: " + Entity.Fields.Count );
-      this.LogMethodEnd ( "GetnEntityData" );
+      this.LogMethodEnd ( "GetEntityData" );
 
     }//END getRecordData method
 
@@ -1551,7 +1566,7 @@ namespace Evado.Dal.Digital
       // 
       // Retrieve the instrument items.
       // 
-      Entity.ChildEntities = dal_RecordEntities.getChildRecordList ( Entity );
+      Entity.ChildRecords = dal_RecordEntities.getChildRecordList ( Entity );
       this.LogClass ( dal_RecordEntities.Log );
     }
 

@@ -46,7 +46,7 @@ namespace Evado.Bll.Digital
     // ----------------------------------------------------------------------------------
     public EdEntityLayouts ( )
     {
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdEntityLayouts.";
+      this.ClassNameSpace = "Evado.Bll.Digital.EdEntityLayouts.";
     }
 
     // ==================================================================================
@@ -58,7 +58,7 @@ namespace Evado.Bll.Digital
     public EdEntityLayouts ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
-      this.ClassNameSpace = "Evado.Bll.Clinical.EdEntityLayouts.";
+      this.ClassNameSpace = "Evado.Bll.Digital.EdEntityLayouts.";
 
       this._Dal_RecordLayouts = new Evado.Dal.Digital.EdEntityLayouts ( Settings );
     }

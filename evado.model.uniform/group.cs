@@ -111,6 +111,12 @@ namespace Evado.Model.UniForm
       set { this._Id = value; }
     }
 
+    /// <summary>
+    /// This property contains the group identifier used by the adapter to identify different groups.
+    /// </summary>
+    [JsonIgnore]
+    public String GroupId { get; set; }
+
     private String _Title = String.Empty;
     /// <summary>
     /// This Property contains the title of the group.

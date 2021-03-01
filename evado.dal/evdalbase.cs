@@ -338,6 +338,23 @@ namespace Evado.Dal
 
     // ==================================================================================
     /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogValue ( String Format, params object [ ] args )
+    {
+      if ( this._ClassParameters.LoggingLevel >= 3 )
+      {
+        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+          String.Format ( Format, args ) );
+      }
+    }
+
+    // ==================================================================================
+    /// <summary>
     /// This method appends the debuglog string to the debug log for the class and adds
     /// a new line at the end of the text.
     /// </summary>

@@ -564,6 +564,27 @@ namespace Evado.Dal.Digital
             recordField = this.getRowData ( row );
 
             //
+            // skip all non summary field if summary fields is selected.
+            //
+            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+              && Record.SelectOnlySummaryFields == true
+              && recordField.Design.SummaryField == false )
+            {
+              this.LogDebug ( "{0} is a summary field so SKIPPED.", recordField.FieldId );
+              continue;
+            }
+
+            //
+            // skip all non summary field if summary fields is selected.
+            //
+            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+              && count > 1 )
+            {
+              this.LogDebug ( "{0} first field retrieved so SKIPPED.", recordField.FieldId );
+              continue;
+            }
+
+            //
             // Update the lst field guid to enable the other field values to be collected.
             //
             previousValueGuid = recordField.Guid;

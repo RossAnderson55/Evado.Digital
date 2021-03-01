@@ -895,13 +895,15 @@ namespace Evado.UniForm.Digital
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EdRecord entities in this.Session.EntityList )
+      foreach ( Evado.Model.Digital.EdRecord entity in this.Session.EntityList )
       {
+        this.LogDebug ( "LCD {0}, LT {1}, FC {2}", entity.Design.LinkContentSetting, entity.LinkText, entity.Fields.Count );
+
         //
         // Create the group list groupCommand object.
         //
-        groupCommand = this.getGroupListCommand (
-          entities,
+        this.getGroupListCommand (
+          entity,
           pageGroup,
           EdRecord.LinkContentSetting.Null );
 
@@ -925,24 +927,24 @@ namespace Evado.UniForm.Digital
       EdRecord.LinkContentSetting ParentLinkSetting )
     {
       this.LogMethod ( "getGroupListCommand" );
-      this.LogValue ( "FormRecord.RecordId: " + CommandEntity.RecordId );
-      this.LogValue ( "ParentLinkSetting: " + ParentLinkSetting );
+      this.LogDebug ( "CommandEntity.EntityId: " + CommandEntity.EntityId );
+      this.LogDebug ( "ParentLinkSetting: " + ParentLinkSetting );
 
       //
       // Set the link setting.
       //
-      EdRecord.LinkContentSetting linkSetting = CommandEntity.Design.LinkContentSetting;
+      EdRecord.LinkContentSetting linkSetting = ParentLinkSetting;
 
-      if ( ParentLinkSetting != EdRecord.LinkContentSetting.Null )
+      if ( CommandEntity.Design.LinkContentSetting != EdRecord.LinkContentSetting.Null )
       {
-        linkSetting = ParentLinkSetting;
+        linkSetting = CommandEntity.Design.LinkContentSetting;
       }
 
       //
       // Define the pageMenuGroup groupCommand.
       //
       Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
-          CommandEntity.RecordId,
+          CommandEntity.LinkText,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -952,39 +954,6 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Short_Title,
         EdLabels.Label_Record_Id + CommandEntity.RecordId );
-
-      groupCommand.Title = String.Empty;
-
-      //
-      // Select the method displaying the chiled entities.
-      //
-      switch ( this.Session.Entity.Design.LinkContentSetting )
-      {
-        case EdRecord.LinkContentSetting.Display_Summary:
-          {
-            groupCommand.Title = CommandEntity.RecordSummary;
-            break;
-          }
-        case EdRecord.LinkContentSetting.First_Field:
-          {
-            groupCommand.Title = CommandEntity.RecordSummary;
-            if ( CommandEntity.Fields.Count > 0 )
-            {
-              groupCommand.Title = CommandEntity.Fields [ 0 ].ItemValue;
-            }
-
-            break;
-          }
-        default:
-          {
-            groupCommand.Title =
-              String.Format ( EdLabels.Form_Record_General_View_Title,
-                CommandEntity.EntityId,
-                CommandEntity.LayoutId,
-                CommandEntity.Title );
-            break;
-          }
-      }
 
       return groupCommand;
 
@@ -1722,7 +1691,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <returns>Evado.Model.UniForm.Command object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.Command createRecordSaveCommand (
+    private Evado.Model.UniForm.Command createEntitySaveCommand (
       Guid RecordGuid,
       String SaveCommandTitle,
       String SaveAction )
@@ -1764,14 +1733,17 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.AppData ClientDataObject )
     {
       this.LogMethod ( "getClientData" );
+      this.LogDebug ( "Entity.Design.LinkContentSetting {0}.", this.Session.Entity.Design.LinkContentSetting );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
 
+      //
+      // Initialise the page generator.
+      //
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
         this.Session,
@@ -1823,10 +1795,6 @@ namespace Evado.UniForm.Digital
 
       this.LogClass ( pageGenerator.Log );
 
-      //
-      // if the entity has child entities add a group to display them.
-      //
-      this.getDataObject_ChildEntities ( ClientDataObject.Page );
 
       //
       // Return null and an error message if the page generator exits with an error.
@@ -1840,43 +1808,72 @@ namespace Evado.UniForm.Digital
         return;
       }
 
+      this.getDataObject_GroupCommands ( ClientDataObject.Page );
       //
-      // Display save command in the last group.
+      // if the entity has child entities add a group to display them.
       //
-      if ( ClientDataObject.Page.EditAccess == Model.UniForm.EditAccess.Enabled
-        && ClientDataObject.Page.GroupList.Count > 0 )
-      {
-        this.LogValue ( "Including save commands in the last group." );
-        Evado.Model.UniForm.Group group = ClientDataObject.Page.GroupList [ ClientDataObject.Page.GroupList.Count - 1 ];
-
-        // 
-        // Add the save groupCommand and add it to the page groupCommand list.
-        // 
-        pageCommand = this.createRecordSaveCommand (
-            this.Session.Entity.Guid,
-            EdLabels.Record_Save_Command_Title,
-            EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
-
-        group.addCommand ( pageCommand );
-
-        // 
-        // Add the submit comment to the page groupCommand list.
-        // 
-        pageCommand = this.createRecordSaveCommand (
-          this.Session.Entity.Guid,
-          EdLabels.Record_Submit_Command,
-          EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
-
-        pageCommand.setEnableForMandatoryFields ( );
-
-        group.addCommand ( pageCommand );
-
-      }//END display state is edit.
+      this.getDataObject_ChildEntities ( ClientDataObject.Page );
 
       this.LogMethodEnd ( "getClientData" );
 
     }//END getClientData Method
 
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_GroupCommands (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_GroupCommands" );
+      //
+      // Display save command in the last group.
+      //
+      if ( PageObject.EditAccess != Model.UniForm.EditAccess.Enabled
+        && PageObject.GroupList.Count == 0 )
+      {
+        this.LogMethodEnd ( "getDataObject_GroupCommands" );
+        return;
+      }
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+
+      this.LogValue ( "Including save commands in the last group." );
+      pageGroup = PageObject.GroupList [ PageObject.GroupList.Count - 1 ];
+
+      // 
+      // Add the save groupCommand and add it to the page groupCommand list.
+      // 
+      pageCommand = this.createEntitySaveCommand (
+          this.Session.Entity.Guid,
+          EdLabels.Record_Save_Command_Title,
+          EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
+
+      pageGroup.addCommand ( pageCommand );
+
+      // 
+      // Add the submit comment to the page groupCommand list.
+      // 
+      pageCommand = this.createEntitySaveCommand (
+        this.Session.Entity.Guid,
+        EdLabels.Record_Submit_Command,
+        EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
+
+      pageCommand.setEnableForMandatoryFields ( );
+
+      pageGroup.addCommand ( pageCommand );
+
+      this.LogMethodEnd ( "getDataObject_GroupCommands" );
+    }
+
+    private readonly string ChildEntityGroupID = "ChildEntities";
     // ==============================================================================
     /// <summary>
     /// This method displays the entity's chiled entities
@@ -1888,6 +1885,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getDataObject_ChildEntities" );
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
+      this.LogDebug ( "Entity.ChildEntities.Count {0}.", this.Session.Entity.ChildEntities.Count );
 
       if ( this.Session.Entity.Design.DisplayRelatedEntities == false )
       {
@@ -1904,6 +1902,16 @@ namespace Evado.UniForm.Digital
 
       pageGroup = PageObject.AddGroup (
         EdLabels.Entities_Child_Entity_Group_Title );
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.GroupId = this.ChildEntityGroupID;
+
+      pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+
+      if ( this.Session.Entity.ChildEntities.Count <= 20 )
+      {
+        pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
+        pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Command_Width, "20%" );
+      }
 
       //
       // Add a create record command.
@@ -1944,17 +1952,24 @@ namespace Evado.UniForm.Digital
       //
       foreach ( EdRecord child in this.Session.Entity.ChildEntities )
       {
-       pageGroup.addCommand (
+        this.LogDebug ( "entity {0}, {1}, L {2}, LT {3}, FC {4}.",
+          child.EntityId,
+          child.Title,
+          child.Design.LinkContentSetting,
+          child.LinkText,
+          child.Fields.Count );
+
         this.getGroupListCommand (
          child,
          pageGroup,
-         this.Session.Entity.Design.LinkContentSetting ) );
+         child.Design.LinkContentSetting );
 
       }
+
+      this.LogDebug ( "Command Count {0}.", pageGroup.CommandList.Count );
       this.LogMethodEnd ( "getDataObject_ChildEntities" );
 
     }//END getClientData_SaveCommands method
-
 
     // ==============================================================================
     /// <summary>

@@ -178,6 +178,16 @@ namespace Evado.Model.Digital
     /// </summary>
     public EdRecord.AuthorAccessList AuthorAccess { get; set; }
 
+    /// <summary>
+    /// This property indicates how the header is to be formatted.
+    /// </summary>
+    public EdRecord.HeaderFormat HeaderFormat { get; set; }
+
+    /// <summary>
+    /// This property indicates how the footer is to be formatted.
+    /// </summary>
+    public EdRecord.FooterFormat FooterFormat { get; set; }
+
     private string _ParentEntities = String.Empty;
     /// <summary>
     /// This property contains a list of edit acces roles

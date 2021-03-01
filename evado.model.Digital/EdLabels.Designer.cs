@@ -1872,6 +1872,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create organisation on user registration:.
+        /// </summary>
+        public static string Config_Create_Org_On_User_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Create_Org_On_User_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden Organisation Fields:.
         /// </summary>
         public static string Config_HiddenOrgFields_List_Field_Label {
@@ -1890,11 +1899,29 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entity to be created when an organisation is created:.
+        /// </summary>
+        public static string Config_Org_Primary_Entity_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Org_Primary_Entity_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adapte Roles:.
         /// </summary>
         public static string Config_Role_List_Field_Label {
             get {
                 return ResourceManager.GetString("Config_Role_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity to be created on user registration:.
+        /// </summary>
+        public static string Config_User_Primary_Entity_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_User_Primary_Entity_Field_Label", resourceCulture);
             }
         }
         
@@ -4584,6 +4611,15 @@ namespace Evado.Model.Digital {
         public static string Lavel_Close_Page {
             get {
                 return ResourceManager.GetString("Lavel_Close_Page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By {0} on {1}.
+        /// </summary>
+        public static string Layout_Author_Format {
+            get {
+                return ResourceManager.GetString("Layout_Author_Format", resourceCulture);
             }
         }
         

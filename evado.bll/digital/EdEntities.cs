@@ -248,7 +248,7 @@ namespace Evado.Bll.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord GetEntity ( Guid RecordGuid )
     {
-      this.LogMethod ( "GetEntity method. " );
+      this.LogMethod ( "GetEntity" );
       this.LogValue ( "RecordGuid: " + RecordGuid );
 
       // 
@@ -283,7 +283,7 @@ namespace Evado.Bll.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord GetEntity ( String EntityId )
     {
-      this.LogMethod ( "GetEntity method. " );
+      this.LogMethod ( "GetEntity" );
       this.LogValue ( "EntityId: " + EntityId );
       // 
       // Initialise the method variables and objects.
@@ -319,7 +319,7 @@ namespace Evado.Bll.Digital
     public EdRecord GetEntityBySource (
       String SourceId )
     {
-      this.LogMethod ( "GetnEntityBySource method. " );
+      this.LogMethod ( "GetEntityBySource" );
       this.LogValue ( "SourceId: " + SourceId );
       // 
       // Initialise the method variables and objects.

@@ -655,7 +655,6 @@ namespace Evado.Model.UniForm
 
     }//END AddGroup method
 
-
     // ==================================================================================
     /// <summary>
     /// This method adds a field group object to the page.

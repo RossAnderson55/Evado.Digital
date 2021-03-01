@@ -2010,6 +2010,44 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
+      
+      //
+      // create the user primary entity selection. 
+      // This entity will be created when the user is regsitered.
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( new EvOption ( ) );
+      foreach ( EdRecord entity in this.AdapterObjects.IssuedEntityLayouts )
+      {
+        optionList.Add ( entity.SelectionOption );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Primary_Entity,
+        EdLabels.Config_User_Primary_Entity_Field_Label,
+        this.AdapterObjects.AdapterSettings.UserPrimaryEntity, 
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the register organisation when user is registered.
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Create_Organisation_On_User_Registration,
+        EdLabels.Config_Create_Org_On_User_Field_Label,
+        this.AdapterObjects.AdapterSettings.CreateOrganisationOnUserRegistration );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the organisation primary entity selection. 
+      // This entity will be created when the user is regsitered.
+      //
+      pageField = pageGroup.createSelectionListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Organisation_Primary_Entity,
+        EdLabels.Config_Org_Primary_Entity_Field_Label,
+        this.AdapterObjects.AdapterSettings.OrganisationPrimaryEntity,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the hidden user profile fields checkbox list.

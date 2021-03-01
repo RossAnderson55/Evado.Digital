@@ -892,7 +892,7 @@ namespace Evado.Dal.Digital
       // 
       // Get the array length
       // 
-      this.LogValue ( "Returned records: " + recordList.Count );
+      this.LogValue ( "recordList.Count {0}.", recordList.Count );
 
       // 
       // Return the result array.

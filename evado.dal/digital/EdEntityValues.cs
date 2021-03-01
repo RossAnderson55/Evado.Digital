@@ -545,10 +545,21 @@ namespace Evado.Dal.Digital
             //
             // skip all non summary field if summary fields is selected.
             //
-            if ( Entity.SelectOnlySummaryFields == true
+            if ( Entity.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+              && Entity.SelectOnlySummaryFields == true
               && recordField.Design.SummaryField == false )
             {
               this.LogDebug ( "{0} is a summary field so SKIPPED.", recordField.FieldId );
+              continue;
+            }
+
+            //
+            // skip all non summary field if summary fields is selected.
+            //
+            if ( Entity.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+              && count > 1 )
+            {
+              this.LogDebug ( "{0} first field retrieved so SKIPPED.", recordField.FieldId );
               continue;
             }
 
@@ -583,7 +594,7 @@ namespace Evado.Dal.Digital
             case Evado.Model.EvDataTypes.Boolean:
             case Evado.Model.EvDataTypes.Yes_No:
               {
-                bool bValue = EvSqlMethods.getBool ( row, EdEntityValues.DB_VALUES_NUMERIC);
+                bool bValue = EvSqlMethods.getBool ( row, EdEntityValues.DB_VALUES_NUMERIC );
                 this.LogDebug ( "bValue: {0}.", bValue );
                 recordField.ItemValue = "No";
                 if ( bValue == true )
@@ -967,7 +978,7 @@ namespace Evado.Dal.Digital
             this.updateSingleValueField (
               SqlUpdateStatement,
               ParmList,
-              RecordField);
+              RecordField );
             break;
           }
       }
@@ -1009,7 +1020,7 @@ namespace Evado.Dal.Digital
       // Define the record column identifier
       // 
       prm = new SqlParameter ( EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
-      prm.Value = String.Empty ;
+      prm.Value = String.Empty;
       ParmList.Add ( prm );
 
       // 
@@ -1210,7 +1221,7 @@ namespace Evado.Dal.Digital
         // Define the record column identifier
         // 
         prm = new SqlParameter ( EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount, SqlDbType.NVarChar, 10 );
-        prm.Value = option.Value ;
+        prm.Value = option.Value;
         ParmList.Add ( prm );
 
         // 
@@ -1224,7 +1235,7 @@ namespace Evado.Dal.Digital
         // set the value to 1 if the option is in the field value.
         //
         string value = "0";
-        if( EntityField.ItemValue.Contains( option.Value ) == true )
+        if ( EntityField.ItemValue.Contains ( option.Value ) == true )
         {
           value = "1";
         }
@@ -1252,7 +1263,7 @@ namespace Evado.Dal.Digital
          + ", " + EdEntityValues.PARM_VALUE_COLUMN_ID + "_" + this._ValueCount
          + ", " + EdEntityValues.PARM_VALUE_ROW + "_" + this._ValueCount
          + ", " + EdEntityValues.PARM_VALUE_NUMERIC + "_" + +this._ValueCount + " );\r\n" );
-        
+
       }//END ITERATION LOOP
 
       this.LogMethodEnd ( "updateCheckBoxValueField" );
