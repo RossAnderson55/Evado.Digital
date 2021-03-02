@@ -262,6 +262,32 @@ namespace Evado.UniForm.Digital
             return pageCommand;
           }
 
+        case EvPageIds.External_Selection_List_View:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Selection_Lists.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            return pageCommand;
+          }
+
+        case EvPageIds.External_Selection_List_Page:
+          {
+            pageCommand = new Model.UniForm.Command (
+              MenuItem.Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Selection_Lists.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetPageId ( MenuItem.PageId );
+
+            return pageCommand;
+          }
+
 
         case EvPageIds.Record_Layout_View:
           {

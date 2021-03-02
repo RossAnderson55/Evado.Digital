@@ -6788,6 +6788,132 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selection list description:.
+        /// </summary>
+        public static string SelectionList_Description_Field_Label {
+            get {
+                return ResourceManager.GetString("SelectionList_Description_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Duplicate selection list identifier.
+        /// </summary>
+        public static string SelectionList_Duplicate_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_Duplicate_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Selection List identifier is empty..
+        /// </summary>
+        public static string SelectionList_Identifier_Empty_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_Identifier_Empty_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error generates creating the list of selection lists.
+        /// </summary>
+        public static string SelectionList_List_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_List_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection list identifier is empty.
+        /// </summary>
+        public static string SelectionList_List_Id_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_List_Id_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection list ID:.
+        /// </summary>
+        public static string SelectionList_List_Id_Field_Label {
+            get {
+                return ResourceManager.GetString("SelectionList_List_Id_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection list title is empty.
+        /// </summary>
+        public static string SelectionList_Title_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_Title_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection list title:.
+        /// </summary>
+        public static string SelectionList_Title_Field_Label {
+            get {
+                return ResourceManager.GetString("SelectionList_Title_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: updates selection list object..
+        /// </summary>
+        public static string SelectionList_Update_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_Update_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}, Version {2}, State {3}.
+        /// </summary>
+        public static string SelectionLists_LInk_Text {
+            get {
+                return ResourceManager.GetString("SelectionLists_LInk_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection Lists.
+        /// </summary>
+        public static string SelectionLists_List_Group_Title {
+            get {
+                return ResourceManager.GetString("SelectionLists_List_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Selection Lists.
+        /// </summary>
+        public static string SelectionLists_List_Page_Title {
+            get {
+                return ResourceManager.GetString("SelectionLists_List_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a New Selection List.
+        /// </summary>
+        public static string SelectionLists_New_List_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionLists_New_List_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection list {0} - {1}.
+        /// </summary>
+        public static string SelectionLIsts_Page_Title {
+            get {
+                return ResourceManager.GetString("SelectionLIsts_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Email.
         /// </summary>
         public static string Send_Email_To_Subjects {

@@ -70,12 +70,6 @@ namespace Evado.UniForm.Digital
           isANewUser = true;
         }
 
-        //
-        // set the user profile values for saving the object to the database..
-        //
-        this.Session.AdminUserProfile.UpdatedByUserId = this.Session.UserProfile.UserId;
-        this.Session.AdminUserProfile.UserCommonName = this.Session.UserProfile.CommonName;
-
         // 
         // update the object.
         // 

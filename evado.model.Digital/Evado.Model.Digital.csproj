@@ -152,7 +152,7 @@
     <Compile Include="EdRecordDesign.cs" />
     <Compile Include="EdRecordField.cs" />
     <Compile Include="EdRecordFieldDesign.cs" />
-    <Compile Include="EdExternalSelectionList.cs" />
+    <Compile Include="EdSelectionList.cs" />
     <Compile Include="EdRecordTable.cs" />
     <Compile Include="EdRecordTableHeader.cs" />
     <Compile Include="EdRecordTableRow.cs" />

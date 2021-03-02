@@ -832,6 +832,28 @@ namespace Evado.UniForm.Digital
           break;
         }
          */
+        case EuAdapterClasses.Selection_Lists:
+          {
+            this.LogDebug ( " SELECTION LISTS CLASS SELECTED." );
+
+            // 
+            // Initialise the methods variables and objects.
+            // 
+            EuSelectionLists selectionLists = new EuSelectionLists ( this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.ClassParameters );
+
+            selectionLists.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = selectionLists.getDataObject ( PageCommand );
+            this.ErrorMessage = selectionLists.ErrorMessage;
+            this.LogAdapter ( selectionLists.Log );
+
+            break;
+
+          }
         case EuAdapterClasses.Record_Layouts:
           {
             this.LogDebug ( "RECORD LAYOUTS CLASS SELECTED." );

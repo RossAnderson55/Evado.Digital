@@ -214,11 +214,6 @@ namespace Evado.Dal.Digital
       this.processTableRowObject ( Row, recordField );
 
       //
-      // Get the external selection list values.
-      //
-      this.getExternalSelectionList ( Row, recordField );
-
-      //
       // Process the NA values in selectionlists.
       //
       this.processNotAvailableValues ( Row, recordField );
@@ -230,59 +225,6 @@ namespace Evado.Dal.Digital
       return recordField;
 
     }//END getRowData method.
-
-    // =====================================================================================
-    /// <summary>
-    /// This method attached external selectionlist options to the formfield list.
-    /// </summary>
-    /// <param name="Row">DataRow: an sql data row object</param>
-    /// <param name="Field">EvFormField: a form field object</param>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Validate whether the formfield type is external selectionlist. 
-    /// 
-    /// 2. Initialize the external codeing list object.
-    /// 
-    /// 3. Attach the external coding lists to the formfield option list.
-    /// 
-    /// 4. Reset the formfield type to be selectionlist
-    /// </remarks>
-    // -------------------------------------------------------------------------------------
-    private void getExternalSelectionList (
-      DataRow Row,
-      EdRecordField Field )
-    {
-      // 
-      // Validate whether the formfield type is external selectionlist. 
-      // 
-      if ( Field.TypeId != Evado.Model.EvDataTypes.External_Selection_List )
-      {
-        return;
-      }
-      this.LogMethod ( "getExternalSelectionList method" );
-
-      //
-      // Initialize the external codeing list object.
-      //
-      EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
-
-      this.LogDebug ( "Ext ListId: " + Field.Design.ExSelectionListId
-        + " Category: " + Field.Design.ExSelectionListCategory );
-
-      //
-      // Attach the external coding lists to the formfield option list.
-      //
-      Field.Design.Options = externalCodingLists.getItemCodingList (
-        Field.Design.ExSelectionListId,
-        Field.Design.ExSelectionListCategory );
-
-      //
-      // Reset the formfield type to be selectionlist.
-      //
-      Field.Design.TypeId = Evado.Model.EvDataTypes.Selection_List;
-
-    }//END getExternalSelectionList method
 
     // =====================================================================================
     /// <summary>

@@ -67,7 +67,12 @@ namespace Evado.UniForm.Digital
       Applications,
 
       /// <summary>
-      /// This option identifies the project forms class object.
+      /// This option identifies the selection lists class object.
+      /// </summary>
+      Selection_Lists,
+
+      /// <summary>
+      /// This option identifies the record layout class object.
       /// </summary>
       Record_Layouts,
 

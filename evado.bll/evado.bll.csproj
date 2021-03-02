@@ -151,7 +151,7 @@
     <Compile Include="digital\evbinaryfiles.cs" />
     <Compile Include="digital\evdataanalysis.cs" />
     <Compile Include="digital\evdatachanges.cs" />
-    <Compile Include="digital\evformfieldselectionlists.cs" />
+    <Compile Include="digital\EdSelectionLists.cs" />
     <Compile Include="digital\evformrecordexport.cs" />
     <Compile Include="digital\evformrecordfields.cs" />
     <Compile Include="digital\evmenus.cs" />

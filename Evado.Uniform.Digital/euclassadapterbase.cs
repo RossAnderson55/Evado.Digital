@@ -154,7 +154,7 @@ namespace Evado.UniForm.Digital
     public virtual Evado.Model.UniForm.AppData getDataObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getClientDataObject" );
+      this.LogMethod ( "getDataObject" );
       this.LogValue ( "Parameter PageCommand " + PageCommand.getAsString ( false, false ) );
 
       return new Evado.Model.UniForm.AppData ( );
@@ -235,7 +235,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.Session.UserProfile.UserCommonName );
+        this.Session.UserProfile.CommonName );
 
       this.AddEvent ( applicationEvent );
 
@@ -276,7 +276,7 @@ namespace Evado.UniForm.Digital
         EventId,
         this.ClassNameSpace,
         stEvent,
-        this.Session.UserProfile.UserCommonName );
+        this.Session.UserProfile.CommonName );
 
       this.AddEvent ( applicationEvent );
 
@@ -321,7 +321,7 @@ namespace Evado.UniForm.Digital
         EventId,
         this.ClassNameSpace,
         stEvent,
-        this.Session.UserProfile.UserCommonName );
+        this.Session.UserProfile.CommonName );
 
       this.AddEvent ( applicationEvent );
 
@@ -390,7 +390,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.Session.UserProfile.UserCommonName );
+        this.Session.UserProfile.CommonName );
 
       //
       // Log the application event.
@@ -409,7 +409,7 @@ namespace Evado.UniForm.Digital
     {
       String value = "NameSpace: " + this.ClassNameSpace
        + "\r\nUser: " + this.Session.UserProfile.UserId
-       + "\r\nUserCommonName: " + this.Session.UserProfile.UserCommonName
+       + "\r\nUserCommonName: " + this.Session.UserProfile.CommonName
        + "\r\n" + EvStatics.getException ( Ex );
 
       // 
@@ -420,7 +420,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.Ok,
         this.ClassNameSpace,
         value,
-        this.Session.UserProfile.UserCommonName );
+        this.Session.UserProfile.CommonName );
 
       this.AddEvent ( applicationEvent );
 

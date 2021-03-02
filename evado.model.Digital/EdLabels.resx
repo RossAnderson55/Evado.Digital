@@ -2677,4 +2677,46 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="Layout_Author_Format" xml:space="preserve">
     <value>By {0} on {1}</value>
   </data>
+  <data name="SelectionLists_LInk_Text" xml:space="preserve">
+    <value>{0} - {1}, Version {2}, State {3}</value>
+  </data>
+  <data name="SelectionLists_List_Group_Title" xml:space="preserve">
+    <value>Selection Lists</value>
+  </data>
+  <data name="SelectionLists_List_Page_Title" xml:space="preserve">
+    <value>External Selection Lists</value>
+  </data>
+  <data name="SelectionLists_New_List_Command_Title" xml:space="preserve">
+    <value>Create a New Selection List</value>
+  </data>
+  <data name="SelectionLIsts_Page_Title" xml:space="preserve">
+    <value>Selection list {0} - {1}</value>
+  </data>
+  <data name="SelectionList_Description_Field_Label" xml:space="preserve">
+    <value>Selection list description:</value>
+  </data>
+  <data name="SelectionList_Duplicate_Error_Message" xml:space="preserve">
+    <value>ERROR: Duplicate selection list identifier</value>
+  </data>
+  <data name="SelectionList_Identifier_Empty_Error_Message" xml:space="preserve">
+    <value>ERROR: Selection List identifier is empty.</value>
+  </data>
+  <data name="SelectionList_List_Error_Message" xml:space="preserve">
+    <value>Error generates creating the list of selection lists</value>
+  </data>
+  <data name="SelectionList_List_Id_Error_Message" xml:space="preserve">
+    <value>Selection list identifier is empty</value>
+  </data>
+  <data name="SelectionList_List_Id_Field_Label" xml:space="preserve">
+    <value>Selection list ID:</value>
+  </data>
+  <data name="SelectionList_Title_Error_Message" xml:space="preserve">
+    <value>Selection list title is empty</value>
+  </data>
+  <data name="SelectionList_Title_Field_Label" xml:space="preserve">
+    <value>Selection list title:</value>
+  </data>
+  <data name="SelectionList_Update_Error_Message" xml:space="preserve">
+    <value>ERROR: updates selection list object.</value>
+  </data>
 </root>

@@ -262,8 +262,8 @@ namespace Evado.Dal.Digital
       parms [ 19 ].Value = UserProfile.TypeId;
       parms [ 20 ].Value = UserProfile.Title;
       parms [ 21 ].Value = UserProfile.ExpiryDate;
-      parms [ 22 ].Value = UserProfile.UpdatedByUserId;
-      parms [ 23 ].Value = UserProfile.UserCommonName;
+      parms [ 22 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 23 ].Value = this.ClassParameters.UserProfile.CommonName;
       parms [ 24 ].Value = DateTime.Now;
 
 
@@ -1462,8 +1462,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime)
       };
       cmdParms [ 0 ].Value = Profile.Guid;
-      cmdParms [ 1 ].Value = Profile.UpdatedByUserId;
-      cmdParms [ 2 ].Value = Profile.UserCommonName;
+      cmdParms [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 3 ].Value = DateTime.Now;
 
       //

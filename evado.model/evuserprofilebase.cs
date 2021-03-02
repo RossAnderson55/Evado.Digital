@@ -503,15 +503,6 @@ namespace Evado.Model
       set { this._UpdatedByUserId = value; }
     }
 
-    private string _UserCommonName = String.Empty;
-    /// <summary>
-    /// This property contains updating user's common name
-    /// </summary>
-    public string UserCommonName
-    {
-      get { return this._UserCommonName; }
-      set { this._UserCommonName = value; }
-    }
 
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

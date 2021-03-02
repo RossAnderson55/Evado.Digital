@@ -485,12 +485,6 @@ namespace Evado.UniForm.Digital
         // 
         String stSaveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
 
-        //
-        // set the user profile values for saving the object to the database..
-        //
-        this.Session.UserProfile.UpdatedByUserId = this.Session.UserProfile.UserId;
-        this.Session.UserProfile.UserCommonName = this.Session.UserProfile.CommonName;
-
         // 
         // update the object.
         // 

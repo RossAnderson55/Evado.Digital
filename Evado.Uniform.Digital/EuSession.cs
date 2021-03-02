@@ -488,6 +488,16 @@ namespace Evado.UniForm.Digital
     //
     public bool EntityAdaperLoaded { get; set; }
 
+    /// <summary>
+    /// This property object contains a list of external selection lists.
+    /// </summary>
+    public List<EdSelectionList> AdminSelectionLists { get; set; }
+
+    /// <summary>
+    /// This property object contains the an external selection list object.
+    /// </summary>
+    public EdSelectionList AdminSelectionList { get; set; }
+
     private List<EdRecord> _EntityLayoutList = new List<EdRecord> ( );
     /// <summary>
     /// This property object contains a list of eClinical evForm object for the currently selected record.

@@ -462,24 +462,6 @@ namespace Evado.Dal.Digital
 
       }//END Table newField.
 
-      // 
-      // If it is an external selection list, add the relevant coding visitSchedule items.
-      // 
-      if ( formField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
-      {
-        this.LogValue ( "External ListId: " + formField.Design.ExSelectionListId
-          + " Category: " + formField.Design.ExSelectionListCategory );
-
-        EdRecordFieldSelectionLists externalCodingLists = new EdRecordFieldSelectionLists ( );
-
-        formField.Design.Options = externalCodingLists.getItemCodingList (
-          formField.Design.ExSelectionListId,
-          formField.Design.ExSelectionListCategory );
-
-        this.LogValue ( " " + externalCodingLists.Log );
-
-      }
-
       //
       // Resolve the numeric 'NA' to negative infinity issue.
       //

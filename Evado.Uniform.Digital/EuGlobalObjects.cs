@@ -180,13 +180,13 @@ namespace Evado.UniForm.Digital
       set { _ExportFilePath = value; }
     }
 
-    private List<EdExternalSelectionList> _ExternalSelectionLists = new List<EdExternalSelectionList> ( );
+    private List<EdSelectionList> _ExternalSelectionLists = new List<EdSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
     /// lists.
     /// </summary>
 
-    public List<EdExternalSelectionList> ExternalSelectionLists
+    public List<EdSelectionList> ExternalSelectionLists
     {
       get { return _ExternalSelectionLists; }
       set { _ExternalSelectionLists = value; }

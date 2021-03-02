@@ -137,7 +137,7 @@
     <Compile Include="digital\EdOrganisations.cs" />
     <Compile Include="digital\EdRecordComments.cs" />
     <Compile Include="digital\EdRecordFields.cs" />
-    <Compile Include="digital\EdRecordFieldSelectionLists.cs" />
+    <Compile Include="digital\EdSelectionLists.cs" />
     <Compile Include="digital\EdRecordLayouts.cs" />
     <Compile Include="digital\EdRecords.cs" />
     <Compile Include="digital\EdRecordSections.cs" />

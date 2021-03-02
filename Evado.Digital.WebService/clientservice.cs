@@ -921,7 +921,7 @@ namespace Evado.Digital.WebService
         //
         this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Authenticated;
-        this._ServiceUserProfile.UserCommonName = this._ServiceUserProfile.UserId;
+        this._ServiceUserProfile.CommonName = this._ServiceUserProfile.UserId;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.NewAuthentication = true;
         this._ServiceUserProfile.UserLoginFailureCount = 0;
@@ -1029,7 +1029,7 @@ namespace Evado.Digital.WebService
         //
         this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Debug_Authentication;
-        this._ServiceUserProfile.UserCommonName = this._ServiceUserProfile.UserId;
+        this._ServiceUserProfile.CommonName = this._ServiceUserProfile.UserId;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.UserLoginFailureCount = 0;
         this._ServiceUserProfile.NewAuthentication = true;
@@ -1065,7 +1065,7 @@ namespace Evado.Digital.WebService
         //
         this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Authenticated;
-        this._ServiceUserProfile.UserCommonName = this._ServiceUserProfile.UserId;
+        this._ServiceUserProfile.CommonName = this._ServiceUserProfile.UserId;
         this._ServiceUserProfile.DomainGroupNames = stNetworkRoles;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.UserLoginFailureCount = 0;
@@ -1112,7 +1112,7 @@ namespace Evado.Digital.WebService
         //
         this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Authenticated;
-        this._ServiceUserProfile.UserCommonName = this._ServiceUserProfile.UserId;
+        this._ServiceUserProfile.CommonName = this._ServiceUserProfile.UserId;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.NewAuthentication = true;
         this._ServiceUserProfile.UserLoginFailureCount = 0;
