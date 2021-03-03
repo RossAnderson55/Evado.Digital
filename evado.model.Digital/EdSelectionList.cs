@@ -36,65 +36,48 @@ namespace Evado.Model.Digital
     ///  This Xml data class contains the trial objects Xml content.
     /// </summary>
     [Serializable]
-    public class OptionItem
+    public class Item
     {
       /// <summary>
       ///  Initialise the class object.
       /// </summary>
-      public OptionItem ( )
+      public Item ( )
       {
 
       }
-
-      #region Private members.
-
-      private int _No = 0;
-      private string _Value = string.Empty;
-      private string _Description = string.Empty;
-      private string _Category = string.Empty;
       /// <summary>
-      /// This field dfines the list identifier.
+      ///  Initialise the class object.
       /// </summary>
-      public string ListId = string.Empty;
+      public Item ( int No, String Category, String Value, String Description )
+      {
+        this.No = No;
+        this.Category = Category;
+        this.Value = Value;
+        this.Description = Description;
 
-      #endregion
+
+      }
 
       #region class property
       /// <summary>
       /// This property contains a number code item.
       /// </summary>
-      public int No
-      {
-        get { return this._No; }
-        set { this._No = value; }
-      }
+      public int No { get; set; }
 
       /// <summary>
       /// This property contains a value of code item.
       /// </summary>
-      public string Value
-      {
-        get { return this._Value; }
-        set { this._Value = value; }
-      }
+      public string Value { get; set; }
 
       /// <summary>
       /// This property contains description of code item.
       /// </summary>
-      public string Description
-      {
-        get { return this._Description; }
-        set { this._Description = value; }
-      }
+      public string Description { get; set; }
 
       /// <summary>
       /// This property contains a category of code item.
       /// </summary>
-      public string Category
-      {
-        get { return this._Category; }
-        set { this._Category = value; }
-      }
+      public string Category { get; set; }
 
       #endregion
 
@@ -230,7 +213,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an item list of selection list
     /// </summary>
-    public List<OptionItem> Items { get; set; }
+    public List<Item> Items { get; set; }
 
     /// <summary>
     /// This property contains a version of  selection list
@@ -274,13 +257,13 @@ namespace Evado.Model.Digital
 
         if ( this.Items == null )
         {
-          this.Items = new List<OptionItem> ( );
+          this.Items = new List<Item> ( );
         }
 
         //
         // iterate through the list creating the list categories.
         //
-        foreach ( OptionItem item in this.Items )
+        foreach ( Item item in this.Items )
         {
           EvOption option = new EvOption ( item.Category.Trim ( ) );
 
@@ -331,7 +314,7 @@ namespace Evado.Model.Digital
       //
       // iterate through the list creating the list categories.
       //
-      foreach ( OptionItem item in this.Items )
+      foreach ( Item item in this.Items )
       {
         //
         // skip non matching categories.

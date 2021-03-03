@@ -6788,6 +6788,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Selection List.
+        /// </summary>
+        public static string SelectionList_Delete_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Delete_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection list description:.
         /// </summary>
         public static string SelectionList_Description_Field_Label {
@@ -6806,11 +6815,29 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string SelectionList_General_Group_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_General_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ERROR: Selection List identifier is empty..
         /// </summary>
         public static string SelectionList_Identifier_Empty_Error_Message {
             get {
                 return ResourceManager.GetString("SelectionList_Identifier_Empty_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issue Selection List.
+        /// </summary>
+        public static string SelectionList_Issue_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Issue_Command_Title", resourceCulture);
             }
         }
         
@@ -6838,6 +6865,69 @@ namespace Evado.Model.Digital {
         public static string SelectionList_List_Id_Field_Label {
             get {
                 return ResourceManager.GetString("SelectionList_List_Id_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Selection List.
+        /// </summary>
+        public static string SelectionList_New_List_Page_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_New_List_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Options.
+        /// </summary>
+        public static string SelectionList_Option_Group_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Option_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Options table:.
+        /// </summary>
+        public static string SelectionList_Options_Field_Label {
+            get {
+                return ResourceManager.GetString("SelectionList_Options_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Selection List.
+        /// </summary>
+        public static string SelectionList_Save_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Save_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string SelectionList_Table_Column_1_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Table_Column_1_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option Value.
+        /// </summary>
+        public static string SelectionList_Table_Column_2_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Table_Column_2_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option Description.
+        /// </summary>
+        public static string SelectionList_Table_Column_3_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Table_Column_3_Title", resourceCulture);
             }
         }
         

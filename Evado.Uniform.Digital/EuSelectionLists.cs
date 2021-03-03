@@ -26,7 +26,7 @@ using System.Web.SessionState;
 using Evado.Bll;
 using Evado.Model;
 using Evado.Bll.Digital;
-using  Evado.Model.Digital;
+using Evado.Model.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital
@@ -238,7 +238,7 @@ namespace Evado.UniForm.Digital
 
           this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-           return this.Session.LastPage;;
+          return this.Session.LastPage; ;
         }
 
         // 
@@ -270,7 +270,7 @@ namespace Evado.UniForm.Digital
 
 
         this.LogMethodEnd ( "getListObject" );
-        return clientDataObject;  
+        return clientDataObject;
 
       }
       catch ( Exception Ex )
@@ -287,7 +287,7 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogMethodEnd ( "getListObject" );
-       return this.Session.LastPage;;
+      return this.Session.LastPage; ;
 
     }//END getListObject method.
 
@@ -311,9 +311,9 @@ namespace Evado.UniForm.Digital
 
       this.Session.AdminSelectionLists = this._Bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
 
-      this.LogDebugClass ( this._Bll_SelectionLists.Log ); 
+      this.LogDebugClass ( this._Bll_SelectionLists.Log );
 
-      this.LogDebug( "Selection list count {0}.", this.Session.AdminSelectionLists.Count ) ;
+      this.LogDebug ( "Selection list count {0}.", this.Session.AdminSelectionLists.Count );
 
       this.LogMethodEnd ( "getSelectionList" );
 
@@ -328,7 +328,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    public void getListGroup ( 
+    public void getListGroup (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getListGroup" );
@@ -377,7 +377,7 @@ namespace Evado.UniForm.Digital
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Selection_Lists.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );
-          
+
           command.Id = listItem.Guid;
           command.SetGuid ( listItem.Guid );
 
@@ -421,7 +421,7 @@ namespace Evado.UniForm.Digital
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasAdministrationAccess== false )
+      if ( this.Session.UserProfile.hasAdministrationAccess == false )
       {
         this.LogIllegalAccess (
           this.ClassNameSpace + "getObject",
@@ -429,7 +429,7 @@ namespace Evado.UniForm.Digital
 
         this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-         return this.Session.LastPage;;
+        return this.Session.LastPage; ;
       }
 
       // 
@@ -503,7 +503,7 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-       return this.Session.LastPage;;
+      return this.Session.LastPage; ;
 
     }//END getObject method
 
@@ -529,11 +529,16 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
       ClientDataObject.Id = this.Session.AdminSelectionList.Guid;
-      ClientDataObject.Title = 
-        String.Format( EdLabels.SelectionLIsts_Page_Title,
-        this.Session.AdminSelectionList.ListId,
-        this.Session.AdminSelectionList.Title );
 
+      ClientDataObject.Title = EdLabels.SelectionList_New_List_Page_Title;
+
+      if ( this.Session.AdminSelectionList.ListId != String.Empty )
+      {
+        ClientDataObject.Title =
+          String.Format ( EdLabels.SelectionLIsts_Page_Title,
+          this.Session.AdminSelectionList.ListId,
+          this.Session.AdminSelectionList.Title );
+      }
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -556,6 +561,11 @@ namespace Evado.UniForm.Digital
       // Add the detail group to the page.
       //
       this.getDataObject_DetailsGroup ( ClientDataObject.Page );
+
+      //
+      // Display the selection list option table.
+      //
+      this.getDataObject_OptionGroup ( ClientDataObject.Page );
 
       this.LogMethodEnd ( "getDataObject" );
 
@@ -585,7 +595,7 @@ namespace Evado.UniForm.Digital
         // save command.
         //
         pageCommand = PageObject.addCommand (
-          EdLabels.Organisation_Save_Command_Title,
+          EdLabels.SelectionList_Save_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Selection_Lists.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -602,7 +612,7 @@ namespace Evado.UniForm.Digital
         // Delete command
         //
         pageCommand = PageObject.addCommand (
-          EdLabels.Organisation_Delete_Command_Title,
+          EdLabels.SelectionList_Delete_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Selection_Lists.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -627,7 +637,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_DetailsGroup ( 
+    private void getDataObject_DetailsGroup (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_DetailsGroup" );
@@ -640,9 +650,8 @@ namespace Evado.UniForm.Digital
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        String.Empty );
+       EdLabels.SelectionList_General_Group_Title );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       //
       // Add the group commands
@@ -658,7 +667,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminSelectionList.ListId, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
-      if ( this.Session.AdminSelectionList.Guid != Guid.Empty )
+      if ( this.Session.AdminSelectionList.Guid != Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
       {
         groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
       }
@@ -683,14 +692,109 @@ namespace Evado.UniForm.Digital
       // 
       groupField = pageGroup.createFreeTextField (
         EdSelectionList.SelectionListFieldNames.Description,
-        EdLabels.SelectionList_Description_Field_Label, String.Empty,
-        50,10);
+        EdLabels.SelectionList_Description_Field_Label,
+        this.Session.AdminSelectionList.Description,
+        50, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getDataObject_DetailsGroup" );
 
     }//END getDataObject_DetailsGroup Method
 
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
+    /// <returns>ClientApplicationData object</returns>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_OptionGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_OptionGroup" );
+      this.LogDebug ( "Item count {0}", 
+        this.Session.AdminSelectionList.Items.Count );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      int rowCount_Inital = 20;
+      int rowCount_Extend = 5;
+
+      // 
+      // create the page page Group
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+        EdLabels.SelectionList_Option_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // Add the group commands
+      //
+      this.getDataObject_GroupCommands ( pageGroup );
+
+      // 
+      // Create the customer id object
+      // 
+      groupField = pageGroup.createTableField (
+        EdSelectionList.SelectionListFieldNames.Items.ToString ( ),
+        EdLabels.SelectionList_Options_Field_Label,
+        this.Session.AdminSelectionList.ListId, 3 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      groupField.Table.Header [ 0 ].No = 1;
+      groupField.Table.Header [ 0 ].Text = EdLabels.SelectionList_Table_Column_1_Title;
+      groupField.Table.Header [ 0 ].ColumnId = groupField.Table.Header [ 0 ].Text;
+      groupField.Table.Header [ 0 ].Width = "20";
+      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Text;
+
+      groupField.Table.Header [ 1 ].No = 2;
+      groupField.Table.Header [ 1 ].Text = EdLabels.SelectionList_Table_Column_2_Title;
+      groupField.Table.Header [ 1 ].ColumnId = groupField.Table.Header [ 1 ].Text;
+      groupField.Table.Header [ 1 ].Width = "20";
+      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Text;
+
+      groupField.Table.Header [ 2 ].No = 3;
+      groupField.Table.Header [ 2 ].Text = EdLabels.SelectionList_Table_Column_3_Title;
+      groupField.Table.Header [ 2 ].ColumnId = groupField.Table.Header [ 2 ].Text;
+      groupField.Table.Header [ 2 ].Width = "40";
+      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Text;
+
+      //
+      // Add an initial row count of 20 rows
+      //
+      if ( this.Session.AdminSelectionList.Items.Count == 0 )
+      {
+        for ( int i = 0; i < rowCount_Inital; i++ )
+        {
+          groupField.Table.addRow ( );
+        }
+      }
+      else
+      {
+        for ( int count = 0; count < this.Session.AdminSelectionList.Items.Count; count++ )
+        {
+          EdSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
+
+          var row = groupField.Table.addRow ( );
+          row.No = count + 1;
+          row.Column [ 0 ] = item.Category;
+          row.Column [ 1 ] = item.Value;
+          row.Column [ 2 ] = item.Description;
+        }
+
+        //
+        // Add extract rows to allow for more options to be added.
+        //
+        for ( int i = 0; i < rowCount_Extend; i++ )
+        {
+          groupField.Table.addRow ( );
+        }
+      }
+
+      this.LogMethodEnd ( "getDataObject_OptionGroup" );
+
+    }//END getDataObject_DetailsGroup Method
 
     //================================================================================
     /// <summary>
@@ -713,7 +817,7 @@ namespace Evado.UniForm.Digital
       if ( PageGroup.EditAccess == Evado.Model.UniForm.EditAccess.Enabled )
       {
         pageCommand = PageGroup.addCommand (
-          EdLabels.Organisation_Save_Command_Title,
+          EdLabels.SelectionList_Save_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Selection_Lists.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -727,10 +831,28 @@ namespace Evado.UniForm.Digital
           EdSelectionList.SaveActions.Save.ToString ( ) );
 
         //
+        // Issue command
+        //
+        pageCommand = PageGroup.addCommand (
+          EdLabels.SelectionList_Issue_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Selection_Lists.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+        // 
+        // Define the save and issue groupCommand parameters
+        // 
+        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.AddParameter (
+           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+          EdSelectionList.SaveActions.Issue_List.ToString ( ) );
+
+
+        //
         // Delete command
         //
         pageCommand = PageGroup.addCommand (
-          EdLabels.Organisation_Delete_Command_Title,
+          EdLabels.SelectionList_Delete_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Selection_Lists.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
@@ -743,9 +865,11 @@ namespace Evado.UniForm.Digital
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
           EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
       }
+
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
 
     }//END getDataObject_GroupCommands Method
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -786,14 +910,18 @@ namespace Evado.UniForm.Digital
 
           this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-           return this.Session.LastPage;;
+          return this.Session.LastPage; ;
         }
 
         //
         // Initialise the dlinical ResultData objects.
         //
         this.Session.AdminSelectionList = new EdSelectionList ( );
-        this.Session.AdminSelectionList.Guid =   Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.AdminSelectionList.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.AdminSelectionList.ListId = String.Empty;
+        this.Session.AdminSelectionList.Title = String.Empty;
+        this.Session.AdminSelectionList.Description = String.Empty;
+        this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
 
         this.getDataObject ( clientDataObject );
 
@@ -817,7 +945,7 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-       return this.Session.LastPage;
+      return this.Session.LastPage;
 
     }//END method
 
@@ -848,12 +976,10 @@ namespace Evado.UniForm.Digital
       try
       {
         this.LogMethod ( "updateObject" );
-        this.LogDebug( "PageCommand: " + PageCommand.getAsString ( false, true ) );
-
-        this.LogDebug ( "AdminOrganisation"
-          + " Guid: " + this.Session.AdminSelectionList.Guid
-          + " OrgId: " + this.Session.AdminSelectionList.ListId
-          + " Title: " + this.Session.AdminSelectionList.Title );
+        this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+        //
+        // Initialise the methods variables and objects.
+        //
         EdSelectionList.SaveActions saveAction = EdSelectionList.SaveActions.Save;
 
         // 
@@ -871,7 +997,7 @@ namespace Evado.UniForm.Digital
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.
         // 
-        if ( this.Session.AdminSelectionList.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+        if ( this.Session.AdminSelectionList.Guid == Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
           this.Session.AdminSelectionList.Guid = Guid.Empty;
         }
@@ -881,13 +1007,25 @@ namespace Evado.UniForm.Digital
         // 
         if ( PageCommand.Method == Evado.Model.UniForm.ApplicationMethods.Delete_Object )
         {
-          return new Model.UniForm.AppData();
+          return new Model.UniForm.AppData ( );
         }
 
         // 
         // Update the object.
         // 
         this.updateObjectValue ( PageCommand.Parameters );
+
+        //
+        // Update the table values.
+        //
+        this.updateObjectTableValues ( PageCommand.Parameters );
+
+        this.LogDebug ( "AdminSelectionList:" );
+        this.LogDebug ( "-Guid: " + this.Session.AdminSelectionList.Guid );
+        this.LogDebug ( "-ListId: " + this.Session.AdminSelectionList.ListId );
+        this.LogDebug ( "-Title: " + this.Session.AdminSelectionList.Title );
+        this.LogDebug ( "-Description: " + this.Session.AdminSelectionList.Description );
+        this.LogDebug ( "-Items.Count: " + this.Session.AdminSelectionList.Items.Count );
 
         //
         // check that the mandatory fields have been filed.
@@ -897,17 +1035,29 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }
 
+        //
+        // remove the empty rows from the list.
+        //
+        for ( int i = 0; i < this.Session.AdminSelectionList.Items.Count; i++ )
+        {
+          if ( this.Session.AdminSelectionList.Items [ i ].Value == String.Empty )
+          {
+            this.Session.AdminSelectionList.Items.RemoveAt ( i );
+            i--;
+          }
+        }
+
         // 
         // Get the save action message value.
         // 
-        String stSaveAction = PageCommand.GetParameter (  Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
+        String stSaveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
 
         // 
         // Resets the save action to the parameter passed in the page groupCommand.
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction =  Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SaveActions> ( stSaveAction );
+          saveAction = Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SaveActions> ( stSaveAction );
         }
         this.Session.AdminSelectionList.Action = saveAction;
 
@@ -924,7 +1074,7 @@ namespace Evado.UniForm.Digital
         // 
         // get the debug ResultData.
         // 
-        this.LogValue (  this._Bll_SelectionLists.Log );
+        this.LogValue ( this._Bll_SelectionLists.Log );
 
         // 
         // if an error state is returned create log the event.
@@ -958,7 +1108,7 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }//END save error returned.
 
-        return new Model.UniForm.AppData();
+        return new Model.UniForm.AppData ( );
 
       }
       catch ( Exception Ex )
@@ -1033,10 +1183,10 @@ namespace Evado.UniForm.Digital
     /// <param name="Parameters">List of field values to be updated.</param>
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValue ( 
+    private void updateObjectValue (
       List<Evado.Model.UniForm.Parameter> Parameters )
     {
-      this.LogMethod (  "updateObjectValue" );
+      this.LogMethod ( "updateObjectValue" );
       this.LogDebug ( "Parameters.Count: " + Parameters.Count );
       this.LogDebug ( "Customer.Guid: " + this.Session.AdminSelectionList.Guid );
 
@@ -1047,7 +1197,8 @@ namespace Evado.UniForm.Digital
       {
         if ( parameter.Name.Contains ( Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == false
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION )
+          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
+          && parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
         {
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
           try
@@ -1072,6 +1223,78 @@ namespace Evado.UniForm.Digital
       }// End iteration loop
 
     }//END updateObjectValue method.
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method saves the ResultData object updating the field values contained in the 
+    /// parameter list.
+    /// </summary>
+    /// <param name="Parameters">List of field values to be updated.</param>
+    /// <returns></returns>
+    //  ----------------------------------------------------------------------------------
+    private void updateObjectTableValues (
+      List<Evado.Model.UniForm.Parameter> Parameters )
+    {
+      this.LogMethod ( "updateObjectTableValues" );
+      this.LogDebug ( "Parameters.Count: " + Parameters.Count );
+      this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
+      int count = 0;
+      /// 
+      /// Iterate through the parameter values updating the ResultData object
+      /// 
+      foreach ( Evado.Model.UniForm.Parameter parameter in Parameters )
+      {
+        if ( parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == true )
+        {
+          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
+          string name = parameter.Name;
+          string [ ] arName = name.Split ( '_' );
+          int arLength = arName.Length;
+          int column = EvStatics.getInteger ( arName [ arLength - 1 ] );
+          int row = EvStatics.getInteger ( arName [ arLength - 2 ] ) - 1;
+
+          this.LogDebug ( "Row {0}, Col {1}", row, column );
+
+          if ( row >= this.Session.AdminSelectionList.Items.Count )
+          {
+            this.LogDebug ( "Add option item" );
+            this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item ( ) );
+            this.Session.AdminSelectionList.Items [ row ].No = row + 1;
+          }
+
+          //
+          // User switch to determine which object value to updae.
+          //
+          switch ( column )
+          {
+            case 1:
+              {
+                this.LogDebug ( "Update Category" );
+                this.Session.AdminSelectionList.Items [ row ].Category = parameter.Value;
+                break;
+              }
+            case 2:
+              {
+                this.LogDebug ( "Update Value" );
+                this.Session.AdminSelectionList.Items [ row ].Value = parameter.Value;
+                break;
+              }
+            case 3:
+              {
+                this.LogDebug ( "Update Description" );
+                this.Session.AdminSelectionList.Items [ row ].Description = parameter.Value;
+                break;
+              }
+          }//END value switch
+        }
+        else
+        {
+          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
+        }
+
+      }// End iteration loop
+
+    }//END updateObjectTableValues method.
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

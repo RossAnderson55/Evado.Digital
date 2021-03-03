@@ -231,13 +231,17 @@ namespace Evado.Bll.Digital
       {
         return EvEventCodes.Data_InvalidId_Error;
       }
+      if ( SelectionList.State == EdSelectionList.SelectionListStates.Null )
+      {
+        SelectionList.State = EdSelectionList.SelectionListStates.Draft;
+      }
 
       // 
       // Remove the empty items from the list.
       // 
       for ( int count = 0; count < SelectionList.Items.Count; count++ )
       {
-        EdSelectionList.OptionItem item = (EdSelectionList.OptionItem) SelectionList.Items [ count ];
+        EdSelectionList.Item item = (EdSelectionList.Item) SelectionList.Items [ count ];
 
         if ( item.Value == String.Empty )
         {

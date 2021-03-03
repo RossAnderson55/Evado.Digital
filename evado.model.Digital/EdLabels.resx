@@ -2719,4 +2719,34 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="SelectionList_Update_Error_Message" xml:space="preserve">
     <value>ERROR: updates selection list object.</value>
   </data>
+  <data name="SelectionList_Delete_Command_Title" xml:space="preserve">
+    <value>Delete Selection List</value>
+  </data>
+  <data name="SelectionList_General_Group_Title" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SelectionList_Issue_Command_Title" xml:space="preserve">
+    <value>Issue Selection List</value>
+  </data>
+  <data name="SelectionList_New_List_Page_Title" xml:space="preserve">
+    <value>New Selection List</value>
+  </data>
+  <data name="SelectionList_Options_Field_Label" xml:space="preserve">
+    <value>List Options table:</value>
+  </data>
+  <data name="SelectionList_Option_Group_Title" xml:space="preserve">
+    <value>List Options</value>
+  </data>
+  <data name="SelectionList_Save_Command_Title" xml:space="preserve">
+    <value>Save Selection List</value>
+  </data>
+  <data name="SelectionList_Table_Column_1_Title" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="SelectionList_Table_Column_2_Title" xml:space="preserve">
+    <value>Option Value</value>
+  </data>
+  <data name="SelectionList_Table_Column_3_Title" xml:space="preserve">
+    <value>Option Description</value>
+  </data>
 </root>

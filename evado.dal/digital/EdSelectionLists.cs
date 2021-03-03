@@ -73,28 +73,28 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This constant defines sql query string for selecting all items from FormField selectionlist view.
     /// </summary>
-    private const string _sqlQuery_View = "Select * FROM ED_SELECTION_LISTS ";
+    private const string SQL_VIEW_QUERY = "Select * FROM ED_SELECTION_LISTS ";
 
     #region Define class Storeprocedure.
     /// <summary>
     /// This constant defines storeprocedure for adding items to formfield selection list table. 
     /// </summary>
-    private const string _STORED_PROCEDURE_AddItem = "USR_SELECTION_LIST_add";
+    private const string _STORED_PROCEDURE_AddItem = "USR_SELECTION_LIST_ADD";
 
     /// <summary>
     /// This constant defines storeprocedure for updating items on formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_UpdateItem = "USR_SELECTION_LIST_update";
+    private const string _STORED_PROCEDURE_UpdateItem = "USR_SELECTION_LIST_UPDATE";
 
     /// <summary>
     /// This constant defines storeprocedure for deleting items from formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_DeleteItem = "USR_SELECTION_LIST_delete";
+    private const string _STORED_PROCEDURE_DeleteItem = "USR_SELECTION_LIST_DELETE";
 
     /// <summary>
     /// This constant defines storeprocedure for withdrawing items from formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_WithdrawItem = "USR_SELECTION_LIST_withdraw";
+    private const string _STORED_PROCEDURE_WithdrawItem = "USR_SELECTION_LIST_WITHDRAWN";
 
 
     private const string DB_GUID = "EDSL_GUID";
@@ -189,10 +189,10 @@ namespace Evado.Dal.Digital
       //
       parms [ 0 ].Value = Item.Guid;
       parms [ 1 ].Value = Item.ListId;
-      parms [ 2 ].Value = string.Empty;
+      parms [ 2 ].Value = Item.State;
       parms [ 3 ].Value = Item.Title;
       parms [ 4 ].Value = Item.Description;
-      parms [ 5 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdSelectionList.OptionItem>> ( Item.Items );
+      parms [ 5 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
       parms [ 6 ].Value = Item.Version;
       parms [ 7 ].Value = this.ClassParameters.UserProfile.UserId;
       parms [ 8 ].Value = this.ClassParameters.UserProfile.CommonName;
@@ -237,7 +237,7 @@ namespace Evado.Dal.Digital
       string xmlCodeItem = EvSqlMethods.getString ( Row, EdSelectionLists.DB_ITEM_LIST );
       if ( xmlCodeItem != String.Empty )
       {
-        Item.Items = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdSelectionList.OptionItem>> ( xmlCodeItem );
+        Item.Items = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdSelectionList.Item>> ( xmlCodeItem );
       }
       Item.State = Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SelectionListStates> (
         EvSqlMethods.getString ( Row, EdSelectionLists.DB_STATE ) );
@@ -298,7 +298,7 @@ namespace Evado.Dal.Digital
       //
       // Define the sql query string. 
       // 
-      sqlQueryString = _sqlQuery_View;
+      sqlQueryString = SQL_VIEW_QUERY;
       if ( State != EdSelectionList.SelectionListStates.Null )
       {
         sqlQueryString += " WHERE ( " + EdSelectionLists.DB_STATE + " = " + EdSelectionLists.PARM_STATE + " ) "
@@ -481,7 +481,7 @@ namespace Evado.Dal.Digital
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = _sqlQuery_View + " WHERE " + EdSelectionLists.DB_GUID + " = " + EdSelectionLists.PARM_GUID+ ";";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdSelectionLists.DB_GUID + " = " + EdSelectionLists.PARM_GUID+ ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -566,7 +566,7 @@ namespace Evado.Dal.Digital
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = _sqlQuery_View + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
 
       if ( Issued == true )
       {
@@ -679,10 +679,10 @@ namespace Evado.Dal.Digital
       }
 
       string oldCodeItem =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.OptionItem>> ( Item.Items );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
 
       string newCodeItem =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.OptionItem>> ( Item.Items );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
 
       if ( newCodeItem != oldCodeItem )
       {
@@ -743,14 +743,14 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdSelectionLists.DB_LIST_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10),
       };
       cmdParms [ 0 ].Value = Item.ListId;
 
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = _sqlQuery_View + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
 
       this.LogDebug ( "Duplication SQL Query:" + sqlQueryString );
 
