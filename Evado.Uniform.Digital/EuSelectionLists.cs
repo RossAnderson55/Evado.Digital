@@ -34,7 +34,7 @@ namespace Evado.UniForm.Digital
   /// <summary>
   /// This class defines the selection list class
   /// 
-  /// This class terminates the Organisation object.
+  /// This class terminates the Selection Lists object.
   /// </summary>
   public class EuSelectionLists : EuClassAdapterBase
   {
@@ -278,7 +278,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EdLabels.Organisation_List_Error_Message;
+        this.ErrorMessage = EdLabels.SelectionList_List_Error_Message;
 
         // 
         // Generate the log the error event.
