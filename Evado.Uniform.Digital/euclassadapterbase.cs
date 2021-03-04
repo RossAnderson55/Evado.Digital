@@ -681,7 +681,7 @@ namespace Evado.UniForm.Digital
     /// <param name="Format">String: format text.</param>
     /// <param name="args">Array of objects as parameters.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogFormat ( String Format, params object [ ] args )
+    protected void LogValue ( String Format, params object [ ] args )
     {
       if ( this.LoggingLevel >= EuClassAdapterBase.LoggingValueLevel )
       {

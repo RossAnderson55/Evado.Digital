@@ -79,9 +79,9 @@
     <Content Include="css\exportstyle.css" />
     <Content Include="css\xsl-style.css" />
     <Content Include="email_tmplate.xml" />
-    <Content Include="temp\ClientData.xml" />
     <Content Include="temp\ClientPage.htm" />
     <Content Include="temp\Copy of ClientPage.htm" />
+    <Content Include="temp\Data.xml" />
     <Content Include="temp\Errors.txt" />
     <Content Include="xsl\temp\EventLog.txt" />
     <Content Include="Global.asax" />

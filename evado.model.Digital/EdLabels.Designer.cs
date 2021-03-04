@@ -6806,11 +6806,29 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selection List Download.
+        /// </summary>
+        public static string SelectionList_Download_Group_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Download_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ERROR: Duplicate selection list identifier.
         /// </summary>
         public static string SelectionList_Duplicate_Error_Message {
             get {
                 return ResourceManager.GetString("SelectionList_Duplicate_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Selection List.
+        /// </summary>
+        public static string SelectionList_Export_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Export_Command_Title", resourceCulture);
             }
         }
         
@@ -6829,6 +6847,15 @@ namespace Evado.Model.Digital {
         public static string SelectionList_Identifier_Empty_Error_Message {
             get {
                 return ResourceManager.GetString("SelectionList_Identifier_Empty_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Selection List.
+        /// </summary>
+        public static string SelectionList_Import_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Import_Command_Title", resourceCulture);
             }
         }
         
@@ -6865,6 +6892,15 @@ namespace Evado.Model.Digital {
         public static string SelectionList_List_Id_Field_Label {
             get {
                 return ResourceManager.GetString("SelectionList_List_Id_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered retrieving selection list..
+        /// </summary>
+        public static string SelectionList_List_Retrieval_Error_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_List_Retrieval_Error_Message", resourceCulture);
             }
         }
         
@@ -6955,6 +6991,15 @@ namespace Evado.Model.Digital {
         public static string SelectionList_Update_Error_Message {
             get {
                 return ResourceManager.GetString("SelectionList_Update_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Selection List.
+        /// </summary>
+        public static string SelectionList_Upload_Command_Title {
+            get {
+                return ResourceManager.GetString("SelectionList_Upload_Command_Title", resourceCulture);
             }
         }
         

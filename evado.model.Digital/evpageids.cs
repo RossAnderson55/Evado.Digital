@@ -597,17 +597,17 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration value is the external selection list upload page identifier.
     /// </summary>
-    External_Selection_List_Upload,
+    Selection_List_Upload,
 
     /// <summary>
     /// This enumeration value is the external selection list page identifier.
     /// </summary>
-    External_Selection_List_Page,
+    Selection_List_Page,
 
     /// <summary>
     /// This enumeration value is the external selection list view page identifier.
     /// </summary>
-    External_Selection_List_View,
+    Selection_List_View,
 
 
     /// <summary>

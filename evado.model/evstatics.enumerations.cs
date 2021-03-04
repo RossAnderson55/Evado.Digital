@@ -159,7 +159,13 @@ namespace Evado.Model
         //
         // Return Type of the enumeration
         //
-        return (T) Enum.Parse( typeof( T ), value );
+        try
+        {
+          return (T) Enum.Parse ( typeof ( T ), value );
+        }
+        catch {
+          return default ( T );
+        }
 
       }//END parseEnumValue method
       /*

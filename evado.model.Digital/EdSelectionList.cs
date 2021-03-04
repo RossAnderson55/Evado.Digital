@@ -117,9 +117,35 @@ namespace Evado.Model.Digital
       Version,
 
       /// <summary>
+      /// This enumeration defines the list title field
+      /// </summary>
+      State,
+
+      /// <summary>
       /// This enumeration defines the list items field
       /// </summary>
       Items,
+
+      /// <summary>
+      /// This enumeration defines the list item No field
+      /// </summary>
+      Item_No,
+
+      /// <summary>
+      /// This enumeration defines the list item value field
+      /// </summary>
+      Item_Value,
+
+      /// <summary>
+      /// This enumeration defines the list item Desciption field
+      /// </summary>
+      Item_Description,
+
+      /// <summary>
+      /// This enumeration defines the list item Category field
+      /// </summary>
+      Item_Category,
+
     }
 
     /// <summary>

@@ -262,7 +262,7 @@ namespace Evado.UniForm.Digital
             return pageCommand;
           }
 
-        case EvPageIds.External_Selection_List_View:
+        case EvPageIds.Selection_List_View:
           {
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,
@@ -275,7 +275,7 @@ namespace Evado.UniForm.Digital
             return pageCommand;
           }
 
-        case EvPageIds.External_Selection_List_Page:
+        case EvPageIds.Selection_List_Page:
           {
             pageCommand = new Model.UniForm.Command (
               MenuItem.Title,

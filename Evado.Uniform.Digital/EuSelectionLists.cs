@@ -55,6 +55,11 @@ namespace Evado.UniForm.Digital
       {
         this.Session.AdminSelectionList = new EdSelectionList ( );
       }
+
+      if ( this.Session.UploadFileName == null )
+      {
+        this.Session.UploadFileName = String.Empty;
+      }
     }
 
     /// <summary>
@@ -98,6 +103,11 @@ namespace Evado.UniForm.Digital
         this.Session.AdminSelectionList = new EdSelectionList ( );
       }
 
+      if ( this.Session.UploadFileName == null )
+      {
+        this.Session.UploadFileName = String.Empty;
+      }
+
       this._Bll_SelectionLists = new Evado.Bll.Digital.EdSelectionLists ( this.ClassParameters );
 
     }//END Method
@@ -110,6 +120,15 @@ namespace Evado.UniForm.Digital
 
     private Evado.Bll.Digital.EdSelectionLists _Bll_SelectionLists = new Evado.Bll.Digital.EdSelectionLists ( );
 
+    private bool ImportExportSelected = false;
+
+    public const string CONST_IMP_EXP_FIELD_ID = "IM-EX";
+
+    public const string CONST_TEMPLATE_FIELD_ID = "IFTF";
+
+    public const string CONST_TEMPLATE_EXTENSION = ".sl.csv";
+
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -118,7 +137,6 @@ namespace Evado.UniForm.Digital
     // ==================================================================================
     /// <summary>
     /// This method gets the trial site object.
-    /// 
     /// </summary>
     /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
     /// <returns>ClientApplicationData</returns>
@@ -127,13 +145,26 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getDataObject" );
-      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString ( false, false ) );
+      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString (false, true ) );
       try
       {
         // 
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        this.ImportExportSelected = false;
+
+        //
+        // if the import export parameter exists then import export enabled.
+        //
+        if ( PageCommand.hasParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID ) == true )
+        {
+          this.ImportExportSelected = true ;
+        }
+        this.LogDebug ( "ImportExportSelected {0}. ", ImportExportSelected );
+
+        this.Session.PageId = PageCommand.GetPageId<EvPageIds> ( );
+        this.LogDebug ( "PageId {0}", this.Session.PageId );
 
         this.LogDebug ( "Command.Method {0}", PageCommand.Method );
         // 
@@ -249,6 +280,19 @@ namespace Evado.UniForm.Digital
           this.Session.UserProfile );
 
         //
+        // read in the form template upload filename.
+        //
+        string value = PageCommand.GetParameter ( EuSelectionLists.CONST_TEMPLATE_FIELD_ID );
+
+        this.LogValue ( "Upload filename: " + value );
+
+        if ( value != string.Empty )
+        {
+          this.Session.UploadFileName = value;
+        }
+        this.LogValue ( "FormTemplateFilename: " + this.Session.UploadFileName );
+
+        //
         // get the selection lists.
         //
         this.getSelectionList ( );
@@ -259,6 +303,46 @@ namespace Evado.UniForm.Digital
         clientDataObject.Title = EdLabels.SelectionLists_List_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
+
+
+        //
+        // import  command
+        //
+        var pageCommand = clientDataObject.Page.addCommand (
+          EdLabels.SelectionList_Import_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Selection_Lists.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+        // 
+        // Define the groupCommand parameters
+        // 
+        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
+        pageCommand.AddParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID, "YES" );
+
+        //
+        // Display the selection list upload group if selected.
+        //
+        if ( this.ImportExportSelected == true )
+        {
+          //
+          // if the form template filename is empty display the selection field.
+          //
+          if ( this.Session.UploadFileName == String.Empty )
+          {
+            this.LogValue ( "FormTemplateFilename is empty" );
+
+            this.getSelectionListUploadDataObject ( clientDataObject );
+          }
+          else
+          {
+            this.LogValue ( "Processing the uploaded file." );
+
+            this.getSelectionListUpload_Group ( clientDataObject );
+          }
+
+        }//END upload groups.
 
         // 
         // Add the trial organisation list to the page.
@@ -291,7 +375,6 @@ namespace Evado.UniForm.Digital
 
     }//END getListObject method.
 
-
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -318,8 +401,6 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getSelectionList" );
 
     }//END getSelectionList method
-
-
 
     // ==============================================================================
     /// <summary>
@@ -400,6 +481,376 @@ namespace Evado.UniForm.Digital
       }
 
     }//END getListObject method.
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Class form template upload methods
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getSelectionListUploadDataObject (
+      Evado.Model.UniForm.AppData ClientDataObject )
+    {
+      this.LogMethod ( "getSelectionListUploadDataObject" );
+
+      //
+      // set the page edit access.
+      //
+      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+      if ( this.Session.UserProfile.hasManagementAccess == true )
+      {
+        ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+      }
+
+      //
+      // Add the file selection group.
+      //
+      this.getUpload_FileSelectionGroup ( ClientDataObject.Page );
+
+    }//END getPropertiesDataObject Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="Page">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getUpload_FileSelectionGroup (
+      Evado.Model.UniForm.Page Page )
+    {
+      this.LogMethod ( "getUpload_FileSelectionGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+
+      //
+      // Define the general properties pageMenuGroup..
+      //
+      pageGroup = Page.AddGroup (
+        String.Empty,
+        Evado.Model.UniForm.EditAccess.Inherited );
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+
+      pageGroup.SetCommandBackBroundColor (
+        Model.UniForm.GroupParameterList.BG_Mandatory,
+        Model.UniForm.Background_Colours.Red );
+
+      groupField = pageGroup.createBinaryFileField (
+        EuSelectionLists.CONST_TEMPLATE_FIELD_ID,
+        EdLabels.Form_Template_File_Selection_Field_Title,
+        String.Empty,
+        this.Session.UploadFileName );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, "Yes" );
+
+      groupCommand = pageGroup.addCommand (
+        EdLabels.SelectionList_Upload_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entity_Layouts.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+      groupCommand.SetPageId ( EvPageIds.Form_Template_Upload );
+      groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
+
+      this.LogMethodEnd ( "getUpload_FileSelectionGroup" );
+
+    }//END getUpload_FileSelectionGroup Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getSelectionListUpload_Group (
+      Evado.Model.UniForm.AppData ClientDataObject )
+    {
+      this.LogMethod ( "getSelectionListUpload_Group" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Guid formGuid = Guid.Empty;
+      EdSelectionList selectionList = new EdSelectionList ( );
+
+      //
+      // Define the general properties pageMenuGroup..
+      //
+      pageGroup = ClientDataObject.Page.AddGroup (
+        EdLabels.Form_Template_Upload_Log_Group_Title,
+        Evado.Model.UniForm.EditAccess.Inherited );
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // Upload the the form by it form file name.
+      //
+      selectionList = this.ReadCsvData (
+        this.UniForm_BinaryFilePath,
+        this.Session.UploadFileName );
+
+      this.LogValue ( "Uploaded selection list is: " + selectionList.ListId );
+
+      //
+      // save the uploaded form.
+      //
+      String processLog = this.SaveUploadedSelectionList ( selectionList );
+
+      this.LogValue ( "processLog: " + processLog );
+
+      pageGroup.Description = processLog;
+
+      //
+      // reset the form template filename.
+      //
+      this.Session.UploadFileName = String.Empty;
+
+      this.LogMethodEnd ( "getSelectionListUpload_Group" );
+
+    }//END getPropertiesDataObject Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    //  ------------------------------------------------------------------------------
+    private EdSelectionList ReadCsvData (
+       String FileDirectory,
+        String FileName )
+    {
+      this.LogMethod ( "ReadCsvData" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      EdSelectionList selectionList = new EdSelectionList ( );
+      String [ ] header = new String [ 8 ];
+      int itemNo = 1;
+
+      //
+      // read in the file as list of string.
+      //
+      List<String> StringList = Evado.Model.EvStatics.Files.readFileAsList (
+         FileDirectory,
+         FileName );
+
+      for ( int i = 0; i < StringList.Count; i++ )
+      {
+        String str = StringList [ i ];
+
+        if ( str == String.Empty )
+        {
+          continue;
+        }
+
+        //
+        // separate the row columns.
+        //
+        String [ ] csvRow = str.Split ( ',' );
+
+        if ( csvRow.Length < 6 )
+        {
+          continue;
+        }
+
+        //
+        // read in the first row (header) of the CSV file.
+        //
+        if ( i == 0 )
+        {
+          this.LogDebug ( "Header {0}", str );
+          for ( int j = 0; j < 6; j++ )
+          {
+            header [ j ] = csvRow [ j ];
+          }
+          continue;
+        }
+
+        var item = new EdSelectionList.Item ( );
+        item.No = itemNo;
+        itemNo++;
+
+        //
+        // iterate through the row extracting the values that match the header names.
+        //
+        for ( int k = 0; k < 6; k++ )
+        {
+          string name = header [ k ].Trim ( );
+
+          this.LogDebug ( "K {0}, name {1}, V: {2} ", k, name, csvRow [ k ] );
+
+          var columName = EvStatics.parseEnumValue<EdSelectionList.SelectionListFieldNames> ( name );
+
+          switch ( columName )
+          {
+            case EdSelectionList.SelectionListFieldNames.ListId:
+              {
+                if ( csvRow [ k ] != String.Empty )
+                {
+                  selectionList.ListId = csvRow [ k ];
+                }
+                break;
+              }
+            case EdSelectionList.SelectionListFieldNames.Title:
+              {
+                if ( csvRow [ k ] != String.Empty )
+                {
+                  selectionList.Title = csvRow [ k ];
+                }
+                break;
+              }
+            case EdSelectionList.SelectionListFieldNames.Description:
+              {
+                if ( csvRow [ k ] != String.Empty )
+                {
+                  selectionList.Title = csvRow [ k ];
+                }
+                break;
+              }
+            case EdSelectionList.SelectionListFieldNames.Item_Category:
+              {
+                item.Category = csvRow [ k ];
+                break;
+              }
+            case EdSelectionList.SelectionListFieldNames.Item_Value:
+              {
+                item.Value = csvRow [ k ];
+                break;
+              }
+            case EdSelectionList.SelectionListFieldNames.Item_Description:
+              {
+                item.Description= csvRow [ k ];
+                break;
+              }
+          }//END colum switch
+
+        }//End value loop
+
+        //
+        // add the new item to the selection list.
+        //
+        selectionList.Items.Add ( item );
+
+      }//END CSV row iteration loop
+
+      this.LogMethodEnd ( "ReadCsvData" );
+      return selectionList;
+
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private String SaveUploadedSelectionList (
+      EdSelectionList UploadedForm )
+    {
+      this.LogMethod ( "SaveUploadedSelectionList" );
+      this.LogValue ( "Uploaded form is: " + UploadedForm.ListId );
+      //
+      // initialise the methods variables and objects.
+      //
+      Guid formGuid = Guid.Empty;
+      StringBuilder processLog = new StringBuilder ( );
+      Evado.Model.EvEventCodes result = EvEventCodes.Ok;
+      float version = 0.0F;
+
+      processLog.AppendLine ( "Saving form: " + UploadedForm.ListId + " " + UploadedForm.Title );
+      //
+      // Get the list of forms to determine if there is an existing draft form.
+      //
+      if ( this.Session.AdminSelectionLists.Count == 0 )
+      {
+        this.getSelectionList ( );
+      }
+
+      //
+      // check if there is a draft form and delete it.
+      //
+      foreach ( EdSelectionList selectionList in this.Session.AdminSelectionLists )
+      {
+        //
+        // get the list issued version of the form.
+        //
+        if ( selectionList.ListId == UploadedForm.ListId
+          && selectionList.State == EdSelectionList.SelectionListStates.Issued )
+        {
+          version = selectionList.Version;
+        }
+
+        //
+        // delete any existing draft forms with form ID
+        //
+        if ( selectionList.ListId == UploadedForm.ListId
+          && selectionList.State == EdSelectionList.SelectionListStates.Draft )
+        {
+          processLog.AppendLine ( "Existing draft version of " + UploadedForm.ListId + " " + UploadedForm.Title + " found." );
+
+          selectionList.Action = EdSelectionList.SaveActions.Delete_Object;
+
+          result = this._Bll_SelectionLists.SaveItem ( selectionList );
+
+          if ( result == EvEventCodes.Ok )
+          {
+            processLog.AppendLine ( "Existing draft version of successfully deleted." );
+          }
+          else
+          {
+            processLog.AppendLine ( "Deletion process returned the following error: " +
+              Evado.Model.EvStatics.enumValueToString ( result ) );
+
+            return processLog.ToString ( );
+          }
+        }
+      }
+
+      processLog.AppendLine ( "Saving uploaded form to the database." );
+      //
+      // set the form's save parameters 
+
+      UploadedForm.State = EdSelectionList.SelectionListStates.Draft;
+      UploadedForm.Action = EdSelectionList.SaveActions.Save;
+      UploadedForm.Version = 0;
+      UploadedForm.Guid = Guid.Empty;
+
+      //
+      // Save the form
+      //
+      result = this._Bll_SelectionLists.SaveItem ( UploadedForm );
+
+      this.LogText ( this._Bll_SelectionLists.Log );
+
+      if ( result == EvEventCodes.Ok )
+      {
+        processLog.AppendLine ( "Uploaded form successfully save to database." );
+      }
+      else
+      {
+        processLog.AppendLine ( "Save process returned the following error: " +
+          Evado.Model.EvStatics.enumValueToString ( result ) );
+      }
+
+      return processLog.ToString ( );
+
+    }//END saveUploadeForm method
+
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Class get object methods
 
     // ==============================================================================
     /// <summary>
@@ -507,11 +958,6 @@ namespace Evado.UniForm.Digital
 
     }//END getObject method
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class get object methods
-
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -557,6 +1003,11 @@ namespace Evado.UniForm.Digital
       //
       this.getDataObject_PageCommands ( ClientDataObject.Page );
 
+      if ( this.ImportExportSelected == true )
+      {
+        this.getSelectionListDownloadGroup ( ClientDataObject.Page );
+      }
+
       //
       // Add the detail group to the page.
       //
@@ -591,6 +1042,22 @@ namespace Evado.UniForm.Digital
       // 
       if ( PageObject.EditAccess == Evado.Model.UniForm.EditAccess.Enabled )
       {
+        //
+        // Export  command
+        //
+        pageCommand = PageObject.addCommand (
+          EdLabels.SelectionList_Export_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Selection_Lists.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+        // 
+        // Define the groupCommand parameters
+        // 
+        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
+        pageCommand.AddParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID, "YES" );
+
         //
         // save command.
         //
@@ -629,6 +1096,165 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getDataObject_PageCommands" );
 
     }//END getDataObject_GroupCommands Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Command object.</param>
+    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    //  ------------------------------------------------------------------------------
+    private void getSelectionListDownloadGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getSelectionListDownloadPage" );
+      this.LogValue ( "UniForm_BinaryFilePath: " + this.UniForm_BinaryFilePath );
+
+      //
+      // if import export disabled exit method.
+      //
+      if ( this.ImportExportSelected == false )
+      {
+        return;
+      }
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      String csvData = String.Empty;
+      String templateUrl = String.Empty;
+      String formTemplateFilename = String.Empty;
+      //
+      // exist if the form object is null.
+      //
+      if ( this.Session.AdminSelectionList == null )
+      {
+        this.LogValue ( " Form object is null" );
+        this.LogMethodEnd ( "getSelectionListDownloadPage" );
+        return;
+      }
+
+      //
+      // exist if the form object is null.
+      //
+      if ( this.Session.AdminSelectionList.Guid == Guid.Empty
+        || this.UniForm_BinaryFilePath == String.Empty
+        || this.UniForm_BinaryServiceUrl == String.Empty )
+      {
+        this.LogValue ( " Form object, UniForm path or URL is empty." );
+        this.LogMethodEnd ( "getSelectionListDownloadPage" );
+        return;
+      }
+
+      //
+      // Define the form template filename.
+      //
+      formTemplateFilename = this.Session.AdminSelectionList.ListId
+         + "-" + this.Session.AdminSelectionList.Title
+         + EuSelectionLists.CONST_TEMPLATE_EXTENSION;
+
+      formTemplateFilename = formTemplateFilename.Replace ( " ", "-" );
+      formTemplateFilename = formTemplateFilename.ToLower ( );
+
+      this.LogValue ( "formTemplateFilename: " + formTemplateFilename );
+
+      templateUrl = this.UniForm_BinaryServiceUrl +
+        formTemplateFilename;
+
+      this.LogValue ( "templateUrl: " + templateUrl );
+
+      //
+      // get the CSv selection list data.
+      //
+      csvData = this.CreateCsvData ( this.Session.AdminSelectionList );
+
+      //
+      // Save the form layout to the UniFORM binary repository.
+      //
+      Evado.Model.EvStatics.Files.saveFile (
+        this.UniForm_BinaryFilePath,
+        formTemplateFilename,
+        csvData );
+
+      //
+      // Define the download group.
+      //
+      pageGroup = PageObject.AddGroup (
+        EdLabels.SelectionList_Download_Group_Title,
+        Evado.Model.UniForm.EditAccess.Inherited );
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+
+      groupField = pageGroup.createHtmlLinkField (
+        String.Empty,
+        formTemplateFilename,
+        templateUrl );
+
+      // 
+      // Return the client ResultData object to the calling method.
+      // 
+      this.LogMethodEnd ( "getSelectionListDownloadPage" );
+      return;
+
+    }//END getFormTemplateUpload method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    //  ------------------------------------------------------------------------------
+    private String CreateCsvData ( EdSelectionList SelectionList )
+    {
+      this.LogMethod ( "CreateCsvData" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      StringBuilder sbCsvData = new StringBuilder ( );
+      String outputFormat = "\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"\r\n";
+
+      sbCsvData.AppendFormat ( outputFormat,
+        EdSelectionList.SelectionListFieldNames.ListId,
+        EdSelectionList.SelectionListFieldNames.Title,
+        EdSelectionList.SelectionListFieldNames.Version,
+        EdSelectionList.SelectionListFieldNames.Item_Category,
+        EdSelectionList.SelectionListFieldNames.Item_Value,
+        EdSelectionList.SelectionListFieldNames.Item_Description );
+
+      for ( int count = 0; count < SelectionList.Items.Count; count++ )
+      {
+        EdSelectionList.Item item = SelectionList.Items [ count ];
+        if ( count == 0 )
+        {
+          sbCsvData.AppendFormat ( outputFormat,
+            SelectionList.ListId,
+            SelectionList.Title,
+            item.No,
+            item.Category,
+            item.Value,
+            item.Description );
+        }
+        else
+        {
+          sbCsvData.AppendFormat ( "\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
+            String.Empty,
+            String.Empty,
+            String.Empty,
+            String.Empty,
+            item.No,
+            item.Category,
+            item.Value,
+            item.Description );
+        }
+      }//END item iteration loop
+
+      this.LogMethodEnd ( "CreateCsvData" );
+      return sbCsvData.ToString ( );
+
+    }
 
     // ==============================================================================
     /// <summary>
@@ -712,7 +1338,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_OptionGroup" );
-      this.LogDebug ( "Item count {0}", 
+      this.LogDebug ( "Item count {0}",
         this.Session.AdminSelectionList.Items.Count );
       // 
       // Initialise the methods variables and objects.
@@ -1069,7 +1695,7 @@ namespace Evado.UniForm.Digital
         // 
         // update the object.
         // 
-        EvEventCodes result = this._Bll_SelectionLists.saveItem ( this.Session.AdminSelectionList );
+        EvEventCodes result = this._Bll_SelectionLists.SaveItem ( this.Session.AdminSelectionList );
 
         // 
         // get the debug ResultData.

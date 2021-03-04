@@ -1238,7 +1238,6 @@ namespace Evado.UniForm.Digital
       //
       // initialise the methods variables and objects.
       //
-      Evado.Bll.Digital.EdEntityFields bll_Formfields = new EdEntityFields ( );
       Guid formGuid = Guid.Empty;
       StringBuilder processLog = new StringBuilder ( );
       Evado.Model.EvEventCodes result = EvEventCodes.Ok;

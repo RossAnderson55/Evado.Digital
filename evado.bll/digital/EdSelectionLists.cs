@@ -216,7 +216,7 @@ namespace Evado.Bll.Digital
     /// 6. Return an event code of method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveItem ( EdSelectionList SelectionList )
+    public EvEventCodes SaveItem ( EdSelectionList SelectionList )
     {
       this.LogMethod ( "saveItem" );
       // 
