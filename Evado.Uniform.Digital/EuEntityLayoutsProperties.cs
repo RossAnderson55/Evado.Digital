@@ -562,10 +562,6 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogValue ( "After No of form sections: " + this.Session.EntityLayout.Design.FormSections.Count );
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
-      this.SaveSessionObjects ( );
 
       this.LogMethodEnd ( "getProperties_SectionsPageGroup" );
 
@@ -869,11 +865,6 @@ namespace Evado.UniForm.Digital
       pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
       pageCommand.AddParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER, "1" );
 
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
-      this.SaveSessionObjects ( );
-      this.LogMethodEnd ( "getPropertiesSectionDataObject" );
 
     }//END getPropertiesDataObject Method
 

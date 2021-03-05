@@ -1731,6 +1731,12 @@ namespace Evado.UniForm.Digital
                 break;
               }
           }
+
+          //
+          // empty the selection lists to force a reload on the next initialisation.
+          //
+          this.AdapterObjects.SelectionLists = new List<EdSelectionList> ();
+
           return this.Session.LastPage;
         }//END save error returned.
 

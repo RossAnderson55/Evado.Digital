@@ -2367,6 +2367,19 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The selection list category field enables the selection list object to display a list sub-category.  
+        /// 
+        ///If the selection lis is uncategories the list items will be displayed, if the selection list is categorised, the the categories will be lists.
+        /// 
+        ///Alternatively enter &apos;Auto: FieldId&apos; where the &apos;FieldId&apos; is a Entity Field identifier, will select that field&apos;s value as the category value. .
+        /// </summary>
+        public static string EntityField_External_Selection_Category_Field_Description {
+            get {
+                return ResourceManager.GetString("EntityField_External_Selection_Category_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to eClinical Mobile get Trial object error event..
         /// </summary>
         public static string Error_Log_Mobile_Project_Messge {

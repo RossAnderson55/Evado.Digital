@@ -309,6 +309,8 @@ namespace Evado.Bll.Digital
         this.LogDebug ( "Withdraw the existing checklist" );
         iReturn = this._dal_SelectionLists.WithdrawIssuedList ( SelectionList );
         this.LogClass ( this._dal_SelectionLists.Log );
+
+        SelectionList.State = EdSelectionList.SelectionListStates.Issued;
       }
 
       // 

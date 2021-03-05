@@ -309,10 +309,10 @@ namespace Evado.UniForm.Digital
 
           this.LogClass ( this._Bll_EntityFields.Log );
 
-          this.LogValue ( "SessionObjects.EntityField.FieldId: " + this.Session.EntityField.FieldId );
         }
 
-
+        this.LogDebug ( "Field.FieldId {0}. ", this.Session.EntityField.FieldId );
+        this.LogDebug ( "Field Type {0}.", this.Session.EntityField.TypeId );
 
         //
         // Extract the ResultData type to validated if it has been changed.
@@ -896,25 +896,23 @@ namespace Evado.UniForm.Digital
       // Create the external selection list,
       //
       if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
-      {/*
-        optionList = EvFormField.getDataTypes ( false );
+      {
+        optionList = this.AdapterObjects.getSelectionListOptions ( true );
 
         groupField = pageGroup.createSelectionListField (
-          EvFormField.FormFieldClassFieldNames.ExSelectionListId.ToString ( ),
+          EdRecordField.FieldClassFieldNames.ExSelectionListId,
           EdLabels.Form_Field_External_Selection_Field_Label,
-          this.SessionObjects.FormField.Design.ExSelectionListId,
+          this.Session.EntityField.Design.ExSelectionListId,
           optionList );
-        groupField.Layout = PageGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-        optionList = EvFormField.getDataTypes (false  );
-
-        groupField = pageGroup.createSelectionListField (
-          EvFormField.FormFieldClassFieldNames.ExSelectionListCategory.ToString ( ),
+        groupField = pageGroup.createTextField (
+          EdRecordField.FieldClassFieldNames.ExSelectionListCategory,
           EdLabels.Form_Field_External_Selection_Category_Field_Label,
-          this.SessionObjects.FormField.Design.ExSelectionListCategory,
-          optionList );
-        groupField.Layout = PageGenerator.ApplicationFieldLayout;
-      */
+         EdLabels.EntityField_External_Selection_Category_Field_Description,
+          this.Session.EntityField.Design.ExSelectionListCategory,
+          20 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       //
@@ -1010,7 +1008,6 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END createGeneralFieldGroup Method
-
 
     // ==============================================================================
     /// <summary>

@@ -364,9 +364,9 @@ namespace Evado.Dal.Digital
       cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
       cmdParms [ 24 ].Value = Form.Design.HeaderFormat;
       cmdParms [ 25 ].Value = Form.Design.FooterFormat;
-      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 26 ].Value = DateTime.Now;
+      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 27 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 28 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 

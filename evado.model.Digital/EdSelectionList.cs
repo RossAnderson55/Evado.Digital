@@ -318,6 +318,20 @@ namespace Evado.Model.Digital
           this.State );
       }
     }
+
+    public EvOption Option
+    {
+      get
+      {
+        return new EvOption( this.ListId, 
+          String.Format (
+          EdLabels.SelectionLists_LInk_Text,
+          this.ListId,
+          this.Title,
+          this.Version,
+          this.State ) );
+      }
+    }
     #endregion
 
     #region class methods
@@ -330,12 +344,20 @@ namespace Evado.Model.Digital
     /// <param name="Category">String selection option category</param>
     /// <returns>List of EvOption objects</returns>
     // ----------------------------------------------------------------------------------
-    public List<EvOption> GetOptionList ( String Category )
+    public List<EvOption> GetOptionList ( String Category, bool ForSelectionList )
     {
       //
       // Initialise the methods variables and objecs.
       //
       List<EvOption> optionList = new List<EvOption> ( );
+
+      //
+      // Add an empty selection option. 'Null' indicated that nothing is selected.
+      //
+      if ( ForSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( "Null", "") );
+      }
 
       //
       // iterate through the list creating the list categories.

@@ -2764,4 +2764,11 @@ __Note__: all of these text substitutions are case sensitive.
   <data name="SelectionList_Upload_Command_Title" xml:space="preserve">
     <value>Upload Selection List</value>
   </data>
+  <data name="EntityField_External_Selection_Category_Field_Description" xml:space="preserve">
+    <value>The selection list category field enables the selection list object to display a list sub-category.  
+ 
+If the selection lis is uncategories the list items will be displayed, if the selection list is categorised, the the categories will be lists.
+ 
+Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identifier, will select that field's value as the category value. </value>
+  </data>
 </root>

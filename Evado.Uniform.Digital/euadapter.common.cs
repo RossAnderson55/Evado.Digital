@@ -260,6 +260,45 @@ namespace Evado.UniForm.Digital
 
     }//END loadRecordLayoutList method
 
+    //===================================================================================
+    /// <summary>
+    /// This method executes the form list query 
+    /// </summary>
+    //-----------------------------------------------------------------------------------
+    private void loadSelectionLists ( )
+    {
+      this.LogInitMethod ( "loadSelectionLists" );
+      this.LogInitValue ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+
+      //
+      // Exit the method if the list exists or the loaded entiy layout is false.
+      //
+      if ( this._AdapterObjects.SelectionLists.Count > 0 )
+      {
+        this.LogInitValue ( "Record layouts loaded." );
+        this.LogInitValue ( "END loadSelectionLists" );
+        return;
+      }
+
+      //
+      // Initialise the methods variables and object.
+      //
+      EdSelectionLists bll_SelectionLists = new EdSelectionLists ( this.ClassParameters );
+
+      // 
+      // Query the database to retrieve a list of the selection lists that are issued.
+      // 
+      this._AdapterObjects.SelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Issued );
+
+      this.LogInit ( bll_SelectionLists.Log );
+      this.Session.LoadRecordLayoutList = false;
+
+      this.LogInitValue ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+
+      this.LogInitValue ( "END loadSelectionLists" );
+
+    }//END loadRecordLayoutList method
+
   }///END EuAdapter class
 
 }///END NAMESPACE

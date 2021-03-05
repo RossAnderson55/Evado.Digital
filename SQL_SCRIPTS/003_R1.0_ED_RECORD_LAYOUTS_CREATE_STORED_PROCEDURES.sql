@@ -242,7 +242,7 @@ CREATE PROCEDURE dbo.USR_RECORD_LAYOUT_COPY
 AS
 
 DECLARE @NewGuid uniqueidentifier
-DECLARE @LAYOUT_id varchar(20)
+DECLARE @LAYOUT_ID varchar(20)
 DECLARE @Title varchar(100)
 DECLARE @CopyId varchar(4)
 

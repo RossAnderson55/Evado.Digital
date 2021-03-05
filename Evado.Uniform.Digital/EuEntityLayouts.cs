@@ -179,6 +179,11 @@ namespace Evado.UniForm.Digital
         string value = PageCommand.GetParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER );
 
         //
+        // update the selection values.
+        //
+        this.updateSessionValue ( PageCommand );
+
+        //
         // Update the session form object if a new section is added to the page.
         //
         if ( value == "1"
@@ -332,19 +337,74 @@ namespace Evado.UniForm.Digital
 
     }//END getRecordObject methods
 
-    // ==================================================================================
+    // ==============================================================================
     /// <summary>
-    /// This method Saves the clinical objects to user session object.
+    /// This method returns a client application ResultData object
     /// </summary>
-    // ----------------------------------------------------------------------------------
-    public void SaveSessionObjects ( )
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    // ------------------------------------------------------------------------------
+    private void updateSessionValue (
+      Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "SaveSessionObjects" );
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
+      this.LogMethod ( "updateSessionValue" );
 
-    }//END SaveSessionObjects method.
+      //
+      // if the command has a customer method parameter it is a selection update command so reset the record layouts.
+      //
+      if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
+      {
+        this.Session.AdminEntityList = new List<EdRecord> ( );
+      }
+
+      if ( PageCommand.hasParameter ( EdRecord.CONST_RECORD_TYPE ) == true )
+      {
+        var recordType = PageCommand.GetParameter<EdRecordTypes> ( EdRecord.CONST_RECORD_TYPE );
+
+        if ( this.Session.EntityType != recordType )
+        {
+          this.Session.EntityType = recordType;
+          this.Session.AdminRecordList = new List<EdRecord> ( );
+        }
+      }
+      this.LogValue ( "EntityType: " + this.Session.EntityType );
+
+
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
+      {
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
+
+        if ( this.Session.EntitySelectionState != stateValue )
+        {
+          if ( stateValue != EdRecordObjectStates.Null )
+          {
+            this.Session.AdminEntityList = new List<EdRecord> ( );
+            this.Session.EntitySelectionState = stateValue;
+          }
+          else
+          {
+            this.Session.AdminEntityList = new List<EdRecord> ( );
+            this.Session.EntitySelectionState = EdRecordObjectStates.Null;
+          }
+        }
+      }
+      this.LogValue ( "EntitySelectionState: " + this.Session.EntitySelectionState );
+
+      // 
+      // Set the page type to control the DB query type.
+      // 
+      string pageId = PageCommand.GetPageId ( );
+
+      this.LogValue ( "PageCommand pageId: " + pageId );
+
+      if ( pageId != String.Empty )
+      {
+        this.Session.setPageId ( pageId );
+      }
+      this.LogValue ( "PageId: " + this.Session.PageId );
+
+      this.LogMethodEnd ( "updateSessionValue" );
+
+    }//END updateSessionValue method.
 
     //  =============================================================================== 
     /// <summary>
@@ -501,7 +561,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the pageMenuGroup containing commands to open the records.
         // 
-        this.createFormList_Group ( clientDataObject.Page );
+        this.createEntityLayoutList_Group ( clientDataObject.Page );
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
@@ -832,10 +892,10 @@ namespace Evado.UniForm.Digital
     /// <param name="FormList">List<EvForm> object.</param>
     /// <returns>Evado.Model.UniForm.Group</returns>
     //  ------------------------------------------------------------------------------
-    private void createFormList_Group (
+    private void createEntityLayoutList_Group (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "createFormList_Group" );
+      this.LogMethod ( "createEntityLayoutList_Group" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -877,6 +937,7 @@ namespace Evado.UniForm.Digital
       // 
       foreach ( Evado.Model.Digital.EdRecord form in this.Session.AdminEntityList )
       {
+        this.LogDebug ( "ID {0}, T: {1}, S: {2}", form.LayoutId, form.Title, form.State );
         EuAdapterClasses appObject = EuAdapterClasses.Entity_Layouts;
 
         groupCommand = pageGroup.addCommand (
@@ -918,19 +979,14 @@ namespace Evado.UniForm.Digital
             }
         }//END state switch.
 
-        groupCommand.Title += form.LayoutId
-          + EdLabels.Space_Hypen
-          + form.Title
-          + EdLabels.Space_Open_Bracket
-          + EdLabels.Label_Version
-          + form.Version
-          + EdLabels.Space_Close_Bracket;
+        groupCommand.Title += form.LinkText;
 
       }//END iteration loop
 
       this.LogValue ( "Group command count: " + pageGroup.CommandList.Count );
 
-    }//END createFormList_Group method
+      this.LogMethodEnd ( "createEntityLayoutList_Group" );
+    }//END createEntityLayoutList_Group method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -1474,11 +1530,6 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Updated: Form.Fields.Count: " + this.Session.EntityLayout.Fields.Count );
       this.LogDebug ( "Form.ParentEntities: " + this.Session.EntityLayout.Design.ParentEntities );
 
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
-      this.SaveSessionObjects ( );
-
       return true;
     }//END getFormObject method
 
@@ -1564,11 +1615,6 @@ namespace Evado.UniForm.Digital
         //
         this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
 
-        // 
-        // Save the session ResultData so it is available for the next user generated groupCommand.
-        // 
-        this.SaveSessionObjects ( );
-
         //
         // generate the page layout.
         //
@@ -1643,11 +1689,6 @@ namespace Evado.UniForm.Digital
           this.LogMethodEnd ( "getDraftLayoutObject" );
           return this.Session.LastPage;
         }
-
-        // 
-        // Save the session ResultData so it is available for the next user generated groupCommand.
-        // 
-        this.SaveSessionObjects ( );
 
         //
         // generate the page layout.

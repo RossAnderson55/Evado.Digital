@@ -180,16 +180,49 @@ namespace Evado.UniForm.Digital
       set { _ExportFilePath = value; }
     }
 
-    private List<EdSelectionList> _ExternalSelectionLists = new List<EdSelectionList> ( );
+    private List<EdSelectionList> _SelectionLists = new List<EdSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
     /// lists.
     /// </summary>
 
-    public List<EdSelectionList> ExternalSelectionLists
+    public List<EdSelectionList> SelectionLists
     {
-      get { return _ExternalSelectionLists; }
-      set { _ExternalSelectionLists = value; }
+      get { return _SelectionLists; }
+      set { _SelectionLists = value; }
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of options for selection list objects.
+    /// </summary>
+    /// <param name="forSelectionList">bool true for a selection list.</param>
+    /// <returns>List of EvOption objects</return>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> getSelectionListOptions ( bool forSelectionList )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+
+      //
+      // add an empty option for page selection list objects.
+      //
+      if ( forSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( String.Empty ) );
+      }
+      //
+      // iterate through the issues selection lists.
+      //
+      foreach ( EdSelectionList list in this._SelectionLists )
+      {
+        optionList.Add ( list.Option );
+      }
+
+      return optionList;
+
     }
 
     /// <summary>

@@ -817,11 +817,25 @@ namespace Evado.Model.Digital
     {
       get
       {
+        if ( this._State == EdRecordObjectStates.Form_Draft
+          || this._State == EdRecordObjectStates.Form_Reviewed
+          || this._State == EdRecordObjectStates.Form_Issued )
+        {
+          return String.Format (
+                    "{0} - {1}, Type: {2}, State {3}",
+                    this.LayoutId,
+                    this.Title,
+                    this.TypeId,
+                    this.StateDesc );
+        }
+        //
+        // for data entity lists.
+        //
         if ( this.RecordId == String.Empty )
         {
           this.RecordId = "RECORD-ID";
         }
-        String link = link = String.Format (
+        String link = String.Format (
                     EdLabels.Record_Page_Header_Text,
                     this.RecordId,
                     this.LayoutId,

@@ -153,6 +153,11 @@ namespace Evado.UniForm.Digital
         this.loadOrganisationList ( );
 
         //
+        // load the external selection list (issued for use)
+        //
+        this.loadSelectionLists ( );
+
+        //
         // load the list of issued entity layouts in the application.
         //
         this.loadEnityLayoutList ( );

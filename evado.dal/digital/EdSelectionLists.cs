@@ -302,11 +302,11 @@ namespace Evado.Dal.Digital
       if ( State != EdSelectionList.SelectionListStates.Null )
       {
         sqlQueryString += " WHERE ( " + EdSelectionLists.DB_STATE + " = " + EdSelectionLists.PARM_STATE + " ) "
-          + " ORDER BY " + EdSelectionLists.PARM_LIST_ID + ";";
+          + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
       }
       else
       {
-        sqlQueryString += " WHERE (  " + EdSelectionLists.DB_STATE + " <> '" + EdSelectionList.SelectionListStates.Issued + "' ) "
+        sqlQueryString += " WHERE (  " + EdSelectionLists.DB_STATE + " <> '" + EdSelectionList.SelectionListStates.Withdrawn + "' ) "
           + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
       }
 
@@ -818,10 +818,10 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] commandParameters = new SqlParameter [ ]
       {
-        new SqlParameter(EdSelectionLists.DB_LIST_ID, SqlDbType.UniqueIdentifier),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_DATE, SqlDbType.DateTime)
+        new SqlParameter(EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_DATE, SqlDbType.DateTime)
       };
       commandParameters [ 0 ].Value = Item.ListId;
       commandParameters [ 1 ].Value = this.ClassParameters.UserProfile.UserId;

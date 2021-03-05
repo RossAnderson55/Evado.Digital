@@ -150,7 +150,6 @@ GO
 /****** Object:  StoredProcedure dbo.USR_SELECTION_LIST_UPDATE    Script Date: 01/04/2021 10:32:51 ******/
 
 CREATE PROCEDURE dbo.USR_SELECTION_LIST_UPDATE
- 
  @GUID UniqueIdentifier,
  @LIST_ID NVarChar(20),
  @STATE  NVarChar(20),

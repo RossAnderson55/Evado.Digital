@@ -57,6 +57,8 @@ namespace Evado.Model.Digital
     /// </summary>
     public string LayoutId = String.Empty;
 
+    public EdRecordTypes Type = EdRecordTypes.Null;
+
     /// <summary>
     /// This field defines the entity record identifier.
     /// </summary>

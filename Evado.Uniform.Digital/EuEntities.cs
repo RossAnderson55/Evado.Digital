@@ -531,7 +531,7 @@ namespace Evado.UniForm.Digital
       {
         this.Session.EntitySelectionLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) );
       }
-      this.LogValue ( "RecordSelectionFormId: " + this.Session.EntitySelectionLayoutId );
+      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.EntitySelectionLayoutId );
 
       if ( PageCommand.hasParameter ( EdRecord.CONST_RECORD_TYPE ) == true )
       {
@@ -539,12 +539,11 @@ namespace Evado.UniForm.Digital
 
         if ( this.Session.EntityType != recordType )
         {
-          this.Session.EntityType = PageCommand.GetParameter<EdRecordTypes> ( EdRecord.CONST_RECORD_TYPE );
-          this.Session.AdminRecordList = new List<EdRecord> ( );
           this.Session.EntityType = recordType;
+          this.Session.AdminRecordList = new List<EdRecord> ( );
         }
       }
-      this.LogValue ( "RecordType: " + this.Session.EntityType );
+      this.LogValue ( "EntityType: " + this.Session.EntityType );
 
 
       if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
@@ -565,7 +564,7 @@ namespace Evado.UniForm.Digital
           }
         }
       }
-      this.LogValue ( "RecordSelectionState: " + this.Session.EntitySelectionState );
+      this.LogValue ( "EntitySelectionState: " + this.Session.EntitySelectionState );
 
       // 
       // Set the page type to control the DB query type.
@@ -644,23 +643,21 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        /*
-        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Entity.Design.ReadAccessRoles ) == false )
+        if ( this.Session.UserProfile.hasAdministrationAccess == false )
         {
           this.LogIllegalAccess (
-            this.ClassNameSpace + "FormRecords.getListObject",
+            this.ClassNameSpace + "getListObject",
             this.Session.UserProfile );
 
           this.ErrorMessage = EdLabels.Record_Access_Error_Message;
 
           return this.Session.LastPage; ;
         }
-        */
         // 
         // Log the user's access to page.
         // 
         this.LogPageAccess (
-          this.ClassNameSpace + "FormRecords.getListObject",
+          this.ClassNameSpace + "getListObject",
           this.Session.UserProfile );
 
         // 
@@ -734,7 +731,7 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the query values to the currently selected objects identifiers.
       // 
-      queryParameters.LayoutId = this.Session.EntitySelectionLayoutId;
+      queryParameters.Type = this.Session.EntityType;
 
       // 
       // Initialise the query state selection.
