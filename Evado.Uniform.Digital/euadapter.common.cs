@@ -160,12 +160,12 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
-      this.Session.OrganisationType = EdOrganisation.OrganisationTypes.Null;
+      this.Session.SelectedOrganisationType = String.Empty;
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
       this.Session.OrganisationList = bll_Organisations.getOrganisationList (
-         this.Session.OrganisationType, false );
+         this.Session.SelectedOrganisationType  );
 
       this.LogInit( bll_Organisations.Log );
 

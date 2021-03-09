@@ -103,9 +103,7 @@ namespace Evado.Bll.Digital
     {
       this.LogMethod( "getView method." );
 
-      List<EdOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
-        EdOrganisation.OrganisationTypes.Null,
-        false );
+      List<EdOrganisation> organisationList = this._DalOrganisations.getOrganisationList ( String.Empty );
 
        this.LogDebug(  this._DalOrganisations.Log );
 
@@ -128,16 +126,13 @@ namespace Evado.Bll.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EdOrganisation> getOrganisationList ( 
-      EdOrganisation.OrganisationTypes OrgType, 
-      bool NotOrgType )
+      String OrgType )
     {
       this.LogMethod ( "getOrganisationList" );
        this.LogDebug(  "Type: " + OrgType );
-       this.LogDebug(  "NotOrgType: " + NotOrgType );
 
       List<EdOrganisation> organisationList = this._DalOrganisations.getOrganisationList (
-        OrgType,
-        NotOrgType );
+        OrgType );
 
        this.LogDebugClass(  this._DalOrganisations.Log );
 
@@ -160,14 +155,13 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of options for Organization objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvOption> getList ( EdOrganisation.OrganisationTypes Type )
+    public List<EvOption> getList ( String Type )
     {
       this.LogMethod ( "getList method. " );
        this.LogDebug(  "Type: " + Type );
 
       List<EvOption> organisationList = this._DalOrganisations.getList ( 
-        Type,
-        false );
+        Type  );
 
       this.LogDebugClass ( this._DalOrganisations.Log );
 
@@ -255,18 +249,11 @@ namespace Evado.Bll.Digital
        this.LogDebug(  "OrgId: " + Organisation.OrgId );
        this.LogDebug(  "Name: " + Organisation.Name );
        this.LogDebug(  "OrgType: " + Organisation.OrgType );
-       this.LogDebug(  "UserName: " + Organisation.UserCommonName );
 
       // 
       // Define the local variables
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
-
-      if ( Organisation.UserCommonName == String.Empty )
-      {
-         this.LogDebug(  "User id empty" );
-        return EvEventCodes.Identifier_User_Id_Error;
-      }
 
       // 
       // If Faciity Name is null the delete the Organisation ResultData object from the database.

@@ -1,0 +1,215 @@
+/****** File: 012_R1.0_ED_ORGANISATION_ED_CREATE_PROCEDURES.sql ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+DECLARE @RC int
+
+EXECUTE @RC = dbo.usr_DB_Add_Database_Update 
+   007, 'R1.0','ED_USER7', 
+   'CREATE PROCEDURES.'
+GO
+
+PRINT N'START: 012_R1.0_ED_ORGANISATION_ED_CREATE_PROCEDURES.'; 
+GO
+
+/****** Object:  View [dbo].[EV_ORGANISATION_VIEW]    Script Date: 03/09/2021 16:19:50 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[EV_ORGANISATION_VIEW]'))
+DROP VIEW [dbo].[EV_ORGANISATION_VIEW]
+GO
+
+
+/****** Object:  View [dbo].[EV_ORGANISATION_VIEW]    Script Date: 03/09/2021 16:19:50 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ED_ORGANISATION_VIEW]'))
+DROP VIEW [dbo].[ED_ORGANISATION_VIEW]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_ADD]    Script Date: 03/09/2021 16:23:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USR_ORGANISATION_ADD]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USR_ORGANISATION_ADD]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_DELETE]    Script Date: 03/09/2021 16:23:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USR_ORGANISATION_DELETE]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USR_ORGANISATION_DELETE]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_UPDATE]    Script Date: 03/09/2021 16:23:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USR_ORGANISATION_UPDATE]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USR_ORGANISATION_UPDATE]
+GO
+
+/****** Object:  View [dbo].[EV_ORGANISATION_VIEW]    Script Date: 10/07/2020 16:03:04 ******/
+
+CREATE VIEW [dbo].[ED_ORGANISATION_VIEW]
+AS
+
+SELECT     TOP (100) PERCENT   
+   [O_GUID]
+  ,[ORG_ID]
+  ,[O_NAME]
+  ,[O_ADDRESS_1]
+  ,[O_ADDRESS_2]
+  ,[O_ADDRESS_CITY]
+  ,[O_ADDRESS_POST_CODE]
+  ,[O_ADDRESS_STATE]
+  ,[O_COUNTRY]
+  ,[O_ORG_TYPE]
+  ,[O_TELEPHONE]
+  ,[O_EMAIL_ADDRESS]
+  ,[O_UPDATED_BY_USER_ID]
+  ,[O_UPDATE_BY]
+  ,[O_UPDATE_DATE]
+  ,[O_DELETED]
+  ,[O_AD_GROUP]
+FROM ED_ORGANISATIONS
+WHERE     (O_DELETED = 0)
+ORDER BY ORG_ID
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_ADD]    Script Date: 03/09/2021 16:23:44 ******/
+
+CREATE            PROCEDURE [dbo].[USR_ORGANISATION_ADD]
+ @Guid UniqueIdentifier,
+ @ORG_ID nvarchar(10),
+ @NAME nvarchar(50),
+ @ADDRESS_1 nvarchar(50),
+ @ADDRESS_2 nvarchar(50),
+ @ADDRESS_CITY nvarchar(50),
+ @ADDRESS_POST_CODE nvarchar(10),
+ @ADDRESS_STATE nvarchar(50),
+ @COUNTRY nvarchar(50),
+ @TELEPHONE nvarchar(15),
+ @EMAIL_ADDRESS nvarchar(100),
+ @ORG_TYPE nvarchar(50),
+ @UPDATED_BY_USER_ID nvarchar(100),
+ @UPDATED_BY nvarchar(100),
+ @UPDATE_DATE datetime
+AS
+
+
+DECLARE @SERIAL_NO INT
+DECLARE @ORGANISATION_ID VARCHAR(6)
+
+
+SELECT 	@SERIAL_NO = COUNT(O_GUID)
+FROM 	ED_ORGANISATION_VIEW 
+ 
+PRINT N'SERIAL_NO: ' + CONVERT(VARCHAR(3), @SERIAL_NO); 
+
+SET @ORGANISATION_ID = RIGHT( '0000' + CONVERT(VARCHAR(4), @SERIAL_NO), 4 ) ;
+  
+
+PRINT N'ORGANISATION_ID: ' + @ORGANISATION_ID; 
+
+Insert Into ED_ORGANISATIONS 
+(O_Guid,
+ORG_ID, 
+O_NAME, 
+O_ADDRESS_1,
+O_ADDRESS_2,
+O_ADDRESS_CITY,
+O_ADDRESS_POST_CODE,
+O_ADDRESS_STATE,
+o_COUNTRY, 
+O_TELEPHONE, 
+O_EMAIL_ADDRESS, 
+O_ORG_TYPE, 
+O_UPDATED_BY_USER_ID, 
+O_UPDATE_BY, 
+O_UPDATE_DATE, 
+O_DELETED ) 
+values	
+( @Guid,
+  @ORGANISATION_ID, 
+  @NAME, 
+  @ADDRESS_1,
+  @ADDRESS_2,
+  @ADDRESS_CITY,
+  @ADDRESS_POST_CODE,
+  @ADDRESS_STATE,
+  @COUNTRY, 
+  @TELEPHONE, 
+  @EMAIL_ADDRESS, 
+  @ORG_TYPE,  
+  @UPDATED_BY_USER_ID, 
+  @UPDATED_BY, 
+  @UPDATE_DATE, 
+  0 );
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_DELETE]    Script Date: 03/09/2021 16:23:44 ******/
+
+CREATE        PROCEDURE [dbo].[USR_ORGANISATION_DELETE]
+ @Guid UniqueIdentifier,
+@UPDATED_BY_USER_ID nvarchar(100),
+@UPDATED_BY nvarchar(100),
+@UPDATE_DATE datetime
+AS
+
+Update 	ED_ORGANISATIONS 
+SET	
+  O_UPDATED_BY_USER_ID =  @UPDATED_BY_USER_ID, 
+  O_UPDATE_BY =  @UPDATED_BY, 
+ 	O_UPDATE_DATE = @UPDATE_DATE , 
+	O_DELETED = -1 
+WHERE	(O_DELETED = 0) AND (O_Guid = @Guid);
+
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USR_ORGANISATION_UPDATE]    Script Date: 03/09/2021 16:23:44 ******/
+
+CREATE     PROCEDURE [dbo].[USR_ORGANISATION_UPDATE]
+ @Guid UniqueIdentifier,
+ @ORG_ID nvarchar(10),
+ @NAME nvarchar(50),
+ @ADDRESS_1 nvarchar(50),
+ @ADDRESS_2 nvarchar(50),
+ @ADDRESS_CITY nvarchar(50),
+ @ADDRESS_POST_CODE nvarchar(10),
+ @ADDRESS_STATE nvarchar(50),
+ @COUNTRY nvarchar(50),
+ @TELEPHONE nvarchar(15),
+ @EMAIL_ADDRESS nvarchar(100),
+ @ORG_TYPE nvarchar(50),
+ @UPDATED_BY_USER_ID nvarchar(100),
+ @UPDATED_BY nvarchar(100),
+ @UPDATE_DATE datetime
+AS
+
+Update ED_ORGANISATIONS 
+SET	
+  ORG_ID = @ORG_ID, 
+  O_NAME = @NAME,  
+  O_ADDRESS_1 = @ADDRESS_1,
+  O_ADDRESS_2 = @ADDRESS_2,
+  O_ADDRESS_CITY = @ADDRESS_CITY,
+  O_ADDRESS_POST_CODE = @ADDRESS_POST_CODE,
+  O_ADDRESS_STATE = @ADDRESS_STATE,
+  O_COUNTRY = @COUNTRY, 
+  O_TELEPHONE = @TELEPHONE, 
+  O_EMAIL_ADDRESS = @EMAIL_ADDRESS, 
+  O_ORG_TYPE = @ORG_TYPE, 
+  O_UPDATED_BY_USER_ID = @UPDATED_BY_USER_ID,
+  O_UPDATE_BY =  @UPDATED_BY, 
+	O_UPDATE_DATE = @UPDATE_DATE,
+  O_DELETED = 0  
+WHERE	(O_Guid = @Guid);
+
+
+GO
+
+
+PRINT N'FINISH: 012_R1.0_ED_ORGANISATION_ED_CREATE_PROCEDURES.'; 
+GO

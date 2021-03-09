@@ -350,6 +350,43 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicated if the field is readonly and set the mandatory field to false.
     /// </summary>
+    public bool isSingleValue
+    {
+      get
+      {
+        switch ( this.TypeId )
+        {
+          case Evado.Model.EvDataTypes.Computed_Field:
+          case Evado.Model.EvDataTypes.Read_Only_Text:
+          case Evado.Model.EvDataTypes.Sound:
+          case Evado.Model.EvDataTypes.Hidden:
+          case Evado.Model.EvDataTypes.Html_Link:
+          case Evado.Model.EvDataTypes.Video:
+          case Evado.Model.EvDataTypes.Image:
+          case Evado.Model.EvDataTypes.Html_Content:
+          case Evado.Model.EvDataTypes.Bar_Chart:
+          case Evado.Model.EvDataTypes.Line_Chart:
+          case Evado.Model.EvDataTypes.Pie_Chart:
+          case Evado.Model.EvDataTypes.Donut_Chart:
+          case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
+          case Evado.Model.EvDataTypes.Streamed_Video:
+          case Evado.Model.EvDataTypes.External_Image:
+          case Evado.Model.EvDataTypes.Table:
+          case Evado.Model.EvDataTypes.Special_Matrix:
+          case Evado.Model.EvDataTypes.Special_Document:
+          case Evado.Model.EvDataTypes.Special_Subsitute_Data:
+            {
+              this._Design.Mandatory = false;
+              return true;
+            }
+        }
+
+        return false;
+      }
+    }
+    /// <summary>
+    /// This property indicated if the field is readonly and set the mandatory field to false.
+    /// </summary>
     public bool isReadOnly
     {
       get
@@ -362,6 +399,7 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Hidden:
           case Evado.Model.EvDataTypes.Html_Link:
           case Evado.Model.EvDataTypes.Video:
+          case Evado.Model.EvDataTypes.Image:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:
           case Evado.Model.EvDataTypes.Line_Chart:
@@ -370,6 +408,8 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
           case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
+          case Evado.Model.EvDataTypes.Special_Document:
+          case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
               this._Design.Mandatory = false;
               return true;
@@ -392,6 +432,7 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Sound:
           case Evado.Model.EvDataTypes.Html_Link:
           case Evado.Model.EvDataTypes.Video:
+          case Evado.Model.EvDataTypes.Image:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:
           case Evado.Model.EvDataTypes.Line_Chart:
@@ -400,6 +441,7 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
           case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
+          case Evado.Model.EvDataTypes.Special_Document:
           case Evado.Model.EvDataTypes.Special_Subsitute_Data:
             {
               this._Design.AiDataPoint = false;

@@ -624,7 +624,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
-
+      List<EvOption> optionList = new List<EvOption> ( );
       // 
       // create the page pageMenuGroup
       // 
@@ -658,8 +658,6 @@ namespace Evado.UniForm.Digital
       //
       // Generate the organisation type list.
       //
-      List<EvOption> typeList = EdOrganisation.getOrganisationTypeList (
-        this.Session.AdminOrganisation.OrgType );
 
       //
       // Generate the organisation type radio button list field object.
@@ -669,7 +667,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Organisation_Type_Field_Label,
         EdLabels.Organisation_Type_Field_Description,
         Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminOrganisation.OrgType ),
-        typeList );
+        optionList );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.Mandatory = true;
@@ -719,28 +717,10 @@ namespace Evado.UniForm.Digital
       // 
       // Create the organisation fax number object
       // 
-      pageField = pageGroup.createTelephoneNumberField (
-        EdOrganisation.OrganisationFieldNames.Fax_Phone.ToString ( ),
-        EdLabels.Organisation_Fax_Number_Field_Label,
-        this.Session.AdminOrganisation.FaxPhone );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      // 
-      // Create the organisation fax number object
-      // 
       pageField = pageGroup.createEmailAddressField (
         EdOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
         EdLabels.Organisation_Email_Field_Label,
         this.Session.AdminOrganisation.EmailAddress );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      // 
-      // Create the organisation current object
-      // 
-      pageField = pageGroup.createBooleanField (
-        EuOrganisations.CONST_CURRENT_FIELD_ID,
-        EdLabels.Organisation_Current_Field_Label,
-        this.Session.AdminOrganisation.Current );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getDataObject_DetailsGroup" );
@@ -802,6 +782,7 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
 
     }//END getDataObject_GroupCommands Method
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -850,8 +831,6 @@ namespace Evado.UniForm.Digital
         //
         this.Session.AdminOrganisation = new EdOrganisation ( );
         this.Session.AdminOrganisation.Guid =   Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-
-        this.LogDebug ( "Organisation CustomerGuid {0}. ", this.Session.AdminOrganisation.CustomerGuid );
 
         this.getDataObject ( clientDataObject );
 
@@ -924,8 +903,6 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the update variables.
         // 
-        this.Session.AdminOrganisation.UpdatedByUserId = this.Session.UserProfile.UserId;
-        this.Session.AdminOrganisation.UserCommonName = this.Session.UserProfile.CommonName;
         this.Session.OrganisationList = new List<EdOrganisation> ( );
 
         // 
@@ -1061,7 +1038,7 @@ namespace Evado.UniForm.Digital
       //
       // Org type not defined.
       //
-      if ( this.Session.AdminOrganisation.OrgType  == EdOrganisation.OrganisationTypes.Null)
+      if ( this.Session.AdminOrganisation.OrgType  ==String.Empty)
       {
         if ( this.ErrorMessage != String.Empty )
         {

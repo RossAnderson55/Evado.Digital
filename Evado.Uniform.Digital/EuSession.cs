@@ -236,7 +236,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains a list of organisations.
     /// </summary>
-    public EdOrganisation.OrganisationTypes OrganisationType { get; set; }
+    public String SelectedOrganisationType { get; set; }
     /// <summary>
     /// This property contains a list of organisations.
     /// </summary>
