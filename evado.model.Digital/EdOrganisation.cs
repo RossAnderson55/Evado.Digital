@@ -355,17 +355,6 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property contains the organisation type value.
-    /// </summary>
-    public String stOrgType
-    {
-      get
-      {
-        return EvStatics.enumValueToString ( _OrgType );
-      }
-    }
-
-    /// <summary>
     /// This property contains a summary of an organization
     /// </summary>
     public string LinkText
@@ -380,10 +369,38 @@ namespace Evado.Model.Digital
         {
           stLinkText += evado.model.Properties.Resources.Space_Coma
             + evado.model.Properties.Resources.Organisation_Type_Label
-            + EvStatics.enumValueToString ( this._OrgType );
+            + this._OrgType.Replace( "_", " ") ;
         }
 
         return stLinkText;
+      }
+    }
+
+    /// <summary>
+    /// This property contains a summary of an organization
+    /// </summary>
+    public EvOption Option
+    {
+      get
+      {
+        if ( this._OrgType == String.Empty )
+        {
+          return new EvOption (
+              this._OrgId,
+              this._OrgId
+             + evado.model.Properties.Resources.Space_Hypen
+             + this._Name );
+        }
+
+       return new EvOption (
+           this._OrgId,
+           this._OrgId
+          + evado.model.Properties.Resources.Space_Hypen
+          + this._Name
+          + evado.model.Properties.Resources.Space_Coma
+          + evado.model.Properties.Resources.Organisation_Type_Label
+          + this._OrgType.Replace ( "_", " " ) );
+
       }
     }
 

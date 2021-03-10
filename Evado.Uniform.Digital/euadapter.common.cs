@@ -145,14 +145,15 @@ namespace Evado.UniForm.Digital
     {
       this.LogInitMethod ( "loadOrganisationList" );
 
-      if ( this.Session.OrganisationList == null )
+      if ( this._AdapterObjects.OrganisationList == null )
       {
-        this.Session.OrganisationList = new List<EdOrganisation> ( );
+        this._AdapterObjects.OrganisationList = new List<EdOrganisation> ( );
       }
 
-      if ( this.Session.OrganisationList.Count > 0 )
+      if ( this._AdapterObjects.OrganisationList.Count > 0 )
       {
-        this.LogInitValue ( "Organistion layout loaded." );
+        this.LogInitValue ( "Organistion list layout loaded." );
+        this.LogInitValue ( "END loadOrganisationList" );
         return;
       }
 
@@ -160,16 +161,16 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
-      this.Session.SelectedOrganisationType = String.Empty;
+      bll_Organisations.ClassParameter.LoggingLevel = 5;
+
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.OrganisationList = bll_Organisations.getOrganisationList (
-         this.Session.SelectedOrganisationType  );
+      this._AdapterObjects.OrganisationList = bll_Organisations.getView ();
 
       this.LogInit( bll_Organisations.Log );
 
-      this.LogInitValue ( "Organisation list count: " + this.Session.OrganisationList.Count );
+      this.LogInitValue ( "Organisation list count: " + this._AdapterObjects.OrganisationList.Count );
 
       this.LogInitValue ( "END loadOrganisationList" );
 

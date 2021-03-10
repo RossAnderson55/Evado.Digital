@@ -35,7 +35,7 @@ namespace Evado.Dal.Digital
   /// The Evado.Evado.User is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EdUserprofiles : EvDalBase
+  public class EdUserProfiles : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -43,7 +43,7 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdUserprofiles ( )
+    public EdUserProfiles ( )
     {
       this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
     }
@@ -54,7 +54,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdUserprofiles ( EvClassParameters Settings )
+    public EdUserProfiles ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
@@ -114,8 +114,8 @@ namespace Evado.Dal.Digital
     public const string DB_ROLES = "UP_ROLES";
     public const string DB_TYPE = "UP_TYPE";
     public const string DB_UPDATED_BY_USER_ID = "UP_UPDATED_BY_USER_ID";
-    public const string DB_UPDATE_BY = "UP_UPDATE_BY";
-    public const string DB_UPDATE_DATE = "UP_UPDATE_DATE";
+    public const string DB_UPDATE_BY = "UP_UPDATED_BY";
+    public const string DB_UPDATE_DATE = "UP_UPDATED_DATE";
     public const string DB_DELETED = "UP_DELETED";
     public const string DB_EXPIRY_DATE = "UP_EXPIRY_DATE";
 
@@ -124,50 +124,30 @@ namespace Evado.Dal.Digital
     /// This constant defines a string parameter as Guid for the UserProfile object
     /// </summary>
     private const string PARM_Guid = "@Guid";
-
     private const string PARM_ORG_ID = "@OrgId";
-
     private const string PARM_UserId = "@UserId";
-
     private const string PARM_ACTIVE_DIRECTORY_NAME = "@ActiveDirectName";
-
     private const string PARM_PREFIX = "@PREFIX";
-
     private const string PARM_GIVEN_NAME = "@GIVEN_NAME";
-
     private const string PARM_FAMILY_NAME = "FAMILY_NAME";
-
     private const string PARM_SUFFIX = "@SUFFIX";
-
     private const string PARM_ADDRESS_1 = "@ADDRESS_1";
     private const string PARM_ADDRESS_2 = "@ADDRESS_2";
     private const string PARM_ADDRESS_CITY = "@ADDRESS_CITY";
     private const string PARM_ADDRESS_STATE = "@ADDRESS_STATE";
     private const string PARM_ADDRESS_POSTCODE = "@ADDRESS_POST_CODE";
     private const string PARM_ADDRESS_COUNTRY = "@ADDRESS_COUNTRY";
-
     private const string PARM_TELEPHONE = "@TELEPHONE";
-
     private const string PARM_MOBILE_PHONE = "@MOBILE_PHONE";
-
     private const string PARM_CommonName = "@CommonName";
-
     private const string PARM_EmailAddress = "@EmailAddress";
-
     private const string PARM_RoleId = "@RoleId";
-
     private const string PARM_TYPE = "@TYPE";
-
     private const string PARM_Title = "@Title";
-
     private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
-
     private const string PARM_UpdatedBy = "@UpdatedBy";
-
     private const string PARM_UpdateDate = "@UpdateDate";
-
     private const string PARM_EXPIRY_DATE = "@EXPIRY_DATE";
-
     private const string PARM_PARTIAL_USER_ID = "@P_USER_ID";
 
     private const string PARM_PARTIAL_COMMON_NAME = "@P_COMMON_NAME";
@@ -322,7 +302,7 @@ namespace Evado.Dal.Digital
       profile.MobilePhone = EvSqlMethods.getString ( Row, DB_MOBILE_PHONE );
       profile.EmailAddress = EvSqlMethods.getString ( Row, DB_EMAIL_ADDRESS ).ToLower ( );
       profile.Title = EvSqlMethods.getString ( Row, DB_TITLE );
-      profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EdUserprofiles.DB_EXPIRY_DATE );
+      profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_EXPIRY_DATE );
 
       profile.UpdatedByUserId = EvSqlMethods.getString ( Row, DB_UPDATED_BY_USER_ID );
       profile.UpdatedBy = EvSqlMethods.getString ( Row, DB_UPDATE_BY );
@@ -386,26 +366,28 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( PARM_ORG_ID, SqlDbType.Char, 20 )
+        new SqlParameter ( EdUserProfiles.PARM_TYPE, SqlDbType.Char, 30 ),
+        new SqlParameter ( EdUserProfiles.PARM_ORG_ID, SqlDbType.Char, 10 )
       };
-      cmdParms [ 0 ].Value = OrgId;
+      cmdParms [ 0 ].Value = UserType;
+      cmdParms [ 1 ].Value = OrgId;
 
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + DB_DELETED + " = 0) \r\n"; ;
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + EdUserProfiles.DB_DELETED + " = 0) \r\n"; ;
 
       if ( UserType != EdUserProfile.UserTypesList.Null )
       {
-        sqlQueryString += " AND (" + DB_TYPE + " = " + PARM_TYPE + ") \r\n";
+        sqlQueryString += " AND (" + EdUserProfiles.DB_TYPE + " = " + EdUserProfiles.PARM_TYPE + ") \r\n";
       }
 
       if ( OrgId != String.Empty )
       {
-        sqlQueryString += " AND (" + DB_ORG_ID + " = " + PARM_ORG_ID + ") \r\n";
+        sqlQueryString += " AND (" + EdUserProfiles.DB_ORG_ID + " = " + EdUserProfiles.PARM_ORG_ID + ") \r\n";
       }
 
-      sqlQueryString += " ORDER BY " + DB_ORG_ID + ", " + DB_USER_ID + ";";
+      sqlQueryString += " ORDER BY " + EdUserProfiles.DB_ORG_ID + ", " + EdUserProfiles.DB_USER_ID + ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -484,7 +466,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EdUserprofiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
+        new SqlParameter ( EdUserProfiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
       };
       cmdParms [ 0 ].Value = OrgId;
 
@@ -507,21 +489,21 @@ namespace Evado.Dal.Digital
       {
         PartialUserId = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EdUserprofiles.DB_ORG_ID + " = " + EdUserprofiles.PARM_ORG_ID + " ) \r\n";
+        sqlQueryString += " AND (" + EdUserProfiles.DB_ORG_ID + " = " + EdUserProfiles.PARM_ORG_ID + " ) \r\n";
       }
 
       if ( PartialUserId != String.Empty )
       {
         PartialUserId = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EdUserprofiles.DB_USER_ID + " LIKE '%" + PartialUserId + "%' ) \r\n";
+        sqlQueryString += " AND (" + EdUserProfiles.DB_USER_ID + " LIKE '%" + PartialUserId + "%' ) \r\n";
       }
 
       if ( PartialCommonName != String.Empty )
       {
         PartialCommonName = PartialUserId.Replace ( "'", "" );
 
-        sqlQueryString += " AND (" + EdUserprofiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
+        sqlQueryString += " AND (" + EdUserProfiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
       }
 
       sqlQueryString += " ORDER BY OrgId, UserId;";
@@ -676,7 +658,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserprofiles.DB_USER_ID + " = " + EdUserprofiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_UserId + ")\r\n";
 
       //
       // Execute the query against the database
@@ -747,7 +729,7 @@ namespace Evado.Dal.Digital
       if ( UserType != EdUserProfile.UserTypesList.Null )
       {
         sqlQueryString = SQL_SELECT_QUERY
-          + "WHERE (" + EdUserprofiles.DB_ORG_ID + " = " + EdUserprofiles.PARM_ORG_ID + ") ;";
+          + "WHERE (" + EdUserProfiles.DB_ORG_ID + " = " + EdUserProfiles.PARM_ORG_ID + ") ;";
       }
 
       //
@@ -824,7 +806,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserprofiles.DB_USER_ID + " = " + EdUserprofiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_UserId + ")\r\n";
 
       this.LogDebug ( sqlQueryString );
 
@@ -918,7 +900,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EdUserprofiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.Char, 100 )
+        new SqlParameter ( EdUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.Char, 100 )
       };
       cmdParms [ 0 ].Value = AdsUserId;
 
@@ -926,7 +908,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserprofiles.DB_AD_NAME + " = " + EdUserprofiles.PARM_ACTIVE_DIRECTORY_NAME + ")\r\n";
+        + "WHERE (" + EdUserProfiles.DB_AD_NAME + " = " + EdUserProfiles.PARM_ACTIVE_DIRECTORY_NAME + ")\r\n";
 
       this.LogValue ( sqlQueryString );
 
@@ -1022,7 +1004,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( EdUserprofiles.PARM_Guid, SqlDbType.UniqueIdentifier )
+        new SqlParameter ( EdUserProfiles.PARM_Guid, SqlDbType.UniqueIdentifier )
       };
       cmdParms [ 0 ].Value = UserProfileGuid;
 
@@ -1030,7 +1012,7 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserprofiles.DB_USER_GUID + " = " + EdUserprofiles.PARM_Guid + ")";
+        + "WHERE (" + EdUserProfiles.DB_USER_GUID + " = " + EdUserProfiles.PARM_Guid + ")";
 
       this.LogValue ( sqlQueryString );
 

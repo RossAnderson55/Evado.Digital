@@ -103,8 +103,8 @@ Insert Into ED_USER_PROFILES
   ,[UP_TYPE]
   ,[UP_EXPIRY_DATE]
   ,[UP_UPDATED_BY_USER_ID]
-  ,[UP_UPDATE_BY]
-  ,[UP_UPDATE_DATE]
+  ,[UP_UPDATED_BY]
+  ,[UP_UPDATED_DATE]
   ,[UP_DELETED] ) 
 values 	
  (@Guid,
@@ -148,8 +148,8 @@ AS
 
 UPDATE 	ED_USER_PROFILES 
 SET	UP_UPDATED_BY_USER_ID =  @UpdatedByUserId,  
-  UP_UPDATE_BY =  @UpdatedBy,  
-	UP_UPDATE_DATE = @UpdateDate , 
+  UP_UPDATED_BY =  @UpdatedBy,  
+	UP_UPDATED_DATE = @UpdateDate , 
 	UP_DELETED = -1 
 WHERE	UP_DELETED = 0 AND UP_Guid = @Guid;
 
@@ -212,8 +212,8 @@ SET
   UP_Title = @Title, 
   UP_EXPIRY_DATE = @EXPIRY_DATE,
  	UP_UPDATED_BY_USER_ID = @UpdatedByUserId,  
- 	UP_UPDATE_BY = @UpdatedBy,  
-	UP_UPDATE_DATE = @UpdateDate,
+ 	UP_UPDATED_BY = @UpdatedBy,  
+	UP_UPDATED_DATE = @UpdateDate,
   UP_DELETED = 0 
 WHERE UP_Guid = @Guid;
 

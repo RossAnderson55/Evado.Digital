@@ -61,7 +61,7 @@ namespace Evado.Model.UniForm
       set { this._UniForm_BinaryServiceUrl = value; }
     }
 
-    private EvUserProfileBase _ServiceUserProfile = new EvUserProfileBase( );
+    private EvUserProfileBase _ServiceUserProfile = new EvUserProfileBase ( );
 
     /// <summary>
     /// This property contains a user profile.
@@ -72,12 +72,12 @@ namespace Evado.Model.UniForm
       set { this._ServiceUserProfile = value; }
     }
 
-    private Command _ExitCommand = new Command( );
+    private Command _ExitCommand = new Command ( );
 
     /// <summary>
     /// This property contains object of Command class .
     /// </summary>
-    public Command ExitCommand 
+    public Command ExitCommand
     {
       get { return _ExitCommand; }
       set { _ExitCommand = value; }
@@ -95,7 +95,7 @@ namespace Evado.Model.UniForm
       get { return _ClientDataObject; }
       set { _ClientDataObject = value; }
     }
-    
+
     /// <summary>
     /// This is the base class name space for the adapter class.
     /// </summary>
@@ -184,9 +184,9 @@ namespace Evado.Model.UniForm
     /// <param name="PageCommand">Command: ClientPateCommand object</param>
     /// <returns>Evado.Model.UniForm.AppData</returns>
     // ----------------------------------------------------------------------------------
-    public virtual AppData getPageObject( Command PageCommand )
+    public virtual AppData getPageObject ( Command PageCommand )
     {
-      return new AppData( );
+      return new AppData ( );
 
     }//END getPageObject method
 
@@ -203,7 +203,7 @@ namespace Evado.Model.UniForm
     // ----------------------------------------------------------------------------------
     protected void resetApplicationLog ( )
     {
-      this._AdapterLog = new StringBuilder();
+      this._AdapterLog = new StringBuilder ( );
     }
 
     // ==================================================================================
@@ -240,8 +240,7 @@ namespace Evado.Model.UniForm
     // ----------------------------------------------------------------------------------
     protected void LogInit ( String Value )
     {
-     
-        this._AdapterLog.Append (  Value );
+     this._AdapterLog.Append ( Value );
     }
 
     // ==================================================================================
@@ -324,7 +323,7 @@ namespace Evado.Model.UniForm
     {
       if ( this._LoggingLevel >= ApplicationAdapterBase.LoggingValueLevel )
       {
-        this._AdapterLog.Append (  Value );
+        this._AdapterLog.Append ( Value );
       }
     }
 
@@ -396,12 +395,12 @@ namespace Evado.Model.UniForm
     /// <param name="Format">String: format text.</param>
     /// <param name="args">Array of objects as parameters.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebug ( String Format, params object[] args )
+    protected void LogDebug ( String Format, params object [ ] args )
     {
       if ( this._LoggingLevel > ApplicationAdapterBase.DebugValueLevel )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
-          String.Format( Format, args ) );
+          String.Format ( Format, args ) );
       }
     }
 

@@ -1908,6 +1908,33 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter one organisation type on each line of the field..
+        /// </summary>
+        public static string Config_OrgType_List_Field_Description {
+            get {
+                return ResourceManager.GetString("Config_OrgType_List_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organisation Types:.
+        /// </summary>
+        public static string Config_OrgType_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_OrgType_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter one role on each line of the field..
+        /// </summary>
+        public static string Config_Role_List_Field_Description {
+            get {
+                return ResourceManager.GetString("Config_Role_List_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adapte Roles:.
         /// </summary>
         public static string Config_Role_List_Field_Label {
@@ -5150,11 +5177,56 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to City:.
+        /// </summary>
+        public static string Organisation_Address_City_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_City_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country:.
+        /// </summary>
+        public static string Organisation_Address_Country_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_Country_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address: .
         /// </summary>
         public static string Organisation_Address_Field_Label {
             get {
                 return ResourceManager.GetString("Organisation_Address_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Postcode:.
+        /// </summary>
+        public static string Organisation_Address_PostCode_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_PostCode_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State:.
+        /// </summary>
+        public static string Organisation_Address_State_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_State_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Street Address:.
+        /// </summary>
+        public static string Organisation_Address_Street_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_Address_Street_Field_Label", resourceCulture);
             }
         }
         
@@ -5330,6 +5402,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisation Selection.
+        /// </summary>
+        public static string Organisation_List_Selection_Group {
+            get {
+                return ResourceManager.GetString("Organisation_List_Selection_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - {1}.
         /// </summary>
         public static string Organisation_Name {
@@ -5416,6 +5497,15 @@ namespace Evado.Model.Digital {
         public static string Organisation_Save_Command_Title {
             get {
                 return ResourceManager.GetString("Organisation_Save_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Selection.
+        /// </summary>
+        public static string Organisation_Selection_Command_Title {
+            get {
+                return ResourceManager.GetString("Organisation_Selection_Command_Title", resourceCulture);
             }
         }
         

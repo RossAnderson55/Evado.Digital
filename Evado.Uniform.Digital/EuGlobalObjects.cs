@@ -315,6 +315,16 @@ namespace Evado.UniForm.Digital
       set { _MenuList = value; }
     }
 
+    private List<EdOrganisation> _OrganisationList = new List<EdOrganisation> ( );
+    /// <summary>
+    /// This property object contains a list of organisations. 
+    /// </summary>
+    public List<EdOrganisation> OrganisationList
+    {
+      get { return this._OrganisationList; }
+      set { this._OrganisationList = value; }
+    }
+
 
 
     private List<EdRecord> _AllEntityLayouts = new List<EdRecord> ( );

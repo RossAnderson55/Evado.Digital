@@ -2001,15 +2001,34 @@ namespace Evado.UniForm.Digital
       this.AddGroupCommands ( pageGroup );
 
       //
-      // create the demonstration account expiry period in days.
+      // create the application role llist 
       //
+      string roles = this.AdapterObjects.AdapterSettings.UserRoles;
+      roles = roles.Replace ( ";", "\r\n" );
+
       pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.Roles.ToString ( ),
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Roles.ToString ( ),
         EdLabels.Config_Role_List_Field_Label,
-        this.AdapterObjects.AdapterSettings.Roles, 50, 10);
+        EdLabels.Config_Role_List_Field_Description,
+       roles, 20, 10 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-      this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
+      this.LogDebug ( "Roles {0}.", this.AdapterObjects.AdapterSettings.UserRoles );
+
+      //
+      // create the organisation types field
+      //
+      string orgType = this.AdapterObjects.AdapterSettings.OrgTypes;
+      orgType = orgType.Replace ( ";", "\r\n" );
+
+      pageField = pageGroup.createFreeTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Org_Types.ToString ( ),
+        EdLabels.Config_OrgType_List_Field_Label,
+        EdLabels.Config_OrgType_List_Field_Description,
+        orgType, 20, 10 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogDebug ( "OrgTypes {0}.", this.AdapterObjects.AdapterSettings.OrgTypes );
       
       //
       // create the user primary entity selection. 
@@ -2054,6 +2073,10 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Country ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Given_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Family_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Telephone ) );
@@ -2073,7 +2096,12 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Country ) );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Telephone ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Email_Address ) );
 
       pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ),
@@ -2311,7 +2339,8 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( "Parameter N: {0}, V: {1}", parm.Name, parm.Value );
         }
 
-        this.LogDebug ( "DemoAccountExpiryDays {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
+        this.LogDebug ( "Roles {0}.", this.AdapterObjects.AdapterSettings.UserRoles );
+        this.LogDebug ( "OrgTypes {0}.", this.AdapterObjects.AdapterSettings.OrgTypes );
 
         // 
         // update the object.

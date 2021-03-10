@@ -772,16 +772,14 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      List<EvOption> roleList = EdUserProfile.getRoleOptionList( 
-        this.AdapterObjects.AdapterSettings.RoleList,
-        false );
+      optionList = this.AdapterObjects.AdapterSettings.GetRoleOptionList ( false );
       string roles = this.Session.MenuItem.RoleList;
 
       pageField = pageGroup.createCheckBoxListField (
         EvMenuItem.MenuFieldNames.Role_List.ToString ( ),
         EdLabels.Menu_Role_List_Field_Label,
         roles,
-        roleList );
+        optionList );
 
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 

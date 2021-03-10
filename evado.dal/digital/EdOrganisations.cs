@@ -66,9 +66,7 @@ namespace Evado.Dal.Digital
     //
     // Static constants
     //
-    private const string SQL_SELECT_QUERY = "Select * FROM EvOrganisations ";
-
-    private const string SQL_SELECT_ORGANISATION_VIEW = "Select * FROM ED_ORGANISATION_VIEW ";
+    private const string SQL_SELECT_QUERY = "Select * FROM ED_ORGANISATION_VIEW ";
 
     private const string STORED_PROCEDURE_ADD_ITEM = "USR_ORGANISATION_ADD";
     private const string STORED_PROCEDURE_DELETE_ITEM = "USR_ORGANISATION_DELETE";
@@ -84,15 +82,15 @@ namespace Evado.Dal.Digital
     public const string DB_ADDRESS_POST_CODE = "O_ADDRESS_POST_CODE";
     public const string DB_ADDRESS_STATE = "O_ADDRESS_STATE";
     public const string DB_COUNTRY = "O_COUNTRY";
-    public const string DB_TELEPHONE = "O_TELPHONE";
+    public const string DB_TELEPHONE = "O_TELEPHONE";
     public const string DB_EMAIL_ADDRESS = "O_EMAIL_ADDRESS";
     public const string DB_UPDATED_BY_USER_ID = "O_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_By = "O_UPDATED_BY";
-    public const string DB_UPDATE_DATE = "O_UPDATE_DATE";
+    public const string DB_UPDATE_DATE = "O_UPDATED_DATE";
     public const string DB_DELETED = "O_DELETED";
 
     private const string PARM_Guid = "@Guid";
-    private const string PARM_OrgId = "@OrgId";
+    private const string PARM_ORG_ID = "@ORG_ID";
     private const string PARM_Name = "@Name";
     private const string PARM_Address_1 = "@ADDRESS_1";
     private const string PARM_Address_2 = "@ADDRESS_2";
@@ -100,12 +98,12 @@ namespace Evado.Dal.Digital
     private const string PARM_Address_Post_Code = "@ADDRESS_POST_CODE";
     private const string PARM_Address_State = "@ADDRESS_STATE";
     private const string PARM_COUNTRY = "@COUNTRY";
-    private const string PARM_Telephone = "@TELPHONE";
+    private const string PARM_TELEPHONE = "@TELEPHONE";
     private const string PARM_EmailAddress = "@EMAIL_ADDRESS";
     private const string PARM_ORG_TYPE = "@ORG_TYPE";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
-    private const string PARM_UPDATE_DATE = "@UPDATE_DATE";
+    private const string PARM_UPDATE_DATE = "@UPDATED_DATE";
 
     private string sqlQueryString = String.Empty;
 
@@ -131,7 +129,7 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] parms = new SqlParameter [ ] 
       {
         new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_OrgId, SqlDbType.NVarChar, 10),
+        new SqlParameter( PARM_ORG_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_Name, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_Address_1, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_Address_2, SqlDbType.NVarChar, 50),
@@ -139,7 +137,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( PARM_Address_Post_Code, SqlDbType.NVarChar, 10),
         new SqlParameter( PARM_Address_State, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_COUNTRY, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_Telephone, SqlDbType.NVarChar, 15),
+        new SqlParameter( PARM_TELEPHONE, SqlDbType.NVarChar, 15),
         new SqlParameter( PARM_EmailAddress, SqlDbType.NVarChar, 100),
         new SqlParameter( PARM_ORG_TYPE, SqlDbType.NVarChar, 50),
         new SqlParameter( PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
@@ -247,7 +245,6 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class returns a list of organization data object based on the passed parameters. 
     /// </summary>
-    /// <param name="IsCurrent">Boolean: true, if select current organisations.</param>
     /// <param name="Type">EvOrganisation.OrganisationTypes: the organisation type.</param>
     /// <returns>List of EvOrganisation: a list of organization data object</returns>
     /// <remarks>
@@ -291,21 +288,21 @@ namespace Evado.Dal.Digital
       // Create the sql query string.
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (  (" + EdOrganisations.DB_DELETED + " = 0 ) ";
+        + "WHERE (" + EdOrganisations.DB_DELETED + " = 0) ";
 
       if ( Type != String.Empty )
       {
         sqlQueryString += " AND (" + EdOrganisations.DB_ORG_TYPE + " = " + EdOrganisations.PARM_ORG_TYPE + ") ";
       }
 
-      sqlQueryString += " ) ORDER BY" + EdOrganisations.DB_ORG_ID + "";
+      sqlQueryString += " ORDER BY " + EdOrganisations.DB_ORG_ID + ";";
 
       this.LogDebug ( sqlQueryString );
 
       // 
       // Execute the query against the database
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, null ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
       {
         // 
         // Iterate through the results extracting the role information.
@@ -318,12 +315,6 @@ namespace Evado.Dal.Digital
           DataRow row = table.Rows [ Count ];
 
           EdOrganisation organisation = this.readQueryRow ( row );
-
-          if ( organisation.OrgType == "Evado"
-            && this.ClassParameters.UserProfile.hasEvadoAccess == false )
-          {
-            continue;
-          }
 
           organisationList.Add ( organisation );
         }
@@ -383,7 +374,7 @@ namespace Evado.Dal.Digital
       {
         option = new EvOption (
           org.OrgId,
-          String.Format ( "{0} - {1}, Type: {2}", org.OrgId, org.Name, org.stOrgType ) );
+          String.Format ( "{0} - {1}, Type: {2}", org.OrgId, org.Name, org.OrgType ) );
 
         list.Add ( option );
       }
@@ -437,6 +428,8 @@ namespace Evado.Dal.Digital
       // 
       if ( OrgGuid == Guid.Empty )
       {
+        this.LogDebug ( "OrgGuid empty" );
+        this.LogMethodEnd ( "getItem" );
         return organisation;
       }
 
@@ -453,9 +446,10 @@ namespace Evado.Dal.Digital
       // Construct the Sql query string.
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE " + EdOrganisations.DB_GUID + " =" + EdOrganisations.PARM_Guid + " ) ; ";
+        + "WHERE (" + EdOrganisations.DB_GUID + " = " + EdOrganisations.PARM_Guid + ") ; ";
 
       this.LogDebug ( sqlQueryString );
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
       // 
       // Execute the query against the database
@@ -468,6 +462,7 @@ namespace Evado.Dal.Digital
         if ( table.Rows.Count == 0 )
         {
           this.LogDebug ( "ROW NOT FOUND" );
+          this.LogMethodEnd ( "getItem" );
 
           return organisation;
         }
@@ -547,7 +542,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter (  EdOrganisations.PARM_OrgId, SqlDbType.NVarChar, 10 )
+        new SqlParameter (  EdOrganisations.PARM_ORG_ID, SqlDbType.NVarChar, 10 )
       };
       cmdParms [ 0 ].Value = OrgId;
 
@@ -555,7 +550,7 @@ namespace Evado.Dal.Digital
       // Construct the Sql query string.
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE ( " + EdOrganisations.DB_ORG_ID + "  =" + EdOrganisations.PARM_OrgId + " ) ; ";
+        + "WHERE ( " + EdOrganisations.DB_ORG_ID + "  =" + EdOrganisations.PARM_ORG_ID + " ) ; ";
 
       this.LogDebug ( sqlQueryString );
       // 
@@ -736,7 +731,7 @@ namespace Evado.Dal.Digital
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_DELETE_ITEM, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( EdOrganisations.STORED_PROCEDURE_UPDATE_ITEM, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -793,7 +788,7 @@ namespace Evado.Dal.Digital
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_ADD_ITEM, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( EdOrganisations.STORED_PROCEDURE_ADD_ITEM, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
@@ -844,7 +839,7 @@ namespace Evado.Dal.Digital
       //
       // Execute the update command.
       //
-      if ( EvSqlMethods.StoreProcUpdate ( STORED_PROCEDURE_UPDATE_ITEM, cmdParms ) == 0 )
+      if ( EvSqlMethods.StoreProcUpdate ( EdOrganisations.STORED_PROCEDURE_DELETE_ITEM, cmdParms ) == 0 )
       {
         return EvEventCodes.Database_Record_Update_Error;
       }

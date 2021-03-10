@@ -287,7 +287,7 @@ namespace Evado.UniForm.Digital
 
     private EvEventCodes _EventCode = EvEventCodes.Ok;
 
-    private Evado.Model.Digital.EvClassParameters _Settings = new Evado.Model.Digital.EvClassParameters ( );
+    private Evado.Model.Digital.EvClassParameters _ClassParameters = new Evado.Model.Digital.EvClassParameters ( );
 
     private Evado.Bll.EvApplicationEvents _Bll_ApplicationEvents = new Bll.EvApplicationEvents ( );
 
@@ -306,13 +306,13 @@ namespace Evado.UniForm.Digital
     {
       get
       {
-        return _Settings;
+        return _ClassParameters;
       }
       set
       {
-        this._Settings = value;
+        this._ClassParameters = value;
 
-        this._Bll_ApplicationEvents = new Bll.EvApplicationEvents ( this._Settings );
+        this._Bll_ApplicationEvents = new Bll.EvApplicationEvents ( this._ClassParameters );
       }
     }
 
@@ -377,11 +377,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
         this.LogDebug ( "LastPage.Title {0}. ", this.Session.LastPage.Title );
         this.LogDebug ( "AllEntityLayouts.Count {0}. ", this._AdapterObjects.AllEntityLayouts.Count );
-
-        foreach ( EdRole role in this._AdapterObjects.AdapterSettings.RoleList )
-        {
-          this.LogDebug ( "Role ID: {0} D: {1}. ", role.RoleId, role.Description );
-        }
+        this.LogDebug ( "Role ID: {0}. ", this._AdapterObjects.AdapterSettings.UserRoles );
 
         //
         // Turn on BLL debug to match the current class setting.
@@ -717,22 +713,22 @@ namespace Evado.UniForm.Digital
           }
         case EuAdapterClasses.Organisations:
           {
-            this.LogDebug ( " USERS CLASS SELECTED." );
+            this.LogDebug ( " ORGANISATION CLASS SELECTED." );
 
             // 
             // Initialise the methods variables and objects.
             // 
-            EuOrganisations userProfiles = new EuOrganisations ( this._AdapterObjects,
+            EuOrganisations organisations = new EuOrganisations ( this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
               this.ClassParameters );
 
-            userProfiles.LoggingLevel = this.LoggingLevel;
+            organisations.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = userProfiles.getDataObject ( PageCommand );
-            this.ErrorMessage = userProfiles.ErrorMessage;
-            this.LogAdapter ( userProfiles.Log );
+            clientDataObject = organisations.getDataObject ( PageCommand );
+            this.ErrorMessage = organisations.ErrorMessage;
+            this.LogAdapter ( organisations.Log );
 
             break;
 
@@ -921,7 +917,7 @@ namespace Evado.UniForm.Digital
             clientDataObject = entityLayouts.getDataObject ( PageCommand );
             this.ErrorMessage = entityLayouts.ErrorMessage;
             LogAdapter ( entityLayouts.Log );
-    
+
             break;
           }
 
@@ -1325,7 +1321,7 @@ namespace Evado.UniForm.Digital
 
       if ( this.GlobalObjectList.ContainsKey ( this._SessionObjectKey ) == true )
       {
-        this.Session = (Evado.UniForm.Digital.EuSession) this.GlobalObjectList [ this._SessionObjectKey ]; 
+        this.Session = (Evado.UniForm.Digital.EuSession) this.GlobalObjectList [ this._SessionObjectKey ];
 
         this.LogInitValue ( "Session object loaded." );
       }
@@ -1599,7 +1595,7 @@ namespace Evado.UniForm.Digital
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT NOT RECORDED " );
       }
 
-      if ( this._Settings.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._AdapterLog.AppendLine ( value );
@@ -1651,7 +1647,7 @@ namespace Evado.UniForm.Digital
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT NOT RECORDED " );
       }
 
-      if ( this._Settings.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._AdapterLog.AppendLine ( Description );

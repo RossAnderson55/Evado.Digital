@@ -26,7 +26,7 @@ using System.Web.SessionState;
 using Evado.Bll;
 using Evado.Model;
 using Evado.Bll.Digital;
-using  Evado.Model.Digital;
+using Evado.Model.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital
@@ -81,6 +81,19 @@ namespace Evado.UniForm.Digital
 
       this._Bll_Organisations = new Evado.Bll.Digital.EdOrganisations ( this.ClassParameters );
 
+      if ( this.Session.AdminOrganisation == null )
+      {
+        this.Session.AdminOrganisation = new EdOrganisation ( );
+      }
+      if ( this.Session.AdminOrganisationList == null )
+      {
+        this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
+      }
+
+      if ( this.Session.SelectedOrganisationType == null )
+      {
+        this.Session.SelectedOrganisationType = String.Empty;
+      }
     }//END Method
 
 
@@ -88,7 +101,7 @@ namespace Evado.UniForm.Digital
     #endregion
 
     #region Class constants and variables.
-    
+
     private const String CONST_CURRENT_FIELD_ID = "CURRENT";
     private const String CONST_NEW_FIELD_ID = "NEW";
 
@@ -101,16 +114,15 @@ namespace Evado.UniForm.Digital
 
     // ==================================================================================
     /// <summary>
-    /// This method gets the trial site object.
-    /// 
+    /// This method gets the trial site object
     /// </summary>
     /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
     /// <returns>ClientApplicationData</returns>
     //  ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.AppData getClientDataObject (
+    public override Evado.Model.UniForm.AppData getDataObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ("getClientDataObject" );
+      this.LogMethod ( "getDataObject" );
       this.LogValue ( "PageCommand Content: " + PageCommand.getAsString ( false, false ) );
       try
       {
@@ -118,6 +130,16 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+
+        if ( PageCommand.hasParameter ( EdOrganisation.OrganisationFieldNames.Org_Type ) == true )
+        {
+          this.Session.SelectedOrganisationType = PageCommand.GetParameter ( EdOrganisation.OrganisationFieldNames.Org_Type );
+        }
+        if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
+        {
+          this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
+        }
+        this.LogValue ( "SelectedOrganisationType: " + this.Session.SelectedOrganisationType );
 
         // 
         // Determine the method to be called
@@ -183,6 +205,11 @@ namespace Evado.UniForm.Digital
 
     }//END getDataObject method
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Class list methods
+
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -193,10 +220,9 @@ namespace Evado.UniForm.Digital
     public Evado.Model.UniForm.AppData getListObject (
       Evado.Model.UniForm.Command PageCommand )
     {
+      this.LogMethod ( "getListObject" );
       try
       {
-        this.LogValue (  Evado.Model.UniForm.EuStatics.CONST_METHOD_START
-          + " Evado.UniForm.Clinical.Organisations.getListObject" );
         // 
         // Initialise the methods variables and objects.
         //      
@@ -213,7 +239,7 @@ namespace Evado.UniForm.Digital
 
           this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-           return this.Session.LastPage;;
+          return this.Session.LastPage; ;
         }
 
         // 
@@ -223,38 +249,27 @@ namespace Evado.UniForm.Digital
           this.ClassNameSpace + "getListObject",
           this.Session.UserProfile );
 
+        //
+        // fill the organisation list.
+        //
+        this.getOrganisationList ( );
+
+        //
+        // Initialise the list of organisations.
+        //
         clientDataObject.Title = EdLabels.Organisation_List_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
-        if ( this.AdapterObjects.HelpUrl != String.Empty )
-        {/**/
-          Evado.Model.UniForm.Command helpCommand = clientDataObject.Page.addCommand (
-           EdLabels.Label_Help_Command_Title,
-           EuAdapter.ADAPTER_ID,
-           EuAdapterClasses.Organisations.ToString ( ),
-           Model.UniForm.ApplicationMethods.Get_Object );
-
-          helpCommand.Type = Evado.Model.UniForm.CommandTypes.Html_Link;
-
-          helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
-           EvcStatics.createHelpUrl( 
-            this.AdapterObjects.HelpUrl, 
-             Evado.Model.Digital.EvPageIds.Organisation_View ) );
-        
-        }
-
-
+        this.getOrganisationSelection ( clientDataObject.Page );
         // 
         // Add the trial organisation list to the page.
         // 
         this.getListGroup ( clientDataObject.Page );
 
-        this.LogValue ( "data.Title: " + clientDataObject.Title );
-        this.LogValue ( "data.Page.Title: " + clientDataObject.Page.Title );
 
-
-        return clientDataObject;  
+        this.LogMethodEnd ( "getListObject" );
+        return clientDataObject;
 
       }
       catch ( Exception Ex )
@@ -270,14 +285,97 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-       return this.Session.LastPage;;
+      this.LogMethodEnd ( "getListObject" );
+      return this.Session.LastPage; ;
 
     }//END getListObject method.
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
+    // ==============================================================================
+    /// <summary>
+    /// This method updates the list of organisaitons.
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>ClientApplicationData object</returns>
+    //  ------------------------------------------------------------------------------
+    private void getOrganisationList ( )
+    {
+      this.LogMethod ( "getOrganisationList" );
+      // 
+      // if the list exists exit.
+      // 
+      if ( this.Session.AdminOrganisationList.Count > 0 )
+      {
+        return;
+      }
 
-    #region Class list methods
+      this.Session.AdminOrganisationList = this._Bll_Organisations.getOrganisationList (
+        this.Session.SelectedOrganisationType );
+
+      this.LogValue ( this._Bll_Organisations.Log );
+      this.LogValue ( "list count: " + this.Session.AdminOrganisationList.Count );
+
+      this.LogMethodEnd ( "getOrganisationList" );
+
+    }//END getOrganisationList method.
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods returns a pageMenuGroup object contains a selection of organisations.
+    /// </summary>
+    /// <param name="PageObject">Application</param>
+    /// <returns>Evado.Model.UniForm.Group object</returns>
+    //  ---------------------------------------------------------------------------------
+    public void getOrganisationSelection (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getOrganisationSelection" );
+
+      // 
+      // initialise the methods variables and objects.
+      // 
+      List<Evado.Model.EvOption> optionList = new List<Evado.Model.EvOption> ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+        EdLabels.Organisation_List_Selection_Group,
+        Evado.Model.UniForm.EditAccess.Enabled );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // get the list of organisations.
+      //
+      optionList = this.AdapterObjects.AdapterSettings.GetOrgTypeList ( true );
+
+      // 
+      // Set the selection to the current site org id.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdOrganisation.OrganisationFieldNames.Org_Type,
+        EdLabels.Config_OrgType_List_Field_Label,
+        this.Session.SelectedOrganisationType.ToString ( ),
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+
+      // 
+      // Create a custom groupCommand to process the selection.
+      // 
+      Evado.Model.UniForm.Command customCommand = pageGroup.addCommand (
+        EdLabels.Organisation_Selection_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Organisations.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+      // 
+      // Set the custom groupCommand parameter.
+      // 
+      customCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+
+      this.LogMethodEnd ( "getOrganisationSelection" );
+
+    }//END getOrganisationSelection method
 
     // ==============================================================================
     /// <summary>
@@ -286,87 +384,67 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    public void getListGroup ( 
+    public void getListGroup (
       Evado.Model.UniForm.Page PageObject )
     {
-      try
+      this.LogMethod ( "getListGroup" );
+
+      // 
+      // Create the new pageMenuGroup.
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+        EdLabels.Organisation_List_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+
+      // 
+      // Add the save groupCommand
+      // 
+      Evado.Model.UniForm.Command groupCommand = pageGroup.addCommand (
+        EdLabels.Organisation_New_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Organisations.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Create_Object );
+
+      // 
+      // Define the save and delete groupCommand parameters
+      // 
+      groupCommand.AddParameter ( EuOrganisations.CONST_NEW_FIELD_ID, "true" );
+
+      groupCommand.SetBackgroundColour (
+        Model.UniForm.CommandParameters.BG_Default,
+        Model.UniForm.Background_Colours.Purple );
+
+      // 
+      // generate the page links.
+      // 
+      foreach ( EdOrganisation organisation in this.Session.AdminOrganisationList )
       {
-        this.LogValue (  Evado.Model.UniForm.EuStatics.CONST_METHOD_START
-          + " Evado.UniForm.Clinical.Organisations.getListGroup" );
-
         // 
-        // Create the new pageMenuGroup.
+        // Add the trial organisation to the list of organisations as a groupCommand.
         // 
-        Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-          EdLabels.Organisation_List_Group_Title );
-        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-        pageGroup.Title = EdLabels.Organisation_List_Group_Title;
-
-
-        // 
-        // Add the save groupCommand
-        // 
-        Evado.Model.UniForm.Command groupCommand = pageGroup.addCommand (
-          EdLabels.Organisation_New_Command_Title,
+        Evado.Model.UniForm.Command command = pageGroup.addCommand (
+          organisation.LinkText,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Organisations.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Create_Object );
+          Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        groupCommand.AddParameter ( EuOrganisations.CONST_NEW_FIELD_ID, "true" );
+        command.Id = organisation.Guid;
+        command.SetGuid ( organisation.Guid );
 
-        groupCommand.SetBackgroundColour (
-          Model.UniForm.CommandParameters.BG_Default,
-          Model.UniForm.Background_Colours.Purple );
+      }//END organisation list iteration loop
 
-        // 
-        // get the list of customers.
-        // 
-        if ( this.Session.OrganisationList.Count == 0 )
-        {
-          this.Session.OrganisationList = this._Bll_Organisations.getView ( );
-          this.LogValue ( this._Bll_Organisations.Log );
-        }
-        this.LogValue ( "list count: " + this.Session.OrganisationList.Count );
-        // 
-        // generate the page links.
-        // 
-        foreach ( EdOrganisation organisation in this.Session.OrganisationList )
-        {
-          // 
-          // Add the trial organisation to the list of organisations as a groupCommand.
-          // 
-          Evado.Model.UniForm.Command command = pageGroup.addCommand (
-            organisation.LinkText,
-            EuAdapter.ADAPTER_ID,
-            EuAdapterClasses.Organisations.ToString ( ),
-            Evado.Model.UniForm.ApplicationMethods.Get_Object );
-          
-          command.Id = organisation.Guid;
-          command.SetGuid ( organisation.Guid );
+      this.LogValue ( "pageGroup.CommandList.Count {0}. ", pageGroup.CommandList.Count );
 
-        }//END trial organisation list iteration loop
+      this.LogMethodEnd ( "getListGroup" );
 
-        this.LogValue ( "command count: " + pageGroup.CommandList.Count );
+    }//END getListGroup method.
 
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // Create the error message to be displayed to the user.
-        // 
-        this.ErrorMessage = EdLabels.Organisation_List_Error_Message;
 
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
 
-    }//END getListObject method.
+    #region Class get object methods
 
     // ==============================================================================
     /// <summary>
@@ -378,26 +456,26 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData getObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogValue (  Evado.Model.UniForm.EuStatics.CONST_METHOD_START
-        + this.ClassNameSpace + "getObject" );
+      this.LogMethod ( "getObject" );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      Guid OrgGuid = Guid.Empty;
+      Guid orgGuid = Guid.Empty;
 
       //
       // Determine if the user has access to this page and log and error if they do not.
       //
-      if ( this.Session.UserProfile.hasAdministrationAccess== false )
+      if ( this.Session.UserProfile.hasAdministrationAccess == false )
       {
         this.LogIllegalAccess (
-          this.ClassNameSpace + "getListObject",
+          this.ClassNameSpace + "getObject",
           this.Session.UserProfile );
 
         this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-         return this.Session.LastPage;;
+        this.LogMethodEnd ( "getObject" );
+        return this.Session.LastPage;
       }
 
       // 
@@ -407,38 +485,70 @@ namespace Evado.UniForm.Digital
         this.ClassNameSpace + "getObject",
         this.Session.UserProfile );
 
+      //
+      // get the organisation guid.
+      //
+      orgGuid = PageCommand.GetGuid ( );
+
+      //
+      // guid and object empty.
+      //
+      if ( orgGuid == Guid.Empty
+        && this.Session.AdminOrganisation.Guid == Guid.Empty )
+      {
+        this.ErrorMessage = EdLabels.Organisation_Guid_Empty_Message;
+        this.LogMethodEnd ( "getObject" );
+        return this.Session.LastPage;
+      }
+
+      //
+      // load the organisation
+      //
+      if ( this.getOrganisation ( orgGuid ) == false )
+      {
+        this.Session.LastPage.Message = this.ErrorMessage;
+        this.LogMethodEnd ( "getObject" );
+        return this.Session.LastPage;
+      }
+
+      // 
+      // return the client ResultData object for the customer.
+      // 
+      this.getDataObject ( clientDataObject );
+
+      //
+      // return the client data object.
+      //
+      this.LogMethodEnd ( "getObject" );
+      return clientDataObject;
+
+    }//END getObject method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method loads the admin organisation
+    /// </summary>
+    /// <param name="OrgGuid">Guid object identifier.</param>
+    //  ------------------------------------------------------------------------------
+    private bool getOrganisation ( Guid OrgGuid )
+    {
+      this.LogMethod ( "getOrganisation" );
+      this.LogValue ( "OrgGuid: " + OrgGuid );
       // 
       // if the parameter value exists then set the customerId
       // 
-      OrgGuid = PageCommand.GetGuid ( );
-      this.LogValue ( "OrgGuid: " + OrgGuid );
-
-      // 
-      // return if not trial id
-      // 
-      if ( OrgGuid == Guid.Empty )
-      {
-        this.LogValue ( "Guid Empty get current object" );
-
-        if ( this.Session.AdminOrganisation.Guid != Guid.Empty )
-        {
-          // 
-          // return the client ResultData object for the customer.
-          // 
-          this.getDataObject ( clientDataObject );
-        }
-        else
-        {
-          this.LogValue ( "ERROR: current organisation guid empty" );
-          this.ErrorMessage = EdLabels.Organisation_Guid_Empty_Message;
-        }
-
-        return clientDataObject;
-      }
-      this.LogValue ( "Query site Guid: " + OrgGuid );
-
       try
       {
+        //
+        // if the organisation is loaded or not matching the passed guid.
+        //
+        if ( this.Session.AdminOrganisation.Guid != Guid.Empty
+          && this.Session.AdminOrganisation.Guid == OrgGuid )
+        {
+          this.LogMethodEnd ( "getOrganisation" );
+          return true;
+        }
+
         // 
         // Retrieve the customer object from the database via the DAL and BLL layers.
         // 
@@ -446,22 +556,16 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( this._Bll_Organisations.Log );
 
-        this.LogValue ( "SessionObjects.Organisation.OrgId: "
+        if ( this.Session.AdminOrganisation.OrgType == String.Empty )
+        {
+          this.Session.AdminOrganisation.OrgType = this.AdapterObjects.AdapterSettings.DefaultOrgType;
+        }
+
+        this.LogValue ( "Organisation.OrgId: "
           + this.Session.AdminOrganisation.OrgId );
 
-        // 
-        // Save the customer object to the session
-        // 
-         
-
-        // 
-        // return the client ResultData object for the customer.
-        // 
-        this.getDataObject ( clientDataObject );
-
-        this.LogValue ( "Page.Title: " + clientDataObject.Page.Title );
-
-        return clientDataObject;
+        this.LogMethodEnd ( "getObject" );
+        return true;
       }
       catch ( Exception Ex )
       {
@@ -474,16 +578,12 @@ namespace Evado.UniForm.Digital
         // Generate the log the error event.
         // 
         this.LogException ( Ex );
+
+        this.LogMethodEnd ( "getOrganisation" );
+        return false;
       }
 
-       return this.Session.LastPage;;
-
-    }//END getObject method
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class get object methods
+    }//END getOrganisation method.
 
     // ==============================================================================
     /// <summary>
@@ -546,25 +646,6 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
 
-      //
-      // Add the help button if the help url is defined.
-      //
-      if ( this.AdapterObjects.HelpUrl != String.Empty )
-      {
-        pageCommand = PageObject.addCommand (
-         EdLabels.Label_Help_Command_Title,
-         EuAdapter.ADAPTER_ID,
-         EuAdapterClasses.Organisations.ToString ( ),
-         Model.UniForm.ApplicationMethods.Get_Object );
-
-        pageCommand.Type = Evado.Model.UniForm.CommandTypes.Html_Link;
-
-        pageCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
-           EvcStatics.createHelpUrl (
-            this.AdapterObjects.HelpUrl,
-             Evado.Model.Digital.EvPageIds.Organisation_Page ) );
-      }
-
       // 
       // Add the save groupCommand
       // 
@@ -582,27 +663,33 @@ namespace Evado.UniForm.Digital
         // 
         // Define the save and delete groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.Organisation.Guid );
+        pageCommand.SetGuid ( this.Session.AdminOrganisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
           EdOrganisation.ActionCodes.Save.ToString ( ) );
 
+        this.LogDebug ( "Org GUid {0}.", this.Session.AdminOrganisation.Guid );
+        this.LogDebug ( "OrgType {0}.", this.Session.AdminOrganisation.OrgType );
         //
         // Delete command
         //
-        pageCommand = PageObject.addCommand (
-          EdLabels.Organisation_Delete_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Organisations.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        if ( this.Session.AdminOrganisation.Guid != EvStatics.CONST_NEW_OBJECT_ID
+          && this.Session.AdminOrganisation.OrgType != "Evado" )
+        {
+          pageCommand = PageObject.addCommand (
+            EdLabels.Organisation_Delete_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Organisations.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        pageCommand.SetGuid ( this.Session.Organisation.Guid );
-        pageCommand.AddParameter (
-           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+          // 
+          // Define the save and delete groupCommand parameters
+          // 
+          pageCommand.SetGuid ( this.Session.AdminOrganisation.Guid );
+          pageCommand.AddParameter (
+             Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+            EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+        }
       }
 
       this.LogMethodEnd ( "getDataObject_PageCommands" );
@@ -616,7 +703,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_DetailsGroup ( 
+    private void getDataObject_DetailsGroup (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_DetailsGroup" );
@@ -625,6 +712,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
+
       // 
       // create the page pageMenuGroup
       // 
@@ -656,19 +744,19 @@ namespace Evado.UniForm.Digital
         + this.Session.AdminOrganisation.OrgType );
 
       //
-      // Generate the organisation type list.
+      // get the org type selection list.
       //
+      optionList = this.AdapterObjects.AdapterSettings.GetOrgTypeList ( true );
 
       //
       // Generate the organisation type radio button list field object.
       //
-      pageField = pageGroup.createRadioButtonListField (
+      pageField = pageGroup.createSelectionListField (
         EdOrganisation.OrganisationFieldNames.Org_Type.ToString ( ),
         EdLabels.Organisation_Type_Field_Label,
         EdLabels.Organisation_Type_Field_Description,
-        Evado.Model.EvStatics.getEnumStringValue ( this.Session.AdminOrganisation.OrgType ),
+        this.Session.AdminOrganisation.OrgType,
         optionList );
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.Mandatory = true;
 
@@ -697,31 +785,104 @@ namespace Evado.UniForm.Digital
         Model.UniForm.Background_Colours.Red );
 
       // 
-      // Create the customer name object
+      // Create the street address 1
+      //
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Address_1 ) == false )
+      {
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_1,
+          EdLabels.Organisation_Address_Street_Field_Label,
+          this.Session.AdminOrganisation.AddressStreet_1, 50 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+        // 
+        // Create the street address 2
+        // 
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_2,
+          EdLabels.Organisation_Address_Street_Field_Label,
+          this.Session.AdminOrganisation.AddressStreet_2, 50 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
       // 
-      pageField = pageGroup.createAddressField (
-        EdOrganisation.OrganisationFieldNames.Address,
-        EdLabels.Organisation_Address_Field_Label,
-        this.Session.AdminOrganisation.Address );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      // Create the street address city
+      // 
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Address_City ) == false )
+      {
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_City,
+          EdLabels.Organisation_Address_City_Field_Label,
+          this.Session.AdminOrganisation.AddressCity, 50 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address state
+      // 
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Address_State ) == false )
+      {
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_State,
+          EdLabels.Organisation_Address_State_Field_Label,
+          this.Session.AdminOrganisation.AddressState, 10 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address 1
+      // 
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Address_Post_Code ) == false )
+      {
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_Post_Code,
+          EdLabels.Organisation_Address_City_Field_Label,
+          this.Session.AdminOrganisation.AddressPostCode, 50 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address 1
+      // 
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Address_Country ) == false )
+      {
+        pageField = pageGroup.createTextField (
+          EdOrganisation.OrganisationFieldNames.Address_Country,
+          EdLabels.Organisation_Address_Country_Field_Label,
+          this.Session.AdminOrganisation.AddressCountry, 50 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
 
       // 
       // Create the organisation telephone number object
       // 
-      pageField = pageGroup.createTelephoneNumberField (
-        EdOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
-        EdLabels.Organisation_Telephone_Field_Label,
-        this.Session.AdminOrganisation.Telephone );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Telephone ) == false )
+      {
+        pageField = pageGroup.createTelephoneNumberField (
+          EdOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
+          EdLabels.Organisation_Telephone_Field_Label,
+          this.Session.AdminOrganisation.Telephone );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
 
       // 
       // Create the organisation fax number object
       // 
-      pageField = pageGroup.createEmailAddressField (
-        EdOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
-        EdLabels.Organisation_Email_Field_Label,
-        this.Session.AdminOrganisation.EmailAddress );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+        EdOrganisation.OrganisationFieldNames.Email_Address ) == false )
+      {
+        pageField = pageGroup.createEmailAddressField (
+          EdOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
+          EdLabels.Organisation_Email_Field_Label,
+          this.Session.AdminOrganisation.EmailAddress );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+      }
 
       this.LogMethodEnd ( "getDataObject_DetailsGroup" );
 
@@ -757,27 +918,34 @@ namespace Evado.UniForm.Digital
         // 
         // Define the save and delete groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.Organisation.Guid );
+        pageCommand.SetGuid ( this.Session.AdminOrganisation.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
           EdOrganisation.ActionCodes.Save.ToString ( ) );
 
+
+        this.LogDebug ( "Org GUid {0}.", this.Session.AdminOrganisation.Guid );
+        this.LogDebug ( "OrgType {0}.", this.Session.AdminOrganisation.OrgType );
         //
         // Delete command
         //
-        pageCommand = PageGroup.addCommand (
-          EdLabels.Organisation_Delete_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Organisations.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        if ( this.Session.AdminOrganisation.Guid != EvStatics.CONST_NEW_OBJECT_ID
+          && this.Session.AdminOrganisation.OrgType != EdAdapterSettings.EVADO_ORGANISATION )
+        {
+          pageCommand = PageGroup.addCommand (
+            EdLabels.Organisation_Delete_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Organisations.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        pageCommand.SetGuid ( this.Session.Organisation.Guid );
-        pageCommand.AddParameter (
-           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+          // 
+          // Define the save and delete groupCommand parameters
+          // 
+          pageCommand.SetGuid ( this.Session.AdminOrganisation.Guid );
+          pageCommand.AddParameter (
+             Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+            EdOrganisation.ActionCodes.Delete_Object.ToString ( ) );
+        }
       }
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
 
@@ -823,14 +991,14 @@ namespace Evado.UniForm.Digital
 
           this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
 
-           return this.Session.LastPage;;
+          return this.Session.LastPage; ;
         }
 
         //
         // Initialise the dlinical ResultData objects.
         //
         this.Session.AdminOrganisation = new EdOrganisation ( );
-        this.Session.AdminOrganisation.Guid =   Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.AdminOrganisation.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
 
         this.getDataObject ( clientDataObject );
 
@@ -854,7 +1022,7 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-       return this.Session.LastPage;
+      return this.Session.LastPage;
 
     }//END method
 
@@ -885,7 +1053,7 @@ namespace Evado.UniForm.Digital
       try
       {
         this.LogMethod ( "updateObject" );
-        this.LogDebug( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+        this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
         this.LogDebug ( "AdminOrganisation"
           + " Guid: " + this.Session.AdminOrganisation.Guid
@@ -903,12 +1071,12 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the update variables.
         // 
-        this.Session.OrganisationList = new List<EdOrganisation> ( );
+        this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
 
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.
         // 
-        if ( this.Session.AdminOrganisation.Guid ==  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+        if ( this.Session.AdminOrganisation.Guid == Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
           this.Session.AdminOrganisation.Guid = Guid.Empty;
         }
@@ -918,7 +1086,7 @@ namespace Evado.UniForm.Digital
         // 
         if ( PageCommand.Method == Evado.Model.UniForm.ApplicationMethods.Delete_Object )
         {
-          return new Model.UniForm.AppData();
+          return new Model.UniForm.AppData ( );
         }
 
         // 
@@ -945,14 +1113,14 @@ namespace Evado.UniForm.Digital
         // 
         // Get the save action message value.
         // 
-        String stSaveAction = PageCommand.GetParameter (  Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
+        String stSaveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
 
         // 
         // Resets the save action to the parameter passed in the page groupCommand.
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction =  Evado.Model.EvStatics.parseEnumValue<EdOrganisation.ActionCodes> ( stSaveAction );
+          saveAction = Evado.Model.EvStatics.parseEnumValue<EdOrganisation.ActionCodes> ( stSaveAction );
         }
         this.Session.AdminOrganisation.Action = saveAction;
 
@@ -965,7 +1133,7 @@ namespace Evado.UniForm.Digital
         // 
         // get the debug ResultData.
         // 
-        this.LogValue (  this._Bll_Organisations.Log );
+        this.LogValue ( this._Bll_Organisations.Log );
 
         // 
         // if an error state is returned create log the event.
@@ -982,7 +1150,7 @@ namespace Evado.UniForm.Digital
                 this.ErrorMessage =
                   String.Format (
                     EdLabels.Organisation_Duplicate_Error_Message,
-                    this.Session.Organisation.OrgId );
+                    this.Session.AdminOrganisation.OrgId );
                 break;
               }
             case EvEventCodes.Identifier_Org_Id_Error:
@@ -999,7 +1167,7 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }//END save error returned.
 
-        return new Model.UniForm.AppData();
+        return new Model.UniForm.AppData ( );
 
       }
       catch ( Exception Ex )
@@ -1038,7 +1206,7 @@ namespace Evado.UniForm.Digital
       //
       // Org type not defined.
       //
-      if ( this.Session.AdminOrganisation.OrgType  ==String.Empty)
+      if ( this.Session.AdminOrganisation.OrgType == String.Empty )
       {
         if ( this.ErrorMessage != String.Empty )
         {
@@ -1074,10 +1242,10 @@ namespace Evado.UniForm.Digital
     /// <param name="Parameters">List of field values to be updated.</param>
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValue ( 
+    private void updateObjectValue (
       List<Evado.Model.UniForm.Parameter> Parameters )
     {
-      this.LogMethod (  "updateObjectValue" );
+      this.LogMethod ( "updateObjectValue" );
       this.LogDebug ( "Parameters.Count: " + Parameters.Count );
       this.LogDebug ( "Customer.Guid: " + this.Session.AdminOrganisation.Guid );
 

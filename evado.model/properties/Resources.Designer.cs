@@ -106,7 +106,7 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JSON deserialisation failure:.
+        ///   Looks up a localized string similar to JSON deserialisation failure: .
         /// </summary>
         public static string JSON_DESERIALISATION_ERROR {
             get {
@@ -115,7 +115,7 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ActivityId:.
+        ///   Looks up a localized string similar to ActivityId: .
         /// </summary>
         public static string Label_Activity_Id {
             get {
@@ -151,7 +151,7 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Organisation Type.
+        ///   Looks up a localized string similar to Organisation Type: .
         /// </summary>
         public static string Organisation_Type_Label {
             get {

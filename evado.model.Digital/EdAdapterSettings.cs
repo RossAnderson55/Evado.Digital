@@ -118,24 +118,34 @@ namespace Evado.Model.Digital
       Http_Reference,
 
       /// <summary>
-      /// This enumeration define a description field name of a trial
+      /// This enumeration defines a description field name of a trial
       /// </summary>
       Description,
 
       /// <summary>
-      /// This enumeration define a collecting binary data field name of a trial
+      /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
       Enable_Binary_Data,
 
       /// <summary>
-      /// this enumeration defiens the roles in the application.
+      /// this enumeration defines the roles in the application.
       /// </summary>
-      Roles,
+      User_Roles,
 
       /// <summary>
-      /// this enumeration the default user role field in the application
+      /// this enumeration defines the default user role field in the application
       /// </summary>
       Default_User_Roles,
+
+      /// <summary>
+      /// This enumeration defines the OrgTypes in the application
+      /// </summary>
+      Org_Types,
+
+      /// <summary>
+      /// This enumeration defines the default organisation type
+      /// </summary>
+      Default_User_Org_Type,
 
       /// <summary>
       /// this enumeration defines the hidden user fields the application.
@@ -230,6 +240,11 @@ namespace Evado.Model.Digital
 
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region class constants and objects
+
+    public const string EVADO_ORGANISATION = "Evado";
     #endregion
 
     #region Object Update
@@ -388,7 +403,7 @@ namespace Evado.Model.Digital
       }
       set
       {
-        this.setParameter ( AdapterFieldNames.Hidden_User_Fields, EvDataTypes.Text, value);
+        this.setParameter ( AdapterFieldNames.Hidden_User_Fields, EvDataTypes.Text, value );
       }
     }
 
@@ -413,11 +428,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( AdapterFieldNames.Hidden_Organisation_Fields);
+        return this.getParameter ( AdapterFieldNames.Hidden_Organisation_Fields );
       }
       set
       {
-        this.setParameter ( AdapterFieldNames.Hidden_Organisation_Fields, EvDataTypes.Text, value);
+        this.setParameter ( AdapterFieldNames.Hidden_Organisation_Fields, EvDataTypes.Text, value );
       }
     }
     /// <summary>
@@ -456,11 +471,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return EvStatics.getBool (this.getParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration ) );
+        return EvStatics.getBool ( this.getParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration ) );
       }
       set
       {
-        this.setParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration, EvDataTypes.Boolean, value.ToString() );
+        this.setParameter ( AdapterFieldNames.Create_Organisation_On_User_Registration, EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
 
@@ -478,71 +493,120 @@ namespace Evado.Model.Digital
         this.setParameter ( AdapterFieldNames.Organisation_Primary_Entity, EvDataTypes.Text, value );
       }
     }
+
     #endregion
 
-    #region Role Group
+    #region Organisation Types Group
 
-    private String _Roles = String.Empty;
+
+    public const String StaticOrgType = "Evado;Customer";
 
     /// <summary>
     /// This property contains the name of the person who last updated the trial object.
     /// </summary>
-    public string Roles
+    public string OrgTypes
     {
       get
       {
-        return _Roles;
+        return this.getParameter ( AdapterFieldNames.Org_Types );
       }
       set
       {
-        this._Roles = value.Trim ( );
-
-        String [ ] arRoles = this._Roles.Split ( ';' );
-        EdRole role = new EdRole ( );
-
-        for ( int i = 0; i < arRoles.Length; i++ )
-        {
-          string str = arRoles [ i ].Trim ( );
-
-          if ( str == String.Empty )
-          {
-            continue;
-          }
-          if ( str.Contains ( ":" ) == true )
-          {
-            string [ ] arStr = str.Split ( ':' );
-            if ( arStr [ 0 ] == String.Empty )
-            {
-              continue;
-            }
-
-            role = new EdRole ( arStr [ 0 ], arStr [ 1 ] );
-          }
-          else
-          {
-            role = new EdRole ( str, str );
-          }
-
-          _RoleList.Add ( role );
-        }
+        this.setParameter ( AdapterFieldNames.Org_Types, EvDataTypes.Text, value );
       }
     }
-    List<EdRole> _RoleList = new List<EdRole> ( );
+
     /// <summary>
-    /// This property contains the list of roles for this application.
-    /// Static roles will be automatically added to the last on creation.
+    /// This property contains the default organisation type
     /// </summary>
-    public List<EdRole> RoleList
+    public String DefaultOrgType
     {
       get
       {
-        return _RoleList;
+        return
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type,
+          EvDataTypes.Text, value.ToString ( ) );
       }
     }
 
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a selected list of application roles based on the delimited
+    /// list of selected roles that are passed to the method.
+    /// </summary>
+    /// <param name="SelectedOrgTypeIds">Delimited string of role identifiers</param>
+    /// <returns>List of EdOrgType objects</returns>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> GetOrgTypeList ( bool ForSelectionList )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> OptionList = new List<EvOption> ( );
+
+      if ( ForSelectionList == true )
+      {
+        OptionList.Add ( new EvOption ( ) );
+      }
+
+      OptionList.Add ( new EvOption ( "Evado" ) );
+      OptionList.Add ( new EvOption ( "Customer" ) );
+
+      //
+      // get an array of org types
+      //
+      String [ ] arOrgTypes = this.OrgTypes.Split ( ';' );
+
+      //
+      // iterate through the list creating selection options.
+      //
+      for ( int i = 0; i < arOrgTypes.Length; i++ )
+      {
+        string str = arOrgTypes [ i ].Trim ( );
+
+        if ( str == String.Empty
+          || str.ToLower ( ) == "null" )
+        {
+          continue;
+        }
+
+        OptionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
+      }
+
+      //
+      // return the list of selected roles
+      //
+      return OptionList;
+    }//END method
+
+    #endregion
+
+    #region Role Group
+
+    public const String StaticRoles = "Administrator;Manager;Designer;Staff;Customer";
 
 
-    private String _DefaultRoles = String.Empty;
+    /// <summary>
+    /// This property contains the name of the person who last updated the trial object.
+    /// </summary>
+    public string UserRoles
+    {
+      get
+      {
+        return
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.User_Roles );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.User_Roles,
+          EvDataTypes.Text, value.ToString ( ) );
+      }
+    }
+
 
     /// <summary>
     /// This property contains a delimited list of the default user roles.
@@ -572,29 +636,54 @@ namespace Evado.Model.Digital
     /// <param name="SelectedRoleIds">Delimited string of role identifiers</param>
     /// <returns>List of EdRole objects</returns>
     // ----------------------------------------------------------------------------------
-    public List<EdRole> filteredRoleList ( String SelectedRoleIds )
+    public List<EvOption> GetRoleOptionList ( bool ForSelectionList )
     {
       //
       // Initialise the methods variables and objects.
       //
-      List<EdRole> roleList = new List<EdRole> ( );
+      List<EvOption> optionList = new List<EvOption> ( );
+      String [ ] arRoles = this.UserRoles.Split ( ';' );
+
+      if ( ForSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( ) );
+      }
 
       //
-      // Iterate through the application roles and select those roles
-      // that are in the selected role list.
+      // add the static roles.
       //
-      foreach ( EdRole role in this._RoleList )
+      optionList.Add ( new EvOption ( "Administrator" ) );
+      optionList.Add ( new EvOption ( "Manager" ) );
+      optionList.Add ( new EvOption ( "Designer" ) );
+      optionList.Add ( new EvOption ( "Staff" ) );
+      optionList.Add ( new EvOption ( "Customer" ) );
+
+      //
+      // Iterate through the array of roles to create the option list.
+      //
+      for ( int i = 0; i < arRoles.Length; i++ )
       {
-        if ( SelectedRoleIds.Contains ( role.RoleId ) == true )
+        string str = arRoles [ i ].Trim ( );
+
+        //
+        // skip empty and null roles
+        //
+        if ( str == String.Empty
+          || str.ToLower ( ) == "null" )
         {
-          roleList.Add ( role );
+          continue;
         }
+
+        //
+        // add the role as a selection option object.
+        //
+        optionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
       }
 
       //
       // return the list of selected roles
       //
-      return roleList;
+      return optionList;
     }//END method
 
     #endregion
@@ -929,9 +1018,35 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdAdapterSettings.AdapterFieldNames.Roles:
+        case EdAdapterSettings.AdapterFieldNames.User_Roles:
           {
-            this.Roles = Value;
+            string roles = Value;
+            roles = roles.Replace ( "\r\n", ";" );
+            roles = roles.Replace ( "; ", ";" );
+            roles = roles.Replace ( " ;", ";" );
+            this.UserRoles = roles.Replace ( ";;", ";" );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Default_User_Roles:
+          {
+            this.DefaultUserRoles = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Org_Types:
+          {
+            string orgType = Value;
+            orgType = orgType.Replace ( "\r\n", ";" );
+            orgType = orgType.Replace ( "; ", ";" );
+            orgType = orgType.Replace ( " ;", ";" );
+            this.OrgTypes = orgType.Replace ( ";;", ";" );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type:
+          {
+            this.DefaultOrgType = Value;
             return;
           }
 
@@ -955,7 +1070,7 @@ namespace Evado.Model.Digital
 
         case EdAdapterSettings.AdapterFieldNames.Create_Organisation_On_User_Registration:
           {
-            this.CreateOrganisationOnUserRegistration = EvStatics.getBool( Value );
+            this.CreateOrganisationOnUserRegistration = EvStatics.getBool ( Value );
             return;
           }
 

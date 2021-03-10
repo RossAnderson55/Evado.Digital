@@ -2771,4 +2771,34 @@ If the selection lis is uncategories the list items will be displayed, if the se
  
 Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identifier, will select that field's value as the category value. </value>
   </data>
+  <data name="Config_OrgType_List_Field_Description" xml:space="preserve">
+    <value>Enter one organisation type on each line of the field.</value>
+  </data>
+  <data name="Config_OrgType_List_Field_Label" xml:space="preserve">
+    <value>Organisation Types:</value>
+  </data>
+  <data name="Config_Role_List_Field_Description" xml:space="preserve">
+    <value>Enter one role on each line of the field.</value>
+  </data>
+  <data name="Organisation_Address_City_Field_Label" xml:space="preserve">
+    <value>City:</value>
+  </data>
+  <data name="Organisation_Address_Country_Field_Label" xml:space="preserve">
+    <value>Country:</value>
+  </data>
+  <data name="Organisation_Address_PostCode_Field_Label" xml:space="preserve">
+    <value>Postcode:</value>
+  </data>
+  <data name="Organisation_Address_State_Field_Label" xml:space="preserve">
+    <value>State:</value>
+  </data>
+  <data name="Organisation_Address_Street_Field_Label" xml:space="preserve">
+    <value>Street Address:</value>
+  </data>
+  <data name="Organisation_List_Selection_Group" xml:space="preserve">
+    <value>Organisation Selection</value>
+  </data>
+  <data name="Organisation_Selection_Command_Title" xml:space="preserve">
+    <value>Update Selection</value>
+  </data>
 </root>

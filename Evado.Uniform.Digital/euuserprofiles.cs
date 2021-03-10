@@ -80,9 +80,9 @@ namespace Evado.UniForm.Digital
         this.Session.SelectedUserType = EdUserProfile.UserTypesList.End_User;
       }
 
-      if ( this.Session.OrganisationList == null )
+      if ( this.Session.AdminOrganisationList == null )
       {
-        this.Session.OrganisationList = new List<EdOrganisation> ( );
+        this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
       }
 
       this._Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( this.ClassParameters );
@@ -788,10 +788,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of organisations.
       //
-      optionList.Add ( new EvOption ( ) );
-      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.Customer.ToString ( ), EdUserProfile.UserTypesList.Customer.ToString ( ) ) );
-      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.Evado.ToString ( ), EdUserProfile.UserTypesList.Evado.ToString ( ) ) );
-      optionList.Add ( new EvOption ( EdUserProfile.UserTypesList.End_User.ToString ( ), EdUserProfile.UserTypesList.End_User.ToString ( ).Replace( "_"," ") ) );
+      optionList = EdUserProfile.GetUserTypeOptionList ( true );
 
       // 
       // Set the selection to the current site org id.
@@ -812,7 +809,7 @@ namespace Evado.UniForm.Digital
       optionList = new List<Evado.Model.EvOption> ( );
       optionList.Add ( new EvOption());
 
-      foreach ( EdOrganisation org in this.Session.OrganisationList )
+      foreach ( EdOrganisation org in this.Session.AdminOrganisationList )
       {
         optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
       }      
@@ -1177,9 +1174,9 @@ namespace Evado.UniForm.Digital
       optionList = new List<Evado.Model.EvOption> ( );
       optionList.Add ( new EvOption());
 
-      foreach ( EdOrganisation org in this.Session.OrganisationList )
+      foreach ( EdOrganisation org in this.AdapterObjects.OrganisationList )
       {
-        optionList.Add( new EvOption( org.OrgId, org.LinkText ) );
+        optionList.Add( org.Option );
       }      
 
       // 
@@ -1188,7 +1185,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createSelectionListField (
         EdUserProfile.UserProfileFieldNames.OrgId,
         EdLabels.User_Profile_Organisation_List_Field_Label,
-        this.Session.SelectedUserType.ToString ( ),
+        this.Session.UserProfile.OrgId.ToString ( ),
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -1340,9 +1337,7 @@ namespace Evado.UniForm.Digital
       //
       // Generate the user role list.
       //
-      List<EvOption> roleList =  Evado.Model.Digital.EdUserProfile.getRoleOptionList (
-        this.AdapterObjects.AdapterSettings.RoleList,
-        false );
+      optionList = this.AdapterObjects.AdapterSettings.GetRoleOptionList ( false );
 
       //
       // Generate the user role radio button list field object.
@@ -1352,12 +1347,33 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_Role_Field_Label,
         EdLabels.UserProfile_Role_Field_Description,
         this.Session.AdminUserProfile.Roles ,
-        roleList );
+        optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
+
+      //
+      // get the list of organisations.
+      //
+      optionList = EdUserProfile.GetUserTypeOptionList ( true );
+
+      // 
+      // Set the selection to the current site org id.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdUserProfile.UserProfileFieldNames.User_Type_Id,
+        EdLabels.UserProfile_User_Type_Field_Label,
+        this.Session.AdminUserProfile.TypeId.ToString ( ),
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Mandatory = true;
+      groupField.setBackgroundColor (
+        Model.UniForm.FieldParameterList.BG_Mandatory,
+        Model.UniForm.Background_Colours.Red );
+
+
 
       if ( this.Session.UserProfile.hasEvadoAdministrationAccess )
       {
@@ -1403,10 +1419,13 @@ namespace Evado.UniForm.Digital
       groupCommand.SetGuid (
         this.Session.UserProfile.Guid );
 
+     
       //
       // Add the delete groupCommand object.
       //
-      if ( this.Session.UserProfile.Guid != Guid.Empty )
+      if ( this.Session.UserProfile.Guid != Guid.Empty
+        || ( this.Session.UserProfile.OrgId == EdAdapterSettings.EVADO_ORGANISATION
+          && this.Session.AdminUserProfile.OrgId == EdAdapterSettings.EVADO_ORGANISATION ) )
       {
         groupCommand = PageGroup.addCommand (
            EdLabels.User_Profile_Delete_Command_Title,

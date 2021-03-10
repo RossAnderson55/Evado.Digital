@@ -62,7 +62,7 @@ namespace Evado.Bll.Digital
 
       this.LogMethodEnd ( "EvUserProfiles" );
 
-      this._Dal_UserProfiles = new Evado.Dal.Digital.EdUserprofiles ( Settings );
+      this._Dal_UserProfiles = new Evado.Dal.Digital.EdUserProfiles ( Settings );
     }
     #endregion
 
@@ -70,7 +70,7 @@ namespace Evado.Bll.Digital
     // 
     // Instantiate the DAL Class\
     // 
-    private Evado.Dal.Digital.EdUserprofiles _Dal_UserProfiles = new Evado.Dal.Digital.EdUserprofiles ( );
+    private Evado.Dal.Digital.EdUserProfiles _Dal_UserProfiles = new Evado.Dal.Digital.EdUserProfiles ( );
 
     #endregion
 

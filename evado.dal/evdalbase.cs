@@ -150,7 +150,7 @@ namespace Evado.Dal
       //
       dllObjectParameters.updateItems ( ParameterList, ObjectGuid );
 
-      this.LogDebugClass ( dllObjectParameters.Log );
+     // this.LogDebugClass ( dllObjectParameters.Log );
 
       this.LogMethodEnd ( "UpdateObjectParameters " );
     }

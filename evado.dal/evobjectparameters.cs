@@ -286,7 +286,7 @@ namespace Evado.Dal
 
       }//END form list iteration loop.
 
-      this.LogDebug ( "Sql Query: " + SqlUpdateQuery.ToString ( ) );
+      //this.LogDebug ( "Sql Query: " + SqlUpdateQuery.ToString ( ) );
 
       if ( EvSqlMethods.QueryUpdate ( SqlUpdateQuery.ToString ( ), null ) == 0 )
       {

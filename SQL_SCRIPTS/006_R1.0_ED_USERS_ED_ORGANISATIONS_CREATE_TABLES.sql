@@ -46,8 +46,8 @@ CREATE TABLE [dbo].[ED_USER_PROFILES](
 	[UP_TYPE] [nvarchar](50) NULL,
 	[UP_EXPIRY_DATE] [datetime] NULL,
 	[UP_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
-	[UP_UPDATE_BY] [nvarchar](100) NULL,
-	[UP_UPDATE_DATE] [datetime] NULL,
+	[UP_UPDATED_BY] [nvarchar](100) NULL,
+	[UP_UPDATED_DATE] [datetime] NULL,
 	[UP_DELETED] [bit] NULL,
  CONSTRAINT [PK_USER_PROFILES] PRIMARY KEY CLUSTERED 
 (
@@ -75,8 +75,8 @@ CREATE TABLE [dbo].[ED_ORGANISATIONS](
 	[O_TELEPHONE] [varchar](20) NULL,
 	[O_EMAIL_ADDRESS] [varchar](255) NULL,
 	[O_UPDATED_BY_USER_ID] [nvarchar](100) NULL,
-	[O_UPDATE_BY] [nvarchar](100) NULL,
-	[O_UPDATE_DATE] [datetime] NULL,
+	[O_UPDATED_BY] [nvarchar](100) NULL,
+	[O_UPDATED_DATE] [datetime] NULL,
 	[O_DELETED] [bit] NULL,
 	[O_AD_GROUP] [varchar](30) NULL
 ) 
@@ -97,8 +97,8 @@ Insert Into ED_USER_PROFILES
   ,[UP_TYPE]
   ,[UP_EXPIRY_DATE]
   ,[UP_UPDATED_BY_USER_ID]
-  ,[UP_UPDATE_BY]
-  ,[UP_UPDATE_DATE]
+  ,[UP_UPDATED_BY]
+  ,[UP_UPDATED_DATE]
   ,[UP_DELETED] ) 
 values 	
  (NEWID(),
@@ -125,8 +125,8 @@ Insert Into ED_ORGANISATIONS
    O_NAME,
 	 O_ORG_TYPE,
    O_UPDATED_BY_USER_ID,
-   O_UPDATE_BY,
-   O_UPDATE_DATE,
+   O_UPDATED_BY,
+   O_UPDATED_DATE,
    O_DELETED ) 
 values 	
  (NEWID(),

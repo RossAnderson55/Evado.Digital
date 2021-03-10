@@ -204,7 +204,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 11 ].Value = AdapterSettings.Title;
       cmdParms [ 12 ].Value = AdapterSettings.HttpReference;
       cmdParms [ 13 ].Value = AdapterSettings.Description;
-      cmdParms [ 14 ].Value = AdapterSettings.Roles;
+      cmdParms [ 14 ].Value = AdapterSettings.UserRoles;
 
       cmdParms [ 15 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 16 ].Value = this.ClassParameters.UserProfile.UserId;
@@ -272,7 +272,7 @@ namespace Evado.Dal.Digital
 
       applicationSettings.Description = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_DESCRIPTION );
 
-      applicationSettings.Roles = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_ROLES );
+      applicationSettings.UserRoles = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_ROLES );
 
       applicationSettings.UpdatedBy = EvSqlMethods.getString ( Row, EdAdapterConfig.DB_FIELD_UPDATE_USER );
 
@@ -386,7 +386,7 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-    #region ApplicationProfile Update queries
+    #region AdapterConfig Update queries
 
     // =====================================================================================
     /// <summary>
@@ -428,15 +428,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = GetParameters ( );
       SetParameters ( cmdParms, AdapterParameters );
-      /*
-      this.LogDebugValue ( "Parameters:" );
-      foreach ( SqlParameter prm in cmdParms )
-      {
-        this.LogDebugValue ( "Type: " + prm.DbType
-          + ", Name: " + prm.ParameterName
-          + ", Value: " + prm.Value );
-      }
-       */ 
+
       try
       {
         //
