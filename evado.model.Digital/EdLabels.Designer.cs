@@ -1881,6 +1881,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Binary Data:.
+        /// </summary>
+        public static string Config_Enable_Binary_Data_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Enable_Binary_Data_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden Organisation Fields:.
         /// </summary>
         public static string Config_HiddenOrgFields_List_Field_Label {
@@ -1940,6 +1949,24 @@ namespace Evado.Model.Digital {
         public static string Config_Role_List_Field_Label {
             get {
                 return ResourceManager.GetString("Config_Role_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Platform Title:.
+        /// </summary>
+        public static string Config_Title_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Title_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Home Page Title on all pages..
+        /// </summary>
+        public static string Config_User_Home_Page_OnAll_Pages_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_User_Home_Page_OnAll_Pages_Field_Label", resourceCulture);
             }
         }
         
@@ -2390,6 +2417,15 @@ namespace Evado.Model.Digital {
         public static string Entity_New_Entity_Command_Title {
             get {
                 return ResourceManager.GetString("Entity_New_Entity_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of Entities.
+        /// </summary>
+        public static string Entity_View_Page_Title {
+            get {
+                return ResourceManager.GetString("Entity_View_Page_Title", resourceCulture);
             }
         }
         
@@ -5348,6 +5384,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Corporate Logo Image:.
+        /// </summary>
+        public static string Organisation_ImageFileame_Field_Label {
+            get {
+                return ResourceManager.GetString("Organisation_ImageFileame_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site investigator&apos;s name:.
         /// </summary>
         public static string Organisation_Investigator_Name_Field_Label {
@@ -7761,6 +7806,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current photo or Avatar:.
+        /// </summary>
+        public static string UserProfile_ImageFileame_Field_Label {
+            get {
+                return ResourceManager.GetString("UserProfile_ImageFileame_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Selection Filters.
         /// </summary>
         public static string UserProfile_List_Selection_Group {
@@ -7833,6 +7887,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Title:.
+        /// </summary>
+        public static string UserProfile_Title_Field_Label {
+            get {
+                return ResourceManager.GetString("UserProfile_Title_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update User Profile.
         /// </summary>
         public static string UserProfile_Update_Profile_Command_Title {
@@ -7883,6 +7946,15 @@ namespace Evado.Model.Digital {
         public static string UserProfile_Upload_Process_Log_Title {
             get {
                 return ResourceManager.GetString("UserProfile_Upload_Process_Log_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select image file to upload:.
+        /// </summary>
+        public static string UserProfile_UploadImage_Field_Label {
+            get {
+                return ResourceManager.GetString("UserProfile_UploadImage_Field_Label", resourceCulture);
             }
         }
         

@@ -84,6 +84,7 @@ namespace Evado.Dal.Digital
     public const string DB_COUNTRY = "O_COUNTRY";
     public const string DB_TELEPHONE = "O_TELEPHONE";
     public const string DB_EMAIL_ADDRESS = "O_EMAIL_ADDRESS";
+    public const string DB_IMAGE_FILENAME = "O_IMAGE_FILENAME";
     public const string DB_UPDATED_BY_USER_ID = "O_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_By = "O_UPDATED_BY";
     public const string DB_UPDATE_DATE = "O_UPDATED_DATE";
@@ -92,6 +93,7 @@ namespace Evado.Dal.Digital
     private const string PARM_Guid = "@Guid";
     private const string PARM_ORG_ID = "@ORG_ID";
     private const string PARM_Name = "@Name";
+    private const string PARM_ORG_TYPE = "@ORG_TYPE";
     private const string PARM_Address_1 = "@ADDRESS_1";
     private const string PARM_Address_2 = "@ADDRESS_2";
     private const string PARM_Address_City = "@ADDRESS_CITY";
@@ -100,7 +102,7 @@ namespace Evado.Dal.Digital
     private const string PARM_COUNTRY = "@COUNTRY";
     private const string PARM_TELEPHONE = "@TELEPHONE";
     private const string PARM_EmailAddress = "@EMAIL_ADDRESS";
-    private const string PARM_ORG_TYPE = "@ORG_TYPE";
+    private const string PARM_IMAGE_FILENAME = "@IMAGE_FILENAME";
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
     private const string PARM_UPDATE_DATE = "@UPDATED_DATE";
@@ -128,21 +130,22 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] parms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_ORG_ID, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_Name, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_Address_1, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_Address_2, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_Address_City, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_Address_Post_Code, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_Address_State, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_COUNTRY, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_TELEPHONE, SqlDbType.NVarChar, 15),
-        new SqlParameter( PARM_EmailAddress, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_ORG_TYPE, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_UPDATE_DATE, SqlDbType.DateTime)
+        new SqlParameter( EdOrganisations.PARM_Guid, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdOrganisations.PARM_ORG_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdOrganisations.PARM_Name, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_Address_1, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_Address_2, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_Address_City, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_Address_Post_Code, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdOrganisations.PARM_Address_State, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_TELEPHONE, SqlDbType.NVarChar, 15),
+        new SqlParameter( EdOrganisations.PARM_EmailAddress, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdOrganisations.PARM_ORG_TYPE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_IMAGE_FILENAME, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdOrganisations.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdOrganisations.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdOrganisations.PARM_UPDATE_DATE, SqlDbType.DateTime)
       };
 
       return parms;
@@ -174,9 +177,10 @@ namespace Evado.Dal.Digital
       cmdParms [ 9 ].Value = Organisation.Telephone;
       cmdParms [ 10 ].Value = Organisation.EmailAddress;
       cmdParms [ 11 ].Value = Organisation.OrgType;
-      cmdParms [ 12 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 13 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 14 ].Value = DateTime.Now;
+      cmdParms [ 12 ].Value = Organisation.ImageFileName;
+      cmdParms [ 13 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 14 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 15 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -210,20 +214,21 @@ namespace Evado.Dal.Digital
       // 
       organisation.Guid = EvSqlMethods.getGuid ( Row, EdOrganisations.DB_GUID );
       organisation.OrgId = EvSqlMethods.getString ( Row, EdOrganisations.DB_ORG_ID );
-      organisation.Name = EvSqlMethods.getString ( Row, DB_NAME );
-      organisation.AddressStreet_1 = EvSqlMethods.getString ( Row, DB_ADDRESS_1 );
-      organisation.AddressStreet_2 = EvSqlMethods.getString ( Row, DB_ADDRESS_2 );
-      organisation.AddressCity = EvSqlMethods.getString ( Row, DB_ADDRESS_CITY );
-      organisation.AddressPostCode = EvSqlMethods.getString ( Row, DB_ADDRESS_POST_CODE );
-      organisation.AddressState = EvSqlMethods.getString ( Row, DB_ADDRESS_STATE );
-      organisation.AddressCountry = EvSqlMethods.getString ( Row, DB_COUNTRY );
-      organisation.Telephone = EvSqlMethods.getString ( Row, DB_TELEPHONE );
-      organisation.EmailAddress = EvSqlMethods.getString ( Row, DB_EMAIL_ADDRESS );
-      organisation.OrgType = EvSqlMethods.getString ( Row, DB_ORG_TYPE );
+      organisation.Name = EvSqlMethods.getString ( Row, EdOrganisations.DB_NAME );
+      organisation.AddressStreet_1 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_1 );
+      organisation.AddressStreet_2 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_2 );
+      organisation.AddressCity = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_CITY );
+      organisation.AddressPostCode = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_POST_CODE );
+      organisation.AddressState = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_STATE );
+      organisation.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_COUNTRY );
+      organisation.Telephone = EvSqlMethods.getString ( Row, EdOrganisations.DB_TELEPHONE );
+      organisation.EmailAddress = EvSqlMethods.getString ( Row, EdOrganisations.DB_EMAIL_ADDRESS );
+      organisation.OrgType = EvSqlMethods.getString ( Row, EdOrganisations.DB_ORG_TYPE );
+      organisation.ImageFileName = EvSqlMethods.getString ( Row, EdOrganisations.DB_IMAGE_FILENAME);
 
-      organisation.UpdatedByUserId = EvSqlMethods.getString ( Row, DB_UPDATED_BY_USER_ID );
-      organisation.UpdatedBy = EvSqlMethods.getString ( Row, DB_UPDATED_By );
-      organisation.UpdatedDate = EvSqlMethods.getDateTime ( Row, DB_UPDATE_DATE );
+      organisation.UpdatedByUserId = EvSqlMethods.getString ( Row, EdOrganisations.DB_UPDATED_BY_USER_ID );
+      organisation.UpdatedBy = EvSqlMethods.getString ( Row, EdOrganisations.DB_UPDATED_By );
+      organisation.UpdatedDate = EvSqlMethods.getDateTime ( Row, EdOrganisations.DB_UPDATE_DATE );
 
       if ( organisation.OrgId.ToLower ( ) == "evado" )
       {

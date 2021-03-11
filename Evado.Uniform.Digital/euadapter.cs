@@ -139,7 +139,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the application Guid
         //
-        this.ClassParameters.AdapterGuid = this._AdapterObjects.AdapterSettings.Guid;
+        this.ClassParameters.AdapterGuid = this._AdapterObjects.Settings.Guid;
         this.ClassParameters.PlatformId = this._AdapterObjects.PlatformId;
 
         //
@@ -377,7 +377,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
         this.LogDebug ( "LastPage.Title {0}. ", this.Session.LastPage.Title );
         this.LogDebug ( "AllEntityLayouts.Count {0}. ", this._AdapterObjects.AllEntityLayouts.Count );
-        this.LogDebug ( "Role ID: {0}. ", this._AdapterObjects.AdapterSettings.UserRoles );
+        this.LogDebug ( "Role ID: {0}. ", this._AdapterObjects.Settings.UserRoles );
 
         //
         // Turn on BLL debug to match the current class setting.
@@ -405,7 +405,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-        Evado.Bll.EvStaticSetting.SiteGuid = this._AdapterObjects.AdapterSettings.Guid;
+        Evado.Bll.EvStaticSetting.SiteGuid = this._AdapterObjects.Settings.Guid;
 
         // 
         // Load the user profile.
@@ -722,6 +722,7 @@ namespace Evado.UniForm.Digital
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
+              this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
             organisations.LoggingLevel = this.LoggingLevel;
@@ -744,6 +745,7 @@ namespace Evado.UniForm.Digital
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
+              this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
             userProfiles.LoggingLevel = this.LoggingLevel;
@@ -1177,7 +1179,7 @@ namespace Evado.UniForm.Digital
       //  
       // Load the paremeters from the web.config if not already loaded.
       // 
-      if ( this._AdapterObjects.AdapterSettings.Guid != Guid.Empty )
+      if ( this._AdapterObjects.Settings.Guid != Guid.Empty )
       {
         this.LogInitValue ( "APPLICATION OBJECT IS LOADED" );
         return;
@@ -1199,9 +1201,9 @@ namespace Evado.UniForm.Digital
       this._AdapterObjects.loadGlobalParameters ( );
 
       this.LogInit ( this._AdapterObjects.Log );
-      this.LogInitValue ( "Version: " + this._AdapterObjects.AdapterSettings.Version );
-      this.LogInitValue ( "HiddenOrganisationFields: " + this._AdapterObjects.AdapterSettings.HiddenOrganisationFields );
-      this.LogInitValue ( "HiddenUserFields: " + this._AdapterObjects.AdapterSettings.HiddenUserFields );
+      this.LogInitValue ( "Version: " + this._AdapterObjects.Settings.Version );
+      this.LogInitValue ( "HiddenOrganisationFields: " + this._AdapterObjects.Settings.HiddenOrganisationFields );
+      this.LogInitValue ( "HiddenUserFields: " + this._AdapterObjects.Settings.HiddenUserFields );
 
       // 
       // Save the application parameters to global objects.

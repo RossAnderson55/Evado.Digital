@@ -128,9 +128,9 @@ namespace Evado.UniForm.Digital
       this.getSelectedGroupItem ( PageCommand );
 
       String pageTitle = Evado.Model.Digital.EdLabels.Default_Home_Page_Title;
-      if ( this._AdapterObjects.AdapterSettings.HomePageHeaderText != String.Empty )
+      if ( this._AdapterObjects.Settings.HomePageHeaderText != String.Empty )
       {
-        pageTitle = this._AdapterObjects.AdapterSettings.HomePageHeaderText;
+        pageTitle = this._AdapterObjects.Settings.HomePageHeaderText;
       }
 
       //

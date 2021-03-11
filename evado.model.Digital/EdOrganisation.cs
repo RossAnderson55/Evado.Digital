@@ -49,6 +49,11 @@ namespace Evado.Model.Digital
       Name,
 
       /// <summary>
+      /// This enumeration defines a image filename for an organization
+      /// </summary>
+      Image_File_Name,
+
+      /// <summary>
       /// This enumeration defines a organisation type field name of an organization
       /// </summary>
       Org_Type,
@@ -98,7 +103,6 @@ namespace Evado.Model.Digital
       /// </summary>
       Email_Address,
     }
-
 
     /// <summary>
     /// This enumeration list defines the action codes for Trial orgnization object.
@@ -193,6 +197,11 @@ namespace Evado.Model.Digital
         this._Name = value;
       }
     }
+
+    /// <summary>
+    /// This property contains the image (logo) filename for the organisation.
+    /// </summary>
+    public string ImageFileName { get; set; }
 
     /// <summary>
     /// This property contains an address of an organization
@@ -496,6 +505,11 @@ namespace Evado.Model.Digital
         case EdOrganisation.OrganisationFieldNames.Name:
           return this._Name;
 
+        case EdOrganisation.OrganisationFieldNames.Image_File_Name:
+          {
+            return this.ImageFileName;
+          }
+
         case EdOrganisation.OrganisationFieldNames.Org_Type:
           return this._OrgType;
 
@@ -557,53 +571,66 @@ namespace Evado.Model.Digital
       //
       switch ( FieldName )
       {
-
         case EdOrganisation.OrganisationFieldNames.OrgId:
-          this._OrgId = Value;
-          return;
-
+          {
+            this._OrgId = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Name:
-          this._Name = Value;
-          return;
-
+          {
+            this._Name = Value;
+            return;
+          }
+        case EdOrganisation.OrganisationFieldNames.Image_File_Name:
+          {
+            this.ImageFileName = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address:
           {
             this.Address = Value;
           } return;
 
         case EdOrganisation.OrganisationFieldNames.Address_1:
-          this._AddressStreet_1 = Value;
-          return;
-
+          {
+            this._AddressStreet_1 = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address_2:
-          this._AddressStreet_2 = Value;
-          return;
-
+          {
+            this._AddressStreet_2 = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address_City:
-          this._AddressCity = Value;
-          return;
-
+          {
+            this._AddressCity = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address_State:
-          this._AddressState = Value;
-          return;
-
+          {
+            this._AddressState = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address_Post_Code:
-          this._AddressPostCode = Value;
-          return;
-
+          {
+            this._AddressPostCode = Value;
+            return;
+          }
         case EdOrganisation.OrganisationFieldNames.Address_Country:
           this._Country = Value;
           return;
 
         case EdOrganisation.OrganisationFieldNames.Telephone:
-          this._Telephone = Value;
-          return;
-
+          {
+            this._Telephone = Value;
+            return;
+          }
 
         case EdOrganisation.OrganisationFieldNames.Email_Address:
-          this._EmailAddress = Value;
-          return;
-
+          {
+            this._EmailAddress = Value;
+            return;
+          }
 
         case EdOrganisation.OrganisationFieldNames.Org_Type:
           {

@@ -74,38 +74,40 @@ CREATE             PROCEDURE [dbo].[USR_USER_PROFILE_ADD]
  @EmailAddress nvarchar(100),
  @RoleId nvarchar(100),
  @TYPE nvarchar(50),
+ @IMAGE_FILENAME nvarchar(100),
  @EXPIRY_DATE datetime,
  @UpdatedByUserId nvarchar(100),
  @UpdatedBy nvarchar(100),
  @UpdateDate datetime
 AS
 Insert Into ED_USER_PROFILES 
-  ([UP_GUID]
-  ,[USER_ID]
-  ,[ORG_ID]
-  ,[UP_ACTIVE_DIRECTORY_NAME]
-  ,[UP_COMMON_NAME]
-  ,[UP_TITLE]
-  ,[UP_PREFIX]
-  ,[UP_GIVEN_NAME]
-  ,[UP_FAMILY_NAME]
-  ,[UP_SUFFIX]
-  ,[UP_ADDRESS_1]
-  ,[UP_ADDRESS_2]
-  ,[UP_ADDRESS_CITY]
-  ,[UP_ADDRESS_POST_CODE]
-  ,[UP_ADDRESS_STATE]
-  ,[UP_ADDRESS_COUNTRY]
-  ,[UP_MOBILE_PHONE]
-  ,[UP_TELEPHONE]
-  ,[UP_EMAIL_ADDRESS]
-  ,[UP_ROLES]
-  ,[UP_TYPE]
-  ,[UP_EXPIRY_DATE]
-  ,[UP_UPDATED_BY_USER_ID]
-  ,[UP_UPDATED_BY]
-  ,[UP_UPDATED_DATE]
-  ,[UP_DELETED] ) 
+  ( UP_GUID 
+  , USER_ID 
+  , ORG_ID 
+  , UP_ACTIVE_DIRECTORY_NAME 
+  , UP_COMMON_NAME 
+  , UP_TITLE 
+  , UP_PREFIX 
+  , UP_GIVEN_NAME 
+  , UP_FAMILY_NAME 
+  , UP_SUFFIX 
+  , UP_ADDRESS_1 
+  , UP_ADDRESS_2 
+  , UP_ADDRESS_CITY 
+  , UP_ADDRESS_POST_CODE 
+  , UP_ADDRESS_STATE 
+  , UP_ADDRESS_COUNTRY 
+  , UP_MOBILE_PHONE 
+  , UP_TELEPHONE 
+  , UP_EMAIL_ADDRESS 
+  , UP_ROLES 
+  , UP_TYPE 
+  , UP_IMAGE_FILENAME 
+  , UP_EXPIRY_DATE 
+  , UP_UPDATED_BY_USER_ID 
+  , UP_UPDATED_BY 
+  , UP_UPDATED_DATE 
+  , UP_DELETED  ) 
 values 	
  (@Guid,
  @UserId,
@@ -128,6 +130,7 @@ values
  @EmailAddress,
  @RoleId,
  @TYPE,
+ @IMAGE_FILENAME,
  @EXPIRY_DATE,
  @UpdatedByUserId,
  @UpdatedBy,
@@ -181,7 +184,8 @@ CREATE      PROCEDURE [dbo].[USR_USER_PROFILE_UPDATE]
  @MOBILE_PHONE nvarchar(20),
  @EmailAddress nvarchar(100),
  @RoleId nvarchar(100),
- @TYPE nvarchar(20),
+ @TYPE nvarchar(50),
+ @IMAGE_FILENAME nvarchar(100),
  @EXPIRY_DATE datetime,
  @UpdatedByUserId nvarchar(100),
  @UpdatedBy nvarchar(100),
@@ -210,6 +214,7 @@ SET
   UP_ROLES = @RoleId, 
   UP_TYPE = @TYPE,
   UP_Title = @Title, 
+  UP_IMAGE_FILENAME= @IMAGE_FILENAME,
   UP_EXPIRY_DATE = @EXPIRY_DATE,
  	UP_UPDATED_BY_USER_ID = @UpdatedByUserId,  
  	UP_UPDATED_BY = @UpdatedBy,  

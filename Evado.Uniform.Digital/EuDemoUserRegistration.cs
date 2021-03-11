@@ -215,7 +215,7 @@ namespace Evado.UniForm.Digital
       this.LogValue ( Evado.Model.UniForm.EuStatics.CONST_METHOD_START
         + this.ClassNameSpace + "getDataObject_RegistrationPage" );
       this.LogDebug ( "AdminOrganisation.OrgId: " +this.Session.SelectedUserType.ToString() );
-      this.LogDebug ( "Demo Expiry {0}", this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays.ToString() );
+      this.LogDebug ( "Demo Expiry {0}", this.AdapterObjects.Settings.DemoAccountExpiryDays.ToString() );
       try
       {
         // 
@@ -229,7 +229,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile = new Evado.Model.Digital.EdUserProfile ( );
         this.Session.AdminUserProfile.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.AdminUserProfile.ExpiryDate = DateTime.Now.AddDays (
-          this.AdapterObjects.AdapterSettings.DemoAccountExpiryDays );
+          this.AdapterObjects.Settings.DemoAccountExpiryDays );
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
@@ -432,7 +432,7 @@ namespace Evado.UniForm.Digital
       //
       // if there is not video donot create the video field.
       //
-      if ( this.AdapterObjects.AdapterSettings.DemoRegistrationVideoUrl == String.Empty )
+      if ( this.AdapterObjects.Settings.DemoRegistrationVideoUrl == String.Empty )
       {
         return;
       }
@@ -442,7 +442,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Field groupField = PageGroup.createField ( );
       groupField.Type = Evado.Model.EvDataTypes.Streamed_Video;
-      groupField.Value = this.AdapterObjects.AdapterSettings.DemoRegistrationVideoUrl;
+      groupField.Value = this.AdapterObjects.Settings.DemoRegistrationVideoUrl;
       groupField.Description = String.Empty;
 
       int iWidth = 800;

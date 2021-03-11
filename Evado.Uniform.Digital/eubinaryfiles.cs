@@ -739,7 +739,7 @@ namespace Evado.UniForm.Digital
         Guid orgGuid = Guid.Empty;
 
         this._BinaryFile.FileGuid = Guid.NewGuid ( );
-        this._BinaryFile.TrialGuid = this.AdapterObjects.AdapterSettings.Guid;
+        this._BinaryFile.TrialGuid = this.AdapterObjects.Settings.Guid;
         this._BinaryFile.GroupId = this.Session.BinaryFileOrgId;
         this._BinaryFile.GroupGuid = orgGuid;
       }//END emtpty binary object.
@@ -2039,10 +2039,10 @@ namespace Evado.UniForm.Digital
       // 
       EvBinaryFileMetaData binaryFile = new EvBinaryFileMetaData (
         FileGuid,
-        this.AdapterObjects.AdapterSettings.Guid,
+        this.AdapterObjects.Settings.Guid,
         GroupGuid,
         SubGroupGuid,
-        this.AdapterObjects.AdapterSettings.ApplicationId,
+        this.AdapterObjects.Settings.ApplicationId,
         GroupId,
         SubGroupId,
         FileId,

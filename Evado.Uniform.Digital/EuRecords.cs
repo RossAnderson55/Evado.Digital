@@ -643,21 +643,6 @@ namespace Evado.UniForm.Digital
         List<EdRecord> recordList = new List<EdRecord> ( );
 
         // 
-        // If the user does not have monitor or ResultData manager roles exit the page.
-        // 
-        /*
-        if ( this.Session.UserProfile.hasEndUserRole( this.Session.Record.Design.ReadAccessRoles ) == false )
-        {
-          this.LogIllegalAccess (
-            this.ClassNameSpace + "FormRecords.getListObject",
-            this.Session.UserProfile );
-
-          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
-
-          return this.Session.LastPage; ;
-        }
-        */
-        // 
         // Log the user's access to page.
         // 
         this.LogPageAccess (
@@ -671,6 +656,12 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Record_View_Page_Title;
+
+        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        {
+          clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+        }
+          
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
 
@@ -1826,12 +1817,12 @@ namespace Evado.UniForm.Digital
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       ClientDataObject.Id = this.Session.Record.Guid;
-      ClientDataObject.Title = String.Format (
-          EdLabels.Record_Page_Title_Subject_Prefix,
-          String.Empty,
-          this.Session.Record.RecordId,
-          this.Session.Record.Title,
-          this.Session.Record.StateDesc );
+      ClientDataObject.Title = this.Session.Entity.CommandTitle;
+
+      if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+      {
+        ClientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+      }
 
 
       ClientDataObject.Page.Title = ClientDataObject.Title;

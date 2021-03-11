@@ -47,7 +47,7 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     public EuGlobalObjects ( )
     {
-      this.Settings = new EvClassParameters ( );
+      this.ClassParameters = new EvClassParameters ( );
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
     }
 
@@ -57,12 +57,12 @@ namespace Evado.UniForm.Digital
     /// </summary>
     //-----------------------------------------------------------------------------------
     public EuGlobalObjects (
-      EvClassParameters Settings )
+      EvClassParameters ClassParameters )
     {
       this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
-      this.Settings = Settings;
+      this.ClassParameters = ClassParameters;
 
-      this._LoggingLevel = this.Settings.LoggingLevel;
+      this._LoggingLevel = this.ClassParameters.LoggingLevel;
 
     }//END Method
 
@@ -83,7 +83,7 @@ namespace Evado.UniForm.Digital
     public void loadGlobalParameters ( )
     {
       this.LogMethod ( "loadGlobalParameters" );
-      this.Settings.LoggingLevel = this.LoggingLevel;
+      this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
       this.LoadStaticEnvironmentalProperties ( );
 
@@ -102,7 +102,64 @@ namespace Evado.UniForm.Digital
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Class properties and variables.
+    #region Class Adapter properties
+
+
+    private String _ErrorMessage = String.Empty;
+
+    /// <summary>
+    /// This property defines the error message to be displayed to the user.
+    /// </summary>
+    public string ErrorMessage
+    {
+      get
+      {
+        return _ErrorMessage;
+      }
+      set { _ErrorMessage = value; }
+    }
+
+    protected String _FileRepositoryPath;
+
+    /// <summary>
+    /// This property contains the binary files repository path
+    /// </summary>
+
+    public String FileRepositoryPath
+    {
+      get { return this._FileRepositoryPath; }
+      set { this._FileRepositoryPath = value; }
+    }
+
+    private Evado.Model.Digital.EvClassParameters _ClassParameters = new Evado.Model.Digital.EvClassParameters ( );
+    /// <summary>
+    /// This property contains the setting data object. 
+    /// </summary>
+    public Evado.Model.Digital.EvClassParameters ClassParameters
+    {
+      get
+      {
+        return _ClassParameters;
+      }
+      set
+      {
+        this._ClassParameters = value;
+
+      }
+    }
+
+    private Model.Digital.EdAdapterSettings _Settings = new Model.Digital.EdAdapterSettings ( );
+    /// <summary>
+    /// This property object contains the platform settings object.
+    /// </summary>
+    public Model.Digital.EdAdapterSettings Settings
+    {
+      get { return _Settings; }
+      set { _Settings = value; }
+    }
+
+    #endregion
+    #region Class Global properties and variables.
 
     // 
     // Constants
@@ -293,16 +350,6 @@ namespace Evado.UniForm.Digital
       {
         this._NoReplyEmailAddress = value;
       }
-    }
-
-    private Model.Digital.EdAdapterSettings _AdapterSettings = new Model.Digital.EdAdapterSettings ( );
-    /// <summary>
-    /// This property object contains the platform settings object.
-    /// </summary>
-    public Model.Digital.EdAdapterSettings AdapterSettings
-    {
-      get { return _AdapterSettings; }
-      set { _AdapterSettings = value; }
     }
 
     private List<EvMenuItem> _MenuList = new List<EvMenuItem> ( );
@@ -498,7 +545,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialse the methods objects and variables.
         // 
-        EvMenus bll_Menu = new EvMenus ( this.Settings );
+        EvMenus bll_Menu = new EvMenus ( this.ClassParameters );
 
         // 
         // Get the site setMenu.
@@ -537,15 +584,15 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Bll.Digital.EdAdapterConfig adapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( );
 
-      if ( this.Settings != null )
+      if ( this.ClassParameters != null )
       {
-        adapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( this.Settings );
+        adapterConfig = new Evado.Bll.Digital.EdAdapterConfig ( this.ClassParameters );
       }
 
       //
       // Get the Application profile.
       //
-      this._AdapterSettings = adapterConfig.getItem ( "A" );
+      this._Settings = adapterConfig.getItem ( "A" );
 
       this.LogDebugClass ( adapterConfig.Log );
 
@@ -592,18 +639,18 @@ namespace Evado.UniForm.Digital
 
       this.LogDebug ( "Full version: " + _AssembyAttributes.FullVersion );
 
-      this._AdapterSettings.Version = _AssembyAttributes.FullVersion;
-      this._AdapterSettings.MinorVersion = _AssembyAttributes.MinorVersion;
+      this._Settings.Version = _AssembyAttributes.FullVersion;
+      this._Settings.MinorVersion = _AssembyAttributes.MinorVersion;
 
       //
       // Set the Stide GUid used by encryption module.
       //
-      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._AdapterSettings.Guid.ToString ( );
+      ConfigurationManager.AppSettings [ "SiteGuid" ] = this._Settings.Guid.ToString ( );
 
       // 
       // Log the Site Properties on startup.
       // 
-      this.LogDebug ( "Version: " + this._AdapterSettings.Version );
+      this.LogDebug ( "Version: " + this._Settings.Version );
 
       this.LogMethodEnd ( "loadAdatperSettings" );
     }//ENd loadSiteProperties method
@@ -648,7 +695,7 @@ namespace Evado.UniForm.Digital
       // 
       // Log the Maximum selection list length on startup.
       // 
-      this.LogDebug ( "MaximumSelectionListLength: " + this._AdapterSettings.MaximumSelectionListLength );
+      this.LogDebug ( "MaximumSelectionListLength: " + this._Settings.MaximumSelectionListLength );
 
       this.LogMethodEnd ( "LoadStaticEnvironmentalProperties" );
     }//END setStaticEnvironmentalProperties method
@@ -699,24 +746,24 @@ namespace Evado.UniForm.Digital
       //
       // Load the SMTP server properties is not loadedd.
       //
-      if ( this._AdapterSettings.SmtpServer == String.Empty )
+      if ( this._Settings.SmtpServer == String.Empty )
       {
         if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_KEY ] != null )
         {
-          this._AdapterSettings.SmtpServer = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_KEY ];
+          this._Settings.SmtpServer = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_KEY ];
         }
         if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] != null )
         {
-          this._AdapterSettings.SmtpServerPort =
+          this._Settings.SmtpServerPort =
             EvStatics.getInteger ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_SERVER_PORT_KEY ] );
         }
         if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ] != null )
         {
-          this._AdapterSettings.SmtpUserId = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ];
+          this._Settings.SmtpUserId = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_KEY ];
         }
         if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_PASSWORD_KEY ] != null )
         {
-          this._AdapterSettings.SmtpPassword = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_PASSWORD_KEY ];
+          this._Settings.SmtpPassword = (string) ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_SMTP_USER_PASSWORD_KEY ];
         }
 
       }//END no SMTP server.
@@ -724,32 +771,32 @@ namespace Evado.UniForm.Digital
       // 
       // Log the SMTP server.
       // 
-      this.LogDebug ( " SmtpServer: " + this._AdapterSettings.SmtpServer );
+      this.LogDebug ( " SmtpServer: " + this._Settings.SmtpServer );
 
       // 
       // Log the SMTP port setting
       // 
-      this.LogDebug ( " SmtpServerPort: " + this._AdapterSettings.SmtpServerPort );
+      this.LogDebug ( " SmtpServerPort: " + this._Settings.SmtpServerPort );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebug ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
+      this.LogDebug ( " SmtpUserId: " + this._Settings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebug ( " SmtpPassword: " + this._AdapterSettings.SmtpPassword );
+      this.LogDebug ( " SmtpPassword: " + this._Settings.SmtpPassword );
 
       // 
       // Log the SMTP User Id.
       // 
-      this.LogDebug ( " SmtpUserId: " + this._AdapterSettings.SmtpUserId );
+      this.LogDebug ( " SmtpUserId: " + this._Settings.SmtpUserId );
 
       // 
       // Log the SMTP user password.
       // 
-      this.LogDebug ( " EmailAlertTestAddress: " + this._AdapterSettings.EmailAlertTestAddress );
+      this.LogDebug ( " EmailAlertTestAddress: " + this._Settings.EmailAlertTestAddress );
 
 
       this.LogMethodEnd ( "loadSmtpServerProperties" );
@@ -758,53 +805,6 @@ namespace Evado.UniForm.Digital
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Class Adapter properties
-
-
-    private String _ErrorMessage = String.Empty;
-
-    /// <summary>
-    /// This property defines the error message to be displayed to the user.
-    /// </summary>
-    public string ErrorMessage
-    {
-      get
-      {
-        return _ErrorMessage;
-      }
-      set { _ErrorMessage = value; }
-    }
-
-    protected String _FileRepositoryPath;
-
-    /// <summary>
-    /// This property contains the binary files repository path
-    /// </summary>
-
-    public String FileRepositoryPath
-    {
-      get { return this._FileRepositoryPath; }
-      set { this._FileRepositoryPath = value; }
-    }
-
-    private Evado.Model.Digital.EvClassParameters _Settings = new Evado.Model.Digital.EvClassParameters ( );
-    /// <summary>
-    /// This property contains the setting data object. 
-    /// </summary>
-    public Evado.Model.Digital.EvClassParameters Settings
-    {
-      get
-      {
-        return _Settings;
-      }
-      set
-      {
-        this._Settings = value;
-
-      }
-    }
-
-    #endregion
 
     #region Debug methods.
 
@@ -835,7 +835,7 @@ namespace Evado.UniForm.Digital
       set
       {
         _LoggingLevel = value;
-        this.Settings.LoggingLevel = LoggingEventLevel;
+        this.ClassParameters.LoggingLevel = LoggingEventLevel;
 
         if ( this.LoggingLevel < 1 )
         {
@@ -904,7 +904,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.User_Access_Granted,
         this._ClassNameSpace,
         stEvent,
-        this.Settings.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.CommonName );
 
       // this.AddEvent ( applicationEvent );
 
@@ -956,7 +956,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.User_Access_Error,
         this._ClassNameSpace,
         stEvent,
-        this.Settings.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.CommonName );
 
       // this.AddEvent ( applicationEvent );
 
@@ -1091,7 +1091,7 @@ namespace Evado.UniForm.Digital
         EvEventCodes.Ok,
         this._ClassNameSpace,
         Value,
-        this.Settings.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.CommonName );
 
       this._AdapterLog.AppendLine (
         DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EVENT:  " + Value );
@@ -1115,11 +1115,11 @@ namespace Evado.UniForm.Digital
         EvEventCodes.Ok,
         this._ClassNameSpace,
         value,
-        this.Settings.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.CommonName );
 
       // this.AddEvent ( applicationEvent );
 
-      if ( this._Settings.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._AdapterLog.AppendLine ( value );
@@ -1160,11 +1160,11 @@ namespace Evado.UniForm.Digital
         EventId,
         this._ClassNameSpace,
         Description,
-        this.Settings.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.CommonName );
 
       // this.AddEvent ( applicationEvent );
 
-      if ( this._Settings.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._AdapterLog.AppendLine ( Description );
@@ -1324,7 +1324,7 @@ namespace Evado.UniForm.Digital
       try
       {
         Evado.Bll.EvApplicationEvents _Bll_ApplicationEvents = new Bll.EvApplicationEvents (
-          this.Settings );
+          this.ClassParameters );
         //
         // If the action is set to delete the object.
         // 

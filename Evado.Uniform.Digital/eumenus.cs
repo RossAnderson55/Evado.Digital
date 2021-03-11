@@ -772,7 +772,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      optionList = this.AdapterObjects.AdapterSettings.GetRoleOptionList ( false );
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
       string roles = this.Session.MenuItem.RoleList;
 
       pageField = pageGroup.createCheckBoxListField (

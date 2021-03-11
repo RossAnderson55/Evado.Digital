@@ -69,6 +69,11 @@ namespace Evado.Model.Digital
       /// This enumeration defines the organisation identifier in user profile
       /// </summary>
       OrgId,
+      
+      /// <summary>
+      /// This enumeration defines the user image or photo filename.
+      /// </summary>
+      Image_File_Name,
 
       /// <summary>
       /// This enumeration defines the user identifier in user profile
@@ -247,6 +252,7 @@ namespace Evado.Model.Digital
         this._TypeId = value;
       }
     }
+
     String _OrgId = String.Empty;
     /// <summary>
     /// This property defines the user type and used to organisation to the platform.
@@ -264,6 +270,11 @@ namespace Evado.Model.Digital
         }
       }
     }
+
+    /// <summary>
+    /// This property contains the image (logo) filename for the organisation.
+    /// </summary>
+    public string ImageFileName { get; set; }
 
     private String _Roles = String.Empty;
     /// <summary>
@@ -639,6 +650,11 @@ namespace Evado.Model.Digital
         case UserProfileFieldNames.Password:
           {
             this.Password = value;
+            break;
+          }
+        case UserProfileFieldNames.Image_File_Name:
+          {
+            this.ImageFileName = value;
             break;
           }
         case UserProfileFieldNames.User_Type_Id:

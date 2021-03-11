@@ -984,7 +984,7 @@ namespace Evado.UniForm.Digital
             }
         }//END state switch.
 
-        groupCommand.Title += form.LinkText;
+        groupCommand.Title += form.CommandTitle;
 
       }//END iteration loop
 

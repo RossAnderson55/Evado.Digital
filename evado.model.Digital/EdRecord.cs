@@ -236,9 +236,14 @@ namespace Evado.Model.Digital
       No_Header,
 
       /// <summary>
-      /// This enumeration defines all edit accss roles have edit access to the object.
+      /// This enumeration defines author record/entity layout header setting
       /// </summary>
       Author_Header,
+
+      /// <summary>
+      /// This enumeration defines  author record/entity and save date layout header setting.
+      /// </summary>
+      Author_Date_Header,
     }
     /// <summary>
     /// This enumeration list defines the layout header format
@@ -809,23 +814,26 @@ namespace Evado.Model.Digital
       }
     }
 
-    private string _LinkText = String.Empty;
     /// <summary>
     /// This property contains a link text of a form. 
     /// </summary>
-    public string LinkText
+    public string CommandTitle
     {
       get
       {
+        //
+        // Return the design command title
+        //
         if ( this._State == EdRecordObjectStates.Form_Draft
           || this._State == EdRecordObjectStates.Form_Reviewed
           || this._State == EdRecordObjectStates.Form_Issued )
         {
           return String.Format (
-                    "{0} - {1}, Type: {2}, State {3}",
+                    "{0} - {1}, Type: {2}, Version {3}, State {4}",
                     this.LayoutId,
                     this.Title,
                     this.TypeId,
+                    this.Version,
                     this.StateDesc );
         }
         //
@@ -843,7 +851,7 @@ namespace Evado.Model.Digital
 
         if ( this.Design.DisplayAuthorDetails == true )
         {
-          link += " " + this.Updated;
+          link += EdLabels.Label_by + this.Updated;
         }
 
         //
@@ -851,10 +859,6 @@ namespace Evado.Model.Digital
         //
         switch ( this.Design.LinkContentSetting )
         {
-          default:
-            {
-              return link;
-            }//END default case
           case LinkContentSetting.Display_Summary:
             {
               return this.RecordSummary;
@@ -864,12 +868,23 @@ namespace Evado.Model.Digital
               if ( this.Fields.Count > 1 )
               {
                 link = this.Fields [ 0 ].ItemValue;
+
+                if ( this.Design.DisplayAuthorDetails == true )
+                {
+                  link += EdLabels.Label_by + this.Updated;
+                }
               }
               return link;
             }
+          default:
+            {
+              return link;
+            }//END default case
         }//END switch statement
-      }
-    }
+      
+      }//Get method
+
+    }//END method
 
 
 

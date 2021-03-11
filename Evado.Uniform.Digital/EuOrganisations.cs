@@ -56,6 +56,7 @@ namespace Evado.UniForm.Digital
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
+      String UniForm_BinaryServiceUrl,
       EvClassParameters Settings )
     {
       this.ClassNameSpace = "Evado.UniForm.Digital.EuOrganisations.";
@@ -63,21 +64,23 @@ namespace Evado.UniForm.Digital
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
+      this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
       this.ClassParameters = Settings;
 
 
       this.LogInitMethod ( "EuOrganisations initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
-      this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
+      this.LogInit ( "Session.UserProfile.Userid: " + this.Session.UserProfile.UserId );
+      this.LogInit ( "Session.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
+      this.LogInit ( "UniForm BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
 
       this.LogInit ( "Settings:" );
       this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
       this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.AdapterGuid );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
-      this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
+      this.LogInit ( "-CommonName: " + Settings.UserProfile.CommonName );
 
       this._Bll_Organisations = new Evado.Bll.Digital.EdOrganisations ( this.ClassParameters );
 
@@ -344,7 +347,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of organisations.
       //
-      optionList = this.AdapterObjects.AdapterSettings.GetOrgTypeList ( true );
+      optionList = this.AdapterObjects.Settings.GetOrgTypeList ( true );
 
       // 
       // Set the selection to the current site org id.
@@ -558,8 +561,12 @@ namespace Evado.UniForm.Digital
 
         if ( this.Session.AdminOrganisation.OrgType == String.Empty )
         {
-          this.Session.AdminOrganisation.OrgType = this.AdapterObjects.AdapterSettings.DefaultOrgType;
+          this.Session.AdminOrganisation.OrgType = this.AdapterObjects.Settings.DefaultOrgType;
         }
+        // 
+        // Create the organisation fax number object
+        // 
+        this.LogDebug ( "AdminOrganisation.OrgType: " + this.Session.AdminOrganisation.OrgType );
 
         this.LogValue ( "Organisation.OrgId: "
           + this.Session.AdminOrganisation.OrgId );
@@ -737,16 +744,10 @@ namespace Evado.UniForm.Digital
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-      // 
-      // Create the organisation fax number object
-      // 
-      this.LogDebug ( "AdminOrganisation.OrgType: "
-        + this.Session.AdminOrganisation.OrgType );
-
       //
       // get the org type selection list.
       //
-      optionList = this.AdapterObjects.AdapterSettings.GetOrgTypeList ( true );
+      optionList = this.AdapterObjects.Settings.GetOrgTypeList ( true );
 
       //
       // Generate the organisation type radio button list field object.
@@ -785,9 +786,19 @@ namespace Evado.UniForm.Digital
         Model.UniForm.Background_Colours.Red );
 
       // 
+      // Create the customer name object
+      // 
+      pageField = pageGroup.createTextField (
+        EdOrganisation.OrganisationFieldNames.Image_File_Name.ToString ( ),
+        EdLabels.Organisation_ImageFileame_Field_Label,
+        this.Session.AdminOrganisation.ImageFileName,
+        50 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      // 
       // Create the street address 1
       //
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Address_1 ) == false )
       {
         pageField = pageGroup.createTextField (
@@ -809,7 +820,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the street address city
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Address_City ) == false )
       {
         pageField = pageGroup.createTextField (
@@ -822,7 +833,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the street address state
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Address_State ) == false )
       {
         pageField = pageGroup.createTextField (
@@ -835,7 +846,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the street address 1
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Address_Post_Code ) == false )
       {
         pageField = pageGroup.createTextField (
@@ -848,7 +859,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the street address 1
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Address_Country ) == false )
       {
         pageField = pageGroup.createTextField (
@@ -861,7 +872,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the organisation telephone number object
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Telephone ) == false )
       {
         pageField = pageGroup.createTelephoneNumberField (
@@ -874,7 +885,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the organisation fax number object
       // 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenOrganisationField (
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
         EdOrganisation.OrganisationFieldNames.Email_Address ) == false )
       {
         pageField = pageGroup.createEmailAddressField (
@@ -1094,6 +1105,7 @@ namespace Evado.UniForm.Digital
         // 
         this.updateObjectValue ( PageCommand.Parameters );
 
+
         //
         // check that the mandatory fields have been filed.
         //
@@ -1101,7 +1113,11 @@ namespace Evado.UniForm.Digital
         {
           return this.Session.LastPage;
         }
-
+        
+        //
+        // copy the image file to the image directory.
+        //
+        this.saveImageFile ( );
 
         this.LogDebug ( "AddressStreet_1: " + this.Session.AdminOrganisation.AddressStreet_1 );
         this.LogDebug ( "AddressStreet_2: " + this.Session.AdminOrganisation.AddressStreet_2 );
@@ -1185,6 +1201,37 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END method
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method copies the upload image file to the image directory.
+    /// </summary>
+    //  ----------------------------------------------------------------------------------
+    private void saveImageFile ( )
+    {
+      this.LogMethod ( "saveImageFile" );
+
+      if ( this.Session.AdminOrganisation .ImageFileName == String.Empty )
+      {
+        return;
+      }
+
+      //
+      // Initialise the method variables and objects.
+      //
+      String stSourcePath = this.UniForm_BinaryFilePath + this.Session.AdminOrganisation.ImageFileName;
+      String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminOrganisation.ImageFileName;
+
+      this.LogDebug ( "Source path {0}.", stSourcePath );
+      this.LogDebug ( "Image path {0}.", stImagePath );
+
+      //
+      // Save the file to the directory repository.
+      //
+      System.IO.File.Copy ( stSourcePath, stImagePath, true );
+
+      this.LogMethodEnd ( "saveImageFile" );
+    }//END saveImageFile method
 
     // ==================================================================================
     /// <summary>

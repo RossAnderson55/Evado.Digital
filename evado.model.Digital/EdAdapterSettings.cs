@@ -126,6 +126,11 @@ namespace Evado.Model.Digital
       /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
       Enable_Binary_Data,
+      
+      /// <summary>
+      /// This enumeration definse a collecting binary data field name of a trial
+      /// </summary>
+      User_Home_Page_On_All_Pages,
 
       /// <summary>
       /// this enumeration defines the roles in the application.
@@ -370,6 +375,25 @@ namespace Evado.Model.Digital
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Ads_Group,
           EvDataTypes.Text, value );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property indicates to user the home header for all entity and record pages.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool UserHomePageOnAllPages
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages,
+          EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
 
@@ -1014,7 +1038,13 @@ namespace Evado.Model.Digital
 
         case EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data:
           {
-            this.setParameter ( AdapterFieldNames.Enable_Binary_Data, EvDataTypes.Text, Value );
+            this.setParameter ( AdapterFieldNames.Enable_Binary_Data, EvDataTypes.Boolean, Value );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages:
+          {
+            this.setParameter ( AdapterFieldNames.User_Home_Page_On_All_Pages, EvDataTypes.Boolean, Value );
             return;
           }
 

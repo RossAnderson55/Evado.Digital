@@ -128,7 +128,11 @@ namespace Evado.Model
     public string GivenName
     {
       get { return this._GivenName; }
-      set { this._GivenName = value; }
+      set
+      {
+        this._GivenName = value;
+        this.setNames ( );
+      }
     }
 
     private string _FamilyName = String.Empty;
@@ -138,7 +142,11 @@ namespace Evado.Model
     public string FamilyName
     {
       get { return this._FamilyName; }
-      set { this._FamilyName = value; }
+      set
+      {
+        this._FamilyName = value;
+        this.setNames ( );
+      }
     }
     private string _Suffix = String.Empty;
     /// <summary>
@@ -160,7 +168,6 @@ namespace Evado.Model
       set
       {
         this._CommonName = value;
-        this.setNames ( );
       }
     }
     /// <summary>
@@ -168,62 +175,19 @@ namespace Evado.Model
     /// </summary>
     private void setNames ( )
     {
-      if ( this._FamilyName != String.Empty )
-      {
-        return;
-      }
-      //
-      // names array.
-      //
-      String [ ] name = this._CommonName.Split ( ' ' );
-
-      if ( name.Length == 0 )
+      if ( this._FamilyName == String.Empty
+        && this._GivenName == String.Empty )
       {
         return;
       }
 
-      if ( name.Length == 1 )
+      if ( this._Prefix != String.Empty )
       {
-        _FamilyName = name [ 0 ];
+        this._CommonName = this._Prefix + " " + this._GivenName + " " + this._FamilyName;
         return;
       }
 
-      if ( name.Length == 2 )
-      {
-        this._GivenName = name [ 0 ];
-        this._FamilyName = name [ 1 ];
-        return;
-      }
-
-
-      for ( int i = 0; i < name.Length; i++ )
-      {
-        if ( name [ i ].ToLower ( ) == "dr"
-          || name [ i ].ToLower ( ) == "prof"
-          || name [ i ].ToLower ( ) == "assoc"
-          || name [ i ].ToLower ( ) == "mr"
-          || name [ i ].ToLower ( ) == "ms"
-          || name [ i ].ToLower ( ) == "mrs"
-          || name [ i ].ToLower ( ) == "miss" )
-        {
-          _Prefix = name [ i ];
-          continue;
-        }
-
-        if ( this._GivenName == String.Empty )
-        {
-          this._GivenName = name [ i ];
-        }
-        else
-        {
-          if ( this._FamilyName != String.Empty )
-          {
-            this._FamilyName += " ";
-          }
-          this._FamilyName += name [ i ];
-        }
-
-      }//END iteration loop
+      this._CommonName = this._GivenName + " " + this._FamilyName;
 
     }//END method
 
@@ -412,13 +376,13 @@ namespace Evado.Model
     /// <summary>
     /// This property contains user organisation identifier
     /// </summary>
-   /*
-   public string OrgId
-    {
-      get { return this._OrgId; }
-      set { this._OrgId = value; }
-    }
-    */
+    /*
+    public string OrgId
+     {
+       get { return this._OrgId; }
+       set { this._OrgId = value; }
+     }
+     */
     private string _SessionId = String.Empty;
     /// <summary>
     /// This property defines the user's session identifier
@@ -592,7 +556,7 @@ namespace Evado.Model
         if ( this.Parameters [ i ].Name == Parameter.Name )
         {
           this.Parameters [ i ] = Parameter;
-          return "Updated object Value: " + Parameter.Value ;
+          return "Updated object Value: " + Parameter.Value;
         }
       }//END iteration loop
 
@@ -631,7 +595,7 @@ namespace Evado.Model
     {
       var parameter = this.getParameterObject ( Name );
 
-      if( parameter != null )
+      if ( parameter != null )
       {
         return parameter.Value;
       }

@@ -53,27 +53,30 @@ namespace Evado.UniForm.Digital
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
+      String UniForm_BinaryServiceUrl,
       EvClassParameters Settings)
     {
       this.AdapterObjects = AdapterObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
+      this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
       this.ClassParameters = Settings;
 
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuUserProfiles.";
       this.LogInitMethod ( "UserProfiles initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
-      this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
-      this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
+      this.LogInit ( "Session.UserProfile.Userid: " + this.Session.UserProfile.UserId );
+      this.LogInit ( "Session.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
       this.LogInit ( "UniFormBinaryFilePath: " + this.UniForm_BinaryFilePath );
+      this.LogInit ( "UniForm BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
 
       this.LogInit ( "Settings:" );
       this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
       this.LogInit ( "-ApplicationGuid: " + this.ClassParameters.AdapterGuid );
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
-      this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
+      this.LogInit ( "-CommonName: " + Settings.UserProfile.CommonName );
 
       if ( this.Session.SelectedUserType == EdUserProfile.UserTypesList.Null )
       {
@@ -1225,14 +1228,50 @@ namespace Evado.UniForm.Digital
       }
        */
 
+      this.LogDebug ( "ImageFileName {0}.", this.Session.AdminUserProfile.ImageFileName );
+      // 
+      // Create the customer name object
+      // 
+      if ( this.Session.AdminUserProfile.ImageFileName != String.Empty )
+      {
+        groupField = pageGroup.createImageField (
+          "Disp_Image",
+          EdLabels.UserProfile_ImageFileame_Field_Label,
+          this.UniForm_ImageServiceUrl + this.Session.AdminUserProfile.ImageFileName, 
+          300, 
+          300 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+
+      // 
+      // Create the customer name object
+      // 
+      groupField = pageGroup.createBinaryFileField (
+        EdUserProfile.UserProfileFieldNames.Image_File_Name.ToString ( ),
+        EdLabels.UserProfile_UploadImage_Field_Label,
+        this.Session.AdminUserProfile.ImageFileName  );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // add the user tilte field
+      //
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Title ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Title,
+          EdLabels.UserProfile_Title_Field_Label,
+          this.Session.AdminUserProfile.Title, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
       // 
       // Create the  name object
       // 
       this.LogValue ( "Given Name:" + this.Session.AdminUserProfile.GivenName );
       this.LogValue ( "Family Name:" + this.Session.AdminUserProfile.FamilyName );
-      /*
-      */
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Prefix ) == false )
+
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Prefix ) == false )
       {
         groupField = pageGroup.createTextField (
            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Prefix,
@@ -1240,7 +1279,9 @@ namespace Evado.UniForm.Digital
           this.Session.AdminUserProfile.Prefix, 10 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Given_Name ) == false )
+
+      bool userFamilyName = false;
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Given_Name ) == false )
       {
         groupField = pageGroup.createTextField (
            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
@@ -1250,13 +1291,17 @@ namespace Evado.UniForm.Digital
         groupField.setBackgroundColor (
           Model.UniForm.FieldParameterList.BG_Mandatory,
           Model.UniForm.Background_Colours.Red );
+
+        
+        userFamilyName = true;
       }
       else
       {
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
+        userFamilyName = false;
       }
 
-      if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Family_Name ) == false )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Family_Name ) == false )
       {
         groupField = pageGroup.createTextField (
            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
@@ -1267,10 +1312,13 @@ namespace Evado.UniForm.Digital
         groupField.setBackgroundColor (
           Model.UniForm.FieldParameterList.BG_Mandatory,
           Model.UniForm.Background_Colours.Red );
+        
+        userFamilyName = true;
       }
       else
       {
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
+        userFamilyName = false;
       }
 
       // 
@@ -1283,17 +1331,25 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.CommonName,
         80 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
+
+      if ( userFamilyName == true )
+      {
+        groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
+      }
+      else
+      {
+        groupField.Mandatory = true;
+        groupField.setBackgroundColor (
+          Model.UniForm.FieldParameterList.BG_Mandatory,
+          Model.UniForm.Background_Colours.Red );
+      }
 
       //
       // define the user address field.
       //
       if ( this.Session.CollectUserAddress == true )
       {
-        if ( this.AdapterObjects.AdapterSettings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Address_1 ) == false )
+        if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Address_1 ) == false )
         {
           this.LogDebug ( "Address_1:" + this.Session.UserProfile.Address_1 );
           this.LogDebug ( "Address_2:" + this.Session.UserProfile.Address_2 );
@@ -1337,7 +1393,7 @@ namespace Evado.UniForm.Digital
       //
       // Generate the user role list.
       //
-      optionList = this.AdapterObjects.AdapterSettings.GetRoleOptionList ( false );
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
 
       //
       // Generate the user role radio button list field object.
@@ -1865,6 +1921,11 @@ namespace Evado.UniForm.Digital
         this.updateAddressValue ( PageCommand );
 
         //
+        // save the image file if it exists.
+        //
+        this.saveImageFile ( );
+
+        //
         // Perform new user ADS duplication validation.
         //
         if ( this.newUserDuplicateValidation ( ) == false )
@@ -1925,6 +1986,37 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END method
+    
+    // ==================================================================================
+    /// <summary>
+    /// THis method copies the upload image file to the image directory.
+    /// </summary>
+    //  ----------------------------------------------------------------------------------
+    private void saveImageFile ( )
+    {
+      this.LogMethod ( "saveImageFile" );
+
+      if ( this.Session.AdminUserProfile.ImageFileName == String.Empty )
+      {
+        return;
+      }
+
+      //
+      // Initialise the method variables and objects.
+      //
+      String stSourcePath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
+      String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
+
+      this.LogDebug ( "Source path {0}.", stSourcePath );
+      this.LogDebug ( "Image path {0}.", stImagePath );
+
+      //
+      // Save the file to the directory repository.
+      //
+      System.IO.File.Copy ( stSourcePath, stImagePath, true );
+
+      this.LogMethodEnd ( "saveImageFile" );
+    }//END saveImageFile method
 
     // ==================================================================================
     /// <summary>

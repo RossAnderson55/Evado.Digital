@@ -2801,4 +2801,28 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Organisation_Selection_Command_Title" xml:space="preserve">
     <value>Update Selection</value>
   </data>
+  <data name="Config_Enable_Binary_Data_Field_Label" xml:space="preserve">
+    <value>Enable Binary Data:</value>
+  </data>
+  <data name="Config_Title_Field_Label" xml:space="preserve">
+    <value>Platform Title:</value>
+  </data>
+  <data name="Config_User_Home_Page_OnAll_Pages_Field_Label" xml:space="preserve">
+    <value>User Home Page Title on all pages.</value>
+  </data>
+  <data name="Entity_View_Page_Title" xml:space="preserve">
+    <value>List of Entities</value>
+  </data>
+  <data name="Organisation_ImageFileame_Field_Label" xml:space="preserve">
+    <value>Corporate Logo Image:</value>
+  </data>
+  <data name="UserProfile_ImageFileame_Field_Label" xml:space="preserve">
+    <value>Current photo or Avatar:</value>
+  </data>
+  <data name="UserProfile_Title_Field_Label" xml:space="preserve">
+    <value>User Title:</value>
+  </data>
+  <data name="UserProfile_UploadImage_Field_Label" xml:space="preserve">
+    <value>Select image file to upload:</value>
+  </data>
 </root>

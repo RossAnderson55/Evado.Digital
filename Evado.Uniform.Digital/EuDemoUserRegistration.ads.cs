@@ -97,8 +97,8 @@ namespace Evado.UniForm.Digital
         //
         // if the ADS is not available
         //
-        if ( this.AdapterObjects.AdapterSettings.AdsGroupName == null
-          || this.AdapterObjects.AdapterSettings.AdsGroupName == String.Empty )
+        if ( this.AdapterObjects.Settings.AdsGroupName == null
+          || this.AdapterObjects.Settings.AdsGroupName == String.Empty )
         {
           this.LogDebug ( "Debug Authenication or AD Group is null" );
           this.LogMethodEnd ( "saveUserProfile" );
@@ -225,7 +225,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getAdsCustomerGroup" );
       this.LogDebug ( "Customer Group Name: " +
-        this.AdapterObjects.AdapterSettings.AdsGroupName );
+        this.AdapterObjects.Settings.AdsGroupName );
 
       //
       // if ADS is not enabled then set the AdsCustomerGroup to null 
@@ -238,7 +238,7 @@ namespace Evado.UniForm.Digital
         return EvEventCodes.Active_Directory_Not_Enabled;
       }
 
-      if ( this.AdapterObjects.AdapterSettings.AdsGroupName == String.Empty )
+      if ( this.AdapterObjects.Settings.AdsGroupName == String.Empty )
       {
         return EvEventCodes.Active_Directory_Group_Not_Found;
       }
@@ -246,9 +246,9 @@ namespace Evado.UniForm.Digital
       if ( this.Session.AdsCustomerGroup != null )
       {
         this.LogValue ( "Customer Group Name: " +
-          this.AdapterObjects.AdapterSettings.AdsGroupName + " EXISTS." );
+          this.AdapterObjects.Settings.AdsGroupName + " EXISTS." );
 
-        if ( this.Session.AdsCustomerGroup.Name == this.AdapterObjects.AdapterSettings.AdsGroupName )
+        if ( this.Session.AdsCustomerGroup.Name == this.AdapterObjects.Settings.AdsGroupName )
         {
           this.LogMethodEnd ( "getAdsCustomerGroup" );
           return EvEventCodes.Ok;
@@ -266,7 +266,7 @@ namespace Evado.UniForm.Digital
       // Get the customer's Group name.
       //
       resultGroup = adsProfiles.GetGroup (
-        this.AdapterObjects.AdapterSettings.AdsGroupName );
+        this.AdapterObjects.Settings.AdsGroupName );
 
       //
       // If the user does not exist add them as a new user.
@@ -310,7 +310,7 @@ namespace Evado.UniForm.Digital
       //
       // Skip update if a new user.
       //
-      if ( this.AdapterObjects.AdapterSettings.AdsGroupName == null
+      if ( this.AdapterObjects.Settings.AdsGroupName == null
         || this.Session.AdsEnabled == false )
       {
         this.LogValue ( "Debug Authenication or AD Group is null" );
@@ -495,7 +495,7 @@ namespace Evado.UniForm.Digital
       //
       if ( ( AdUserProfile.EvGroups.Count == 0
         || hasCustomerGroup == false )
-        && ( this.AdapterObjects.AdapterSettings.AdsGroupName != null ) )
+        && ( this.AdapterObjects.Settings.AdsGroupName != null ) )
       {
         AdUserProfile.EvGroups.Add ( this.Session.AdsCustomerGroup );
         this.LogValue ( "ADS Customer group added" );
@@ -578,7 +578,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.FamilyName );
 
       EmailTitle = EmailTitle.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE, 
-        this.AdapterObjects.AdapterSettings.Title );
+        this.AdapterObjects.Settings.Title );
 
       EmailBody = EmailBody.Replace ( "\r\n\r\n", "\r\n \r\n" );
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_FIRST_NAME,
@@ -602,7 +602,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.OrganisationName );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_ADAPTER_TITLE,
-        this.AdapterObjects.AdapterSettings.Title );
+        this.AdapterObjects.Settings.Title );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_PASSWORD_RESET_URL,
         this.AdapterObjects.PasswordResetUrl );
@@ -637,10 +637,10 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the report alert class
       //
-      email.SmtpServer = this.AdapterObjects.AdapterSettings.SmtpServer;
-      email.SmtpServerPort = this.AdapterObjects.AdapterSettings.SmtpServerPort;
-      email.SmtpUserId = this.AdapterObjects.AdapterSettings.SmtpUserId;
-      email.SmtpPassword = this.AdapterObjects.AdapterSettings.SmtpPassword;
+      email.SmtpServer = this.AdapterObjects.Settings.SmtpServer;
+      email.SmtpServerPort = this.AdapterObjects.Settings.SmtpServerPort;
+      email.SmtpUserId = this.AdapterObjects.Settings.SmtpUserId;
+      email.SmtpPassword = this.AdapterObjects.Settings.SmtpPassword;
 
       //
       // Set the email alert to the recipents

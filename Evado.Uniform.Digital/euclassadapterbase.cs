@@ -49,8 +49,18 @@ namespace Evado.UniForm.Digital
       set { this._UniForm_BinaryFilePath = value; }
     }
 
-    private String _UniForm_BinaryServiceUrl;
+    /// <summary>
+    /// This property passes the image file path.
+    /// </summary>
+    public String UniForm_ImageFilePath
+    {
+      get
+      {
+        return _UniForm_BinaryFilePath + @"images\";
+      }
+    }
 
+    private String _UniForm_BinaryServiceUrl = String.Empty;
     /// <summary>
     /// This property passes in the binary file path the class.
     /// </summary>
@@ -58,6 +68,17 @@ namespace Evado.UniForm.Digital
     {
       get { return this._UniForm_BinaryServiceUrl; }
       set { this._UniForm_BinaryServiceUrl = value; }
+    }
+
+    /// <summary>
+    /// This property passes the image service url
+    /// </summary>
+    public String UniForm_ImageServiceUrl
+    {
+      get
+      {
+        return _UniForm_BinaryServiceUrl + @"images/";
+      }
     }
 
     private EvUserProfileBase _ServiceUserProfile;

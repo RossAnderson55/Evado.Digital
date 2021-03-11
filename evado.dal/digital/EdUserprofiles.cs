@@ -113,6 +113,7 @@ namespace Evado.Dal.Digital
     public const string DB_EMAIL_ADDRESS = "UP_EMAIL_ADDRESS";
     public const string DB_ROLES = "UP_ROLES";
     public const string DB_TYPE = "UP_TYPE";
+    public const string DB_IMAGE_FILENAME = "UP_IMAGE_FILENAME";
     public const string DB_UPDATED_BY_USER_ID = "UP_UPDATED_BY_USER_ID";
     public const string DB_UPDATE_BY = "UP_UPDATED_BY";
     public const string DB_UPDATE_DATE = "UP_UPDATED_DATE";
@@ -144,6 +145,7 @@ namespace Evado.Dal.Digital
     private const string PARM_RoleId = "@RoleId";
     private const string PARM_TYPE = "@TYPE";
     private const string PARM_Title = "@Title";
+    private const string PARM_IMAGE_FILENAME = "@IMAGE_FILENAME";
     private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
     private const string PARM_UpdatedBy = "@UpdatedBy";
     private const string PARM_UpdateDate = "@UpdateDate";
@@ -174,31 +176,32 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] parms = new SqlParameter [ ]
       {
-        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_ORG_ID, SqlDbType.NVarChar, 20),
-        new SqlParameter( PARM_UserId, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_PREFIX, SqlDbType.NVarChar, 10),
-        new SqlParameter( PARM_GIVEN_NAME, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_FAMILY_NAME, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_SUFFIX, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_1, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_2, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_CITY, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_STATE, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_POSTCODE, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_ADDRESS_COUNTRY, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_TELEPHONE, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_MOBILE_PHONE, SqlDbType.NVarChar, 50),
-        new SqlParameter( PARM_CommonName, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_EmailAddress, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_RoleId, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_TYPE, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_Title, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_EXPIRY_DATE, SqlDbType.DateTime),
-        new SqlParameter( PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_UpdatedBy, SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_UpdateDate, SqlDbType.DateTime),
+        new SqlParameter( EdUserProfiles.PARM_Guid, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdUserProfiles.PARM_ORG_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdUserProfiles.PARM_UserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_PREFIX, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdUserProfiles.PARM_GIVEN_NAME, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_FAMILY_NAME, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_SUFFIX, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_1, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_2, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_CITY, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_STATE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_POSTCODE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_ADDRESS_COUNTRY, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_TELEPHONE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_MOBILE_PHONE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_CommonName, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_EmailAddress, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_RoleId, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_TYPE, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_Title, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_EXPIRY_DATE, SqlDbType.DateTime),
+        new SqlParameter( EdUserProfiles.PARM_IMAGE_FILENAME, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_UpdatedByUserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_UpdatedBy, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_UpdateDate, SqlDbType.DateTime),
       };
 
       return parms;
@@ -242,9 +245,10 @@ namespace Evado.Dal.Digital
       parms [ 19 ].Value = UserProfile.TypeId;
       parms [ 20 ].Value = UserProfile.Title;
       parms [ 21 ].Value = UserProfile.ExpiryDate;
-      parms [ 22 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 23 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 24 ].Value = DateTime.Now;
+      parms [ 22 ].Value = UserProfile.ImageFileName;
+      parms [ 23 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 24 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 25 ].Value = DateTime.Now;
 
 
     }//END setUsersParameters class.
@@ -286,27 +290,28 @@ namespace Evado.Dal.Digital
       profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
       profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
       profile.TypeId = EvStatics.parseEnumValue<EdUserProfile.UserTypesList> (
-        EvSqlMethods.getString ( Row, DB_TYPE ) );
+        EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE ) );
 
-      profile.Prefix = EvSqlMethods.getString ( Row, DB_PREFIX );
-      profile.GivenName = EvSqlMethods.getString ( Row, DB_GIVEN_NAME );
-      profile.FamilyName = EvSqlMethods.getString ( Row, DB_FAMILY_NAME );
-      profile.Suffix = EvSqlMethods.getString ( Row, DB_SUFFIX );
-      profile.Address_1 = EvSqlMethods.getString ( Row, DB_ADDRESS_1 );
-      profile.Address_2 = EvSqlMethods.getString ( Row, DB_ADDRESS_2 );
-      profile.AddressCity = EvSqlMethods.getString ( Row, DB_ADDRESS_CITY );
-      profile.AddressState = EvSqlMethods.getString ( Row, DB_ADDRESS_STATE );
-      profile.AddressPostCode = EvSqlMethods.getString ( Row, DB_ADDRESS_POST_CODE );
-      profile.AddressCountry = EvSqlMethods.getString ( Row, DB_ADDRESS_COUNTRY );
-      profile.Telephone = EvSqlMethods.getString ( Row, DB_TELEPHONE );
-      profile.MobilePhone = EvSqlMethods.getString ( Row, DB_MOBILE_PHONE );
-      profile.EmailAddress = EvSqlMethods.getString ( Row, DB_EMAIL_ADDRESS ).ToLower ( );
-      profile.Title = EvSqlMethods.getString ( Row, DB_TITLE );
+      profile.Prefix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_PREFIX );
+      profile.GivenName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_GIVEN_NAME );
+      profile.FamilyName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_FAMILY_NAME );
+      profile.Suffix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_SUFFIX );
+      profile.Address_1 = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_1 );
+      profile.Address_2 = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_2 );
+      profile.AddressCity = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_CITY );
+      profile.AddressState = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_STATE );
+      profile.AddressPostCode = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_POST_CODE );
+      profile.AddressCountry = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_COUNTRY );
+      profile.Telephone = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TELEPHONE );
+      profile.MobilePhone = EvSqlMethods.getString ( Row, EdUserProfiles.DB_MOBILE_PHONE );
+      profile.EmailAddress = EvSqlMethods.getString ( Row, EdUserProfiles.DB_EMAIL_ADDRESS ).ToLower ( );
+      profile.Title = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TITLE );
       profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_EXPIRY_DATE );
+      profile.ImageFileName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_IMAGE_FILENAME );
 
-      profile.UpdatedByUserId = EvSqlMethods.getString ( Row, DB_UPDATED_BY_USER_ID );
-      profile.UpdatedBy = EvSqlMethods.getString ( Row, DB_UPDATE_BY );
-      profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, DB_UPDATE_DATE );
+      profile.UpdatedByUserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_UPDATED_BY_USER_ID );
+      profile.UpdatedBy = EvSqlMethods.getString ( Row, EdUserProfiles.DB_UPDATE_BY );
+      profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_UPDATE_DATE );
 
       // 
       // Return the profile Object.

@@ -679,7 +679,13 @@ namespace Evado.UniForm.Digital
         clientDataObject.Id = Guid.NewGuid ( );
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
-        clientDataObject.Title = EdLabels.Record_View_Page_Title;
+        clientDataObject.Title = EdLabels.Entity_View_Page_Title;
+
+        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        {
+          clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+        }
+
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
 
@@ -901,7 +907,7 @@ namespace Evado.UniForm.Digital
       // 
       foreach ( Evado.Model.Digital.EdRecord entity in this.Session.EntityList )
       {
-        this.LogDebug ( "LCD {0}, LT {1}, FC {2}", entity.Design.LinkContentSetting, entity.LinkText, entity.Fields.Count );
+        this.LogDebug ( "LCD {0}, LT {1}, FC {2}", entity.Design.LinkContentSetting, entity.CommandTitle, entity.Fields.Count );
 
         //
         // Create the group list groupCommand object.
@@ -948,7 +954,7 @@ namespace Evado.UniForm.Digital
       // Define the pageMenuGroup groupCommand.
       //
       Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
-          CommandEntity.LinkText,
+          CommandEntity.CommandTitle,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -1724,7 +1730,6 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.AppData ClientDataObject )
     {
       this.LogMethod ( "getClientData" );
-      this.LogDebug ( "Entity.Design.LinkContentSetting {0}.", this.Session.Entity.Design.LinkContentSetting );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1749,12 +1754,12 @@ namespace Evado.UniForm.Digital
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       ClientDataObject.Id = this.Session.Entity.Guid;
-      ClientDataObject.Title = String.Format (
-          EdLabels.Record_Page_Title_Subject_Prefix,
-          String.Empty,
-          this.Session.Entity.RecordId,
-          this.Session.Entity.Title,
-          this.Session.Entity.StateDesc );
+      ClientDataObject.Title = this.Session.Entity.CommandTitle;
+
+      if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+      {
+        ClientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+      }
 
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
@@ -1947,7 +1952,7 @@ namespace Evado.UniForm.Digital
           child.EntityId,
           child.Title,
           child.Design.LinkContentSetting,
-          child.LinkText,
+          child.CommandTitle,
           child.Fields.Count );
 
         this.getGroupListCommand (

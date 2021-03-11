@@ -601,12 +601,12 @@ namespace Evado.UniForm.Digital
       if ( Layout.Design.HttpReference != String.Empty )
       {
         pageGroup.Description =
-          String.Format ( "<a href='{0}' target='_blank'>{1}</a>", Layout.Design.HttpReference, Layout.LinkText );
+          String.Format ( "<a href='{0}' target='_blank'>{1}</a>", Layout.Design.HttpReference, Layout.CommandTitle );
         pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
       else
       {
-        pageGroup.Description = Layout.LinkText;
+        pageGroup.Description = Layout.CommandTitle;
         pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
       }
     }

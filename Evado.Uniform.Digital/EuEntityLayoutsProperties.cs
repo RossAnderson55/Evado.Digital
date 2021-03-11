@@ -383,7 +383,7 @@ namespace Evado.UniForm.Digital
       //
       // Form Update reason
       //
-      optionList = this.AdapterObjects.AdapterSettings.GetRoleOptionList ( false );
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
 
       groupField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
