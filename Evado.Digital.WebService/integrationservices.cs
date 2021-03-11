@@ -94,7 +94,7 @@ namespace Evado.UniForm
       //
       this._ExitCommand = Command.getLogoutCommand ( );
 
-      this._CommandHistory.DebugOn = true;
+      //this._CommandHistory.DebugOn = true;
       //
       // Initialise the command history object.
       //
@@ -300,7 +300,7 @@ namespace Evado.UniForm
         //
         if ( this._NewUser == true )
         {
-          this.LogValue ( "new user retreiving the last command" );
+          this.LogDebug ( "new user retreiving the last command" );
           List<Evado.Model.UniForm.Parameter> header = PageCommand.Header;
 
           Command lastCommand = this._CommandHistory.getLastCommand ( );
@@ -394,7 +394,8 @@ namespace Evado.UniForm
         //
         this._ExitCommand = this._CommandHistory.getExitCommand ( PageCommand );
 
-        //this.LogDebugValue ( this._CommandHistory.Log );
+        //this.LogDebug ( this._CommandHistory.Log );
+        //this.LogDebug ( "Final List: \r\n" + this._CommandHistory.listCommandHistory ( true ) );
 
         this.LogValue ( "ExitCommand: " + this._ExitCommand.getAsString ( false, false ) );
 
@@ -628,7 +629,7 @@ namespace Evado.UniForm
 
       homePageCommand.Header = PageCommand.Header;
 
-      this.LogDebugValue ( "Default Home page command: " + homePageCommand.getAsString ( true, false ) );
+      this.LogDebug ( "Default Home page command: " + homePageCommand.getAsString ( true, false ) );
 
       //
       // Call the get page method to generate the next page.
@@ -663,14 +664,14 @@ namespace Evado.UniForm
       clientDataObject.Page.Exit = this._ExitCommand;
 
 
-      this.LogDebugValue ( "PageObject:" );
-      this.LogDebugValue ( "-ID: " + clientDataObject.Id );
-      this.LogDebugValue ( "-Title: " + clientDataObject.Title );
+      this.LogDebug ( "PageObject:" );
+      this.LogDebug ( "-ID: " + clientDataObject.Id );
+      this.LogDebug ( "-Title: " + clientDataObject.Title );
       if ( clientDataObject.Page.Exit != null )
       {
-        this.LogDebugValue ( "-ExitCommand: " + clientDataObject.Page.Exit.getAsString ( false, false ) );
+        this.LogDebug ( "-ExitCommand: " + clientDataObject.Page.Exit.getAsString ( false, false ) );
       }
-      this.LogDebugValue ( "-Message: " + clientDataObject.Message );
+      this.LogDebug ( "-Message: " + clientDataObject.Message );
       //
       // return the application object.
       //
@@ -801,13 +802,31 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebugValue ( String Value )
+    protected void LogDebug ( String Value )
     {
       if ( _LoggingLevel > 4 )
       {
         this._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
     }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogDebug ( String Format, params object [ ] args )
+    {
+      if ( this.LoggingLevel > 4 )
+      {
+        this._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
+          String.Format ( Format, args ) );
+      }
+    }
+
 
     // ==================================================================================
     /// <summary>

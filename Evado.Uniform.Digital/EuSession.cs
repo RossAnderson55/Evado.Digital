@@ -264,11 +264,6 @@ namespace Evado.UniForm.Digital
       set { _ExportParameters = value; }
     }
 
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Application properties
-
 
     public List<EvBinaryFileMetaData> FileMetaDataList { get; set; }
 
@@ -499,15 +494,39 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EdSelectionList AdminSelectionList { get; set; }
 
-    private List<EdRecord> _EntityLayoutList = new List<EdRecord> ( );
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Entity objects
+
     /// <summary>
-    /// This property object contains a list of eClinical evForm object for the currently selected record.
+    /// This property contains the currently selecte Entity object.
     /// </summary>
-    public List<EdRecord> EntityLayoutList
-    {
-      get { return _EntityLayoutList; }
-      set { _EntityLayoutList = value; }
-    }
+    public EdRecord Entity { get; set; }
+
+    /// <summary>
+    /// This property contains dictionary of the Entity hiararchy.
+    /// The Guid key is the Entity's Guid identifier.
+    /// The dictionary value is the Entity object.
+    /// </summary>
+    public List<EdRecord> EntityDictionary { get; set; }
+
+    /// <summary>
+    /// This property object contains a list of entitys in the application
+    /// </summary>
+    public List<EdRecord> EntityList { get; set; }
+
+    /// <summary>
+    ///  This property object define the entity selection state filter. 
+    /// </summary>
+    public EdRecordObjectStates EntityStateSelection = EdRecordObjectStates.Null;
+
+    /// <summary>
+    /// This proporty object defines the entity type selection filter
+    /// </summary>
+    public EdRecordTypes EntityTypeSelection { get; set; }
+
 
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
@@ -519,17 +538,21 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EdRecordField EntityField { get; set; }
 
-    public EdRecordObjectStates EntitySelectionState = EdRecordObjectStates.Null;
 
-    public EdRecordTypes EntityType { get; set; }
-
-    public List<EdRecord> AdminEntityList { get; set; }
-
-    private List<EdRecord> _EntityList = new List<EdRecord> ( );
     /// <summary>
-    /// This property object contains a list of entitys in the application
+    /// This property object contains a list of eClinical evForm object for the currently selected record.
     /// </summary>
-    public List<EdRecord> EntityList { get; set; }
+    public List<EdRecord> EntityLayoutList { get; set; }
+
+    /// <summary>
+    /// This property defines the entity layout state selection filter.
+    /// </summary>
+    public EdRecordObjectStates EntityLayoutStateSelection { get; set; }
+
+    /// <summary>
+    /// This property defines the entity layout id selection filter/
+    /// </summary>
+    public String EntityLayoutIdSelection { get; set; }
 
     ///<summary>
     /// this indicates if the entity layout list is to be loaded or reloaded.
@@ -539,107 +562,172 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains the list of Form Versions.
     /// </summary>
-    public List<EvOption> FormVersionList { get; set; }
+    public List<EvOption> LayoutVersionList { get; set; }
 
-    EdRecordObjectStates _EntityFormState = EdRecordObjectStates.Null;
+
+    // ==================================================================================
     /// <summary>
-    /// COntains the currently selected form state.
+    /// This methods pushes the passed Entity onto the entity dictionary stack
     /// </summary>
-    public EdRecordObjectStates EntityFormState
+    /// <param name="Entity">EdRecord: the entity to added to the dictionary.</param>
+    //  ---------------------------------------------------------------------------------
+    public void PushEntity ( EdRecord Entity )
     {
-      get { return _EntityFormState; }
-      set { _EntityFormState = value; }
-    }
+      bool exists = false;
+      //
+      // Exist if the entity is aready on the in the dictionary.
+      //
+      for ( int count = 0; count < this.EntityDictionary.Count; count++ )
+      {
+        EdRecord entity = this.EntityDictionary [ count ];
 
-    String _EntitySelectionLayoutId = String.Empty;
+        //
+        // test to see if the entity already exists in the list.
+        //
+        if ( entity.Guid == Entity.Guid )
+        {
+          exists = true;
+        }
+
+        //
+        // If the entity exists in the list, remove all entity after this entity.
+        //
+        if ( exists == true
+          && entity.Guid != Entity.Guid )
+        {
+          this.EntityDictionary.RemoveAt ( count );
+          count--;
+        }
+      }//END entity iteration loop
+
+      //
+      // if the entity is not found in the list add it.
+      //
+      if ( exists == false )
+      {
+        this.EntityDictionary.Add ( Entity );
+      }
+
+    }//END PushEntity method
+
+    // ==================================================================================
     /// <summary>
-    /// COntains the currently selected form type.
+    /// This methods pull an Entity the dictionary using it guid identifier
     /// </summary>
-    public String EntitySelectionLayoutId
+    /// <param name="EntityGuid">Guid: the entity's guid identifier.</param>
+    /// <returns>EdRecord containing the entity object.</returns>
+    //  ---------------------------------------------------------------------------------
+    public EdRecord PullEntity ( Guid EntityGuid )
     {
-      get { return _EntitySelectionLayoutId; }
-      set { _EntitySelectionLayoutId = value; }
-    }
+      //
+      // initialise the methods variables and objects.
+      //
+      bool exists = false;
+      EdRecord entity = null;
+      
+      //
+      // Exist if the entity is aready on the in the dictionary.
+      //
+      for ( int count = 0; count < this.EntityDictionary.Count; count++ )
+      {
+        EdRecord listEntity = this.EntityDictionary [ count ];
 
+        //
+        // test to see if the entity already exists in the list.
+        //
+        if ( listEntity.Guid == EntityGuid )
+        {
+          entity = listEntity;
+          exists = true;
+        }
 
+        //
+        // If the entity exists in the list, remove all entity after this entity.
+        //
+        if ( exists == true
+          && listEntity.Guid != EntityGuid )
+        {
+          this.EntityDictionary.RemoveAt ( count );
+          count--;
+        }
+      }//END entity iteration loop
 
-    ///<summary>
-    /// this indicates if the entity layout list is to be loaded or reloaded.
-    /// </summary>
-    public bool LoadRecordLayoutList { get; set; }
+      //
+      // Returned the seleced entity.
+      //
+      return entity;
+
+    }//END PushEntity method
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Record objects
+
     /// <summary>
-    /// This property object contains the eClinical evForm object for the currently selected record.
+    /// This property contains the current record data object.
     /// </summary>
-    public EdRecord RecordLayout { get; set; }
+    public EdRecord Record { get; set; }
+
+    /// <summary>
+    /// This property contains the record list.
+    /// </summary>
+    public List<EdRecord> RecordList { get; set; }
 
     /// <summary>
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
     public EdRecordField RecordField { get; set; }
 
-    public EdRecordObjectStates RecordSelectionState = EdRecordObjectStates.Null;
+    /// <summary>
+    /// This property object contains the eClinical evForm object for the currently selected record.
+    /// </summary>
+    public EdRecord RecordLayout { get; set; }
 
-    public EdRecordTypes RecordType { get; set; }
+    /// <summary>
+    /// This property contains the record layout list.
+    /// </summary>
+    public List<EdRecord> RecordLayoutList { get; set; }
 
-    public List<EdRecord> AdminRecordList { get; set; }
+    ///<summary>
+    /// this indicates if the entity layout list is to be loaded or reloaded.
+    /// </summary>
+    public bool LoadRecordLayoutList { get; set; }
 
-    public List<EdRecord> RecordList { get; set; }
 
-    String _FormRecords_Selected_FormId = String.Empty;
+    public EdRecordObjectStates RecordStateSelection { get; set; }
+
+    /// <summary>
+    /// This property defines the Record type selection filter.
+    /// </summary>
+    public EdRecordTypes RecordTypeSelection { get; set; }
+
+
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public String RecordSelectionLayoutId
-    {
-      get { return _FormRecords_Selected_FormId; }
-      set { _FormRecords_Selected_FormId = value; }
-    }
+    public String RecordLayoutIdSelection { get; set; }
 
-    private bool _FormRecords_IncludeTestSites = false;
-    /// <summary>
-    /// This property defines the  form record filter to include test sites.
-    /// </summary>
-    public bool FormRecords_IncludeTestSites
-    {
-      get { return _FormRecords_IncludeTestSites; }
-      set { _FormRecords_IncludeTestSites = value; }
-    }
-
-    private bool _FormRecords_IncludeDraftRecords = false;
     /// <summary>
     /// This property defines the include draft record selection.
     /// </summary>
-    public bool FormRecords_IncludeDraftRecords
-    {
-      get { return _FormRecords_IncludeDraftRecords; }
-      set { _FormRecords_IncludeDraftRecords = value; }
-    }
+    public bool FormRecords_IncludeDraftRecords { get; set; }
 
-    private bool _FormRecords_IncludeFreeTextData = false;
     /// <summary>
     /// this property defines the include free text ResultData selection.
     /// </summary>
-    public bool FormRecords_IncludeFreeTextData
-    {
-      get { return _FormRecords_IncludeFreeTextData; }
-      set { _FormRecords_IncludeFreeTextData = value; }
-    }
+    public bool FormRecords_IncludeFreeTextData { get; set; }
 
-    EdRecordTypes _FormType = EdRecordTypes.Null;
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public EdRecordTypes FormType
-    {
-      get { return _FormType; }
-      set { _FormType = value; }
-    }
+    public EdRecordTypes RecordLayoutTypeSelection { get; set; }
 
     private int _SelectedFormVersion = 1;
     /// <summary>
     /// This property contains the selected form version for a version selection query.
     /// </summary>
-    public int SelectedFormVersion
+    public int RecordLayoutVersion
     {
       get
       {
@@ -657,23 +745,23 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="FormType">EvFormRecordTypes enumerated list</param>
     //-----------------------------------------------------------------------------------
-    public void setFormType ( String FormType )
+    public void SetLayoutType ( String FormType )
     {
       EdRecordTypes recordType = EdRecordTypes.Null;
 
       if ( EvStatics.tryParseEnumValue<EdRecordTypes> ( FormType, out recordType ) == true )
       {
-        this.FormType = recordType;
+        this.RecordLayoutTypeSelection = recordType;
       }
 
-      this.FormType = EdRecordTypes.Null;
+      this.RecordLayoutTypeSelection = EdRecordTypes.Null;
     }
 
     EdRecordObjectStates _FormState = EdRecordObjectStates.Null;
     /// <summary>
     /// COntains the currently selected form state.
     /// </summary>
-    public EdRecordObjectStates RecordFormState
+    public EdRecordObjectStates RecordLayoutStateSelection
     {
       get { return _FormState; }
       set { _FormState = value; }
@@ -859,9 +947,6 @@ namespace Evado.UniForm.Digital
       set { _BlockAllResets = value; }
     }
 
-    public EdRecord Record { get; set; }
-
-    public EdRecord Entity { get; set; }
 
     public EvAncillaryRecord AncillaryRecord = new EvAncillaryRecord ( );
 

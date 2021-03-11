@@ -169,6 +169,7 @@ namespace Evado.Model.UniForm
       }//END set statement
 
     }//END property.
+
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -197,8 +198,10 @@ namespace Evado.Model.UniForm
       //
       // Initialise the methods variables and objects.
       //
-      String commandPageType = PageCommand.GetParameter ( CommandParameters.Page_Id );
-      String localPageType = this.GetParameter ( CommandParameters.Page_Id );
+      String PageId = PageCommand.GetPageId();
+      String currentPageId = this.GetPageId();
+      Guid DataGuid = PageCommand.GetGuid ( );
+      Guid currentDataGuid = this.GetGuid ( );
 
       //
       // if the command identifiers match same command return true;
@@ -236,7 +239,8 @@ namespace Evado.Model.UniForm
       if ( this._ApplicationId == PageCommand.ApplicationId
         && this._Object == PageCommand.Object
         && this._Method == PageCommand.Method
-        && commandPageType == localPageType )
+        && PageId == currentPageId
+        && DataGuid == currentDataGuid )
       {
         return true;
       }

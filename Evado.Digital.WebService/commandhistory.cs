@@ -44,7 +44,7 @@ namespace Evado.UniForm
     // ----------------------------------------------------------------------------------
     public CommandHistory ( )
     {
-      this.writeDebugLogHeaderMethod ( "CommandHistory method" );
+      this.LogInitialMethod ( "CommandHistory method" );
 
     }
 
@@ -60,8 +60,8 @@ namespace Evado.UniForm
       Hashtable GlobalObjects,
       EvUserProfileBase ServiceUserProfile )
     {
-      this.writeDebugLogHeaderMethod ( "CommandHistory class initialisation method" );
-      this.writeDebugLogHeader ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
+      this.LogInitialMethod ( "CommandHistory class initialisation method" );
+      this.LogInitialDebug ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
 
       //
       // Initialise the sesion and Global object stores.
@@ -69,25 +69,25 @@ namespace Evado.UniForm
       this._GlobalObjects = GlobalObjects;
       this._GlobalKey = ServiceUserProfile.UserId + Evado.Model.UniForm.EuStatics.GLOBAL_COMMAND_HISTORY;
       this._GlobalKey = this._GlobalKey.ToUpper ( );
-      this.writeDebugLogHeader ( "GlobalKey: " + this._GlobalKey );
+      this.LogInitialDebug ( "GlobalKey: " + this._GlobalKey );
 
-      this.writeDebugLogHeader ( "Attempting to load from Global object store." );
+      this.LogInitialDebug ( "Attempting to load from Global object store." );
 
       if ( this._GlobalObjects [ this._GlobalKey ] != null )
       {
         this._CommandHistoryList = (List<Command>) this._GlobalObjects [ this._GlobalKey ];
 
-        this.writeDebugLogHeader ( "History loaded from Global Object store." );
+        this.LogInitialDebug ( "History loaded from Global Object store." );
       }
 
-      this.writeDebugLogHeader ( "Session CommandHistory count:" + this._CommandHistoryList.Count );
+      this.LogInitialDebug ( "Session CommandHistory count:" + this._CommandHistoryList.Count );
 
       if ( this._CommandHistoryList.Count == 0 )
       {
         this._CommandHistoryList.Add ( Command.getLogoutCommand ( ) );
       }
 
-      this.writeDebugLogHeader ( "CommandHistory count:" + this._CommandHistoryList.Count );
+      this.LogInitialDebug ( "CommandHistory count:" + this._CommandHistoryList.Count );
 
     }
 
@@ -96,30 +96,13 @@ namespace Evado.UniForm
 
     #region Class Global Objects
 
-    //private const string SESSION_COMMAND_HISTORY = "COMMAND_HISTORY";
-    //public const string GLOBAL_COMMAND_HISTORY = "_HISTORY";
-
     const string CONST_NAME_SPACE = "Evado.UniForm.CommandHistory.";
-
-
-    private readonly string _eventLogSource = ConfigurationManager.AppSettings [ "EventLogSource" ];
 
     //private HttpSessionState _SessionState;
 
     private Hashtable _GlobalObjects;
 
     private String _GlobalKey;
-
-    /// <summary>
-    /// This property passes in the session state for the class.
-    /// </summary>
-    /*
-    public HttpSessionState SessionState
-    {
-      get { return this._SessionState; }
-      set { this._SessionState = value; }
-    }
-    */
 
     /// <summary>
     /// This list contains a list of the server commands sent to the client.
@@ -139,11 +122,11 @@ namespace Evado.UniForm
     /// 
     /// Status stores the debug status information.
     /// 
-    private StringBuilder _DebugLog = new StringBuilder ( );
+    private StringBuilder _log = new StringBuilder ( );
 
     public String Log
     {
-      get { return this._DebugLog.ToString ( ); }
+      get { return this._log.ToString ( ); }
     }
 
     public int Count
@@ -165,7 +148,7 @@ namespace Evado.UniForm
     public void initialiseHistory ( Command HomePageCommand )
     {
       this.LogMethod ( "initialiseHistory method. " );
-      this.LogDebugValue ( "GlobalKey: " + this._GlobalKey );
+      this.LogDebug ( "GlobalKey: " + this._GlobalKey );
 
       //
       // Initialise the home page groupCommand.
@@ -174,7 +157,7 @@ namespace Evado.UniForm
 
       if ( HomePageCommand.Id == Guid.Empty )
       {
-        this.LogDebugValue ( "New Command Guid created." );
+        this.LogDebug ( "New Command Guid created." );
         HomePageCommand.Id = Guid.NewGuid ( );
       }
 
@@ -188,7 +171,7 @@ namespace Evado.UniForm
       //
       this._CommandHistoryList.Add ( HomePageCommand );
 
-      this.LogDebugValue ( listCommandHistory ( true ) );
+      this.LogDebug ( listCommandHistory ( true ) );
 
       //
       // Update the session variable.
@@ -264,10 +247,10 @@ namespace Evado.UniForm
     // ----------------------------------------------------------------------------------
     public Command getExitCommand ( Command PageCommand )
     {
-      this._DebugLog = new StringBuilder ( );
+      this._log = new StringBuilder ( );
       this.LogMethod ( "getExitCommand method, " );
-      //this.writeDebugLogLine ( "GlobalKey: '" + this._GlobalKey + "'" );
-      //this.writeDebugLogLine ( "PageCommand:" + PageCommand.getAsString ( false, false ) );
+      this.LogDebug ( "GlobalKey: '" + this._GlobalKey + "'" );
+      this.LogDebug ( "PageCommand:" + PageCommand.getAsString ( false, false ) );
 
       //
       // Initialise the methods variables and objects.
@@ -277,7 +260,7 @@ namespace Evado.UniForm
       //
       // debug log of the objects in the groupCommand list.
       //
-      this.LogDebugValue ( this.listCommandHistory ( true ) );
+      this.LogDebug ( this.listCommandHistory ( true ) );
 
       //
       // Select the exit processing based on the groupCommand method.
@@ -300,7 +283,7 @@ namespace Evado.UniForm
             //
             exitCommand = this.getPreviousCommand ( PageCommand );
 
-            this.LogDebugValue ( "CUSTOM: Exit Command: " + exitCommand.Title );
+            //this.LogDebug ( "CUSTOM: Exit Command: " + exitCommand.Title );
 
             //
             // Exit the method returning the exit groupCommand.
@@ -324,7 +307,7 @@ namespace Evado.UniForm
             //
             this.deleteAfterCommand ( exitCommand );
 
-            // this.writeDebugLogLine ( "SAVE: Exit Command: " + exitCommand.Title );
+            // this.LogDebug ( "SAVE: Exit Command: " + exitCommand.Title );
 
             //
             // Exit the method returning the exit groupCommand.
@@ -352,7 +335,7 @@ namespace Evado.UniForm
             //
             this.addCommand ( PageCommand );
 
-            //this.writeDebugLogLine ( "Exit Command: " + exitCommand.Title + " > default exit command " );
+            //this.LogDebug ( "Exit Command: " + exitCommand.Title + " > default exit command " );
 
             //
             // Exit the method returning the exit groupCommand.
@@ -379,7 +362,7 @@ namespace Evado.UniForm
     private Command getPreviousCommand ( Command PageCommand )
     {
       this.LogMethod ( "getPreviousCommand method, " );
-      //this.writeDebugLogLine ( "PageCommand:" + PageCommand.getAsString ( false, false ) );
+      //this.LogDebug ( "PageCommand:" + PageCommand.getAsString ( false, false ) );
       //
       // Intialise the methods variables and objects.
       //
@@ -391,7 +374,7 @@ namespace Evado.UniForm
       //
       if ( this._CommandHistoryList.Count == 0 )
       {
-        //this.writeDebugLogLine ( "Empty list return empty command" );
+        //this.LogDebug ( "Empty list return empty command" );
 
         return previousCommand;
       }
@@ -404,25 +387,25 @@ namespace Evado.UniForm
       {
         previousCount = count - 1;
 
-        this.LogDebugValue ( count + " > " + this._CommandHistoryList [ count ].getAsString ( false, false ) );
+        this.LogDebug ( count + " > " + this._CommandHistoryList [ count ].getAsString ( false, false ) );
 
         if ( this._CommandHistoryList [ count ].Id == PageCommand.Id )
         {
-          //this.writeDebugLogLine ( "ID test: PREVOUS Command: " + this._CommandHistoryList [ previousCount ].Title );
+          //this.LogDebug ( "ID test: PREVOUS Command: " + this._CommandHistoryList [ previousCount ].Title );
 
           return this._CommandHistoryList [ previousCount ];
         }
 
         if ( this._CommandHistoryList [ count ].isCommand ( PageCommand ) == true )
         {
-          //this.writeDebugLogLine ( "Value test: PREVOUS Command: " + this._CommandHistoryList [ previousCount ].Title );
+          //this.LogDebug ( "Value test: PREVOUS Command: " + this._CommandHistoryList [ previousCount ].Title );
 
           return this._CommandHistoryList [ previousCount ];
         }
 
       }//END iteration loop
 
-      //this.writeDebugLogLine ( "Command not found get last command: " );
+      //this.LogDebug ( "Command not found get last command: " );
 
       //
       // Get the last groupCommand.
@@ -439,8 +422,8 @@ namespace Evado.UniForm
     //  ----------------------------------------------------------------------------------
     private void addCommand ( Command PageCommand )
     {
-      this.LogMethod ( "addCommand method. "
-        + " Command: " + PageCommand.getAsString ( false, false ) );
+      this.LogMethod ( "addCommand method. " );
+     // this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
 
       //
       // copy the command so the header list is not affected by the 
@@ -453,8 +436,7 @@ namespace Evado.UniForm
       //
       if ( PageCommand.Id == Guid.Empty )
       {
-        //this.writeDebugLogLine ( "The command identifier is null." );
-
+        //this.LogDebug ( "The command identifier is null." );
         return;
       }
 
@@ -463,12 +445,11 @@ namespace Evado.UniForm
       //
       if ( this.hasCommand ( pageCommand ) == true )
       {
-        //this.writeDebugLogLine ( "The command exists in the list." );
-
+        //this.LogDebug ( "The command exists in the list." );
         return;
       }
 
-      this.LogDebugValue ( "ADD the command to the list." );
+      //this.LogDebug ( "ADD the command to the list." );
       //
       // Empty the header values as they are set by the client.
       //
@@ -519,7 +500,7 @@ namespace Evado.UniForm
     private int deleteAfterCommand ( Command PageCommand )
     {
       this.LogMethod ( "deleteAfterCommand method. " );
-      this.LogDebugValue ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
+      //this.LogDebug ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
       //
       // Initialise the methods variables and objects.
       //
@@ -536,7 +517,7 @@ namespace Evado.UniForm
         //
         if ( bCommandFound == true )
         {
-          //this.writeDebugLogLine ( "Removing command: " + this._CommandHistoryList [ count ].Title );
+          //this.LogDebug ( "Removing command: " + this._CommandHistoryList [ count ].Title );
 
           this._CommandHistoryList.RemoveAt ( count );
           count--;
@@ -575,7 +556,7 @@ namespace Evado.UniForm
     private int deleteCommand ( Command PageCommand )
     {
       this.LogMethod ( "deleteCommand method. " );
-      //this.writeDebugLogLine ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
+      //this.LogDebug ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
       //
       // Initialise the methods variables and objects.
       //
@@ -595,7 +576,7 @@ namespace Evado.UniForm
           continue;
         }
 
-        //writeDebugLogLine ( "Removing command: " + this._CommandHistoryList [ count ].Title );
+        //LogDebug ( "Removing command: " + this._CommandHistoryList [ count ].Title );
 
         this._CommandHistoryList.RemoveAt ( count );
 
@@ -605,8 +586,6 @@ namespace Evado.UniForm
       //
       // Update the session variable.
       //
-      //this._SessionState [ CommandHistory.SESSION_COMMAND_HISTORY ] = this._CommandHistoryList;
-
       this._GlobalObjects [ this._GlobalKey ] = this._CommandHistoryList;
 
       //
@@ -710,9 +689,9 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void writeDebugLogHeaderMethod ( String Value )
+    protected void LogInitialMethod ( String Value )
     {
-      this._DebugLog.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
+      this._log.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
       + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
       + CONST_NAME_SPACE + Value );
     }
@@ -723,9 +702,9 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="DebugLogString">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void writeDebugLogHeader ( String DebugLogString )
+    protected void LogInitialDebug ( String DebugLogString )
     {
-      this._DebugLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + DebugLogString );
+      this._log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + DebugLogString );
     }
 
     // ==================================================================================
@@ -739,7 +718,7 @@ namespace Evado.UniForm
     {
       if ( _DebugOn == true )
       {
-        this._DebugLog.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
+        this._log.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
         + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
         + CONST_NAME_SPACE + Value );
       }
@@ -752,11 +731,28 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="DebugLogString">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogDebugValue ( String DebugLogString )
+    protected void LogDebug ( String DebugLogString )
     {
       if ( _DebugOn == true )
       {
-        this._DebugLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + DebugLogString );
+        this._log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + DebugLogString );
+      }
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogDebug ( String Format, params object [ ] args )
+    {
+      if ( _DebugOn == true )
+      {
+        this._log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
+          String.Format ( Format, args ) );
       }
     }
 

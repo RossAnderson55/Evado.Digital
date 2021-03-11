@@ -78,9 +78,9 @@ namespace Evado.UniForm.Digital
 
       this._Bll_RecordLayouts = new EdRecordLayouts ( Settings );
 
-      if ( this.Session.AdminRecordList == null )
+      if ( this.Session.RecordLayoutList == null )
       {
-        this.Session.AdminRecordList = new List<EdRecord> ( );
+        this.Session.RecordLayoutList = new List<EdRecord> ( );
       }
 
       if ( this.Session.RecordLayout == null )
@@ -91,6 +91,11 @@ namespace Evado.UniForm.Digital
       if ( this.Session.RecordField == null )
       {
         this.Session.RecordField = new EdRecordField ( );
+      }
+
+      if ( this.Session.RecordLayoutIdSelection == null )
+      {
+        this.Session.RecordLayoutIdSelection = String.Empty;
       }
 
     }//END Method
@@ -156,9 +161,9 @@ namespace Evado.UniForm.Digital
         //
         // set the form type.
         //
-        if ( this.Session.FormType == EdRecordTypes.Null )
+        if ( this.Session.RecordLayoutTypeSelection == EdRecordTypes.Null )
         {
-          this.Session.FormType = EdRecordTypes.Normal_Record;
+          this.Session.RecordLayoutTypeSelection = EdRecordTypes.Normal_Record;
         }
         
         //
@@ -488,7 +493,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the pageMenuGroup containing commands to open the records.
         // 
-        this.getLayoutList_Group ( clientDataObject.Page, this.Session.AdminRecordList );
+        this.getLayoutList_Group ( clientDataObject.Page, this.Session.RecordLayoutList );
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
@@ -523,10 +528,10 @@ namespace Evado.UniForm.Digital
     private void loadRecordLayoutList ( )
     {
       this.LogMethod ( "loadRecordLayoutList" );
-      this.LogDebug ( "FormType '{0}'", this.Session.FormType );
-      this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordFormState );
+      this.LogDebug ( "FormType '{0}'", this.Session.RecordLayoutTypeSelection );
+      this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
 
-      if ( this.Session.AdminRecordList.Count > 0 )
+      if ( this.Session.RecordLayoutList.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
@@ -540,12 +545,12 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.AdminRecordList = this._Bll_RecordLayouts.getLayoutList (
-        this.Session.FormType,
-        this.Session.RecordFormState );
+      this.Session.RecordLayoutList = this._Bll_RecordLayouts.getLayoutList (
+        this.Session.RecordLayoutTypeSelection,
+        this.Session.RecordLayoutStateSelection );
 
       this.LogDebugClass ( this._Bll_RecordLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.Session.AdminRecordList.Count );
+      this.LogDebug ( "Form list count: " + this.Session.RecordLayoutList.Count );
 
       this.LogMethod ( "loadRecordLayoutList method" );
     }//ENd loadRecordLayoutList method
@@ -645,7 +650,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.AdminRecordList = new List<EdRecord> ( );
+        this.Session.RecordLayoutList = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -701,7 +706,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.TypeId.ToString ( ),
        EdLabels.Form_Type_Selection_Label,
-       this.Session.FormType.ToString ( ),
+       this.Session.RecordLayoutTypeSelection.ToString ( ),
        optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -716,7 +721,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
-        this.Session.RecordFormState.ToString ( ),
+        this.Session.RecordLayoutStateSelection.ToString ( ),
         optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -759,10 +764,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.FormType = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
+        this.Session.RecordLayoutTypeSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormType: "
-        + this.Session.FormType );
+        + this.Session.RecordLayoutTypeSelection );
 
       // 
       // Get the form record type parameter value
@@ -773,10 +778,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.RecordFormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.RecordLayoutStateSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
-        + this.Session.RecordFormState );
+        + this.Session.RecordLayoutStateSelection );
 
     }//END updateSessionObjects method
 
@@ -826,7 +831,7 @@ namespace Evado.UniForm.Digital
       List<EdRecord> FormList )
     {
       this.LogMethod ( "getLayoutList_Group" );
-      this.LogDebug ( "FormType {0}. ", this.Session.FormType );
+      this.LogDebug ( "FormType {0}. ", this.Session.RecordLayoutTypeSelection );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -849,7 +854,7 @@ namespace Evado.UniForm.Digital
       // Add new form button if the user has configuration write access.
       //
       if ( this.Session.UserProfile.hasManagementAccess == true
-        && this.Session.FormType != EdRecordTypes.Null )
+        && this.Session.RecordLayoutTypeSelection != EdRecordTypes.Null )
       {
         //
         // Add the create new form page groupCommand.
@@ -1244,7 +1249,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.AdminRecordList.Count == 0 )
+      if ( this.Session.RecordLayoutList.Count == 0 )
       {
         this.loadRecordLayoutList ( );
       }
@@ -1252,7 +1257,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.Session.AdminRecordList )
+      foreach ( EdRecord form in this.Session.RecordLayoutList )
       {
         //
         // get the list issued version of the form.
@@ -2752,7 +2757,7 @@ namespace Evado.UniForm.Digital
         //
         // Set the form type to the current setting if it is a project form.
         //
-        this.Session.RecordLayout.Design.TypeId = this.Session.FormType;
+        this.Session.RecordLayout.Design.TypeId = this.Session.RecordLayoutTypeSelection;
 
         // 
         // Generate the new page layout 
@@ -2937,7 +2942,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.AdminRecordList = new List<EdRecord> ( );
+        this.Session.RecordLayoutList = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -2977,7 +2982,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.Session.AdminRecordList )
+      foreach ( EdRecord form in this.Session.RecordLayoutList )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

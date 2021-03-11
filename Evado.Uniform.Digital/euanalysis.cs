@@ -1377,7 +1377,7 @@ namespace Evado.UniForm.Digital
           + formRecord.StateDesc + EdLabels.Space_Close_Bracket;
 
         EuAdapterClasses appObject =
-          EuConversions.convertRecordType ( this.Session.RecordType );
+          EuConversions.convertRecordType ( this.Session.RecordTypeSelection );
 
         groupCommand = pageGroup.addCommand (
           stTitle,

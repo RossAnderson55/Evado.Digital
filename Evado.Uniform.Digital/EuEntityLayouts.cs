@@ -78,9 +78,9 @@ namespace Evado.UniForm.Digital
 
       this._Bll_EntityLayouts = new EdEntityLayouts ( Settings );
 
-      if ( this.Session.AdminEntityList == null )
+      if ( this.Session.EntityLayoutList == null )
       {
-        this.Session.AdminEntityList = new List<EdRecord> ( );
+        this.Session.EntityLayoutList = new List<EdRecord> ( );
       }
 
       if ( this.Session.EntityLayout == null )
@@ -91,6 +91,11 @@ namespace Evado.UniForm.Digital
       if ( this.Session.EntityField == null )
       {
         this.Session.EntityField = new EdRecordField ( );
+      }
+
+      if ( this.Session.EntityLayoutIdSelection == null )
+      {
+        this.Session.EntityLayoutIdSelection = String.Empty;
       }
 
     }//END Method
@@ -353,41 +358,41 @@ namespace Evado.UniForm.Digital
       //
       if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
       {
-        this.Session.AdminEntityList = new List<EdRecord> ( );
+        this.Session.EntityLayoutList = new List<EdRecord> ( );
       }
 
       if ( PageCommand.hasParameter ( EdRecord.CONST_RECORD_TYPE ) == true )
       {
         var recordType = PageCommand.GetParameter<EdRecordTypes> ( EdRecord.CONST_RECORD_TYPE );
 
-        if ( this.Session.EntityType != recordType )
+        if ( this.Session.EntityTypeSelection != recordType )
         {
-          this.Session.EntityType = recordType;
-          this.Session.AdminRecordList = new List<EdRecord> ( );
+          this.Session.EntityTypeSelection = recordType;
+          this.Session.RecordLayoutList = new List<EdRecord> ( );
         }
       }
-      this.LogValue ( "EntityType: " + this.Session.EntityType );
+      this.LogValue ( "EntityType: " + this.Session.EntityTypeSelection );
 
 
       if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
       {
         var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
 
-        if ( this.Session.EntitySelectionState != stateValue )
+        if ( this.Session.EntityStateSelection != stateValue )
         {
           if ( stateValue != EdRecordObjectStates.Null )
           {
-            this.Session.AdminEntityList = new List<EdRecord> ( );
-            this.Session.EntitySelectionState = stateValue;
+            this.Session.EntityLayoutList = new List<EdRecord> ( );
+            this.Session.EntityStateSelection = stateValue;
           }
           else
           {
-            this.Session.AdminEntityList = new List<EdRecord> ( );
-            this.Session.EntitySelectionState = EdRecordObjectStates.Null;
+            this.Session.EntityLayoutList = new List<EdRecord> ( );
+            this.Session.EntityStateSelection = EdRecordObjectStates.Null;
           }
         }
       }
-      this.LogValue ( "EntitySelectionState: " + this.Session.EntitySelectionState );
+      this.LogValue ( "EntitySelectionState: " + this.Session.EntityStateSelection );
 
       // 
       // Set the page type to control the DB query type.
@@ -596,27 +601,27 @@ namespace Evado.UniForm.Digital
     private void loadRecordLayoutList ( )
     {
       this.LogMethod ( "loadRecordLayoutList method" );
-      this.LogDebug ( "EntityType '{0}'", this.Session.EntityType );
-      this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordFormState );
+      this.LogDebug ( "EntityType '{0}'", this.Session.EntityTypeSelection );
+      this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
 
-      if ( this.Session.AdminEntityList.Count > 0 )
+      if ( this.Session.EntityLayoutList.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
       }
 
-      this.LogDebug ( "EntityFormState: '" + this.Session.EntityFormState + "'" );
-      this.LogDebug ( "FormType: '" + this.Session.EntityType + "'" );
+      this.LogDebug ( "EntityFormState: '" + this.Session.EntityLayoutStateSelection + "'" );
+      this.LogDebug ( "FormType: '" + this.Session.EntityTypeSelection + "'" );
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.AdminEntityList = this._Bll_EntityLayouts.getLayoutList (
-        this.Session.EntityType,
-        this.Session.EntityFormState );
+      this.Session.EntityLayoutList = this._Bll_EntityLayouts.getLayoutList (
+        this.Session.EntityTypeSelection,
+        this.Session.EntityLayoutStateSelection );
 
       this.LogDebugClass ( this._Bll_EntityLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.Session.AdminEntityList.Count );
+      this.LogDebug ( "Form list count: " + this.Session.EntityLayoutList.Count );
 
       this.LogMethod ( "loadRecordLayoutList method" );
     }//ENd loadRecordLayoutList method
@@ -716,7 +721,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.AdminEntityList = new List<EdRecord> ( );
+        this.Session.EntityLayoutList = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -772,7 +777,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.TypeId.ToString ( ),
        EdLabels.Form_Type_Selection_Label,
-       this.Session.EntityType.ToString ( ),
+       this.Session.EntityTypeSelection.ToString ( ),
        optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -787,7 +792,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
-        this.Session.RecordFormState.ToString ( ),
+        this.Session.RecordLayoutStateSelection.ToString ( ),
         optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -830,10 +835,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.EntityType = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
+        this.Session.EntityTypeSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormType: "
-        + this.Session.EntityType );
+        + this.Session.EntityTypeSelection );
 
       // 
       // Get the form record type parameter value
@@ -844,10 +849,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.RecordFormState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.RecordLayoutStateSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
-        + this.Session.RecordFormState );
+        + this.Session.RecordLayoutStateSelection );
 
     }//END updateSessionObjects method
 
@@ -912,7 +917,7 @@ namespace Evado.UniForm.Digital
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EdLabels.List_Count_Label + this.Session.AdminEntityList.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + this.Session.EntityLayoutList.Count;
 
       //
       // Add new form button if the user has configuration write access.
@@ -935,7 +940,7 @@ namespace Evado.UniForm.Digital
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EdRecord form in this.Session.AdminEntityList )
+      foreach ( Evado.Model.Digital.EdRecord form in this.Session.EntityLayoutList )
       {
         this.LogDebug ( "ID {0}, T: {1}, S: {2}", form.LayoutId, form.Title, form.State );
         EuAdapterClasses appObject = EuAdapterClasses.Entity_Layouts;
@@ -1303,7 +1308,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.AdminEntityList.Count == 0 )
+      if ( this.Session.EntityLayoutList.Count == 0 )
       {
         this.loadRecordLayoutList ( );
       }
@@ -1311,7 +1316,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.Session.AdminEntityList )
+      foreach ( EdRecord form in this.Session.EntityLayoutList )
       {
         //
         // get the list issued version of the form.
@@ -2858,7 +2863,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        this.Session.AdminEntityList = new List<EdRecord> ( );
+        this.Session.EntityLayoutList = new List<EdRecord> ( );
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
         this.Session.EntityLayout = new Evado.Model.Digital.EdRecord ( );
         this.Session.EntityLayout.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
@@ -2868,7 +2873,7 @@ namespace Evado.UniForm.Digital
         //
         // Set the form type to the current setting if it is a project form.
         //
-        this.Session.EntityLayout.Design.TypeId = this.Session.EntityType;
+        this.Session.EntityLayout.Design.TypeId = this.Session.EntityTypeSelection;
 
         // 
         // Generate the new page layout 
@@ -3052,7 +3057,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.AdminEntityList = new List<EdRecord> ( );
+        this.Session.EntityLayoutList = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -3092,7 +3097,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.Session.AdminEntityList )
+      foreach ( EdRecord form in this.Session.EntityLayoutList )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

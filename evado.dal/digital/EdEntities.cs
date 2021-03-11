@@ -685,8 +685,9 @@ namespace Evado.Dal.Digital
       //
       sqlQueryString.AppendLine ( this.createSqlQueryStatement ( QueryParameters ) );
       this.LogDebug ( sqlQueryString.ToString ( ) );
+      this.LogDebug( EvSqlMethods.getParameterSqlText( cmdParms ) );
 
-      this.LogDebug ( " Execute Query" );
+      this.LogDebug ( "Execute Query" );
       //
       //Execute the query against the database.
       //
@@ -704,7 +705,7 @@ namespace Evado.Dal.Digital
 
           EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
 
-          this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting  );
+            this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting  );
           // 
           // Attach fields and other trial data.
           // 

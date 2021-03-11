@@ -141,10 +141,10 @@ namespace Evado.Bll.Digital
     {
       this.LogMethod ( "GetEntityList method. " );
       this.LogDebug ( "Parameters." );
-      this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
-      this.LogValue ( "- IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
-      this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
-      this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
+      this.LogValue ( "-LayoutId: " + QueryParameters.LayoutId );
+      this.LogValue ( "-IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
+      this.LogValue ( "-States.Count: " + QueryParameters.States.Count );
+      this.LogValue ( "-NotSelectedState: " + QueryParameters.NotSelectedState );
 
       if ( QueryParameters.States != null )
       {
