@@ -1,7 +1,7 @@
 /***************************************************************************************
  * <copyright file="AssemblyInfo.cs" company="Evado">
  *     
- *      Copyright (c) 2002 - 2020 Evado.  All rights reserved.
+ *      Copyright (c) 2002 - 2021 Evado.  All rights reserved.
  *     
  *      The use and distribution terms for this software are contained in the file
  *      named \license.txt, which can be found in the root of this distribution.
@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany( "Evado Holdings Pty. Ltd." )]
 [assembly: AssemblyProduct( "Evado" )]
-[assembly: AssemblyCopyright( "(c) Evado Holdings Pty. Ltd. 2002 - 2020 All rights reserved." )]
+[assembly: AssemblyCopyright( "(c) Evado Holdings Pty. Ltd. 2002 - 2021 All rights reserved." )]
 [assembly: AssemblyTrademark("Evado")]
 [assembly: AssemblyCulture("")]		
 

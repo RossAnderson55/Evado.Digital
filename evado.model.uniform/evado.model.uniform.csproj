@@ -53,6 +53,7 @@
     <Compile Include="commandheaderparameters.cs" />
     <Compile Include="commandparameters.cs" />
     <Compile Include="commandtypes.cs" />
+    <Compile Include="EuArticle.cs" />
     <Compile Include="dataobj.cs" />
     <Compile Include="device.cs" />
     <Compile Include="editaccess.cs" />
