@@ -1166,7 +1166,7 @@ namespace Evado.UniForm.Digital
 
 
       string jsonDataFilename = this.Session.Report.ReportId
-        + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + "_json.txt";
+        + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + "_json.txt ";
       jsonDataFilename = jsonDataFilename.ToLower ( );
 
       this.LogValue ( "jsonDataFilename: " + jsonDataFilename );
