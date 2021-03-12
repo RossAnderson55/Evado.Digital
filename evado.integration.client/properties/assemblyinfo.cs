@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany ( "Evado Holdings Pty. Ltd." )]
 [assembly: AssemblyProduct( "Evado.Initialisation" )]
-[assembly: AssemblyCopyright( "(c) Evado Holdings Pty. Ltd. 2002 - 2020 All rights reserved." )]
+[assembly: AssemblyCopyright( "(c) Evado Holdings Pty. Ltd.  2002 - 2021  All rights reserved." )]
 [assembly: AssemblyTrademark( "Evado" )]
 [assembly: AssemblyCulture( "" )]
 

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration ( "" )]
 [assembly: AssemblyCompany ( "Evado Holdings Pty. Ltd." )]
 [assembly: AssemblyProduct ( "Evado UnIFORM" )]
-[assembly: AssemblyCopyright ( "(c) Evado Holdings Pty. Ltd. 2002 - 2020 All rights reserved." )]
+[assembly: AssemblyCopyright ( "(c) Evado Holdings Pty. Ltd.  2002 - 2021  All rights reserved." )]
 [assembly: AssemblyTrademark ( "Ross Anderson." )]
 [assembly: AssemblyCulture ( "" )]		
 

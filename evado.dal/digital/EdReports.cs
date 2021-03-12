@@ -1,6 +1,6 @@
 /* <copyright file="DAL\EvReports.cs" company="EVADO HOLDING PTY. LTD.">
  *     
- *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
+ *      Copyright (c) 2002 - 2021 EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
  *      The use and distribution terms for this software are contained in the file
  *      named license.txt, which can be found in the root of this distribution.
@@ -45,7 +45,7 @@ namespace Evado.Dal.Digital
   /// Data Access Layer Class execute SQL query based reports
   /// 
   /// </summary>
-  public class EvReports : EvDalBase
+  public class EdReports : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -53,9 +53,9 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvReports ( )
+    public EdReports ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EvReports.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdReports.";
     }
 
     // ==================================================================================
@@ -64,19 +64,13 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvReports ( EvClassParameters Settings )
+    public EdReports ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Digital.EvReports.";
-
-      if ( this.ClassParameters.LoggingLevel == 0 )
-      {
-        this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
+      this.ClassNameSpace = "Evado.Dal.Digital.EdReports.";
     }
 
     #endregion
-
 
     #region Data Reader methods
 

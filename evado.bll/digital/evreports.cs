@@ -72,7 +72,7 @@ namespace Evado.Bll.Digital
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this. _dalReports = new Evado.Dal.Digital.EvReports ( Settings );
+      this. _dalReports = new Evado.Dal.Digital.EdReports ( Settings );
     }
     #endregion 
 
@@ -80,7 +80,7 @@ namespace Evado.Bll.Digital
     // 
     // Instantiate the DAL Class\_dal    
     // 
-    private Evado.Dal.Digital.EvReports _dalReports = new Evado.Dal.Digital.EvReports ( );
+    private Evado.Dal.Digital.EdReports _dalReports = new Evado.Dal.Digital.EdReports ( );
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -99,7 +99,6 @@ namespace Evado.Bll.Digital
       this.LogMethod(  "getReport method. " );
       this.LogDebug(  "ReportId: " + Report.ReportId );
       this.LogDebug(  "SourceId: " + Report.DataSourceId );
-      this.LogDebug(  "Source: " + Report.Source );
       this.LogDebug(  "RequireUserTrial: " + Report.RequireUserTrial );
 
       this.LogDebug(  "Report.Queries.Length: " + Report.Queries.Length );

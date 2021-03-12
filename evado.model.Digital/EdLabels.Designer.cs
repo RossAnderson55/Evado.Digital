@@ -6185,6 +6185,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}  {1} JSON data download.
+        /// </summary>
+        public static string Report_Json_Download_Link_Title {
+            get {
+                return ResourceManager.GetString("Report_Json_Download_Link_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report did not generate any data output..
         /// </summary>
         public static string Report_Result_Empty_Message {

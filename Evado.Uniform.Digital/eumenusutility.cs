@@ -1,7 +1,7 @@
 ﻿/***************************************************************************************
  * <copyright file="Evado.UniForm.Clinical\Menus.cs" company="EVADO HOLDING PTY. LTD.">
  *     
- *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
+ *      Copyright (c)  2002 - 2021  EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
  *      The use and distribution terms for this software are contained in the file
  *      named \license.txt, which can be found in the root of this distribution.

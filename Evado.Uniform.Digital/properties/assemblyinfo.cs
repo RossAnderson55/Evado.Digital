@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration ( "" )]
 [assembly: AssemblyCompany ( "Evado Holdings Pty. Ltd." )]
 [assembly: AssemblyProduct ( "Evado Clinical" )]
-[assembly: AssemblyCopyright ( "(c) Evado Holdings Pty. Ltd. 2002 - 2020 All rights reserved." )]
+[assembly: AssemblyCopyright ( "(c) Evado Holdings Pty. Ltd.  2002 - 2021  All rights reserved." )]
 [assembly: AssemblyTrademark ( "Ross Anderson." )]
 [assembly: AssemblyCulture ( "" )]			
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion ( "5.0.2.*" )]
-[assembly: AssemblyFileVersion ( "5.0.2" )]
+[assembly: AssemblyVersion ( "1.0.0.*" )]
+[assembly: AssemblyFileVersion ( "1.0.0" )]

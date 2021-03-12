@@ -1,7 +1,7 @@
 ﻿/***************************************************************************************
  * <copyright file="Evado.UniForm.Clinical\Records.cs" company="EVADO HOLDING PTY. LTD.">
  *     
- *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
+ *      Copyright (c)  2002 - 2021  EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
  *      The use and distribution terms for this software are contained in the file
  *      named \license.txt, which can be found in the root of this distribution.
@@ -26,7 +26,7 @@ using System.Web.SessionState;
 using Evado.Bll;
 using Evado.Model;
 using Evado.Bll.Digital;
-using  Evado.Model.Digital;
+using Evado.Model.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital
@@ -77,6 +77,18 @@ namespace Evado.UniForm.Digital
       this._Bll_Reports = new Evado.Bll.Digital.EvReports ( this.ClassParameters );
       this._Bll_ReportTemplates = new Evado.Bll.Digital.EvReportTemplates ( this.ClassParameters );
 
+      //
+      // Initialise the report object.
+      //
+      if ( this.Session.Report == null )
+      {
+        this.Session.Report = new EvReport ( );
+      }
+      if ( this.Session.ReportTemplateList == null )
+      {
+        this.Session.ReportTemplateList = new List<EvReport> ( );
+      }
+
     }//END Method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,18 +135,6 @@ namespace Evado.UniForm.Digital
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
 
-        //
-        // Initialise the report object.
-        //
-        if ( this.Session.Report == null )
-        {
-          this.Session.Report = new EvReport ( );
-        }
-        if ( this.Session.ReportTemplateList == null )
-        {
-          this.Session.ReportTemplateList = new List<EvReport> ( );
-        }
-
         // 
         // Set the page type to control the DB query type.
         // 
@@ -163,7 +163,7 @@ namespace Evado.UniForm.Digital
             }
           case Evado.Model.UniForm.ApplicationMethods.Create_Object:
             {
-              clientDataObject = this.createObject ( PageCommand ); 
+              clientDataObject = this.createObject ( PageCommand );
               break;
             }
           case Evado.Model.UniForm.ApplicationMethods.Save_Object:
@@ -268,41 +268,41 @@ namespace Evado.UniForm.Digital
         clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
 
         switch ( this.Session.PageId )
-              {
-                case EvPageIds.Data_Management_Report_List:
-                  {
-                    clientDataObject.Title = EdLabels.Reports_Data_Management_List_Page_Title;
-                    this.Session.ReportScope = EvReport.ReportScopeTypes.Data_Management_Reports;
-                    break;
-                  }
-                case EvPageIds.Monitoring_Report_List:
-                  {
-                    clientDataObject.Title = EdLabels.Reports_Monitoring_List_Page_Title;
-                    this.Session.ReportScope = EvReport.ReportScopeTypes.Monitoring_Reports;
-                    break;
-                  }
-            /*
-                case EvPageIds.Financial_Report_List:
-                  {
-                    clientDataObject.Title = EdLabels.Reports_Financial_List_Page_Title;
-                    this.Session.ReportScope = EvReport.ReportScopeTypes.Finance_Reports;
-                    break;
-                  }
-              */
+        {
+          case EvPageIds.Data_Management_Report_List:
+            {
+              clientDataObject.Title = EdLabels.Reports_Data_Management_List_Page_Title;
+              this.Session.ReportScope = EvReport.ReportScopeTypes.Data_Management_Reports;
+              break;
+            }
+          case EvPageIds.Monitoring_Report_List:
+            {
+              clientDataObject.Title = EdLabels.Reports_Monitoring_List_Page_Title;
+              this.Session.ReportScope = EvReport.ReportScopeTypes.Monitoring_Reports;
+              break;
+            }
+          /*
+              case EvPageIds.Financial_Report_List:
+                {
+                  clientDataObject.Title = EdLabels.Reports_Financial_List_Page_Title;
+                  this.Session.ReportScope = EvReport.ReportScopeTypes.Finance_Reports;
+                  break;
+                }
+            */
           case EvPageIds.Site_Report_List:
-                  {
-                    clientDataObject.Title = EdLabels.Reports_Site_List_Page_Title;
-                    this.Session.ReportScope = EvReport.ReportScopeTypes.Site_Reports;
-                    break;
-                  }
-                case EvPageIds.Operational_Report_List:
-                default:
-                  {
-                    clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
-                    this.Session.ReportScope = EvReport.ReportScopeTypes.Operational_Reports;
-                    break;
-                  }
-              }//END PageId switch
+            {
+              clientDataObject.Title = EdLabels.Reports_Site_List_Page_Title;
+              this.Session.ReportScope = EvReport.ReportScopeTypes.Site_Reports;
+              break;
+            }
+          case EvPageIds.Operational_Report_List:
+          default:
+            {
+              clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
+              this.Session.ReportScope = EvReport.ReportScopeTypes.Operational_Reports;
+              break;
+            }
+        }//END PageId switch
 
         this.LogValue ( "Set ReportScope: " + this.Session.ReportScope );
 
@@ -423,11 +423,11 @@ namespace Evado.UniForm.Digital
         // 
         // Query and database.
         // 
-          this.Session.ReportTemplateList = this._Bll_ReportTemplates.getReportList (
-            EvReport.ReportTypeCode.Null,
-            this.Session.ReportScope );
+        this.Session.ReportTemplateList = this._Bll_ReportTemplates.getReportList (
+          EvReport.ReportTypeCode.Null,
+          this.Session.ReportScope );
 
-          this.LogValue ( this._Bll_Reports.Log );
+        this.LogValue ( this._Bll_Reports.Log );
 
         // 
         // bind output to the datagrid.
@@ -540,30 +540,17 @@ namespace Evado.UniForm.Digital
 
       parameterValue = PageCommand.GetParameter ( EuReports.CONST_SAVE_REPORT );
 
-      this._OutputReport =  Evado.Model.Digital.EvcStatics.getBool ( parameterValue );
+      this._OutputReport = Evado.Model.Digital.EvcStatics.getBool ( parameterValue );
       this.LogValue ( "OutputReport: " + this._OutputReport );
 
       try
       {
-        //
-        // retrieve the report template if it has not already been retrieved.
-        //
-        if ( ( this.Session.Report.Guid != reportTemplateGuid )
-          || ( this.Session.Report.DataRecords.Count > 0 ) )
-        {
-          this.LogValue ( "Loading Report Template" );
-
-          this.Session.Report = this._Bll_ReportTemplates.getReport ( reportTemplateGuid );
-
-          this.LogValue ( this._Bll_ReportTemplates.Log );
-
-          this.Session.Report.DataRecords = new List<EvReportRow> ( );
-        }
+        this.getReportTemplate ( reportTemplateGuid );
 
         //
         // update the reports query values.
         //
-        bool parameterValueChanged = this.getReport_Update_Query_Values ( PageCommand );
+        bool parameterValueChanged = this.getReportUpdateQueryValues ( PageCommand );
 
         // 
         // Retrieve the customer object from the database via the DAL and BLL layers.
@@ -573,7 +560,7 @@ namespace Evado.UniForm.Digital
           this.LogValue ( "parameterValueChanged true" );
           this.getReport_Execute_Query ( );
         }
-        
+
         // 
         // return the client ResultData object for the customer.
         // 
@@ -606,6 +593,34 @@ namespace Evado.UniForm.Digital
 
     // ==============================================================================
     /// <summary>
+    /// This method retrieves the report template.
+    /// </summary>
+    /// <param name="reportTemplateGuid">Guid Template unique identifier</param>
+    //  ------------------------------------------------------------------------------
+    private void getReportTemplate ( Guid reportTemplateGuid )
+    {
+      this.LogMethod ( "getReportTemplate" );
+
+
+      if ( this.Session.Report.Guid == reportTemplateGuid )
+      {
+        this.LogValue ( "EXIT: template loaded." );
+        this.LogMethodEnd ( "getReportTemplate" );
+        return;
+      }
+
+      this.Session.Report = this._Bll_ReportTemplates.getReport ( reportTemplateGuid );
+
+      this.LogValue ( this._Bll_ReportTemplates.Log );
+
+      this.Session.Report.DataRecords = new List<EvReportRow> ( );
+
+      this.LogValue ( "SessionObjects.Report.ReportId: " + this.Session.Report.ReportId );
+      this.LogMethodEnd ( "getReportTemplate" );
+    }
+
+    // ==============================================================================
+    /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
@@ -613,10 +628,14 @@ namespace Evado.UniForm.Digital
     private void getReport_Execute_Query ( )
     {
       this.LogMethod ( "getReport_Exexute_Query" );
+      this.Session.Report.DataRecords = new List<EvReportRow> ( );
 
       this.Session.Report = this._Bll_Reports.getReport ( this.Session.Report );
 
       this.LogValue ( this._Bll_Reports.Log );
+
+      this.Session.Report.GeneratedBy =
+        this.Session.UserProfile.CommonName + " on " + DateTime.Now.ToString ( "dd-MMM-yyyy HH:mm" ); 
 
       this.LogValue ( "SessionObjects.Report.ReportId: " + this.Session.Report.ReportId );
       this.LogValue ( "Report data record count: " + this.Session.Report.DataRecords.Count );
@@ -629,24 +648,31 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>bool: Mandatory Parameters present.</returns>
     //  ------------------------------------------------------------------------------
-    private bool getReport_Update_Query_Values (
+    private bool getReportUpdateQueryValues (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getReport_Update_Query_Values" );
+      this.LogMethod ( "getReportUpdateQueryValues" );
+      this.LogDebug ( "Queries.Length {0}.", this.Session.Report.Queries.Length );
       //
       // Define method variables and objects.
       //
       String parameterValue = String.Empty;
       bool parametersChanged = false;
+
+      //
+      // If query array is empty exit true.
+      //
       if ( this.Session.Report.Queries.Length == 0 )
       {
-        this.LogValue ( "No Query Values return true." );
+        this.LogDebug ( "No Query Values return true." );
+        this.LogMethodEnd ( "getReportUpdateQueryValues" );
         return true;
       }
 
       if ( this.Session.Report.Queries [ 0 ].QueryId == String.Empty )
       {
         this.LogValue ( "No Query Values return true." );
+        this.LogMethodEnd ( "getReportUpdateQueryValues" );
         return true;
       }
 
@@ -677,6 +703,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "parametersChanged: " + parametersChanged );
 
+      this.LogMethodEnd ( "getReportUpdateQueryValues" );
       return parametersChanged;
 
     }//END update selection values.
@@ -720,13 +747,13 @@ namespace Evado.UniForm.Digital
             ClientDataObject.Title = EdLabels.Reports_Monitoring_Page_Title;
             break;
           }
-          /*
-        case EvReport.ReportScopeTypes.Finance_Reports:
-          {
-            ClientDataObject.Title = EdLabels.Reports_Finance_Page_Title;
-            break;
-          }
-           */ 
+        /*
+      case EvReport.ReportScopeTypes.Finance_Reports:
+        {
+          ClientDataObject.Title = EdLabels.Reports_Finance_Page_Title;
+          break;
+        }
+         */
         case EvReport.ReportScopeTypes.Operational_Reports:
         default:
           {
@@ -828,7 +855,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      DateTime dValue =  Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
+      DateTime dValue = Evado.Model.Digital.EvcStatics.CONST_DATE_NULL;
       bool displayGenerateCommand = false;
 
       // 
@@ -873,7 +900,7 @@ namespace Evado.UniForm.Digital
           {
             case EvReport.DataTypes.Date:
               {
-                dValue =  Evado.Model.Digital.EvcStatics.getDateTime ( query.Value );
+                dValue = Evado.Model.Digital.EvcStatics.getDateTime ( query.Value );
 
                 groupField = pageGroup.createDateField (
                   EuReports.CONST_QUERY_FIELD_ID + i,
@@ -894,7 +921,7 @@ namespace Evado.UniForm.Digital
         }//END none source query field.
         else
         {
-          optionList =  Evado.Model.Digital.EvcStatics.getArrayAsList<EvOption> ( this.getQuerySelectionList ( query ) );
+          optionList = Evado.Model.Digital.EvcStatics.getArrayAsList<EvOption> ( this.getQuerySelectionList ( query ) );
 
           groupField = pageGroup.createSelectionListField (
             EuReports.CONST_QUERY_FIELD_ID + i,
@@ -1023,7 +1050,7 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Column count: " + this.Session.Report.Columns.Count );
 
-        String columnValue = String.Empty ;
+        String columnValue = String.Empty;
         foreach ( EvReportColumn column in this.Session.Report.Columns )
         {
           if ( columnValue != String.Empty )
@@ -1043,7 +1070,7 @@ namespace Evado.UniForm.Digital
             {
               columnValue += ",";
             }
-            rowValue += "'"+ value + "'";
+            rowValue += "'" + value + "'";
           }
           this.LogValue ( rowValue );
         }
@@ -1055,7 +1082,7 @@ namespace Evado.UniForm.Digital
         //
         pageGroup.Title = this.Session.Report.ReportTitle;
 
-        pageGroup.Description = this.Session.Report.getReportAsHtml ( this.Session.UserProfile ) ;
+        pageGroup.Description = this.Session.Report.getReportAsHtml ( this.Session.UserProfile );
 
         this.LogValue ( this.Session.Report.Log );
 
@@ -1096,7 +1123,7 @@ namespace Evado.UniForm.Digital
       //
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      String CssDirectorypath = this.AdapterObjects.ApplicationPath +@"\css\";
+      String CssDirectorypath = this.AdapterObjects.ApplicationPath + @"\css\";
 
       if ( this._OutputReport == false )
       {
@@ -1121,25 +1148,34 @@ namespace Evado.UniForm.Digital
       //
       string htmlFilename = this.Session.Report.ReportId
         + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + ".htm";
+      htmlFilename = htmlFilename.ToLower ( );
 
       this.LogValue ( "htmlFilename: " + htmlFilename );
 
       string csvFilename = this.Session.Report.ReportId
         + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + ".csv";
+      csvFilename = csvFilename.ToLower ( );
 
       this.LogValue ( "csvFilename: " + csvFilename );
 
       string csvDataFilename = this.Session.Report.ReportId
         + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + "_data.csv";
+      csvDataFilename = csvDataFilename.ToLower ( );
 
       this.LogValue ( "csvDataFilename: " + csvDataFilename );
 
+
+      string jsonDataFilename = this.Session.Report.ReportId
+        + "-" + DateTime.Now.ToString ( "dd-mmm-yy-HHmmss" ) + "_json.txt";
+      jsonDataFilename = jsonDataFilename.ToLower ( );
+
+      this.LogValue ( "jsonDataFilename: " + jsonDataFilename );
       //
       // Save the report as a stand alone html document.
       //
       String htmlReport = this.createHtmlReport ( CssDirectorypath );
 
-       Evado.Model.Digital.EvcStatics.Files.saveFile ( this.UniForm_BinaryFilePath, htmlFilename, htmlReport );
+      Evado.Model.Digital.EvcStatics.Files.saveFile ( this.UniForm_BinaryFilePath, htmlFilename, htmlReport );
 
       //
       // Save the report as a CSV file.
@@ -1151,9 +1187,19 @@ namespace Evado.UniForm.Digital
       //
       // Save the data as a CSV file.
       //
-       csvReport = this.Session.Report.getReportFlatAsCsv ( ",", this.Session.UserProfile );
+      csvReport = this.Session.Report.getReportFlatAsCsv ( ",", this.Session.UserProfile );
 
-       Evado.Model.Digital.EvcStatics.Files.saveFile ( this.UniForm_BinaryFilePath, csvDataFilename, csvReport );
+
+      Evado.Model.Digital.EvcStatics.Files.saveFile ( this.UniForm_BinaryFilePath, csvDataFilename, csvReport );
+
+      //
+      // Save the data as a JSON object.
+      //
+      String jsonReport = this.getJasonSerialiseReport ( );
+
+      this.LogDebug ( jsonReport );
+
+      Evado.Model.Digital.EvcStatics.Files.saveFile ( this.UniForm_BinaryFilePath, jsonDataFilename, jsonReport );
 
       //
       // Create the download pageMenuGroup.
@@ -1173,7 +1219,7 @@ namespace Evado.UniForm.Digital
 
       groupField = pageGroup.addField (
         String.Empty,
-        String.Format ( 
+        String.Format (
           EdLabels.Report_CSV_Download_Link_Title,
           this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
@@ -1182,16 +1228,55 @@ namespace Evado.UniForm.Digital
 
       groupField = pageGroup.addField (
         String.Empty,
-        String.Format(
+        String.Format (
           EdLabels.Report_Data_Download_Link_Title,
-          this.Session.Report.ReportId, 
+          this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
         Evado.Model.EvDataTypes.Html_Link,
         csvDataFilename );
 
+      groupField = pageGroup.addField (
+        String.Empty,
+        String.Format (
+          EdLabels.Report_Json_Download_Link_Title,
+          this.Session.Report.ReportId,
+          this.Session.Report.ReportTitle ),
+        Evado.Model.EvDataTypes.Html_Link,
+        jsonDataFilename );
+
 
 
     }//END getReport_Save_Group method
+
+    //  ==================================================================================
+    /// <summary>
+    /// This method JSON serialises the report structure.
+    /// </summary>
+    /// <returns>String: containing the JSON report content.</returns>
+    //  ---------------------------------------------------------------------------------
+    private string getJasonSerialiseReport ( )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      String stJsonReport = string.Empty;
+      Newtonsoft.Json.JsonSerializerSettings jsonSettings = new Newtonsoft.Json.JsonSerializerSettings
+      {
+        NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+      };
+
+      //
+      // create a JSON serialisation of the report object.
+      //
+      stJsonReport = Newtonsoft.Json.JsonConvert.SerializeObject (
+        this.Session.Report, Newtonsoft.Json.Formatting.Indented, jsonSettings );
+
+      //
+      // Return the json serialised report.
+      //
+      return stJsonReport;
+
+    }//END getJasonSerialiseReport method
 
     //  ==================================================================================
     /// <summary>
@@ -1422,7 +1507,7 @@ namespace Evado.UniForm.Digital
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
         this.Session.Report = new EvReport ( );
-        this.Session.Report.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.Report.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
 
         Guid reportTemplateGuid = Command.GetGuid ( );
 
@@ -1490,7 +1575,7 @@ namespace Evado.UniForm.Digital
         // 
         this.LogException ( Ex );
       }
-      return this.Session.LastPage; 
+      return this.Session.LastPage;
 
     }//END method
 

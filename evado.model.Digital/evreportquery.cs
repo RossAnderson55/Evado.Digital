@@ -128,6 +128,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the source's query identifier.
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public String QueryId
     {
       get { return _QueryId; }
@@ -137,6 +138,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains teh source's query title.
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public String QueryTitle
     {
       get { return _QueryTitle; }
@@ -146,6 +148,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an operator object of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvReport.Operators Operator
     {
       get { return _Operator; }
@@ -155,6 +158,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an index number of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public int Index
     {
       get
@@ -170,6 +174,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a selection source object of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvReport.SelectionListTypes SelectionSource
     {
       get
@@ -185,6 +190,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a selection list array object of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvOption [ ] SelectionList
     {
       get
@@ -200,6 +206,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a field name of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public string FieldName
     {
       get
@@ -230,6 +237,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains value name of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public string ValueName
     {
       get
@@ -260,6 +268,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public bool Mandatory
     {
       get
@@ -275,15 +284,27 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a data type object of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvReport.DataTypes DataType
     {
       get { return _DataType; }
       set { _DataType = value; }
     }
 
+
+    /// <summary>
+    /// This property contains a data type object of the report query
+    /// </summary>
+    [Newtonsoft.Json.JsonProperty ( "Type" )]
+    public String stDataType
+    {
+      get { return _DataType.ToString(); }
+    }
+
     /// <summary>
     /// This property contains query parameters of the report query
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public String QueryParameters
     {
       get { return queryParameters; }

@@ -118,6 +118,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a global unique identifier of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public Guid Guid
     {
       get
@@ -133,6 +134,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the source's column identifier.
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public String ColumnId
     {
       get { return _ColumnId; }
@@ -142,6 +144,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the source's coluomn order identifier.
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public int SourceOrder
     {
       get { return _SourceOrder; }
@@ -182,6 +185,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a style width of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public string StyleWidth
     {
       get
@@ -198,6 +202,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a section level 1 of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public int SectionLvl
     {
       get
@@ -214,6 +219,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates whether a report column is grouping index
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public bool GroupingIndex
     {
       get
@@ -230,6 +236,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a grouping type object of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvReport.GroupingTypes GroupingType
     {
       get
@@ -262,6 +269,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public float[] GroupingValues
     {
       get
@@ -278,6 +286,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a data type object of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public EvReport.DataTypes DataType
     {
       get
@@ -303,8 +312,18 @@ namespace Evado.Model.Digital
     } //end ColumnType
 
     /// <summary>
+    /// This property contains a data type object of the report query
+    /// </summary>
+    [Newtonsoft.Json.JsonProperty ( "Type" )]
+    public String stDataType
+    {
+      get { return _DataType.ToString ( ); }
+    }
+
+    /// <summary>
     /// This property contains a value formating string of a report column
     /// </summary>
+    [Newtonsoft.Json.JsonIgnore]
     public string ValueFormatingString
     {
       get

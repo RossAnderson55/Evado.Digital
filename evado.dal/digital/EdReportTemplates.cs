@@ -1,6 +1,6 @@
 /* <copyright file="DAL\EvReportTemplates.cs" company="EVADO HOLDING PTY. LTD.">
  *     
- *      Copyright (c) 2002 - 2020 EVADO HOLDING PTY. LTD..  All rights reserved.
+ *      Copyright (c) 2002 - 2021 EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
  *      The use and distribution terms for this software are contained in the file
  *      named license.txt, which can be found in the root of this distribution.
@@ -59,7 +59,7 @@ namespace Evado.Dal.Digital
   /// The Evado.Evado.Report is used in most methods 
   /// and is used to store serializable information about an account
   /// </summary>
-  public class EvReportTemplates : EvDalBase
+  public class EdReportTemplates : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -67,9 +67,9 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvReportTemplates ( )
+    public EdReportTemplates ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EvReportTemplates.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdReportTemplates.";
     }
 
     // ==================================================================================
@@ -78,15 +78,10 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvReportTemplates ( EvClassParameters Settings )
+    public EdReportTemplates ( EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
-      this.ClassNameSpace = "Evado.Dal.Digital.EvReportTemplates.";
-
-      if ( this.ClassParameters.LoggingLevel == 0 )
-      {
-        this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
+      this.ClassNameSpace = "Evado.Dal.Digital.EdReportTemplates.";
     }
 
     #endregion
@@ -297,17 +292,17 @@ namespace Evado.Dal.Digital
       // 
       // Extract the data object values.
       // 
-      reportSource.SourceId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_ID );
-      reportSource.Name = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_NAME );
-      reportSource.Description = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_DESCRIPTION );
+      reportSource.SourceId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_ID );
+      reportSource.Name = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_NAME );
+      reportSource.Description = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_DESCRIPTION );
 
-      String value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SOURCE );
+      String value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SOURCE );
 
       reportSource.ReportSource =
         Evado.Model.EvStatics.parseEnumValue<EvReport.ReportSourceCode> (
-        EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SOURCE ) );
+        EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SOURCE ) );
 
-      reportSource.SqlQuery = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_SQL_QUERY );
+      reportSource.SqlQuery = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_SQL_QUERY );
 
 
       //
@@ -343,21 +338,21 @@ namespace Evado.Dal.Digital
       // Extract the data object values.
       // 
       reportQuery.QueryId =
-        EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_QUERY_ID );
+        EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_QUERY_ID );
       reportQuery.QueryTitle =
-        EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_QUERY_TITLE );
+        EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_QUERY_TITLE );
 
       reportQuery.SelectionSource =
-        EvSqlMethods.getString<EvReport.SelectionListTypes> ( Row, EvReportTemplates.DB_REPORT_QUERY_SELECTION_SOURCE );
+        EvSqlMethods.getString<EvReport.SelectionListTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_SELECTION_SOURCE );
 
 
 
       reportQuery.FieldName =
-        EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_QUERY_FIELD_NAME );
+        EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_QUERY_FIELD_NAME );
       reportQuery.Prompt =
-        EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_QUERY_PROMPT );
+        EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_QUERY_PROMPT );
       reportQuery.DataType =
-        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EvReportTemplates.DB_REPORT_QUERY_DATA_TYPE );
+        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_DATA_TYPE );
 
       //
       // IF the source query is false add the report query columns.
@@ -365,11 +360,11 @@ namespace Evado.Dal.Digital
       if ( IsSource == false )
       {
         reportQuery.Index =
-          EvSqlMethods.getInteger ( Row, EvReportTemplates.DB_REPORT_QUERY_INDEX );
+          EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_QUERY_INDEX );
         reportQuery.Mandatory =
-          EvSqlMethods.getBool ( Row, EvReportTemplates.DB_REPORT_QUERY_MANDATORY );
+          EvSqlMethods.getBool ( Row, EdReportTemplates.DB_REPORT_QUERY_MANDATORY );
         reportQuery.Operator =
-          EvSqlMethods.getString<EvReport.Operators> ( Row, EvReportTemplates.DB_REPORT_QUERY_OPERATOR );
+          EvSqlMethods.getString<EvReport.Operators> ( Row, EdReportTemplates.DB_REPORT_QUERY_OPERATOR );
       }
 
       //
@@ -404,13 +399,13 @@ namespace Evado.Dal.Digital
       // 
       // Extract the data object values.
       // 
-      reportColumn.ColumnId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_COLUMN_ID );
-      reportColumn.HeaderText = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_COLUMN_HEADER_TEXT );
-      reportColumn.SourceField = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_COLUMN_SOURCE_FIELD );
-      reportColumn.StyleWidth = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_COLUMN_STYLE_WIDTH );
+      reportColumn.ColumnId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_COLUMN_ID );
+      reportColumn.HeaderText = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_HEADER_TEXT );
+      reportColumn.SourceField = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_SOURCE_FIELD );
+      reportColumn.StyleWidth = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_STYLE_WIDTH );
       reportColumn.DataType =
-        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EvReportTemplates.DB_REPORT_COLUMN_DATA_TYPE );
-      reportColumn.ValueFormatingString = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_COLUMN_VALUE_FORMATING );
+        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_DATA_TYPE );
+      reportColumn.ValueFormatingString = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_FORMATING );
 
       //
       // IF the source query is false add the report query columns.
@@ -418,13 +413,13 @@ namespace Evado.Dal.Digital
       if ( IsSource == false )
       {
         reportColumn.SourceOrder =
-          EvSqlMethods.getInteger ( Row, EvReportTemplates.DB_REPORT_COLUMN_ORDER );
+          EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_COLUMN_ORDER );
         reportColumn.GroupingIndex =
-          EvSqlMethods.getBool ( Row, EvReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_INDEX );
+          EvSqlMethods.getBool ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_INDEX );
         reportColumn.GroupingType =
-          EvSqlMethods.getString<EvReport.GroupingTypes> ( Row, EvReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_TYPE );
+          EvSqlMethods.getString<EvReport.GroupingTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_TYPE );
         reportColumn.SectionLvl =
-          EvSqlMethods.getInteger ( Row, EvReportTemplates.DB_REPORT_COLUMN_VALUE_SECTION_LEVEL );
+          EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_SECTION_LEVEL );
 
         //
         // set the selection list for sorting in SQL
@@ -467,59 +462,59 @@ namespace Evado.Dal.Digital
       // 
       // Extract the data object values.
       // 
-      report.Guid = EvSqlMethods.getGuid ( Row, EvReportTemplates.DB_REPORT_GUID );
-      report.ReportId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_ID );
+      report.Guid = EvSqlMethods.getGuid ( Row, EdReportTemplates.DB_REPORT_GUID );
+      report.ReportId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_ID );
       report.LastReportId = report.ReportId;
-      report.SourceId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_ID );
-      report.ReportTitle = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_TITLE );
-      report.ReportSubTitle = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SUB_TITLE );
-      report.Category = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_CATEGORY );
+      report.SourceId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_ID );
+      report.ReportTitle = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_TITLE );
+      report.ReportSubTitle = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SUB_TITLE );
+      report.Category = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_CATEGORY );
       report.IsAggregated =
-        EvSqlMethods.getBool ( Row, EvReportTemplates.DB_REPORT_IS_AGGRETATED );
+        EvSqlMethods.getBool ( Row, EdReportTemplates.DB_REPORT_IS_AGGRETATED );
       this.LogDebug ( "report.IsAggregated: " + report.IsAggregated );
 
-      value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_TYPE );
+      value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_TYPE );
       if ( value != String.Empty )
       {
         report.ReportType = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportTypeCode> ( value );
       }
 
-      value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SCOPE );
+      value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SCOPE );
       if ( value != String.Empty )
       {
         report.ReportScope = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportScopeTypes> ( value );
       }
 
-      report.SourceId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_SOURCE_ID );
+      report.SourceId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_ID );
 
-      value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_DATA_SOURCE_ID );
+      value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_DATA_SOURCE_ID );
       if ( value != String.Empty )
       {
         report.DataSourceId = Evado.Model.EvStatics.
           parseEnumValue<EvReport.ReportSourceCode> ( value );
       }
 
-      value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_SQL_SOURCE );
+      value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SQL_SOURCE );
       if ( value != String.Empty )
       {
         report.SqlDataSource = value;
       }
 
-      value = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_LAYOUT_TYPE_ID );
+      value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_LAYOUT_TYPE_ID );
       if ( value != String.Empty )
       {
         report.LayoutTypeId = Evado.Model.EvStatics.
           parseEnumValue<EvReport.LayoutTypeCode> ( value );
       }
 
-      report.Version = EvSqlMethods.getInteger ( Row, EvReportTemplates.DB_REPORT_VERSION );
-      report.UpdateUserId = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_UPDATE_USER_ID );
+      report.Version = EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_VERSION );
+      report.UpdateUserId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_UPDATE_USER_ID );
 
-      report.Updated = EvSqlMethods.getString ( Row, EvReportTemplates.DB_REPORT_UPDATE_BY );
+      report.Updated = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_UPDATE_BY );
 
-      report.Updated += " on " + EvSqlMethods.getDateTime ( Row, EvReportTemplates.DB_REPORT_UPDATE_DATE ).ToString ( "dd MMM yyyy HH:mm" );
+      report.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdReportTemplates.DB_REPORT_UPDATE_DATE ).ToString ( "dd MMM yyyy HH:mm" );
 
       //
       // Return the Report object
@@ -711,8 +706,8 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
           option = new EvOption (
-            EvSqlMethods.getString ( row, EvReportTemplates.DB_REPORT_ID ),
-            EvSqlMethods.getString ( row, EvReportTemplates.DB_REPORT_TITLE ) );
+            EvSqlMethods.getString ( row, EdReportTemplates.DB_REPORT_ID ),
+            EvSqlMethods.getString ( row, EdReportTemplates.DB_REPORT_TITLE ) );
 
           list.Add ( option );
 
@@ -1194,7 +1189,7 @@ namespace Evado.Dal.Digital
     {
        
       this.LogMethod ( "getReport method. " );
-      this.LogDebug ( "Guid: " + ReportGuid );
+      this.LogDebug ( "ReportGuid: " + ReportGuid );
       // 
       // Define the local variables
       // 
@@ -1206,14 +1201,15 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_Guid, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdReportTemplates.PARM_Guid, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = ReportGuid;
 
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (RT_Guid = @Guid); ";
+      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (" + EdReportTemplates.DB_REPORT_GUID + "=" + EdReportTemplates.PARM_Guid + "); ";
+
       this.LogDebug ( SqlQueryString );
 
       //
@@ -1321,14 +1317,17 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_REPORT_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdReportTemplates.PARM_REPORT_ID, SqlDbType.NVarChar, 20),
       };
       cmdParms [ 0 ].Value = ReportId;
 
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (ReportId = @ReportId) AND RT_Superseded = 0; ";
+      SqlQueryString = SQl_QUERY_REPORT_TEMPLATES
+        + "WHERE (" + EdReportTemplates.DB_REPORT_ID + "=" + EdReportTemplates.PARM_REPORT_ID + ") " 
+        + "AND (" + EdReportTemplates.DB_REPORT_DELETED + "= 0); ";
+     
       this.LogDebug ( SqlQueryString );
 
       //
@@ -1425,7 +1424,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_REPORT_ID, SqlDbType.NVarChar, 50 ),
+        new SqlParameter( EdReportTemplates.PARM_REPORT_ID, SqlDbType.NVarChar, 50 ),
       };
 
       cmdParms [ 0 ].Value = ReportId;
@@ -1433,7 +1432,8 @@ namespace Evado.Dal.Digital
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQL_QUERY_REPORT_TEMPLATE_QUERIES + "WHERE (" + DB_REPORT_ID + "=" + PARM_REPORT_ID + ") ORDER BY " + DB_SOURCE_QUERY_ID + ";";
+      SqlQueryString = SQL_QUERY_REPORT_TEMPLATE_QUERIES
+        + "WHERE (" + EdReportTemplates.DB_REPORT_ID + "=" + EdReportTemplates.PARM_REPORT_ID + ") ORDER BY " + EdReportTemplates.DB_SOURCE_QUERY_ID + ";";
 
       this.LogDebug ( SqlQueryString );
 
@@ -1512,7 +1512,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( PARM_REPORT_ID, SqlDbType.NVarChar, 50 ),
+        new SqlParameter( EdReportTemplates.PARM_REPORT_ID, SqlDbType.NVarChar, 50 ),
       };
 
       cmdParms [ 0 ].Value = ReportId;
@@ -1520,8 +1520,8 @@ namespace Evado.Dal.Digital
       // 
       // Generate the SQL query string
       // 
-      SqlQueryString = SQl_QUERY_REPORT_TEMPLATE_COLUMNS + "WHERE (" + DB_REPORT_ID + "=" + PARM_REPORT_ID + ") "
-        + " ORDER BY " +  EvReportTemplates.DB_REPORT_COLUMN_ORDER + ";";
+      SqlQueryString = SQl_QUERY_REPORT_TEMPLATE_COLUMNS + "WHERE (" + EdReportTemplates.DB_REPORT_ID + "=" + EdReportTemplates.PARM_REPORT_ID + ") "
+        + " ORDER BY " +  EdReportTemplates.DB_REPORT_COLUMN_ORDER + ";";
 
       this.LogDebug ( SqlQueryString );
 

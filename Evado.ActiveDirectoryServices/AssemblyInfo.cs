@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Evado")]
 [assembly: AssemblyProduct("EvadoAdminUtil.ActiveDirectory")]
-[assembly: AssemblyCopyright("Copyright © Evado 2013")]
+[assembly: AssemblyCopyright("Copyright © Evado 2013 - 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

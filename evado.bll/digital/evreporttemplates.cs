@@ -60,7 +60,7 @@ namespace Evado.Bll.Digital
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._dalReportTemplates = new Evado.Dal.Digital.EvReportTemplates ( Settings );
+      this._dalReportTemplates = new Evado.Dal.Digital.EdReportTemplates ( Settings );
     }
     #endregion
 
@@ -68,7 +68,7 @@ namespace Evado.Bll.Digital
     // 
     // Instantiate the DAL Class\
     // 
-    private Evado.Dal.Digital.EvReportTemplates _dalReportTemplates = new Evado.Dal.Digital.EvReportTemplates ( );
+    private Evado.Dal.Digital.EdReportTemplates _dalReportTemplates = new Evado.Dal.Digital.EdReportTemplates ( );
 
     private System.Text.StringBuilder _DebugLog = new System.Text.StringBuilder ( );
      

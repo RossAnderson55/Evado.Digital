@@ -20,6 +20,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Evado.Model.Digital
 {
@@ -584,6 +585,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property returns the object log content.
     /// </summary>
+    [JsonIgnore]
     public String Log
     {
       get
@@ -676,6 +678,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a global unique identifier of a report
     /// </summary>
+    [JsonIgnore]
     public Guid Guid
     {
       get
@@ -691,6 +694,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a data source identifier of a report
     /// </summary>
+    [JsonIgnore]
     public String SourceId
     {
       get
@@ -706,6 +710,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates whether a report is aggregated
     /// </summary>
+    [JsonIgnore]
     public bool IsAggregated
     {
       get { return this._IsAggregated; }
@@ -715,6 +720,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a site column header text of a report
     /// </summary>
+    [JsonIgnore]
     public String SiteColumnHeaderText
     {
       get { return this._SiteHeaderText; }
@@ -724,6 +730,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates whether a report is user site filtered
     /// </summary>
+    [JsonIgnore]
     public bool IsUserSiteFiltered
     {
       get { return this._SiteHeaderText != String.Empty; }
@@ -745,17 +752,9 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// This property contains a report scope type object of a report
-    /// </summary>
-    public ReportScopeTypes ReportScope
-    {
-      get { return this._ReportScopeType; }
-      set { this._ReportScopeType = value; }
-    }
-
-    /// <summary>
     /// This property contains a string number of a report
     /// </summary>
+    [JsonIgnore]
     public string stReportNo
     {
       get
@@ -765,8 +764,19 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property contains a report scope type object of a report
+    /// </summary>
+    [JsonProperty ( "scope" )]
+    public ReportScopeTypes ReportScope
+    {
+      get { return this._ReportScopeType; }
+      set { this._ReportScopeType = value; }
+    }
+
+    /// <summary>
     /// This property contains a category of a report
     /// </summary>
+    [JsonIgnore]
     public string Category
     {
       get
@@ -797,6 +807,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a last report identifier of a report
     /// </summary>
+    [JsonIgnore]
     public string LastReportId { get; set; }
 
     /// <summary>
@@ -847,6 +858,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a generated date of a report
     /// </summary>
+    [JsonIgnore]
     public DateTime ReportDate
     {
       get
@@ -862,6 +874,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a generated date string of a report
     /// </summary>
+    [JsonProperty ( "Date" )]
     public string stReportDate
     {
       get
@@ -891,6 +904,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a data source identifier of a report
     /// </summary>
+    [JsonIgnore]
     public ReportSourceCode DataSourceId
     {
       get
@@ -906,6 +920,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an sql data source of a report
     /// </summary>
+    [JsonIgnore]
     public string SqlDataSource
     {
       get
@@ -921,6 +936,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a report type identifier of a report
     /// </summary>
+    [JsonIgnore]
     public ReportTypeCode ReportType
     {
       get
@@ -936,6 +952,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a layout type identifier object of a report
     /// </summary>
+    [JsonIgnore]
     public LayoutTypeCode LayoutTypeId
     {
       get
@@ -951,6 +968,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a version of a report
     /// </summary>
+    [JsonIgnore]
     public int Version
     {
       get
@@ -966,6 +984,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an update user identifier of a report
     /// </summary>
+    [JsonIgnore]
     public string UpdateUserId
     {
       get
@@ -981,6 +1000,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a user common name who updates a report
     /// </summary>
+    [JsonIgnore]
     public string UserCommonName
     {
       get
@@ -996,6 +1016,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an updated string of a report
     /// </summary>
+    [JsonIgnore]
     public string Updated
     {
       get
@@ -1008,27 +1029,10 @@ namespace Evado.Model.Digital
       }
     }
 
-    //
-    //TODO remove this. It is not used, but I don't know what will happen with the actual xml reports.
-    //
-    /// <summary>
-    /// This property contains a source string of a report
-    /// </summary>
-    public string Source
-    {
-      get
-      {
-        return "";
-      }
-      set
-      {
-        string dVar = value;
-      }
-    }
-
     /// <summary>
     /// This property contains column numbers of a report
     /// </summary>
+    [JsonIgnore]
     public int NoColumns
     {
       get
@@ -1086,6 +1090,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a global unique identifier of a report
     /// </summary>
+    [JsonIgnore]
     public bool SelectionOn
     {
       get
@@ -1101,6 +1106,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates whether a report is detail index name
     /// </summary>
+    [JsonIgnore]
     public String DetailIndexName
     {
       get { return this._DetailIndexName; }
@@ -1110,6 +1116,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains description of a report
     /// </summary>
+    [JsonIgnore]
     public String Description
     {
       get { return this._Description; }
@@ -1119,6 +1126,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains details of a report
     /// </summary>
+    [JsonIgnore]
     public string Details
     {
       get
@@ -1133,6 +1141,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates whether a report require user trial
     /// </summary>
+    [JsonIgnore]
     public bool RequireUserTrial
     {
       get { return _RequireUserTrial; }
@@ -1142,6 +1151,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a software version of a report
     /// </summary>
+    [JsonIgnore]
     public String SoftwareVersion
     {
       get { return this._SoftwareVersion; }
