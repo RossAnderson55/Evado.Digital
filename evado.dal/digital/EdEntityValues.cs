@@ -72,7 +72,7 @@ namespace Evado.Dal.Digital
     // 
     // selectionList query string.
     // 
-    private const string SQL_QUERY_VALUES_VIEW = "Select *  FROM ED_ENTITY_VALUE_VIEW ";
+    private const string SQL_QUERY_VIEW = "Select *  FROM ED_ENTITY_VALUE_VIEW ";
 
 
     #region Define the query parameter constants.
@@ -423,7 +423,7 @@ namespace Evado.Dal.Digital
       // 
       // Define the query string.
       // 
-      _Sql_QueryString = SQL_QUERY_VALUES_VIEW + " WHERE ( " + EdEntityValues.DB_ENTITY_GUID + " =" + EdEntityValues.PARM_ENTITY_GUID + ") "
+      _Sql_QueryString = SQL_QUERY_VIEW + " WHERE ( " + EdEntityValues.DB_ENTITY_GUID + " =" + EdEntityValues.PARM_ENTITY_GUID + ") "
         + "ORDER BY " + EdEntityFields.DB_ORDER + "; ";
 
       this.LogDebug ( _Sql_QueryString );

@@ -471,7 +471,7 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-    #region FormRecord views and query methods.
+    #region Record views and query methods.
 
     // =====================================================================================
     /// <summary>

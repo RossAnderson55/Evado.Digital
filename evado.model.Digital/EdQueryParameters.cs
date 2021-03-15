@@ -107,11 +107,13 @@ namespace Evado.Model.Digital
     }
 
     /// </summary>
-    private List<EvOption> _SelectionFilters = new List<EvOption> ( );
+    private String [ ] _SelectionFilters = new String [ 5 ];
     /// <summary>
     /// This property contains a list of entity/record selection list filters.
+    /// These filters field Ids are created from the listed field filters in the EntityLayout.
+    /// The value is the selected value of the filter.
     /// </summary>
-    public List<EvOption> SelectionFilters
+    public String [ ] SelectionFilters
     {
       get { return _SelectionFilters; }
       set { _SelectionFilters = value; }

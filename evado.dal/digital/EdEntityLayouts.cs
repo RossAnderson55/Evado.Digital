@@ -262,6 +262,10 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This is the entity layout field id 0 parameter
     /// </summary>
+    public const string PARM_FILTER_FIELD = "@FILTER_FIELD_";
+    /// <summary>
+    /// This is the entity layout field id 0 parameter
+    /// </summary>
     public const string PARM_FILTER_FIELD_0 = "@FILTER_FIELD_0";
     /// <summary>
     /// This is the entity layout field id 1 parameter

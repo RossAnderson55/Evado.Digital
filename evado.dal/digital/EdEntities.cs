@@ -62,7 +62,7 @@ namespace Evado.Dal.Digital
 
     #region Class constants and variables.
 
-   //
+    //
     // define the entity query string.
     //
     private const string SQL_QUERY_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
@@ -146,6 +146,26 @@ namespace Evado.Dal.Digital
     /// </summary>
     public const string DB_SIGN_OFFS = "EDE_SIGN_OFFS";
     /// <summary>
+    /// This database entity layout field Id filter 0
+    /// </summary>
+    public const string DB_FILTER_VALUE_0 = "EDE_FILTER_VALUE_0";
+    /// <summary>
+    /// This database entity layout field Id filter 1
+    /// </summary>
+    public const string DB_FILTER_VALUE_1 = "EDE_FILTER_VALUE_1";
+    /// <summary>
+    /// This database entity layout field Id filter 2
+    /// </summary>
+    public const string DB_FILTER_VALUE_2 = "EDE_FILTER_VALUE_2";
+    /// <summary>
+    /// This database entity layout field Id filter 3
+    /// </summary>
+    public const string DB_FILTER_VALUE_3 = "EDE_FILTER_VALUE_3";
+    /// <summary>
+    /// This database entity layout field Id filter 4
+    /// </summary>
+    public const string DB_FILTER_VALUE_4 = "EDE_FILTER_VALUE_4";
+    /// <summary>
     /// The database entity booked out user identifier column name
     /// </summary>
     public const string DB_BOOKED_OUT_USER_ID = "EDE_BOOKED_OUT_USER_ID";
@@ -201,21 +221,14 @@ namespace Evado.Dal.Digital
     private const string PARM_TEXT_VALUE = "@TEXT_VALUE";
     private const string PARM_TYPE_ID = "@TYPE_ID";
 
-    //
-    // The database field names.
-    //
-    private const string DB_FILTER_FIELD_ID = "@FIELD_ID_";
-    private const string DB_FILTER_VALUE = "@VALUE_";
-    //
-    // The field filter Parameters.
-    //
-    private const string PARM_FILTER_FIELD_ID = "@FIELD_ID_";
-    private const string PARM_FILTER_VALUE = "@VALUE_";
+    private const string DB_FILTER_VALUE_ = "EDE_FILTER_VALUE_";
+    private const string PARM_FILTER_VALUE = "@FILTER_VALUE_";
 
-    //
-    // This variable is used to skip retrieving comments when updating the form record.
-    //
-    bool _SkipRetrievingComments = false;
+    private const string PARM_FILTER_VALUE_0 = "@FILTER_VALUE_0";
+    private const string PARM_FILTER_VALUE_1 = "@FILTER_VALUE_1";
+    private const string PARM_FILTER_VALUE_2 = "@FILTER_VALUE_2";
+    private const string PARM_FILTER_VALUE_3 = "@FILTER_VALUE_3";
+    private const string PARM_FILTER_VALUE_4 = "@FILTER_VALUE_4";
 
     EdRecordSections _Dal_FormSections = new EdRecordSections ( );
     #endregion
@@ -245,6 +258,11 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntities.PARM_ENTITY_ACCESS, SqlDbType.VarChar, 1000),
         new SqlParameter( EdEntities.PARM_AI_DATA_INDEX, SqlDbType.NVarChar, 1000), 
         new SqlParameter( EdEntities.PARM_SIGN_OFFS, SqlDbType.NVarChar),
+        new SqlParameter( EdEntities.PARM_FILTER_VALUE_0, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntities.PARM_FILTER_VALUE_1, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntities.PARM_FILTER_VALUE_2, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntities.PARM_FILTER_VALUE_3, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntities.PARM_FILTER_VALUE_4, SqlDbType.NVarChar, 250),
         new SqlParameter( EdEntities.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -257,7 +275,7 @@ namespace Evado.Dal.Digital
     /// This class binds values to query parameters.
     /// </summary>
     /// <param name="CommandParameters">SqlParameter: an array of sql parameters</param>
-    /// <param name="Record">EvForm: a form object containing the parmeter values.</param>
+    /// <param name="Entity">EvForm: a form object containing the parmeter values.</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -270,38 +288,80 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     private void SetParameters (
       SqlParameter [ ] CommandParameters,
-      EdRecord Record )
+      EdRecord Entity )
     {
       // 
       // Set the record date if is not already set.
       // 
-      if ( Record.RecordDate == Evado.Model.EvStatics.CONST_DATE_NULL )
+      if ( Entity.RecordDate == Evado.Model.EvStatics.CONST_DATE_NULL )
       {
-        Record.RecordDate = DateTime.Now;
+        Entity.RecordDate = DateTime.Now;
       }
 
       // 
       // Set the Global identifier if not set.
       // 
-      if ( Record.Guid == Guid.Empty )
+      if ( Entity.Guid == Guid.Empty )
       {
-        Record.Guid = Guid.NewGuid ( );
+        Entity.Guid = Guid.NewGuid ( );
       }
+
+      //
+      // define the filter field value array.
+      // 
+      String [ ] filterFieldValue = new string [ 5 ];
+
+      //
+      // iterate through the fields updating the filterFieldValue values.
+      //
+      for ( int fieldCount = 0; fieldCount < Entity.FilterFieldIds.Length; fieldCount++ )
+      {
+        String fieldId = Entity.FilterFieldIds [ fieldCount ];
+        filterFieldValue [ fieldCount ] = String.Empty;
+
+        if ( fieldId == String.Empty )
+        {
+          continue;
+        }
+
+        //
+        // iterate through the entity fields.
+        //
+        foreach ( EdRecordField field in Entity.Fields )
+        {
+          if ( field.FieldId != fieldId )
+          {
+            continue;
+          }
+
+          //
+          // update the filter value list array if the field identifier match.
+          //
+          filterFieldValue [ fieldCount ] = field.ItemValue;
+
+        }//End Field iteration loop.
+
+      }//End FilterFieldId iteration loop.
 
       // 
       // Load the command parmameter values
       // 
-      CommandParameters [ 0 ].Value = Record.Guid;
-      CommandParameters [ 1 ].Value = Record.State;
-      CommandParameters [ 2 ].Value = Record.SourceId;
-      CommandParameters [ 3 ].Value = Record.RecordDate;
-      CommandParameters [ 4 ].Value = Record.Visabilty;
-      CommandParameters [ 5 ].Value = Record.EntityAccess;
-      CommandParameters [ 6 ].Value = Record.AiIndex;
-      CommandParameters [ 7 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
-      CommandParameters [ 8 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.CommonName;
-      CommandParameters [ 10 ].Value = DateTime.Now;
+      CommandParameters [ 0 ].Value = Entity.Guid;
+      CommandParameters [ 1 ].Value = Entity.State;
+      CommandParameters [ 2 ].Value = Entity.SourceId;
+      CommandParameters [ 3 ].Value = Entity.RecordDate;
+      CommandParameters [ 4 ].Value = Entity.Visabilty;
+      CommandParameters [ 5 ].Value = Entity.EntityAccess;
+      CommandParameters [ 6 ].Value = Entity.AiIndex;
+      CommandParameters [ 7 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Entity.Signoffs );
+      CommandParameters [ 8 ].Value = filterFieldValue [ 0 ];
+      CommandParameters [ 9 ].Value = filterFieldValue [ 1 ];
+      CommandParameters [ 10 ].Value = filterFieldValue [ 2 ];
+      CommandParameters [ 11 ].Value = filterFieldValue [ 3 ];
+      CommandParameters [ 12 ].Value = filterFieldValue [ 4 ];
+      CommandParameters [ 13 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 14 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 15 ].Value = DateTime.Now;
 
 
     }//END SetParameters class.
@@ -484,6 +544,12 @@ namespace Evado.Dal.Digital
         record.Design.LinkContentSetting =
           Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
       }
+
+      record.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
+      record.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );
+      record.FilterFieldIds [ 2 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_2 );
+      record.FilterFieldIds [ 3 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_3 );
+      record.FilterFieldIds [ 4 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_4 );
 
       //
       // Skip detailed content if a queryState query
@@ -688,7 +754,11 @@ namespace Evado.Dal.Digital
       // 
       // Define the query parameters.
       // 
-      SqlParameter [ ] cmdParms = this.defineSqlParameters ( QueryParameters );
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+      };
+      cmdParms [ 0 ].Value = QueryParameters.LayoutId;
       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
       //
@@ -791,84 +861,6 @@ namespace Evado.Dal.Digital
     /// 2. Return the sql query string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private SqlParameter [ ] defineSqlParameters (
-      EdQueryParameters QueryParameters )
-    {
-      this.LogMethod ( "defineSqlParameters" );
-      this.LogDebug ( "Filter list count {0}.", QueryParameters.SelectionFilters.Count );
-      //
-      // Define the methods object and variables.
-      //
-      SqlParameter [ ] cmdParms = new SqlParameter [ 1 ];
-      int parameterListLength = QueryParameters.SelectionFilters.Count * 2 + 1;
-      int parameterCount = 0;
-
-      //
-      // Create a single pararmeter value if there are no field filters.
-      //
-      if ( QueryParameters.SelectionFilters.Count == 0 )
-      {
-        cmdParms [ parameterCount ] = new SqlParameter ( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10 );
-        cmdParms [ parameterCount ].Value = QueryParameters.LayoutId;
-
-        return cmdParms;
-      }
-
-      //
-      // define the parameter list to be twice the filter list count + one.
-      //
-      cmdParms = new SqlParameter [ parameterListLength ];
-
-      //
-      // define the layout parameter
-      //
-      cmdParms [ parameterCount ] = new SqlParameter ( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10 );
-      cmdParms [ parameterCount ].Value = QueryParameters.LayoutId;
-      parameterCount++;
-
-      //
-      // filter iteration loop, creating command parameters for each filter object.
-      //
-      for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Count; filterCount++ )
-      {
-        EvOption filter = QueryParameters.SelectionFilters [ filterCount ];
-
-        //
-        // define the filter field parameter
-        //
-        cmdParms [ parameterCount ] = new SqlParameter ( EdEntities.PARM_FILTER_FIELD_ID + filterCount, SqlDbType.NVarChar, 20 );
-        cmdParms [ parameterCount ].Value = filter.Value;
-        parameterCount++;
-
-        //
-        // define the filter field value.
-        //
-        cmdParms [ parameterCount ] = new SqlParameter ( EdEntities.PARM_FILTER_VALUE + filterCount, SqlDbType.NVarChar, 50 );
-        cmdParms [ parameterCount ].Value = filter.Description;
-        parameterCount++;
-
-      }//End filter list iteration loop
-
-      this.LogDebug ( "cmdParms length {0}.", cmdParms.Length );
-
-      return cmdParms;
-
-    }//END method
-
-    // =====================================================================================
-    /// <summary>
-    /// This class defines an SQL query string based on the query parameters. 
-    /// </summary>
-    /// <param name="QueryParameters">EvQueryParameters: (Mandatory) EvQueryParameters.</param>
-    /// <returns>String: a SQL query string</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Generate the sql query string. 
-    /// 
-    /// 2. Return the sql query string. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
     private String createSqlQueryStatement (
       EdQueryParameters QueryParameters )
     {
@@ -885,17 +877,47 @@ namespace Evado.Dal.Digital
         sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
       }
 
-      if ( QueryParameters.SelectionFilters.Count > 0 )
+      //
+      // If the filter exist use them to filter the entities.
+      //
+      if ( QueryParameters.SelectionFilters [ 0 ] != null )
       {
         //
-        // iterate through the filters to generate the SQL statement for the quey.
+        // iterate through the filter values creating a query element for each.
         //
-        for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Count && filterCount < 5; filterCount++ )
+        for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Length; filterCount++ )
         {
+          if ( QueryParameters.SelectionFilters [ filterCount ] == null )
+          {
+            continue;
+          }
+          if ( QueryParameters.SelectionFilters [ filterCount ] == String.Empty )
+          {
+            continue;
+          }
 
+          String value = QueryParameters.SelectionFilters [ filterCount ];
 
+          if ( value.Contains (";" ) == false )
+          {
+            sqlQueryString.AppendLine ( " AND ( "
+              + EdEntities.DB_FILTER_VALUE_ + filterCount + " = '" + value + "' ) " );
+          }
+          else
+          {
+            string [ ] arValues = value.Split ( ';' );
+
+            foreach ( string str in arValues )
+            {
+
+              sqlQueryString.AppendLine ( " AND ( "
+                + EdEntities.DB_FILTER_VALUE_ + filterCount + " like '%" + str + "%' ) " );
+            }
+
+          }
         }
 
+        sqlQueryString.AppendLine ( ") ORDER BY " + EdEntities.DB_ENTITY_ID + ";" );
 
         //
         // Return the sql query string. 
@@ -2097,12 +2119,6 @@ namespace Evado.Dal.Digital
       int databaseRecordAffected = 0;
       EvDataChanges dataChanges = new EvDataChanges ( this.ClassParameters );
       EvEventCodes eventCode = EvEventCodes.Ok;
-
-      //
-      // Set the skip retrieve comments to true to not retrieve comments
-      // when validating the record object for saving.
-      //
-      this._SkipRetrievingComments = true;
 
       // 
       // Validate whether the record object exists.

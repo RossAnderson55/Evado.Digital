@@ -149,11 +149,14 @@ namespace Evado.Bll.Digital
         {
           this.LogValue ( "- State: " + state );
         }
-      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Count );
+      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Length);
 
-      foreach ( EvOption filter in QueryParameters.SelectionFilters )
+      foreach ( String filter in QueryParameters.SelectionFilters )
       {
-        this.LogValue ( "- Filter: FieldId: {0}, Value {1}.  ", filter.Value, filter.Description );
+        if ( filter != null )
+        {
+          this.LogValue ( "- Filter: Value: {0}, Value {1}.  ", filter );
+        }
       }
 
       // 
