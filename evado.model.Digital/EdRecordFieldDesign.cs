@@ -560,7 +560,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates a summary field of form field design
     /// </summary>
-    public bool SummaryField
+    public bool IsSummaryField
     {
       get
       {

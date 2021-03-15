@@ -994,7 +994,7 @@ namespace Evado.UniForm.Digital
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
           EdLabels.Form_Field_Summary_Field_Label,
-          this.Session.EntityField.Design.SummaryField );
+          this.Session.EntityField.Design.IsSummaryField );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
@@ -1362,7 +1362,7 @@ namespace Evado.UniForm.Digital
 
         return;
       }
-      this.Session.EntityField.Design.SummaryField = false;
+      this.Session.EntityField.Design.IsSummaryField = false;
       // 
       // Initialise the methods variables and objects.
       // 

@@ -111,8 +111,8 @@ namespace Evado.Bll.Digital
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogValue ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
-      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
+      this.LogValue ( "- RecordRangeStart: " + QueryParameters.ResultStartRange );
+      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.ResultFinishRange );
       // 
       // Execute the query.
       // 

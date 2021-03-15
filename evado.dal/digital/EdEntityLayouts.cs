@@ -190,6 +190,26 @@ namespace Evado.Dal.Digital
     /// </summary>
     public const string DB_FOOTER_FORMAT = "EDEL_FOOTER_FORMAT";
     /// <summary>
+    /// This database entity layout field Id filter 0
+    /// </summary>
+    public const string DB_FILTER_FIELD_0 = "EDEL_FILTER_FIELD_0";
+    /// <summary>
+    /// This database entity layout field Id filter 1
+    /// </summary>
+    public const string DB_FILTER_FIELD_1 = "EDEL_FILTER_FIELD_1";
+    /// <summary>
+    /// This database entity layout field Id filter 2
+    /// </summary>
+    public const string DB_FILTER_FIELD_2 = "EDEL_FILTER_FIELD_2";
+    /// <summary>
+    /// This database entity layout field Id filter 3
+    /// </summary>
+    public const string DB_FILTER_FIELD_3 = "EDEL_FILTER_FIELD_3";
+    /// <summary>
+    /// This database entity layout field Id filter 4
+    /// </summary>
+    public const string DB_FILTER_FIELD_4 = "EDEL_FILTER_FIELD_4";
+    /// <summary>
     /// The database entity updates by user identifier column name
     /// </summary>
     public const string DB_UPDATED_BY_USER_ID = "EDEL_UPDATED_BY_USER_ID";
@@ -239,6 +259,26 @@ namespace Evado.Dal.Digital
     private const string PARM_PARENT_ACCESS = "@PARENT_ACCESS";
     private const string PARM_HEADER_FORMAT = "@HEADER_FORMAT";
     private const string PARM_FOOTER_FORMAT = "@FOOTER_FORMAT";
+    /// <summary>
+    /// This is the entity layout field id 0 parameter
+    /// </summary>
+    public const string PARM_FILTER_FIELD_0 = "@FILTER_FIELD_0";
+    /// <summary>
+    /// This is the entity layout field id 1 parameter
+    /// </summary>
+    public const string PARM_FILTER_FIELD_1 = "@FILTER_FIELD_1";
+    /// <summary>
+    /// This is the entity layout field id 2 parameter
+    /// </summary>
+    public const string PARM_FILTER_FIELD_2 = "@FILTER_FIELD_2";
+    /// <summary>
+    /// This is the entity layout field id 3 parameter
+    /// </summary>
+    public const string PARM_FILTER_FIELD_3 = "@FILTER_FIELD_3";
+    /// <summary>
+    /// This is the entity layout field id 4 parameter
+    /// </summary>
+    public const string PARM_FILTER_FIELD_4 = "@FILTER_FIELD_4";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -301,6 +341,12 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_PARENT_ACCESS, SqlDbType.NVarChar, 50),
         new SqlParameter( EdEntityLayouts.PARM_HEADER_FORMAT, SqlDbType.NVarChar, 30),
         new SqlParameter( EdEntityLayouts.PARM_FOOTER_FORMAT, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_0, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_1, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_2, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_3, SqlDbType.NVarChar, 30),
+
+        new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_4, SqlDbType.NVarChar, 30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -313,7 +359,7 @@ namespace Evado.Dal.Digital
     /// This class binds values parameters 
     /// </summary>
     /// <param name="cmdParms">SqlParameter: an array of Database parameters</param>
-    /// <param name="Form">EvForm: Values to bind to parameters</param>
+    /// <param name="EntityLayout">EvForm: Values to bind to parameters</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -322,51 +368,95 @@ namespace Evado.Dal.Digital
     /// 2. Fill the parameters array with the values from the form object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord Form )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord EntityLayout )
     {
       // 
       // If the FormUid is emptry create a new value.
       // 
-      EdRecordSections formsections = new EdRecordSections ( );
-      if ( Form.Guid == Guid.Empty )
+      String [ ] filterFieldId = new string [ 5 ];
+      int filterCount = 0;
+      if ( EntityLayout.Guid == Guid.Empty )
       {
-        Form.Guid = Guid.NewGuid ( );
+        EntityLayout.Guid = Guid.NewGuid ( );
       }
+
+      //
+      // define the filter field identifiers for the entity.
+      //
+      for ( int i = 0; i < 5; i++ )
+      {
+        filterFieldId [ i ] = String.Empty;
+      }
+
+      foreach ( EdRecordField field in EntityLayout.Fields )
+      {
+        if ( field.Design.IsSummaryField == false )
+        {
+          continue;
+        }
+
+        //
+        // break the iteration loop there are more than 5 values.
+        //
+        if ( filterCount >= 5 )
+        {
+          break;
+        }
+
+        //
+        // only add single fields 
+        //
+        if ( field.isSingleValue == true
+          || field.TypeId == EvDataTypes.Check_Box_List )
+        {
+          filterFieldId [ filterCount ] = field.FieldId;
+          filterCount++;
+        }
+      }
+
 
       // 
       // Fill the parameters array with the values from the form object. 
       // 
-      cmdParms [ 0 ].Value = Form.Guid;
-      cmdParms [ 1 ].Value = Form.LayoutId.Trim ( );
-      cmdParms [ 2 ].Value = Form.State.ToString ( );
-      cmdParms [ 3 ].Value = Form.Design.Title;
-      cmdParms [ 4 ].Value = Form.Design.HttpReference;
-      cmdParms [ 5 ].Value = Form.Design.Instructions;
-      cmdParms [ 6 ].Value = Form.Design.Description;
-      cmdParms [ 7 ].Value = Form.Design.UpdateReason.ToString ( );
-      cmdParms [ 8 ].Value = Form.Design.RecordCategory;
-      cmdParms [ 9 ].Value = Form.Design.TypeId.ToString ( );
+      cmdParms [ 0 ].Value = EntityLayout.Guid;
+      cmdParms [ 1 ].Value = EntityLayout.LayoutId.Trim ( );
+      cmdParms [ 2 ].Value = EntityLayout.State.ToString ( );
+      cmdParms [ 3 ].Value = EntityLayout.Design.Title;
+      cmdParms [ 4 ].Value = EntityLayout.Design.HttpReference;
+      cmdParms [ 5 ].Value = EntityLayout.Design.Instructions;
+      cmdParms [ 6 ].Value = EntityLayout.Design.Description;
+      cmdParms [ 7 ].Value = EntityLayout.Design.UpdateReason.ToString ( );
+      cmdParms [ 8 ].Value = EntityLayout.Design.RecordCategory;
+      cmdParms [ 9 ].Value = EntityLayout.Design.TypeId.ToString ( );
 
-      cmdParms [ 10 ].Value = Form.Design.Version;
-      cmdParms [ 11 ].Value = Form.Design.JavaScript;
-      cmdParms [ 12 ].Value = Form.Design.hasCsScript;
-      cmdParms [ 13 ].Value = Form.Design.Language;
-      cmdParms [ 14 ].Value = Form.Design.ReadAccessRoles;
-      cmdParms [ 15 ].Value = Form.Design.EditAccessRoles;
-      cmdParms [ 16 ].Value = Form.Design.ParentEntities;
-      cmdParms [ 17 ].Value = Form.Design.DefaultPageLayout;
-      cmdParms [ 18 ].Value = Form.Design.LinkContentSetting;
-      cmdParms [ 19 ].Value = Form.Design.DisplayRelatedEntities;
+      cmdParms [ 10 ].Value = EntityLayout.Design.Version;
+      cmdParms [ 11 ].Value = EntityLayout.Design.JavaScript;
+      cmdParms [ 12 ].Value = EntityLayout.Design.hasCsScript;
+      cmdParms [ 13 ].Value = EntityLayout.Design.Language;
+      cmdParms [ 14 ].Value = EntityLayout.Design.ReadAccessRoles;
+      cmdParms [ 15 ].Value = EntityLayout.Design.EditAccessRoles;
+      cmdParms [ 16 ].Value = EntityLayout.Design.ParentEntities;
+      cmdParms [ 17 ].Value = EntityLayout.Design.DefaultPageLayout;
+      cmdParms [ 18 ].Value = EntityLayout.Design.LinkContentSetting;
+      cmdParms [ 19 ].Value = EntityLayout.Design.DisplayRelatedEntities;
 
-      cmdParms [ 20 ].Value = Form.Design.DisplayAuthorDetails;
-      cmdParms [ 21 ].Value = Form.Design.RecordPrefix;
-      cmdParms [ 22 ].Value = Form.Design.ParentType;
-      cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
-      cmdParms [ 24 ].Value = Form.Design.HeaderFormat;
-      cmdParms [ 25 ].Value = Form.Design.FooterFormat;
-      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 27 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 28 ].Value = DateTime.Now;
+      cmdParms [ 20 ].Value = EntityLayout.Design.DisplayAuthorDetails;
+      cmdParms [ 21 ].Value = EntityLayout.Design.RecordPrefix;
+      cmdParms [ 22 ].Value = EntityLayout.Design.ParentType;
+      cmdParms [ 23 ].Value = EntityLayout.Design.AuthorAccess;
+      cmdParms [ 24 ].Value = EntityLayout.Design.HeaderFormat;
+      cmdParms [ 25 ].Value = EntityLayout.Design.FooterFormat;
+      cmdParms [ 26 ].Value = filterFieldId [ 0 ];
+      cmdParms [ 27 ].Value = filterFieldId [ 1 ];
+      cmdParms [ 28 ].Value = filterFieldId [ 2 ];
+      cmdParms [ 29 ].Value = filterFieldId [ 3 ];
+
+      cmdParms [ 30 ].Value = filterFieldId [ 4 ];
+      cmdParms [ 31 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 32 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 33 ].Value = DateTime.Now;
+
+
 
     }//END SetParameters class.
 
@@ -444,6 +534,12 @@ namespace Evado.Dal.Digital
       layout.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
       layout.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
       layout.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
+
+      layout.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
+      layout.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );
+      layout.FilterFieldIds [ 2 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_2 );
+      layout.FilterFieldIds [ 3 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_3 );
+      layout.FilterFieldIds [ 4 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_4 );
 
       layout.Updated = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATED_BY );
       layout.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntityLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );

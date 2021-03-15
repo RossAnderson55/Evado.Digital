@@ -194,7 +194,7 @@ namespace Evado.Dal.Digital
       recordField.Design.HttpReference = EvSqlMethods.getString ( Row, EdRecordFields.DB_HTTP_REFERENCE );
       recordField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdRecordFields.DB_SECTION_ID );
       recordField.Design.Options = EvSqlMethods.getString ( Row, EdRecordFields.DB_OPTIONS );
-      recordField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_SUMMARY_FIELD );
+      recordField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_SUMMARY_FIELD );
       recordField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdRecordFields.DB_MANDATORY );
       recordField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdRecordFields.DB_AI_DATA_POINT );
       recordField.Design.HideField = EvSqlMethods.getBool ( Row, EdRecordFields.DB_HIDDEN );
@@ -505,7 +505,7 @@ namespace Evado.Dal.Digital
             //
             if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
               && Record.SelectOnlySummaryFields == true
-              && recordField.Design.SummaryField == false )
+              && recordField.Design.IsSummaryField == false )
             {
               this.LogDebug ( "{0} is a summary field so SKIPPED.", recordField.FieldId );
               continue;

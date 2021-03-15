@@ -904,17 +904,18 @@ namespace Evado.Model.Digital
         this._Signoffs = value;
       }
     }
+
     //
     // These are record filters, containing a record's field identifiers
     //
-    private string [ ] _RecordFilterFieldIds = new String [ 5 ];
+    private string [ ] _FilterFieldIds = new String [ 5 ];
     /// <summary>
     /// This property contains the record filter values.
     /// </summary>
-    public string [ ] RecordFilterFieldIds
+    public string [ ] FilterFieldIds
     {
-      get { return _RecordFilterFieldIds; }
-      set { _RecordFilterFieldIds = value; }
+      get { return _FilterFieldIds; }
+      set { _FilterFieldIds = value; }
     }
 
     private string _DataCollectEventId = String.Empty;
@@ -1548,7 +1549,7 @@ namespace Evado.Model.Digital
       //
       foreach ( EdRecordField field in this._Fields )
       {
-        if ( field.Design.SummaryField == true )
+        if ( field.Design.IsSummaryField == true )
         {
           htmlText += this.getSummaryField ( field.Design.Title, field.ItemValue );
         }

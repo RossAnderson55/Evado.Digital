@@ -39,25 +39,23 @@ namespace Evado.Model.Digital
 
     #endregion
 
-    #region Public member variables
+    #region Public fields
     //State
+
     /// <summary>
-    /// This field defines the subject's screening identifier.
+    /// This field defines the to not select the subject or record state.
     /// </summary>
-    private List<EdRecordObjectStates> _States = new List<EdRecordObjectStates> ( );
-
-    public List<EdRecordObjectStates> States
-    {
-      get { return _States; }
-      set { _States = value; }
-    }
+    public bool NotSelectedState = false;
 
     /// <summary>
-    /// This field defines the layout identifier.
+    /// This property defines the record type filter.
+    /// </summary>
+    public EdRecordTypes Type = EdRecordTypes.Null;
+
+    /// <summary>
+    /// This field defines the layout identifier filter.
     /// </summary>
     public string LayoutId = String.Empty;
-
-    public EdRecordTypes Type = EdRecordTypes.Null;
 
     /// <summary>
     /// This field defines the entity record identifier.
@@ -80,54 +78,44 @@ namespace Evado.Model.Digital
     public bool IncludeSummary = true;
 
     /// <summary>
-    /// This field defines the result is to inlcude full data set.
-    /// </summary>
-    public bool FullDataSet = false;
-
-    /// <summary>
-    /// This field defines the to not select the subject or record state.
-    /// </summary>
-    public bool NotSelectedState = false;
-
-    /// <summary>
     /// This field defines the to incude user Guid in output
     /// </summary>
     public bool UseGuid = false;
 
     /// <summary>
-    /// This field defines the output is to be result table count.
-    /// </summary>
-    public bool CountOnly = false;
-
-    /// <summary>
-    /// this field defines the maximum list length of the output.
-    /// </summary>
-    public int MaxListLength = 1000000;
-
-    /// <summary>
     /// This field defines the result set start range index
     /// </summary>
-    public int RecordRangeStart = 0;
+    public int ResultStartRange = 0;
+
     /// <summary>
     /// This field defines the result set finish rand index.
     /// </summary>
-    public int RecordRangeFinish = 100000000;
-    /// <summary>
-    /// This field defines the that the user has edit access to the records.
-    /// </summary>
-    public bool hasRecordEditAccess = false;
+    public int ResultFinishRange = 100000000;
 
-    //public bool SubjectRecordQueryStatus = false;
-
-
-
-    /// <summary>
-    /// This field defines the if the summarised results are required.
-    /// </summary>
-    public bool SummaryResult = false;
     #endregion
 
     #region Class property
+    /// <summary>
+    /// This property contains a list of the entity/record selection states.
+    /// </summary>
+    private List<EdRecordObjectStates> _States = new List<EdRecordObjectStates> ( );
+
+    public List<EdRecordObjectStates> States
+    {
+      get { return _States; }
+      set { _States = value; }
+    }
+
+    /// </summary>
+    private List<EvOption> _SelectionFilters = new List<EvOption> ( );
+    /// <summary>
+    /// This property contains a list of entity/record selection list filters.
+    /// </summary>
+    public List<EvOption> SelectionFilters
+    {
+      get { return _SelectionFilters; }
+      set { _SelectionFilters = value; }
+    }
 
     #endregion
 

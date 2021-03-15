@@ -62,13 +62,15 @@ namespace Evado.Dal.Digital
 
     #region Class constants and variables.
 
-    //  ==================================================================================
-    // 
-    // Define the selectionList query string.
-    // 
-    // The max visitSchedule length setting. 
-
+   //
+    // define the entity query string.
+    //
     private const string SQL_QUERY_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
+
+    //
+    // define the field filtered entity query string.
+    //
+    private const string SQL_QUERY_FIELD_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
 
     // 
     // Define the stored procedure names.
@@ -198,6 +200,17 @@ namespace Evado.Dal.Digital
     private const string PARM_FIELD_ID = "@FIELD_ID";
     private const string PARM_TEXT_VALUE = "@TEXT_VALUE";
     private const string PARM_TYPE_ID = "@TYPE_ID";
+
+    //
+    // The database field names.
+    //
+    private const string DB_FILTER_FIELD_ID = "@FIELD_ID_";
+    private const string DB_FILTER_VALUE = "@VALUE_";
+    //
+    // The field filter Parameters.
+    //
+    private const string PARM_FILTER_FIELD_ID = "@FIELD_ID_";
+    private const string PARM_FILTER_VALUE = "@VALUE_";
 
     //
     // This variable is used to skip retrieving comments when updating the form record.
@@ -664,34 +677,31 @@ namespace Evado.Dal.Digital
     public List<EdRecord> getEntityList (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordList method." );
+      this.LogMethod ( "getEntityList method." );
       //
       // Initialize the method debug log, a return form list and a number of result count. 
       //
       List<EdRecord> view = new List<EdRecord> ( );
-      StringBuilder sqlQueryString = new StringBuilder ( );
+      String sqlQueryString = String.Empty;
       int inResultCount = 0;
 
       // 
       // Define the query parameters.
       // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
-      { new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
-      };
-      cmdParms [ 0 ].Value = QueryParameters.LayoutId;
+      SqlParameter [ ] cmdParms = this.defineSqlParameters ( QueryParameters );
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
       //
       // Generate the SQL query string.
       //
-      sqlQueryString.AppendLine ( this.createSqlQueryStatement ( QueryParameters ) );
-      this.LogDebug ( sqlQueryString.ToString ( ) );
-      this.LogDebug( EvSqlMethods.getParameterSqlText( cmdParms ) );
+      sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
+      this.LogDebug ( sqlQueryString );
 
       this.LogDebug ( "Execute Query" );
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
       {
         // 
         // Iterate through the results extracting the role information.
@@ -705,15 +715,15 @@ namespace Evado.Dal.Digital
 
           EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
 
-            this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting  );
+          this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
           // 
           // Attach fields and other trial data.
           // 
           if ( QueryParameters.IncludeRecordValues == true
             || record.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Field )
           {
-            if ( inResultCount < QueryParameters.RecordRangeStart
-              || inResultCount >= ( QueryParameters.RecordRangeFinish ) )
+            if ( inResultCount < QueryParameters.ResultStartRange
+              || inResultCount >= ( QueryParameters.ResultFinishRange ) )
             {
               this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
 
@@ -781,6 +791,84 @@ namespace Evado.Dal.Digital
     /// 2. Return the sql query string. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
+    private SqlParameter [ ] defineSqlParameters (
+      EdQueryParameters QueryParameters )
+    {
+      this.LogMethod ( "defineSqlParameters" );
+      this.LogDebug ( "Filter list count {0}.", QueryParameters.SelectionFilters.Count );
+      //
+      // Define the methods object and variables.
+      //
+      SqlParameter [ ] cmdParms = new SqlParameter [ 1 ];
+      int parameterListLength = QueryParameters.SelectionFilters.Count * 2 + 1;
+      int parameterCount = 0;
+
+      //
+      // Create a single pararmeter value if there are no field filters.
+      //
+      if ( QueryParameters.SelectionFilters.Count == 0 )
+      {
+        cmdParms [ parameterCount ] = new SqlParameter ( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10 );
+        cmdParms [ parameterCount ].Value = QueryParameters.LayoutId;
+
+        return cmdParms;
+      }
+
+      //
+      // define the parameter list to be twice the filter list count + one.
+      //
+      cmdParms = new SqlParameter [ parameterListLength ];
+
+      //
+      // define the layout parameter
+      //
+      cmdParms [ parameterCount ] = new SqlParameter ( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10 );
+      cmdParms [ parameterCount ].Value = QueryParameters.LayoutId;
+      parameterCount++;
+
+      //
+      // filter iteration loop, creating command parameters for each filter object.
+      //
+      for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Count; filterCount++ )
+      {
+        EvOption filter = QueryParameters.SelectionFilters [ filterCount ];
+
+        //
+        // define the filter field parameter
+        //
+        cmdParms [ parameterCount ] = new SqlParameter ( EdEntities.PARM_FILTER_FIELD_ID + filterCount, SqlDbType.NVarChar, 20 );
+        cmdParms [ parameterCount ].Value = filter.Value;
+        parameterCount++;
+
+        //
+        // define the filter field value.
+        //
+        cmdParms [ parameterCount ] = new SqlParameter ( EdEntities.PARM_FILTER_VALUE + filterCount, SqlDbType.NVarChar, 50 );
+        cmdParms [ parameterCount ].Value = filter.Description;
+        parameterCount++;
+
+      }//End filter list iteration loop
+
+      this.LogDebug ( "cmdParms length {0}.", cmdParms.Length );
+
+      return cmdParms;
+
+    }//END method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class defines an SQL query string based on the query parameters. 
+    /// </summary>
+    /// <param name="QueryParameters">EvQueryParameters: (Mandatory) EvQueryParameters.</param>
+    /// <returns>String: a SQL query string</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Generate the sql query string. 
+    /// 
+    /// 2. Return the sql query string. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
     private String createSqlQueryStatement (
       EdQueryParameters QueryParameters )
     {
@@ -795,6 +883,24 @@ namespace Evado.Dal.Digital
       if ( QueryParameters.LayoutId != String.Empty )
       {
         sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
+      }
+
+      if ( QueryParameters.SelectionFilters.Count > 0 )
+      {
+        //
+        // iterate through the filters to generate the SQL statement for the quey.
+        //
+        for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Count && filterCount < 5; filterCount++ )
+        {
+
+
+        }
+
+
+        //
+        // Return the sql query string. 
+        //
+        return sqlQueryString.ToString ( );
       }
 
       //

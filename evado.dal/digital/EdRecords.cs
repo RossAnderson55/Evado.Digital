@@ -616,8 +616,8 @@ namespace Evado.Dal.Digital
           // 
           if ( QueryParameters.IncludeRecordValues == true )
           {
-            if ( inResultCount < QueryParameters.RecordRangeStart
-              || inResultCount >= ( QueryParameters.RecordRangeFinish ) )
+            if ( inResultCount < QueryParameters.ResultStartRange
+              || inResultCount >= ( QueryParameters.ResultFinishRange ) )
             {
               this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
 

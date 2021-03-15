@@ -1398,7 +1398,7 @@ namespace Evado.UniForm.Digital
       {
         sbDescription.Append (
            "Form field identifier: " + Field.FieldId );
-        if ( Field.Design.SummaryField == true )
+        if ( Field.Design.IsSummaryField == true )
         {
           sbDescription.Append ( ", SF" );
         }

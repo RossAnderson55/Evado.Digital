@@ -300,7 +300,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 9 ].Value = FormField.Design.SectionNo;
 
       cmdParms [ 10 ].Value = FormField.Design.Options;
-      cmdParms [ 11 ].Value = FormField.Design.SummaryField;
+      cmdParms [ 11 ].Value = FormField.Design.IsSummaryField;
       cmdParms [ 12 ].Value = FormField.Design.Mandatory;
       cmdParms [ 13 ].Value = FormField.Design.AiDataPoint;
       cmdParms [ 14 ].Value = FormField.Design.AnalyticsDataPont;
@@ -385,7 +385,7 @@ namespace Evado.Dal.Digital
       formField.Order = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_ORDER );
       formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
       formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
-      formField.Design.SummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
+      formField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
       formField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
       formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
       formField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
@@ -1619,8 +1619,8 @@ namespace Evado.Dal.Digital
 
         dataChange.AddItem (
           "Field_Design_SummaryField",
-          OldField.Design.SummaryField,
-          NewField.Design.SummaryField );
+          OldField.Design.IsSummaryField,
+          NewField.Design.IsSummaryField );
 
         dataChange.AddItem (
           "Field_Design_Unit",

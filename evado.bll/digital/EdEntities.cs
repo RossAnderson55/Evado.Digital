@@ -105,8 +105,8 @@ namespace Evado.Bll.Digital
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "- States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "- NotSelectedState: " + QueryParameters.NotSelectedState );
-      this.LogValue ( "- RecordRangeStart: " + QueryParameters.RecordRangeStart );
-      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.RecordRangeFinish );
+      this.LogValue ( "- RecordRangeStart: " + QueryParameters.ResultStartRange );
+      this.LogValue ( "- RecordRangeFinish: " + QueryParameters.ResultFinishRange );
       // 
       // Execute the query.
       // 
@@ -145,14 +145,17 @@ namespace Evado.Bll.Digital
       this.LogValue ( "-IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "-States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "-NotSelectedState: " + QueryParameters.NotSelectedState );
-
-      if ( QueryParameters.States != null )
-      {
         foreach ( EdRecordObjectStates state in QueryParameters.States )
         {
           this.LogValue ( "- State: " + state );
         }
+      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Count );
+
+      foreach ( EvOption filter in QueryParameters.SelectionFilters )
+      {
+        this.LogValue ( "- Filter: FieldId: {0}, Value {1}.  ", filter.Value, filter.Description );
       }
+
       // 
       // Execute the query.
       // 
