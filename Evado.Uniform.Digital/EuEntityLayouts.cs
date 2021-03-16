@@ -93,9 +93,9 @@ namespace Evado.UniForm.Digital
         this.Session.EntityField = new EdRecordField ( );
       }
 
-      if ( this.Session.EntityLayoutIdSelection == null )
+      if ( this.Session.Entity_SelectedLayoutId == null )
       {
-        this.Session.EntityLayoutIdSelection = String.Empty;
+        this.Session.Entity_SelectedLayoutId = String.Empty;
       }
 
     }//END Method
@@ -570,8 +570,6 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
-
-        this.Session.LoadEntityLayoutList = false;
 
         return clientDataObject;
 
@@ -3000,11 +2998,6 @@ namespace Evado.UniForm.Digital
           this.Session.LastPage.Message = this.ErrorMessage;
           return this.Session.LastPage;
         }
-
-        // 
-        // force a reload of the record layouts
-        // 
-        this.Session.LoadEntityLayoutList = true;
 
         // 
         // Get the save action message value.

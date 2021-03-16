@@ -58,6 +58,21 @@ namespace Evado.Model.Digital
     public string LayoutId = String.Empty;
 
     /// <summary>
+    /// This field enables the organisational filters.
+    /// </summary>
+    public bool EnableOrganisationFilter = false;
+
+    /// <summary>
+    /// This field defines the organisation city filter.
+    /// </summary>
+    public string Org_City = String.Empty;
+
+    /// <summary>
+    /// This field defines the organisation country filter.
+    /// </summary>
+    public string Org_Country = String.Empty;
+
+    /// <summary>
     /// This field defines the entity record identifier.
     /// </summary>
     public string EntityId = String.Empty;
@@ -107,11 +122,11 @@ namespace Evado.Model.Digital
     }
 
     /// </summary>
-    private String [ ] _SelectionFilters = new String [ 5 ];
+    private String [ ] _SelectionFilters = new String [ EdRecord.FILTER_FIELD_COUNT ];
     /// <summary>
     /// This property contains a list of entity/record selection list filters.
     /// These filters field Ids are created from the listed field filters in the EntityLayout.
-    /// The value is the selected value of the filter.
+    /// The value is the selected value of the selected field value.
     /// </summary>
     public String [ ] SelectionFilters
     {

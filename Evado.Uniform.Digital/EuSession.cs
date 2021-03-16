@@ -527,6 +527,17 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public EdRecordTypes EntityTypeSelection { get; set; }
 
+    private String [ ] _EntitySelectionFilters = new String [ 5 ];
+    /// <summary>
+    /// This property contains a list of entity/record selection list filters.
+    /// These filters field Ids are created from the listed field filters in the EntityLayout.
+    /// The value is the selected value of the filter.
+    /// </summary>
+    public String [ ] EntitySelectionFilters
+    {
+      get { return _EntitySelectionFilters; }
+      set { _EntitySelectionFilters = value; }
+    }
 
     /// <summary>
     /// This property object contains the eClinical evForm object for the currently selected record.
@@ -552,12 +563,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property defines the entity layout id selection filter/
     /// </summary>
-    public String EntityLayoutIdSelection { get; set; }
-
-    ///<summary>
-    /// this indicates if the entity layout list is to be loaded or reloaded.
-    /// </summary>
-    public bool LoadEntityLayoutList { get; set; }
+    public String Entity_SelectedLayoutId { get; set; }
 
     /// <summary>
     /// This property contains the list of Form Versions.
@@ -690,11 +696,8 @@ namespace Evado.UniForm.Digital
     public List<EdRecord> RecordLayoutList { get; set; }
 
     ///<summary>
-    /// this indicates if the entity layout list is to be loaded or reloaded.
+    /// this property deines the record state selection.
     /// </summary>
-    public bool LoadRecordLayoutList { get; set; }
-
-
     public EdRecordObjectStates RecordStateSelection { get; set; }
 
     /// <summary>

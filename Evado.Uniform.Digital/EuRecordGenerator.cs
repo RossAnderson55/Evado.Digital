@@ -2238,6 +2238,8 @@ namespace Evado.UniForm.Digital
       List<Evado.Model.EvOption> optionlist = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
         Field.Design.Options );
 
+      optionlist.Add ( new Evado.Model.EvOption ( "", "Not Selected" ) );
+
       // 
       // set the field properties and parameters.
       // 

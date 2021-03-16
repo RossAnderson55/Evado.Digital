@@ -145,17 +145,17 @@ namespace Evado.Bll.Digital
       this.LogValue ( "-IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "-States.Count: " + QueryParameters.States.Count );
       this.LogValue ( "-NotSelectedState: " + QueryParameters.NotSelectedState );
-        foreach ( EdRecordObjectStates state in QueryParameters.States )
-        {
-          this.LogValue ( "- State: " + state );
-        }
-      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Length);
-
-      foreach ( String filter in QueryParameters.SelectionFilters )
+      foreach ( EdRecordObjectStates state in QueryParameters.States )
       {
-        if ( filter != null )
+        this.LogValue ( "-State: " + state );
+      }
+      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Length );
+
+      for ( int i = 0; i < QueryParameters.SelectionFilters.Length; i++ )
+      {
+        if ( QueryParameters.SelectionFilters [ i ] != null )
         {
-          this.LogValue ( "- Filter: Value: {0}, Value {1}.  ", filter );
+          this.LogValue ( "-Filter: {0} Value: {1}.  ", i, QueryParameters.SelectionFilters [ i ] );
         }
       }
 
@@ -174,7 +174,7 @@ namespace Evado.Bll.Digital
 
     }//END getRecordList method.
 
-    
+
     // =====================================================================================
     /// <summary>
     /// This class returns a list of form object based on VisitId, VisitId, FormId and state
@@ -335,7 +335,7 @@ namespace Evado.Bll.Digital
       //
       // Execute the query
       //
-      record = this._DalEntities.GetEntityBySource ( SourceId);
+      record = this._DalEntities.GetEntityBySource ( SourceId );
       this.LogClass ( this._DalEntities.Log );
 
       this.LogMethodEnd ( "GetnEntityBySource" );
@@ -450,7 +450,7 @@ namespace Evado.Bll.Digital
       //
       // Retrieve the specified form to determine the form QueryType.
       //
-      EdRecord entity = this._DalLayouts.GetLayout (Entity.LayoutId, true );
+      EdRecord entity = this._DalLayouts.GetLayout ( Entity.LayoutId, true );
 
       this.LogDebugClass ( this._DalLayouts.Log );
       this.LogDebug ( "LayoutId: " + entity.LayoutId );
@@ -552,7 +552,7 @@ namespace Evado.Bll.Digital
       return iReturn;
 
     }//END saveRecord method.
-  
+
     #endregion
 
     #region Form Record state update

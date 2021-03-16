@@ -372,7 +372,10 @@ namespace Evado.UniForm.Digital
       set { this._OrganisationList = value; }
     }
 
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion 
 
+    #region Entity object section
 
     private List<EdRecord> _AllEntityLayouts = new List<EdRecord> ( );
     /// <summary>
@@ -394,9 +397,11 @@ namespace Evado.UniForm.Digital
 
 
     List<EdObjectParent> _EntityParents = new List<EdObjectParent> ( );
+    // ==================================================================================
     /// <summary>
     /// This private method creates the entity parent list.
     /// </summary>
+    // ----------------------------------------------------------------------------------
     private void createEntityParents ( )
     {
       this.LogInitMethod ( "createEntityParents" );
@@ -421,8 +426,35 @@ namespace Evado.UniForm.Digital
 
         }//END parent iteration loop
       }//End entity iteration loop
-    }
+    }//ENd method
 
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of string containing child layouts.
+    /// </summary>
+    /// <param name="LayoutId">String parent LayoutID</param>
+    /// <returns>List of String containing child LaoutIds</returns>
+    // ----------------------------------------------------------------------------------
+    public EdRecord GetEntityLayout ( String LayoutId )
+    {
+      //
+      // iterate through the list of entity and return the issued entity layout.
+      //
+      foreach ( EdRecord entity in this._AllEntityLayouts )
+      {
+        if ( entity.LayoutId == LayoutId
+          && entity.State == EdRecordObjectStates.Form_Issued )
+        {
+          return entity ;
+        }
+      }
+
+      //
+      // return null if not found.
+      //
+      return null;
+
+    }//END method
     // ==================================================================================
     /// <summary>
     /// This method returns a list of string containing child layouts.
@@ -482,6 +514,11 @@ namespace Evado.UniForm.Digital
         return recordLayoutList;
       }
     }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Record object section
 
     private List<EdRecord> _AllRecordLayoutList = new List<EdRecord> ( );
     /// <summary>

@@ -161,7 +161,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
-      bll_Organisations.ClassParameter.LoggingLevel = 5;
+      bll_Organisations.ClassParameter.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -189,8 +189,7 @@ namespace Evado.UniForm.Digital
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllEntityLayouts.Count > 0
-        && this.Session.LoadEntityLayoutList == false )
+      if ( this._AdapterObjects.AllEntityLayouts.Count > 0)
       {
         this.LogInitValue ( "Entity layouts loaded." );
         this.LogInitValue ( "END loadRecordLayoutList" );
@@ -201,6 +200,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdEntityLayouts bll_EntityLayouts = new EdEntityLayouts ( this.ClassParameters );
+      bll_EntityLayouts.ClassParameter.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -210,8 +210,6 @@ namespace Evado.UniForm.Digital
         EdRecordObjectStates.Null );
 
       this.LogInit ( bll_EntityLayouts.Log );
-
-      this.Session.LoadEntityLayoutList = false;
 
       this.LogInitValue ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
@@ -232,8 +230,7 @@ namespace Evado.UniForm.Digital
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllRecordLayouts.Count > 0
-        || this.Session.LoadRecordLayoutList == false )
+      if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
       {
         this.LogInitValue ( "Record layouts loaded." );
         this.LogInitValue ( "END loadRecordLayoutList" );
@@ -244,6 +241,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
+      bll_RecordLayouts.ClassParameter.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -253,7 +251,6 @@ namespace Evado.UniForm.Digital
         EdRecordObjectStates.Null );
 
       this.LogInit ( bll_RecordLayouts.Log );
-      this.Session.LoadRecordLayoutList = false;
 
       this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
@@ -285,6 +282,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and object.
       //
       EdSelectionLists bll_SelectionLists = new EdSelectionLists ( this.ClassParameters );
+      bll_SelectionLists.ClassParameter.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the selection lists that are issued.
@@ -292,7 +290,6 @@ namespace Evado.UniForm.Digital
       this._AdapterObjects.SelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Issued );
 
       this.LogInit ( bll_SelectionLists.Log );
-      this.Session.LoadRecordLayoutList = false;
 
       this.LogInitValue ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
 

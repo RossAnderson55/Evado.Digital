@@ -70,7 +70,7 @@ namespace Evado.Dal.Digital
     //
     // define the field filtered entity query string.
     //
-    private const string SQL_QUERY_FIELD_ENTITY_VIEW = "Select * FROM ED_ENTITY_VIEW ";
+    private const string DB_QUERY_ENTITY_ORG_QUERY = "Select * FROM ED_ENTITY_ORGANISATION_QUERY ";
 
     // 
     // Define the stored procedure names.
@@ -306,11 +306,29 @@ namespace Evado.Dal.Digital
         Entity.Guid = Guid.NewGuid ( );
       }
 
+
+      /************************************************************************************
+       * 
+       * The multi-field selection function, uses summary fields that are single or 
+       * multi-selection fields (selection list, radio-buttons, checkbox-list), to create 
+       * Entity selections based on these field values.  The property below stored the 
+       * fieldIds for 5 summary selection fields from the entity.  
+       * 
+       * The array is automatically generated, by iterating through the summary fields,
+       * adding the selection field types to the list.
+       * 
+       * This list is then used to identify the selection fields to be created to select 
+       * the Entities based on their these field's values.
+       * 
+       * The array of fild ids are then use to extract the field values and save them in
+       * the ED_Entities table to enable the multi-part selection to be performed.
+       * 
+       ************************************************************************************/
       //
       // define the filter field value array.
       // 
       String [ ] filterFieldValue = new string [ 5 ];
-
+      
       //
       // iterate through the fields updating the filterFieldValue values.
       //
@@ -676,7 +694,7 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "getRecordCount method." );
 
       List<EdRecord> view = new List<EdRecord> ( );
-      StringBuilder sqlQueryString = new StringBuilder ( );
+      String sqlQueryString = String.Empty;
       int inResultCount = 0;
 
       // 
@@ -691,14 +709,14 @@ namespace Evado.Dal.Digital
       //
       // Generate the SQL query string.
       //
-      sqlQueryString.AppendLine ( this.createSqlQueryStatement ( QueryParameters ) );
-      this.LogValue ( sqlQueryString.ToString ( ) );
+      sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
+      this.LogValue ( sqlQueryString );
 
       this.LogValue ( " Execute Query" );
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
       {
         inResultCount = table.Rows.Count;
 
@@ -757,8 +775,13 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
         new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdOrganisations.PARM_Address_City, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
       };
       cmdParms [ 0 ].Value = QueryParameters.LayoutId;
+      cmdParms [ 1 ].Value = QueryParameters.Org_City;
+      cmdParms [ 2 ].Value = QueryParameters.Org_Country;
+
       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
       //
@@ -864,58 +887,135 @@ namespace Evado.Dal.Digital
     private String createSqlQueryStatement (
       EdQueryParameters QueryParameters )
     {
+      this.LogMethod ( "createSqlQueryStatement method." );
+      this.LogDebug ( "EnableOrganisationFilter {0}.", QueryParameters.EnableOrganisationFilter );
       //
       // Initialize the local sql query string. 
       //
       StringBuilder sqlQueryString = new StringBuilder ( );
 
-      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE ( ( " + EdEntities.DB_DELETED + " = 0 )" );
 
+      //
+      // Select the query view based on whether the organisation filter is operational.
+      //
+      if ( QueryParameters.EnableOrganisationFilter == false )
+      {
+        sqlQueryString.AppendLine ( EdEntities.SQL_QUERY_ENTITY_VIEW );
+        sqlQueryString.AppendLine ( " WHERE ( ( " + EdEntities.DB_DELETED + " = 0 )" );
+      }
+      else
+      {
+        sqlQueryString.AppendLine ( EdEntities.DB_QUERY_ENTITY_ORG_QUERY );
+        sqlQueryString.AppendLine ( " WHERE ( ( " + EdEntities.DB_DELETED + " = 0 )" );
+      }
+
+      //
+      // filter by layout id if provided.
+      //
       if ( QueryParameters.LayoutId != String.Empty )
       {
         sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
       }
 
       //
-      // If the filter exist use them to filter the entities.
+      // use organisation filters if organisation filter is enabled.
       //
+      if ( QueryParameters.EnableOrganisationFilter == true )
+      {
+        //
+        // filter by city if provided.
+        //
+        if ( QueryParameters.Org_City != String.Empty )
+        {
+          sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_ADDRESS_CITY + " = " + EdOrganisations.PARM_Address_City + " ) " );
+        }
+
+        //
+        // filter by country if provided.
+        //
+        if ( QueryParameters.Org_Country != String.Empty )
+        {
+          sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_COUNTRY + " = " + EdOrganisations.PARM_COUNTRY + " ) " );
+        }
+      }
+
+      /************************************************************************************
+       * 
+       * The multi-field selection function, uses summary fields that are single or 
+       * multi-selection fields (selection list, radio-buttons, checkbox-list), to create 
+       * Entity selections based on these field values.  The property below stored the 
+       * fieldIds for 5 summary selection fields from the entity.  
+       * 
+       * The array is automatically generated, by iterating through the summary fields,
+       * adding the selection field types to the list.
+       * 
+       * This list is then used to identify the selection fields to be created to select 
+       * the Entities based on their these field's values.
+       * 
+       * The selected field values stored in the Entity table when it is updated and the 
+       * filter values then used to select the relevant Entity.
+       * 
+       ************************************************************************************/
       if ( QueryParameters.SelectionFilters [ 0 ] != null )
       {
+        this.LogDebug ( "Selection filter query enabled." );
         //
         // iterate through the filter values creating a query element for each.
         //
-        for ( int filterCount = 0; filterCount < QueryParameters.SelectionFilters.Length; filterCount++ )
+        for ( int filterIndex = 0; filterIndex < QueryParameters.SelectionFilters.Length; filterIndex++ )
         {
-          if ( QueryParameters.SelectionFilters [ filterCount ] == null )
+          //
+          // skip filters that are not set.
+          //
+          if ( QueryParameters.SelectionFilters [ filterIndex ] == null )
           {
             continue;
           }
-          if ( QueryParameters.SelectionFilters [ filterCount ] == String.Empty )
+          if ( QueryParameters.SelectionFilters [ filterIndex ] == String.Empty )
           {
             continue;
           }
 
-          String value = QueryParameters.SelectionFilters [ filterCount ];
+          //
+          // extract the filter value.
+          //
+          String value = QueryParameters.SelectionFilters [ filterIndex ];
 
-          if ( value.Contains (";" ) == false )
+          this.LogDebug ( "Index {0} = {1}.", filterIndex, value );
+
+          //
+          // determine if the filter value is multi-part or single value.
+          //
+          if ( value.Contains ( ";" ) == false )
           {
+            LogDebug ( "Single value filter" );
+
             sqlQueryString.AppendLine ( " AND ( "
-              + EdEntities.DB_FILTER_VALUE_ + filterCount + " = '" + value + "' ) " );
+              + EdEntities.DB_FILTER_VALUE_ + filterIndex + " = '" + value + "' ) " );
           }
           else
           {
+            LogDebug ( "Multi value filter value" );
+
+            //
+            // split value into an array of values.
+            //
             string [ ] arValues = value.Split ( ';' );
 
+            //
+            // create a filter for each part value using the like statement as
+            // the value will be in a multi-part format of ';' separated values.
+            //
             foreach ( string str in arValues )
             {
+              LogDebug ( "-Value {0}", str );
 
               sqlQueryString.AppendLine ( " AND ( "
-                + EdEntities.DB_FILTER_VALUE_ + filterCount + " like '%" + str + "%' ) " );
+                + EdEntities.DB_FILTER_VALUE_ + filterIndex + " like '%" + str + "%' ) " );
             }
 
-          }
-        }
+          }//END multi-part filter value.
+        }//END filter selection value iteration loop.
 
         sqlQueryString.AppendLine ( ") ORDER BY " + EdEntities.DB_ENTITY_ID + ";" );
 
@@ -923,12 +1023,11 @@ namespace Evado.Dal.Digital
         // Return the sql query string. 
         //
         return sqlQueryString.ToString ( );
-      }
+      }//END field filter selection.
 
       //
       // Reccord state filter.
       //
-
       String StateSelection = " AND ( ";
 
       // 

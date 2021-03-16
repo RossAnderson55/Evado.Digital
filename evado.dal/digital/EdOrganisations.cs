@@ -72,22 +72,85 @@ namespace Evado.Dal.Digital
     private const string STORED_PROCEDURE_DELETE_ITEM = "USR_ORGANISATION_DELETE";
     private const string STORED_PROCEDURE_UPDATE_ITEM = "USR_ORGANISATION_UPDATE";
 
+    /// <summary>
+    /// This constant defines the database GUID field (Primary Key).
+    /// </summary>
     public const string DB_GUID = "O_GUID";
+
+    /// <summary>
+    /// This constant defines the database organisation identifier field .
+    /// </summary>
     public const string DB_ORG_ID = "ORG_ID";
+
+    /// <summary>
+    /// This constant defines the database organisation name field .
+    /// </summary>
     public const string DB_NAME = "O_NAME";
     public const string DB_ORG_TYPE = "O_ORG_TYPE";
+
+    /// <summary>
+    /// This constant defines the database organisation street address 1 field .
+    /// </summary>
     public const string DB_ADDRESS_1 = "O_ADDRESS_1";
+
+    /// <summary>
+    /// This constant defines the database organisation street address 2 field .
+    /// </summary>
     public const string DB_ADDRESS_2 = "O_ADDRESS_2";
+
+    /// <summary>
+    /// This constant defines the database organisation city field .
+    /// </summary>
     public const string DB_ADDRESS_CITY = "O_ADDRESS_CITY";
+
+    /// <summary>
+    /// This constant defines the database organisation post code field .
+    /// </summary>
     public const string DB_ADDRESS_POST_CODE = "O_ADDRESS_POST_CODE";
+
+    /// <summary>
+    /// This constant defines the database organisation state field .
+    /// </summary>
     public const string DB_ADDRESS_STATE = "O_ADDRESS_STATE";
+
+    /// <summary>
+    /// This constant defines the database country field .
+    /// </summary>
     public const string DB_COUNTRY = "O_COUNTRY";
+
+    /// <summary>
+    /// This constant defines the database telephone field .
+    /// </summary>
     public const string DB_TELEPHONE = "O_TELEPHONE";
+
+    /// <summary>
+    /// This constant defines the email address field .
+    /// </summary>
     public const string DB_EMAIL_ADDRESS = "O_EMAIL_ADDRESS";
+
+    /// <summary>
+    /// This constant defines the organisation identifie field .
+    /// </summary>
     public const string DB_IMAGE_FILENAME = "O_IMAGE_FILENAME";
+
+    /// <summary>
+    /// This constant defines the the userId who performed the last update field .
+    /// </summary>
     public const string DB_UPDATED_BY_USER_ID = "O_UPDATED_BY_USER_ID";
+
+    /// <summary>
+    /// This constant defines the user who performed the last update field .
+    /// </summary>
     public const string DB_UPDATED_By = "O_UPDATED_BY";
+
+    /// <summary>
+    /// This constant defines the last update date field .
+    /// </summary>
     public const string DB_UPDATE_DATE = "O_UPDATED_DATE";
+
+    /// <summary>
+    /// This constant defines the deleted flag field .
+    /// </summary>
     public const string DB_DELETED = "O_DELETED";
 
     private const string PARM_Guid = "@Guid";
@@ -96,10 +159,16 @@ namespace Evado.Dal.Digital
     private const string PARM_ORG_TYPE = "@ORG_TYPE";
     private const string PARM_Address_1 = "@ADDRESS_1";
     private const string PARM_Address_2 = "@ADDRESS_2";
-    private const string PARM_Address_City = "@ADDRESS_CITY";
+    /// <summary>
+    /// This constant defines the organisation city parameter.
+    /// </summary>
+    public const string PARM_Address_City = "@ADDRESS_CITY";
     private const string PARM_Address_Post_Code = "@ADDRESS_POST_CODE";
     private const string PARM_Address_State = "@ADDRESS_STATE";
-    private const string PARM_COUNTRY = "@COUNTRY";
+    /// <summary>
+    /// This constant defines the organisation country parameter field.
+    /// </summary>
+    public const string PARM_COUNTRY = "@COUNTRY";
     private const string PARM_TELEPHONE = "@TELEPHONE";
     private const string PARM_EmailAddress = "@EMAIL_ADDRESS";
     private const string PARM_IMAGE_FILENAME = "@IMAGE_FILENAME";

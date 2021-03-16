@@ -377,7 +377,6 @@ namespace Evado.Dal.Digital
       // 
       // If the FormUid is emptry create a new value.
       // 
-      String [ ] filterFieldId = new string [ 5 ];
       int filterCount = 0;
       if ( EntityLayout.Guid == Guid.Empty )
       {
@@ -387,9 +386,26 @@ namespace Evado.Dal.Digital
       //
       // define the filter field identifiers for the entity.
       //
-      for ( int i = 0; i < 5; i++ )
+      /************************************************************************************
+       * 
+       * The multi-field selection function, uses summary fields that are single or 
+       * multi-selection fields (selection list, radio-buttons, checkbox-list), to create 
+       * Entity selections based on these field values.  The property below stored the 
+       * fieldIds for 5 summary selection fields from the entity.  
+       * 
+       * The array is automatically generated, by iterating through the summary fields,
+       * adding the selection field types to the list.
+       * 
+       * This list is then used to identify the selection fields to be created to select 
+       * the Entities based on their these field's values.
+       * 
+       * The selected fieldIds are then stored as filter field identifiers in the EntityLayouts 
+       * table.
+       * 
+       ************************************************************************************/
+      for ( int filterIndex = 0; filterIndex < EntityLayout.FilterFieldIds.Length; filterIndex++ )
       {
-        filterFieldId [ i ] = String.Empty;
+        EntityLayout.FilterFieldIds [ filterIndex ] = String.Empty;
       }
 
       foreach ( EdRecordField field in EntityLayout.Fields )
@@ -402,19 +418,28 @@ namespace Evado.Dal.Digital
         //
         // break the iteration loop there are more than 5 values.
         //
-        if ( filterCount >= 5 )
+        if ( filterCount >= EntityLayout.FilterFieldIds.Length )
         {
-          break;
+          continue;
         }
 
         //
-        // only add single fields 
+        // only add selection fields 
         //
-        if ( field.isSingleValue == true
-          || field.TypeId == EvDataTypes.Check_Box_List )
+        switch ( field.TypeId )
         {
-          filterFieldId [ filterCount ] = field.FieldId;
-          filterCount++;
+          case EvDataTypes.Yes_No:
+          case EvDataTypes.Boolean:
+          case EvDataTypes.Check_Box_List:
+          case EvDataTypes.Selection_List:
+          case EvDataTypes.External_Selection_List:
+          case EvDataTypes.Horizontal_Radio_Buttons:
+          case EvDataTypes.Radio_Button_List:
+            {
+              EntityLayout.FilterFieldIds [ filterCount ] = field.FieldId;
+              filterCount++;
+              continue;
+            }
         }
       }
 
@@ -450,12 +475,12 @@ namespace Evado.Dal.Digital
       cmdParms [ 23 ].Value = EntityLayout.Design.AuthorAccess;
       cmdParms [ 24 ].Value = EntityLayout.Design.HeaderFormat;
       cmdParms [ 25 ].Value = EntityLayout.Design.FooterFormat;
-      cmdParms [ 26 ].Value = filterFieldId [ 0 ];
-      cmdParms [ 27 ].Value = filterFieldId [ 1 ];
-      cmdParms [ 28 ].Value = filterFieldId [ 2 ];
-      cmdParms [ 29 ].Value = filterFieldId [ 3 ];
+      cmdParms [ 26 ].Value = EntityLayout.FilterFieldIds [ 0 ];
+      cmdParms [ 27 ].Value = EntityLayout.FilterFieldIds [ 1 ];
+      cmdParms [ 28 ].Value = EntityLayout.FilterFieldIds [ 2 ];
+      cmdParms [ 29 ].Value = EntityLayout.FilterFieldIds [ 3 ];
 
-      cmdParms [ 30 ].Value = filterFieldId [ 4 ];
+      cmdParms [ 30 ].Value = EntityLayout.FilterFieldIds [ 4 ];
       cmdParms [ 31 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 32 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 33 ].Value = DateTime.Now;

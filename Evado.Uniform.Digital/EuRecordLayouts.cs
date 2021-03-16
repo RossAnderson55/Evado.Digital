@@ -498,8 +498,6 @@ namespace Evado.UniForm.Digital
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
 
-        this.Session.LoadEntityLayoutList = false;
-
         return clientDataObject;
 
       }
@@ -2884,11 +2882,6 @@ namespace Evado.UniForm.Digital
           this.Session.LastPage.Message = this.ErrorMessage;
           return this.Session.LastPage;
         }
-
-        // 
-        // force a reload of the record layouts
-        // 
-        this.Session.LoadRecordLayoutList = true;
 
         // 
         // Get the save action message value.

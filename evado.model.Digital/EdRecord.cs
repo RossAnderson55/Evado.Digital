@@ -517,6 +517,11 @@ namespace Evado.Model.Digital
     /// </summary>
     public const string CONST_RECORD_TYPE = "RECTYP";
 
+    /// <summary>
+    /// This constant defines the number of fields in the filtered field query 
+    /// </summary>
+    public const int FILTER_FIELD_COUNT = 5;
+
     #endregion
 
     #region Class Properties
@@ -908,7 +913,21 @@ namespace Evado.Model.Digital
     //
     // These are record filters, containing a record's field identifiers
     //
-    private string [ ] _FilterFieldIds = new String [ 5 ];
+    /************************************************************************************
+     * 
+     * The multi-field selection function, uses summary fields that are single or 
+     * multi-selection fields (selection list, radio-buttons, checkbox-list), to create 
+     * Entity selections based on these field values.  The property below stored the 
+     * fieldIds for 5 summary selection fields from the entity.  
+     * 
+     * The array is automatically generated, by iterating through the summary fields,
+     * adding the selection field types to the list.
+     * 
+     * This list is then used to identify the selection fields to be created to select 
+     * the Entities based on their these field's values.
+     * 
+     ************************************************************************************/
+    private string [ ] _FilterFieldIds = new String [ EdRecord.FILTER_FIELD_COUNT ];
     /// <summary>
     /// This property contains the record filter values.
     /// </summary>
@@ -1377,6 +1396,29 @@ namespace Evado.Model.Digital
 
     //=====================================================================================
     /// <summary>
+    /// This method selects and returns the selected field and returns null if not found.
+    /// </summary>
+    /// <param name="FieldId">String: the selected field identifier</param>
+    /// <returns>EdRecordField object</returns>
+    //-------------------------------------------------------------------------------------
+    public EdRecordField GetFieldObject ( String FieldId )
+    {
+      //
+      // iterate through the entity fields to find the selected field.
+      //
+      foreach ( EdRecordField field in this.Fields )
+      {
+        if ( field.FieldId == FieldId )
+        {
+          return field;
+        }
+      }
+
+      return null;
+    }//END GetFieldObject method
+
+    //=====================================================================================
+    /// <summary>
     /// This method sets the Form Role property 
     /// </summary>
     /// <param name="UserProfile">EvUserProfile Object</param>
@@ -1524,80 +1566,6 @@ namespace Evado.Model.Digital
       }
 
     }//END updateFormState method
-
-    //=====================================================================================
-    /// <summary>
-    /// This property generates a summary of field values.
-    /// </summary>
-    //-------------------------------------------------------------------------------------
-    public String createSubjectSummary ( )
-    {
-      //
-      // Initialise the methods variables and objects.
-      //
-      String htmlText = String.Empty;
-
-      //
-      // Get record header information.
-      //
-      htmlText += this.getSummaryField ( "Form Title", this._Design.Title );
-      htmlText += this.getSummaryField ( "Record Date", this.stRecordDate );
-      htmlText += this.getSummaryField ( "Record State", this.StateDesc );
-
-      //
-      // Iterate through the form fields to extract the fields that are form summary fields.
-      //
-      foreach ( EdRecordField field in this._Fields )
-      {
-        if ( field.Design.IsSummaryField == true )
-        {
-          htmlText += this.getSummaryField ( field.Design.Title, field.ItemValue );
-        }
-      }
-
-      if ( htmlText != String.Empty )
-      {
-        htmlText = " <table class='tblSummary' style='margin: 0;' > " + htmlText + "</table>";
-      }
-      else
-      {
-        htmlText = "<p>No field summary values.</p>\r\n";
-      }
-
-
-      //
-      // Return the generated html text.
-      //
-      return htmlText;
-
-    }//END Get Field summary
-
-    // =======================================================================================
-    /// <summary>
-    /// This class returns a field summary entry
-    /// </summary>
-    /// <param name="Name">String: a field name</param>
-    /// <param name="FieldValue">String: a field value</param>
-    /// <returns>String: HTml string</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Validate whether the FieldValue is not empty
-    /// 
-    /// 2. Return a html string with Name and FieldValue
-    /// </remarks>
-    // ----------------------------------------------------------------------------------------
-    private String getSummaryField (
-      String Name,
-      String FieldValue )
-    {
-      if ( FieldValue != String.Empty )
-      {
-        return "<tr><td class='Prompt Width_40'>" + Name + ": "
-                + "</td><td>" + FieldValue + "</td></tr>\r\n";
-      }
-      return String.Empty;
-    }
 
 
     //  =================================================================================
