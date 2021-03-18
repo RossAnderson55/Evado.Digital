@@ -428,7 +428,7 @@ namespace Evado.Bll.Digital
     private List<EvOption> GetUserList ( )
     {
       EdUserprofiles users = new EdUserprofiles ( );
-      List<EvOption> list = users.GetList ( EdUserProfile.UserTypesList.Null, String.Empty , true );
+      List<EvOption> list = users.GetList ( String.Empty, String.Empty , true );
 
       return list;
     }//END GetUserList class

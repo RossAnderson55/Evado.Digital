@@ -163,7 +163,7 @@ namespace Evado.UniForm.Digital
         }
         this.LogDebug ( "ImportExportSelected {0}. ", ImportExportSelected );
 
-        this.Session.PageId = PageCommand.GetPageId<EvPageIds> ( );
+        this.Session.PageId = PageCommand.GetPageId ( );
         this.LogDebug ( "PageId {0}", this.Session.PageId );
 
         this.LogDebug ( "Command.Method {0}", PageCommand.Method );
@@ -558,7 +558,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Entity_Layouts.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
-      groupCommand.SetPageId ( EvPageIds.Form_Template_Upload );
+      groupCommand.SetPageId ( EdStaticPageIds.Form_Template_Upload );
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
       this.LogMethodEnd ( "getUpload_FileSelectionGroup" );

@@ -34,13 +34,13 @@ namespace Evado.UniForm.Digital
   /// <summary>
   /// This class profile UniFORM class adapter for the user profile classes
   /// </summary>
-  public partial class EuDemoUserRegistration : EuClassAdapterBase
+  public partial class EuUserRegistration : EuClassAdapterBase
   {
     #region Class Initialisation
     /// <summary>
     /// This method initialises the class.
     /// </summary>
-    public EuDemoUserRegistration ( )
+    public EuUserRegistration ( )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuDemoUserRegistration.";
     }
@@ -48,7 +48,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method initialises the class and passs in the user profile.
     /// </summary>
-    public EuDemoUserRegistration (
+    public EuUserRegistration (
       EuGlobalObjects ApplicationObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
@@ -125,7 +125,7 @@ namespace Evado.UniForm.Digital
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
 
-        var pageId = PageCommand.GetPageId<EvPageIds> ( );
+        var pageId = PageCommand.GetPageId<EdStaticPageIds> ( );
 
         this.LogDebug ( "Page Id {0}.", pageId );
         //
@@ -146,13 +146,13 @@ namespace Evado.UniForm.Digital
             {
               switch ( pageId )
               {
-                case EvPageIds.Demo_User_Page:
+                case EdStaticPageIds.User_Registration_Page:
                 default:
                   {
                     clientDataObject = this.getDataObject_RegistrationPage ( PageCommand );
                     break;
                   }
-                case EvPageIds.Demo_User_Exit_Page:
+                case EdStaticPageIds.Demo_User_Exit_Page:
                   {
                     this.LogValue ( " Save Object method" );
 
@@ -233,7 +233,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.UserId = this.createDemoUderId ( );
         this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
         this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
-        this.Session.AdminUserProfile.TypeId = EdUserProfile.UserTypesList.End_User;
+        this.Session.AdminUserProfile.TypeId = "End_User";
 
         this.LogDebug ( "AdminUserProfile.UserId: {0} ", this.Session.AdminUserProfile.UserId );
         this.LogDebug ( "AdminUserProfile.ExpiryDate: {0} ", this.Session.AdminUserProfile.ExpiryDate );
@@ -279,10 +279,10 @@ namespace Evado.UniForm.Digital
       //
       // get the list of users.
       //
-      int userCount = this._Bll_UserProfiles.UserCount ( EdUserProfile.UserTypesList.Null );
+      int userCount = this._Bll_UserProfiles.UserCount (String.Empty );
       userCount++;
 
-      userId = EuDemoUserRegistration.CONST_DEMO_USER_PREFIX + userCount.ToString ( "##000" );
+      userId = EuUserRegistration.CONST_DEMO_USER_PREFIX + userCount.ToString ( "##000" );
 
       return userId;
     }
@@ -306,7 +306,7 @@ namespace Evado.UniForm.Digital
         + this.Session.AdminUserProfile.CommonName;
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.PageId = EvPageIds.User_Profile_Page.ToString ( );
+      ClientDataObject.Page.PageId = EdStaticPageIds.User_Profile_Page.ToString ( );
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
 
@@ -358,7 +358,7 @@ namespace Evado.UniForm.Digital
 
       pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
 
-      pageCommand.SetPageId ( EvPageIds.Demo_User_Exit_Page );
+      pageCommand.SetPageId ( EdStaticPageIds.Demo_User_Exit_Page );
 
 
     }//END getclientDataObject_Commands Method
@@ -574,7 +574,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
 
-      groupCommand.SetPageId ( EvPageIds.Demo_User_Exit_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.Demo_User_Exit_Page );
 
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
     }//END getDataObject_GroupCommands method.
@@ -693,7 +693,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile.UserId = EvStatics.CleanSamUserId (
           this.Session.AdminUserProfile.UserId );
 
-        if ( PageCommand.hasParameter ( EuDemoUserRegistration.CONST_NEW_PASSWORD_PARAMETER ) == true )
+        if ( PageCommand.hasParameter ( EuUserRegistration.CONST_NEW_PASSWORD_PARAMETER ) == true )
         {
           this.LogValue ( "Creating a new password." );
           this.createDefaultPassword ( );
@@ -709,7 +709,7 @@ namespace Evado.UniForm.Digital
         // 
         // Resets the save action to the parameter passed in the page groupCommand.
         // 
-        if ( stSaveAction == EuDemoUserRegistration.CONST_DELETE_ACTION )
+        if ( stSaveAction == EuUserRegistration.CONST_DELETE_ACTION )
         {
           this.Session.AdminUserProfile.CommonName = String.Empty;
         }
@@ -777,7 +777,7 @@ namespace Evado.UniForm.Digital
         + this.Session.AdminUserProfile.CommonName;
 
       clientDataObject.Page.Title = clientDataObject.Title;
-      clientDataObject.Page.PageId = EvPageIds.User_Profile_Page.ToString ( );
+      clientDataObject.Page.PageId = EdStaticPageIds.User_Profile_Page.ToString ( );
       clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       var pageGroup = clientDataObject.Page.AddGroup (
@@ -839,9 +839,9 @@ namespace Evado.UniForm.Digital
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Page_Id.ToString ( )
           && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
-          && parameter.Name != EuDemoUserRegistration.CONST_ADDRESS_FIELD_ID
-          && parameter.Name != EuDemoUserRegistration.CONST_CURRENT_FIELD_ID
-          && parameter.Name != EuDemoUserRegistration.CONST_NEW_PASSWORD_PARAMETER )
+          && parameter.Name != EuUserRegistration.CONST_ADDRESS_FIELD_ID
+          && parameter.Name != EuUserRegistration.CONST_CURRENT_FIELD_ID
+          && parameter.Name != EuUserRegistration.CONST_NEW_PASSWORD_PARAMETER )
         {
           this.LogTextEnd ( " >> UPDATED" );
           try

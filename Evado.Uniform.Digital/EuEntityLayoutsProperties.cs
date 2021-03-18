@@ -412,7 +412,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Author Access option list length: ", optionList );
       this.LogDebug ( "RecordLayout.Design.AuthorAccess: ", this.Session.EntityLayout.Design.AuthorAccess );
 
-      groupField = pageGroup.createRadioButtonListField (
+      groupField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.AuthorAccess.ToString ( ),
         EdLabels.Record_Layout_Author_Access_Setting_Field_Title,
         this.Session.EntityLayout.Design.AuthorAccess,
@@ -425,7 +425,7 @@ namespace Evado.UniForm.Digital
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
 
-      groupField = pageGroup.createRadioButtonListField (
+      groupField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.ParentType.ToString ( ),
         EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
         this.Session.EntityLayout.Design.ParentType,
@@ -474,19 +474,55 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
-      // Record heaader setting
+      // Record LLnk content setting
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
 
-      if ( this.Session.EntityLayout.Design.DefaultPageLayout == null )
+      if ( this.Session.EntityLayout.Design.LinkContentSetting == EdRecord.LinkContentSetting.Null )
       {
-        this.Session.EntityLayout.Design.DefaultPageLayout = EdRecord.LinkContentSetting.Default.ToString ( );
+        this.Session.EntityLayout.Design.LinkContentSetting = EdRecord.LinkContentSetting.Default;
       }
 
       groupField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.LinkContentSetting,
         EdLabels.Record_Link_Content_Setting_Field_Title,
         this.Session.EntityLayout.Design.LinkContentSetting,
+        optionList );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Record header layout settings
+      //
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.HeaderFormat ), false );
+
+      if ( this.Session.EntityLayout.Design.HeaderFormat == EdRecord.HeaderFormat.Null )
+      {
+        this.Session.EntityLayout.Design.HeaderFormat = EdRecord.HeaderFormat.Default;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.HeaderFormat,
+        EdLabels.RecordLayout_Header_Format_Field_Title,
+        this.Session.EntityLayout.Design.HeaderFormat,
+        optionList );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Record footer layout settings
+      //
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.FooterFormat ), false );
+
+      if ( this.Session.EntityLayout.Design.FooterFormat == EdRecord.FooterFormat.Null )
+      {
+        this.Session.EntityLayout.Design.FooterFormat = EdRecord.FooterFormat.Default;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.FooterFormat,
+        EdLabels.RecordLayout_Footer_Format_Field_Title,
+        this.Session.EntityLayout.Design.FooterFormat,
         optionList );
 
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -541,7 +577,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.ApplicationMethods.Get_Object );
 
       groupCommand.AddParameter ( EdRecordSection.FormSectionClassFieldNames.Sectn_No.ToString ( ), "-1" );
-      groupCommand.SetPageId ( EvPageIds.Form_Properties_Section_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.Form_Properties_Section_Page );
       groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
 
       this.LogValue ( "No of form sections: " + this.Session.EntityLayout.Design.FormSections.Count );
@@ -557,7 +593,7 @@ namespace Evado.UniForm.Digital
           Model.UniForm.ApplicationMethods.Get_Object );
 
         groupCommand.AddParameter ( EdRecordSection.FormSectionClassFieldNames.Sectn_No.ToString ( ), formSection.No );
-        groupCommand.SetPageId ( EvPageIds.Form_Properties_Section_Page );
+        groupCommand.SetPageId ( EdStaticPageIds.Form_Properties_Section_Page );
       }
 
       this.LogValue ( "After No of form sections: " + this.Session.EntityLayout.Design.FormSections.Count );
@@ -859,7 +895,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Entity_Layouts.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 
-      pageCommand.SetPageId ( EvPageIds.Form_Properties_Page );
+      pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
       pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
       pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
       pageCommand.AddParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER, "1" );

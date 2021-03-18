@@ -153,6 +153,16 @@ namespace Evado.Model.Digital
       Default_User_Org_Type,
 
       /// <summary>
+      /// This enumeration defines the UserTypes in the application
+      /// </summary>
+      User_Types,
+
+      /// <summary>
+      /// This enumeration defines the default user type
+      /// </summary>
+      Default_User_Type,
+
+      /// <summary>
       /// this enumeration defines the hidden user fields the application.
       /// </summary>
       Hidden_User_Fields,
@@ -570,15 +580,15 @@ namespace Evado.Model.Digital
       //
       // Initialise the methods variables and objects.
       //
-      List<EvOption> OptionList = new List<EvOption> ( );
+      List<EvOption> optionList = new List<EvOption> ( );
 
       if ( ForSelectionList == true )
       {
-        OptionList.Add ( new EvOption ( ) );
+        optionList.Add ( new EvOption ( ) );
       }
 
-      OptionList.Add ( new EvOption ( "Evado" ) );
-      OptionList.Add ( new EvOption ( "Customer" ) );
+      optionList.Add ( new EvOption ( "Evado" ) );
+      optionList.Add ( new EvOption ( "Customer" ) );
 
       //
       // get an array of org types
@@ -598,13 +608,103 @@ namespace Evado.Model.Digital
           continue;
         }
 
-        OptionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
+        optionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
       }
 
       //
       // return the list of selected roles
       //
-      return OptionList;
+      return optionList;
+    }//END method
+
+    #endregion
+
+    #region User Types Group
+
+
+    public const String StaticUserType = "Evado;Customer;End_User;";
+
+    /// <summary>
+    /// This property contains the name of the person who last updated the trial object.
+    /// </summary>
+    public string UserTypes
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.User_Types );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.User_Types, EvDataTypes.Text, value );
+      }
+    }
+
+    /// <summary>
+    /// This property contains the default organisation type
+    /// </summary>
+    public String DefaultUserType
+    {
+      get
+      {
+        return
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Type );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Type,
+          EvDataTypes.Text, value.ToString ( ) );
+      }
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a selected list of application roles based on the delimited
+    /// list of selected roles that are passed to the method.
+    /// </summary>
+    /// <param name="SelectedUserTypeIds">Delimited string of role identifiers</param>
+    /// <returns>List of EdUserType objects</returns>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> GetUserTypeList ( bool ForSelectionList )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+
+      if ( ForSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( ) );
+      }
+
+      optionList.Add ( new EvOption ( "Evado" ) );
+      optionList.Add ( new EvOption ( "Customer" ) );
+      optionList.Add ( new EvOption ( "End_User" ) );
+
+      //
+      // get an array of org types
+      //
+      String [ ] arUserTypes = this.UserTypes.Split ( ';' );
+
+      //
+      // iterate through the list creating selection options.
+      //
+      for ( int i = 0; i < arUserTypes.Length; i++ )
+      {
+        string str = arUserTypes [ i ].Trim ( );
+
+        if ( str == String.Empty
+          || str.ToLower ( ) == "null" )
+        {
+          continue;
+        }
+
+        optionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
+      }
+
+      //
+      // return the list of selected roles
+      //
+      return optionList;
     }//END method
 
     #endregion
@@ -1077,6 +1177,22 @@ namespace Evado.Model.Digital
         case EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type:
           {
             this.DefaultOrgType = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.User_Types:
+          {
+            string orgType = Value;
+            orgType = orgType.Replace ( "\r\n", ";" );
+            orgType = orgType.Replace ( "; ", ";" );
+            orgType = orgType.Replace ( " ;", ";" );
+            this.UserTypes = orgType.Replace ( ";;", ";" );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Default_User_Type:
+          {
+            this.DefaultUserType = Value;
             return;
           }
 

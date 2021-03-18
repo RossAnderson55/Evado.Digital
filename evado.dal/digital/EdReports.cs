@@ -91,12 +91,12 @@ namespace Evado.Dal.Digital
     /// 3. Return the Report object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvReportRow readRow ( DataRow Row, List<EvReportColumn> Columns )
+    private EdReportRow readRow ( DataRow Row, List<EdReportColumn> Columns )
     {
       //
       // Initialize the return report row object. 
       //
-      EvReportRow reportRow = new EvReportRow ( Columns.Count );
+      EdReportRow reportRow = new EdReportRow ( Columns.Count );
 
       //
       // Loop through the report columns list.
@@ -108,12 +108,12 @@ namespace Evado.Dal.Digital
         //
         switch ( Columns [ columnCount ].DataType )
         {
-          case EvReport.DataTypes.Bool:
+          case EdReport.DataTypes.Bool:
             {
               reportRow.ColumnValues [ columnCount ] = EvSqlMethods.getBool ( Row, Columns [ columnCount ].SourceField ).ToString ( );
               break;
             }
-          case EvReport.DataTypes.Date:
+          case EdReport.DataTypes.Date:
             {
 
               DateTime dateVal = EvSqlMethods.getDateTime ( Row, Columns [ columnCount ].SourceField );
@@ -128,13 +128,13 @@ namespace Evado.Dal.Digital
 
               break;
             }
-          case EvReport.DataTypes.Integer:
+          case EdReport.DataTypes.Integer:
             {
               reportRow.ColumnValues [ columnCount ] = EvSqlMethods.getInteger ( Row, Columns [ columnCount ].SourceField ).ToString ( );
               break;
             }
-          case EvReport.DataTypes.Float:
-          case EvReport.DataTypes.Currency:
+          case EdReport.DataTypes.Float:
+          case EdReport.DataTypes.Currency:
             {
               reportRow.ColumnValues [ columnCount ] = EvSqlMethods.getFloat ( Row, Columns [ columnCount ].SourceField ).ToString ( );
               break;
@@ -183,7 +183,7 @@ namespace Evado.Dal.Digital
     /// 4. Return the Report data object.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( EvReport Report )
+    public EdReport getReport ( EdReport Report )
     {
       this.LogMethod ( "getReport. " );
       this.LogDebug ( "ReportTypeId: " + Report.ReportType );
@@ -229,14 +229,14 @@ namespace Evado.Dal.Digital
 
         switch ( Report.Queries [ queryCount ].DataType )
         {
-          case EvReport.DataTypes.Text:
-          case EvReport.DataTypes.Guid:
-          case EvReport.DataTypes.Hidden:
+          case EdReport.DataTypes.Text:
+          case EdReport.DataTypes.Guid:
+          case EdReport.DataTypes.Hidden:
             {
               sqlQueryString += "'" + Report.Queries [ queryCount ].Value + "'";
               break;
             }
-          case EvReport.DataTypes.Date:
+          case EdReport.DataTypes.Date:
             {
               //TODO I dont know what to do with dates.
               sqlQueryString += "'" + Report.Queries [ queryCount ].Value + "'";
@@ -307,7 +307,7 @@ namespace Evado.Dal.Digital
     /// 4. Return the sql query string. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private string getOrderByString ( EvReport Report )
+    private string getOrderByString ( EdReport Report )
     {
       this.LogMethod ( "getOrderByString. " );
 
@@ -329,7 +329,7 @@ namespace Evado.Dal.Digital
       //
       for ( int columnCounter = 0; columnCounter < Report.Columns.Count; columnCounter++ )
       {
-        EvReportColumn column = Report.Columns [ columnCounter ];
+        EdReportColumn column = Report.Columns [ columnCounter ];
 
         if ( column.SectionLvl < 0 || column.SectionLvl > 5 )
         {

@@ -108,7 +108,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       String stHeaderDescription = String.Empty;
-      this.Session.PageId = EvPageIds.Null;
+      this.Session.PageId = String.Empty;
 
       // 
       // Log access to page.
@@ -118,7 +118,8 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the menus class for generating the home page menus.
       // 
-      this._MenuUtility = new EuMenuUtility (
+      this._MenuUtility = new EuNavigationCommands (
+        this._AdapterObjects,
         this.Session,
         this.ClassParameters );
 
@@ -144,7 +145,7 @@ namespace Evado.UniForm.Digital
       clientDataObject.Id = Guid.NewGuid ( );
       clientDataObject.Page.Id = clientDataObject.Id;
 
-      clientDataObject.Page.PageId = EuAdapter.ADAPTER_ID + EvPageIds.Home_Page;
+      clientDataObject.Page.PageId = EuAdapter.ADAPTER_ID + EdStaticPageIds.Home_Page;
       clientDataObject.Page.PageDataGuid = clientDataObject.Page.Id;
       clientDataObject.Page.SetLeftColumnWidth ( 15 );
 
@@ -308,7 +309,7 @@ namespace Evado.UniForm.Digital
         EdUserProfile.UserProfileFieldNames.UserId.ToString ( ),
         this.Session.UserProfile.UserId );
 
-      pageCommand.SetPageId ( EvPageIds.User_Profile_Update_Page );
+      pageCommand.SetPageId ( EdStaticPageIds.User_Profile_Update_Page );
       this.LogMethodEnd ( "getPageCommand" );
     }//END getPageCommand method
 
@@ -668,10 +669,8 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( "PageId {0}", item.PageId );
 
           if ( item.Group == EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID
-            && item.PageId != EvPageIds.Trial_View_Page
-            && item.PageId != EvPageIds.Report_Template_View
-            && item.PageId != EvPageIds.Report_Template_Form
-            && item.PageId != EvPageIds.Operational_Report_Page )
+            && item.PageId != EdStaticPageIds.Report_Template_Page.ToString ( )
+            && item.PageId != EdStaticPageIds.Operational_Report_Page.ToString ( ) )
           {
             this.LogDebug ( "{0} is NOT selected.", item.PageId );
             continue;

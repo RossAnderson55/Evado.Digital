@@ -2828,4 +2828,25 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Report_Json_Download_Link_Title" xml:space="preserve">
     <value>{0}  {1} JSON data download</value>
   </data>
+  <data name="RecordLayout_Footer_Format_Field_Title" xml:space="preserve">
+    <value>Layout FooterFormat:</value>
+  </data>
+  <data name="RecordLayout_Header_Format_Field_Title" xml:space="preserve">
+    <value>Layout Header Format:</value>
+  </data>
+  <data name="Entity_Enable_Edit_Command_Title" xml:space="preserve">
+    <value>Edit Page</value>
+  </data>
+  <data name="Config_Default_Org_Type_Field_Label" xml:space="preserve">
+    <value>Default organisation type:</value>
+  </data>
+  <data name="Config_Default_User_Type_Field_Label" xml:space="preserve">
+    <value>Default user type:</value>
+  </data>
+  <data name="Config_UserType_List_Field_Description" xml:space="preserve">
+    <value>Enter a new user type on each line with no spaces between the words on a line.</value>
+  </data>
+  <data name="Config_UserType_List_Field_Label" xml:space="preserve">
+    <value>Configurable User Types:</value>
+  </data>
 </root>

@@ -363,7 +363,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.AddParameter ( EuStaticContentTemplates.CONST_DISPLAY_PAGE, "false" );
 
-        pageCommand.SetPageId ( EvPageIds.Email_Templates_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.Email_Templates_Page );
 
         return;
       }
@@ -382,7 +382,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.AddParameter ( EuStaticContentTemplates.CONST_DISPLAY_PAGE, "true" );
 
-        pageCommand.SetPageId ( EvPageIds.Email_Templates_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.Email_Templates_Page );
       }
 
       // 
@@ -789,7 +789,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.AddParameter ( EuStaticContentTemplates.CONST_DISPLAY_PAGE, "false" );
 
-        pageCommand.SetPageId ( EvPageIds.Email_Templates_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.Email_Templates_Page );
 
         return;
       }
@@ -808,7 +808,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.AddParameter ( EuStaticContentTemplates.CONST_DISPLAY_PAGE, "true" );
 
-        pageCommand.SetPageId ( EvPageIds.Email_Templates_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.Email_Templates_Page );
       }
 
       // 

@@ -136,29 +136,29 @@ namespace Evado.UniForm.Digital
           case Evado.Model.UniForm.ApplicationMethods.List_of_Objects:
           case Evado.Model.UniForm.ApplicationMethods.Get_Object:
             {
-              switch ( this.Session.PageId )
+              switch ( this.Session.StaticPageId )
               {
-                case EvPageIds.Database_Version:
+                case EdStaticPageIds.Database_Version:
                   {
                     clientDataObject = this.getDB_Update_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Audit_Configuration_Page:
+                case EdStaticPageIds.Audit_Configuration_Page:
                   {
                     clientDataObject = this.getConfig_Audit_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Audit_Records_Page:
+                case EdStaticPageIds.Audit_Records_Page:
                   {
                     clientDataObject = this.getRecord_Audit_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Audit_Record_Items_Page:
+                case EdStaticPageIds.Audit_Record_Items_Page:
                   {
                     clientDataObject = this.getRecord_Item_Audit_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Application_Profile:
+                case EdStaticPageIds.Application_Profile:
                 default:
                   {
                     clientDataObject = this.getObject ( PageCommand );
@@ -413,7 +413,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Page_Id,
-        EvPageIds.Database_Version );
+        EdStaticPageIds.Database_Version );
 
       groupCommand.setCustomMethod (
         Model.UniForm.ApplicationMethods.Get_Object );
@@ -781,7 +781,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Page_Id,
-        EvPageIds.Audit_Configuration_Page );
+        EdStaticPageIds.Audit_Configuration_Page );
 
       groupCommand.setCustomMethod (
         Model.UniForm.ApplicationMethods.Get_Object );
@@ -1730,7 +1730,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Page_Id,
-        EvPageIds.Audit_Record_Items_Page );
+        EdStaticPageIds.Audit_Record_Items_Page );
 
       groupCommand.setCustomMethod (
         Model.UniForm.ApplicationMethods.Get_Object );
@@ -2066,6 +2066,55 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogDebug ( "OrgTypes {0}.", this.AdapterObjects.Settings.OrgTypes );
+
+      //
+      // create the defult organisation type selection. 
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( new EvOption ( ) );
+      foreach ( String value in this.AdapterObjects.Settings.OrgTypes.Split( ';' ) )
+      {
+        optionList.Add ( new EvOption( value ) );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type,
+        EdLabels.Config_Default_Org_Type_Field_Label,
+        this.AdapterObjects.Settings.DefaultOrgType,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the organisation types field
+      //
+      string userType = this.AdapterObjects.Settings.UserTypes;
+      userType = userType.Replace ( ";", "\r\n" );
+
+      pageField = pageGroup.createFreeTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Types.ToString ( ),
+        EdLabels.Config_UserType_List_Field_Label,
+        EdLabels.Config_UserType_List_Field_Description,
+        userType, 20, 10 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogDebug ( "UserTypes {0}.", this.AdapterObjects.Settings.UserTypes );
+
+      //
+      // create the defult organisation type selection. 
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( new EvOption ( ) );
+      foreach ( String value in this.AdapterObjects.Settings.UserTypes.Split ( ';' ) )
+      {
+        optionList.Add ( new EvOption ( value ) );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Default_User_Type,
+        EdLabels.Config_Default_User_Type_Field_Label,
+        this.AdapterObjects.Settings.DefaultOrgType,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
       
       //
       // create the user primary entity selection. 

@@ -118,6 +118,11 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This constant defines the user identifier parameter key value.
     /// </summary>
+    public const string PARAMETER_LOGIN_USER_TOKEN = "USER_TOKEN";
+
+    /// <summary>
+    /// This constant defines the user identifier parameter key value.
+    /// </summary>
     public const string PARAMETER_LOGIN_USER_ID = "USER_ID";
 
     /// <summary>

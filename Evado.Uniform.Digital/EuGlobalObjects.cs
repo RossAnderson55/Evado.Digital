@@ -159,6 +159,7 @@ namespace Evado.UniForm.Digital
     }
 
     #endregion
+
     #region Class Global properties and variables.
 
     // 
@@ -282,6 +283,74 @@ namespace Evado.UniForm.Digital
       return optionList;
 
     }
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of options for selected Selection List.
+    /// </summary>
+    /// <param name="ListId">String: the list identifier.</param>
+    /// <param name="Category">String: the list category.</param>
+    /// <param name="CategoryOnly">bool true only return categories.</param>
+    /// <returns>List of EvOption objects</return>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> getExternalSelectionOptions (
+      String ListId,
+      String Category,
+      bool CategoryOnly )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+      string categories = String.Empty;
+
+      //
+      // iterate through the issues selection lists.
+      //
+      foreach ( EdSelectionList list in this._SelectionLists )
+      {
+        if ( list.ListId == ListId )
+        {
+          foreach ( EdSelectionList.Item item in list.Items )
+          {
+            if ( item.Value == String.Empty )
+            {
+              continue;
+            }
+
+            //
+            // if category only is selected the only return the categories as a list.
+            //
+            if ( CategoryOnly == true )
+            {
+              if ( item.Category != String.Empty )
+              {
+                if ( categories.Contains ( item.Category ) == false )
+                {
+                  optionList.Add ( new EvOption ( item.Category ) );
+                }
+              }
+              continue;
+            }
+
+            if ( Category == String.Empty )
+            {
+              optionList.Add ( item.GetOption ( true ) );
+            }
+            else if ( item.Category == Category )
+            {
+              optionList.Add ( item.GetOption ( false ) );
+            }
+
+          }// List item iteration loop
+        }//END list selection
+      }//Selection list iteration loop
+
+      //
+      // Return the selection list's options.
+      //
+      return optionList;
+
+    }//END method.
 
     /// <summary>
     /// This property contains the email templates for user administration.
@@ -362,6 +431,11 @@ namespace Evado.UniForm.Digital
       set { _MenuList = value; }
     }
 
+    /// <summary>
+    /// This property contains a list of the adapters navigation commands.
+    /// </summary>
+    public List<EvOption> PageIdentifiers { get; set; }
+
     private List<EdOrganisation> _OrganisationList = new List<EdOrganisation> ( );
     /// <summary>
     /// This property object contains a list of organisations. 
@@ -373,7 +447,7 @@ namespace Evado.UniForm.Digital
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion 
+    #endregion
 
     #region Entity object section
 
@@ -445,7 +519,7 @@ namespace Evado.UniForm.Digital
         if ( entity.LayoutId == LayoutId
           && entity.State == EdRecordObjectStates.Form_Issued )
         {
-          return entity ;
+          return entity;
         }
       }
 
@@ -455,6 +529,7 @@ namespace Evado.UniForm.Digital
       return null;
 
     }//END method
+
     // ==================================================================================
     /// <summary>
     /// This method returns a list of string containing child layouts.
@@ -566,10 +641,10 @@ namespace Evado.UniForm.Digital
 
     #region class methods
 
-    ///
+
     ///  =======================================================================================
     /// <summary>
-    /// This method loades the global menu objects
+    /// This method loads the global menu objects
     /// </summary>
     //  ---------------------------------------------------------------------------------
     public void loadGlobalMenu ( )
@@ -604,7 +679,7 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogMethodEnd ( "loadGlobalMenu" );
-    }//END loadMenu method
+    }//END loadGlobalMenu method
 
     ///  =======================================================================================
     /// <summary>

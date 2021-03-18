@@ -105,9 +105,13 @@ namespace Evado.Dal.Digital
     /// </summary>
     public const string DB_ENTITY_DATE = "EDE_ENTITY_DATE";
     /// <summary>
-    /// The database entity parent organisatin identifier column name
+    /// The database entity parent organisatiOn identifier column name
     /// </summary>
     public const string DB_PARENT_ORG_ID = "EDE_PARENT_ORG_ID";
+    /// <summary>
+    /// The database entity parent user identifier column name
+    /// </summary>
+    public const string DB_PARENT_USER_ID = "EDE_PARENT_USER_ID";
     /// <summary>
     /// The database entity author user identifier column name
     /// </summary>
@@ -199,6 +203,7 @@ namespace Evado.Dal.Digital
     private const string PARM_SOURCE_ID = "@SOURCE_ID";
     private const string PARM_ENTITY_DATE = "@ENTITY_DATE";
     private const string PARM_PARENT_ORG_ID = "@PARENT_ORG_ID";
+    private const string PARM_PARENT_USER_ID = "@PARENT_USER_ID";
     private const string PARM_AUTHOR_USER_ID = "@AUTHOR_USER_ID";
     private const string PARM_AUTHOR = "@AUTHOR";
     private const string PARM_PARENT_LAYOUT_ID = "@PARENT_LAYOUT_ID";
@@ -403,6 +408,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdEntities.PARM_PARENT_LAYOUT_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_PARENT_USER_ID, SqlDbType.VarChar, 100),
         new SqlParameter( EdEntities.PARM_PARENT_ORG_ID, SqlDbType.VarChar, 20),
         new SqlParameter( EdEntities.PARM_AUTHOR_USER_ID, SqlDbType.VarChar, 100),
         new SqlParameter( EdEntities.PARM_AUTHOR, SqlDbType.VarChar, 100),
@@ -438,13 +444,14 @@ namespace Evado.Dal.Digital
       CommandParameters [ 1 ].Value = Record.LayoutId;
       CommandParameters [ 2 ].Value = Record.ParentLayoutId;
       CommandParameters [ 3 ].Value = Record.ParentGuid;
-      CommandParameters [ 4 ].Value = Record.ParentOrgId;
-      CommandParameters [ 5 ].Value = Record.AuthorUserId;
-      CommandParameters [ 6 ].Value = Record.Author;
-      CommandParameters [ 7 ].Value = Record.DataCollectEventId;
-      CommandParameters [ 8 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.CommonName;
-      CommandParameters [ 10 ].Value = DateTime.Now;
+      CommandParameters [ 4 ].Value = Record.ParentUserId;
+      CommandParameters [ 5 ].Value = Record.ParentOrgId;
+      CommandParameters [ 6 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 7 ].Value = Record.Author;
+      CommandParameters [ 8 ].Value = Record.DataCollectEventId;
+      CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.UserId;
+      CommandParameters [ 10 ].Value = this.ClassParameters.UserProfile.CommonName;
+      CommandParameters [ 11 ].Value = DateTime.Now;
 
     }//END SetCreateParameters class.
 
@@ -530,97 +537,100 @@ namespace Evado.Dal.Digital
       // 
       // Initialise the return form object and the form selected condition.
       // 
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
+
+      entity.Design.IsEntity = true;
 
       // 
       // Update the trial record object with compatible values from datarow.
       // 
-      record.Guid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
-      record.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
-      record.SourceId = EvSqlMethods.getString ( Row, EdEntities.DB_SOURCE_ID );
-      record.LayoutId = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LAYOUT_ID );
-      record.RecordId = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ID );
-      record.Design.Title = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TITLE );
-      record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> (
+      entity.Guid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
+      entity.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
+      entity.SourceId = EvSqlMethods.getString ( Row, EdEntities.DB_SOURCE_ID );
+      entity.LayoutId = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LAYOUT_ID );
+      entity.RecordId = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ID );
+      entity.Design.Title = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TITLE );
+      entity.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> (
         EvSqlMethods.getString ( Row, EdEntities.DB_STATE ) );
-      record.RecordDate = EvSqlMethods.getDateTime ( Row, EdEntities.DB_ENTITY_DATE );
+      entity.RecordDate = EvSqlMethods.getDateTime ( Row, EdEntities.DB_ENTITY_DATE );
 
-      record.Author = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
-      record.AuthorUserId = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
-      record.ParentOrgId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_ORG_ID );
+      entity.ParentUserId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_USER_ID );
+      entity.ParentOrgId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_ORG_ID );
+      entity.Author = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
+      entity.AuthorUserId = EvSqlMethods.getString ( Row, EdEntities.DB_AUTHOR_USER_ID );
 
-      record.Visabilty = EvSqlMethods.getString<EdRecord.VisabilityList> ( Row, EdEntities.DB_VISABILITY );
-      record.EntityAccess = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ACCESS );
+      entity.Visabilty = EvSqlMethods.getString<EdRecord.VisabilityList> ( Row, EdEntities.DB_VISABILITY );
+      entity.EntityAccess = EvSqlMethods.getString ( Row, EdEntities.DB_ENTITY_ACCESS );
 
-      record.ParentLayoutId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_LAYOUT_ID );
-      record.ParentGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_PARENT_GUID );
-      record.DataCollectEventId = EvSqlMethods.getString ( Row, EdEntities.DB_COLLECTION_EVENT_ID );
+      entity.ParentLayoutId = EvSqlMethods.getString ( Row, EdEntities.DB_PARENT_LAYOUT_ID );
+      entity.ParentGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_PARENT_GUID );
+      entity.DataCollectEventId = EvSqlMethods.getString ( Row, EdEntities.DB_COLLECTION_EVENT_ID );
 
       string value = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LINK_CONTENT_SETTING );
       if ( value != String.Empty )
       {
-        record.Design.LinkContentSetting =
+        entity.Design.LinkContentSetting =
           Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( value );
       }
 
-      record.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
-      record.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );
-      record.FilterFieldIds [ 2 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_2 );
-      record.FilterFieldIds [ 3 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_3 );
-      record.FilterFieldIds [ 4 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_4 );
+      entity.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
+      entity.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );
+      entity.FilterFieldIds [ 2 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_2 );
+      entity.FilterFieldIds [ 3 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_3 );
+      entity.FilterFieldIds [ 4 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_4 );
 
       //
       // Skip detailed content if a queryState query
       //
       if ( SummaryQuery == false )
       {
-        record.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
-        record.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
-        record.Design.Description = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DESCRIPTION );
-        record.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
+        entity.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
+        entity.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
+        entity.Design.Description = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DESCRIPTION );
+        entity.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
           EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATE_REASON ) );
-        record.Design.RecordCategory = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_CATEGORY );
+        entity.Design.RecordCategory = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_CATEGORY );
 
-        record.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> (
+        entity.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> (
            EvSqlMethods.getString ( Row, EdEntityLayouts.DB_TYPE_ID ) );
-        record.Design.Version = EvSqlMethods.getFloat ( Row, EdEntityLayouts.DB_VERSION );
+        entity.Design.Version = EvSqlMethods.getFloat ( Row, EdEntityLayouts.DB_VERSION );
 
-        record.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_JAVA_SCRIPT );
-        record.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HAS_CS_SCRIPT );
-        record.Design.Language = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LANGUAGE );
-        record.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_READ_ACCESS_ROLES );
-        record.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_EDIT_ACCESS_ROLES );
+        entity.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_JAVA_SCRIPT );
+        entity.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HAS_CS_SCRIPT );
+        entity.Design.Language = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_LANGUAGE );
+        entity.Design.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_READ_ACCESS_ROLES );
+        entity.Design.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_EDIT_ACCESS_ROLES );
 
-        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
-        record.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DEFAULT_PAGE_LAYOUT );
-        record.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
-        record.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
-        record.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_ENTITY_PREFIX );
-        record.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
-        record.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
-        record.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
-        record.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
-        record.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
+        entity.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
+        entity.Design.DefaultPageLayout = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DEFAULT_PAGE_LAYOUT );
+        entity.Design.DisplayRelatedEntities = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_ENTITIES );
+        entity.Design.DisplayAuthorDetails = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_DISPLAY_AUTHOR_DETAILS );
+        entity.Design.RecordPrefix = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_ENTITY_PREFIX );
+        entity.Design.ParentType = EvSqlMethods.getString<EdRecord.ParentTypeList> ( Row, EdEntityLayouts.DB_PARENT_TYPE );
+        entity.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
+        entity.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
+        entity.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
+        entity.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
 
-        record.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
-        if ( record.Updated != string.Empty )
+        entity.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
+        if ( entity.Updated != string.Empty )
         {
-          record.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntities.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
+          entity.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntities.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
         }
-        record.BookedOutBy = EvSqlMethods.getString ( Row, EdEntities.DB_BOOKED_OUT );
+        entity.BookedOutBy = EvSqlMethods.getString ( Row, EdEntities.DB_BOOKED_OUT );
 
         //
         // fill the comment list.
         //
-        this.fillCommentList ( record );
+        this.fillCommentList ( entity );
 
-        string approved = "Version: " + record.Design.Version.ToString ( "0.00" );
+        string approved = "Version: " + entity.Design.Version.ToString ( "0.00" );
         approved += " by: " + EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATED_BY );
         approved += " on " + EvSqlMethods.getDateTime ( Row, EdEntityLayouts.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy" );
-        record.Design.Approval = approved;
+        entity.Design.Approval = approved;
       }
 
-      return record;
+      return entity;
 
     }//END getRowData class
 
@@ -1332,8 +1342,8 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method retrieves a form object based on Guid
     /// </summary>
-    /// <param name="EntityGuid">Guid: (Mandatory) Global Unique object identifier (long integer).</param>
-    /// <returns>EvForm: a form data object.</returns>
+    /// <param name="EntityGuid">Guid: (Mandatory) Global Unique object identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -1373,8 +1383,11 @@ namespace Evado.Dal.Digital
       // 
       // Set the query parameter values
       // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier );
-      cmdParms.Value = EntityGuid;
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
+      };
+      cmdParms [ 0 ].Value = EntityGuid;
 
       // 
       // Generate SQL query string
@@ -1443,8 +1456,8 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class gets a form object based on the record identifier
     /// </summary>
-    /// <param name="SourceId">string: (Mandatory) record identifier.</param>
-    /// <returns>EvForm: a form data object.</returns>
+    /// <param name="SourceId">string: external source identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -1483,11 +1496,14 @@ namespace Evado.Dal.Digital
       // 
       // Define the parameters for the query
       // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_SOURCE_ID, SqlDbType.NVarChar, 20 );
-      cmdParms.Value = SourceId;
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntities.PARM_SOURCE_ID, SqlDbType.NVarChar, 20 ),
+      };
+      cmdParms [ 0 ].Value = SourceId;
 
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + PARM_SOURCE_ID + " );" );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_SOURCE_ID + "= " + EdEntities.PARM_SOURCE_ID + " );" );
 
       //
       // Execute the query against the database.
@@ -1547,12 +1563,251 @@ namespace Evado.Dal.Digital
 
     }//END getItem method
 
+
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentOrgId (
+      String LayoutId,
+      String ParentOrgId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId method. " );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( ParentOrgId == String.Empty )
+      {
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdEntities.PARM_PARENT_ORG_ID, SqlDbType.NVarChar, 20 ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentOrgId;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " );" );
+      sqlQueryString.AppendLine ( "   AND (" + EdEntities.DB_PARENT_ORG_ID + "= " + EdEntities.PARM_PARENT_ORG_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      //
+      // get the child entities for this entity.
+      //
+      entity.ChildEntities = this.getChildEntityList ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getRecordEntities ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentUserId">string: parent user identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentUserId (
+      String LayoutId,
+      String ParentUserId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId" );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( LayoutId == String.Empty
+        || ParentUserId == String.Empty )
+      {
+        this.LogMethodEnd ( "GetItemByParentOrgId" );
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdEntities.PARM_PARENT_USER_ID, SqlDbType.NVarChar, 100 ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentUserId;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " );" );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_AUTHOR_USER_ID + "= " + EdEntities.PARM_AUTHOR_USER_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      //
+      // get the child entities for this entity.
+      //
+      entity.ChildEntities = this.getChildEntityList ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getRecordEntities ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
     // =====================================================================================
     /// <summary>
     /// This class gets a record object using RecordId and the form state. 
     /// </summary>
-    /// <param name="EntityId">string: (Mandatory) record identifier.</param>
-    /// <returns>EvForm: a form data object.</returns>
+    /// <param name="EntityId">string: (Mandatory) entity identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 

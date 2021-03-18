@@ -84,7 +84,7 @@ namespace Evado.Bll.Digital
     /// 2. Return an event code for saving new report. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveNewReport ( EvReport Report )
+    public EvEventCodes saveNewReport ( EdReport Report )
     {
       this.LogMethod ( "saveNewReport method." );
       this.LogDebug ( "Adding Report." );
@@ -114,10 +114,10 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of Report objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getView ( string TrialId, EvReport.ReportTypeCode ReportTypeId, string Category )
+    public List<EdReport> getView ( string TrialId, EdReport.ReportTypeCode ReportTypeId, string Category )
     {
       this.LogMethod ( "getView method." );
-      List<EvReport> view = this._dalReportSaved.getView ( TrialId, ReportTypeId, Category );
+      List<EdReport> view = this._dalReportSaved.getView ( TrialId, ReportTypeId, Category );
 
       this.LogClass ( this._dalReportSaved.Log );
       return view;
@@ -138,11 +138,11 @@ namespace Evado.Bll.Digital
     /// 2. Return a report object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( Guid Guid )
+    public EdReport getReport ( Guid Guid )
     {
       this.LogMethod ( "getReport method." );
 
-      EvReport report = this._dalReportSaved.getReport ( Guid );
+      EdReport report = this._dalReportSaved.getReport ( Guid );
 
       this.LogClass ( this._dalReportSaved.Log );
 

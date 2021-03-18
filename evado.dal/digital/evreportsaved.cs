@@ -143,7 +143,7 @@ namespace Evado.Dal.Digital
     /// 1. Bind the values from Report object to the array of parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] parms, EvReport Report )
+    private void SetParameters ( SqlParameter [ ] parms, EdReport Report )
     {
       parms [ 0 ].Value = Report.Guid;
       parms [ 1 ].Value = String.Empty ;
@@ -153,7 +153,7 @@ namespace Evado.Dal.Digital
       parms [ 5 ].Value = Report.ReportTitle;
       parms [ 6 ].Value = Report.ReportType;
       parms [ 7 ].Value = Report.Category;
-      parms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<EvReport> ( Report );
+      parms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<EdReport> ( Report );
       parms [ 9 ].Value = Report.UpdateUserId;
       parms [ 10 ].Value = Report.UserCommonName;
       parms [ 11 ].Value = DateTime.Now;
@@ -180,12 +180,12 @@ namespace Evado.Dal.Digital
     /// 3. Return the Report data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport readRow ( DataRow Row )
+    public EdReport readRow ( DataRow Row )
     {
       // 
       // Initialise the methods variables and objects.
       // 
-      EvReport report = new EvReport ( );
+      EdReport report = new EdReport ( );
 
       //
       // Set the xml report string, if it is empty. 
@@ -230,7 +230,7 @@ namespace Evado.Dal.Digital
         xmlReport = xmlReport.Replace ( "<ReportTypeId>", "<ReportType>" );
         xmlReport = xmlReport.Replace ( "</ReportTypeId>", "</ReportType>" );
 
-        report = Evado.Model.EvStatics.DeserialiseObject<EvReport> ( xmlReport ); ;
+        report = Evado.Model.EvStatics.DeserialiseObject<EdReport> ( xmlReport ); ;
       }
 
       //
@@ -241,7 +241,7 @@ namespace Evado.Dal.Digital
       report.ReportTitle = EvSqlMethods.getString ( Row, "RS_ReportTitle" );
       //Report.ReportSubTitle = EvSqlMethods.getString( Row, "RS_ReportSubTitle" );
       report.ReportDate = EvSqlMethods.getDateTime ( Row, "RS_ReportDate" );
-      report.ReportType = ( EvReport.ReportTypeCode ) EvSqlMethods.getInteger ( Row, "RS_ReportTypeId" );
+      report.ReportType = ( EdReport.ReportTypeCode ) EvSqlMethods.getInteger ( Row, "RS_ReportTypeId" );
       report.ReportNo = EvSqlMethods.getInteger ( Row, "RS_ReportNo" );
 
       report.UpdateUserId = EvSqlMethods.getString ( Row, "RS_UpdatedByUserId" );
@@ -283,7 +283,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getView ( string ProjectId, EvReport.ReportTypeCode ReportTypeId, string Category )
+    public List<EdReport> getView ( string ProjectId, EdReport.ReportTypeCode ReportTypeId, string Category )
     {
       this.LogMethod ( "getView. " );
       this.LogDebug ( "Projectid: " + ProjectId);
@@ -294,7 +294,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string _sqlQueryString;
-      List<EvReport> view = new List<EvReport> ( );
+      List<EdReport> view = new List<EdReport> ( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -314,7 +314,7 @@ namespace Evado.Dal.Digital
       // 
       _sqlQueryString = _sqlQuery_View + "WHERE (TrialId = @TrialId) ";
 
-      if ( ReportTypeId != EvReport.ReportTypeCode.Null )
+      if ( ReportTypeId != EdReport.ReportTypeCode.Null )
       {
         _sqlQueryString += " AND (RS_ReportTypeId = @ReportTypeId ) ";
       }
@@ -343,7 +343,7 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
 
-          EvReport Report = this.readRow( row );
+          EdReport Report = this.readRow( row );
 
           view.Add( Report );
         }
@@ -381,7 +381,7 @@ namespace Evado.Dal.Digital
     /// 4. Return the Report data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( Guid Guid )
+    public EdReport getReport ( Guid Guid )
     {
      this.LogMethod ( "getReport. ");
       this.LogDebug ( "Guid: " + Guid );
@@ -390,7 +390,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string _sqlQueryString;
-      EvReport report = new EvReport( );
+      EdReport report = new EdReport( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -465,7 +465,7 @@ namespace Evado.Dal.Digital
     /// 4. Else, return the event code for adding items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes addReport ( EvReport Report )
+    public EvEventCodes addReport ( EdReport Report )
     {
       this.LogMethod ( "addReport. ");
       this.LogDebug ( "Guid: " + Report.Guid);

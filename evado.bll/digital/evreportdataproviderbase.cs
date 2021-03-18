@@ -35,7 +35,7 @@ namespace Evado.Bll.Digital
     /// </summary>
     /// <param name="Report"></param>
     /// <returns></returns>
-    public virtual EvReport getReport(EvReport Report)
+    public virtual EdReport getReport(EdReport Report)
     {
       return Report;
     }//END getReport class

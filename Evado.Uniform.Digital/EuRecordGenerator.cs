@@ -73,6 +73,11 @@ namespace Evado.UniForm.Digital
     public const string CONST_FORM_DISP_COMMENT_FIELD_ID = "fcm_dsp";
     public const string CONST_FORM_DISP_SOF_FIELD_ID = "sof_dsp";
 
+    /// <summary>
+    /// This constand define the field to enable editing.
+    /// </summary>
+    private const string CONST_ENABLE_EDIT_FIELD = "ENED";
+
     private string RecordQueryAnnotation = String.Empty;
 
     //
@@ -359,7 +364,9 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
       {
-        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Layout.Design.DefaultPageLayout.ToString ( ), out this._FieldLayout ) == false )
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( 
+          Layout.Design.DefaultPageLayout.ToString ( ), 
+          out this._FieldLayout ) == false )
         {
           this._FieldLayout = EuAdapter.DefaultFieldLayout;
         }
@@ -1052,6 +1059,31 @@ namespace Evado.UniForm.Digital
         fieldGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
         //
+        // add an edit command if the page is in display mode and the user is the author and 
+        // selectable edit has been enabled.
+        //
+        if ( Layout.Design.AuthorAccess == EdRecord.AuthorAccessList.Only_Author_Selectable
+          && PageObject.EditAccess == Model.UniForm.EditAccess.Disabled
+          && Layout.Author == this.Session.UserProfile.UserId )
+        {
+          var groupCommand = fieldGroup.addCommand( 
+            EdLabels.Entity_Enable_Edit_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+            groupCommand.SetGuid ( this.Session.Entity.Guid );
+
+            groupCommand.AddParameter (
+             EuRecordGenerator.CONST_ENABLE_EDIT_FIELD, "Yes");
+
+            if ( Layout.Design.IsEntity == false )
+            {
+              groupCommand.Object = EuAdapterClasses.Records.ToString ( );
+            }
+
+        }//END command selection block.
+
+        //
         // If the section has field name then add the pageMenuGroup hide parameters.
         //
         if ( section.FieldId != String.Empty )
@@ -1185,6 +1217,7 @@ namespace Evado.UniForm.Digital
       //
       if ( Field.TypeId == EvDataTypes.Read_Only_Text
         || Field.TypeId == EvDataTypes.External_Image
+        || Field.TypeId == EvDataTypes.Image
         || Field.TypeId == EvDataTypes.Streamed_Video
         || Field.TypeId == EvDataTypes.Html_Content )
       {
@@ -1260,6 +1293,11 @@ namespace Evado.UniForm.Digital
             this.getFloatRangeField ( Field, groupField );
             break;
           }
+        case Evado.Model.EvDataTypes.Date_Range:
+          {
+            this.getDateRangeField ( Field, groupField );
+            break;
+          }
         case Evado.Model.EvDataTypes.Date:
           {
             this.getDateField ( Field, groupField );
@@ -1291,9 +1329,13 @@ namespace Evado.UniForm.Digital
             return;
           }
         case Evado.Model.EvDataTypes.Selection_List:
-        case Evado.Model.EvDataTypes.External_Selection_List:
           {
             this.getSelectonField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.External_Selection_List:
+          {
+            this.getExternalSelectonField ( Field, groupField );
             return;
           }
         case Evado.Model.EvDataTypes.Radio_Button_List:
@@ -1325,6 +1367,11 @@ namespace Evado.UniForm.Digital
         case Evado.Model.EvDataTypes.Streamed_Video:
           {
             this.getStreamedVideoField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Image:
+          {
+            this.getImageField ( Field, groupField );
             return;
           }
         case Evado.Model.EvDataTypes.External_Image:
@@ -1680,6 +1727,66 @@ namespace Evado.UniForm.Digital
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
+    private void getImageField (
+        Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getImageField" );
+
+      // 
+      // Initialise local variables.
+      // 
+      if ( GroupField.EditAccess == Model.UniForm.EditAccess.Disabled )
+      {
+        GroupField.Type = Evado.Model.EvDataTypes.Binary_File;
+        GroupField.Value = Field.ItemValue;
+        GroupField.Description = String.Empty;
+        return;
+      }
+
+      GroupField.Type = Evado.Model.EvDataTypes.Image;
+      GroupField.Value = Field.ItemValue;
+      GroupField.Description = String.Empty;
+
+      this.LogDebug ( "JavaScript: " + Field.Design.JavaScript );
+      int iWidth = 0;
+      int iHeight = 0;
+      if ( Field.Design.JavaScript != String.Empty )
+      {
+        String [ ] arParms = Field.Design.JavaScript.Split ( ';' );
+        if ( int.TryParse ( arParms [ 0 ], out iWidth ) == false )
+        {
+          iWidth = 0;
+        }
+        if ( arParms.Length > 1 )
+        {
+          if ( int.TryParse ( arParms [ 1 ], out iHeight ) == false )
+          {
+            iHeight = 0;
+          }
+        }
+      }
+
+      this.LogDebug ( "iWidth: " + iWidth );
+      this.LogDebug ( "iHeight: " + iHeight );
+
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, iWidth.ToString ( ) );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, iHeight.ToString ( ) );
+
+      this.LogDebug ( "Value: " + GroupField.Value );
+
+      return;
+
+    }//END getImageField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the external image form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
     private void getExternalImageField (
         Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
@@ -1977,6 +2084,43 @@ namespace Evado.UniForm.Digital
 
     }//END getDateField method.
 
+    // =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the numeric form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDateRangeField (
+       Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getFloatRangeField" );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Date_Range;
+      GroupField.Value = Field.ItemValue;
+
+      // 
+      // Set the custom validation script if it exists.
+      // 
+      if ( Field.Design.JavaScript != String.Empty )
+      {
+        GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Validation_Callback,
+          "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
+      }
+      if ( Field.TypeId == Evado.Model.EvDataTypes.Integer )
+      {
+        GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Validation_Callback,
+          "Evado.Form.onIntegerValidation" );
+      }
+
+    }//END getFloatRangeField method.
+
     //  =================================================================================
     /// <summary>
     /// Description:
@@ -2224,9 +2368,9 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
-    /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
-    private void getSelectonField ( Evado.Model.Digital.EdRecordField Field,
+    private void getSelectonField ( 
+      Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getSelectonField" );
@@ -2257,6 +2401,44 @@ namespace Evado.UniForm.Digital
         GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
+
+    }//END getSelectonField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the external selection list form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getExternalSelectonField ( 
+      Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getExternalSelectonField" );
+      this.LogDebug ( "Options: " + Field.Design.Options );
+
+      // 
+      // Initialise the methods object and variables.
+      // 
+      String listId = Field.Design.ExSelectionListId; 
+      String category = Field.Design.ExSelectionListId;
+
+      //
+      // get the external selection list options.
+      //
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Selection_List;
+      GroupField.Value = Field.ItemValue;
+      GroupField.OptionList = optionlist;
+      GroupField.Mandatory = Field.Design.Mandatory;
+      GroupField.setBackgroundColor ( Model.UniForm.FieldParameterList.BG_Mandatory, Model.UniForm.Background_Colours.Red );
 
     }//END getSelectonField method.
 

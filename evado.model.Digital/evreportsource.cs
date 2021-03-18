@@ -80,11 +80,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    EvReport.ReportSourceCode _ReportSource = EvReport.ReportSourceCode.Null;
+    EdReport.ReportSourceCode _ReportSource = EdReport.ReportSourceCode.Null;
     /// <summary>
     /// This property contains a report source code
     /// </summary>
-    public EvReport.ReportSourceCode ReportSource
+    public EdReport.ReportSourceCode ReportSource
     {
       get
       {
@@ -112,11 +112,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    List<EvReportQuery> _QueryList = new List<EvReportQuery> ( );
+    List<EdReportQuery> _QueryList = new List<EdReportQuery> ( );
     /// <summary>
     /// This property contains the list of query options for this data source.
     /// </summary>
-    public List<EvReportQuery> QueryList 
+    public List<EdReportQuery> QueryList 
     {
       get
       {
@@ -128,11 +128,11 @@ namespace Evado.Model.Digital
       }
     }
 
-    List<EvReportColumn> _ColumnList = new List<EvReportColumn> ( );
+    List<EdReportColumn> _ColumnList = new List<EdReportColumn> ( );
     /// <summary>
     /// This property contains the list of column options for this data source.
     /// </summary>
-    public List<EvReportColumn> ColumnList
+    public List<EdReportColumn> ColumnList
     {
       get
       {
@@ -183,11 +183,11 @@ namespace Evado.Model.Digital
       //
       // Create the option list.
       //
-      foreach ( EvReportQuery query in QueryList )
+      foreach ( EdReportQuery query in QueryList )
       {
         option = new EvOption ( query.QueryId, query.QueryTitle );
 
-        if ( query.DataType != EvReport.DataTypes.Text )
+        if ( query.DataType != EdReport.DataTypes.Text )
         {
           option.Description += " (" + query.DataType + ")";
         }
@@ -234,11 +234,11 @@ namespace Evado.Model.Digital
       //
       // Create the option list.
       //
-      foreach ( EvReportColumn column in ColumnList )
+      foreach ( EdReportColumn column in ColumnList )
       {
         option = new EvOption ( column.ColumnId, column.HeaderText );
 
-        if ( column.DataType != EvReport.DataTypes.Text )
+        if ( column.DataType != EdReport.DataTypes.Text )
         {
           option.Description += " (" + column.DataType + ")";
         }
@@ -258,7 +258,7 @@ namespace Evado.Model.Digital
     /// <param name="QueryId">String: the queries identifier.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportQuery getQuery ( String QueryId )
+    public EdReportQuery getQuery ( String QueryId )
     {
       //
       // exit if query list is null.
@@ -271,7 +271,7 @@ namespace Evado.Model.Digital
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportQuery query in QueryList )
+      foreach ( EdReportQuery query in QueryList )
       {
         if ( query.QueryId == QueryId )
         {
@@ -282,7 +282,7 @@ namespace Evado.Model.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportQuery ( );
+      return new EdReportQuery ( );
 
     }//END getQuery method
 
@@ -293,20 +293,20 @@ namespace Evado.Model.Digital
     /// <param name="SelectionSource">String: the selection source.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportQuery getQueryBySelectionSource ( EvReport.SelectionListTypes SelectionSource )
+    public EdReportQuery getQueryBySelectionSource ( EdReport.SelectionListTypes SelectionSource )
     {
       //
       // exit if query list is null.
       //
       if ( QueryList == null )
       {
-        return new EvReportQuery ( );
+        return new EdReportQuery ( );
       }
 
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportQuery query in QueryList )
+      foreach ( EdReportQuery query in QueryList )
       {
         if ( query.SelectionSource == SelectionSource )
         {
@@ -317,7 +317,7 @@ namespace Evado.Model.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportQuery ( );
+      return new EdReportQuery ( );
 
     }//END getQuery method
 
@@ -328,20 +328,20 @@ namespace Evado.Model.Digital
     /// <param name="ColumnId">String: the column identifier.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportColumn getColumn ( String ColumnId )
+    public EdReportColumn getColumn ( String ColumnId )
     {
       //
       // exit if query list is null.
       //
       if ( ColumnList == null )
       {
-        return new EvReportColumn ( );
+        return new EdReportColumn ( );
       }
 
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportColumn column in ColumnList )
+      foreach ( EdReportColumn column in ColumnList )
       {
         if ( column.ColumnId == ColumnId )
         {
@@ -352,7 +352,7 @@ namespace Evado.Model.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportColumn ( );
+      return new EdReportColumn ( );
 
     }//END getColumn method
 
@@ -363,20 +363,20 @@ namespace Evado.Model.Digital
     /// <param name="SourceField">String: the column source field.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportColumn getColumnBySourceField ( String SourceField )
+    public EdReportColumn getColumnBySourceField ( String SourceField )
     {
       //
       // exit if query list is null.
       //
       if ( QueryList == null )
       {
-        return new EvReportColumn ( );
+        return new EdReportColumn ( );
       }
 
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportColumn column in ColumnList )
+      foreach ( EdReportColumn column in ColumnList )
       {
         if ( column.SourceField == SourceField )
         {
@@ -387,7 +387,7 @@ namespace Evado.Model.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportColumn ( );
+      return new EdReportColumn ( );
 
     }//END getColumn method
 

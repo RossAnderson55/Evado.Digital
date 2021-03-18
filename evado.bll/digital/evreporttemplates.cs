@@ -93,16 +93,16 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of report objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getReportList (
-      EvReport.ReportTypeCode ReportType,
+    public List<EdReport> getReportList (
+      EdReport.ReportTypeCode ReportType,
       string Category )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod( "getReportList method " );
 
-      List<EvReport> view = this._dalReportTemplates.getReportList ( 
+      List<EdReport> view = this._dalReportTemplates.getReportList ( 
         ReportType, 
-        EvReport.ReportScopeTypes.Null, 
+        EdReport.ReportScopeTypes.Null, 
         Category, false );
 
       this.LogClass ( this._dalReportTemplates.Log );
@@ -126,16 +126,16 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of report objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getAllReportList (
-      EvReport.ReportTypeCode ReportTypeId,
+    public List<EdReport> getAllReportList (
+      EdReport.ReportTypeCode ReportTypeId,
       String Category )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod ( "getAllReportList method " );
 
-      List<EvReport> reportList = this._dalReportTemplates.getReportList (
+      List<EdReport> reportList = this._dalReportTemplates.getReportList (
         ReportTypeId,
-        EvReport.ReportScopeTypes.Null,
+        EdReport.ReportScopeTypes.Null,
         Category,
         false );
 
@@ -159,16 +159,16 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of report objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getReportList (
-      EvReport.ReportTypeCode ReportType,
-      EvReport.ReportScopeTypes ReportScope )
+    public List<EdReport> getReportList (
+      EdReport.ReportTypeCode ReportType,
+      EdReport.ReportScopeTypes ReportScope )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod ( "getReportList method " );
       this.LogDebug ( "ReportTypeId: " + ReportType);
       this.LogDebug ( "ReportScope: " + ReportScope );
 
-      List<EvReport> view = this._dalReportTemplates.getReportList (
+      List<EdReport> view = this._dalReportTemplates.getReportList (
         ReportType, 
         ReportScope,
         String.Empty,
@@ -196,10 +196,10 @@ namespace Evado.Bll.Digital
     /// 2. Return a list of report objects. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getReportList (
-      EvReport.ReportTypeCode ReportTypeId,
+    public List<EdReport> getReportList (
+      EdReport.ReportTypeCode ReportTypeId,
       String Category,
-      EvReport.ReportScopeTypes ReportScope )
+      EdReport.ReportScopeTypes ReportScope )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod( "getReportList method ");
@@ -207,7 +207,7 @@ namespace Evado.Bll.Digital
       this.LogDebug ( "Category: " + Category);
       this.LogDebug ( "ReportScope: " + ReportScope );
 
-      List<EvReport> view = this._dalReportTemplates.getReportList (
+      List<EdReport> view = this._dalReportTemplates.getReportList (
          ReportTypeId, ReportScope, Category, false );
 
       this.LogClass ( this._dalReportTemplates.Log );
@@ -385,7 +385,7 @@ namespace Evado.Bll.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getSelectionList (
-      EvReport.SelectionListTypes selectionType,
+      EdReport.SelectionListTypes selectionType,
       string ListParameters,
       Evado.Model.Digital.EdUserProfile profile )
     {
@@ -402,7 +402,7 @@ namespace Evado.Bll.Digital
       //
       switch ( selectionType )
       {
-        case EvReport.SelectionListTypes.Status:
+        case EdReport.SelectionListTypes.Status:
           {
             this.LogValue ( "Status source selected." );
 
@@ -416,7 +416,7 @@ namespace Evado.Bll.Digital
 
             break;
           }
-        case EvReport.SelectionListTypes.Record_State:
+        case EdReport.SelectionListTypes.Record_State:
           {
             this.LogValue ( "Record source selected." );
             returnList = EdRecord.getRptRecordStates ( );
@@ -424,7 +424,7 @@ namespace Evado.Bll.Digital
           }
 
 
-        case EvReport.SelectionListTypes.LayoutId:
+        case EdReport.SelectionListTypes.LayoutId:
           {
             this.LogValue ( "Form source selected." );
             EdRecordLayouts formsBll = new EdRecordLayouts ( this.ClassParameter );
@@ -465,13 +465,13 @@ namespace Evado.Bll.Digital
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Null ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportTypeCode.Null ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.General ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportTypeCode.General ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Entity ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportTypeCode.Entity ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportTypeCode.Record ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportTypeCode.Record ) );
 
       // 
       // Return the repot QueryType currentSchedule.
@@ -502,15 +502,15 @@ namespace Evado.Bll.Digital
       //
       List<EvOption> list = new List<EvOption> ( );
 
-      list.Add ( new EvOption ( EvReport.ReportScopeTypes.Null, String.Empty ) );
+      list.Add ( new EvOption ( EdReport.ReportScopeTypes.Null, String.Empty ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Operational_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportScopeTypes.Operational_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Monitoring_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportScopeTypes.Monitoring_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Data_Management_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportScopeTypes.Data_Management_Reports ) );
 
-      list.Add ( Evado.Model.EvStatics.getOption ( EvReport.ReportScopeTypes.Site_Reports ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( EdReport.ReportScopeTypes.Site_Reports ) );
 
       // 
       // Return the repot QueryType currentSchedule.
@@ -538,13 +538,13 @@ namespace Evado.Bll.Digital
     /// 2. Return the report object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( Guid ReportGuid )
+    public EdReport getReport ( Guid ReportGuid )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod( "getReport method. ");
       this.LogDebug ( "Guid: " + ReportGuid );
 
-      EvReport report = this._dalReportTemplates.getReport ( ReportGuid );
+      EdReport report = this._dalReportTemplates.getReport ( ReportGuid );
 
       this.LogClass ( this._dalReportTemplates.Log );
 
@@ -562,15 +562,15 @@ namespace Evado.Bll.Digital
     /// <param name="Scope">EvReport.ReportScopeTypes: Report Scope.</param>
     /// <returns>EvReport: a report object</returns>
     // -------------------------------------------------------------------------------------
-    public EvReport getReportByScope ( EvReport.ReportScopeTypes Scope )
+    public EdReport getReportByScope ( EdReport.ReportScopeTypes Scope )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       this.LogMethod ( "getReportByScope method. " );
       this.LogDebug ( "Scope: " + Scope );
-      EvReport report = new EvReport ( );
+      EdReport report = new EdReport ( );
 
-      List<EvReport> reportList = this._dalReportTemplates.getReportList (
-      EvReport.ReportTypeCode.Null,
+      List<EdReport> reportList = this._dalReportTemplates.getReportList (
+      EdReport.ReportTypeCode.Null,
       Scope, String.Empty, false );
 
       if ( reportList.Count == 0 )
@@ -614,7 +614,7 @@ namespace Evado.Bll.Digital
     /// 4. Return the event code of the method execution. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes saveReport ( EvReport Report )
+    public EvEventCodes saveReport ( EdReport Report )
     {
       this._DebugLog = new System.Text.StringBuilder ( );
       EvEventCodes iReturn = EvEventCodes.Ok;

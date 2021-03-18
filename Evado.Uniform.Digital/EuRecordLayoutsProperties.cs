@@ -554,7 +554,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.ApplicationMethods.Get_Object );
 
       groupCommand.AddParameter ( EdRecordSection.FormSectionClassFieldNames.Sectn_No.ToString ( ), "-1" );
-      groupCommand.SetPageId ( EvPageIds.Form_Properties_Section_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.Form_Properties_Section_Page );
       groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
 
       this.LogValue ( "No of form sections: " + this.Session.RecordLayout.Design.FormSections.Count );
@@ -570,7 +570,7 @@ namespace Evado.UniForm.Digital
           Model.UniForm.ApplicationMethods.Get_Object );
 
         groupCommand.AddParameter ( EdRecordSection.FormSectionClassFieldNames.Sectn_No.ToString ( ), formSection.No );
-        groupCommand.SetPageId ( EvPageIds.Form_Properties_Section_Page );
+        groupCommand.SetPageId ( EdStaticPageIds.Form_Properties_Section_Page );
       }
 
       this.LogValue ( "After No of form sections: " + this.Session.RecordLayout.Design.FormSections.Count );
@@ -875,7 +875,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Record_Layouts.ToString ( ),
         Model.UniForm.ApplicationMethods.Custom_Method );
 
-      pageCommand.SetPageId ( EvPageIds.Form_Properties_Page );
+      pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
       pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
       pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
       pageCommand.AddParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER, "1" );

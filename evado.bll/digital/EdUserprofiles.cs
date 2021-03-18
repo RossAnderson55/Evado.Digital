@@ -91,7 +91,7 @@ namespace Evado.Bll.Digital
     /// </remarks>
     // ----------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EdUserProfile> GetView (
-     EdUserProfile.UserTypesList Type,
+     String Type,
       String OrgId )
     {
       this.LogMethod ( "GetView method." );
@@ -160,7 +160,7 @@ namespace Evado.Bll.Digital
     /// </remarks>
     //  -------------------------------------------------------------------------------------
     public List<EvOption> GetList (
-     EdUserProfile.UserTypesList Type,
+     String Type,
      String OrgId,
       bool useGuid )
     {
@@ -201,7 +201,7 @@ namespace Evado.Bll.Digital
     /// <param name="OrgId">String: The organisation identifier.</param>
     /// <returns>Integer</returns>
     // -------------------------------------------------------------------------------------
-    public int UserCount ( EdUserProfile.UserTypesList UserType )
+    public int UserCount ( String UserType )
     {
       this.LogMethod ( "UserCount method." );
       this.LogDebug ( "UserType: " + UserType );

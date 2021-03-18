@@ -100,7 +100,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuAdapter.HomePage.cs" />
-    <Compile Include="EuMenusUtility.cs" />
+    <Compile Include="EuNavigationCommands.cs" />
     <Compile Include="EuUserProfiles.cs" />
     <Compile Include="EvServerPageScript.cs" />
     <Compile Include="EuRecordFields.cs">

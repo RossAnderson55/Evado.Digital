@@ -205,6 +205,12 @@ namespace Evado.Model.Digital
       Only_Author,
 
       /// <summary>
+      /// This enumeration defines the only the author can edit the object content.
+      /// The default display is in display only layout
+      /// </summary>
+      Only_Author_Selectable,
+
+      /// <summary>
       /// This enumeration defines the all organisatino users associated with an object can edit the object content..
       /// </summary>
       Only_Organisation,
@@ -443,9 +449,19 @@ namespace Evado.Model.Digital
       AuthorUserId,
 
       /// <summary>
-      /// This enumeration parent layout idnetifier  field.
+      /// This enumeration parent layout identifier  field.
       /// </summary>
       ParentLayoutId,
+
+      /// <summary>
+      /// This enumeration parent organisation identifier  field.
+      /// </summary>
+      ParentOrgId,
+
+      /// <summary>
+      /// This enumeration parent user identifier  field.
+      /// </summary>
+      ParentUserId,
 
       /// <summary>
       /// This enumeration parent layout guid field.
@@ -478,9 +494,19 @@ namespace Evado.Model.Digital
       RecordPrefix,
 
       /// <summary>
-      /// This enumeration identifies the displkay record summary field
+      /// This enumeration identifies the link content setting  field
       /// </summary>
       LinkContentSetting,
+
+      /// <summary>
+      /// This enumeration identifies the header format  field
+      /// </summary>
+      HeaderFormat,
+
+      /// <summary>
+      /// This enumeration identifies the footer format  field
+      /// </summary>
+      FooterFormat,
 
       /// <summary>
       /// This enumeration identifies the display related entities field
@@ -633,6 +659,21 @@ namespace Evado.Model.Digital
       set
       {
         this._ParentOrgId = value;
+      }
+    }
+    private string _ParentUserId = String.Empty;
+    /// <summary>
+    /// This property contains the user id of the parent organisation associated with this object.
+    /// </summary>
+    public string ParentUserId
+    {
+      get
+      {
+        return this._ParentUserId;
+      }
+      set
+      {
+        this._ParentUserId = value;
       }
     }
 
@@ -886,7 +927,7 @@ namespace Evado.Model.Digital
               return link;
             }//END default case
         }//END switch statement
-      
+
       }//Get method
 
     }//END method
@@ -1442,38 +1483,24 @@ namespace Evado.Model.Digital
       }
 
       //
-      // Set author only access.
-      //
-      if ( this.Design.AuthorAccess == AuthorAccessList.Only_Author
-        && this.AuthorUserId == UserProfile.UserId )
-      {
-        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
-        return;
-      }
-
-      //
       // Set the object author access
       //
       switch ( this.Design.AuthorAccess )
       {
+        case AuthorAccessList.Only_Author_Selectable:
+          {
+            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
+            return;
+
+          }
         case AuthorAccessList.Only_Author:
           {
-            //
-            // Set Record Author access when organisation only access is set and 
-            // the user organisation is the same as the parent organsiations.
-            //
-            if ( this.ParentOrgId == UserProfile.OrgId )
+            if ( this.AuthorUserId == UserProfile.UserId )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
+              return;
             }
-            else if ( this.State != EdRecordObjectStates.Submitted_Record )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.None;
-            }
-            else
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
-            }
+            this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             return;
           }
         case AuthorAccessList.Only_Organisation:
@@ -1485,10 +1512,6 @@ namespace Evado.Model.Digital
             if ( this.ParentOrgId == UserProfile.OrgId )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
-            }
-            else if ( this.State != EdRecordObjectStates.Submitted_Record )
-            {
-              this.FormAccessRole = EdRecord.FormAccessRoles.None;
             }
             else
             {
@@ -1836,6 +1859,19 @@ namespace Evado.Model.Digital
               Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( Value );
             return;
           }
+        case RecordFieldNames.HeaderFormat:
+          {
+            this.Design.HeaderFormat =
+              Evado.Model.EvStatics.parseEnumValue<EdRecord.HeaderFormat> ( Value );
+            return;
+          }
+        case RecordFieldNames.FooterFormat:
+          {
+            this.Design.FooterFormat =
+              Evado.Model.EvStatics.parseEnumValue<EdRecord.FooterFormat> ( Value );
+            return;
+          }
+
         case RecordFieldNames.DisplayRelatedEntities:
           {
             this.Design.DisplayRelatedEntities = EvcStatics.getBool ( Value );

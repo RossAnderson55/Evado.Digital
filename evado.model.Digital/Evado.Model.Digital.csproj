@@ -140,7 +140,7 @@
     <Compile Include="EvReportSource.cs" />
     <Compile Include="EdModuleCodes.cs" />
     <Compile Include="EvExportParameters.cs" />
-    <Compile Include="EvPageIds.cs" />
+    <Compile Include="EdStaticPageIds.cs" />
     <Compile Include="evalert.cs" />
     <Compile Include="EvBinaryFileMetadata.cs" />
     <Compile Include="evchart.cs" />

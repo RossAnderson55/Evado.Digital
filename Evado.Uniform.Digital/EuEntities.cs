@@ -252,6 +252,14 @@ namespace Evado.UniForm.Digital
         //
         this.updateSessionValue ( PageCommand );
 
+
+        EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+        if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+        {
+          pageId = EdStaticPageIds.Null;
+        }
+
         // 
         // Determine the method to be called
         // 
@@ -264,14 +272,14 @@ namespace Evado.UniForm.Digital
             {
               this.LogDebug ( "Get List of object method" );
 
-              switch ( this.Session.PageId )
+              switch ( pageId )
               {
-                case EvPageIds.Entity_Export_Page:
+                case EdStaticPageIds.Entity_Export_Page:
                   {
                     clientDataObject = this.getRecordExport_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Entity_Query_View:
+                case EdStaticPageIds.Entity_Query_View:
                   {
                     clientDataObject = this.GetFilteredListObject ( PageCommand );
                     break;
@@ -746,7 +754,7 @@ namespace Evado.UniForm.Digital
         }
 
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Records_View.ToString ( );
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -922,7 +930,7 @@ namespace Evado.UniForm.Digital
         }
 
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Records_View.ToString ( );
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -1075,7 +1083,7 @@ namespace Evado.UniForm.Digital
 
       selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      selectionCommand.SetPageId ( EvPageIds.Entity_Query_View ); 
+      selectionCommand.SetPageId ( EdStaticPageIds.Entity_Query_View ); 
 
       this.LogMethodEnd ( "getQueryList_SelectionGroup" );
 
@@ -1253,7 +1261,7 @@ namespace Evado.UniForm.Digital
       // Add a create record command.
       //
       if ( this.Session.Entity_SelectedLayoutId != String.Empty
-        && this.Session.PageId != EvPageIds.Entity_Query_View )
+        && this.Session.PageId != EdStaticPageIds.Entity_Query_View.ToString() )
       {
         groupCommand = pageGroup.addCommand (
           "New Record",
@@ -1387,7 +1395,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Record_View_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Record_Export_Page.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Record_Export_Page.ToString ( );
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -1772,7 +1780,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasDesignAccess == false )
+        if ( this.Session.UserProfile.hasRole( this.Session.UserProfile.Roles) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getObject",
@@ -1794,10 +1802,10 @@ namespace Evado.UniForm.Digital
         // Get the record.
 
         var result = this.GetEntity ( PageCommand );
+
         // 
         // if the guid is empty the parameter was not found to exit.
         // 
-
         if ( result != EvEventCodes.Ok )
         {
           this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
@@ -1860,6 +1868,18 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "GetEntity" );
+
+      //
+      // if the page command has a layout identifier then assume parental identifier retrieval.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id ) == true )
+      {
+        var result = this.GetEntityByParent ( PageCommand );
+
+        this.LogMethodEnd ( "GetEntity" );
+        return result;
+      }
+
       //
       // Initialise the methods variables and objects.
       //
@@ -1924,6 +1944,110 @@ namespace Evado.UniForm.Digital
       this.Session.PushEntity ( this.Session.Entity );
 
       this.LogMethodEnd ( "GetEntity" );
+      return EvEventCodes.Ok;
+
+    }//ENd GetEntity method
+
+    //  =============================================================================== 
+    /// <summary>
+    /// This method retrieves any by its LayoutId and Parent identifiers.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    private EvEventCodes GetEntityByParent (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "GetEntityByParent" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      String layoutId = String.Empty;
+      String orgId = String.Empty;
+      String userId = String.Empty;
+
+      //
+      // retrieve the parent references from the command parameters.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id ) == true )
+      {
+        layoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+      }
+
+      //
+      // There can only be one parental identifier and the organisation identifier is taking precedence
+      // over the user parental identifier.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.ParentOrgId ) == true )
+      {
+        orgId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.ParentOrgId );
+      }
+      else
+      {
+        if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.ParentUserId ) == true )
+        {
+          userId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.ParentUserId );
+        }
+      }
+
+      //
+      // return a retrieval error message guid is empty.
+      //
+      if ( (layoutId == String.Empty )
+        || ( orgId == String.Empty && userId == String.Empty ) )
+      {
+        return EvEventCodes.Identifier_General_ID_Error;
+      }
+
+      //
+      // Attempt to pull the entity from the entity dictionary.
+      //
+      this.Session.Entity = this.Session.PullEntity ( layoutId, orgId, userId );
+
+      //
+      // if the pull returned entity exists exit.
+      //
+      if ( this.Session.Entity != null )
+      {
+        this.LogDebug ( "Entity Loaded from dictionary" );
+        this.LogMethodEnd ( "GetEntityByParent" );
+        return EvEventCodes.Ok;
+      }
+
+      //
+      // Retrieve the record object from the database via the DAL and BLL layers.
+      //
+      if ( orgId != String.Empty )
+      {
+        this.LogDebug ( "Retrieving Entity be organisation parental identifier" );
+
+        this.Session.Entity = this._Bll_Entities.GetItemByParentOrgId ( layoutId, orgId );
+      }
+      else
+      {
+        this.LogDebug ( "Retrieving Entity be organisation parental identifier" );
+
+        this.Session.Entity = this._Bll_Entities.GetItemByParentOrgId ( layoutId, userId );
+      }
+
+      this.LogClass ( this._Bll_Entities.Log );
+
+      this.LogDebug ( "Entity {0}, Title {1}.", this.Session.Entity.EntityId, this.Session.Entity.Title );
+      this.LogDebug ( "There are {0} of fields in the record.", this.Session.Entity.Fields.Count );
+
+      //
+      // return a retrieval error message if the resulting common record guid is empty.
+      //
+      if ( this.Session.Entity.Guid == Guid.Empty )
+      {
+        this.LogMethodEnd ( "GetEntityByParent" );
+        return EvEventCodes.Database_Record_Retrieval_Error;
+      }
+
+      //
+      // push the new entity onto the directory list.
+      //
+      this.Session.PushEntity ( this.Session.Entity );
+
+      this.LogMethodEnd ( "GetEntityByParent" );
       return EvEventCodes.Ok;
 
     }//ENd GetEntity method
@@ -2580,7 +2704,7 @@ namespace Evado.UniForm.Digital
         // 
         // Update the object.
         // 
-        if ( this.Session.PageId == EvPageIds.Record_Admin_Page )
+        if ( this.Session.PageId == EdStaticPageIds.Record_Admin_Page.ToString() )
         {
           this.updateObject_AdminValues ( PageCommand );
         }

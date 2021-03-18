@@ -46,6 +46,7 @@ namespace Evado.Model.Digital
 
     #region class property
 
+    public bool IsEntity = false; 
 
     private string _Title = String.Empty;
     /// <summary>

@@ -363,6 +363,8 @@ namespace Evado.Dal.Digital
       // 
       EdRecord record = new EdRecord ( );
 
+      record.Design.IsEntity = false;
+
       // 
       // Update the trial record object with compatible values from datarow.
       // 

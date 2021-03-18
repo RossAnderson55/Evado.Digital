@@ -1881,6 +1881,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default organisation type:.
+        /// </summary>
+        public static string Config_Default_Org_Type_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Default_Org_Type_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default user type:.
+        /// </summary>
+        public static string Config_Default_User_Type_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Default_User_Type_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable Binary Data:.
         /// </summary>
         public static string Config_Enable_Binary_Data_Field_Label {
@@ -1976,6 +1994,24 @@ namespace Evado.Model.Digital {
         public static string Config_User_Primary_Entity_Field_Label {
             get {
                 return ResourceManager.GetString("Config_User_Primary_Entity_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a new user type on each line with no spaces between the words on a line..
+        /// </summary>
+        public static string Config_UserType_List_Field_Description {
+            get {
+                return ResourceManager.GetString("Config_UserType_List_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configurable User Types:.
+        /// </summary>
+        public static string Config_UserType_List_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_UserType_List_Field_Label", resourceCulture);
             }
         }
         
@@ -2399,6 +2435,15 @@ namespace Evado.Model.Digital {
         public static string Entities_Child_Entity_Group_Title {
             get {
                 return ResourceManager.GetString("Entities_Child_Entity_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Page.
+        /// </summary>
+        public static string Entity_Enable_Edit_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_Enable_Edit_Command_Title", resourceCulture);
             }
         }
         
@@ -6118,6 +6163,24 @@ namespace Evado.Model.Digital {
         public static string Record_Withdraw_Command {
             get {
                 return ResourceManager.GetString("Record_Withdraw_Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layout FooterFormat:.
+        /// </summary>
+        public static string RecordLayout_Footer_Format_Field_Title {
+            get {
+                return ResourceManager.GetString("RecordLayout_Footer_Format_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layout Header Format:.
+        /// </summary>
+        public static string RecordLayout_Header_Format_Field_Title {
+            get {
+                return ResourceManager.GetString("RecordLayout_Header_Format_Field_Title", resourceCulture);
             }
         }
         

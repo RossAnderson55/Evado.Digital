@@ -82,11 +82,11 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.Report == null )
       {
-        this.Session.Report = new EvReport ( );
+        this.Session.Report = new EdReport ( );
       }
       if ( this.Session.ReportTemplateList == null )
       {
-        this.Session.ReportTemplateList = new List<EvReport> ( );
+        this.Session.ReportTemplateList = new List<EdReport> ( );
       }
 
     }//END Method
@@ -267,39 +267,13 @@ namespace Evado.UniForm.Digital
         clientDataObject.Id = Guid.NewGuid ( );
         clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
 
-        switch ( this.Session.PageId )
+        switch ( this.Session.StaticPageId )
         {
-          case EvPageIds.Data_Management_Report_List:
-            {
-              clientDataObject.Title = EdLabels.Reports_Data_Management_List_Page_Title;
-              this.Session.ReportScope = EvReport.ReportScopeTypes.Data_Management_Reports;
-              break;
-            }
-          case EvPageIds.Monitoring_Report_List:
-            {
-              clientDataObject.Title = EdLabels.Reports_Monitoring_List_Page_Title;
-              this.Session.ReportScope = EvReport.ReportScopeTypes.Monitoring_Reports;
-              break;
-            }
-          /*
-              case EvPageIds.Financial_Report_List:
-                {
-                  clientDataObject.Title = EdLabels.Reports_Financial_List_Page_Title;
-                  this.Session.ReportScope = EvReport.ReportScopeTypes.Finance_Reports;
-                  break;
-                }
-            */
-          case EvPageIds.Site_Report_List:
-            {
-              clientDataObject.Title = EdLabels.Reports_Site_List_Page_Title;
-              this.Session.ReportScope = EvReport.ReportScopeTypes.Site_Reports;
-              break;
-            }
-          case EvPageIds.Operational_Report_List:
+          case EdStaticPageIds.Operational_Report_List:
           default:
             {
               clientDataObject.Title = EdLabels.Reports_Operational_View_Page_Title;
-              this.Session.ReportScope = EvReport.ReportScopeTypes.Operational_Reports;
+              this.Session.ReportScope = EdReport.ReportScopeTypes.Operational_Reports;
               break;
             }
         }//END PageId switch
@@ -356,9 +330,9 @@ namespace Evado.UniForm.Digital
       //
       String parameterValue = String.Empty;
 
-      this.Session.ReportScope = EvReport.ReportScopeTypes.Operational_Reports;
+      this.Session.ReportScope = EdReport.ReportScopeTypes.Operational_Reports;
 
-      this.Session.ReportType = PageCommand.GetParameter<EvReport.ReportTypeCode> ( EuReports.CONST_Report_TYPE );
+      this.Session.ReportType = PageCommand.GetParameter<EdReport.ReportTypeCode> ( EuReports.CONST_Report_TYPE );
 
       this.LogValue ( "ReportType: " + this.Session.ReportType );
       this.LogValue ( "ReportScope: " + this.Session.ReportScope );
@@ -424,7 +398,7 @@ namespace Evado.UniForm.Digital
         // Query and database.
         // 
         this.Session.ReportTemplateList = this._Bll_ReportTemplates.getReportList (
-          EvReport.ReportTypeCode.Null,
+          EdReport.ReportTypeCode.Null,
           this.Session.ReportScope );
 
         this.LogValue ( this._Bll_Reports.Log );
@@ -434,13 +408,13 @@ namespace Evado.UniForm.Digital
         // 
         if ( this.Session.ReportTemplateList.Count == 0 )  // If nothing returned create a blank row.
         {
-          this.Session.ReportTemplateList.Add ( new EvReport ( ) );
+          this.Session.ReportTemplateList.Add ( new EdReport ( ) );
         }
 
         // 
         // generate the page links.
         // 
-        foreach ( EvReport report in this.Session.ReportTemplateList )
+        foreach ( EdReport report in this.Session.ReportTemplateList )
         {
           String stReportTitle = report.ReportTitle + EdLabels.Space_Arrow_Right + report.ReportTitle;
 
@@ -450,7 +424,7 @@ namespace Evado.UniForm.Digital
             Model.UniForm.ApplicationMethods.Get_Object );
 
           command.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-             Evado.Model.Digital.EvPageIds.Operational_Report_Page );
+             Evado.Model.Digital.EdStaticPageIds.Operational_Report_Page );
 
           command.AddParameter ( Model.UniForm.CommandParameters.Short_Title,
             report.ReportId );
@@ -613,7 +587,7 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( this._Bll_ReportTemplates.Log );
 
-      this.Session.Report.DataRecords = new List<EvReportRow> ( );
+      this.Session.Report.DataRecords = new List<EdReportRow> ( );
 
       this.LogValue ( "SessionObjects.Report.ReportId: " + this.Session.Report.ReportId );
       this.LogMethodEnd ( "getReportTemplate" );
@@ -628,7 +602,7 @@ namespace Evado.UniForm.Digital
     private void getReport_Execute_Query ( )
     {
       this.LogMethod ( "getReport_Exexute_Query" );
-      this.Session.Report.DataRecords = new List<EvReportRow> ( );
+      this.Session.Report.DataRecords = new List<EdReportRow> ( );
 
       this.Session.Report = this._Bll_Reports.getReport ( this.Session.Report );
 
@@ -682,7 +656,7 @@ namespace Evado.UniForm.Digital
       for ( int index = 0; index < this.Session.Report.Queries.Length; index++ )
       {
         String fieldId = EuReports.CONST_QUERY_FIELD_ID + index.ToString ( );
-        EvReportQuery query = this.Session.Report.Queries [ index ];
+        EdReportQuery query = this.Session.Report.Queries [ index ];
 
         this.LogValue ( "Query: " + index + " Prompt: " + query.Prompt
           + " value name: " + query.ValueName
@@ -732,17 +706,17 @@ namespace Evado.UniForm.Digital
 
       switch ( this.Session.Report.ReportScope )
       {
-        case EvReport.ReportScopeTypes.Data_Management_Reports:
+        case EdReport.ReportScopeTypes.Data_Management_Reports:
           {
             ClientDataObject.Title = EdLabels.Reports_Data_Management_Page_Title;
             break;
           }
-        case EvReport.ReportScopeTypes.Site_Reports:
+        case EdReport.ReportScopeTypes.Site_Reports:
           {
             ClientDataObject.Title = EdLabels.Reports_Data_Management_Page_Title;
             break;
           }
-        case EvReport.ReportScopeTypes.Monitoring_Reports:
+        case EdReport.ReportScopeTypes.Monitoring_Reports:
           {
             ClientDataObject.Title = EdLabels.Reports_Monitoring_Page_Title;
             break;
@@ -754,7 +728,7 @@ namespace Evado.UniForm.Digital
           break;
         }
          */
-        case EvReport.ReportScopeTypes.Operational_Reports:
+        case EdReport.ReportScopeTypes.Operational_Reports:
         default:
           {
             ClientDataObject.Title = EdLabels.Reports_Operational_Page_Title;
@@ -871,7 +845,7 @@ namespace Evado.UniForm.Digital
       //
       for ( int i = 0; i < this.Session.Report.Queries.Length; i++ )
       {
-        EvReportQuery query = this.Session.Report.Queries [ i ];
+        EdReportQuery query = this.Session.Report.Queries [ i ];
 
         //
         // skip null or empty queries.
@@ -885,7 +859,7 @@ namespace Evado.UniForm.Digital
         //
         //AFC July 01 2010 Hide the query if it is type hidden.
         //
-        if ( query.DataType == EvReport.DataTypes.Hidden )
+        if ( query.DataType == EdReport.DataTypes.Hidden )
         {
           continue;
         }
@@ -898,7 +872,7 @@ namespace Evado.UniForm.Digital
         {
           switch ( query.DataType )
           {
-            case EvReport.DataTypes.Date:
+            case EdReport.DataTypes.Date:
               {
                 dValue = Evado.Model.Digital.EvcStatics.getDateTime ( query.Value );
 
@@ -971,7 +945,7 @@ namespace Evado.UniForm.Digital
     /// <returns></returns>
     /// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private EvOption [ ] getQuerySelectionList (
-      EvReportQuery query )
+      EdReportQuery query )
     {
       this.LogMethod ( "getQuerySelectionList method " );
       this.LogValue ( "SelectionSource: " + query.SelectionSource );
@@ -991,7 +965,7 @@ namespace Evado.UniForm.Digital
       // 
       // Parse the listId into the selection list types.
       // 
-      EvReport.SelectionListTypes selectionListTypes = (EvReport.SelectionListTypes) Enum.Parse ( typeof ( EvReport.SelectionListTypes )
+      EdReport.SelectionListTypes selectionListTypes = (EdReport.SelectionListTypes) Enum.Parse ( typeof ( EdReport.SelectionListTypes )
         , listId );
 
       query.SelectionList = this._Bll_ReportTemplates.getSelectionList (
@@ -1051,7 +1025,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Column count: " + this.Session.Report.Columns.Count );
 
         String columnValue = String.Empty;
-        foreach ( EvReportColumn column in this.Session.Report.Columns )
+        foreach ( EdReportColumn column in this.Session.Report.Columns )
         {
           if ( columnValue != String.Empty )
           {
@@ -1061,7 +1035,7 @@ namespace Evado.UniForm.Digital
         }
         this.LogValue ( columnValue );
 
-        foreach ( EvReportRow row in this.Session.Report.DataRecords )
+        foreach ( EdReportRow row in this.Session.Report.DataRecords )
         {
           String rowValue = "";
           foreach ( string value in row.ColumnValues )
@@ -1269,7 +1243,9 @@ namespace Evado.UniForm.Digital
       // create a JSON serialisation of the report object.
       //
       stJsonReport = Newtonsoft.Json.JsonConvert.SerializeObject (
-        this.Session.Report, Newtonsoft.Json.Formatting.Indented, jsonSettings );
+        this.Session.Report, 
+        Newtonsoft.Json.Formatting.Indented, 
+        jsonSettings );
 
       //
       // Return the json serialised report.
@@ -1506,7 +1482,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        this.Session.Report = new EvReport ( );
+        this.Session.Report = new EdReport ( );
         this.Session.Report.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
 
         Guid reportTemplateGuid = Command.GetGuid ( );

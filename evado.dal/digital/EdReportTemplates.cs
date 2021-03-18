@@ -241,7 +241,7 @@ namespace Evado.Dal.Digital
     /// 1. Bind the values from Report object to the array of sql query parameters. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] parms, EvReport Report )
+    private void SetParameters ( SqlParameter [ ] parms, EdReport Report )
     {
       parms [ 0 ].Value = Report.Guid;
       parms [ 1 ].Value = String.Empty;
@@ -299,7 +299,7 @@ namespace Evado.Dal.Digital
       String value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SOURCE );
 
       reportSource.ReportSource =
-        Evado.Model.EvStatics.parseEnumValue<EvReport.ReportSourceCode> (
+        Evado.Model.EvStatics.parseEnumValue<EdReport.ReportSourceCode> (
         EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SOURCE ) );
 
       reportSource.SqlQuery = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_SQL_QUERY );
@@ -327,12 +327,12 @@ namespace Evado.Dal.Digital
     /// 2. Return the Report data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReportQuery readQueryRow ( DataRow Row, bool IsSource )
+    public EdReportQuery readQueryRow ( DataRow Row, bool IsSource )
     {
       // 
       // Initialise the methods variables and objects.
       // 
-      EvReportQuery reportQuery = new EvReportQuery ( );
+      EdReportQuery reportQuery = new EdReportQuery ( );
 
       // 
       // Extract the data object values.
@@ -343,7 +343,7 @@ namespace Evado.Dal.Digital
         EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_QUERY_TITLE );
 
       reportQuery.SelectionSource =
-        EvSqlMethods.getString<EvReport.SelectionListTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_SELECTION_SOURCE );
+        EvSqlMethods.getString<EdReport.SelectionListTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_SELECTION_SOURCE );
 
 
 
@@ -352,7 +352,7 @@ namespace Evado.Dal.Digital
       reportQuery.Prompt =
         EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_QUERY_PROMPT );
       reportQuery.DataType =
-        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_DATA_TYPE );
+        EvSqlMethods.getString<EdReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_QUERY_DATA_TYPE );
 
       //
       // IF the source query is false add the report query columns.
@@ -364,7 +364,7 @@ namespace Evado.Dal.Digital
         reportQuery.Mandatory =
           EvSqlMethods.getBool ( Row, EdReportTemplates.DB_REPORT_QUERY_MANDATORY );
         reportQuery.Operator =
-          EvSqlMethods.getString<EvReport.Operators> ( Row, EdReportTemplates.DB_REPORT_QUERY_OPERATOR );
+          EvSqlMethods.getString<EdReport.Operators> ( Row, EdReportTemplates.DB_REPORT_QUERY_OPERATOR );
       }
 
       //
@@ -389,12 +389,12 @@ namespace Evado.Dal.Digital
     /// 2. Return the Report data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReportColumn readColumnRow ( DataRow Row, bool IsSource )
+    public EdReportColumn readColumnRow ( DataRow Row, bool IsSource )
     {
       // 
       // Initialise the methods variables and objects.
       // 
-      EvReportColumn reportColumn = new EvReportColumn ( );
+      EdReportColumn reportColumn = new EdReportColumn ( );
 
       // 
       // Extract the data object values.
@@ -404,7 +404,7 @@ namespace Evado.Dal.Digital
       reportColumn.SourceField = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_SOURCE_FIELD );
       reportColumn.StyleWidth = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_STYLE_WIDTH );
       reportColumn.DataType =
-        EvSqlMethods.getString<EvReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_DATA_TYPE );
+        EvSqlMethods.getString<EdReport.DataTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_DATA_TYPE );
       reportColumn.ValueFormatingString = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_FORMATING );
 
       //
@@ -417,7 +417,7 @@ namespace Evado.Dal.Digital
         reportColumn.GroupingIndex =
           EvSqlMethods.getBool ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_INDEX );
         reportColumn.GroupingType =
-          EvSqlMethods.getString<EvReport.GroupingTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_TYPE );
+          EvSqlMethods.getString<EdReport.GroupingTypes> ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_GROUPING_TYPE );
         reportColumn.SectionLvl =
           EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_COLUMN_VALUE_SECTION_LEVEL );
 
@@ -451,12 +451,12 @@ namespace Evado.Dal.Digital
     /// 2. Return the Report data object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport readTemplateRow ( DataRow Row )
+    public EdReport readTemplateRow ( DataRow Row )
     {
       // 
       // Initialise the methods variables and objects.
       // 
-      EvReport report = new EvReport ( );
+      EdReport report = new EdReport ( );
       String value = String.Empty;
 
       // 
@@ -477,14 +477,14 @@ namespace Evado.Dal.Digital
       if ( value != String.Empty )
       {
         report.ReportType = Evado.Model.EvStatics.
-          parseEnumValue<EvReport.ReportTypeCode> ( value );
+          parseEnumValue<EdReport.ReportTypeCode> ( value );
       }
 
       value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SCOPE );
       if ( value != String.Empty )
       {
         report.ReportScope = Evado.Model.EvStatics.
-          parseEnumValue<EvReport.ReportScopeTypes> ( value );
+          parseEnumValue<EdReport.ReportScopeTypes> ( value );
       }
 
       report.SourceId = EvSqlMethods.getString ( Row, EdReportTemplates.DB_SOURCE_ID );
@@ -493,7 +493,7 @@ namespace Evado.Dal.Digital
       if ( value != String.Empty )
       {
         report.DataSourceId = Evado.Model.EvStatics.
-          parseEnumValue<EvReport.ReportSourceCode> ( value );
+          parseEnumValue<EdReport.ReportSourceCode> ( value );
       }
 
       value = EvSqlMethods.getString ( Row, EdReportTemplates.DB_REPORT_SQL_SOURCE );
@@ -506,7 +506,7 @@ namespace Evado.Dal.Digital
       if ( value != String.Empty )
       {
         report.LayoutTypeId = Evado.Model.EvStatics.
-          parseEnumValue<EvReport.LayoutTypeCode> ( value );
+          parseEnumValue<EdReport.LayoutTypeCode> ( value );
       }
 
       report.Version = EvSqlMethods.getInteger ( Row, EdReportTemplates.DB_REPORT_VERSION );
@@ -551,9 +551,9 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EvReport> getReportList (
-      EvReport.ReportTypeCode ReportType,
-      EvReport.ReportScopeTypes ReportScope,
+    public List<EdReport> getReportList (
+      EdReport.ReportTypeCode ReportType,
+      EdReport.ReportScopeTypes ReportScope,
       String Category,
       bool IncludeSuperseded )
     {
@@ -567,7 +567,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      List<EvReport> view = new List<EvReport> ( );
+      List<EdReport> view = new List<EdReport> ( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -588,12 +588,12 @@ namespace Evado.Dal.Digital
       // 
       SqlQueryString = SQl_QUERY_REPORT_TEMPLATES + "WHERE (" + DB_REPORT_DELETED + " = 0 ) ";
 
-      if ( ReportScope != EvReport.ReportScopeTypes.Null )
+      if ( ReportScope != EdReport.ReportScopeTypes.Null )
       {
         SqlQueryString += " AND (" + DB_REPORT_SCOPE + " = " + PARM_REPORT_SCOPE + ") ";
       }
 
-      if ( ReportType != EvReport.ReportTypeCode.Null )
+      if ( ReportType != EdReport.ReportTypeCode.Null )
       {
         SqlQueryString += " AND (" + DB_REPORT_TYPE + " = " + PARM_REPORT_TYPE + " ) ";
       }
@@ -630,7 +630,7 @@ namespace Evado.Dal.Digital
           //
           // Read the table row.
           //
-          EvReport report = this.readTemplateRow ( row );
+          EdReport report = this.readTemplateRow ( row );
 
           this.LogDebug ( "Report: " + report.ReportId + ", Type: " + report.ReportType + ", Scope: " + report.ReportScope );
           //
@@ -1006,7 +1006,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private List<EvReportQuery> getSourceQuery ( String SourceId )
+    private List<EdReportQuery> getSourceQuery ( String SourceId )
     {
       //this.writeDebugLogMethod ( "getSourceQuery method. " );
 
@@ -1014,7 +1014,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      List<EvReportQuery> sourceQueryList = new List<EvReportQuery> ( );
+      List<EdReportQuery> sourceQueryList = new List<EdReportQuery> ( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -1052,7 +1052,7 @@ namespace Evado.Dal.Digital
           //
           // Read the table row.
           //
-          EvReportQuery reportQuery = this.readQueryRow ( row, true );
+          EdReportQuery reportQuery = this.readQueryRow ( row, true );
 
 
           //this.writeDebugLogLine ( "Report QueryID: " + reportQuery.QueryId + ", Title: " + reportQuery.QueryTitle );
@@ -1094,7 +1094,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private List<EvReportColumn> getSourceColumns ( String SourceId )
+    private List<EdReportColumn> getSourceColumns ( String SourceId )
     {
       //this.writeDebugLogMethod ( "getSourceQuery method. " );
 
@@ -1102,7 +1102,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      List<EvReportColumn> sourceColumnList = new List<EvReportColumn> ( );
+      List<EdReportColumn> sourceColumnList = new List<EdReportColumn> ( );
       // 
       // Define the SQL query parameters and load the query values.
       // 
@@ -1138,7 +1138,7 @@ namespace Evado.Dal.Digital
           //
           // Read the table row.
           //
-          EvReportColumn reportColumn = this.readColumnRow ( row, true );
+          EdReportColumn reportColumn = this.readColumnRow ( row, true );
 
 
           //this.writeDebugLogLine ( "Report Column ID: " + reportColumn.ColumnId + ", Header text: " + reportColumn.HeaderText );
@@ -1185,7 +1185,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( Guid ReportGuid )
+    public EdReport getReport ( Guid ReportGuid )
     {
        
       this.LogMethod ( "getReport method. " );
@@ -1194,7 +1194,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      EvReport report = new EvReport ( );
+      EdReport report = new EdReport ( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -1299,7 +1299,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvReport getReport (
+    private EdReport getReport (
       String ReportId )
     {
        
@@ -1310,7 +1310,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      EvReport report = new EvReport ( );
+      EdReport report = new EdReport ( );
 
       // 
       // Define the SQL query parameters and load the query values.
@@ -1400,7 +1400,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private EvReportQuery [ ] getReportQueries ( String ReportId )
+    private EdReportQuery [ ] getReportQueries ( String ReportId )
     {
       this.LogMethod ( "getSourceQuery method. " );
       this.LogDebug ( "ReportId: " + ReportId );
@@ -1409,14 +1409,14 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      EvReportQuery [ ] arrRportQueries = new EvReportQuery [ 5 ];
+      EdReportQuery [ ] arrRportQueries = new EdReportQuery [ 5 ];
 
       //
       // Initialise the query array;
       //
       for ( int i = 0; i < arrRportQueries.Length; i++ )
       {
-        arrRportQueries [ i ] = new EvReportQuery ( );
+        arrRportQueries [ i ] = new EdReportQuery ( );
       }
 
       // 
@@ -1455,7 +1455,7 @@ namespace Evado.Dal.Digital
           //
           // Read the table row.
           //
-          EvReportQuery reportQuery = this.readQueryRow ( row, false );
+          EdReportQuery reportQuery = this.readQueryRow ( row, false );
 
           this.LogDebug ( "Report QueryID: " + reportQuery.QueryId + ", Title: " + reportQuery.QueryTitle );
           //
@@ -1496,7 +1496,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the Report list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private List<EvReportColumn> getReportColumns ( String ReportId )
+    private List<EdReportColumn> getReportColumns ( String ReportId )
     {
       this.LogMethod ( "getReportColumns method. " );
 
@@ -1504,7 +1504,7 @@ namespace Evado.Dal.Digital
       // Define the local variables
       // 
       string SqlQueryString;
-      List<EvReportColumn> sourceColumnList = new List<EvReportColumn> ( );
+      List<EdReportColumn> sourceColumnList = new List<EdReportColumn> ( );
       bool sourceIndexed = false;
 
       // 
@@ -1543,7 +1543,7 @@ namespace Evado.Dal.Digital
           //
           // Read the table row.
           //
-          EvReportColumn reportColumn = this.readColumnRow ( row, false );
+          EdReportColumn reportColumn = this.readColumnRow ( row, false );
 
           if ( reportColumn.SourceOrder > 0 )
           {
@@ -1609,7 +1609,7 @@ namespace Evado.Dal.Digital
     /// 6. Return the event code for updating items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateReport ( EvReport ReportTemplate )
+    public EvEventCodes updateReport ( EdReport ReportTemplate )
     {
        
       this.LogMethod ( "updateReport method." );
@@ -1630,7 +1630,7 @@ namespace Evado.Dal.Digital
       //
       // Validate whether the Old Report object's Guid is not empty.
       //
-      EvReport oldReportTemplate = this.getReport ( ReportTemplate.Guid );
+      EdReport oldReportTemplate = this.getReport ( ReportTemplate.Guid );
       if ( oldReportTemplate.Guid == Guid.Empty )
       {
         return EvEventCodes.Data_InvalidId_Error;
@@ -1687,8 +1687,8 @@ namespace Evado.Dal.Digital
     /// <returns>EvDataChange object</returns>
     //-----------------------------------------------------------------------------------
     private EvDataChange updateDataChanges (
-      EvReport OldReportTemplate,
-      EvReport ReportTemplate )
+      EdReport OldReportTemplate,
+      EdReport ReportTemplate )
     {
       //
       // Initialise the data change object.
@@ -1729,10 +1729,10 @@ namespace Evado.Dal.Digital
       }
 
       string oldXmlReport =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<EvReport> ( OldReportTemplate );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<EdReport> ( OldReportTemplate );
 
       string newXmlReport =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<EvReport> ( ReportTemplate );
+        Evado.Model.Digital.EvcStatics.SerialiseObject<EdReport> ( ReportTemplate );
 
       if ( ReportTemplate.Version != OldReportTemplate.Version )
       {
@@ -1744,8 +1744,8 @@ namespace Evado.Dal.Digital
       //
       for ( int qCount = 0; qCount < ReportTemplate.Queries.Length & qCount < 5; qCount++ )
       {
-        EvReportQuery newQuery = ReportTemplate.Queries [ qCount ];
-        EvReportQuery oldQuery = new EvReportQuery ( );
+        EdReportQuery newQuery = ReportTemplate.Queries [ qCount ];
+        EdReportQuery oldQuery = new EdReportQuery ( );
         if ( qCount < OldReportTemplate.Queries.Length )
         {
           if ( OldReportTemplate.Queries [ qCount ] != null )
@@ -1801,8 +1801,8 @@ namespace Evado.Dal.Digital
       //
       for ( int cCount = 0; cCount < ReportTemplate.Columns.Count & cCount < 5; cCount++ )
       {
-        EvReportColumn newColumn = ReportTemplate.Columns [ cCount ];
-        EvReportColumn oldColumn = new EvReportColumn ( );
+        EdReportColumn newColumn = ReportTemplate.Columns [ cCount ];
+        EdReportColumn oldColumn = new EdReportColumn ( );
         if ( cCount < OldReportTemplate.Columns.Count )
         {
           oldColumn = OldReportTemplate.Columns [ cCount ];
@@ -1874,7 +1874,7 @@ namespace Evado.Dal.Digital
     /// 4. Else, return an event code for adding items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes addReport ( EvReport ReportTemplate )
+    public EvEventCodes addReport ( EdReport ReportTemplate )
     {
       this.LogMethod ( "addReport method. " );
       this.LogDebug ( "Guid: " + ReportTemplate.Guid );
@@ -1891,7 +1891,7 @@ namespace Evado.Dal.Digital
       //
       // Validate whether the ProjectId or User common name is not empty. 
       //
-      if ( ReportTemplate.ReportType == EvReport.ReportTypeCode.Null )
+      if ( ReportTemplate.ReportType == EdReport.ReportTypeCode.Null )
       {
         this.LogDebug ( "ReportType missing. " );
         return EvEventCodes.Identifier_General_ID_Error;
@@ -1906,7 +1906,7 @@ namespace Evado.Dal.Digital
       // 
       // Check that the Report id is unique trial.
       // 
-      EvReport report = this.getReport ( ReportTemplate.ReportId );
+      EdReport report = this.getReport ( ReportTemplate.ReportId );
       if ( report.Guid != Guid.Empty )
       {
         this.LogDebug ( "Duplicate report Id. " );
@@ -1967,7 +1967,7 @@ namespace Evado.Dal.Digital
     /// 4. Else, return an event code for deleting items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes deleteItem ( EvReport Report )
+    public EvEventCodes deleteItem ( EdReport Report )
     {
       this.LogMethod ( "deleteItem method. " );
       this.LogDebug ( "ReportId: " + Report.ReportId );
@@ -2025,7 +2025,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes updateTemplateQueries (
-      EvReport ReportTemplate )
+      EdReport ReportTemplate )
     {
       this.LogMethod ( "updateTemplateQueries." );
       this.LogDebug  ( "ReportTemplate.Guid: " + ReportTemplate.Guid );
@@ -2049,7 +2049,7 @@ namespace Evado.Dal.Digital
       // Iterate through each newField in the activity list for
       // Updating those activities that have changed.
       // 
-      foreach ( EvReportQuery query in ReportTemplate.Queries )
+      foreach ( EdReportQuery query in ReportTemplate.Queries )
       {
         //
         // if the activity id is empty continue to the next value.
@@ -2062,13 +2062,13 @@ namespace Evado.Dal.Digital
           //continue;
         }
 
-        if ( query.QueryId == EvReport.SelectionListTypes.None.ToString ( )
+        if ( query.QueryId == EdReport.SelectionListTypes.None.ToString ( )
           && query.FieldName == String.Empty )
         {
           continue;
         }
 
-        if ( query.QueryId == EvReport.SelectionListTypes.None.ToString ( ) )
+        if ( query.QueryId == EdReport.SelectionListTypes.None.ToString ( ) )
         {
           query.QueryId = query.FieldName;
 
@@ -2147,7 +2147,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public EvEventCodes updateTemplateColumns (
-      EvReport ReportTemplate )
+      EdReport ReportTemplate )
     {
       this.LogMethod ( "updateTemplateColumns." );
       this.LogDebug  ( "ReportTemplate.Columns.Count: " + ReportTemplate.Columns.Count );
@@ -2172,7 +2172,7 @@ namespace Evado.Dal.Digital
       // Iterate through each newField in the activity list for
       // Updating those activities that have changed.
       // 
-      foreach ( EvReportColumn column in ReportTemplate.Columns )
+      foreach ( EdReportColumn column in ReportTemplate.Columns )
       {
         this.LogDebug  ( "ColumnId: " + column.ColumnId );
 

@@ -143,6 +143,14 @@ namespace Evado.UniForm.Digital
         this.Session.setPageId ( pageType );
 
         this.LogValue ( "PageType: " + this.Session.PageId );
+
+        EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+        if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+        {
+          pageId = EdStaticPageIds.Null;
+        }
+
         // 
         // Determine the method to be called
         // 
@@ -150,14 +158,14 @@ namespace Evado.UniForm.Digital
         {
           case Evado.Model.UniForm.ApplicationMethods.List_of_Objects:
             {
-              switch ( this.Session.PageId )
+              switch ( pageId )
               {
-                case EvPageIds.Data_Charting_Page:
+                case EdStaticPageIds.Data_Charting_Page:
                   {
                     clientDataObject = this.getChartObject ( PageCommand );
                     break;
                   }
-                case EvPageIds.Record_Query_Page:
+                case EdStaticPageIds.Record_Query_Page:
                   {
                     clientDataObject = this.getRecordQueryObject ( PageCommand );
                     break;
@@ -444,7 +452,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( EuAnalysis.CONST_QUERY_COMMAND, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Data_Charting_Page );
+         Evado.Model.Digital.EdStaticPageIds.Data_Charting_Page );
 
       //
       // Add the chart export page groupCommand if ResultData exists.
@@ -469,7 +477,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( EuAnalysis.CONST_EXPORT_COMMAND, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Data_Charting_Page );
+         Evado.Model.Digital.EdStaticPageIds.Data_Charting_Page );
 
     }//END getChart_Page_Commands method
 
@@ -1208,7 +1216,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( EuAnalysis.CONST_QUERY_COMMAND, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Record_Query_Page );
+         Evado.Model.Digital.EdStaticPageIds.Record_Query_Page );
 
       //
       // Add the chart export page groupCommand if ResultData exists.
@@ -1228,7 +1236,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( EuAnalysis.CONST_EXPORT_COMMAND, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Record_Query_Page );
+         Evado.Model.Digital.EdStaticPageIds.Record_Query_Page );
 
     }//END getRecordQuery_Page_Commands method
 
@@ -1318,7 +1326,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( EuAnalysis.CONST_QUERY_COMMAND, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Record_Query_Page );
+         Evado.Model.Digital.EdStaticPageIds.Record_Query_Page );
 
     }//END getRecordQuery_Selection_Group method
 

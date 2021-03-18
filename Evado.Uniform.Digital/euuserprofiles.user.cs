@@ -113,7 +113,7 @@ namespace Evado.UniForm.Digital
         + this.Session.UserProfile.CommonName;
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.PageId = EvPageIds.User_Profile_Page.ToString ( );
+      ClientDataObject.Page.PageId = EdStaticPageIds.User_Profile_Page.ToString ( );
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       this.LogDebug ( "clientDataObject status: " + ClientDataObject.Page.EditAccess );
@@ -404,7 +404,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-      groupCommand.SetPageId ( EvPageIds.User_Profile_Update_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.User_Profile_Update_Page );
 
       // 
       // Define the save and delete groupCommand parameters

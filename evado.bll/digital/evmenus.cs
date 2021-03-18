@@ -63,7 +63,7 @@ namespace Evado.Bll.Digital
         this.ClassParameter.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
       }
 
-      this._dalMenus = new Evado.Dal.Digital.EvMenus ( Settings );
+      this._dalMenus = new Evado.Dal.Digital.EdMenus ( Settings );
     }
     #endregion
 
@@ -71,7 +71,7 @@ namespace Evado.Bll.Digital
     // 
     // Create instantiate the DAL class 
     // 
-    private Evado.Dal.Digital.EvMenus _dalMenus = new Evado.Dal.Digital.EvMenus ( );
+    private Evado.Dal.Digital.EdMenus _dalMenus = new Evado.Dal.Digital.EdMenus ( );
 
     #endregion
 

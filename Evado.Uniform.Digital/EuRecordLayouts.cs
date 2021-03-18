@@ -169,24 +169,30 @@ namespace Evado.UniForm.Digital
         //
         // Set the page Id
         //
-        if ( this.Session.PageId != EvPageIds.Form_Draft_Page
-          && this.Session.PageId != EvPageIds.Form_Properties_Page
-          && this.Session.PageId != EvPageIds.Record_Layout_Page )
+        if ( this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString ( ) )
         {
-          this.Session.PageId = EvPageIds.Form_Draft_Page;
+          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString ( );
         }
         if ( this.Session.RecordLayout.State == EdRecordObjectStates.Form_Issued )
         {
-          this.Session.PageId = EvPageIds.Record_Layout_Page;
+          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString ( );
         }
 
         String stPageId = PageCommand.GetParameter ( Evado.Model.UniForm.CommandParameters.Page_Id );
         if ( stPageId != String.Empty )
         {
-          this.Session.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( stPageId );
+          this.Session.PageId = stPageId ;
         }
         this.LogValue ( "SessionObjects.PageType: " + this.Session.PageId );
 
+        EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+        if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+        {
+          pageId = EdStaticPageIds.Null;
+        }
 
         // 
         // Determine the method to be called
@@ -225,29 +231,29 @@ namespace Evado.UniForm.Digital
               //
               // Display the form properties page if the view type set to property page.
               //
-              switch ( this.Session.PageId )
+              switch ( pageId )
               {
-                case EvPageIds.Form_Properties_Page:
+                case EdStaticPageIds.Form_Properties_Page:
                   {
                     clientDataObject = this.GetLayoutProperties_Object ( PageCommand );
                     break;
                   }
-                case EvPageIds.Form_Properties_Section_Page:
+                case EdStaticPageIds.Form_Properties_Section_Page:
                   {
                     clientDataObject = this.getFormPropertiesSectionObject ( PageCommand );
                     break;
                   }
-                case EvPageIds.Form_Draft_Page:
+                case EdStaticPageIds.Form_Draft_Page:
                   {
                     clientDataObject = this.getFormDraftLayoutObject ( PageCommand );
                     break;
                   }
-                case EvPageIds.Form_Template_Upload:
+                case EdStaticPageIds.Form_Template_Upload:
                   {
                     clientDataObject = this.getFormTemplateUploadPage ( PageCommand );
                     break;
                   }
-                case EvPageIds.Form_Template_Download:
+                case EdStaticPageIds.Form_Template_Download:
                   {
                     clientDataObject = this.getFormTemplateDownloadPage ( PageCommand );
                     break;
@@ -426,7 +432,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        this.Session.PageId = EvPageIds.Null;
+        this.Session.PageId = String.Empty;
 
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
@@ -459,7 +465,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Form_Selection_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Record_Layout_View.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Record_Layout_View.ToString ( );
 
         //
         // Define the icon urls.
@@ -812,7 +818,7 @@ namespace Evado.UniForm.Digital
       // 
       // Define the save groupCommand parameters.
       // 
-      pageCommand.SetPageId ( EvPageIds.Form_Template_Upload );
+      pageCommand.SetPageId ( EdStaticPageIds.Form_Template_Upload );
     }
 
     // ==============================================================================
@@ -1395,7 +1401,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Record_Layouts.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
-      groupCommand.SetPageId ( EvPageIds.Form_Template_Upload );
+      groupCommand.SetPageId ( EdStaticPageIds.Form_Template_Upload );
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
 
 
@@ -1542,20 +1548,20 @@ namespace Evado.UniForm.Digital
         // if there are is not page type defines and draft state display the draft page.
         //
         if ( this.Session.RecordLayout.State == EdRecordObjectStates.Form_Draft
-          && this.Session.PageId == EvPageIds.Null )
+          && this.Session.PageId == String.Empty )
         {
-          this.Session.PageId = EvPageIds.Form_Draft_Page;
+          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString();
           this.getFormDraftDataObject ( clientDataObject );
 
           return clientDataObject;
         }
 
-        if ( this.Session.PageId != EvPageIds.Record_Layout_Page
-          && this.Session.PageId != EvPageIds.Form_Properties_Page
-          && this.Session.PageId != EvPageIds.Form_Draft_Page
-          && this.Session.PageId != EvPageIds.Form_Annotated_Page )
+        if ( this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Annotated_Page.ToString ( ) )
         {
-          this.Session.PageId = EvPageIds.Record_Layout_Page;
+          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString ( );
         }
 
         //
@@ -1860,7 +1866,7 @@ namespace Evado.UniForm.Digital
             // 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-            pageCommand.SetPageId ( EvPageIds.Form_Template_Download );
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Template_Download );
 
             //
             // Add the copy groupCommand.
@@ -1927,9 +1933,9 @@ namespace Evado.UniForm.Digital
       //
       // Add the properties page groupCommand.
       //
-      switch( this.Session.PageId )
+      switch ( this.Session.StaticPageId )
       {
-        case EvPageIds.Form_Annotated_Page:
+        case EdStaticPageIds.Form_Annotated_Page:
           {
             //
             // Add property page command
@@ -1940,7 +1946,7 @@ namespace Evado.UniForm.Digital
                 EuAdapterClasses.Record_Layouts.ToString ( ),
                 Model.UniForm.ApplicationMethods.Get_Object );
 
-              pageCommand.SetPageId ( EvPageIds.Form_Properties_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
 
               pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
@@ -1958,7 +1964,7 @@ namespace Evado.UniForm.Digital
 
               pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-              pageCommand.SetPageId ( EvPageIds.Form_Draft_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
 
             //
             // Add the full layout command
@@ -1974,11 +1980,11 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-            pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
             break;
 
           }
-        case EvPageIds.Form_Draft_Page:
+        case EdStaticPageIds.Form_Draft_Page:
           {
             //
             // Add property page command
@@ -1989,7 +1995,7 @@ namespace Evado.UniForm.Digital
               EuAdapterClasses.Record_Layouts.ToString ( ),
               Model.UniForm.ApplicationMethods.Get_Object );
 
-            pageCommand.SetPageId ( EvPageIds.Form_Properties_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
@@ -2007,10 +2013,10 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-            pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
             break;
           }
-        case EvPageIds.Form_Properties_Page:
+        case EdStaticPageIds.Form_Properties_Page:
           {
             //
             // Add the draft layout command.
@@ -2026,7 +2032,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-            pageCommand.SetPageId ( EvPageIds.Form_Draft_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
 
             //
             // Add the full layout command.
@@ -2042,10 +2048,10 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
 
-            pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
           break;
           }
-        case EvPageIds.Record_Layout_Page:
+        case EdStaticPageIds.Record_Layout_Page:
           {
             break;
           }
@@ -2085,7 +2091,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the property page refresh
       //
-      if ( this.Session.PageId == EvPageIds.Form_Properties_Page )
+      if ( this.Session.PageId == EdStaticPageIds.Form_Properties_Page.ToString ( ) )
       {
         pageCommand = PageGroup.addCommand (
           EdLabels.Layout_Design_Refresh,
@@ -2119,11 +2125,11 @@ namespace Evado.UniForm.Digital
 
             if ( this.Session.RecordLayout.State == EdRecordObjectStates.Form_Draft )
             {
-              pageCommand.SetPageId ( EvPageIds.Form_Draft_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
             }
             else
             {
-              pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
             }
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -2147,7 +2153,7 @@ namespace Evado.UniForm.Digital
               // Define the save groupCommand parameters.
               // 
               pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
-              pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
 
               pageCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -2168,7 +2174,7 @@ namespace Evado.UniForm.Digital
                 // Define the save groupCommand parameters.
                 // 
                 pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
-                pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+                pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
 
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -2193,7 +2199,7 @@ namespace Evado.UniForm.Digital
             // Define the save groupCommand parameters.
             // 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
-            pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -2212,7 +2218,7 @@ namespace Evado.UniForm.Digital
             // Define the save groupCommand parameters.
             // 
             pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
-            pageCommand.SetPageId ( EvPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
@@ -2595,7 +2601,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-        EvPageIds.Form_Field_Page.ToString ( ) );
+        EdStaticPageIds.Form_Field_Page.ToString ( ) );
 
       groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.RecordLayout.Fields.Count.ToString ( ) );
@@ -2676,7 +2682,7 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-        EvPageIds.Form_Field_Page.ToString ( ) );
+        EdStaticPageIds.Form_Field_Page.ToString ( ) );
 
       groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
         this.Session.RecordLayout.Fields.Count.ToString ( ) );

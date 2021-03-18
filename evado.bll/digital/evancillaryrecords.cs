@@ -187,34 +187,6 @@ namespace Evado.Bll.Digital
 
     }//END getList method.
 
-    // =====================================================================================
-    /// <summary>
-    /// This query performs a pivot query on SubjectRecord to produce a queryState
-    /// of the trial FirstSubject states.
-    /// </summary>
-    /// <param name="TrialId">string: (Mandatory) trial identifier.</param>
-    /// <param name="SubjectId">string: (Optional) milestone identifier.</param>
-    /// <returns>List of EvFormRecordSummary: a list of form record queryState objects</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Execute the method for retrieving the list of form record queryState objects
-    /// 
-    /// 2. Return a list of form record queryState objects. 
-    /// </remarks>
-    //  ----------------------------------------------------------------------------------
-    public List<EdRecordSummary> getRecordSummary ( string TrialId, string SubjectId )
-    {
-      this._DebugLog.AppendLine ( "Evado.Bll.AncillaryRecords.getRecordSummary method. " );
-
-      List<EdRecordSummary> View = this._dalSubjectRecords.getRecordSummary ( TrialId, SubjectId );
-
-      this._DebugLog.AppendLine ( this._dalSubjectRecords.Log );
-
-      return View;
-
-    }//END getRecordSummary method.
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 

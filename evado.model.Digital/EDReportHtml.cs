@@ -35,7 +35,7 @@ namespace Evado.Model.Digital
   {
     #region Initialization
     public EvReportHtml (
-      EvReport report,
+      EdReport report,
       EdUserProfile userProfile )
     {
       this.writeDebugLogMethod ( "EvReportHtml initialisation method." );
@@ -64,12 +64,12 @@ namespace Evado.Model.Digital
     /// 
     /// 2. Generate header cells
     /// </remarks>
-    private String getSectionHeader ( EvReportSection section )
+    private String getSectionHeader ( EdReportSection section )
     {
       this.writeDebugLogMethod ( "getSectionHeader method." );
       string stHtml = String.Empty;
 
-      if ( section.Layout == EvReportSection.LayoutTypes.Tabular )
+      if ( section.Layout == EdReportSection.LayoutTypes.Tabular )
       {
         stHtml = "<tr>";
 
@@ -79,12 +79,12 @@ namespace Evado.Model.Digital
         for ( int i = 0; i < section.ColumnList.Count; i++ )
         {
 
-          EvReportColumn currentColumn = (EvReportColumn) section.ColumnList [ i ];
+          EdReportColumn currentColumn = (EdReportColumn) section.ColumnList [ i ];
 
           //
           // If the column is hiddent don't process it at all.
           //
-          if ( currentColumn.DataType == EvReport.DataTypes.Hidden )
+          if ( currentColumn.DataType == EdReport.DataTypes.Hidden )
           {
             continue;
           }
@@ -106,7 +106,7 @@ namespace Evado.Model.Digital
           //
           if ( section.OnlyShowHeadersForTotalColumns == true )
           {
-            if ( currentColumn.GroupingType == EvReport.GroupingTypes.None )
+            if ( currentColumn.GroupingType == EdReport.GroupingTypes.None )
             {
               headerCell = "<td>&nbsp;</td>";
             }
@@ -141,7 +141,7 @@ namespace Evado.Model.Digital
     /// 4. After painting all of the child sections, add the section total.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private string getSection ( EvReportSection section, int recordNumber )
+    private string getSection ( EdReportSection section, int recordNumber )
     {
       this.writeDebugLogMethod ( "getSection method." );
       String stHtml = String.Empty;
@@ -150,7 +150,7 @@ namespace Evado.Model.Digital
       //
       // Validate whether the section layout is flat or tabulated
       //
-      if ( section.Layout == EvReportSection.LayoutTypes.Flat )
+      if ( section.Layout == EdReportSection.LayoutTypes.Flat )
       {
         stHtml += getFlatSection ( section );
       }
@@ -170,7 +170,7 @@ namespace Evado.Model.Digital
         //
         for ( int i = 0; i < children.Count; i++ )
         {
-          EvReportSection child = (EvReportSection) children [ i ];
+          EdReportSection child = (EdReportSection) children [ i ];
 
           //
           // If it is the first child, and it must show the header, then ad the header of the child section.
@@ -223,7 +223,7 @@ namespace Evado.Model.Digital
     /// 5. If title exists, add total value.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private String addTotal ( EvReportSection section )
+    private String addTotal ( EdReportSection section )
     {
       this.writeDebugLogMethod ( "addTotal method." );
       int span = getMaxColSpan ( section );
@@ -270,7 +270,7 @@ namespace Evado.Model.Digital
           if ( !isTitleSet && ( j + 1 ) < section.DetailColumnsList.Count )
           {
 
-            EvReportColumn nextColumn = (EvReportColumn) section.DetailColumnsList [ j + 1 ];
+            EdReportColumn nextColumn = (EdReportColumn) section.DetailColumnsList [ j + 1 ];
 
             // 
             // Obtains the acumulated value for the next column.
@@ -284,12 +284,12 @@ namespace Evado.Model.Digital
             {
               int spanValue = j + 1;
 
-              if ( nextColumn.GroupingType == EvReport.GroupingTypes.Total )
+              if ( nextColumn.GroupingType == EdReport.GroupingTypes.Total )
               {
                 cell = "<td colspan='" + spanValue + "' class='Rpt_Total' style='background-color: white' ><strong>Total "
                 + section.GroupingColumnValue + ":</strong></td>\r\n";
               }
-              else if ( nextColumn.GroupingType == EvReport.GroupingTypes.Count )
+              else if ( nextColumn.GroupingType == EdReport.GroupingTypes.Count )
               {
                 cell = "<td colspan='" + spanValue + "' class='Rpt_Total' style='background-color: white' ><strong>" +
                     section.GroupingColumnValue + " total quantity:</strong></td>\r\n";
@@ -305,7 +305,7 @@ namespace Evado.Model.Digital
           //
           else
           {
-            EvReportColumn currentColumn = (EvReportColumn) section.DetailColumnsList [ j ];
+            EdReportColumn currentColumn = (EdReportColumn) section.DetailColumnsList [ j ];
             String value = (String) section.Acumulator [ currentColumn.HeaderText ];
 
             if ( value != null )
@@ -359,7 +359,7 @@ namespace Evado.Model.Digital
     /// 6. If numeric, move to the right but if not, move to center
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private String getTabulatedSection ( EvReportSection section, int recordNumber )
+    private String getTabulatedSection ( EdReportSection section, int recordNumber )
     {
       this.writeDebugLogMethod ( "getTabulatedSection method." );
       //
@@ -378,12 +378,12 @@ namespace Evado.Model.Digital
       //
       for ( int j = 0; j < columnList.Count; j++ )
       {
-        EvReportColumn currentColumn = (EvReportColumn) columnList [ j ];
+        EdReportColumn currentColumn = (EdReportColumn) columnList [ j ];
 
         //
         // If the column is hidden, do nothing.
         //
-        if ( currentColumn.DataType == EvReport.DataTypes.Hidden )
+        if ( currentColumn.DataType == EdReport.DataTypes.Hidden )
         {
           continue;
         }
@@ -396,15 +396,15 @@ namespace Evado.Model.Digital
         //
         // If the coulmn is numeric, align to the right.
         //
-        if ( currentColumn.DataType == EvReport.DataTypes.Integer
-          || currentColumn.DataType == EvReport.DataTypes.Float
-          || currentColumn.DataType == EvReport.DataTypes.Currency )
+        if ( currentColumn.DataType == EdReport.DataTypes.Integer
+          || currentColumn.DataType == EdReport.DataTypes.Float
+          || currentColumn.DataType == EdReport.DataTypes.Currency )
         {
           stHtml += "style='text-align:right' ";
         }
-        else if ( currentColumn.DataType == EvReport.DataTypes.Bool
-          || currentColumn.DataType == EvReport.DataTypes.Date
-          || currentColumn.DataType == EvReport.DataTypes.Percent )
+        else if ( currentColumn.DataType == EdReport.DataTypes.Bool
+          || currentColumn.DataType == EdReport.DataTypes.Date
+          || currentColumn.DataType == EdReport.DataTypes.Percent )
         {
           stHtml += "style='text-align:center' ";
         }
@@ -442,7 +442,7 @@ namespace Evado.Model.Digital
     /// 3. Switch column datatype and update the html string with value defining by datatypes
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private string getFormattedValue ( EvReportSection section, EvReportColumn column )
+    private string getFormattedValue ( EdReportSection section, EdReportColumn column )
     {
       this.writeDebugLogMethod ( "getFormattedValue method." );
       //
@@ -472,23 +472,23 @@ namespace Evado.Model.Digital
       //
       switch ( column.DataType )
       {
-        case EvReport.DataTypes.Bool:
+        case EdReport.DataTypes.Bool:
           stHtml += "<input type='checkbox' id='" + column.HeaderText + "-" + section.RowNumber + "' ";
           stHtml += parseBoolean ( currentValue ) ? "CHECKED " : "";
           stHtml += _report.SelectionOn ? "" : "DISABLED ";
           stHtml += "/>";
           return stHtml;
-        case EvReport.DataTypes.Text:
+        case EdReport.DataTypes.Text:
           stHtml = currentValue;
           stHtml = stHtml.Replace ( "[[br]]", "[[BR]]" );
           stHtml = stHtml.Replace ( "[[BR]]", "<br/>" );
           stHtml = stHtml.Replace ( "\b", "<br/>" );
           return stHtml;
-        case EvReport.DataTypes.Currency:
+        case EdReport.DataTypes.Currency:
           return EvcStatics.formatDoubleString ( currentValue, "$###,##0" );
-        case EvReport.DataTypes.Date:
+        case EdReport.DataTypes.Date:
           return EvcStatics.formatDateString ( currentValue, "dd/MM/yyyy" );
-        case EvReport.DataTypes.Percent:
+        case EdReport.DataTypes.Percent:
           try
           {
             double dVal = double.Parse ( currentValue );
@@ -527,7 +527,7 @@ namespace Evado.Model.Digital
     /// 5. If it is not the last row, then break line, else close table row.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private string getFlatSection ( EvReportSection section )
+    private string getFlatSection ( EdReportSection section )
     {
       this.writeDebugLogMethod ( "getFlatSection method." );
       //
@@ -551,7 +551,7 @@ namespace Evado.Model.Digital
           + "<td colspan='" + span + "' class='" + getClassNameForFlatRow ( section.SectionLevel ) + "'>";
         }
 
-        EvReportColumn currentColumn = (EvReportColumn) columnList [ i ];
+        EdReportColumn currentColumn = (EdReportColumn) columnList [ i ];
 
         //
         // Append a span class to the html string
@@ -594,7 +594,7 @@ namespace Evado.Model.Digital
     /// 3. Only add the not hidden columns to the span value.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private static int getMaxColSpan ( EvReportSection section )
+    private static int getMaxColSpan ( EdReportSection section )
     {
       int span = 0;
       //
@@ -609,9 +609,9 @@ namespace Evado.Model.Digital
         //
         for ( int i = 0; i < section.DetailColumnsList.Count; i++ )
         {
-          EvReportColumn column = (EvReportColumn) section.DetailColumnsList [ i ];
+          EdReportColumn column = (EdReportColumn) section.DetailColumnsList [ i ];
 
-          if ( column.DataType != EvReport.DataTypes.Hidden )
+          if ( column.DataType != EdReport.DataTypes.Hidden )
           {
             span++;
           }
@@ -639,7 +639,7 @@ namespace Evado.Model.Digital
     /// 3. Switch the datatype of column and update the numberic value defining by the datatypes. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private string formatUsingMask ( String value, EvReportColumn column )
+    private string formatUsingMask ( String value, EdReportColumn column )
     {
       //
       // Initialize a pattern string
@@ -659,13 +659,13 @@ namespace Evado.Model.Digital
       //
       switch ( column.DataType )
       {
-        case EvReport.DataTypes.Currency:
-        case EvReport.DataTypes.Float:
-        case EvReport.DataTypes.Integer:
+        case EdReport.DataTypes.Currency:
+        case EdReport.DataTypes.Float:
+        case EdReport.DataTypes.Integer:
           {
             return EvcStatics.formatDoubleString ( value, pattern );
           }
-        case EvReport.DataTypes.Date:
+        case EdReport.DataTypes.Date:
           {
             return EvcStatics.formatDateString ( value, pattern );
           }
@@ -696,7 +696,7 @@ namespace Evado.Model.Digital
     /// 3. Return the report content formatted as Html.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    private string getGroupedReportContent ( EvReportSection model )
+    private string getGroupedReportContent ( EdReportSection model )
     {
       // 
       // Initialise a html string and model status
@@ -710,7 +710,7 @@ namespace Evado.Model.Digital
       // 
       //stHtml += "<table style='width:100%' border='1'>\n\r";
       stHtml += "<table id='Rpt_ContentTable' cellspacing='0' rules='all' border='1' >\n\r";
-      stHtml += getSection ( (EvReportSection) model, 0 );
+      stHtml += getSection ( (EdReportSection) model, 0 );
       stHtml += "</table>\n\r";
 
       // 
@@ -801,7 +801,7 @@ namespace Evado.Model.Digital
       //
       // Load the herarchy model of Section of Objects.
       //
-      EvReportSection model = this.loadModel ( this._report );
+      EdReportSection model = this.loadModel ( this._report );
 
 
       // 
@@ -930,8 +930,8 @@ namespace Evado.Model.Digital
         for ( int i = 0; i < this._report.Queries.Length; i++ )
         {
 
-          if ( this._report.Queries [ i ].DataType == EvReport.DataTypes.Guid
-            || this._report.Queries [ i ].DataType == EvReport.DataTypes.Hidden )
+          if ( this._report.Queries [ i ].DataType == EdReport.DataTypes.Guid
+            || this._report.Queries [ i ].DataType == EdReport.DataTypes.Hidden )
           {
             continue;
           }

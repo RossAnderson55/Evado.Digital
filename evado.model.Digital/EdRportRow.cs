@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// data  entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvReportRow
+  public class EdReportRow
   {
     #region Static members
     /// <summary>
@@ -42,7 +42,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This class method initialised ia a report row object.
     /// </summary>
-    public EvReportRow()
+    public EdReportRow()
     {
       this._ColumnValues[0] = String.Empty;
     }
@@ -50,7 +50,7 @@ namespace Evado.Model.Digital
     /// This class methods initialsies a report row with a defined number of columns.
     /// </summary>
     /// <param name="Columns">Int: number of columne in the row.</param>
-    public EvReportRow(int Columns)
+    public EdReportRow(int Columns)
     {
       // 
       // Reinitialise the arrays.

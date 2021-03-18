@@ -165,12 +165,12 @@ namespace Evado.UniForm.Digital
         if ( this.Session.ReportSource == null )
         {
           this.Session.ReportSource = new EvReportSource ( );
-          this.Session.ReportSource.QueryList = new List<EvReportQuery> ( );
-          this.Session.ReportSource.ColumnList = new List<EvReportColumn> ( );
+          this.Session.ReportSource.QueryList = new List<EdReportQuery> ( );
+          this.Session.ReportSource.ColumnList = new List<EdReportColumn> ( );
         }
         if ( this.Session.ReportTemplate == null )
         {
-          this.Session.ReportTemplate = new EvReport ( );
+          this.Session.ReportTemplate = new EdReport ( );
         }
         if ( this.Session.ReportSourceList == null )
         {
@@ -178,7 +178,7 @@ namespace Evado.UniForm.Digital
         }
         if ( this.Session.ReportDesignTemplateList == null )
         {
-          this.Session.ReportDesignTemplateList = new List<EvReport> ( );
+          this.Session.ReportDesignTemplateList = new List<EdReport> ( );
         }
         if ( this.Session.ReportTemplateList_All == null )
         {
@@ -362,7 +362,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the upload command
       //
-      if ( this.Session.PageId != EvPageIds.Report_Template_Upload )
+      if ( this.Session.PageId != EdStaticPageIds.Report_Template_Upload.ToString ( ) )
       {
         pageCommand = PageObject.addCommand (
           EdLabels.ReportTemplate_Upload_Command_Title,
@@ -374,7 +374,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.AddParameter (
           Model.UniForm.CommandParameters.Page_Id,
-          EvPageIds.Report_Template_Upload );
+          EdStaticPageIds.Report_Template_Upload );
 
         return;
       }
@@ -411,7 +411,7 @@ namespace Evado.UniForm.Digital
 
       if ( PageCommand.hasParameter ( EuReportTemplates.CONST_REPORT_SCOPE ) == true )
       {
-        this.Session.ReportScope = PageCommand.GetParameter<EvReport.ReportScopeTypes> ( EuReportTemplates.CONST_REPORT_SCOPE );
+        this.Session.ReportScope = PageCommand.GetParameter<EdReport.ReportScopeTypes> ( EuReportTemplates.CONST_REPORT_SCOPE );
       }
       this.LogDebug ( "ReportCategory: " + this.Session.ReportCategory );
       //this.LogDebugValue ( "ReportType: " + this.SessionObjects.ReportType );
@@ -439,7 +439,7 @@ namespace Evado.UniForm.Digital
       //
       // exist if the page is not an upload page.
       //
-      if ( this.Session.PageId != EvPageIds.Report_Template_Upload )
+      if ( this.Session.PageId != EdStaticPageIds.Report_Template_Upload.ToString ( ) )
       {
         return;
       }
@@ -478,7 +478,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      groupCommand.SetPageId ( EvPageIds.Report_Template_View );
+      groupCommand.SetPageId ( EdStaticPageIds.Report_Template_View );
 
       //
       // Add the save as new templae.
@@ -491,7 +491,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      groupCommand.SetPageId ( EvPageIds.Report_Template_View );
+      groupCommand.SetPageId ( EdStaticPageIds.Report_Template_View );
 
       groupCommand.AddParameter ( EuReportTemplates.CONST_UPLOAD_NEW_FIELD_ID, "Yes" );
 
@@ -548,7 +548,7 @@ namespace Evado.UniForm.Digital
         //
         // Read in the report template.
         //
-        EvReport reportTemplate = Evado.Model.EvStatics.Files.readXmlFile<EvReport> (
+        EdReport reportTemplate = Evado.Model.EvStatics.Files.readXmlFile<EdReport> (
           this.UniForm_BinaryFilePath,
           fieldName );
 
@@ -644,7 +644,7 @@ namespace Evado.UniForm.Digital
         //
         // Empty the list of templates so it will be rebuilt the page is opened.
         //
-        this.Session.ReportDesignTemplateList = new List<EvReport> ( );
+        this.Session.ReportDesignTemplateList = new List<EdReport> ( );
 
         return true;
 
@@ -721,7 +721,7 @@ namespace Evado.UniForm.Digital
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
       groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-         Evado.Model.Digital.EvPageIds.Operational_Report_List );
+         Evado.Model.Digital.EdStaticPageIds.Operational_Report_List );
 
     }//END getReports_List_Selection_Group method
 
@@ -760,7 +760,7 @@ namespace Evado.UniForm.Digital
           || this._SelectionCommand == true )
         {
           this.Session.ReportDesignTemplateList = this._Bll_ReportTemplates.getReportList (
-            EvReport.ReportTypeCode.Null,
+            EdReport.ReportTypeCode.Null,
             this.Session.ReportScope );
 
           this.Session.ReportTemplateList_All = this._Bll_ReportTemplates.getReportListAll ( );
@@ -786,14 +786,14 @@ namespace Evado.UniForm.Digital
           Model.UniForm.ApplicationMethods.Create_Object );
 
         groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-           Evado.Model.Digital.EvPageIds.Report_Template_Form );
+           Evado.Model.Digital.EdStaticPageIds.Report_Template_Page );
 
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
 
         // 
         // generate the page links.
         // 
-        foreach ( EvReport template in this.Session.ReportDesignTemplateList )
+        foreach ( EdReport template in this.Session.ReportDesignTemplateList )
         {
           String stReportTitle = String.Format (
             EdLabels.ReportTemplate_List_Command_Title,
@@ -808,7 +808,7 @@ namespace Evado.UniForm.Digital
              Model.UniForm.ApplicationMethods.Get_Object );
 
           groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-             Evado.Model.Digital.EvPageIds.Report_Template_Form );
+             Evado.Model.Digital.EdStaticPageIds.Report_Template_Page );
 
           groupCommand.AddParameter ( Model.UniForm.CommandParameters.Short_Title,
             template.ReportId );
@@ -1004,14 +1004,14 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Updating query source parameters." );
       for ( int iQuery = 0; iQuery < this.Session.ReportTemplate.Queries.Length; iQuery++ )
       {
-        EvReportQuery query = this.Session.ReportTemplate.Queries [ iQuery ];
+        EdReportQuery query = this.Session.ReportTemplate.Queries [ iQuery ];
 
         if ( query.QueryId == String.Empty )
         {
           continue;
         }
 
-        EvReportQuery sourceQuery = this.Session.ReportSource.getQuery ( query.QueryId );
+        EdReportQuery sourceQuery = this.Session.ReportSource.getQuery ( query.QueryId );
 
         query.QueryTitle = sourceQuery.QueryTitle;
         query.Prompt = sourceQuery.Prompt;
@@ -1028,9 +1028,9 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Updating column source parameters." );
       for ( int iCol = 0; iCol < this.Session.ReportTemplate.Columns.Count; iCol++ )
       {
-        EvReportColumn column = this.Session.ReportTemplate.Columns [ iCol ];
+        EdReportColumn column = this.Session.ReportTemplate.Columns [ iCol ];
 
-        EvReportColumn sourceColumn = this.Session.ReportSource.getColumn ( column.ColumnId );
+        EdReportColumn sourceColumn = this.Session.ReportSource.getColumn ( column.ColumnId );
 
         column.HeaderText = sourceColumn.HeaderText;
         column.SourceField = sourceColumn.SourceField;
@@ -1072,7 +1072,7 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( "Source found and loaded into ReportSource." );
           this.LogDebug ( "ReportSource.SourceId: " + this.Session.ReportSource.SourceId );
 
-          foreach ( EvReportColumn column in this.Session.ReportSource.ColumnList )
+          foreach ( EdReportColumn column in this.Session.ReportSource.ColumnList )
           {
             this.LogDebug ( "Column: " + column.ColumnId + " - " + column.HeaderText );
           }
@@ -1101,13 +1101,13 @@ namespace Evado.UniForm.Digital
       //
       // Reset the report template object.
       //
-      this.Session.ReportTemplate = new EvReport ( );
+      this.Session.ReportTemplate = new EdReport ( );
 
       // 
       // Iterate through the report templates and retrieve the matching template
       // by it report ID.
       // 
-      foreach ( EvReport template in this.Session.ReportDesignTemplateList )
+      foreach ( EdReport template in this.Session.ReportDesignTemplateList )
       {
         this.LogDebug ( "ReportID " + template.ReportId );
 
@@ -1117,7 +1117,7 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( "Report found and loaded into ReportTemplate." );
           this.LogDebug ( "ReportTemplate: " + this.Session.ReportTemplate.ReportId );
 
-          foreach ( EvReportColumn column in this.Session.ReportTemplate.Columns )
+          foreach ( EdReportColumn column in this.Session.ReportTemplate.Columns )
           {
             this.LogDebug ( "Column: " + column.ColumnId + " - " + column.HeaderText );
           }
@@ -1220,14 +1220,14 @@ namespace Evado.UniForm.Digital
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
         if ( this.Session.ReportTemplate.Columns.Count == 0 )
         {
-          this.Session.ReportTemplate.Columns.Add ( new EvReportColumn ( ) );
+          this.Session.ReportTemplate.Columns.Add ( new EdReportColumn ( ) );
         }
         else
         {
           int index = this.Session.ReportTemplate.Columns.Count - 1;
           if ( this.Session.ReportTemplate.Columns [ index ].ColumnId != String.Empty )
           {
-            this.Session.ReportTemplate.Columns.Add ( new EvReportColumn ( ) );
+            this.Session.ReportTemplate.Columns.Add ( new EdReportColumn ( ) );
           }
         }
       }
@@ -1249,12 +1249,18 @@ namespace Evado.UniForm.Digital
       //
       this.getDataObject_Query_Group ( ClientDataObject.Page );
 
+      EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+      if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+      {
+        pageId = EdStaticPageIds.Null;
+      }
       //
       // select the page group to be displayed.
       //
-      switch ( this.Session.PageId )
+      switch ( pageId )
       {
-        case EvPageIds.Report_Template_Column_Selection_Page:
+        case EdStaticPageIds.Report_Template_Column_Selection_Page:
           {
             //
             // Display the report collumn output.
@@ -1353,12 +1359,12 @@ namespace Evado.UniForm.Digital
         //
         // Get the report template column
         //
-        EvReportColumn templateColumn =
+        EdReportColumn templateColumn =
           this.Session.ReportTemplate.getColumn ( arrSelectedColumnIds [ index ] );
 
         this.LogDebug ( "templateColumn.ColumnId: " + templateColumn.ColumnId );
 
-        EvReportColumn sourceColumn = this.Session.ReportSource.getColumn ( arrSelectedColumnIds [ index ] );
+        EdReportColumn sourceColumn = this.Session.ReportSource.getColumn ( arrSelectedColumnIds [ index ] );
 
         //
         // If the column id is empty the column was not found so add it.
@@ -1438,12 +1444,19 @@ namespace Evado.UniForm.Digital
         return;
       }
 
+      EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+      if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+      {
+        pageId = EdStaticPageIds.Null;
+      }
+
       // 
       // Add the Data source selection page.
       // 
-      switch ( this.Session.PageId )
+      switch ( pageId )
       {
-        case EvPageIds.Report_Template_Column_Selection_Page:
+        case EdStaticPageIds.Report_Template_Column_Selection_Page:
           {
             pageCommand = PageObject.addCommand (
               EdLabels.ReportTemplate_Page_Column_Structure_Command_Title,
@@ -1453,11 +1466,11 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.ReportTemplate.Guid );
             pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-            pageCommand.SetPageId ( EvPageIds.Report_Template_Form );
+            pageCommand.SetPageId ( EdStaticPageIds.Report_Template_Page );
 
             break;
           }
-        case EvPageIds.Report_Template_Form:
+        case EdStaticPageIds.Report_Template_Page:
         default:
           {
             pageCommand = PageObject.addCommand (
@@ -1468,7 +1481,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.ReportTemplate.Guid );
             pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-            pageCommand.SetPageId ( EvPageIds.Report_Template_Column_Selection_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Report_Template_Column_Selection_Page );
             break;
           }
       }
@@ -1484,7 +1497,7 @@ namespace Evado.UniForm.Digital
 
       pageCommand.SetGuid ( this.Session.ReportTemplate.Guid );
       pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-      pageCommand.SetPageId ( EvPageIds.Report_Template_Download );
+      pageCommand.SetPageId ( EdStaticPageIds.Report_Template_Download );
 
 
       // 
@@ -1532,7 +1545,7 @@ namespace Evado.UniForm.Digital
       //
       // exit if not a down load page.
       //
-      if ( this.Session.PageId != EvPageIds.Report_Template_Download )
+      if ( this.Session.PageId != EdStaticPageIds.Report_Template_Download.ToString ( ) )
       {
         return;
       }
@@ -1548,7 +1561,7 @@ namespace Evado.UniForm.Digital
         + "-" + this.Session.ReportTemplate.ReportTitle.Replace( " ", "-")
         + "-" + DateTime.Now.ToString ( "yy-MM-dd-hhmm" ) + ".EvReport.Xml";
 
-      xmlReport = Evado.Model.EvStatics.SerialiseObject<EvReport> (
+      xmlReport = Evado.Model.EvStatics.SerialiseObject<EdReport> (
         this.Session.ReportTemplate );
 
       //
@@ -1639,7 +1652,7 @@ namespace Evado.UniForm.Digital
       // Add the source id field.
       //
       groupField = pageGroup.createSelectionListField (
-        EvReport.ReportClassFieldNames.SourceId.ToString ( ),
+        EdReport.ReportClassFieldNames.SourceId.ToString ( ),
         EdLabels.ReportTemplate_Source_ID_Field_Title,
         this.Session.ReportTemplate.SourceId,
         optionList );
@@ -1665,7 +1678,7 @@ namespace Evado.UniForm.Digital
       // Add the report id field.
       //
       groupField = pageGroup.createTextField (
-        EvReport.ReportClassFieldNames.ReportId.ToString ( ),
+        EdReport.ReportClassFieldNames.ReportId.ToString ( ),
         EdLabels.ReportTemplate_Report_ID_Field_Title,
         this.Session.ReportTemplate.ReportId,
         20 );
@@ -1675,7 +1688,7 @@ namespace Evado.UniForm.Digital
       // Add the report title field.
       //
       groupField = pageGroup.createTextField (
-        EvReport.ReportClassFieldNames.ReportTitle.ToString ( ),
+        EdReport.ReportClassFieldNames.ReportTitle.ToString ( ),
         EdLabels.ReportTemplate_Report_Title_Field_Title,
         this.Session.ReportTemplate.ReportTitle,
         80 );
@@ -1685,7 +1698,7 @@ namespace Evado.UniForm.Digital
       // Add the report sub title field.
       //
       groupField = pageGroup.createTextField (
-        EvReport.ReportClassFieldNames.ReportSubTitle.ToString ( ),
+        EdReport.ReportClassFieldNames.ReportSubTitle.ToString ( ),
         EdLabels.ReportTemplate_Report_Sub_Title_Field_Title,
         this.Session.ReportTemplate.ReportSubTitle,
         80 );
@@ -1694,12 +1707,12 @@ namespace Evado.UniForm.Digital
       //
       // Layout options.
       //
-      optionList = EvReport.getReportLayoutOptionList ( );
+      optionList = EdReport.getReportLayoutOptionList ( );
       //
       // Add the Rport Type  field.
       //
       groupField = pageGroup.createSelectionListField (
-        EvReport.ReportClassFieldNames.LayoutTypeId,
+        EdReport.ReportClassFieldNames.LayoutTypeId,
         EdLabels.ReportTemplate_Layout_Field_Title,
         this.Session.ReportTemplate.LayoutTypeId,
         optionList );
@@ -1732,7 +1745,7 @@ namespace Evado.UniForm.Digital
       // Add the Rport scop  field.
       //
       groupField = pageGroup.createSelectionListField (
-        EvReport.ReportClassFieldNames.ReportScope,
+        EdReport.ReportClassFieldNames.ReportScope,
         EdLabels.ReportTemplate_Scope_Field_Title,
         this.Session.ReportTemplate.ReportScope,
         optionList );
@@ -1745,7 +1758,7 @@ namespace Evado.UniForm.Digital
       // Add the Rport Type  field.
       //
       groupField = pageGroup.createBooleanField (
-        EvReport.ReportClassFieldNames.IsAggregated,
+        EdReport.ReportClassFieldNames.IsAggregated,
         EdLabels.ReportTemplate_IsAgregated_Field_Title,
         this.Session.ReportTemplate.IsAggregated );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1789,11 +1802,11 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.ReportTemplate.Guid == EvStatics.CONST_NEW_OBJECT_ID )
       {
-        groupCommand.SetPageId ( EvPageIds.Report_Template_Column_Selection_Page );
+        groupCommand.SetPageId ( EdStaticPageIds.Report_Template_Column_Selection_Page );
       }
       else
       {
-        groupCommand.SetPageId ( EvPageIds.Report_Template_Form );
+        groupCommand.SetPageId ( EdStaticPageIds.Report_Template_Page );
       }
 
 
@@ -1866,7 +1879,7 @@ namespace Evado.UniForm.Digital
       mandatoryOptionList.Add ( new EvOption ( "True", "Yes" ) );
       mandatoryOptionList.Add ( new EvOption ( "False", "No" ) );
 
-      operationOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvReport.Operators ), false );
+      operationOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EdReport.Operators ), false );
 
       this.LogDebug ( "optionList.Count: " + sourceOptionList.Count );
 
@@ -1897,11 +1910,11 @@ namespace Evado.UniForm.Digital
       //
       for ( int i = 0; i < this.Session.ReportTemplate.Queries.Length; i++ )
       {
-        EvReportQuery query = this.Session.ReportTemplate.Queries [ i ];
+        EdReportQuery query = this.Session.ReportTemplate.Queries [ i ];
         if ( query == null )
         {
           this.LogDebug ( "query null" );
-          query = new EvReportQuery ( );
+          query = new EdReportQuery ( );
         }
         this.LogDebug ( "query.QueryId: " + query.QueryId
          + ", Mandatory: " + query.Mandatory );
@@ -1953,7 +1966,7 @@ namespace Evado.UniForm.Digital
       columnOptionList = this.Session.ReportSource.ColumnOptionList ( false );
 
       string currentSelection = String.Empty;
-      foreach ( EvReportColumn column in this.Session.ReportTemplate.Columns )
+      foreach ( EdReportColumn column in this.Session.ReportTemplate.Columns )
       {
         if ( currentSelection != String.Empty )
         {
@@ -1987,7 +2000,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.SetGuid ( this.Session.ReportTemplate.Guid );
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-      groupCommand.SetPageId ( EvPageIds.Report_Template_Form );
+      groupCommand.SetPageId ( EdStaticPageIds.Report_Template_Page );
 
     }//END getDataObject_Column_Selection_Group method
 
@@ -2044,7 +2057,7 @@ namespace Evado.UniForm.Digital
       // 
       // If group report then add output columns
       //
-      if ( this.Session.ReportTemplate.LayoutTypeId == EvReport.LayoutTypeCode.GroupedTable )
+      if ( this.Session.ReportTemplate.LayoutTypeId == EdReport.LayoutTypeCode.GroupedTable )
       {
         groupField.Table.Header = new Model.UniForm.TableColHeader [ intNumerGroupColumns ];
       }
@@ -2066,7 +2079,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group repor design columns
       //
-      if ( this.Session.ReportTemplate.LayoutTypeId == EvReport.LayoutTypeCode.GroupedTable )
+      if ( this.Session.ReportTemplate.LayoutTypeId == EdReport.LayoutTypeCode.GroupedTable )
       {
         //
         // create the query option list 
@@ -2074,7 +2087,7 @@ namespace Evado.UniForm.Digital
         groupHeaderOptionList.Add ( new EvOption ( "True", "Yes" ) );
         groupHeaderOptionList.Add ( new EvOption ( "False", "No" ) );
 
-        groupingTypeOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvReport.GroupingTypes ), true );
+        groupingTypeOptionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EdReport.GroupingTypes ), true );
 
         sectionLevelOptionList.Add ( new EvOption ( "0", "Detail Level" ) );
         for ( int i = 1; i <= 5; i++ )
@@ -2115,7 +2128,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "ReportTemplate.Columns.Count: " + this.Session.ReportTemplate.Columns.Count );
       for ( int i = 0; i < this.Session.ReportTemplate.Columns.Count; i++ )
       {
-        EvReportColumn column = this.Session.ReportTemplate.Columns [ i ];
+        EdReportColumn column = this.Session.ReportTemplate.Columns [ i ];
         if ( column == null )
         {
           continue;
@@ -2134,7 +2147,7 @@ namespace Evado.UniForm.Digital
 
         this.LogDebug ( "column.SourceOrder: " + column.SourceOrder );
 
-        if ( this.Session.ReportTemplate.LayoutTypeId == EvReport.LayoutTypeCode.GroupedTable )
+        if ( this.Session.ReportTemplate.LayoutTypeId == EdReport.LayoutTypeCode.GroupedTable )
         {
           this.LogDebug ( "column.GroupingIndex: " + column.GroupingIndex );
           this.LogDebug ( "column.GroupingType: " + column.GroupingType );
@@ -2187,11 +2200,11 @@ namespace Evado.UniForm.Digital
 
         this.Session.ReportSourceList = this._Bll_ReportTemplates.getSourceList ( );
 
-        this.Session.ReportTemplate = new EvReport ( );
+        this.Session.ReportTemplate = new EdReport ( );
         this.Session.ReportTemplate.Guid =  Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.ReportTemplate.LayoutTypeId = EvReport.LayoutTypeCode.FlatTable;
+        this.Session.ReportTemplate.LayoutTypeId = EdReport.LayoutTypeCode.FlatTable;
 
-        this.Session.PageId = EvPageIds.Report_Template_Form;
+        this.Session.PageId = EdStaticPageIds.Report_Template_Page.ToString();
 
         this.getDataObject ( data );
 
@@ -2249,7 +2262,7 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the methods variables and objects.
         //
-        this.Session.ReportDesignTemplateList = new List<EvReport> ( );
+        this.Session.ReportDesignTemplateList = new List<EdReport> ( );
         EvEventCodes result = EvEventCodes.Ok;
 
         //
@@ -2317,7 +2330,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.ReportTemplate.Guid == Evado.Model.EvStatics.CONST_NEW_OBJECT_ID )
         {
           this.Session.ReportTemplateList_All = new List<EvOption> ( );
-          this.Session.ReportDesignTemplateList = new List<EvReport> ( );
+          this.Session.ReportDesignTemplateList = new List<EdReport> ( );
         }
 
         // 
@@ -2414,8 +2427,8 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
         try
         {
-          EvReport.ReportClassFieldNames fieldName =
-             Evado.Model.EvStatics.parseEnumValue<EvReport.ReportClassFieldNames> ( parameter.Name );
+          EdReport.ReportClassFieldNames fieldName =
+             Evado.Model.EvStatics.parseEnumValue<EdReport.ReportClassFieldNames> ( parameter.Name );
 
           this.Session.ReportTemplate.setValue ( fieldName, parameter.Value );
         }
@@ -2450,7 +2463,7 @@ namespace Evado.UniForm.Digital
       //
       for ( int iCount = 0; iCount < this.Session.ReportTemplate.Queries.Length; iCount++ )
       {
-        this.Session.ReportTemplate.Queries [ iCount ] = new EvReportQuery ( );
+        this.Session.ReportTemplate.Queries [ iCount ] = new EdReportQuery ( );
 
         //
         // get the parameter name.
@@ -2470,7 +2483,7 @@ namespace Evado.UniForm.Digital
         {
           this.LogDebug ( "Value Exists" );
 
-          EvReportQuery sourceQuery = this.getQuery ( tableValue );
+          EdReportQuery sourceQuery = this.getQuery ( tableValue );
 
           this.LogDebug ( "sourceQuery: " + sourceQuery.QueryId
             + ", " + sourceQuery.QueryId
@@ -2480,7 +2493,7 @@ namespace Evado.UniForm.Digital
             + ", " + sourceQuery.DataType );
 
           sourceQuery.Index = iCount;
-          sourceQuery.Operator = EvReport.Operators.Equals_to;
+          sourceQuery.Operator = EdReport.Operators.Equals_to;
           this.Session.ReportTemplate.Queries [ iCount ] = sourceQuery;
           this.LogDebug ( "Queries.Prompt : " + this.Session.ReportTemplate.Queries [ iCount ].Prompt );
 
@@ -2522,7 +2535,7 @@ namespace Evado.UniForm.Digital
           if ( tableValue != String.Empty )
           {
             this.Session.ReportTemplate.Queries [ iCount ].Operator =
-              Evado.Model.EvStatics.parseEnumValue<EvReport.Operators> ( tableValue );
+              Evado.Model.EvStatics.parseEnumValue<EdReport.Operators> ( tableValue );
           }
 
 
@@ -2551,14 +2564,14 @@ namespace Evado.UniForm.Digital
     /// <param name="QueryId">String: the queries identifier.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportQuery getQuery (
+    public EdReportQuery getQuery (
       String QueryId )
     {
       this.LogDebug ( "QueryId " + QueryId );
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportQuery query in this.Session.ReportSource.QueryList )
+      foreach ( EdReportQuery query in this.Session.ReportSource.QueryList )
       {
         if ( query.QueryId == QueryId )
         {
@@ -2571,7 +2584,7 @@ namespace Evado.UniForm.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportQuery ( );
+      return new EdReportQuery ( );
 
     }//END getQuery method
 
@@ -2604,7 +2617,7 @@ namespace Evado.UniForm.Digital
       //
       for ( int iCount = 0; iCount < this.Session.ReportTemplate.Columns.Count; iCount++ )
       {
-        EvReportColumn columnObject = this.Session.ReportTemplate.Columns [ iCount ];
+        EdReportColumn columnObject = this.Session.ReportTemplate.Columns [ iCount ];
 
         this.LogDebug ( "OBJECT: ColumnId: " + columnObject.ColumnId
           + ", HeaderText: " + columnObject.HeaderText
@@ -2633,7 +2646,7 @@ namespace Evado.UniForm.Digital
         columnObject.GroupingIndex = groupingIndex;
         if ( groupingType != String.Empty )
         {
-          columnObject.GroupingType = Evado.Model.EvStatics.parseEnumValue<EvReport.GroupingTypes> ( groupingType );
+          columnObject.GroupingType = Evado.Model.EvStatics.parseEnumValue<EdReport.GroupingTypes> ( groupingType );
         }
         columnObject.SectionLvl = sectionLevel;
 

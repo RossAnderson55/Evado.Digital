@@ -34,7 +34,7 @@ namespace Evado.UniForm.Digital
   /// <summary>
   /// This class profile UniFORM class adapter for the user profile classes
   /// </summary>
-  public partial class EuDemoUserRegistration : EuClassAdapterBase
+  public partial class EuUserRegistration : EuClassAdapterBase
   {
     #region Update user method.
     // ==================================================================================

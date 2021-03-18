@@ -245,9 +245,9 @@ namespace Evado.UniForm.Digital
             {
               this.LogDebug ( "Get List of object method" );
 
-              switch ( this.Session.PageId )
+              switch ( this.Session.StaticPageId )
               {
-                case EvPageIds.Record_Export_Page:
+                case EdStaticPageIds.Record_Export_Page:
                   {
                     clientDataObject = this.getRecordExport_Object ( PageCommand );
                     break;
@@ -663,7 +663,7 @@ namespace Evado.UniForm.Digital
         }
           
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Records_View.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Records_View.ToString ( );
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -1087,7 +1087,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Record_View_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
-        clientDataObject.Page.PageId = EvPageIds.Record_Export_Page.ToString ( );
+        clientDataObject.Page.PageId = EdStaticPageIds.Record_Export_Page.ToString ( );
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -2153,7 +2153,7 @@ namespace Evado.UniForm.Digital
         // 
         // Update the object.
         // 
-        if ( this.Session.PageId == EvPageIds.Record_Admin_Page )
+        if ( this.Session.PageId == EdStaticPageIds.Record_Admin_Page.ToString ( ) )
         {
           this.updateObject_AdminValues ( PageCommand );
         }

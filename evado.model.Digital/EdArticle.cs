@@ -40,26 +40,29 @@ namespace Evado.Model.UniForm
 
     //  =================================================================================
     /// <summary>
-    /// This method initialises the class with parameter and value.
+    /// This method initialises the article class with parameter values.
     /// </summary>
     /// <param name="ArticleId">String: article identifier</param>
     /// <param name="Title">String: article title</param>
     /// <param name="Author">String: Author name</param>
     /// <param name="HeaderImageUrl">String:HeaderImageUrl</param>
     /// <param name="Body">String:article body </param>
+    /// <param name="PublishDate">DateTime:article body </param>
     //  ---------------------------------------------------------------------------------
-    public EuArticle ( 
+    public EuArticle (
       String ArticleId, 
       String Title, 
+      String HeaderImageUrl,
+      String Body,
       String Author, 
-      String HeaderImageUrl, 
-      String Body )
+      DateTime PublishDate )
     {
       this.ArticleId = ArticleId;
       this.Title = Title;
-      this.Author = Author;
       this.HeaderImageUrl = HeaderImageUrl;
       this.Body = Body;
+      this.Author = Author;
+      this.PublishDate = PublishDate;
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,36 +70,49 @@ namespace Evado.Model.UniForm
 
     #region Class PropertyList
 
+
     /// <summary>
-    /// This property contains Article identifier
+    /// This property contains Article identifier, this will be same value as the parent
+    /// Entity's EntityId
     /// </summary>
     [JsonProperty ( "aid" )]
     public String ArticleId { get; set; }
 
     /// <summary>
-    /// This property contains the article title.
+    /// This property contains the article title, this value will be the same as the 
+    /// parent Entity's 'Title' field.
     /// </summary>
     [JsonProperty ( "t" )]
     public String Title { get; set; }
 
     /// <summary>
-    /// This property contains name of the article's author
+    /// This property contains name of the article's author, this value will be the same as the 
+    /// parent Entity's 'AuthorName' property.
     /// </summary>
     [JsonProperty ( "an" )]
     public String Author { get; set; }
 
     /// <summary>
-    /// This property contains absoluate URL to the header image.
+    /// This property contains absoluate URL to the header image, this value will be the same as the 
+    /// parent Entity's 'HeaterImageUrl' field.
     /// Null value indicates that there is no image for this article.
     /// </summary>
-    [JsonProperty ( "iurl" )]
+    [JsonProperty ( "hiurl" )]
     public String HeaderImageUrl { get; set; }
 
     /// <summary>
-    /// This Property contains the article body content. Using MarkDown document formatting.
+    /// This Property contains the article body content, this value will be the same as the 
+    /// parent Entity's 'Body' field. Using MarkDown document formatting.
     /// </summary>
     [JsonProperty ( "body" )]
     public String Body { get; set; }
+
+    /// <summary>
+    /// This Property contains the article publish date content, this value will be the same as the 
+    /// parent Entity's Post/Submit date.
+    /// </summary>
+    [JsonProperty ( "bdt" )]
+    public DateTime PublishDate { get; set; }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

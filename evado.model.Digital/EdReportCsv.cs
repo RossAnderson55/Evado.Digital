@@ -30,7 +30,7 @@ namespace Evado.Model.Digital
   {
 
     #region Initialization
-    public EvReportCsv ( EvReport report, string separator, EdUserProfile userProfile )
+    public EvReportCsv ( EdReport report, string separator, EdUserProfile userProfile )
     {
       _report = report;
       _separator = separator;
@@ -109,7 +109,7 @@ namespace Evado.Model.Digital
       //
       String QueryData = String.Empty;
       int queryCount = 0;
-      foreach ( EvReportQuery query in this._report.Queries )
+      foreach ( EdReportQuery query in this._report.Queries )
       {
         if ( query == null )
         {
@@ -139,7 +139,7 @@ namespace Evado.Model.Digital
       //
       for ( int col = 0; col < this._report.Columns.Count; col++ )
       {
-        EvReportColumn column = this._report.Columns [ col ];
+        EdReportColumn column = this._report.Columns [ col ];
         if ( col > 0 )
         {
           stCsv.Append ( this._separator );
@@ -162,7 +162,7 @@ namespace Evado.Model.Digital
       //
       QueryData = String.Empty;
       queryCount = 0;
-      foreach ( EvReportQuery query in this._report.Queries )
+      foreach ( EdReportQuery query in this._report.Queries )
       {
         if ( query == null )
         {
@@ -195,7 +195,7 @@ namespace Evado.Model.Digital
         //
         // the row of data.
         //
-        EvReportRow rowData = this._report.DataRecords [ row ];
+        EdReportRow rowData = this._report.DataRecords [ row ];
         
         //
         // column interation loop.
@@ -251,7 +251,7 @@ namespace Evado.Model.Digital
       //
       // Loads the herarchy model of Section of Objects.
       //
-      EvReportSection model = loadModel ( _report );
+      EdReportSection model = loadModel ( _report );
 
       //String with the csv formatting.
       string stCsv = String.Empty;
@@ -371,9 +371,9 @@ namespace Evado.Model.Digital
     /// </remarks>
     /// 
     // ----------------------------------------------------------------------------------
-    private String formatText ( String text, EvReport.DataTypes type )
+    private String formatText ( String text, EdReport.DataTypes type )
     {
-      if ( type == EvReport.DataTypes.Text )
+      if ( type == EdReport.DataTypes.Text )
       {
         return getTextCSV ( text );
       }
@@ -427,7 +427,7 @@ namespace Evado.Model.Digital
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private string getSection ( EvReportSection section )
+    private string getSection ( EdReportSection section )
     {
       //
       // Initialize a csv string and columnlist array
@@ -438,7 +438,7 @@ namespace Evado.Model.Digital
       //
       // Set csv layout section: flat or tabulated
       //
-      if ( section.Layout == EvReportSection.LayoutTypes.Flat )
+      if ( section.Layout == EdReportSection.LayoutTypes.Flat )
       {
         stCsv += getFlatSection ( section );
       }
@@ -458,7 +458,7 @@ namespace Evado.Model.Digital
         //
         for ( int i = 0; i < children.Count; i++ )
         {
-          EvReportSection child = (EvReportSection) children [ i ];
+          EdReportSection child = (EdReportSection) children [ i ];
 
           //
           // If it is the first child, then add the header of the child section.
@@ -508,7 +508,7 @@ namespace Evado.Model.Digital
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private string getFlatSection ( EvReportSection section )
+    private string getFlatSection ( EdReportSection section )
     {
       //
       // Initialize a csv string and a columnlist array.
@@ -526,7 +526,7 @@ namespace Evado.Model.Digital
         //
         // Format the current column with header, separator and format text
         //
-        EvReportColumn currentColumn = (EvReportColumn) columnList [ i ];
+        EdReportColumn currentColumn = (EdReportColumn) columnList [ i ];
         stCsv += getTextCSV ( currentColumn.HeaderText )
           + _separator
           + formatText ( (string) section.ColumnValuesByHeaderText [ currentColumn.HeaderText ], currentColumn.DataType )
@@ -552,7 +552,7 @@ namespace Evado.Model.Digital
     /// 3. Convert the csv string into a tabulated format
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private String getTabulatedSection ( EvReportSection section )
+    private String getTabulatedSection ( EdReportSection section )
     {
       //
       // Initialize a csv string and a columnlist array
@@ -566,9 +566,9 @@ namespace Evado.Model.Digital
       for ( int j = 0; j < columnList.Count; j++ )
       {
 
-        EvReportColumn currentColumn = (EvReportColumn) columnList [ j ];
+        EdReportColumn currentColumn = (EdReportColumn) columnList [ j ];
 
-        if ( currentColumn.DataType == EvReport.DataTypes.Hidden )
+        if ( currentColumn.DataType == EdReport.DataTypes.Hidden )
         {
           continue;
         }
@@ -614,7 +614,7 @@ namespace Evado.Model.Digital
     /// 5. If this is the last value, dont add the separator.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private String getSectionHeader ( EvReportSection section )
+    private String getSectionHeader ( EdReportSection section )
     {
       //
       // Initialize a csv string
@@ -624,7 +624,7 @@ namespace Evado.Model.Digital
       //
       // Creates the header for a tabular section.
       //
-      if ( section.Layout == EvReportSection.LayoutTypes.Tabular )
+      if ( section.Layout == EdReportSection.LayoutTypes.Tabular )
       {
         //
         // Iterate over all of the columns until the datatype is not hidden.
@@ -632,9 +632,9 @@ namespace Evado.Model.Digital
         for ( int i = 0; i < section.ColumnList.Count; i++ )
         {
 
-          EvReportColumn currentColumn = (EvReportColumn) section.ColumnList [ i ];
+          EdReportColumn currentColumn = (EdReportColumn) section.ColumnList [ i ];
 
-          if ( currentColumn.DataType == EvReport.DataTypes.Hidden )
+          if ( currentColumn.DataType == EdReport.DataTypes.Hidden )
           {
             continue;
           }
@@ -647,7 +647,7 @@ namespace Evado.Model.Digital
           //
           if ( section.OnlyShowHeadersForTotalColumns == true )
           {
-            if ( currentColumn.GroupingType == EvReport.GroupingTypes.None )
+            if ( currentColumn.GroupingType == EdReport.GroupingTypes.None )
             {
               headerText = String.Empty;
             }
@@ -695,7 +695,7 @@ namespace Evado.Model.Digital
     /// 6. If this is the last value, dont add the separator.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private String addTotal ( EvReportSection section )
+    private String addTotal ( EdReportSection section )
     {
       //
       // Initialize a csv string and a tempRow string.
@@ -724,7 +724,7 @@ namespace Evado.Model.Digital
           if ( !isTitleSet && ( j + 1 ) < section.DetailColumnsList.Count )
           {
 
-            EvReportColumn nextColumn = (EvReportColumn) section.DetailColumnsList [ j + 1 ];
+            EdReportColumn nextColumn = (EdReportColumn) section.DetailColumnsList [ j + 1 ];
 
             //
             // Obtains the acumulated value for the next column.
@@ -736,11 +736,11 @@ namespace Evado.Model.Digital
             //
             if ( nextValue != null && nextValue != String.Empty )
             {
-              if ( nextColumn.GroupingType == EvReport.GroupingTypes.Total )
+              if ( nextColumn.GroupingType == EdReport.GroupingTypes.Total )
               {
                 tempRow += getTextCSV ( "Total " + section.GroupingColumnValue + ":" );
               }
-              else if ( nextColumn.GroupingType == EvReport.GroupingTypes.Count )
+              else if ( nextColumn.GroupingType == EdReport.GroupingTypes.Count )
               {
                 tempRow += getTextCSV ( section.GroupingColumnValue + " total quantity:" );
               }
@@ -754,7 +754,7 @@ namespace Evado.Model.Digital
           //
           else
           {
-            EvReportColumn currentColumn = (EvReportColumn) section.DetailColumnsList [ j ];
+            EdReportColumn currentColumn = (EdReportColumn) section.DetailColumnsList [ j ];
             String value = (String) section.Acumulator [ currentColumn.HeaderText ];
 
             if ( value != null )

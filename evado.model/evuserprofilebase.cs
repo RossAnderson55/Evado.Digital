@@ -80,6 +80,11 @@ namespace Evado.Model
       set { this._Guid = value; }
     }
 
+    /// <summary>
+    /// This property contains the guid user token from an external system.
+    /// </summary>
+    public Guid Token { get; set; }
+
     private string _UserId = String.Empty;
     /// <summary>
     /// This property defines the user identifier

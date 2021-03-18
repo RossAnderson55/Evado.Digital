@@ -94,7 +94,7 @@ namespace Evado.Bll.Digital
     /// 
     /// </summary>
     // -------------------------------------------------------------------------------------
-    public  EvReport getReport ( EvReport Report )
+    public  EdReport getReport ( EdReport Report )
     {
       this.LogMethod(  "getReport method. " );
       this.LogDebug(  "ReportId: " + Report.ReportId );
@@ -105,25 +105,25 @@ namespace Evado.Bll.Digital
 
       for( int index=0;index<Report.Queries.Length; index++ )
       {
-        Evado.Model.Digital.EvReportQuery query = Report.Queries [ index ];
+        Evado.Model.Digital.EdReportQuery query = Report.Queries [ index ];
         this.LogDebug ( index + " > "+ query.getAsString() );
       }
 
       this.LogDebug ( "Report.Column.Count: " + Report.Queries.Length );
       for ( int index = 0; index < Report.Columns.Count; index++ )
       {
-        Evado.Model.Digital.EvReportColumn column = Report.Columns [ index ];
+        Evado.Model.Digital.EdReportColumn column = Report.Columns [ index ];
         this.LogDebug ( index + " > " + column.getAsString ( ) );
       }
 
       //
       // initialise the methods variables and objects.
       //
-      EvReport report = new EvReport( );
+      EdReport report = new EdReport( );
 
       switch ( Report.DataSourceId )
       {
-        case EvReport.ReportSourceCode.FormFields:
+        case EdReport.ReportSourceCode.FormFields:
           {
             Evado.Dal.Digital.EdRecordFields DAL_formField = new Evado.Dal.Digital.EdRecordFields ( this.ClassParameter );
 
@@ -133,7 +133,7 @@ namespace Evado.Bll.Digital
 
             break;
           }
-        case EvReport.ReportSourceCode.Field_Monitoring_Query:
+        case EdReport.ReportSourceCode.Field_Monitoring_Query:
           {
             Evado.Dal.Digital.EdRecordValues DAL_formRecordField = new Evado.Dal.Digital.EdRecordValues ( this.ClassParameter );
 
@@ -143,13 +143,13 @@ namespace Evado.Bll.Digital
 
             break;
           }
-        case EvReport.ReportSourceCode.Subject_Demographics:
+        case EdReport.ReportSourceCode.Subject_Demographics:
           {
             report =  null;
 
             break;
           }
-        case EvReport.ReportSourceCode.Subject_Record_Status:
+        case EdReport.ReportSourceCode.Subject_Record_Status:
           {
             Evado.Dal.Digital.EdRecords dalRecords = new Evado.Dal.Digital.EdRecords ( this.ClassParameter );
 
@@ -158,7 +158,7 @@ namespace Evado.Bll.Digital
 
             break;
           }
-        case EvReport.ReportSourceCode.Class:
+        case EdReport.ReportSourceCode.Class:
           {
             Type providerType = Type.GetType( Report.SqlDataSource );
 
@@ -169,7 +169,7 @@ namespace Evado.Bll.Digital
             break;
           }
         default:
-        case EvReport.ReportSourceCode.SqlQuery:
+        case EdReport.ReportSourceCode.SqlQuery:
           {
             report = this._dalReports.getReport( Report );
 

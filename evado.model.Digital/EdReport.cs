@@ -28,7 +28,7 @@ namespace Evado.Model.Digital
   /// data  entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvReport
+  public class EdReport
   {
     #region Class initialisation
 
@@ -38,7 +38,7 @@ namespace Evado.Model.Digital
     ///  
     /// </summary>
     //  ----------------------------------------------------------------------------------
-    public EvReport ( )
+    public EdReport ( )
     {
       initializeClassMembers ( );
 
@@ -50,13 +50,13 @@ namespace Evado.Model.Digital
     /// </summary>
     public void initializeClassMembers ( )
     {
-      this._Queries = new EvReportQuery [ 5 ];
+      this._Queries = new EdReportQuery [ 5 ];
       // 
       // Initialise teh query array.
       // 
       for ( int Count = 0; Count < this._Queries.Length; Count++ )
       {
-        this._Queries [ Count ] = new EvReportQuery ( );
+        this._Queries [ Count ] = new EdReportQuery ( );
       }
 
 
@@ -612,20 +612,20 @@ namespace Evado.Model.Digital
     /// The Queries contains an array of Query objects, the objects define the attributes for report queries.
     /// 
     /// </summary>
-    private EvReportQuery [ ] _Queries = new EvReportQuery [ 5 ];
+    private EdReportQuery [ ] _Queries = new EdReportQuery [ 5 ];
 
     /// <summary>
     /// The Columns contain an array of Column objects, the column class defines the attributes of each data column in 
     /// the report data set and how that column is to be used in the report.
     /// 
     /// </summary>
-    private List<EvReportColumn> _Columns = new List<EvReportColumn> ( );
+    private List<EdReportColumn> _Columns = new List<EdReportColumn> ( );
 
     /// <summary>
     ///  The DataRecords contains an array of ReportRow objects, each report row object contain one row of report data.
     /// 
     /// </summary>
-    private List<EvReportRow> _DataRecords = new List<EvReportRow> ( );
+    private List<EdReportRow> _DataRecords = new List<EdReportRow> ( );
 
     /// <summary>
     /// This member records whether this is the first instance of the group.  In which
@@ -739,6 +739,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a number of a report
     /// </summary>
+    [JsonIgnore]
     public int ReportNo
     {
       get
@@ -766,7 +767,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a report scope type object of a report
     /// </summary>
-    [JsonProperty ( "scope" )]
+    [JsonIgnore]
     public ReportScopeTypes ReportScope
     {
       get { return this._ReportScopeType; }
@@ -1044,7 +1045,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a query array object of a report
     /// </summary>
-    public EvReportQuery [ ] Queries
+    public EdReportQuery [ ] Queries
     {
       get
       {
@@ -1059,7 +1060,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a column object list of a report
     /// </summary>
-    public List<EvReportColumn> Columns
+    public List<EdReportColumn> Columns
     {
       get
       {
@@ -1075,7 +1076,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a datarecord object list of a report
     /// </summary>
-    public List<EvReportRow> DataRecords
+    public List<EdReportRow> DataRecords
     {
       get
       {
@@ -1133,7 +1134,7 @@ namespace Evado.Model.Digital
       {
         return this._ReportTitle + " - "
           + ( this._ReportSubTitle != null && this._ReportSubTitle != string.Empty ? this._ReportSubTitle + " - " : "" )
-          + Enum.GetName ( typeof ( EvReport.ReportTypeCode ), this._ReportType ) + " - "
+          + Enum.GetName ( typeof ( EdReport.ReportTypeCode ), this._ReportType ) + " - "
           + this._Description;
       }
     }
@@ -1194,9 +1195,9 @@ namespace Evado.Model.Digital
     /// <param name="NewColumn">EvReportColum object to be added</param>
     /// <returns>True: successfully added, False: not added.</returns>
     //  ----------------------------------------------------------------------------------
-    public bool addColumn ( EvReportColumn NewColumn )
+    public bool addColumn ( EdReportColumn NewColumn )
     {
-      foreach ( EvReportColumn column in this._Columns )
+      foreach ( EdReportColumn column in this._Columns )
       {
         if ( column.ColumnId == NewColumn.ColumnId )
         {
@@ -1219,20 +1220,20 @@ namespace Evado.Model.Digital
     /// <param name="ColumnId">String: the column identifier.</param>
     /// <returns>EvReportQuery objects.</returns>
     //-----------------------------------------------------------------------------------
-    public EvReportColumn getColumn ( String ColumnId )
+    public EdReportColumn getColumn ( String ColumnId )
     {
       //
       // exit if query list is null.
       //
       if ( this._Columns.Count == 0  )
       {
-        return new EvReportColumn ( );
+        return new EdReportColumn ( );
       }
 
       //
       // search the list for the matching query.
       //
-      foreach ( EvReportColumn column in this.Columns )
+      foreach ( EdReportColumn column in this.Columns )
       {
         if ( column.ColumnId == ColumnId )
         {
@@ -1243,7 +1244,7 @@ namespace Evado.Model.Digital
       //
       // Returm empty objects.
       //
-      return new EvReportColumn ( );
+      return new EdReportColumn ( );
 
     }//END getColumn method
 
@@ -1260,7 +1261,7 @@ namespace Evado.Model.Digital
       //
       for ( int iCount = 0; iCount < this._Columns.Count; iCount++ )
       {
-        EvReportColumn column = this._Columns [ iCount ];
+        EdReportColumn column = this._Columns [ iCount ];
         if ( column.ColumnId == String.Empty
           || column.HeaderText == String.Empty )
         {
@@ -1291,10 +1292,10 @@ namespace Evado.Model.Digital
       //
       for ( int i = 0; i < this.Queries.Length; i++ )
       {
-        EvReportQuery query = this.Queries [ i ];
+        EdReportQuery query = this.Queries [ i ];
         if ( query.QueryId == String.Empty )
         {
-          EvReportQuery sourceQuery = ReportSource.getQueryBySelectionSource ( query.SelectionSource );
+          EdReportQuery sourceQuery = ReportSource.getQueryBySelectionSource ( query.SelectionSource );
           query.QueryId = sourceQuery.QueryId;
           query.QueryTitle = sourceQuery.QueryTitle;
         }
@@ -1305,10 +1306,10 @@ namespace Evado.Model.Digital
       //
       for ( int i = 0; i < this.Columns.Count; i++ )
       {
-        EvReportColumn column = this.Columns [ i ];
+        EdReportColumn column = this.Columns [ i ];
         if ( column.ColumnId == String.Empty )
         {
-          EvReportColumn sourceColumn = ReportSource.getColumnBySourceField ( column.SourceField );
+          EdReportColumn sourceColumn = ReportSource.getColumnBySourceField ( column.SourceField );
           column.ColumnId = sourceColumn.ColumnId;
         }
       }//END query iteration loop.
@@ -1336,12 +1337,12 @@ namespace Evado.Model.Digital
       // 
       // Demension the report rows.
       // 
-      this.DataRecords = new List<EvReportRow> ( );
+      this.DataRecords = new List<EdReportRow> ( );
 
       // 
       // Process a flat report
       // 
-      foreach ( EvReportRow row in DataRecords )
+      foreach ( EdReportRow row in DataRecords )
       {
         this.DataRecords.Add ( row );
 
@@ -1608,7 +1609,7 @@ namespace Evado.Model.Digital
       // Create the output header.
       //
       string stColumn = String.Empty;
-      foreach ( EvReportColumn column in this._Columns )
+      foreach ( EdReportColumn column in this._Columns )
       {
         if ( stColumn != String.Empty )
         {
@@ -1622,7 +1623,7 @@ namespace Evado.Model.Digital
       //
       // Iterate through the data rows.
       //
-      foreach ( EvReportRow dataRow in this._DataRecords )
+      foreach ( EdReportRow dataRow in this._DataRecords )
       {
         //
         // Iterate through the values in data row.
@@ -1664,10 +1665,10 @@ namespace Evado.Model.Digital
       List<EvOption> optionList = new List<EvOption> ( );
 
       optionList.Add ( Evado.Model.EvStatics.getOption (
-        EvReport.LayoutTypeCode.FlatTable.ToString ( ) ) );
+        EdReport.LayoutTypeCode.FlatTable.ToString ( ) ) );
 
       optionList.Add ( Evado.Model.EvStatics.getOption (
-        EvReport.LayoutTypeCode.GroupedTable.ToString ( ) ) );
+        EdReport.LayoutTypeCode.GroupedTable.ToString ( ) ) );
 
       return optionList;
 

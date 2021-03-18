@@ -734,9 +734,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer id object
       // 
-      optionList = Evado.Model.EvStatics.getOptionsFromEnum (
-        typeof ( EvPageIds ),
-        true );
+      optionList = this.AdapterObjects.PageIdentifiers;
 
       Evado.Model.Digital.EvcStatics.sortOptionList ( optionList );
 
@@ -976,7 +974,7 @@ namespace Evado.UniForm.Digital
         {
           this.LogDebug ( "DELETING MENU ITEM" );
           this.Session.MenuItem.Title = String.Empty;
-          this.Session.MenuItem.PageId = EvPageIds.Null;
+          this.Session.MenuItem.PageId = String.Empty;
         }
 
         // 
@@ -987,7 +985,7 @@ namespace Evado.UniForm.Digital
         // 
         // get the debug ResultData.
         // 
-        this.LogValue ( this._Bll_Menus.Log );
+        this.LogClass ( this._Bll_Menus.Log );
 
         // 
         // if an error state is returned create log the event.
@@ -1047,7 +1045,7 @@ namespace Evado.UniForm.Digital
         this.ErrorMessage += EdLabels.Menu_Group_Empty_Error_Message;
       }
 
-      if ( this.Session.MenuItem.PageId == EvPageIds.Null )
+      if ( this.Session.MenuItem.PageId == String.Empty )
       {
         if ( this.ErrorMessage != String.Empty )
         {

@@ -213,6 +213,11 @@ namespace Evado.UniForm.Digital
 
       this.LogInitValue ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
+      //
+      // update the page identifiers.
+      //
+      this.LoadPageIdentifiers ( );
+
       this.LogInitValue ( "END  loadEnityLayoutList" );
 
     }//END loadEnityLayoutList method
@@ -253,6 +258,11 @@ namespace Evado.UniForm.Digital
       this.LogInit ( bll_RecordLayouts.Log );
 
       this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+
+      //
+      // update the page identifiers.
+      //
+      this.LoadPageIdentifiers ( );
 
       this.LogInitValue ( "END loadRecordLayoutList" );
 
@@ -295,7 +305,194 @@ namespace Evado.UniForm.Digital
 
       this.LogInitValue ( "END loadSelectionLists" );
 
-    }//END loadRecordLayoutList method
+    }//END loadSelectionLists method
+
+    ///  =======================================================================================
+    /// <summary>
+    /// This method loads the navigational command list for all static, entities and record layouts
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    public void LoadPageIdentifiers ( )
+    {
+      this.LogMethod ( "LoadPageIdentifiers method" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      this._AdapterObjects.PageIdentifiers = new List<EvOption> ( );
+
+      this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( ) );
+
+      //
+      // add the static page identifiers.
+      //
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Home_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Access_Denied ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Profile ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Database_Version ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_Upload ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Draft_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Section_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Field_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Upload ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Download ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Email_Templates_Page ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Admin_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Export_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Query_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_View ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Login_Page ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_Page ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_List ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_View ) );
+
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Saved_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Column_Selection_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Upload ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Download ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Admin_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Records_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_View ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_Page ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Upload ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_View ) );
+
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_DownLoad_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Update_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Password_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Upload_Page ) );
+      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_View ) );
+
+      //
+      // dynamic page identifiers for Entities by LayoutId
+      //
+      foreach ( EdRecord entityLayout in this._AdapterObjects.AllEntityLayouts )
+      {
+        if ( entityLayout.State != EdRecordObjectStates.Form_Issued )
+        {
+          continue;
+        }
+
+        String pageId = "Entity_" + entityLayout.LayoutId;
+        String pageLabel = pageId.Replace ( "_", " " );
+
+        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+
+        //
+        // add the page identifier for child entities.
+        //
+        switch ( entityLayout.Design.ParentType )
+        {
+          case EdRecord.ParentTypeList.Organisation:
+            {
+              pageId = "Entity_" + entityLayout.LayoutId + "_Org_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.User:
+            {
+              pageId = "Entity_" + entityLayout.LayoutId + "_User_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.Entity:
+            {
+              pageId = "Entity_" + entityLayout.LayoutId + "_Entity_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+        }//END switch statement.
+
+      }//END Entity list iteration
+
+      //
+      // dynamic page identifiers for Entities by LayoutId
+      //
+      foreach ( EdRecord recordLayouts in this._AdapterObjects.AllRecordLayouts )
+      {
+        if ( recordLayouts.State != EdRecordObjectStates.Form_Issued )
+        {
+          continue;
+        }
+
+        String pageId = "Record_" + recordLayouts.LayoutId;
+        String pageLabel = pageId.Replace ( "_", " " );
+
+        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+
+        //
+        // add the page identifier for child entities.
+        //
+        switch ( recordLayouts.Design.ParentType )
+        {
+          case EdRecord.ParentTypeList.Organisation:
+            {
+              pageId = "Record_" + recordLayouts.LayoutId + "_Org_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.User:
+            {
+              pageId = "Record_" + recordLayouts.LayoutId + "_User_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.Entity:
+            {
+              pageId = "Record_" + recordLayouts.LayoutId + "_Entity_Parent";
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+        }//END switch statement.
+
+      }//END Record list iteration 
+
+      this.LogInitValue ( "PageIdentifiers.Count: " + this._AdapterObjects.PageIdentifiers.Count );
+
+      this.LogMethodEnd ( "LoadPageIdentifiers" );
+
+    }//END LoadPageIdentifiers method
 
   }///END EuAdapter class
 

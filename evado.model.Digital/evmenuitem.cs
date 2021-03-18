@@ -112,11 +112,11 @@ namespace Evado.Model.Digital
       set { _Guid = value; }
     }
 
-    private EvPageIds _PageId = EvPageIds.Null;
+    private String _PageId = String.Empty;
     /// <summary>
     /// This property contains the application page identifier as an enumerated value used to define the page.
     /// </summary>
-    public EvPageIds PageId
+    public String PageId
     {
       get { return this._PageId; }
       set { this._PageId = value; }
@@ -348,7 +348,7 @@ namespace Evado.Model.Digital
     //  --------------------------------------------------------------------------------
     public EvEventCodes setValue ( MenuFieldNames fieldName, String value )
     {
-      EvPageIds pageId = EvPageIds.Null;
+      EdStaticPageIds pageId = EdStaticPageIds.Null;
       //
       // Switch the FieldName based on the activity field names
       //
@@ -356,12 +356,7 @@ namespace Evado.Model.Digital
       {
         case MenuFieldNames.Page_Id:
           {
-            if ( EvStatics.tryParseEnumValue<EvPageIds> ( value, out pageId ) == false )
-            {
-              return EvEventCodes.Data_Enumeration_Casting_Error;
-            }
-
-            this._PageId = pageId;
+            this._PageId = value;
             break;
           }
         case MenuFieldNames.Order:

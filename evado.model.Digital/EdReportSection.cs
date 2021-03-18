@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// data  entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvReportSection
+  public class EdReportSection
   {
 
     #region Class enumerations
@@ -81,7 +81,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// Stores the column object and the key is the field name.
     /// </summary>
-    private Dictionary<String, EvReportColumn> _ColumnBySourceField = new Dictionary<string, EvReportColumn> ( );
+    private Dictionary<String, EdReportColumn> _ColumnBySourceField = new Dictionary<string, EdReportColumn> ( );
 
     /// <summary>
     /// List of the EvReportSection who are children of this section.
@@ -92,7 +92,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// Parent of this section. Null if it is the top section.
     /// </summary>
-    private EvReportSection _parent;
+    private EdReportSection _parent;
 
     /// <summary>
     /// Layout of this section.
@@ -216,7 +216,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a section parent object of the report section
     /// </summary>
-    public EvReportSection Parent
+    public EdReportSection Parent
     {
       get { return _parent; }
       set { _parent = value; }
@@ -250,7 +250,7 @@ namespace Evado.Model.Digital
       {
         this._columnsList = value;
 
-        foreach ( EvReportColumn column in this._columnsList )
+        foreach ( EdReportColumn column in this._columnsList )
         {
           this._ColumnBySourceField [ column.SourceField ] = column;
         }

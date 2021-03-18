@@ -243,7 +243,7 @@ namespace Evado.Bll.Digital
     /// This class retrieves a form object based on Guid
     /// </summary>
     /// <param name="RecordGuid">Guid: a form's Global unique identifier</param>
-    /// <returns>EvForm: a form object</returns>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This class consists of the following steps: 
     /// 
@@ -278,7 +278,7 @@ namespace Evado.Bll.Digital
     /// This class retrieves a form object based on RecordId
     /// </summary>
     /// <param name="EntityId">String record identifier</param>
-    /// <returns>EvForm: a form object</returns>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This class consists of the following steps: 
     /// 
@@ -294,16 +294,16 @@ namespace Evado.Bll.Digital
       // 
       // Initialise the method variables and objects.
       // 
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
 
       //
       // Execute the query
       //
-      record = this._DalEntities.GetEntity ( EntityId );
+      entity = this._DalEntities.GetEntity ( EntityId );
       this.LogClass ( this._DalEntities.Log );
 
       this.LogMethodEnd ( "GetEntity" );
-      return record;
+      return entity;
 
     }//END getRecord method
 
@@ -312,8 +312,7 @@ namespace Evado.Bll.Digital
     /// This class retrieves a form object based on RecordId
     /// </summary>
     /// <param name="SourceId">String containing the external source identifier</param>
-    /// <param name="IncludeComments">Boolean True = Include comments in output.</param>
-    /// <returns>EvForm: a form object</returns>
+    /// <returns>EdRecord: a entitty data object.</returns>
     /// <remarks>
     /// This class consists of the following steps: 
     /// 
@@ -330,18 +329,78 @@ namespace Evado.Bll.Digital
       // 
       // Initialise the method variables and objects.
       // 
-      EdRecord record = new EdRecord ( );
+      EdRecord entity = new EdRecord ( );
 
       //
       // Execute the query
       //
-      record = this._DalEntities.GetEntityBySource ( SourceId );
+      entity = this._DalEntities.GetEntityBySource ( SourceId );
       this.LogClass ( this._DalEntities.Log );
 
       this.LogMethodEnd ( "GetnEntityBySource" );
-      return record;
+      return entity;
 
     }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent org id.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentOrgId (
+      String LayoutId,
+      String ParentOrgId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId" );
+      this.LogValue ( "SourceId: " + ParentOrgId );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalEntities.GetItemByParentOrgId ( LayoutId, ParentOrgId );
+      this.LogClass ( this._DalEntities.Log );
+
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent user id.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent user identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentUserId (
+      String LayoutId,
+      String ParentUserId )
+    {
+      this.LogMethod ( "GetItemByParentUserId" );
+      this.LogValue ( "SourceId: " + ParentUserId );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalEntities.GetItemByParentUserId ( LayoutId, ParentUserId );
+      this.LogClass ( this._DalEntities.Log );
+
+      this.LogMethodEnd ( "GetItemByParentUserId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
 
     #endregion
 

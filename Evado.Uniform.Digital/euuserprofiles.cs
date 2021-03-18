@@ -78,9 +78,9 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-CommonName: " + Settings.UserProfile.CommonName );
 
-      if ( this.Session.SelectedUserType == EdUserProfile.UserTypesList.Null )
+      if ( this.Session.SelectedUserType == String.Empty  )
       {
-        this.Session.SelectedUserType = EdUserProfile.UserTypesList.End_User;
+        this.Session.SelectedUserType = "End_User";
       }
 
       if ( this.Session.AdminOrganisationList == null )
@@ -106,7 +106,7 @@ namespace Evado.UniForm.Digital
 
     private Evado.Bll.Digital.EdUserprofiles _Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( );
 
-    private EvPageIds PageId = EvPageIds.Null;
+    private EdStaticPageIds PageId = EdStaticPageIds.Null;
 
     private System.Text.StringBuilder _ProcessLog = null;
 
@@ -149,14 +149,14 @@ namespace Evado.UniForm.Digital
 
         if ( stPageType != String.Empty )
         {
-          this.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( stPageType );
+          this.PageId = Evado.Model.EvStatics.parseEnumValue<EdStaticPageIds> ( stPageType );
         }
         this.LogValue ( "SessionObjects.PageType: " + this.PageId );
 
         //
         // Skip if the updating the current user properties.
         //
-        if ( this.PageId != EvPageIds.User_Profile_Update_Page )
+        if ( this.PageId != EdStaticPageIds.User_Profile_Update_Page )
         {
           if ( this.Session.AdminUserProfile == null )
           {
@@ -180,7 +180,7 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EvPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.User_Profile_Update_Page:
                   {
                     clientDataObject = this.Session.LastPage; 
                     break;
@@ -200,7 +200,7 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EvPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.User_Profile_Update_Page:
                   {
                     clientDataObject = this.getObject_UserProfile ( PageCommand );
                     break;
@@ -227,7 +227,7 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EvPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.User_Profile_Update_Page:
                   {
                     clientDataObject = this.updateUserObject ( PageCommand );
                     break;
@@ -299,7 +299,7 @@ namespace Evado.UniForm.Digital
       //
       // Update the user selection.
       //
-      this.Session.SelectedUserType = PageCommand.GetParameter<EdUserProfile.UserTypesList> (
+      this.Session.SelectedUserType = PageCommand.GetParameter (
         EdUserProfile.UserProfileFieldNames.User_Type_Id );
 
       //
@@ -334,7 +334,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-      EdUserProfile.UserTypesList userType = EdUserProfile.UserTypesList.Null;
+      String userType = String.Empty;
 
       //
       // Determine if the user has access to this page and log and error if they do not.
@@ -364,7 +364,7 @@ namespace Evado.UniForm.Digital
       // 
       clientDataObject.Id = Guid.NewGuid ( );
       clientDataObject.Page.Id = clientDataObject.Id;
-      clientDataObject.Page.PageId = EvPageIds.User_View.ToString ( );
+      clientDataObject.Page.PageId = EdStaticPageIds.User_View.ToString ( );
       clientDataObject.Page.PageDataGuid = clientDataObject.Id;
       clientDataObject.Title = EdLabels.User_Profile_Selection_Page_Title;
       clientDataObject.Page.Title = clientDataObject.Title;
@@ -376,7 +376,7 @@ namespace Evado.UniForm.Digital
       if ( PageCommand.hasParameter (
           EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
       {
-        userType = PageCommand.GetParameter<EdUserProfile.UserTypesList> ( 
+        userType = PageCommand.GetParameter ( 
           EdUserProfile.UserProfileFieldNames.User_Type_Id );
 
         this.LogDebug ( "Parameter set User Type: " + userType );
@@ -391,7 +391,7 @@ namespace Evado.UniForm.Digital
       //
       // display the user upload group.
       //
-      if ( this.PageId == EvPageIds.User_Upload_Page )
+      if ( this.PageId == EdStaticPageIds.User_Upload_Page )
       {
         this.LogValue ( "Processing upload page." );
         this.getList_Upload_Group ( PageCommand, clientDataObject.Page );
@@ -400,7 +400,7 @@ namespace Evado.UniForm.Digital
       //
       // Display the user download group
       //
-      if ( this.PageId == EvPageIds.User_DownLoad_Page )
+      if ( this.PageId == EdStaticPageIds.User_DownLoad_Page )
       {
         this.LogValue ( "Processing download page." );
         this.getList_Download_Group ( clientDataObject.Page );
@@ -461,7 +461,7 @@ namespace Evado.UniForm.Digital
       //
       // Display the download user profiles page command
       //
-      if ( this.PageId != EvPageIds.User_DownLoad_Page )
+      if ( this.PageId != EdStaticPageIds.User_DownLoad_Page )
       {
         pageCommand = PageObject.addCommand (
            EdLabels.UserProfile_Downoad_Command_Title,
@@ -470,13 +470,13 @@ namespace Evado.UniForm.Digital
            Model.UniForm.ApplicationMethods.Custom_Method );
 
         pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
-        pageCommand.SetPageId ( EvPageIds.User_DownLoad_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.User_DownLoad_Page );
       }
 
       //
       // display the upload user profiles page command.
       //
-      if ( this.PageId != EvPageIds.User_Upload_Page )
+      if ( this.PageId != EdStaticPageIds.User_Upload_Page )
       {
         pageCommand = PageObject.addCommand (
            EdLabels.UserProfile_Upload_Command_Title,
@@ -485,7 +485,7 @@ namespace Evado.UniForm.Digital
            Model.UniForm.ApplicationMethods.Custom_Method );
 
         pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
-        pageCommand.SetPageId ( EvPageIds.User_Upload_Page );
+        pageCommand.SetPageId ( EdStaticPageIds.User_Upload_Page );
       }
 
       this.LogMethodEnd ( "getListPage_Commands" );
@@ -588,7 +588,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
-      groupCommand.SetPageId ( EvPageIds.User_Upload_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.User_Upload_Page );
       groupCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
     }//END getUserProfileUploadDataObject Method
@@ -723,7 +723,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the form template filename.
         //
-        if ( this.Session.SelectedUserType !=  EdUserProfile.UserTypesList.Null)
+        if ( this.Session.SelectedUserType !=  String.Empty )
         {
           downloadFileName = this.Session.SelectedUserType + "-"
            + EuUserProfiles.CONST_DOWNLOAD_EXTENSION;
@@ -791,7 +791,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of organisations.
       //
-      optionList = EdUserProfile.GetUserTypeOptionList ( true );
+      optionList = this.AdapterObjects.Settings.GetUserTypeList ( true );
 
       // 
       // Set the selection to the current site org id.
@@ -1061,7 +1061,7 @@ namespace Evado.UniForm.Digital
         + this.Session.AdminUserProfile.CommonName;
 
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.PageId = EvPageIds.User_Profile_Page.ToString ( );
+      ClientDataObject.Page.PageId = EdStaticPageIds.User_Profile_Page.ToString ( );
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
       this.LogValue ( "clientDataObject status: " + ClientDataObject.Page.EditAccess );
@@ -1413,7 +1413,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of organisations.
       //
-      optionList = EdUserProfile.GetUserTypeOptionList ( true );
+      optionList = this.AdapterObjects.Settings.GetUserTypeList ( true );
 
       // 
       // Set the selection to the current site org id.

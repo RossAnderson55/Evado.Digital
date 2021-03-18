@@ -27,13 +27,13 @@ namespace Evado.Model.Digital
   /// data  entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvReportQuery
+  public class EdReportQuery
   {
     #region Class initialisation method
     /// <summary>
     /// This method initialises the report quety object.
     /// </summary>
-    public EvReportQuery ( )
+    public EdReportQuery ( )
     {
       SelectionList [ 0 ] = new EvOption ( );
     }
@@ -59,7 +59,7 @@ namespace Evado.Model.Digital
     /// list.
     /// 
     /// </summary>
-    private EvReport.SelectionListTypes _SelectionSource = EvReport.SelectionListTypes.None;
+    private EdReport.SelectionListTypes _SelectionSource = EdReport.SelectionListTypes.None;
 
     /// <summary>
     /// This member contains the selection list containing the selection options for the 
@@ -97,7 +97,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// Operator that will be used by the query to compare.
     /// </summary>
-    private EvReport.Operators _Operator = EvReport.Operators.Equals_to;
+    private EdReport.Operators _Operator = EdReport.Operators.Equals_to;
 
     /// <summary>
     /// THis member defines whether the quey selection is mandatory,  if mandatory 
@@ -111,7 +111,7 @@ namespace Evado.Model.Digital
     /// some validations on the queries.
     /// 
     /// </summary>
-    private EvReport.DataTypes _DataType = EvReport.DataTypes.Text;
+    private EdReport.DataTypes _DataType = EdReport.DataTypes.Text;
 
     /// <summary>
     /// List of static parameters used to filter the query list.
@@ -149,7 +149,7 @@ namespace Evado.Model.Digital
     /// This property contains an operator object of the report query
     /// </summary>
     [Newtonsoft.Json.JsonIgnore]
-    public EvReport.Operators Operator
+    public EdReport.Operators Operator
     {
       get { return _Operator; }
       set { _Operator = value; }
@@ -175,7 +175,7 @@ namespace Evado.Model.Digital
     /// This property contains a selection source object of the report query
     /// </summary>
     [Newtonsoft.Json.JsonIgnore]
-    public EvReport.SelectionListTypes SelectionSource
+    public EdReport.SelectionListTypes SelectionSource
     {
       get
       {
@@ -285,7 +285,7 @@ namespace Evado.Model.Digital
     /// This property contains a data type object of the report query
     /// </summary>
     [Newtonsoft.Json.JsonIgnore]
-    public EvReport.DataTypes DataType
+    public EdReport.DataTypes DataType
     {
       get { return _DataType; }
       set { _DataType = value; }
@@ -342,7 +342,7 @@ namespace Evado.Model.Digital
     /// <returns>Boolean: true, if the query has selection source</returns>
     public bool hasSelectionSource ( )
     {
-      return this.SelectionSource != EvReport.SelectionListTypes.None;
+      return this.SelectionSource != EdReport.SelectionListTypes.None;
     }
 
     /// <summary>
@@ -361,11 +361,11 @@ namespace Evado.Model.Digital
       //
       switch ( Operator )
       {
-        case EvReport.Operators.Greater_than:
+        case EdReport.Operators.Greater_than:
           return ">";
-        case EvReport.Operators.Less_than:
+        case EdReport.Operators.Less_than:
           return "<";
-        case EvReport.Operators.Equals_to:
+        case EdReport.Operators.Equals_to:
         default:
           return "=";
 

@@ -33,7 +33,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This is the report which is going to be transformed into a string.
     /// </summary>
-    protected EvReport _report;
+    protected EdReport _report;
 
     /// <summary>
     ///  The State contains debug status of the class.
@@ -65,13 +65,13 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <returns>EvReportSection: Top section of a report</returns>
     // ----------------------------------------------------------------------------------
-    private EvReportSection getTopSection ( )
+    private EdReportSection getTopSection ( )
     {
       this.writeDebugLogMethod ( "getTopSection method." );
-      EvReportSection wholeReport = new EvReportSection ( );
-      wholeReport.SectionLevel = EvReportSection.Report_Level;
+      EdReportSection wholeReport = new EdReportSection ( );
+      wholeReport.SectionLevel = EdReportSection.Report_Level;
       wholeReport.GroupingColumnValue = "Report";
-      wholeReport.Layout = EvReportSection.LayoutTypes.Flat;
+      wholeReport.Layout = EdReportSection.LayoutTypes.Flat;
       return wholeReport;
 
     }//END getTopSection method
@@ -115,14 +115,14 @@ namespace Evado.Model.Digital
     /// 5. If not a detail column, use non-detail column functionality
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvReportSection loadModel ( EvReport report )
+    public EdReportSection loadModel ( EdReport report )
     {
       this.writeDebugLogMethod ( "loadModel method." );
       //
       // This is the main section and contains the whole report.
       // It has some special characteristichs such as the level and the column values.
       //
-      EvReportSection wholeReport = getTopSection ( );
+      EdReportSection wholeReport = getTopSection ( );
 
       //
       // Stores group column value for each level in the report.
@@ -134,18 +134,18 @@ namespace Evado.Model.Digital
       //
       // Define a section for each level in the report.
       //
-      EvReportSection [ ] sections = new EvReportSection [ 5 ];
+      EdReportSection [ ] sections = new EdReportSection [ 5 ];
 
       //
       // Define the detailed section separately as it treated separately.
       //
-      EvReportSection detail = null;
+      EdReportSection detail = null;
 
       //
       // This stores the lower section before the detail. Is used since this section
       // has a specialized format.
       //
-      EvReportSection lowerSection = null;
+      EdReportSection lowerSection = null;
 
       //
       // True if the section has changed in this row. 
@@ -161,7 +161,7 @@ namespace Evado.Model.Digital
         //
         // Get a data report row
         //
-        EvReportRow row = report.DataRecords [ record ];
+        EdReportRow row = report.DataRecords [ record ];
 
         //
         // Iterate through the columns.
@@ -171,7 +171,7 @@ namespace Evado.Model.Digital
           //
           // Retrieve the curren column
           //
-          EvReportColumn currentColumn = report.Columns [ column ];
+          EdReportColumn currentColumn = report.Columns [ column ];
 
           if ( currentColumn.HeaderText == String.Empty )
           {
@@ -192,7 +192,7 @@ namespace Evado.Model.Digital
           // 
           // So process the column using group column functionality.
           //
-          if ( sectionLvl != EvReportSection.Detail_Level )
+          if ( sectionLvl != EdReportSection.Detail_Level )
           {
             //
             // Test whether the group index has changed its value.
@@ -212,22 +212,22 @@ namespace Evado.Model.Digital
               // Open a new level.
               //
               lastIndexValue [ currentColumn.SectionLvl ] = currentValue;
-              sections [ sectionLvl ] = new EvReportSection ( );
+              sections [ sectionLvl ] = new EdReportSection ( );
 
               sections [ sectionLvl ].RowNumber = record;
               //
               // Stores the parent. If the previous level is the detail, then the parent is the 
               // whole report. If not, the parent is the previous section
               //
-              sections [ sectionLvl ].Parent = sectionLvl - 1 == EvReportSection.Detail_Level ? wholeReport : sections [ sectionLvl - 1 ];
+              sections [ sectionLvl ].Parent = sectionLvl - 1 == EdReportSection.Detail_Level ? wholeReport : sections [ sectionLvl - 1 ];
 
               sections [ sectionLvl ].SectionLevel = sectionLvl;
-              sections [ sectionLvl ].Layout = EvReportSection.LayoutTypes.Flat;
+              sections [ sectionLvl ].Layout = EdReportSection.LayoutTypes.Flat;
               sections [ sectionLvl ].GroupingColumnValue = currentValue;
               sectionHasChangedInThisRow [ sectionLvl ] = true;
               if ( sections [ sectionLvl ].Parent == null )
               {
-                sections [ sectionLvl ].Parent = new EvReportSection ( );
+                sections [ sectionLvl ].Parent = new EdReportSection ( );
               }
               sections [ sectionLvl ].Parent.ChildrenList.Add ( sections [ sectionLvl ] );
 
@@ -264,9 +264,9 @@ namespace Evado.Model.Digital
 
               lastIndexValue [ currentColumn.SectionLvl ] = "" + record;
 
-              detail = new EvReportSection ( );
+              detail = new EdReportSection ( );
               detail.RowNumber = record;
-              detail.Layout = EvReportSection.LayoutTypes.Tabular;
+              detail.Layout = EdReportSection.LayoutTypes.Tabular;
               detail.Parent = lowerSection;
 
               if ( report.IsAggregated == true )
@@ -311,7 +311,7 @@ namespace Evado.Model.Digital
 
             detail.ColumnList.Add ( currentColumn );
 
-            if ( currentColumn.GroupingType == EvReport.GroupingTypes.Total )
+            if ( currentColumn.GroupingType == EdReport.GroupingTypes.Total )
             {
               detail.addToAcumulator ( currentColumn.HeaderText, currentValue );
             }
@@ -320,7 +320,7 @@ namespace Evado.Model.Digital
             // If the grouping type is count, then add 1 to the acumulator
             // if the value is not empty.
             //
-            if ( currentColumn.GroupingType == EvReport.GroupingTypes.Count )
+            if ( currentColumn.GroupingType == EdReport.GroupingTypes.Count )
             {
 
               if ( currentValue.Trim ( ) != String.Empty )

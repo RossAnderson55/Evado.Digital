@@ -289,8 +289,7 @@ namespace Evado.Dal.Digital
       profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, DB_AD_NAME );
       profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
       profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
-      profile.TypeId = EvStatics.parseEnumValue<EdUserProfile.UserTypesList> (
-        EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE ) );
+      profile.TypeId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE );
 
       profile.Prefix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_PREFIX );
       profile.GivenName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_GIVEN_NAME );
@@ -347,7 +346,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EdUserProfile> GetView (
-     EdUserProfile.UserTypesList UserType,
+     String UserType,
       String OrgId )
     {
 
@@ -361,7 +360,7 @@ namespace Evado.Dal.Digital
       String sqlQueryString;
       List<Evado.Model.Digital.EdUserProfile> view = new List<Evado.Model.Digital.EdUserProfile> ( );
 
-      if ( UserType == EdUserProfile.UserTypesList.Evado )
+      if ( UserType =="Evado" )
       {
         OrgId = "EVADO";
       }
@@ -382,7 +381,7 @@ namespace Evado.Dal.Digital
       // 
       sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + EdUserProfiles.DB_DELETED + " = 0) \r\n"; ;
 
-      if ( UserType != EdUserProfile.UserTypesList.Null )
+      if ( UserType != String.Empty )
       {
         sqlQueryString += " AND (" + EdUserProfiles.DB_TYPE + " = " + EdUserProfiles.PARM_TYPE + ") \r\n";
       }
@@ -568,7 +567,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<Evado.Model.EvOption> GetList (
-     EdUserProfile.UserTypesList Type,
+     String Type,
       String OrgId,
       bool useGuid )
     {
@@ -705,7 +704,7 @@ namespace Evado.Dal.Digital
     /// 4. Return false if no records are returned.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public int UserCount ( EdUserProfile.UserTypesList UserType )
+    public int UserCount ( String UserType )
     {
 
       this.LogMethod ( "UserCount method." );
@@ -731,10 +730,10 @@ namespace Evado.Dal.Digital
       // 
       sqlQueryString = SQL_SELECT_QUERY;
 
-      if ( UserType != EdUserProfile.UserTypesList.Null )
+      if ( UserType != String.Empty )
       {
         sqlQueryString = SQL_SELECT_QUERY
-          + "WHERE (" + EdUserProfiles.DB_ORG_ID + " = " + EdUserProfiles.PARM_ORG_ID + ") ;";
+          + "WHERE (" + EdUserProfiles.DB_TYPE + " = " + EdUserProfiles.PARM_TYPE + ") ;";
       }
 
       //

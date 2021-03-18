@@ -236,7 +236,7 @@ namespace Evado.UniForm.Digital
           helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (
             this.AdapterObjects.HelpUrl,
-             Evado.Model.Digital.EvPageIds.Application_Event_View ) );
+             Evado.Model.Digital.EdStaticPageIds.Application_Event_View ) );
         }
         if ( this.Session.EventStartDate ==  Evado.Model.Digital.EvcStatics.CONST_DATE_MIN_RANGE )
         {
@@ -617,7 +617,7 @@ namespace Evado.UniForm.Digital
         helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (
             this.AdapterObjects.HelpUrl,
-             Evado.Model.Digital.EvPageIds.Application_Event ) );
+             Evado.Model.Digital.EdStaticPageIds.Application_Event ) );
       }
 
       // 

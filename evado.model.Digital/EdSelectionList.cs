@@ -79,6 +79,19 @@ namespace Evado.Model.Digital
       /// </summary>
       public string Category { get; set; }
 
+      /// <summary>
+      /// This property returns the EvOption object containing the selection options.
+      /// </summary>
+      public EvOption GetOption ( bool withCategory )
+      {
+        if ( withCategory == true )
+        {
+          return new EvOption ( Value, Category + " - " + Description );
+        }
+
+        return new EvOption ( Value, Description );
+      }
+
       #endregion
 
     }//END CodeItem class
@@ -310,7 +323,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return String.Format ( 
+        return String.Format (
           EdLabels.SelectionLists_LInk_Text,
           this.ListId,
           this.Title,
@@ -323,7 +336,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return new EvOption( this.ListId, 
+        return new EvOption ( this.ListId,
           String.Format (
           EdLabels.SelectionLists_LInk_Text,
           this.ListId,
@@ -356,7 +369,7 @@ namespace Evado.Model.Digital
       //
       if ( ForSelectionList == true )
       {
-        optionList.Add ( new EvOption ( "Null", "") );
+        optionList.Add ( new EvOption ( "Null", "" ) );
       }
 
       //

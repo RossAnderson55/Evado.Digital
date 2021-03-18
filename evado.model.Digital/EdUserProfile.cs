@@ -196,33 +196,6 @@ namespace Evado.Model.Digital
       Expiry_Date,
     }
 
-
-    /// <summary>
-    /// This enumeration list user type code .
-    /// These codes control the use access to the platform
-    /// </summary>
-    public enum UserTypesList
-    {
-      /// <summary>
-      /// This enumeration defines the null or not selection state
-      /// </summary>
-      Null,
-
-      /// <summary>
-      /// This enumeration defines the Evado users on the platform
-      /// </summary>
-      Evado,
-
-      /// <summary>
-      /// This enumeration defines the Customers users on the platform
-      /// </summary>
-      Customer,
-
-      /// <summary>
-      /// This enumeration defines the End users on the platform
-      /// </summary>
-      End_User,
-    }
     #endregion
 
     #region Class contants
@@ -240,18 +213,10 @@ namespace Evado.Model.Digital
 
     #region Class Properties
 
-    UserTypesList _TypeId = UserTypesList.Customer;
     /// <summary>
     /// This property defines the user type and used to control user access to the platform.
     /// </summary>
-    public UserTypesList TypeId
-    {
-      get { return this._TypeId; }
-      set
-      {
-        this._TypeId = value;
-      }
-    }
+    public String TypeId { get; set; }
 
     String _OrgId = String.Empty;
     /// <summary>
@@ -266,7 +231,7 @@ namespace Evado.Model.Digital
 
         if ( this._OrgId.ToLower ( ) == "evado" )
         {
-          this._TypeId = UserTypesList.Evado;
+          this.TypeId = "Evado";
         }
       }
     }
@@ -360,7 +325,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado )
+        if ( ( this.TypeId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -376,7 +341,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado )
+        if ( ( this.TypeId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
@@ -394,7 +359,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado )
+        if ( ( this.TypeId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
@@ -413,7 +378,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado )
+        if ( ( this.TypeId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -429,8 +394,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado
-            || this.TypeId == UserTypesList.Customer )
+        if ( ( this.TypeId == "Evado"
+            || this.TypeId == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true ) )
         {
@@ -448,8 +413,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado
-            || this.TypeId == UserTypesList.Customer )
+        if ( ( this.TypeId == "Evado"
+            || this.TypeId == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
@@ -467,8 +432,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == UserTypesList.Evado
-            || this.TypeId == UserTypesList.Customer )
+        if ( ( this.TypeId == "Evado"
+            || this.TypeId == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
@@ -482,19 +447,32 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
-    /// this propety indicated if the user has configuration read access.
+    /// this propety indicated if the user has end user access.
     /// </summary>
     public bool hasEndUserAccess
     {
       get
       {
-        if ( this.TypeId == UserTypesList.End_User )
+        if ( this.TypeId != "Evado"
+            || this.TypeId != "Customer" )
         {
           return true;
         }
 
         return false;
       }
+    }
+    
+    /// <summary>
+    /// this method indicates if the user has a metching type.
+    /// </summary>
+    public bool IsUserType ( String UserType )
+    {
+      if ( this.TypeId == UserType )
+      {
+        return true;
+      }
+      return false;
     }
 
     #endregion
@@ -659,7 +637,7 @@ namespace Evado.Model.Digital
           }
         case UserProfileFieldNames.User_Type_Id:
           {
-            this.TypeId = EvStatics.parseEnumValue<UserTypesList> ( value );
+            this.TypeId = value ;
             break;
           }
         case UserProfileFieldNames.ActiveDirectoryUserId:
@@ -767,26 +745,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region static Methods
-
-    //  ==================================================================================
-    /// <summary>
-    /// This methods listgs the static user roles.
-    /// </summary>
-    //  ---------------------------------------------------------------------------------
-    public static List<EvOption> GetUserTypeOptionList ( bool IsSelectionList )
-    {
-      List<EvOption> optionList = new List<EvOption> ( );
-      if ( IsSelectionList == true )
-      {
-        optionList.Add ( new EvOption ( ) );
-      }
-
-      optionList.Add ( new EvOption ( UserTypesList.End_User, UserTypesList.End_User.ToString ( ).Replace ( "_", "" ) ) );
-      optionList.Add ( new EvOption ( UserTypesList.Customer, UserTypesList.Customer.ToString ( ) ) );
-      optionList.Add ( new EvOption ( UserTypesList.Evado, UserTypesList.Evado.ToString ( ) ) );
-
-      return optionList;
-    }
 
     #endregion
 

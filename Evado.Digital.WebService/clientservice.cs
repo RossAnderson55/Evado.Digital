@@ -231,7 +231,7 @@ namespace Evado.Digital.WebService
         {
           String EventMessage = evado.model.Properties.Resources.JSON_DESERIALISATION_ERROR + "\r\n" + EvStatics.getException ( Ex );
 
-          this.LogEvent( EventMessage );
+          this.LogEvent ( EventMessage );
 
           return generateErrorWebServiceResponse ( Ex );
         }
@@ -266,7 +266,7 @@ namespace Evado.Digital.WebService
           return this.generateWebServiceResponse ( );
         }
 
-        this.LogDebugValue ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
+        this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
 
         Global.LogCommand ( PageCommand, this._Context.Session.SessionID );
 
@@ -280,9 +280,9 @@ namespace Evado.Digital.WebService
         //
         this.getServiceUserProfile ( PageCommand );
 
-        this.LogDebugValue ( "ServiceUserProfile.UserId: " + this._ServiceUserProfile.UserId );
+        this.LogDebug ( "ServiceUserProfile.UserId: " + this._ServiceUserProfile.UserId );
         //this.LogDebugValue ( "ServiceUserProfile.DomainGroupNames: " + this._ServiceUserProfile.DomainGroupNames );
-        this.LogDebugValue ( "ServiceUserProfile.IsAuthenticated: " + this._ServiceUserProfile.IsAuthenticated );
+        this.LogDebug ( "ServiceUserProfile.IsAuthenticated: " + this._ServiceUserProfile.IsAuthenticated );
 
         #endregion
 
@@ -425,11 +425,11 @@ namespace Evado.Digital.WebService
           PageCommand.Method = ApplicationMethods.Get_Object;
         }
 
-       // this.LogDebugValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+        // this.LogDebugValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
-        this.LogDebugValue ( "ServiceUserProfile.UserId: " + this._ServiceUserProfile.UserId );
+        this.LogDebug ( "ServiceUserProfile.UserId: " + this._ServiceUserProfile.UserId );
         //this.LogDebugValue ( "ServiceUserProfile.DomainGroupNames: " + this._ServiceUserProfile.DomainGroupNames );
-        this.LogDebugValue ( "ServiceUserProfile.IsAuthenticated: " + this._ServiceUserProfile.IsAuthenticated );
+        this.LogDebug ( "ServiceUserProfile.IsAuthenticated: " + this._ServiceUserProfile.IsAuthenticated );
         #endregion
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -495,7 +495,7 @@ namespace Evado.Digital.WebService
 
         this.LogEvent ( "Integration Services RETURNED." );
 
-        this.LogDebugValue ( this._AppDataObject.getAtString ( ) );
+        this.LogDebug ( this._AppDataObject.getAtString ( ) );
 
         if ( Global.LoggingLevel > 4 )
         {
@@ -513,11 +513,11 @@ namespace Evado.Digital.WebService
         //
         Global.RecordTestCase ( PageCommand, this._AppDataObject.Page.Exit, this._AppDataObject );
 
-        this.LogDebugValue ( "Global Object count: " + Global.GlobalObjectList.Count );
-        this.LogDebugValue ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
+        this.LogDebug ( "Global Object count: " + Global.GlobalObjectList.Count );
+        this.LogDebug ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
         + Global.GlobalObjectList.ContainsKey ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ) );
 
-        this.LogDebugValue ( "Client data object: " + this._AppDataObject.Title
+        this.LogDebug ( "Client data object: " + this._AppDataObject.Title
           + " send to user: " + this._ServiceUserProfile.UserId );
 
         Global.LogExitCommand ( this._AppDataObject.Page.Exit, this._Context.Session.SessionID );
@@ -537,7 +537,7 @@ namespace Evado.Digital.WebService
       }
       catch ( Exception Ex )
       {
-        string EventMessage = "Evado.Digital.WebService.ClientService event method.\r\n" + EvStatics.getException( Ex );
+        string EventMessage = "Evado.Digital.WebService.ClientService event method.\r\n" + EvStatics.getException ( Ex );
 
         this.LogEvent ( EventMessage );
 
@@ -618,7 +618,7 @@ namespace Evado.Digital.WebService
 
       // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // 
-      this.LogDebugValue ( " SERIALISING the Data Object " );
+      this.LogDebug ( " SERIALISING the Data Object " );
 
       json = JsonConvert.SerializeObject ( this._AppDataObject, Formatting.Indented, jsonSettings );
 
@@ -719,7 +719,7 @@ namespace Evado.Digital.WebService
 
       // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // 
-      this.LogDebugValue ( " SERIALISING the Data Object " );
+      this.LogDebug ( " SERIALISING the Data Object " );
 
 
       //
@@ -733,7 +733,7 @@ namespace Evado.Digital.WebService
       WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
       var result = new MemoryStream ( ASCIIEncoding.UTF8.GetBytes ( json ) );
 
-      this.LogDebugValue( " generating ERROR the memory stream output." );
+      this.LogDebug ( " generating ERROR the memory stream output." );
 
       //
       // Write the log
@@ -814,7 +814,7 @@ namespace Evado.Digital.WebService
       string stUserId = PageCommand.GetHeaderValue ( CommandHeaderElements.UserId );
       string userProfileSessionKey = stUserId.ToUpper ( ) + CONST_USER_PROFILE_SUFFIX;
 
-      this.LogDebugValue ( "PageCommand.Head.UserId: " + stUserId );
+      this.LogDebug ( "PageCommand.Head.UserId: " + stUserId );
       //
       // Using the user id retrieve the user service profile from session.
       //
@@ -822,12 +822,12 @@ namespace Evado.Digital.WebService
       {
         if ( this._Context.Session [ userProfileSessionKey ] != null )
         {
-          this._ServiceUserProfile = ( EvUserProfileBase ) this._Context.Session [ userProfileSessionKey ];
+          this._ServiceUserProfile = (EvUserProfileBase) this._Context.Session [ userProfileSessionKey ];
           this._ServiceUserProfile.NewAuthentication = false;
         }
         else
         {
-          this.LogDebugValue ( "Create new Service User Profile" );
+          this.LogDebug ( "Create new Service User Profile" );
           this._ServiceUserProfile.UserId = stUserId;
           this._ServiceUserProfile.CommonName = stUserId;
           this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
@@ -898,7 +898,7 @@ namespace Evado.Digital.WebService
         return false;
       }
 
-      this.LogDebugValue ( "ATTEMPTING AUTHENTIATION: User credentials: "
+      this.LogDebug ( "ATTEMPTING AUTHENTIATION: User credentials: "
         + "UserId:" + this._ServiceUserProfile.UserId
         + ", Password: " + stPassword );
 
@@ -972,11 +972,26 @@ namespace Evado.Digital.WebService
       this._ServiceUserProfile.NewAuthentication = false;
 
       //
+      // Verify that the groupCommand is login groupCommand.
+      //
+      if ( PageCommand.Type != CommandTypes.Login_Command
+        && PageCommand.Type != CommandTypes.Anonymous_Command
+        && PageCommand.Type != CommandTypes.Network_Login_Command
+        && PageCommand.Type != CommandTypes.Token_Login_Command )
+      {
+        this.LogValue4 ( " A login command was not recieved."
+          + "  Type: " + PageCommand.Type );
+
+        this.LogMethodEnd ( "ValidateUserCredentials" );
+        return true;
+      }
+
+      //
       // If the command type is a annoymous then authenticate the user annoymously and exit
       //
       if ( PageCommand.Type == CommandTypes.Anonymous_Command )
       {
-        this.LogDebugValue ( "PageCommand.Type = Anonymous_Command" );
+        this.LogDebug ( "PageCommand.Type = Anonymous_Command" );
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Anonymous_Access;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.NewAuthentication = true;
@@ -987,19 +1002,8 @@ namespace Evado.Digital.WebService
         return true;
       }
 
-      //
-      // Verify that the groupCommand is login groupCommand.
-      //
-      if ( PageCommand.Type != CommandTypes.Login_Command
-        && PageCommand.Type != CommandTypes.Network_Login_Command )
-      {
-        this.LogValue4 ( " A login command was not recieved."
-          + "  Type: " + PageCommand.Type );
 
-        this.LogMethodEnd ( "ValidateUserCredentials" );
-        return true;
-      }
-
+      string stUserToken = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_TOKEN );
       string stUserId = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
       string stPassword = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
       string stNetworkRoles = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_NETWORK_ROLES );
@@ -1009,7 +1013,8 @@ namespace Evado.Digital.WebService
       // Object values.
       //
       PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
-      PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD ); 
+      PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
+      this._ServiceUserProfile.Token = new Guid ( stUserToken );
       this._ServiceUserProfile.UserId = stUserId;
       this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
 
@@ -1072,8 +1077,38 @@ namespace Evado.Digital.WebService
 
         PageCommand.Type = CommandTypes.Normal_Command;
 
-        this.LogDebugValue ( "UserId: " + this._ServiceUserProfile.UserId );
-        this.LogDebugValue ( "DomainGroupNames: " + this._ServiceUserProfile.DomainGroupNames );
+        this.LogDebug ( "UserId: " + this._ServiceUserProfile.UserId );
+        this.LogDebug ( "DomainGroupNames: " + this._ServiceUserProfile.DomainGroupNames );
+
+        this.setServiceUserProfile ( );
+
+        return true;
+      }
+
+      //
+      // if network authentication is active, then the user was authenticated an external validation source.
+      //
+      if ( PageCommand.Type == CommandTypes.Token_Login_Command
+        && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT )
+      {
+        String message = message = "User: " + this._ServiceUserProfile.Token + " TOKEN AUTHENITCATED.";
+
+        this.LogValue ( message );
+
+        EventLog.WriteEntry ( Global.EventLogSource,
+          message,
+          EventLogEntryType.Information );
+
+        //
+        // Set object values for DEBUG authentication.
+        //
+        this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
+        this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Authenticated;
+        this._ServiceUserProfile.DomainGroupNames = stNetworkRoles;
+        this._ServiceUserProfile.IsAuthenticated = true;
+        this._ServiceUserProfile.UserLoginFailureCount = 0;
+
+        PageCommand.Type = CommandTypes.Normal_Command;
 
         this.setServiceUserProfile ( );
 
@@ -1089,7 +1124,7 @@ namespace Evado.Digital.WebService
         return false;
       }
 
-      this.LogDebugValue ( "ATTEMPTING AUTHENTIATION: User credentials: "
+      this.LogDebug ( "ATTEMPTING AUTHENTIATION: User credentials: "
         + "UserId:" + stUserId
         + ", Password: " + stPassword );
 
@@ -1283,7 +1318,7 @@ namespace Evado.Digital.WebService
 
         for ( int propertyCounter = 0; propertyCounter < propertyCount; propertyCounter++ )
         {
-          dn = ( String ) result.Properties [ "memberOf" ] [ propertyCounter ];
+          dn = (String) result.Properties [ "memberOf" ] [ propertyCounter ];
 
           //this.LogDebugValue ( "dn: " + dn );
 
@@ -1411,15 +1446,15 @@ namespace Evado.Digital.WebService
       sbCommandLog.AppendLine ( "-Application Object: " + PageCommand.Object );
       sbCommandLog.AppendLine ( "-Application Method: " + PageCommand.Method );
 
-      if ( Global.LoggingLevel > 4 
+      if ( Global.LoggingLevel > 4
         && PageCommand.Header.Count > 0 )
+      {
+        sbCommandLog.AppendLine ( "Transaction Header:" );
+        foreach ( Parameter prm in PageCommand.Header )
         {
-          sbCommandLog.AppendLine ( "Transaction Header:" );
-          foreach ( Parameter prm in PageCommand.Header )
-          {
-            sbCommandLog.AppendFormat ( "\tName:\t{0},\tValue:\t{1}", prm.Name, prm.Value  );
-          }
+          sbCommandLog.AppendFormat ( "\tName:\t{0},\tValue:\t{1}", prm.Name, prm.Value );
         }
+      }
 
       if ( Global.LoggingLevel > 4
         || PageCommand.Type != CommandTypes.Login_Command )
@@ -1530,9 +1565,9 @@ namespace Evado.Digital.WebService
     // ----------------------------------------------------------------------------------
     private void LogInitMethodEnd ( String MethodName )
     {
-        String value = Evado.Model.EvStatics.CONST_METHOD_END;
-        value = value.Replace ( " END OF METHOD ", " END OF " + MethodName + " METHOD " );
-        Global.LogService ( value );
+      String value = Evado.Model.EvStatics.CONST_METHOD_END;
+      value = value.Replace ( " END OF METHOD ", " END OF " + MethodName + " METHOD " );
+      Global.LogService ( value );
     }
 
     // ==================================================================================
@@ -1554,7 +1589,7 @@ namespace Evado.Digital.WebService
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    private void  LogMethod ( String Value )
+    private void LogMethod ( String Value )
     {
       if ( Global.LoggingLevel > 1 )
       {
@@ -1644,7 +1679,7 @@ namespace Evado.Digital.WebService
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    private void LogDebugValue ( String Value )
+    private void LogDebug ( String Value )
     {
       if ( Global.LoggingLevel > 4 )
       {

@@ -300,10 +300,10 @@ namespace Evado.Model.Digital
     /// <param name="PageId">EvApplicationPageIdList: (Mandatory) the page identifier enumerateion value.</param>
     /// <returns>string: http help page url reference.</returns>
     // -------------------------------------------------------------------------------------
-    public static string createHelpUrl ( String HelpPageUrl, EvPageIds PageId )
+    public static string createHelpUrl ( String HelpPageUrl, EdStaticPageIds PageId )
     {
       if ( HelpPageUrl == String.Empty
-        || PageId == EvPageIds.Null )
+        || PageId == EdStaticPageIds.Null )
       {
         return String.Empty;
       }

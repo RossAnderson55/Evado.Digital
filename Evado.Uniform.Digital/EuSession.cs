@@ -216,7 +216,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains the current user type selection.
     /// </summary>
-    public EdUserProfile.UserTypesList SelectedUserType { get; set; }
+    public String SelectedUserType { get; set; }
 
     /// <summary>
     /// This property contains the current user type selection.
@@ -267,11 +267,11 @@ namespace Evado.UniForm.Digital
 
     public List<EvBinaryFileMetaData> FileMetaDataList { get; set; }
 
-    Evado.Model.Digital.EvPageIds _PageId = new Evado.Model.Digital.EvPageIds ( );
+    String _PageId = String.Empty;
     /// <summary>
     /// This property object contains the trial object.
     /// </summary>
-    public Evado.Model.Digital.EvPageIds PageId
+    public String PageId
     {
       get
       {
@@ -283,7 +283,22 @@ namespace Evado.UniForm.Digital
       }
     }
 
+    /// <summary>
+    /// This property get the page id as a static page identifier enumerated value.
+    /// </summary>
+    public EdStaticPageIds StaticPageId
+    {
+      get
+      {
+        EdStaticPageIds pageId = EdStaticPageIds.Null;
 
+        if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.PageId, out pageId ) == true )
+        {
+          return pageId;
+        }
+        return EdStaticPageIds.Null;
+      }
+    }
     //===================================================================================
     /// <summary>
     /// This method sets the page type
@@ -300,25 +315,7 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      //
-      // set the old page type as a local variable.
-      //
-      EvPageIds oldPageId = this.PageId;
-
-      //
-      // Try to parse the page type.
-      //
-      try
-      {
-        this.PageId = Evado.Model.EvStatics.parseEnumValue<EvPageIds> ( PageId );
-      }
-      catch
-      {
-        //
-        // in error event reset to the old page type.
-        //
-        this.PageId = oldPageId;
-      }
+      this.PageId = PageId;
     }
 
     List<Evado.Model.EvOption> _IssueFormList = new List<Evado.Model.EvOption> ( );
@@ -432,7 +429,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property object contains a list of eClinical EvReports objects.
     /// </summary>
-    public List<EvReport> ReportDesignTemplateList { get; set; }
+    public List<EdReport> ReportDesignTemplateList { get; set; }
 
     /// <summary>
     /// This property object contains a list of eClinical EvReports objects.
@@ -442,17 +439,17 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property object contains a list of eClinical EvReports objects.
     /// </summary>
-    public List<EvReport> ReportTemplateList { get; set; }
+    public List<EdReport> ReportTemplateList { get; set; }
 
     /// <summary>
     /// This property contains the current report template object.
     /// </summary>
-    public EvReport ReportTemplate { get; set; }
+    public EdReport ReportTemplate { get; set; }
 
     /// <summary>
     /// This property contains the current report object.
     /// </summary>
-    public EvReport Report { get; set; }
+    public EdReport Report { get; set; }
 
     private String _ReportCategory = String.Empty;
     /// <summary>
@@ -467,12 +464,12 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property stores the current report scope.
     /// </summary>
-    public EvReport.ReportTypeCode ReportType { get; set; }
+    public EdReport.ReportTypeCode ReportType { get; set; }
 
     /// <summary>
     /// This property stores the current report scope.
     /// </summary>
-    public EvReport.ReportScopeTypes ReportScope { get; set; }
+    public EdReport.ReportScopeTypes ReportScope { get; set; }
 
     /// <summary>
     /// This property contains the form template upload filename
@@ -646,12 +643,82 @@ namespace Evado.UniForm.Digital
           entity = listEntity;
           exists = true;
         }
+        else
+        {
+          continue;
+        }
 
         //
         // If the entity exists in the list, remove all entity after this entity.
         //
         if ( exists == true
           && listEntity.Guid != EntityGuid )
+        {
+          this.EntityDictionary.RemoveAt ( count );
+          count--;
+        }
+      }//END entity iteration loop
+
+      //
+      // Returned the seleced entity.
+      //
+      return entity;
+
+    }//END PushEntity method
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods pull an Entity the dictionary using it guid identifier
+    /// </summary>
+    /// <param name="LayoutId">String: the entity's  identifier.</param>
+    /// <param name="ParentOrgId">String: the parent organisation identifier.</param>
+    /// <param name="ParentUserId">String: the parent user identifier.</param>
+    /// <returns>EdRecord containing the entity object.</returns>
+    //  ---------------------------------------------------------------------------------
+    public EdRecord PullEntity ( String LayoutId, String ParentOrgId, String ParentUserId )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      bool exists = false;
+      EdRecord entity = null;
+
+      //
+      // There can only be one parental identifier and the organisation identifier is taking precedence
+      // over the user parental identifier.
+      //
+      if ( ParentOrgId != String.Empty )
+      {
+        ParentUserId = String.Empty;
+      }
+
+      //
+      // Exist if the entity is aready on the in the dictionary.
+      //
+      for ( int count = 0; count < this.EntityDictionary.Count; count++ )
+      {
+        EdRecord listEntity = this.EntityDictionary [ count ];
+
+        //
+        // test to see if the entity already exists in the list.
+        //
+        if ( listEntity.ParentOrgId == ParentOrgId
+          || listEntity.ParentUserId == ParentUserId )
+        {
+          entity = listEntity;
+          exists = true;
+        }
+        else
+        {
+          continue;
+        }
+
+        //
+        // If the entity exists in the list, remove all entity after this entity.
+        //
+        if ( exists == true
+          && listEntity.Guid != entity.Guid
+          && entity.Guid != Guid.Empty )
         {
           this.EntityDictionary.RemoveAt ( count );
           count--;

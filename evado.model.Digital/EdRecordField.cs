@@ -934,10 +934,6 @@ namespace Evado.Model.Digital
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Numeric ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Integer_Range ) );
-
-      list.Add ( EvStatics.getOption ( EvDataTypes.Float_Range ) );
-
       list.Add ( EvStatics.getOption ( EvDataTypes.Date ) );
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Time ) );
@@ -948,15 +944,15 @@ namespace Evado.Model.Digital
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Check_Box_List ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Address ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.External_Selection_List ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Telephone_Number ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Integer_Range ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Email_Address ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Float_Range ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Name ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Date_Range ) );
 
-      list.Add(EvStatics.getOption ( EvDataTypes.External_Selection_List ));
+      list.Add ( EvStatics.getOption ( EvDataTypes.Image ) );
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Html_Link ) );
 
@@ -965,6 +961,14 @@ namespace Evado.Model.Digital
       list.Add ( EvStatics.getOption ( EvDataTypes.Horizontal_Radio_Buttons ) );
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Analogue_Scale ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Name ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Address ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Telephone_Number ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.Email_Address ) );
 
       //list.Add ( EvStatics.getOption ( EvDataTypes.Signature ) );
 

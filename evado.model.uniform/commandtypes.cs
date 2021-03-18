@@ -93,6 +93,12 @@ namespace Evado.Model.UniForm
     /// </summary>
     Re_Authentication_Command = 11,// json enumeration: 11
 
+    /// <summary>
+    /// This enumeration value a login event where the user is authenticated considered already authenticated and 
+    /// User identifier token is provided to retrieve the users profile.
+    /// </summary>
+    Token_Login_Command = 12,// json enumeration: 10
+
   }//END Enumeration
 
 }//END namespace

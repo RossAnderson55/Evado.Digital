@@ -31,7 +31,7 @@ namespace Evado.Dal.Digital
   /// <summary>
   /// This class is handles the data access layer for the menu item data object.
   /// </summary>
-  public class EvMenus : EvDalBase
+  public class EdMenus : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -39,7 +39,7 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EvMenus ( )
+    public EdMenus ( )
     {
       this.ClassNameSpace = "Evado.Dal.Digital.EvMenus.";
     }
@@ -50,7 +50,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EvMenus ( Evado.Model.Digital.EvClassParameters Settings )
+    public EdMenus ( Evado.Model.Digital.EvClassParameters Settings )
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvMenus.";
@@ -206,7 +206,7 @@ namespace Evado.Dal.Digital
       // Update elements of MenuItem object to the cmdParms arraylist
       //
       cmdParms [ 0 ].Value = MenuItem.Guid;
-      cmdParms [ 1 ].Value = MenuItem.PageId.ToString ( );
+      cmdParms [ 1 ].Value = MenuItem.PageId;
       cmdParms [ 2 ].Value = MenuItem.Title;
       cmdParms [ 3 ].Value = MenuItem.Order;
       cmdParms [ 4 ].Value = MenuItem.Group;
@@ -249,28 +249,7 @@ namespace Evado.Dal.Digital
        Evado.Model.Digital.EvMenuItem menu = new Evado.Model.Digital.EvMenuItem ( );
 
       menu.Guid = EvSqlMethods.getGuid ( Row, "MNU_GUID" );
-
-      String stPageId = EvSqlMethods.getString ( Row, "MNU_PAGE_ID" );
-
-
-      //
-      // Add page identifier to a menu item object if it exists
-      //
-      if ( stPageId != String.Empty )
-      {
-        try
-        {
-          menu.PageId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EvPageIds> ( stPageId );
-        }
-        catch
-        {
-          menu.PageId = Evado.Model.Digital.EvPageIds.Null;
-        }
-      }
-
-      //
-      // Add the row string of EvSqlMethods object to the menu item object. 
-      //
+      menu.PageId = EvSqlMethods.getString ( Row, "MNU_PAGE_ID" );
       menu.Title = EvSqlMethods.getString ( Row, "MNU_TITLE" );
       menu.Order = EvSqlMethods.getInteger ( Row, "MNU_ORDER" );
       menu.Group = EvSqlMethods.getString ( Row, "MNU_GROUP" );

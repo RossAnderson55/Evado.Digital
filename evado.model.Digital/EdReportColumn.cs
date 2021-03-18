@@ -26,13 +26,13 @@ namespace Evado.Model.Digital
   /// data  entity used to model accounts
   /// </summary>
   [Serializable]
-  public class EvReportColumn
+  public class EdReportColumn
   {
     #region Initialisation method
     /// <summary>
     /// This method initialises th report column object.
     /// </summary>
-    public EvReportColumn( )
+    public EdReportColumn( )
     {
     }    
     #endregion
@@ -85,7 +85,7 @@ namespace Evado.Model.Digital
     /// Other options can are: Sum, Maximum, Minimum.
     /// 
     /// </summary>
-    private EvReport.GroupingTypes _GroupingType = EvReport.GroupingTypes.None; 
+    private EdReport.GroupingTypes _GroupingType = EdReport.GroupingTypes.None; 
 
     /// <summary>
     /// This member contains an array of floating point varables to store the group value at each 
@@ -99,7 +99,7 @@ namespace Evado.Model.Digital
     /// can be summed and how it can be formatted.
     /// 
     /// </summary>
-    private EvReport.DataTypes _DataType = EvReport.DataTypes.Text; 
+    private EdReport.DataTypes _DataType = EdReport.DataTypes.Text; 
 
     /// <summary>
     /// This member contains the current column value of the group.
@@ -237,7 +237,7 @@ namespace Evado.Model.Digital
     /// This property contains a grouping type object of a report column
     /// </summary>
     [Newtonsoft.Json.JsonIgnore]
-    public EvReport.GroupingTypes GroupingType
+    public EdReport.GroupingTypes GroupingType
     {
       get
       {
@@ -248,11 +248,11 @@ namespace Evado.Model.Digital
         //
         // Set the column value based on this option.
         // 
-        if ( this._DataType == EvReport.DataTypes.Text
-          && this._DataType == EvReport.DataTypes.Bool
-          && this._DataType == EvReport.DataTypes.Date )
+        if ( this._DataType == EdReport.DataTypes.Text
+          && this._DataType == EdReport.DataTypes.Bool
+          && this._DataType == EdReport.DataTypes.Date )
         {
-          this._GroupingType = EvReport.GroupingTypes.None;
+          this._GroupingType = EdReport.GroupingTypes.None;
 
           return;
         }
@@ -287,7 +287,7 @@ namespace Evado.Model.Digital
     /// This property contains a data type object of a report column
     /// </summary>
     [Newtonsoft.Json.JsonIgnore]
-    public EvReport.DataTypes DataType
+    public EdReport.DataTypes DataType
     {
       get
       {
@@ -300,11 +300,11 @@ namespace Evado.Model.Digital
         // 
         // Set the column value based on this option.
         // 
-        if ( this._DataType == EvReport.DataTypes.Text
-          && this._DataType == EvReport.DataTypes.Bool
-          && this._DataType == EvReport.DataTypes.Date )
+        if ( this._DataType == EdReport.DataTypes.Text
+          && this._DataType == EdReport.DataTypes.Bool
+          && this._DataType == EdReport.DataTypes.Date )
         {
-          this._GroupingType = EvReport.GroupingTypes.None;
+          this._GroupingType = EdReport.GroupingTypes.None;
         }
 
       }//END set 

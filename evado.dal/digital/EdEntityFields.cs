@@ -935,7 +935,7 @@ namespace Evado.Dal.Digital
     /// 9. Return the report object. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvReport getReport ( EvReport Report )
+    public EdReport getReport ( EdReport Report )
     {
       //
       // Initialize the debug log
@@ -954,7 +954,7 @@ namespace Evado.Dal.Digital
       // 
       // Initialize a list of report rows, a formfield object and the number of report columns
       // 
-      List<EvReportRow> reportRows = new List<EvReportRow> ( );
+      List<EdReportRow> reportRows = new List<EdReportRow> ( );
       EdRecordField formField = new EdRecordField ( );
       int inNoColumns = Report.Columns.Count;
 
@@ -962,23 +962,23 @@ namespace Evado.Dal.Digital
       // Update the report title, datasource and report date. 
       //
       Report.ReportTitle = "Form Field Properties";
-      Report.DataSourceId = EvReport.ReportSourceCode.FormFields;
+      Report.DataSourceId = EdReport.ReportSourceCode.FormFields;
       Report.ReportDate = DateTime.Now;
       //
       // Define the report columns
       //
-      Report.Columns = new List<EvReportColumn> ( );
+      Report.Columns = new List<EdReportColumn> ( );
 
       // 
       // Set the trial column 1
       // 
-      EvReportColumn column = new EvReportColumn ( );
+      EdReportColumn column = new EdReportColumn ( );
       column.HeaderText = "FieldId";
       column.SectionLvl = 0;
       column.GroupingIndex = false;
-      column.DataType = EvReport.DataTypes.Text;
+      column.DataType = EdReport.DataTypes.Text;
       column.SourceField = "FieldId";
-      column.GroupingType = EvReport.GroupingTypes.None;
+      column.GroupingType = EdReport.GroupingTypes.None;
       column.StyleWidth = "100px";
 
       Report.Columns.Add ( column );
@@ -986,13 +986,13 @@ namespace Evado.Dal.Digital
       // 
       // Set the trial column 2
       // 
-      column = new EvReportColumn ( );
+      column = new EdReportColumn ( );
       column.HeaderText = "Title";
       column.SectionLvl = 0;
       column.GroupingIndex = false;
-      column.DataType = EvReport.DataTypes.Text;
+      column.DataType = EdReport.DataTypes.Text;
       column.SourceField = "Subject";
-      column.GroupingType = EvReport.GroupingTypes.None;
+      column.GroupingType = EdReport.GroupingTypes.None;
       column.StyleWidth = "200px";
 
       Report.Columns.Add ( column );
@@ -1000,13 +1000,13 @@ namespace Evado.Dal.Digital
       // 
       // Set the trial column 3
       // 
-      column = new EvReportColumn ( );
+      column = new EdReportColumn ( );
       column.HeaderText = "Type";
       column.SectionLvl = 0;
       column.GroupingIndex = false;
-      column.DataType = EvReport.DataTypes.Text;
+      column.DataType = EdReport.DataTypes.Text;
       column.SourceField = "Type";
-      column.GroupingType = EvReport.GroupingTypes.None;
+      column.GroupingType = EdReport.GroupingTypes.None;
       column.StyleWidth = "100px";
 
       Report.Columns.Add ( column );
@@ -1014,13 +1014,13 @@ namespace Evado.Dal.Digital
       // 
       // Set the trial column 4
       // 
-      column = new EvReportColumn ( );
+      column = new EdReportColumn ( );
       column.HeaderText = "Parameters";
       column.SectionLvl = 0;
       column.GroupingIndex = false;
-      column.DataType = EvReport.DataTypes.Text;
+      column.DataType = EdReport.DataTypes.Text;
       column.SourceField = "Type";
-      column.GroupingType = EvReport.GroupingTypes.None;
+      column.GroupingType = EdReport.GroupingTypes.None;
       column.StyleWidth = "400px";
 
       Report.Columns.Add ( column );
@@ -1028,20 +1028,20 @@ namespace Evado.Dal.Digital
       // 
       // Set the trial column 5
       // 
-      column = new EvReportColumn ( );
+      column = new EdReportColumn ( );
       column.HeaderText = "Hidden Field";
       column.SectionLvl = 0;
       column.GroupingIndex = false;
-      column.DataType = EvReport.DataTypes.Bool;
+      column.DataType = EdReport.DataTypes.Bool;
       column.SourceField = "Hidden";
-      column.GroupingType = EvReport.GroupingTypes.None;
+      column.GroupingType = EdReport.GroupingTypes.None;
       column.StyleWidth = "50px";
 
       Report.Columns.Add ( column );
 
       this.LogValue ( "Report.Column.count: " + Report.Columns.Count );
 
-      foreach ( EvReportColumn col in Report.Columns )
+      foreach ( EdReportColumn col in Report.Columns )
       {
         this.LogValue ( "HeaderText: " + col.HeaderText );
       }
@@ -1060,15 +1060,15 @@ namespace Evado.Dal.Digital
       //
       for ( int i = 0; i < Report.Queries.Length; i++ )
       {
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.LayoutId )
+        if ( Report.Queries [ i ].SelectionSource == EdReport.SelectionListTypes.LayoutId )
         {
           cmdParms [ 0 ].Value = Report.Queries [ i ].Value;
         }
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Field_Id )
+        if ( Report.Queries [ i ].SelectionSource == EdReport.SelectionListTypes.Form_Field_Id )
         {
           cmdParms [ 1 ].Value = Report.Queries [ i ].Value;
         }
-        if ( Report.Queries [ i ].SelectionSource == EvReport.SelectionListTypes.Form_Field_Id)
+        if ( Report.Queries [ i ].SelectionSource == EdReport.SelectionListTypes.Form_Field_Id)
         {
           cmdParms [ 2 ].Value = Report.Queries [ i ].Value;
         }
@@ -1108,7 +1108,7 @@ namespace Evado.Dal.Digital
             + " - " + formField.Title
             + " Type: " + formField.TypeId );
 
-          EvReportRow reportRow = new EvReportRow ( Report.Columns.Count );
+          EdReportRow reportRow = new EdReportRow ( Report.Columns.Count );
 
           //
           // Update the formfield values to the reportRow column
@@ -1173,7 +1173,7 @@ namespace Evado.Dal.Digital
       //
       if ( Report.DataRecords.Count == 0 )
       {
-        EvReportRow reportRow = new EvReportRow ( Report.Columns.Count );
+        EdReportRow reportRow = new EdReportRow ( Report.Columns.Count );
 
         for ( int i = 0; i < Report.Columns.Count; i++ )
         {

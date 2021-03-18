@@ -271,7 +271,7 @@ namespace Evado.UniForm.Digital
 
     private String ErrorMessage = String.Empty;
 
-    EuMenuUtility _MenuUtility;
+    EuNavigationCommands _MenuUtility;
 
     private string _EventLogSource = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_EVENT_LOG_KEY ];
 
@@ -385,7 +385,10 @@ namespace Evado.UniForm.Digital
         Evado.Bll.EvStaticSetting.DebugOn = this.DebugOn;
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
-        this._MenuUtility = new EuMenuUtility ( this.Session, this.ClassParameters );
+        this._MenuUtility = new EuNavigationCommands (
+        this._AdapterObjects, 
+        this.Session, 
+        this.ClassParameters );
 
         //
         // Set the web width.
@@ -517,14 +520,14 @@ namespace Evado.UniForm.Digital
 
       description = PageCommand.getAsString ( false, true );
 
-      description += "\r\n User Type: " + EdUserProfile.UserTypesList.End_User;
+      description += "\r\n User Type: " + "End_User";
 
       this.LogValue ( "Group Description:\r\n " + description );
       pageGroup.Description = description;
       //
       // initialise patient adapter the service object.
       //
-      EuDemoUserRegistration demonstrationUserRegistration = new EuDemoUserRegistration (
+      EuUserRegistration demonstrationUserRegistration = new EuUserRegistration (
         this._AdapterObjects,
         this.ServiceUserProfile,
         this.Session,
