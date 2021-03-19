@@ -218,24 +218,6 @@ namespace Evado.Model.Digital
     /// </summary>
     public String TypeId { get; set; }
 
-    String _OrgId = String.Empty;
-    /// <summary>
-    /// This property defines the user type and used to organisation to the platform.
-    /// </summary>
-    public String OrgId
-    {
-      get { return this._OrgId; }
-      set
-      {
-        this._OrgId = value;
-
-        if ( this._OrgId.ToLower ( ) == "evado" )
-        {
-          this.TypeId = "Evado";
-        }
-      }
-    }
-
     /// <summary>
     /// This property contains the image (logo) filename for the organisation.
     /// </summary>

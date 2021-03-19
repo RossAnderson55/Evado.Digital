@@ -488,55 +488,13 @@ namespace Evado.UniForm.Digital
         // 
         foreach ( EvMenuItem menuItem in menuList )
         {
-          this.LogValue ( "P: " + menuItem.PageId + ", N: " + menuItem.Title + ", R: " + menuItem.RoleList );
-
-          System.Text.StringBuilder sbTitle = new StringBuilder ( );
-          sbTitle.Append ( Evado.Model.EvStatics.enumValueToString ( menuItem.PageId )
-           + EdLabels.Space_Hypen + menuItem.Title
-           + EdLabels.Space_Arrow_Right
-           + EdLabels.Menu_List_Order_Label
-           + menuItem.Order
-           + EdLabels.Space_Arrow_Right
-           + EdLabels.Menu_List_Modules_Label );
-
-          int startIndex = sbTitle.ToString ( ).Length;
-
-          sbTitle.Append ( EdLabels.Menu_List_All_Modules_Label );
-          sbTitle.Append ( EdLabels.Space_Coma );
-
-          sbTitle.Append ( EdLabels.Space_Arrow_Right
-          + EdLabels.Menu_List_Role_Label );
-
-
-          if ( menuItem.hasRole ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true )
-          {
-            sbTitle.Append ( EdLabels.Menu_List_Administrator_Label );
-            sbTitle.Append ( EdLabels.Space_Coma );
-          }
-
-          if ( menuItem.hasRole ( EdUserProfile.CONST_DESIGNER_ROLE ) == true )
-          {
-            sbTitle.Append ( EdLabels.Menu_List_Project_Manager_Label );
-            sbTitle.Append ( EdLabels.Space_Coma );
-          }
-
-          if ( menuItem.hasRole ( EdUserProfile.CONST_MANAGER_ROLE ) == true )
-          {
-            sbTitle.Append ( EdLabels.Menu_List_Project_Coordinator_Label );
-            sbTitle.Append ( EdLabels.Space_Coma );
-          }
-
-          String stTitle = sbTitle.ToString ( );
-
-          if ( startIndex < stTitle.Length - 1 )
-          {
-            stTitle = stTitle.Substring ( 0, stTitle.Length - 2 );
-          }
+          this.LogValue ( "P: " + menuItem.PageId + ", T: " + menuItem.Title + ", R: " + menuItem.RoleList );
 
           // 
           // Add the Menu Field to the list of organisations as a groupCommand.
           // 
-          groupCommand = pageGroup.addCommand ( stTitle,
+          groupCommand = pageGroup.addCommand ( 
+            menuItem.LinkText,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Menu.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );

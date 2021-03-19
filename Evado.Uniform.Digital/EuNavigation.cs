@@ -90,8 +90,7 @@ namespace Evado.UniForm.Digital
     {
       this.resetAdapterLog ( );
       this.LogMethod ( "getMenuCommandObject" );
-      this.LogDebug ( "PageId: {0}, Title: {1}.",
-        PageId, Title );
+      this.LogDebug ( "PageId: {0}, Title: {1}.", PageId, Title );
       //
       // Initialise the methods variables and objects.
       //
@@ -639,11 +638,15 @@ namespace Evado.UniForm.Digital
       }//END Static page ids.
 
       //
-      // Create the command to access Entities by their layout identifers.
+      // Create the command to access a Entity by its organisation parent's identifier.  
+      // i.e. retrieves an organisation's child entity layout.
       //
-      if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX ) == true )
+      if ( PageId.Contains ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX ) == true )
       {
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX, String.Empty );
+
+        this.LogDebug ( "PageId: {0}, Title: {1} Org Parent.", PageId, Title ); 
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        layoutId = layoutId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
           Title,
@@ -653,24 +656,6 @@ namespace Evado.UniForm.Digital
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
-
-        return pageCommand;
-
-      }
-
-      //
-      // Create the command to access a Entity by its organisation parent's identifier.  
-      // i.e. retrieves an organisation's child entity layout.
-      //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX ) == true )
-      {
-        pageCommand = new Model.UniForm.Command (
-          Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Get_Object );
-
-        pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( 
           EdRecord.RecordFieldNames.ParentOrgId, 
           this.Session.Organisation.OrgId );
@@ -682,8 +667,12 @@ namespace Evado.UniForm.Digital
       // Create the command to access a Entity by its user parent's identifier.  
       // i.e. retrieves an user's child entity layout.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX ) == true )
       {
+        this.LogDebug ( "PageId: {0}, Title: {1} User  Parent.", PageId, Title ); 
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        layoutId = layoutId.Replace ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
@@ -691,6 +680,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
           EdRecord.RecordFieldNames.ParentUserId,
           this.Session.UserProfile.UserId );
@@ -702,8 +692,12 @@ namespace Evado.UniForm.Digital
       // Create the command to access a Entity by its Entity parent.  
       // i.e. retrieves an Entity's child records layout.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX ) == true )
       {
+        this.LogDebug ( "PageId: {0}, Title: {1} Entity Parent.", PageId, Title ); 
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        layoutId = layoutId.Replace ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
@@ -711,11 +705,33 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentLayoutId,
-          this.Session.Entity.LayoutId ); ;
+          EdRecord.RecordFieldNames.ParentGuid,
+          this.Session.Entity.ParentGuid ); ;
 
         return pageCommand;
+      }
+      //
+      // Create the command to access Entities by their layout identifers.
+      //
+      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX ) == true )
+      {
+        this.LogDebug ( "PageId: {0}, Title: {1} Layout.", PageId, Title ); 
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+
+        pageCommand = new Model.UniForm.Command (
+          Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+        pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+
+        return pageCommand;
+
       }
 
       //
@@ -723,11 +739,11 @@ namespace Evado.UniForm.Digital
       //
       if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX ) == true )
       {
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
           Title,
-          EuAdapter.ADAPTER_ID,
+          EuAdapter.ADAPTER_ID, 
           EuAdapterClasses.Records.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
@@ -741,8 +757,10 @@ namespace Evado.UniForm.Digital
       // Create the command to access a record by its organisation parent's identifier.  
       // i.e. retrieves an organisation's child entity layout.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX ) == true )
       {
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
@@ -750,6 +768,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
           EdRecord.RecordFieldNames.ParentOrgId,
           this.Session.Organisation.OrgId );
@@ -761,8 +780,10 @@ namespace Evado.UniForm.Digital
       // Create the command to access a record by its user parent's identifier.  
       // i.e. retrieves an user's child entity layout.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX ) == true )
       {
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
@@ -770,6 +791,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
           EdRecord.RecordFieldNames.ParentUserId,
           this.Session.UserProfile.UserId );
@@ -781,18 +803,22 @@ namespace Evado.UniForm.Digital
       // Create the command to access a record by its Entity parent.  
       // i.e. retrieves an Entity's child records layout.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX ) == true )
       {
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Get_Object );
+          Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
+        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentLayoutId,
-          this.Session.Entity.LayoutId ); ;
+          EdRecord.RecordFieldNames.ParentGuid,
+          this.Session.Entity.ParentGuid );
 
         return pageCommand;
       }

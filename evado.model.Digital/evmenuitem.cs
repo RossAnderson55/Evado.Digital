@@ -191,6 +191,22 @@ namespace Evado.Model.Digital
       get { return _UserId; }
       set { _UserId = value; }
     }
+
+    public String LinkText
+    {
+      get
+      {
+        String linkText = String.Format ( 
+          EdLabels.Menu_List_Link_Format,
+          this.PageId,
+          this.Title,
+          this.Order,
+          this.RoleList );
+
+      
+          return linkText;
+      }
+    }
    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

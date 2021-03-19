@@ -344,6 +344,36 @@ namespace Evado.Bll.Digital
 
     // =====================================================================================
     /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent Guid.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentGuid">Guid: Parent Entity Guid identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentGuid (
+      String LayoutId,
+      Guid ParentGuid )
+    {
+      this.LogMethod ( "GetItemByParentGuid" );
+      this.LogValue ( "SourceId: " + ParentGuid );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalEntities.GetItemByParentGuid ( LayoutId, ParentGuid );
+      this.LogClass ( this._DalEntities.Log );
+
+      this.LogMethodEnd ( "GetItemByParentGuid" );
+      return entity;
+
+    }//END GetItemByParentGuid method
+
+    // =====================================================================================
+    /// <summary>
     /// This method retrieves the entity using it layout identifier and parent org id.
     /// </summary>
     /// <param name="LayoutId">String layout identifier</param>

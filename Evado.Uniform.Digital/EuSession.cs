@@ -249,10 +249,15 @@ namespace Evado.UniForm.Digital
     public Evado.Model.Digital.EdOrganisation AdminOrganisation { get; set; }
 
 
+    Evado.Model.Digital.EdOrganisation _Organisation = new EdOrganisation ( );
     /// <summary>
     /// This property contains the Organisation
     /// </summary>
-    public Evado.Model.Digital.EdOrganisation Organisation { get; set; }
+    public Evado.Model.Digital.EdOrganisation Organisation
+    {
+      get { return this._Organisation; }
+      set { this._Organisation = value; }
+    }
 
     Evado.Model.Digital.EvExportParameters _ExportParameters = new EvExportParameters ( );
     /// <summary>
@@ -627,7 +632,7 @@ namespace Evado.UniForm.Digital
       //
       bool exists = false;
       EdRecord entity = null;
-      
+
       //
       // Exist if the entity is aready on the in the dictionary.
       //
@@ -664,7 +669,118 @@ namespace Evado.UniForm.Digital
       //
       return entity;
 
-    }//END PushEntity method
+    }//END PullEntity method
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods pull an Entity the dictionary using it guid identifier
+    /// </summary>
+    /// <param name="LayoutId">String: the entity's  identifier.</param>
+    /// <param name="ParentGuid">Guid: the parent Entity Guid identifier.</param>
+    /// <returns>EdRecord containing the entity object.</returns>
+    //  ---------------------------------------------------------------------------------
+    public EdRecord PullEntity ( String LayoutId )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      bool exists = false;
+      EdRecord entity = null;
+
+      //
+      // Exist if the entity is aready on the in the dictionary.
+      //
+      for ( int count = 0; count < this.EntityDictionary.Count; count++ )
+      {
+        EdRecord listEntity = this.EntityDictionary [ count ];
+
+        //
+        // test to see if the entity already exists in the list.
+        //
+        if ( listEntity.LayoutId == LayoutId  )
+        {
+          entity = listEntity;
+          exists = true;
+        }
+        else
+        {
+          continue;
+        }
+
+        //
+        // If the entity exists in the list, remove all entity after this entity.
+        //
+        if ( exists == true
+          && listEntity.Guid != entity.Guid
+          && entity.Guid != Guid.Empty )
+        {
+          this.EntityDictionary.RemoveAt ( count );
+          count--;
+        }
+      }//END entity iteration loop
+
+      //
+      // Returned the seleced entity.
+      //
+      return entity;
+
+    }//END PullEntity method
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods pull an Entity the dictionary using it guid identifier
+    /// </summary>
+    /// <param name="LayoutId">String: the entity's  identifier.</param>
+    /// <param name="ParentGuid">Guid: the parent Entity Guid identifier.</param>
+    /// <returns>EdRecord containing the entity object.</returns>
+    //  ---------------------------------------------------------------------------------
+    public EdRecord PullEntity ( String LayoutId, Guid ParentGuid )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      bool exists = false;
+      EdRecord entity = null;
+
+      //
+      // Exist if the entity is aready on the in the dictionary.
+      //
+      for ( int count = 0; count < this.EntityDictionary.Count; count++ )
+      {
+        EdRecord listEntity = this.EntityDictionary [ count ];
+
+        //
+        // test to see if the entity already exists in the list.
+        //
+        if ( ( listEntity.LayoutId == LayoutId )
+          && ( listEntity.ParentGuid == ParentGuid ) )
+        {
+          entity = listEntity;
+          exists = true;
+        }
+        else
+        {
+          continue;
+        }
+
+        //
+        // If the entity exists in the list, remove all entity after this entity.
+        //
+        if ( exists == true
+          && listEntity.Guid != entity.Guid
+          && entity.Guid != Guid.Empty )
+        {
+          this.EntityDictionary.RemoveAt ( count );
+          count--;
+        }
+      }//END entity iteration loop
+
+      //
+      // Returned the seleced entity.
+      //
+      return entity;
+
+    }//END PullEntity method
 
     // ==================================================================================
     /// <summary>
@@ -702,8 +818,9 @@ namespace Evado.UniForm.Digital
         //
         // test to see if the entity already exists in the list.
         //
-        if ( listEntity.ParentOrgId == ParentOrgId
-          || listEntity.ParentUserId == ParentUserId )
+        if ( ( listEntity.LayoutId == LayoutId )
+          && ( listEntity.ParentOrgId == ParentOrgId
+            || listEntity.ParentUserId == ParentUserId ) )
         {
           entity = listEntity;
           exists = true;
@@ -730,7 +847,7 @@ namespace Evado.UniForm.Digital
       //
       return entity;
 
-    }//END PushEntity method
+    }//END PullEntity method
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

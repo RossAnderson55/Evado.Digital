@@ -4898,6 +4898,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - {1} &gt; Order: {2}, Roles: {3}.
+        /// </summary>
+        public static string Menu_List_Link_Format {
+            get {
+                return ResourceManager.GetString("Menu_List_Link_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Modules: .
         /// </summary>
         public static string Menu_List_Modules_Label {

@@ -383,13 +383,12 @@ namespace Evado.Model
     /// <summary>
     /// This property contains user organisation identifier
     /// </summary>
-    /*
     public string OrgId
      {
        get { return this._OrgId; }
        set { this._OrgId = value; }
      }
-     */
+
     private string _SessionId = String.Empty;
     /// <summary>
     /// This property defines the user's session identifier

@@ -271,37 +271,22 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constant contains the entity prefix for a entity's organisation parent page identifier.
     /// </summary>
-    public const string CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX = "Organisation_Parent_for_Entity_";
+    public const string CONST_ORG_PARENT_PAGE_ID_SUFFIX = "_Organisation_Parent";
 
     /// <summary>
     /// This constant contains the entity prefix for a entity's user parent page identifier.
     /// </summary>
-    public const string CONST_ENTITY_USER_PARENT_PAGE_ID_PREFIX = "User_Parent_for_Entity_";
+    public const string CONST_USER_PARENT_PAGE_ID_SUFFIX = "User_Parent";
 
     /// <summary>
     /// This constant contains the entity prefix for a entity's Entity parent page identifier.
     /// </summary>
-    public const string CONST_ENTITY_PARENT_PAGE_ID_PREFIX = "Entity_Parent_for_Entity_";
+    public const string CONST_ENTITY_PARENT_PAGE_ID_SUFFIX = "_Entity_Parent";
 
     /// <summary>
     /// This constant contains the record page identifier prefix
     /// </summary>
     public const string CONST_RECORD_PAGE_ID_PREFIX = "Record_";
-
-    /// <summary>
-    /// This constant contains the entity prefix for a record's organisation parent page identifier.
-    /// </summary>
-    public const string CONST_RECORD_ORG_PARENT_PAGE_ID_PREFIX = "Organisation_Parent_for_Record_";
-
-    /// <summary>
-    /// This constant contains the entity prefix for a record's Entity parent page identifier.
-    /// </summary>
-    public const string CONST_RECORD_USER_PARENT_PAGE_ID_PREFIX = "User_Parent_for_Record_";
-
-    /// <summary>
-    /// This constant contains the entity prefix for a record's Entity parent page identifier.
-    /// </summary>
-    public const string CONST_RECORD_ENTITY_PARENT_PAGE_ID_PREFIX = "Entity_Parent_for_Record_";
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -469,6 +454,11 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.TypeId );
 
         //
+        // load the user's organisation.
+        //
+        this.loadUserOrganisation ( );
+
+        //
         // Process a demonstration user registration request. 
         //
         if ( PageCommand.Object == EuAdapterClasses.User_Registration.ToString ( ) )
@@ -480,6 +470,8 @@ namespace Evado.UniForm.Digital
           this.LogMethodEnd ( "getPageObject" );
           return clientDataObject;
         }
+
+
 
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 

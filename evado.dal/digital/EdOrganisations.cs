@@ -56,9 +56,6 @@ namespace Evado.Dal.Digital
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvOrganisations.";
-
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.AdapterGuid );
-
     }
     #endregion
 

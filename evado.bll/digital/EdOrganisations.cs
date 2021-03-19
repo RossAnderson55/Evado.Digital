@@ -212,7 +212,8 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public EdOrganisation getItem ( string OrgId )
     {
-      this.LogMethod ( "getItem method. OrgId: '" + OrgId + "'" );
+      this.LogMethod ( "getItem" );
+      this.LogDebug ( "OrgId: '" + OrgId + "'" );
 
       EdOrganisation organisation = this._DalOrganisations.getItem ( OrgId );
 

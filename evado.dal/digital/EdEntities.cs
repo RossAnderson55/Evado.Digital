@@ -1561,8 +1561,125 @@ namespace Evado.Dal.Digital
       this.LogMethodEnd ( "GetEntityBySource" );
       return entity;
 
-    }//END getItem method
+    }//END getItem method 
 
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentGuid">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentGuid (
+      String LayoutId,
+      Guid ParentGuid )
+    {
+      this.LogMethod ( "GetItemByParentGuid method. " );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( ParentGuid == Guid.Empty )
+      {
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentGuid;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
+      sqlQueryString.AppendLine ( "   AND (" + EdEntities.DB_PARENT_GUID + "= " + EdEntities.PARM_PARENT_GUID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      //
+      // get the child entities for this entity.
+      //
+      entity.ChildEntities = this.getChildEntityList ( entity );
+
+      //
+      // Attache the entity list.
+      //
+      this.getRecordEntities ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentGuid" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
 
     // =====================================================================================
     /// <summary>
@@ -1621,7 +1738,7 @@ namespace Evado.Dal.Digital
       // Define the SQL statement.
       //
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " );" );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
       sqlQueryString.AppendLine ( "   AND (" + EdEntities.DB_PARENT_ORG_ID + "= " + EdEntities.PARM_PARENT_ORG_ID + " );" );
 
       //
@@ -1741,8 +1858,8 @@ namespace Evado.Dal.Digital
       // Define the SQL statement.
       //
       sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " );" );
-      sqlQueryString.AppendLine ( " WHERE (" + EdEntities.DB_AUTHOR_USER_ID + "= " + EdEntities.PARM_AUTHOR_USER_ID + " );" );
+      sqlQueryString.AppendLine ( " WHERE (" + EdEntityLayouts.DB_LAYOUT_ID + "= " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
+      sqlQueryString.AppendLine ( "   AND (" + EdEntities.DB_PARENT_USER_ID + "= " + EdEntities.PARM_PARENT_USER_ID + " );" );
 
       //
       // Execute the query against the database.
