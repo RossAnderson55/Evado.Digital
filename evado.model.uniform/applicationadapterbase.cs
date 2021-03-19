@@ -225,11 +225,41 @@ namespace Evado.Model.UniForm
     /// This method appendes the debuglog string to the debug log for the class and adds
     /// a new line at the end of the text.
     /// </summary>
+    /// <param name="MethodName">String:  debug text.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogInitMethodEnd ( String MethodName )
+    {
+      String value = Evado.Model.EvStatics.CONST_METHOD_END;
+
+      value = value.Replace ( " END OF METHOD ", " END OF " + MethodName + " METHOD " );
+
+      this._AdapterLog.AppendLine ( value );
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes the debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
     /// <param name="DebugLogString">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogInitValue ( String DebugLogString )
+    protected void LogInit ( String DebugLogString )
     {
       this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + DebugLogString );
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogInit ( String Format, params object [ ] args )
+    {
+      this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
+        String.Format ( Format, args ) );
     }
     // ==================================================================================
     /// <summary>
@@ -238,9 +268,9 @@ namespace Evado.Model.UniForm
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    protected void LogInit ( String Value )
+    protected void LogInitClass ( String Value )
     {
-     this._AdapterLog.Append ( Value );
+      this._AdapterLog.Append ( Value );
     }
 
     // ==================================================================================

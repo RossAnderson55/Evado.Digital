@@ -73,10 +73,6 @@
     </Compile>
     <Compile Include="EuOrganisations.cs" />
     <Compile Include="EuRecordLayoutsProperties.cs" />
-    <Compile Include="EuDemoUserRegistration.ads.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EuDemoUserRegistration.cs" />
     <Compile Include="EuAdapter.Common.cs" />
     <Compile Include="EuUserProfiles.user.cs" />
     <Compile Include="EuAdapterClasses.cs" />
@@ -87,6 +83,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuClassAdapterBase.cs" />
+    <Compile Include="EuUserRegistration.ads.cs" />
+    <Compile Include="EuUserRegistration.cs" />
     <Compile Include="EvEmail.cs" />
     <Compile Include="EuReports.cs" />
     <Compile Include="EuApplicationEvents.cs">
@@ -100,7 +98,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EuAdapter.HomePage.cs" />
-    <Compile Include="EuNavigationCommands.cs" />
+    <Compile Include="EuNavigation.cs" />
     <Compile Include="EuUserProfiles.cs" />
     <Compile Include="EvServerPageScript.cs" />
     <Compile Include="EuRecordFields.cs">

@@ -107,14 +107,14 @@ namespace Evado.UniForm.Digital
         this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
         this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
 
-        this.LogInitValue ( "Class Parameters: " );
-        this.LogInitValue ( "-ClientVersion: " + this._ClientVersion );
-        this.LogInitValue ( "-ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
-        this.LogInitValue ( "-ClientDataObject.Title: " + this.ClientDataObject.Title );
-        this.LogInitValue ( "-UniForm_BinaryFilePath: " + this.UniForm_BinaryFilePath );
-        this.LogInitValue ( "-UniForm_BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
-        this.LogInitValue ( "-ApplicationPath: " + this.ApplicationPath );
-        this.LogInitValue ( "-ExitCommand: " + this.ExitCommand.getAsString ( false, true ) );
+        this.LogInit ( "Class Parameters: " );
+        this.LogInit ( "-ClientVersion: " + this._ClientVersion );
+        this.LogInit ( "-ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
+        this.LogInit ( "-ClientDataObject.Title: " + this.ClientDataObject.Title );
+        this.LogInit ( "-UniForm_BinaryFilePath: " + this.UniForm_BinaryFilePath );
+        this.LogInit ( "-UniForm_BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
+        this.LogInit ( "-ApplicationPath: " + this.ApplicationPath );
+        this.LogInit ( "-ExitCommand: " + this.ExitCommand.getAsString ( false, true ) );
 
         Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
@@ -167,23 +167,29 @@ namespace Evado.UniForm.Digital
         //
         this.loadRecordLayoutList ( );
 
-        this.LogInitValue ( "ServiceUserProfile" );
-        this.LogInitValue ( "-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
+        this.LogInit ( "Page identifier list:" );
+        foreach ( EvOption option in this._AdapterObjects.PageIdentifiers )
+        {
+          this.LogInit ( "-PageID: {0} - Desc: {1} ", option.Value, option.Description );
+        }
 
-        this.LogInitValue ( "Settings:" );
-        this.LogInitValue ( "-PlatformId: " + this.ClassParameters.PlatformId );
-        this.LogInitValue ( "-AdapterGuid: " + this.ClassParameters.AdapterGuid );
-        this.LogInitValue ( "-LoggingLevel: " + ClassParameters.LoggingLevel );
-        this.LogInitValue ( "-UserId: " + ClassParameters.UserProfile.UserId );
-        this.LogInitValue ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
+        this.LogInit ( "ServiceUserProfile" );
+        this.LogInit ( "-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
 
-        this.LogInitValue ( "ClientDataObject.Page.Title: " + this.ClientDataObject.Page.Title );
+        this.LogInit ( "Settings:" );
+        this.LogInit ( "-PlatformId: " + this.ClassParameters.PlatformId );
+        this.LogInit ( "-AdapterGuid: " + this.ClassParameters.AdapterGuid );
+        this.LogInit ( "-LoggingLevel: " + ClassParameters.LoggingLevel );
+        this.LogInit ( "-UserId: " + ClassParameters.UserProfile.UserId );
+        this.LogInit ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
+
+        this.LogInit ( "ClientDataObject.Page.Title: " + this.ClientDataObject.Page.Title );
 
         if ( this.Session.AdminUserProfile != null )
         {
-          this.LogInitValue ( "AdminUserProfile.Guid: " + this.Session.AdminUserProfile.Guid );
-          this.LogInitValue ( "AdminUserProfile.UserId: " + this.Session.AdminUserProfile.UserId );
-          this.LogInitValue ( "AdminUserProfile.CommonName: " + this.Session.AdminUserProfile.CommonName );
+          this.LogInit ( "AdminUserProfile.Guid: " + this.Session.AdminUserProfile.Guid );
+          this.LogInit ( "AdminUserProfile.UserId: " + this.Session.AdminUserProfile.UserId );
+          this.LogInit ( "AdminUserProfile.CommonName: " + this.Session.AdminUserProfile.CommonName );
         }
 
       }
@@ -194,7 +200,7 @@ namespace Evado.UniForm.Digital
       }
       String end = Evado.Model.Digital.EvcStatics.CONST_METHOD_END;
       end = end.Replace ( "END OF METHOD", "END OF Evado.UniForm.Clinical.EuAdapter METHOD" );
-      this.LogInitValue ( end );
+      this.LogInit ( end );
 
     }//END Method.
 
@@ -250,13 +256,52 @@ namespace Evado.UniForm.Digital
 
     public const string CONST_ALERT_SELECT = "ALERT_SELECT";
 
-    public const string CONST_HASHE_ITEM_KEY_SELECT = "HIKS";
+    public const string CONST_HASH_ITEM_KEY_SELECT = "HIKS";
 
     public const int CONST_MENU_GROUP_WIDTH = 165;
     public const int CONST_HOME_PAGE_GROUP_DEFAULT_WIDTH = 900;
     public const int CONST_HOME_PAGE_GROUP_MARGINS = 100;
     public const int CONST_HOME_PAGE_GROUP_MAXIMUM_WIDTH = 1200;
 
+    /// <summary>
+    /// This constant contains the entity page identifier prefix
+    /// </summary>
+    public const string CONST_ENTITY_PAGE_ID_PREFIX = "Entity_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a entity's organisation parent page identifier.
+    /// </summary>
+    public const string CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX = "Organisation_Parent_for_Entity_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a entity's user parent page identifier.
+    /// </summary>
+    public const string CONST_ENTITY_USER_PARENT_PAGE_ID_PREFIX = "User_Parent_for_Entity_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a entity's Entity parent page identifier.
+    /// </summary>
+    public const string CONST_ENTITY_PARENT_PAGE_ID_PREFIX = "Entity_Parent_for_Entity_";
+
+    /// <summary>
+    /// This constant contains the record page identifier prefix
+    /// </summary>
+    public const string CONST_RECORD_PAGE_ID_PREFIX = "Record_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a record's organisation parent page identifier.
+    /// </summary>
+    public const string CONST_RECORD_ORG_PARENT_PAGE_ID_PREFIX = "Organisation_Parent_for_Record_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a record's Entity parent page identifier.
+    /// </summary>
+    public const string CONST_RECORD_USER_PARENT_PAGE_ID_PREFIX = "User_Parent_for_Record_";
+
+    /// <summary>
+    /// This constant contains the entity prefix for a record's Entity parent page identifier.
+    /// </summary>
+    public const string CONST_RECORD_ENTITY_PARENT_PAGE_ID_PREFIX = "Entity_Parent_for_Record_";
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -271,7 +316,7 @@ namespace Evado.UniForm.Digital
 
     private String ErrorMessage = String.Empty;
 
-    EuNavigationCommands _MenuUtility;
+    EuNavigation _MenuUtility;
 
     private string _EventLogSource = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_EVENT_LOG_KEY ];
 
@@ -385,7 +430,7 @@ namespace Evado.UniForm.Digital
         Evado.Bll.EvStaticSetting.DebugOn = this.DebugOn;
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
-        this._MenuUtility = new EuNavigationCommands (
+        this._MenuUtility = new EuNavigation (
         this._AdapterObjects, 
         this.Session, 
         this.ClassParameters );
@@ -1132,10 +1177,10 @@ namespace Evado.UniForm.Digital
     private void loadGlobalObjects ( )
     {
       this.LogInitMethod ( "loadGlobalObjects" );
-      this.LogInitValue ( "GlobalObjects.Count: " + this.GlobalObjectList.Count );
-      this.LogInitValue ( "Settings.LoggingLevel: " + this.ClassParameters.LoggingLevel );
+      this.LogInit ( "GlobalObjects.Count: " + this.GlobalObjectList.Count );
+      this.LogInit ( "Settings.LoggingLevel: " + this.ClassParameters.LoggingLevel );
 
-      this.LogInitValue ( "Default ConnectionSettingKey: " + this._ConnectionSettingKey );
+      this.LogInit ( "Default ConnectionSettingKey: " + this._ConnectionSettingKey );
       // 
       // Get the connection string key.
       // 
@@ -1144,11 +1189,11 @@ namespace Evado.UniForm.Digital
         this._ConnectionSettingKey = ConfigurationManager.AppSettings [ EuAdapter.CONFIG_CONNECTION_SETTING_KEY ];
 
       }
-      this.LogInitValue ( "_ConnectionSettingKey: '" + this._ConnectionSettingKey + "'" );
+      this.LogInit ( "_ConnectionSettingKey: '" + this._ConnectionSettingKey + "'" );
 
       Evado.Bll.EvStaticSetting.ConnectionStringKey = this._ConnectionSettingKey;
 
-      this.LogInitValue ( "EvStaticSetting.ConnectionStringKey: '" + Evado.Bll.EvStaticSetting.ConnectionStringKey + "'" );
+      this.LogInit ( "EvStaticSetting.ConnectionStringKey: '" + Evado.Bll.EvStaticSetting.ConnectionStringKey + "'" );
 
       // 
       // Get the respository file path.
@@ -1157,7 +1202,7 @@ namespace Evado.UniForm.Digital
       {
         this._FileRepositoryPath = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
       }
-      this.LogInitValue ( "FileRepositoryPath: '" + this._FileRepositoryPath + "'" );
+      this.LogInit ( "FileRepositoryPath: '" + this._FileRepositoryPath + "'" );
 
       // 
       // load the global object.
@@ -1175,7 +1220,7 @@ namespace Evado.UniForm.Digital
       {
         this._PlatformId = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_PATFORM_ID_KEY ];
       }
-      this.LogInitValue ( "PlatformId: '" + this._PlatformId + "'" );
+      this.LogInit ( "PlatformId: '" + this._PlatformId + "'" );
       this.ClassParameters.PlatformId = this._PlatformId;
       this._AdapterObjects.PlatformId = this._PlatformId;
 
@@ -1184,11 +1229,11 @@ namespace Evado.UniForm.Digital
       // 
       if ( this._AdapterObjects.Settings.Guid != Guid.Empty )
       {
-        this.LogInitValue ( "APPLICATION OBJECT IS LOADED" );
+        this.LogInit ( "APPLICATION OBJECT IS LOADED" );
         return;
       }
 
-      this.LogInitValue ( "LOADING THE APPLICATION OBJECT VALUES" );
+      this.LogInit ( "LOADING THE APPLICATION OBJECT VALUES" );
 
       // 
       // Update the application path.
@@ -1203,19 +1248,19 @@ namespace Evado.UniForm.Digital
 
       this._AdapterObjects.loadGlobalParameters ( );
 
-      this.LogInit ( this._AdapterObjects.Log );
-      this.LogInitValue ( "Version: " + this._AdapterObjects.Settings.Version );
-      this.LogInitValue ( "HiddenOrganisationFields: " + this._AdapterObjects.Settings.HiddenOrganisationFields );
-      this.LogInitValue ( "HiddenUserFields: " + this._AdapterObjects.Settings.HiddenUserFields );
+      this.LogInitClass ( this._AdapterObjects.Log );
+      this.LogInit ( "Version: " + this._AdapterObjects.Settings.Version );
+      this.LogInit ( "HiddenOrganisationFields: " + this._AdapterObjects.Settings.HiddenOrganisationFields );
+      this.LogInit ( "HiddenUserFields: " + this._AdapterObjects.Settings.HiddenUserFields );
 
       // 
       // Save the application parameters to global objects.
       // 
       this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
 
-      this.LogInitValue ( "GlobalObjects: " + this.GlobalObjectList.Count );
+      this.LogInit ( "GlobalObjects: " + this.GlobalObjectList.Count );
 
-      this.LogInitValue ( "GLOBAL APPLICATION OBJECT VALUES LOADED" );
+      this.LogInit ( "GLOBAL APPLICATION OBJECT VALUES LOADED" );
       this._AdapterObjects.LoggingLevel = loggingLevel;
 
     }//END loadGlobalApplicationObjects method
@@ -1242,7 +1287,7 @@ namespace Evado.UniForm.Digital
         //
         if ( this._AdapterObjects.PlatformId != String.Empty )
         {
-          this.LogInitValue ( "The web site identifier exists to exit." );
+          this.LogInit ( "The web site identifier exists to exit." );
           return;
         }
 
@@ -1268,12 +1313,12 @@ namespace Evado.UniForm.Digital
         stIgnoreFileList = stIgnoreFileList.Replace ( ";;", ";" );
         String [ ] ignoreFileList = stIgnoreFileList.Split ( ';' );
 
-        this.LogInitValue ( "ignore list: " + stIgnoreFileList );
+        this.LogInit ( "ignore list: " + stIgnoreFileList );
 
         int deletedFileCount = Evado.Model.Digital.EvcStatics.Files.deleteOldFiles ( this.UniForm_BinaryFilePath, 2, ignoreFileList );
 
         //this.LogInitValue ( Evado.Model.Digital.EvcStatics.Files.DebugLog );
-        this.LogInitValue ( "deletedFile count: " + deletedFileCount );
+        this.LogInit ( "deletedFile count: " + deletedFileCount );
       }
       catch ( Exception Ex )
       {
@@ -1322,20 +1367,20 @@ namespace Evado.UniForm.Digital
       this._SessionObjectKey = this._SessionObjectKey.Replace ( ".", "_" );
       this._SessionObjectKey = this._SessionObjectKey.ToUpper ( );
 
-      this.LogInitValue ( "SessionObjectKey: " + this._SessionObjectKey );
+      this.LogInit ( "SessionObjectKey: " + this._SessionObjectKey );
 
       if ( this.GlobalObjectList.ContainsKey ( this._SessionObjectKey ) == true )
       {
         this.Session = (Evado.UniForm.Digital.EuSession) this.GlobalObjectList [ this._SessionObjectKey ];
 
-        this.LogInitValue ( "Session object loaded." );
+        this.LogInit ( "Session object loaded." );
       }
 
       this._ClientObjectKey = this.ServiceUserProfile.UserId + Evado.Model.Digital.EvcStatics.SESSION_CLIENT_DATA_OBJECT;
       this._ClientObjectKey = this._ClientObjectKey.Replace ( ".", "_" );
       this._ClientObjectKey = this._ClientObjectKey.ToUpper ( );
 
-      this.LogInitValue ( "ClientObjectKey: " + this._ClientObjectKey );
+      this.LogInit ( "ClientObjectKey: " + this._ClientObjectKey );
 
       if ( this.GlobalObjectList.ContainsKey ( this._ClientObjectKey ) == true )
       {
@@ -1358,8 +1403,8 @@ namespace Evado.UniForm.Digital
           this.Session.AdsEnabled = EvStatics.getBool ( value );
         }
       }
-      this.LogInitValue ( "Session Clinical objects: " );
-      this.LogInitValue ( "-AdsEnabled: " + this.Session.AdsEnabled );
+      this.LogInit ( "Session Clinical objects: " );
+      this.LogInit ( "-AdsEnabled: " + this.Session.AdsEnabled );
       /*
       this.LogInitValue ( "-eClinical User Name: " + this.Session.UserProfile.CommonName );
       this.LogInitValue ( "-Current ProjectId: " + this.Session.Project.ProjectId );
@@ -1372,7 +1417,7 @@ namespace Evado.UniForm.Digital
       this.LogInitValue ( "-RecordQuerySelection: " + this.Session.RecordQuerySelection );
       this.LogInitValue ( "-Last Page Title: " + this.ClientDataObject.Page.Title );
       */
-      this.LogInitValue ( "SESSION OBJECTS LOADED" );
+      this.LogInit ( "SESSION OBJECTS LOADED" );
 
     }//END loadSessionObjects method
 

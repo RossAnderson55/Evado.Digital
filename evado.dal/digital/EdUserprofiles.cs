@@ -1360,6 +1360,15 @@ namespace Evado.Dal.Digital
         return Evado.Model.EvEventCodes.Data_Duplicate_Id_Error;
       }
 
+      //
+      // Do a toke substitution of the token Guid exists.
+      // this will enable the token to be used to retrieve user profiles.
+      //
+      if ( UserProfile.Token != Guid.Empty )
+      {
+        user.Guid = UserProfile.Token;
+      }
+
       // 
       // Define the guid for the user of one is not allocated.
       // 

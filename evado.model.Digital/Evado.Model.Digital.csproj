@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EdArticle.cs" />
     <Compile Include="EdObjectParent.cs" />
     <Compile Include="EdLabels.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -130,6 +131,14 @@
     </Compile>
     <Compile Include="EdOrganisation.cs" />
     <Compile Include="EdRecordEntity.cs" />
+    <Compile Include="EdReport.cs" />
+    <Compile Include="EdReportColumn.cs" />
+    <Compile Include="EdReportCsv.cs" />
+    <Compile Include="EdReportGenerator.cs" />
+    <Compile Include="EDReportHtml.cs" />
+    <Compile Include="EdReportQuery.cs" />
+    <Compile Include="EdReportSection.cs" />
+    <Compile Include="EdRportRow.cs" />
     <Compile Include="evdataitem.cs" />
     <Compile Include="EvMediaMetadata.cs" />
     <Compile Include="EdRecordObjectStates.cs">
@@ -155,21 +164,12 @@
     <Compile Include="EdRecordTableHeader.cs" />
     <Compile Include="EdRecordTableRow.cs" />
     <Compile Include="EdRecordComments.cs" />
-    <Compile Include="EdRecordSummary.cs" />
     <Compile Include="EdRecordSection.cs" />
     <Compile Include="evformstaticfield.cs" />
     <Compile Include="evmenuitem.cs" />
     <Compile Include="EvcStatics.cs" />
     <Compile Include="EvClassParameters.cs" />
     <Compile Include="EdQueryParameters.cs" />
-    <Compile Include="evreport.cs" />
-    <Compile Include="evreportcolumn.cs" />
-    <Compile Include="evreportcsv.cs" />
-    <Compile Include="evreportgenerator.cs" />
-    <Compile Include="evreporthtml.cs" />
-    <Compile Include="evreportquery.cs" />
-    <Compile Include="evreportrow.cs" />
-    <Compile Include="evreportsection.cs" />
     <Compile Include="EdAdapterSettings.cs" />
     <Compile Include="EvAncillaryRecord.cs" />
     <Compile Include="EdUserProfile.cs" />

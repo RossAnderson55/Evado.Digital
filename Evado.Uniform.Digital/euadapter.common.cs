@@ -152,8 +152,8 @@ namespace Evado.UniForm.Digital
 
       if ( this._AdapterObjects.OrganisationList.Count > 0 )
       {
-        this.LogInitValue ( "Organistion list layout loaded." );
-        this.LogInitValue ( "END loadOrganisationList" );
+        this.LogInit ( "Organistion list layout loaded." );
+        this.LogInit ( "END loadOrganisationList" );
         return;
       }
 
@@ -168,11 +168,11 @@ namespace Evado.UniForm.Digital
       // 
       this._AdapterObjects.OrganisationList = bll_Organisations.getView ();
 
-      this.LogInit( bll_Organisations.Log );
+      this.LogInitClass( bll_Organisations.Log );
 
-      this.LogInitValue ( "Organisation list count: " + this._AdapterObjects.OrganisationList.Count );
+      this.LogInit ( "Organisation list count: " + this._AdapterObjects.OrganisationList.Count );
 
-      this.LogInitValue ( "END loadOrganisationList" );
+      this.LogInit ( "END loadOrganisationList" );
 
     }//END loadTrialFormList method
 
@@ -191,8 +191,8 @@ namespace Evado.UniForm.Digital
       //
       if ( this._AdapterObjects.AllEntityLayouts.Count > 0)
       {
-        this.LogInitValue ( "Entity layouts loaded." );
-        this.LogInitValue ( "END loadRecordLayoutList" );
+        this.LogInit ( "Entity layouts loaded." );
+        this.LogInit ( "END loadRecordLayoutList" );
         return;
       }
 
@@ -209,16 +209,16 @@ namespace Evado.UniForm.Digital
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
-      this.LogInit ( bll_EntityLayouts.Log );
+      this.LogInitClass ( bll_EntityLayouts.Log );
 
-      this.LogInitValue ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
       //
       // update the page identifiers.
       //
       this.LoadPageIdentifiers ( );
 
-      this.LogInitValue ( "END  loadEnityLayoutList" );
+      this.LogInit ( "END  loadEnityLayoutList" );
 
     }//END loadEnityLayoutList method
 
@@ -230,15 +230,15 @@ namespace Evado.UniForm.Digital
     private void loadRecordLayoutList ( )
     {
       this.LogInitMethod ( "loadRecordLayoutList" );
-      this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInit ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
       if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
       {
-        this.LogInitValue ( "Record layouts loaded." );
-        this.LogInitValue ( "END loadRecordLayoutList" );
+        this.LogInit ( "Record layouts loaded." );
+        this.LogInit ( "END loadRecordLayoutList" );
         return;
       }
 
@@ -255,16 +255,16 @@ namespace Evado.UniForm.Digital
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
-      this.LogInit ( bll_RecordLayouts.Log );
+      this.LogInitClass ( bll_RecordLayouts.Log );
 
-      this.LogInitValue ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInit ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
 
       //
       // update the page identifiers.
       //
       this.LoadPageIdentifiers ( );
 
-      this.LogInitValue ( "END loadRecordLayoutList" );
+      this.LogInit ( "END loadRecordLayoutList" );
 
     }//END loadRecordLayoutList method
 
@@ -276,15 +276,15 @@ namespace Evado.UniForm.Digital
     private void loadSelectionLists ( )
     {
       this.LogInitMethod ( "loadSelectionLists" );
-      this.LogInitValue ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
       if ( this._AdapterObjects.SelectionLists.Count > 0 )
       {
-        this.LogInitValue ( "Record layouts loaded." );
-        this.LogInitValue ( "END loadSelectionLists" );
+        this.LogInit ( "Record layouts loaded." );
+        this.LogInit ( "END loadSelectionLists" );
         return;
       }
 
@@ -299,11 +299,11 @@ namespace Evado.UniForm.Digital
       // 
       this._AdapterObjects.SelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Issued );
 
-      this.LogInit ( bll_SelectionLists.Log );
+      this.LogInitClass ( bll_SelectionLists.Log );
 
-      this.LogInitValue ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
 
-      this.LogInitValue ( "END loadSelectionLists" );
+      this.LogInit ( "END loadSelectionLists" );
 
     }//END loadSelectionLists method
 
@@ -402,7 +402,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        String pageId = "Entity_" + entityLayout.LayoutId;
+        String pageId = EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX + entityLayout.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
@@ -414,26 +414,35 @@ namespace Evado.UniForm.Digital
         {
           case EdRecord.ParentTypeList.Organisation:
             {
-              pageId = "Entity_" + entityLayout.LayoutId + "_Org_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( entityLayout.Design.ParentType == EdRecord.ParentTypeList.Organisation )
+              {
+                pageId = EuAdapter.CONST_ENTITY_ORG_PARENT_PAGE_ID_PREFIX + entityLayout.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
           case EdRecord.ParentTypeList.User:
             {
-              pageId = "Entity_" + entityLayout.LayoutId + "_User_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( entityLayout.Design.ParentType == EdRecord.ParentTypeList.User )
+              {
+                pageId = EuAdapter.CONST_ENTITY_USER_PARENT_PAGE_ID_PREFIX + entityLayout.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
           case EdRecord.ParentTypeList.Entity:
             {
-              pageId = "Entity_" + entityLayout.LayoutId + "_Entity_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( entityLayout.Design.ParentType == EdRecord.ParentTypeList.Entity )
+              {
+                pageId = EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_PREFIX + entityLayout.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
         }//END switch statement.
@@ -450,7 +459,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        String pageId = "Record_" + recordLayouts.LayoutId;
+        String pageId = EuAdapter.CONST_RECORD_PAGE_ID_PREFIX + recordLayouts.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
@@ -462,33 +471,42 @@ namespace Evado.UniForm.Digital
         {
           case EdRecord.ParentTypeList.Organisation:
             {
-              pageId = "Record_" + recordLayouts.LayoutId + "_Org_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( recordLayouts.Design.ParentType == EdRecord.ParentTypeList.Organisation )
+              {
+                pageId = EuAdapter.CONST_RECORD_ORG_PARENT_PAGE_ID_PREFIX + recordLayouts.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
           case EdRecord.ParentTypeList.User:
             {
-              pageId = "Record_" + recordLayouts.LayoutId + "_User_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( recordLayouts.Design.ParentType == EdRecord.ParentTypeList.User )
+              {
+                pageId = EuAdapter.CONST_RECORD_USER_PARENT_PAGE_ID_PREFIX + recordLayouts.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
           case EdRecord.ParentTypeList.Entity:
             {
-              pageId = "Record_" + recordLayouts.LayoutId + "_Entity_Parent";
-              pageLabel = pageId.Replace ( "_", " " );
+              if ( recordLayouts.Design.ParentType == EdRecord.ParentTypeList.Entity )
+              {
+                pageId = EuAdapter.CONST_RECORD_ENTITY_PARENT_PAGE_ID_PREFIX + recordLayouts.LayoutId;
+                pageLabel = pageId.Replace ( "_", " " );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+                this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              }
               break;
             }
         }//END switch statement.
 
       }//END Record list iteration 
 
-      this.LogInitValue ( "PageIdentifiers.Count: " + this._AdapterObjects.PageIdentifiers.Count );
+      this.LogInit ( "PageIdentifiers.Count: " + this._AdapterObjects.PageIdentifiers.Count );
 
       this.LogMethodEnd ( "LoadPageIdentifiers" );
 

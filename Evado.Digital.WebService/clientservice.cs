@@ -1014,7 +1014,7 @@ namespace Evado.Digital.WebService
       //
       PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
       PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
-      this._ServiceUserProfile.Token = new Guid ( stUserToken );
+      this._ServiceUserProfile.Token = EvStatics.getGuid( stUserToken );
       this._ServiceUserProfile.UserId = stUserId;
       this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
 

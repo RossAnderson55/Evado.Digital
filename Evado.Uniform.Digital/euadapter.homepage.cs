@@ -118,7 +118,7 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise the menus class for generating the home page menus.
       // 
-      this._MenuUtility = new EuNavigationCommands (
+      this._MenuUtility = new EuNavigation (
         this._AdapterObjects,
         this.Session,
         this.ClassParameters );
@@ -692,7 +692,7 @@ namespace Evado.UniForm.Digital
           // 
           // Create the groupCommand
           // 
-          var groupCommand = this._MenuUtility.getMenuItemCommandObject ( item );
+          var groupCommand = this._MenuUtility.GetNavigationCommand ( item );
 
           this.LogDebugClass ( this._MenuUtility.Log );
 
@@ -775,7 +775,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the groupCommand
         // 
-        groupCommand = this._MenuUtility.getMenuItemCommandObject ( item );
+        groupCommand = this._MenuUtility.GetNavigationCommand ( item );
 
         this.LogDebug ( this._MenuUtility.Log );
 
@@ -972,7 +972,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
       String userId = String.Empty;
-      String stEntryKey = PageCommand.GetParameter ( EuAdapter.CONST_HASHE_ITEM_KEY_SELECT );
+      String stEntryKey = PageCommand.GetParameter ( EuAdapter.CONST_HASH_ITEM_KEY_SELECT );
 
       // 
       // if the project organisation is not a data collection site reset the organisation object.
@@ -987,7 +987,7 @@ namespace Evado.UniForm.Digital
       }
 
       if ( PageCommand.Method == Model.UniForm.ApplicationMethods.Delete_Object
-        && PageCommand.hasParameter ( EuAdapter.CONST_HASHE_ITEM_KEY_SELECT ) == true
+        && PageCommand.hasParameter ( EuAdapter.CONST_HASH_ITEM_KEY_SELECT ) == true
         && stEntryKey != String.Empty )
       {
         this.LogValue ( "stEntryKey: " + stEntryKey );
@@ -1030,7 +1030,7 @@ namespace Evado.UniForm.Digital
             groupCommand.Method = Model.UniForm.ApplicationMethods.Null;
           }
 
-          groupCommand.AddParameter ( EuAdapter.CONST_HASHE_ITEM_KEY_SELECT, stEntryKey );
+          groupCommand.AddParameter ( EuAdapter.CONST_HASH_ITEM_KEY_SELECT, stEntryKey );
 
         }
       }

@@ -421,30 +421,20 @@ namespace Evado.UniForm.Digital
       }
     }
 
-    private List<EvMenuItem> _MenuList = new List<EvMenuItem> ( );
     /// <summary>
     /// This property object contains a list of the web application menu item object..
     /// </summary>
-    public List<EvMenuItem> MenuList
-    {
-      get { return _MenuList; }
-      set { _MenuList = value; }
-    }
+    public List<EvMenuItem> MenuList { get; set; }
 
     /// <summary>
     /// This property contains a list of the adapters navigation commands.
     /// </summary>
     public List<EvOption> PageIdentifiers { get; set; }
 
-    private List<EdOrganisation> _OrganisationList = new List<EdOrganisation> ( );
     /// <summary>
     /// This property object contains a list of organisations. 
     /// </summary>
-    public List<EdOrganisation> OrganisationList
-    {
-      get { return this._OrganisationList; }
-      set { this._OrganisationList = value; }
-    }
+    public List<EdOrganisation> OrganisationList { get; set; }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

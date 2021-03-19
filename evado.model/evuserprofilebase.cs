@@ -82,6 +82,8 @@ namespace Evado.Model
 
     /// <summary>
     /// This property contains the guid user token from an external system.
+    /// 
+    /// The toke value will become the Guid identifier for the user proifle.
     /// </summary>
     public Guid Token { get; set; }
 
