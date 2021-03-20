@@ -1385,7 +1385,7 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdEntities.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
       };
       cmdParms [ 0 ].Value = EntityGuid;
 
