@@ -139,6 +139,22 @@ namespace Evado.Model.Digital
     Email_Alert_Test,
 
     /// <summary>
+    /// This enumeration value is the external selection list upload page identifier.
+    /// </summary>
+    Page_Layout_Upload,
+
+    /// <summary>
+    /// This enumeration value is the external selection list page identifier.
+    /// </summary>
+    Page_Layout_Page,
+
+    /// <summary>
+    /// This enumeration value is the external selection list view page identifier.
+    /// </summary>
+    Page_Layout_View,
+
+
+    /// <summary>
     /// a trial binary file list page.
     /// </summary>
     Binary_File_List_Page,

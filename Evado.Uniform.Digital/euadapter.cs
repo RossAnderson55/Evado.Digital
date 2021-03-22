@@ -153,6 +153,11 @@ namespace Evado.UniForm.Digital
         this.loadOrganisationList ( );
 
         //
+        // Load the page layouts 
+        //
+        this.loadPageLayoutList ( );
+
+        //
         // load the external selection list (issued for use)
         //
         this.loadSelectionLists ( );
@@ -262,6 +267,11 @@ namespace Evado.UniForm.Digital
     public const int CONST_HOME_PAGE_GROUP_DEFAULT_WIDTH = 900;
     public const int CONST_HOME_PAGE_GROUP_MARGINS = 100;
     public const int CONST_HOME_PAGE_GROUP_MAXIMUM_WIDTH = 1200;
+
+    /// <summary>
+    /// This constant contains the page identifier prefix
+    /// </summary>
+    public const string CONST_PAGE_ID_PREFIX = "Page_";
 
     /// <summary>
     /// This constant contains the entity page identifier prefix
@@ -875,6 +885,28 @@ namespace Evado.UniForm.Digital
           break;
         }
          */
+        case EuAdapterClasses.Page_Layouts:
+          {
+            this.LogDebug ( " PAGE LAYOUTS CLASS SELECTED." );
+
+            // 
+            // Initialise the methods variables and objects.
+            // 
+            EuPageLayouts pageLayouts = new EuPageLayouts ( this._AdapterObjects,
+              this.ServiceUserProfile,
+              this.Session,
+              this.UniForm_BinaryFilePath,
+              this.ClassParameters );
+
+            pageLayouts.LoggingLevel = this.LoggingLevel;
+
+            clientDataObject = pageLayouts.getDataObject ( PageCommand );
+            this.ErrorMessage = pageLayouts.ErrorMessage;
+            this.LogAdapter ( pageLayouts.Log );
+
+            break;
+
+          }
         case EuAdapterClasses.Selection_Lists:
           {
             this.LogDebug ( " SELECTION LISTS CLASS SELECTED." );

@@ -172,6 +172,16 @@ namespace Evado.Model.Digital
       set { _Platform = value; }
     }
 
+    private string _UserTypes = String.Empty;
+    /// <summary>
+    /// This property contains the user type who can access this menu item.
+    /// </summary>
+    public string UserTypes
+    {
+      get { return _UserTypes; }
+      set { _UserTypes = value; }
+    }
+
     private string _RoleList = String.Empty;
     /// <summary>
     /// This property contains an encoded list of the roles for this menu item.

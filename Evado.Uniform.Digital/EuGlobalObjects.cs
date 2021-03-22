@@ -238,6 +238,38 @@ namespace Evado.UniForm.Digital
       set { _ExportFilePath = value; }
     }
 
+    private List<EdPageLayout> _AllPageLayouts = new List<EdPageLayout> ( );
+    /// <summary>
+    /// this field list containt the all page Layouts.
+    /// lists.
+    /// </summary>
+    public List<EdPageLayout> AllPageLayouts
+    {
+      get { return _AllPageLayouts; }
+      set { _AllPageLayouts = value; }
+    }
+
+    /// <summary>
+    /// this field list containt the currently loaded page Layouts. 
+    /// lists.
+    /// </summary>
+    public List<EdPageLayout> PageLayouts
+    {
+      get {
+        List<EdPageLayout> pageLayouts = new List<EdPageLayout> ( );
+
+        foreach ( EdPageLayout layout in this._AllPageLayouts )
+        {
+          if ( layout.State ==  EdPageLayout.States.Issued )
+          {
+            pageLayouts.Add (layout );
+          }
+        }
+
+        return pageLayouts;
+      }
+    }
+
     private List<EdSelectionList> _SelectionLists = new List<EdSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
@@ -281,8 +313,8 @@ namespace Evado.UniForm.Digital
       }
 
       return optionList;
+}
 
-    }
     // ==================================================================================
     /// <summary>
     /// This method returns a list of options for selected Selection List.

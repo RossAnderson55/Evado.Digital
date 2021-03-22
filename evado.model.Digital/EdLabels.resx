@@ -2852,4 +2852,121 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Menu_List_Link_Format" xml:space="preserve">
     <value>{0} - {1} &gt; Order: {2}, Roles: {3}</value>
   </data>
+  <data name="OageLayout_Duplicate_Error_Message" xml:space="preserve">
+    <value>There is a duplicate of this page identifier.</value>
+  </data>
+  <data name="PageLayouts_List_Page_Title" xml:space="preserve">
+    <value>Page Layout list page</value>
+  </data>
+  <data name="PageLayout_Center_Command_List_Field_Label" xml:space="preserve">
+    <value>Column Commands:</value>
+  </data>
+  <data name="PageLayout_Center_Content_Field_Label" xml:space="preserve">
+    <value>Column Content:</value>
+  </data>
+  <data name="PageLayout_Center_Group_List_Field_Label" xml:space="preserve">
+    <value>Column Groups:</value>
+  </data>
+  <data name="PageLayout_Center_Group_Title" xml:space="preserve">
+    <value>Center Column</value>
+  </data>
+  <data name="PageLayout_Creation_Error_Message" xml:space="preserve">
+    <value>ERROR: Generated creating page layout object.</value>
+  </data>
+  <data name="PageLayout_DefaultHomePage_Field_Label" xml:space="preserve">
+    <value>Is Default Home Page:</value>
+  </data>
+  <data name="PageLayout_Delete_Command_Title" xml:space="preserve">
+    <value>Delete Page Layout</value>
+  </data>
+  <data name="PageLayout_Export_Command_Title" xml:space="preserve">
+    <value>Export Page Layout</value>
+  </data>
+  <data name="PageLayout_General_Group_Title" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="PageLayout_Header_Command_List_Field_Label" xml:space="preserve">
+    <value>Header Commands:</value>
+  </data>
+  <data name="PageLayout_Header_Content_Field_Label" xml:space="preserve">
+    <value>Header Content:</value>
+  </data>
+  <data name="PageLayout_Header_Group_List_Field_Label" xml:space="preserve">
+    <value>Header Groups:</value>
+  </data>
+  <data name="PageLayout_Header_Group_Title" xml:space="preserve">
+    <value>Page Header</value>
+  </data>
+  <data name="PageLayout_Import_Command_Title" xml:space="preserve">
+    <value>Import Page Layout</value>
+  </data>
+  <data name="PageLayout_Issue_Command_Title" xml:space="preserve">
+    <value>Issue Page Layout</value>
+  </data>
+  <data name="PageLayout_Left_Command_List_Field_Label" xml:space="preserve">
+    <value>Column Commands:</value>
+  </data>
+  <data name="PageLayout_Left_Content_Field_Label" xml:space="preserve">
+    <value>Column Content:</value>
+  </data>
+  <data name="PageLayout_Left_Group_List_Field_Label" xml:space="preserve">
+    <value>Column Groups:</value>
+  </data>
+  <data name="PageLayout_Left_Group_Title" xml:space="preserve">
+    <value>Left Column</value>
+  </data>
+  <data name="PageLayout_Link_Text" xml:space="preserve">
+    <value>{0} - {1}, Version {2}, State {3}</value>
+  </data>
+  <data name="PageLayout_Link_Text1" xml:space="preserve">
+    <value>{0} - {1}, (Default Home Page) Version {2}, State {3}</value>
+  </data>
+  <data name="PageLayout_New_List_Page_Title" xml:space="preserve">
+    <value>New Page Layout</value>
+  </data>
+  <data name="PageLayout_Page_Error_Message" xml:space="preserve">
+    <value>ERROR: Loading page layout.</value>
+  </data>
+  <data name="PageLayout_Page_Id_Error_Message" xml:space="preserve">
+    <value>The Page identifier has not been entered.</value>
+  </data>
+  <data name="PageLayout_Page_Id_Field_Label" xml:space="preserve">
+    <value>Page Identifier:</value>
+  </data>
+  <data name="PageLayout_Page_Title" xml:space="preserve">
+    <value>Page Layout {0} - {1} </value>
+  </data>
+  <data name="PageLayout_Right_Command_List_Field_Label" xml:space="preserve">
+    <value>Column Commands:</value>
+  </data>
+  <data name="PageLayout_Right_Content_Field_Label" xml:space="preserve">
+    <value>Column Content:</value>
+  </data>
+  <data name="PageLayout_Right_Group_List_Field_Label" xml:space="preserve">
+    <value>Column Groups:</value>
+  </data>
+  <data name="PageLayout_Right_Group_Title" xml:space="preserve">
+    <value>Roght Column</value>
+  </data>
+  <data name="PageLayout_Save_Command_Title" xml:space="preserve">
+    <value>Save Page Layout</value>
+  </data>
+  <data name="PageLayout_Select_All_Option_Description" xml:space="preserve">
+    <value>All are selected</value>
+  </data>
+  <data name="PageLayout_Title_Error_Message" xml:space="preserve">
+    <value>The page title has not been entered.</value>
+  </data>
+  <data name="PageLayout_Title_Field_Label" xml:space="preserve">
+    <value>Page Title:</value>
+  </data>
+  <data name="PageLayout_Update_Error_Message" xml:space="preserve">
+    <value>ERROR: An error was encountered updating this page layout object.</value>
+  </data>
+  <data name="PageLayout_User_Type_Field_Label" xml:space="preserve">
+    <value>User Type:</value>
+  </data>
+  <data name="PageLayout_Version_Field_Label" xml:space="preserve">
+    <value>Page version:</value>
+  </data>
 </root>

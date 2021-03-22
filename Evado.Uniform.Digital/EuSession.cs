@@ -487,6 +487,16 @@ namespace Evado.UniForm.Digital
     public bool EntityAdaperLoaded { get; set; }
 
     /// <summary>
+    /// This property object contains a list of page layouts.
+    /// </summary>
+    public List<EdPageLayout> AdminPageLayouts { get; set; }
+
+    /// <summary>
+    /// This property object contains the an page layout object.
+    /// </summary>
+    public EdPageLayout AdminPageLayout { get; set; }
+
+    /// <summary>
     /// This property object contains a list of external selection lists.
     /// </summary>
     public List<EdSelectionList> AdminSelectionLists { get; set; }

@@ -36,24 +36,24 @@ namespace Evado.UniForm.Digital
   /// 
   /// This class terminates the Selection Lists object.
   /// </summary>
-  public class EuSelectionLists : EuClassAdapterBase
+  public class EuPageLayouts : EuClassAdapterBase
   {
     #region Class Initialisation
     /// <summary>
     /// This method initialises the class.
     /// </summary>
-    public EuSelectionLists ( )
+    public EuPageLayouts ( )
     {
-      this.ClassNameSpace = "Evado.UniForm.Digital.EuSelectionLists.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuPageLayouts.";
 
-      if ( this.Session.AdminSelectionLists == null )
+      if ( this.Session.AdminPageLayouts == null )
       {
-        this.Session.AdminSelectionLists = new List<EdSelectionList> ( );
+        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
       }
 
-      if ( this.Session.AdminSelectionList == null )
+      if ( this.Session.AdminPageLayout == null )
       {
-        this.Session.AdminSelectionList = new EdSelectionList ( );
+        this.Session.AdminPageLayout = new EdPageLayout ( );
       }
 
       if ( this.Session.UploadFileName == null )
@@ -65,14 +65,14 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method initialises the class and passs in the user profile.
     /// </summary>
-    public EuSelectionLists (
+    public EuPageLayouts (
       EuGlobalObjects AdapterObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniFormBinaryFilePath,
       EvClassParameters Settings )
     {
-      this.ClassNameSpace = "Evado.UniForm.Digital.EuSelectionLists.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuPageLayouts.";
       this.AdapterObjects = AdapterObjects;
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = SessionObjects;
@@ -80,7 +80,7 @@ namespace Evado.UniForm.Digital
       this.ClassParameters = Settings;
 
 
-      this.LogInitMethod ( "EuSelectionLists initialisation" );
+      this.LogInitMethod ( "EuPageLayouts initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.Userid: " + this.Session.UserProfile.UserId );
       this.LogInit ( "SessionObjects.UserProfile.CommonName: " + this.Session.UserProfile.CommonName );
@@ -93,14 +93,14 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
 
-      if ( this.Session.AdminSelectionLists == null )
+      if ( this.Session.AdminPageLayouts == null )
       {
-        this.Session.AdminSelectionLists = new List<EdSelectionList> ( );
+        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
       }
 
-      if ( this.Session.AdminSelectionList == null )
+      if ( this.Session.AdminPageLayout == null )
       {
-        this.Session.AdminSelectionList = new EdSelectionList ( );
+        this.Session.AdminPageLayout = new EdPageLayout ( );
       }
 
       if ( this.Session.UploadFileName == null )
@@ -108,7 +108,7 @@ namespace Evado.UniForm.Digital
         this.Session.UploadFileName = String.Empty;
       }
 
-      this._Bll_SelectionLists = new Evado.Bll.Digital.EdSelectionLists ( this.ClassParameters );
+      this._Bll_PageLayouts = new Evado.Bll.Digital.EdPageLayouts ( this.ClassParameters );
 
     }//END Method
 
@@ -118,7 +118,7 @@ namespace Evado.UniForm.Digital
 
     #region Class constants and variables.
 
-    private Evado.Bll.Digital.EdSelectionLists _Bll_SelectionLists = new Evado.Bll.Digital.EdSelectionLists ( );
+    private Evado.Bll.Digital.EdPageLayouts _Bll_PageLayouts = new Evado.Bll.Digital.EdPageLayouts ( );
 
     private bool ImportExportSelected = false;
 
@@ -126,7 +126,7 @@ namespace Evado.UniForm.Digital
 
     public const string CONST_TEMPLATE_FIELD_ID = "IFTF";
 
-    public const string CONST_TEMPLATE_EXTENSION = ".sl.csv";
+    public const string CONST_TEMPLATE_EXTENSION = ".pl.csv";
 
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -145,7 +145,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getDataObject" );
-      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString (false, true ) );
+      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString ( false, true ) );
       try
       {
         // 
@@ -157,9 +157,9 @@ namespace Evado.UniForm.Digital
         //
         // if the import export parameter exists then import export enabled.
         //
-        if ( PageCommand.hasParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID ) == true )
+        if ( PageCommand.hasParameter ( EuPageLayouts.CONST_IMP_EXP_FIELD_ID ) == true )
         {
-          this.ImportExportSelected = true ;
+          this.ImportExportSelected = true;
         }
         this.LogDebug ( "ImportExportSelected {0}. ", ImportExportSelected );
 
@@ -282,7 +282,7 @@ namespace Evado.UniForm.Digital
         //
         // read in the form template upload filename.
         //
-        string value = PageCommand.GetParameter ( EuSelectionLists.CONST_TEMPLATE_FIELD_ID );
+        string value = PageCommand.GetParameter ( EuPageLayouts.CONST_TEMPLATE_FIELD_ID );
 
         this.LogValue ( "Upload filename: " + value );
 
@@ -295,12 +295,12 @@ namespace Evado.UniForm.Digital
         //
         // get the selection lists.
         //
-        this.getSelectionList ( );
+        this.GetPageLayoutList ( );
 
         //
         // Initialise the page objects.
         //
-        clientDataObject.Title = EdLabels.SelectionLists_List_Page_Title;
+        clientDataObject.Title = EdLabels.PageLayouts_List_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
@@ -309,17 +309,17 @@ namespace Evado.UniForm.Digital
         // import  command
         //
         var pageCommand = clientDataObject.Page.addCommand (
-          EdLabels.SelectionList_Import_Command_Title,
+          EdLabels.PageLayout_Import_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
         // 
         // Define the groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
         pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
-        pageCommand.AddParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID, "YES" );
+        pageCommand.AddParameter ( EuPageLayouts.CONST_IMP_EXP_FIELD_ID, "YES" );
 
         //
         // Display the selection list upload group if selected.
@@ -333,13 +333,13 @@ namespace Evado.UniForm.Digital
           {
             this.LogValue ( "FormTemplateFilename is empty" );
 
-            this.getSelectionListUploadDataObject ( clientDataObject );
+            this.GetPageLayoutUploadDataObject ( clientDataObject );
           }
           else
           {
             this.LogValue ( "Processing the uploaded file." );
 
-            this.getSelectionListUpload_Group ( clientDataObject );
+            this.GetPageLayoutUpload_Group ( clientDataObject );
           }
 
         }//END upload groups.
@@ -382,23 +382,23 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    public void getSelectionList ( )
+    public void GetPageLayoutList ( )
     {
-      this.LogMethod ( "getSelectionList" );
+      this.LogMethod ( "GetPageLayoutList" );
 
-      if ( this.Session.AdminSelectionLists.Count > 0 )
+      if ( this.Session.AdminPageLayouts.Count > 0 )
       {
-        this.LogMethodEnd ( "getSelectionList" );
+        this.LogMethodEnd ( "GetPageLayoutList" );
         return;
       }
 
-      this.Session.AdminSelectionLists = this._Bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
+      this.Session.AdminPageLayouts = this._Bll_PageLayouts.getView ( EdPageLayout.States.Null );
 
-      this.LogDebugClass ( this._Bll_SelectionLists.Log );
+      this.LogDebugClass ( this._Bll_PageLayouts.Log );
 
-      this.LogDebug ( "Selection list count {0}.", this.Session.AdminSelectionLists.Count );
+      this.LogDebug ( "Selection list count {0}.", this.Session.AdminPageLayouts.Count );
 
-      this.LogMethodEnd ( "getSelectionList" );
+      this.LogMethodEnd ( "GetPageLayoutList" );
 
     }//END getSelectionList method
 
@@ -429,7 +429,7 @@ namespace Evado.UniForm.Digital
         Evado.Model.UniForm.Command groupCommand = pageGroup.addCommand (
           EdLabels.SelectionLists_New_List_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
         groupCommand.SetBackgroundColour (
@@ -437,26 +437,17 @@ namespace Evado.UniForm.Digital
           Model.UniForm.Background_Colours.Purple );
 
         // 
-        // get the list of customers.
-        // 
-        if ( this.Session.AdminSelectionLists.Count == 0 )
-        {
-          this.Session.AdminSelectionLists = this._Bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
-          this.LogValue ( this._Bll_SelectionLists.Log );
-        }
-        this.LogValue ( "list count: " + this.Session.AdminSelectionLists.Count );
-        // 
         // generate the page links.
         // 
-        foreach ( EdSelectionList listItem in this.Session.AdminSelectionLists )
+        foreach ( EdPageLayout listItem in this.Session.AdminPageLayouts )
         {
           // 
           // Add the trial organisation to the list of organisations as a groupCommand.
           // 
           Evado.Model.UniForm.Command command = pageGroup.addCommand (
-            listItem.LinkText,
+            listItem.CommandText,
             EuAdapter.ADAPTER_ID,
-            EuAdapterClasses.Selection_Lists.ToString ( ),
+            EuAdapterClasses.Page_Layouts.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
           command.Id = listItem.Guid;
@@ -492,10 +483,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getSelectionListUploadDataObject (
+    private void GetPageLayoutUploadDataObject (
       Evado.Model.UniForm.AppData ClientDataObject )
     {
-      this.LogMethod ( "getSelectionListUploadDataObject" );
+      this.LogMethod ( "GetPageLayoutUploadDataObject" );
 
       //
       // set the page edit access.
@@ -511,7 +502,7 @@ namespace Evado.UniForm.Digital
       //
       this.getUpload_FileSelectionGroup ( ClientDataObject.Page );
 
-    }//END getPropertiesDataObject Method
+    }//END GetPageLayoutUploadDataObject Method
 
     // ==============================================================================
     /// <summary>
@@ -544,7 +535,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.Background_Colours.Red );
 
       groupField = pageGroup.createBinaryFileField (
-        EuSelectionLists.CONST_TEMPLATE_FIELD_ID,
+        EuPageLayouts.CONST_TEMPLATE_FIELD_ID,
         EdLabels.Form_Template_File_Selection_Field_Title,
         String.Empty,
         this.Session.UploadFileName );
@@ -571,7 +562,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getSelectionListUpload_Group (
+    private void GetPageLayoutUpload_Group (
       Evado.Model.UniForm.AppData ClientDataObject )
     {
       this.LogMethod ( "getSelectionListUpload_Group" );
@@ -581,7 +572,7 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Guid formGuid = Guid.Empty;
-      EdSelectionList selectionList = new EdSelectionList ( );
+      EdPageLayout pageLayout = new EdPageLayout ( );
 
       //
       // Define the general properties pageMenuGroup..
@@ -594,16 +585,16 @@ namespace Evado.UniForm.Digital
       //
       // Upload the the form by it form file name.
       //
-      selectionList = this.ReadCsvData (
+      pageLayout = this.ReadCsvData (
         this.UniForm_BinaryFilePath,
         this.Session.UploadFileName );
 
-      this.LogValue ( "Uploaded selection list is: " + selectionList.ListId );
+      this.LogValue ( "Uploaded selection list is: " + pageLayout.PageId );
 
       //
       // save the uploaded form.
       //
-      String processLog = this.SaveUploadedSelectionList ( selectionList );
+      String processLog = this.SaveUploadedPageLayout ( pageLayout );
 
       this.LogValue ( "processLog: " + processLog );
 
@@ -625,7 +616,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private EdSelectionList ReadCsvData (
+    private EdPageLayout ReadCsvData (
        String FileDirectory,
         String FileName )
     {
@@ -633,9 +624,7 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the methods variables and objects.
       //
-      EdSelectionList selectionList = new EdSelectionList ( );
-      String [ ] header = new String [ 8 ];
-      int itemNo = 1;
+      EdPageLayout pageLayout = new EdPageLayout ( );
 
       //
       // read in the file as list of string.
@@ -653,98 +642,29 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        //
-        // separate the row columns.
-        //
-        String [ ] csvRow = str.Split ( ',' );
+        String [ ] stColumns = str.Split ( ';' );
 
-        if ( csvRow.Length < 6 )
+        if ( stColumns.Length < 2 )
         {
           continue;
         }
 
-        //
-        // read in the first row (header) of the CSV file.
-        //
-        if ( i == 0 )
+        if ( stColumns[0] == String.Empty )
         {
-          this.LogDebug ( "Header {0}", str );
-          for ( int j = 0; j < 6; j++ )
-          {
-            header [ j ] = csvRow [ j ];
-          }
           continue;
         }
 
-        var item = new EdSelectionList.Item ( );
-        item.No = itemNo;
-        itemNo++;
+        this.LogDebug ( "I {0}, name {1}, V: {2} ", i, stColumns [ 0 ], stColumns [ 1 ] );
 
-        //
-        // iterate through the row extracting the values that match the header names.
-        //
-        for ( int k = 0; k < 6; k++ )
-        {
-          string name = header [ k ].Trim ( );
+        var columName = EvStatics.parseEnumValue<EdPageLayout.FieldNames> ( stColumns [ 0 ] );
 
-          this.LogDebug ( "K {0}, name {1}, V: {2} ", k, name, csvRow [ k ] );
+        pageLayout.setValue ( columName, stColumns [ 1 ] );
 
-          var columName = EvStatics.parseEnumValue<EdSelectionList.SelectionListFieldNames> ( name );
-
-          switch ( columName )
-          {
-            case EdSelectionList.SelectionListFieldNames.ListId:
-              {
-                if ( csvRow [ k ] != String.Empty )
-                {
-                  selectionList.ListId = csvRow [ k ];
-                }
-                break;
-              }
-            case EdSelectionList.SelectionListFieldNames.Title:
-              {
-                if ( csvRow [ k ] != String.Empty )
-                {
-                  selectionList.Title = csvRow [ k ];
-                }
-                break;
-              }
-            case EdSelectionList.SelectionListFieldNames.Description:
-              {
-                if ( csvRow [ k ] != String.Empty )
-                {
-                  selectionList.Title = csvRow [ k ];
-                }
-                break;
-              }
-            case EdSelectionList.SelectionListFieldNames.Item_Category:
-              {
-                item.Category = csvRow [ k ];
-                break;
-              }
-            case EdSelectionList.SelectionListFieldNames.Item_Value:
-              {
-                item.Value = csvRow [ k ];
-                break;
-              }
-            case EdSelectionList.SelectionListFieldNames.Item_Description:
-              {
-                item.Description= csvRow [ k ];
-                break;
-              }
-          }//END colum switch
-
-        }//End value loop
-
-        //
-        // add the new item to the selection list.
-        //
-        selectionList.Items.Add ( item );
 
       }//END CSV row iteration loop
 
       this.LogMethodEnd ( "ReadCsvData" );
-      return selectionList;
+      return pageLayout;
 
     }
 
@@ -754,11 +674,11 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private String SaveUploadedSelectionList (
-      EdSelectionList UploadedForm )
+    private String SaveUploadedPageLayout (
+      EdPageLayout uploadedPageLayout )
     {
       this.LogMethod ( "SaveUploadedSelectionList" );
-      this.LogValue ( "Uploaded form is: " + UploadedForm.ListId );
+      this.LogValue ( "Uploaded PageId is: " + uploadedPageLayout.PageId );
       //
       // initialise the methods variables and objects.
       //
@@ -767,40 +687,40 @@ namespace Evado.UniForm.Digital
       Evado.Model.EvEventCodes result = EvEventCodes.Ok;
       float version = 0.0F;
 
-      processLog.AppendLine ( "Saving form: " + UploadedForm.ListId + " " + UploadedForm.Title );
+      processLog.AppendLine ( "Saving form: " + uploadedPageLayout.PageId + " " + uploadedPageLayout.Title );
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.AdminSelectionLists.Count == 0 )
+      if ( this.Session.AdminPageLayouts.Count == 0 )
       {
-        this.getSelectionList ( );
+        this.GetPageLayoutList ( );
       }
 
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdSelectionList selectionList in this.Session.AdminSelectionLists )
+      foreach ( EdPageLayout pageLayout in this.Session.AdminPageLayouts )
       {
         //
         // get the list issued version of the form.
         //
-        if ( selectionList.ListId == UploadedForm.ListId
-          && selectionList.State == EdSelectionList.SelectionListStates.Issued )
+        if ( pageLayout.PageId == uploadedPageLayout.PageId
+          && pageLayout.State == EdPageLayout.States.Issued )
         {
-          version = selectionList.Version;
+          version = pageLayout.Version;
         }
 
         //
         // delete any existing draft forms with form ID
         //
-        if ( selectionList.ListId == UploadedForm.ListId
-          && selectionList.State == EdSelectionList.SelectionListStates.Draft )
+        if ( pageLayout.PageId == uploadedPageLayout.PageId
+          && pageLayout.State == EdPageLayout.States.Draft )
         {
-          processLog.AppendLine ( "Existing draft version of " + UploadedForm.ListId + " " + UploadedForm.Title + " found." );
+          processLog.AppendLine ( "Existing draft version of " + uploadedPageLayout.PageId + " " + uploadedPageLayout.Title + " found." );
 
-          selectionList.Action = EdSelectionList.SaveActions.Delete_Object;
+          pageLayout.Action = EdPageLayout.SaveActions.Delete;
 
-          result = this._Bll_SelectionLists.SaveItem ( selectionList );
+          result = this._Bll_PageLayouts.SaveItem ( pageLayout );
 
           if ( result == EvEventCodes.Ok )
           {
@@ -820,17 +740,17 @@ namespace Evado.UniForm.Digital
       //
       // set the form's save parameters 
 
-      UploadedForm.State = EdSelectionList.SelectionListStates.Draft;
-      UploadedForm.Action = EdSelectionList.SaveActions.Save;
-      UploadedForm.Version = 0;
-      UploadedForm.Guid = Guid.Empty;
+      uploadedPageLayout.State = EdPageLayout.States.Draft;
+      uploadedPageLayout.Action = EdPageLayout.SaveActions.Save;
+      uploadedPageLayout.Version = 0;
+      uploadedPageLayout.Guid = Guid.Empty;
 
       //
       // Save the form
       //
-      result = this._Bll_SelectionLists.SaveItem ( UploadedForm );
+      result = this._Bll_PageLayouts.SaveItem ( uploadedPageLayout );
 
-      this.LogText ( this._Bll_SelectionLists.Log );
+      this.LogText ( this._Bll_PageLayouts.Log );
 
       if ( result == EvEventCodes.Ok )
       {
@@ -903,7 +823,7 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "Guid Empty get current object" );
 
-        if ( this.Session.AdminSelectionList.Guid != Guid.Empty )
+        if ( this.Session.AdminPageLayout.Guid != Guid.Empty )
         {
           // 
           // return the client ResultData object for the customer.
@@ -925,12 +845,12 @@ namespace Evado.UniForm.Digital
         // 
         // Retrieve the customer object from the database via the DAL and BLL layers.
         // 
-        this.Session.AdminSelectionList = this._Bll_SelectionLists.getItem ( OrgGuid );
+        this.Session.AdminPageLayout = this._Bll_PageLayouts.getItem ( OrgGuid );
 
-        this.LogValue ( this._Bll_SelectionLists.Log );
+        this.LogValue ( this._Bll_PageLayouts.Log );
 
-        this.LogDebug ( "SessionObjects.AdminSelectionList.ListId: "
-          + this.Session.AdminSelectionList.ListId );
+        this.LogDebug ( "SessionObjects.AdminPageLayout.PageId: "
+          + this.Session.AdminPageLayout.PageId );
 
         // 
         // return the client ResultData object for the customer.
@@ -946,7 +866,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EdLabels.Organisation_Page_Error_Message;
+        this.ErrorMessage = EdLabels.PageLayout_Page_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -974,20 +894,24 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
 
-      ClientDataObject.Id = this.Session.AdminSelectionList.Guid;
+      ClientDataObject.Id = this.Session.AdminPageLayout.Guid;
 
-      ClientDataObject.Title = EdLabels.SelectionList_New_List_Page_Title;
+      ClientDataObject.Title = EdLabels.PageLayout_New_List_Page_Title;
 
-      if ( this.Session.AdminSelectionList.ListId != String.Empty )
+      if ( this.Session.AdminPageLayout.PageId != String.Empty )
       {
         ClientDataObject.Title =
-          String.Format ( EdLabels.SelectionLIsts_Page_Title,
-          this.Session.AdminSelectionList.ListId,
-          this.Session.AdminSelectionList.Title );
+          String.Format ( EdLabels.PageLayout_Page_Title,
+          this.Session.AdminPageLayout.PageId,
+          this.Session.AdminPageLayout.Title );
       }
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+      ClientDataObject.Page.SetLeftColumnWidth ( 25 );
+
+      ClientDataObject.Page.SetRightColumnWidth ( 25 );
 
       //
       // Set the user edit access to the objects.
@@ -1005,18 +929,33 @@ namespace Evado.UniForm.Digital
 
       if ( this.ImportExportSelected == true )
       {
-        this.getSelectionListDownloadGroup ( ClientDataObject.Page );
+        this.getPageLayoutDownloadGroup ( ClientDataObject.Page );
       }
 
       //
       // Add the detail group to the page.
       //
-      this.getDataObject_DetailsGroup ( ClientDataObject.Page );
+      this.getDataObject_GeneralGroup ( ClientDataObject.Page );
 
       //
-      // Display the selection list option table.
+      // display the header properties group.
       //
-      this.getDataObject_OptionGroup ( ClientDataObject.Page );
+      this.getDataObjectHeaderGroup ( ClientDataObject.Page );
+
+      //
+      // display the left column properties group.
+      //
+      this.getDataObject_LeftColumnGroup ( ClientDataObject.Page );
+
+      //
+      // display the center column properties group.
+      //
+      this.getDataObject_CenterColumnGroup ( ClientDataObject.Page );
+
+      //
+      // display the right column properties group.
+      //
+      this.getDataObject_RightColumnGroup ( ClientDataObject.Page );
 
       this.LogMethodEnd ( "getDataObject" );
 
@@ -1046,51 +985,70 @@ namespace Evado.UniForm.Digital
         // Export  command
         //
         pageCommand = PageObject.addCommand (
-          EdLabels.SelectionList_Export_Command_Title,
+          EdLabels.PageLayout_Export_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Custom_Method );
 
         // 
         // Define the groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
         pageCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-        pageCommand.AddParameter ( EuSelectionLists.CONST_IMP_EXP_FIELD_ID, "YES" );
+        pageCommand.AddParameter ( EuPageLayouts.CONST_IMP_EXP_FIELD_ID, "YES" );
 
         //
         // save command.
         //
         pageCommand = PageObject.addCommand (
-          EdLabels.SelectionList_Save_Command_Title,
+          EdLabels.PageLayout_Save_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
         // 
-        // Define the save and delete groupCommand parameters
+        // Define the the issue groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Save.ToString ( ) );
+          EdPageLayout.SaveActions.Save.ToString ( ) );
+        //
+        // Issue command
+        //
+        pageCommand = PageObject.addCommand (
+          EdLabels.PageLayout_Issue_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Page_Layouts.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+        // 
+        // Define the save and issue groupCommand parameters
+        // 
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
+        pageCommand.AddParameter (
+           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+          EdPageLayout.SaveActions.Issue.ToString ( ) );
 
         //
         // Delete command
         //
-        pageCommand = PageObject.addCommand (
-          EdLabels.SelectionList_Delete_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        if ( this.Session.AdminPageLayout.State == EdPageLayout.States.Draft )
+        {
+          pageCommand = PageObject.addCommand (
+            EdLabels.PageLayout_Delete_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Page_Layouts.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
-        pageCommand.AddParameter (
-           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+          // 
+          // Define the save and delete groupCommand parameters
+          // 
+          pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
+          pageCommand.AddParameter (
+             Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+            EdPageLayout.SaveActions.Delete.ToString ( ) );
+        }
       }
 
       this.LogMethodEnd ( "getDataObject_PageCommands" );
@@ -1104,7 +1062,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getSelectionListDownloadGroup (
+    private void getPageLayoutDownloadGroup (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getSelectionListDownloadPage" );
@@ -1130,7 +1088,7 @@ namespace Evado.UniForm.Digital
       //
       // exist if the form object is null.
       //
-      if ( this.Session.AdminSelectionList == null )
+      if ( this.Session.AdminPageLayout == null )
       {
         this.LogValue ( " Form object is null" );
         this.LogMethodEnd ( "getSelectionListDownloadPage" );
@@ -1140,7 +1098,7 @@ namespace Evado.UniForm.Digital
       //
       // exist if the form object is null.
       //
-      if ( this.Session.AdminSelectionList.Guid == Guid.Empty
+      if ( this.Session.AdminPageLayout.Guid == Guid.Empty
         || this.UniForm_BinaryFilePath == String.Empty
         || this.UniForm_BinaryServiceUrl == String.Empty )
       {
@@ -1152,9 +1110,9 @@ namespace Evado.UniForm.Digital
       //
       // Define the form template filename.
       //
-      formTemplateFilename = this.Session.AdminSelectionList.ListId
-         + "-" + this.Session.AdminSelectionList.Title
-         + EuSelectionLists.CONST_TEMPLATE_EXTENSION;
+      formTemplateFilename = this.Session.AdminPageLayout.PageId
+         + "-" + this.Session.AdminPageLayout.Title
+         + EuPageLayouts.CONST_TEMPLATE_EXTENSION;
 
       formTemplateFilename = formTemplateFilename.Replace ( " ", "-" );
       formTemplateFilename = formTemplateFilename.ToLower ( );
@@ -1169,7 +1127,7 @@ namespace Evado.UniForm.Digital
       //
       // get the CSv selection list data.
       //
-      csvData = this.CreateCsvData ( this.Session.AdminSelectionList );
+      csvData = this.CreateCsvData ( this.Session.AdminPageLayout );
 
       //
       // Save the form layout to the UniFORM binary repository.
@@ -1202,54 +1160,35 @@ namespace Evado.UniForm.Digital
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
+    /// This method returns a CSV string for the PageLayout
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageLayout">Evado.Model.Digital.EdPageLayout object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private String CreateCsvData ( EdSelectionList SelectionList )
+    private String CreateCsvData ( EdPageLayout PageLayout )
     {
       this.LogMethod ( "CreateCsvData" );
       //
       // Initialise the methods variables and objects.
       //
       StringBuilder sbCsvData = new StringBuilder ( );
-      String outputFormat = "\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"\r\n";
+      String outputFormat = "\"{0}\",\"{1}\"\r\n";
 
-      sbCsvData.AppendFormat ( outputFormat,
-        EdSelectionList.SelectionListFieldNames.ListId,
-        EdSelectionList.SelectionListFieldNames.Title,
-        EdSelectionList.SelectionListFieldNames.Version,
-        EdSelectionList.SelectionListFieldNames.Item_Category,
-        EdSelectionList.SelectionListFieldNames.Item_Value,
-        EdSelectionList.SelectionListFieldNames.Item_Description );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.PageId, PageLayout.PageId );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Title, PageLayout.Title );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Version, PageLayout.Version );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.UserType, PageLayout.UserType );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderContent, PageLayout.HeaderContent );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderGroupList, PageLayout.HeaderGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnContent, PageLayout.LeftColumnContent );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnGroupList, PageLayout.LeftColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnWidth, PageLayout.LeftColumnWidth );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnContent, PageLayout.CenterColumnContent );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnGroupList, PageLayout.CenterColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnContent, PageLayout.RightColumnContent );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnGroupList, PageLayout.RightColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnWidth, PageLayout.RightColumnWidth );
 
-      for ( int count = 0; count < SelectionList.Items.Count; count++ )
-      {
-        EdSelectionList.Item item = SelectionList.Items [ count ];
-        if ( count == 0 )
-        {
-          sbCsvData.AppendFormat ( outputFormat,
-            SelectionList.ListId,
-            SelectionList.Title,
-            item.No,
-            item.Category,
-            item.Value,
-            item.Description );
-        }
-        else
-        {
-          sbCsvData.AppendFormat ( "\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
-            String.Empty,
-            String.Empty,
-            String.Empty,
-            String.Empty,
-            item.No,
-            item.Category,
-            item.Value,
-            item.Description );
-        }
-      }//END item iteration loop
 
       this.LogMethodEnd ( "CreateCsvData" );
       return sbCsvData.ToString ( );
@@ -1263,21 +1202,22 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_DetailsGroup (
+    private void getDataObject_GeneralGroup (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "getDataObject_DetailsGroup" );
+      this.LogMethod ( "getDataObject_GeneralGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      List<EvOption> optionList = new List<EvOption> ( );
 
       // 
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-       EdLabels.SelectionList_General_Group_Title );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+       EdLabels.PageLayout_General_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Page_Header;
 
       //
       // Add the group commands
@@ -1288,23 +1228,23 @@ namespace Evado.UniForm.Digital
       // Create the customer id object
       // 
       groupField = pageGroup.createTextField (
-        EdSelectionList.SelectionListFieldNames.ListId.ToString ( ),
-        EdLabels.SelectionList_List_Id_Field_Label,
-        this.Session.AdminSelectionList.ListId, 10 );
+        EdPageLayout.FieldNames.PageId,
+        EdLabels.PageLayout_Page_Id_Field_Label,
+        this.Session.AdminPageLayout.PageId, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
-      if ( this.Session.AdminSelectionList.Guid != Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+      if ( this.Session.AdminPageLayout.Guid != Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
       {
         groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
       }
 
       // 
-      // Create the customer name object
+      // Create the page title object
       // 
       groupField = pageGroup.createTextField (
-        EdSelectionList.SelectionListFieldNames.Title.ToString ( ),
-        EdLabels.SelectionList_Title_Field_Label,
-        this.Session.AdminSelectionList.Title,
+        EdPageLayout.FieldNames.Title,
+        EdLabels.PageLayout_Title_Field_Label,
+        this.Session.AdminPageLayout.Title,
         50 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
@@ -1314,45 +1254,76 @@ namespace Evado.UniForm.Digital
         Model.UniForm.Background_Colours.Red );
 
       // 
-      // Create the customer name object
+      // Create the page default home page indicator object
       // 
-      groupField = pageGroup.createFreeTextField (
-        EdSelectionList.SelectionListFieldNames.Description,
-        EdLabels.SelectionList_Description_Field_Label,
-        this.Session.AdminSelectionList.Description,
-        50, 10 );
+      groupField = pageGroup.createBooleanField (
+        EdPageLayout.FieldNames.DefaultHomePage,
+        EdLabels.PageLayout_DefaultHomePage_Field_Label,
+        this.Session.AdminPageLayout.DefaultHomePage);
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Mandatory = true;
+
+      groupField.setBackgroundColor (
+        Model.UniForm.FieldParameterList.BG_Mandatory,
+        Model.UniForm.Background_Colours.Red );
+
+      //
+      // create the user type selection list.
+      //
+      optionList = this.AdapterObjects.Settings.GetUserTypeList ( true );
+
+      //
+      // set the first option (empty) to indicate that all are selected.
+      //
+      optionList [ 0 ].Description = EdLabels.PageLayout_Select_All_Option_Description;
+
+      // 
+      // Create the user type selection.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdPageLayout.FieldNames.UserType,
+        EdLabels.PageLayout_User_Type_Field_Label,
+        this.Session.AdminPageLayout.UserType,
+        optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      this.LogMethodEnd ( "getDataObject_DetailsGroup" );
+      // 
+      // Create the page title object
+      // 
+      groupField = pageGroup.createTextField (
+        EdPageLayout.FieldNames.Version,
+        EdLabels.PageLayout_Version_Field_Label,
+        this.Session.AdminPageLayout.Version.ToString(),
+        10 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
 
-    }//END getDataObject_DetailsGroup Method
+
+      this.LogMethodEnd ( "getDataObject_GeneralGroup" );
+
+    }//END getDataObject_GeneralGroup Method
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
+    /// This method generates the left column properties group
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
-    /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_OptionGroup (
+    private void getDataObjectHeaderGroup (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "getDataObject_OptionGroup" );
-      this.LogDebug ( "Item count {0}",
-        this.Session.AdminSelectionList.Items.Count );
+      this.LogMethod ( "getDataObjectHeaderGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
-      int rowCount_Inital = 20;
-      int rowCount_Extend = 5;
 
       // 
-      // create the page page Group
+      // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EdLabels.SelectionList_Option_Group_Title );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+       EdLabels.PageLayout_Header_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Page_Header;
 
       //
       // Add the group commands
@@ -1360,67 +1331,194 @@ namespace Evado.UniForm.Digital
       this.getDataObject_GroupCommands ( pageGroup );
 
       // 
-      // Create the customer id object
+      // Create the left column (top )content object
       // 
-      groupField = pageGroup.createTableField (
-        EdSelectionList.SelectionListFieldNames.Items.ToString ( ),
-        EdLabels.SelectionList_Options_Field_Label,
-        this.Session.AdminSelectionList.ListId, 3 );
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.HeaderContent,
+        EdLabels.PageLayout_Header_Content_Field_Label,
+        this.Session.AdminPageLayout.HeaderContent, 25, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      groupField.Table.Header [ 0 ].No = 1;
-      groupField.Table.Header [ 0 ].Text = EdLabels.SelectionList_Table_Column_1_Title;
-      groupField.Table.Header [ 0 ].ColumnId = groupField.Table.Header [ 0 ].Text;
-      groupField.Table.Header [ 0 ].Width = "20";
-      groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Text;
+      // 
+      // Create the left column group identifiers object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.HeaderGroupList,
+        EdLabels.PageLayout_Header_Group_List_Field_Label,
+        this.Session.AdminPageLayout.HeaderGroupList, 25, 5 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      groupField.Table.Header [ 1 ].No = 2;
-      groupField.Table.Header [ 1 ].Text = EdLabels.SelectionList_Table_Column_2_Title;
-      groupField.Table.Header [ 1 ].ColumnId = groupField.Table.Header [ 1 ].Text;
-      groupField.Table.Header [ 1 ].Width = "20";
-      groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Text;
+      this.LogMethodEnd ( "getDataObjectHeaderGroup" );
 
-      groupField.Table.Header [ 2 ].No = 3;
-      groupField.Table.Header [ 2 ].Text = EdLabels.SelectionList_Table_Column_3_Title;
-      groupField.Table.Header [ 2 ].ColumnId = groupField.Table.Header [ 2 ].Text;
-      groupField.Table.Header [ 2 ].Width = "40";
-      groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Text;
+    }//END getDataObject_LeftColumnGroup Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates the left column properties group
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_LeftColumnGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_LeftColumnGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+
+      // 
+      // create the page pageMenuGroup
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+       EdLabels.PageLayout_Left_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Dynamic;
+      pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
 
       //
-      // Add an initial row count of 20 rows
+      // Add the group commands
       //
-      if ( this.Session.AdminSelectionList.Items.Count == 0 )
-      {
-        for ( int i = 0; i < rowCount_Inital; i++ )
-        {
-          groupField.Table.addRow ( );
-        }
-      }
-      else
-      {
-        for ( int count = 0; count < this.Session.AdminSelectionList.Items.Count; count++ )
-        {
-          EdSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
+      this.getDataObject_GroupCommands ( pageGroup );
 
-          var row = groupField.Table.addRow ( );
-          row.No = count + 1;
-          row.Column [ 0 ] = item.Category;
-          row.Column [ 1 ] = item.Value;
-          row.Column [ 2 ] = item.Description;
-        }
+      // 
+      // Create the left column (top )content object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.LeftColumnContent,
+        EdLabels.PageLayout_Left_Content_Field_Label,
+        this.Session.AdminPageLayout.LeftColumnContent, 25, 10 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-        //
-        // Add extract rows to allow for more options to be added.
-        //
-        for ( int i = 0; i < rowCount_Extend; i++ )
-        {
-          groupField.Table.addRow ( );
-        }
-      }
+      // 
+      // Create the left column group identifiers object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.LeftColumnGroupList,
+        EdLabels.PageLayout_Left_Group_List_Field_Label,
+        this.Session.AdminPageLayout.LeftColumnGroupList, 25, 5 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-      this.LogMethodEnd ( "getDataObject_OptionGroup" );
+      // 
+      // Create the left column command identifier object
+      // 
+      groupField = pageGroup.createNumericField (
+        EdPageLayout.FieldNames.LeftColumnWidth,
+        EdLabels.PageLayout_Left_Command_List_Field_Label,
+        this.Session.AdminPageLayout.LeftColumnWidth, 0, 33 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
-    }//END getDataObject_DetailsGroup Method
+      this.LogMethodEnd ( "getDataObject_LeftColumnGroup" );
+
+    }//END getDataObject_LeftColumnGroup Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates the center column properties group
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_CenterColumnGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_CenterColumnGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+
+      // 
+      // create the page pageMenuGroup
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+       EdLabels.PageLayout_Center_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Body );
+
+      //
+      // Add the group commands
+      //
+      this.getDataObject_GroupCommands ( pageGroup );
+
+      // 
+      // Create the left column (top )content object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.CenterColumnContent,
+        EdLabels.PageLayout_Center_Content_Field_Label,
+        this.Session.AdminPageLayout.CenterColumnContent, 25, 10 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+      // 
+      // Create the left column group identifiers object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.CenterColumnGroupList,
+        EdLabels.PageLayout_Center_Group_List_Field_Label,
+        this.Session.AdminPageLayout.CenterColumnGroupList, 25, 5 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+      this.LogMethodEnd ( "getDataObject_CenterColumnGroup" );
+
+    }//END getDataObject_CenterColumnGroup Method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates the right column properties group
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_RightColumnGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_RightColumnGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+
+      // 
+      // create the page pageMenuGroup
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+       EdLabels.PageLayout_Right_Group_Title );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Dynamic;
+      pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Right );
+
+      //
+      // Add the group commands
+      //
+      this.getDataObject_GroupCommands ( pageGroup );
+
+      // 
+      // Create the left column (top )content object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.RightColumnContent,
+        EdLabels.PageLayout_Right_Content_Field_Label,
+        this.Session.AdminPageLayout.RightColumnContent, 25, 10 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+      // 
+      // Create the left column group identifiers object
+      // 
+      groupField = pageGroup.createFreeTextField (
+        EdPageLayout.FieldNames.RightColumnGroupList,
+        EdLabels.PageLayout_Right_Group_List_Field_Label,
+        this.Session.AdminPageLayout.RightColumnGroupList, 25, 5 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+      // 
+      // Create the left column command identifier object
+      // 
+      groupField = pageGroup.createNumericField (
+        EdPageLayout.FieldNames.RightColumnWidth,
+        EdLabels.PageLayout_Right_Command_List_Field_Label,
+        this.Session.AdminPageLayout.RightColumnWidth, 0, 33 );
+      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+      this.LogMethodEnd ( "getDataObject_RightColumnGroup" );
+
+    }//END getDataObject_RightColumnGroup Method
 
     //================================================================================
     /// <summary>
@@ -1443,53 +1541,55 @@ namespace Evado.UniForm.Digital
       if ( PageGroup.EditAccess == Evado.Model.UniForm.EditAccess.Enabled )
       {
         pageCommand = PageGroup.addCommand (
-          EdLabels.SelectionList_Save_Command_Title,
+          EdLabels.PageLayout_Save_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
         // 
         // Define the save and delete groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Save.ToString ( ) );
+          EdPageLayout.SaveActions.Save.ToString ( ) );
 
         //
         // Issue command
         //
         pageCommand = PageGroup.addCommand (
-          EdLabels.SelectionList_Issue_Command_Title,
+          EdLabels.PageLayout_Issue_Command_Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
+          EuAdapterClasses.Page_Layouts.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
         // 
         // Define the save and issue groupCommand parameters
         // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+        pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Issue_List.ToString ( ) );
-
+          EdPageLayout.SaveActions.Issue.ToString ( ) );
 
         //
         // Delete command
         //
-        pageCommand = PageGroup.addCommand (
-          EdLabels.SelectionList_Delete_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        if ( this.Session.AdminPageLayout.State == EdPageLayout.States.Draft )
+        {
+          pageCommand = PageGroup.addCommand (
+            EdLabels.PageLayout_Delete_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Page_Layouts.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
-        pageCommand.AddParameter (
-           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+          // 
+          // Define the save and delete groupCommand parameters
+          // 
+          pageCommand.SetGuid ( this.Session.AdminPageLayout.Guid );
+          pageCommand.AddParameter (
+             Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+            EdPageLayout.SaveActions.Delete.ToString ( ) );
+        }
       }
 
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
@@ -1542,12 +1642,22 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.Session.AdminSelectionList = new EdSelectionList ( );
-        this.Session.AdminSelectionList.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
-        this.Session.AdminSelectionList.ListId = String.Empty;
-        this.Session.AdminSelectionList.Title = String.Empty;
-        this.Session.AdminSelectionList.Description = String.Empty;
-        this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
+        this.Session.AdminPageLayout = new EdPageLayout ( );
+        this.Session.AdminPageLayout.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.AdminPageLayout.PageId = String.Empty;
+        this.Session.AdminPageLayout.Title = String.Empty;
+        this.Session.AdminPageLayout.State = EdPageLayout.States.Draft;
+        this.Session.AdminPageLayout.UserType= String.Empty;
+        this.Session.AdminPageLayout.CenterColumnContent= String.Empty;
+        this.Session.AdminPageLayout.CenterColumnGroupList = String.Empty;
+        this.Session.AdminPageLayout.HeaderContent = String.Empty;
+        this.Session.AdminPageLayout.HeaderGroupList = String.Empty;
+        this.Session.AdminPageLayout.LeftColumnWidth = 0;
+        this.Session.AdminPageLayout.LeftColumnContent = String.Empty;
+        this.Session.AdminPageLayout.LeftColumnGroupList = String.Empty;
+        this.Session.AdminPageLayout.RightColumnWidth = 0;
+        this.Session.AdminPageLayout.RightColumnContent = String.Empty;
+        this.Session.AdminPageLayout.RightColumnGroupList = String.Empty;
 
         this.getDataObject ( clientDataObject );
 
@@ -1563,7 +1673,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = "Error raised when creating a trial site.";
+        this.ErrorMessage = EdLabels.PageLayout_Creation_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1606,7 +1716,7 @@ namespace Evado.UniForm.Digital
         //
         // Initialise the methods variables and objects.
         //
-        EdSelectionList.SaveActions saveAction = EdSelectionList.SaveActions.Save;
+        EdPageLayout.SaveActions saveAction = EdPageLayout.SaveActions.Save;
 
         // 
         // Log access to page.
@@ -1618,14 +1728,14 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the update variables.
         // 
-        this.Session.AdminSelectionLists = new List<EdSelectionList> ( );
+        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
 
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.
         // 
-        if ( this.Session.AdminSelectionList.Guid == Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+        if ( this.Session.AdminPageLayout.Guid == Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
         {
-          this.Session.AdminSelectionList.Guid = Guid.Empty;
+          this.Session.AdminPageLayout.Guid = Guid.Empty;
         }
 
         // 
@@ -1641,17 +1751,12 @@ namespace Evado.UniForm.Digital
         // 
         this.updateObjectValue ( PageCommand.Parameters );
 
-        //
-        // Update the table values.
-        //
-        this.updateObjectTableValues ( PageCommand.Parameters );
 
         this.LogDebug ( "AdminSelectionList:" );
-        this.LogDebug ( "-Guid: " + this.Session.AdminSelectionList.Guid );
-        this.LogDebug ( "-ListId: " + this.Session.AdminSelectionList.ListId );
-        this.LogDebug ( "-Title: " + this.Session.AdminSelectionList.Title );
-        this.LogDebug ( "-Description: " + this.Session.AdminSelectionList.Description );
-        this.LogDebug ( "-Items.Count: " + this.Session.AdminSelectionList.Items.Count );
+        this.LogDebug ( "-Guid: " + this.Session.AdminPageLayout.Guid );
+        this.LogDebug ( "-ListId: " + this.Session.AdminPageLayout.PageId );
+        this.LogDebug ( "-Title: " + this.Session.AdminPageLayout.Title );
+        this.LogDebug ( "-UserType: " + this.Session.AdminPageLayout.UserType );
 
         //
         // check that the mandatory fields have been filed.
@@ -1660,18 +1765,6 @@ namespace Evado.UniForm.Digital
         {
           this.LogMethodEnd ( "updateObject" );
           return this.Session.LastPage;
-        }
-
-        //
-        // remove the empty rows from the list.
-        //
-        for ( int i = 0; i < this.Session.AdminSelectionList.Items.Count; i++ )
-        {
-          if ( this.Session.AdminSelectionList.Items [ i ].Value == String.Empty )
-          {
-            this.Session.AdminSelectionList.Items.RemoveAt ( i );
-            i--;
-          }
         }
 
         // 
@@ -1684,31 +1777,31 @@ namespace Evado.UniForm.Digital
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction = Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SaveActions> ( stSaveAction );
+          saveAction = Evado.Model.EvStatics.parseEnumValue<EdPageLayout.SaveActions> ( stSaveAction );
         }
-        this.Session.AdminSelectionList.Action = saveAction;
+        this.Session.AdminPageLayout.Action = saveAction;
 
-        if ( saveAction == EdSelectionList.SaveActions.Delete_Object )
+        if ( saveAction == EdPageLayout.SaveActions.Delete )
         {
-          this.Session.AdminSelectionList.Title = String.Empty;
+          this.Session.AdminPageLayout.Title = String.Empty;
         }
 
         // 
         // update the object.
         // 
-        EvEventCodes result = this._Bll_SelectionLists.SaveItem ( this.Session.AdminSelectionList );
+        EvEventCodes result = this._Bll_PageLayouts.SaveItem ( this.Session.AdminPageLayout );
 
         // 
         // get the debug ResultData.
         // 
-        this.LogValue ( this._Bll_SelectionLists.Log );
+        this.LogValue ( this._Bll_PageLayouts.Log );
 
         // 
         // if an error state is returned create log the event.
         // 
         if ( result != EvEventCodes.Ok )
         {
-          string StEvent = this._Bll_SelectionLists.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
+          string StEvent = this._Bll_PageLayouts.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
           this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
 
           switch ( result )
@@ -1717,18 +1810,13 @@ namespace Evado.UniForm.Digital
               {
                 this.ErrorMessage =
                   String.Format (
-                    EdLabels.SelectionList_Duplicate_Error_Message,
-                    this.Session.AdminSelectionList.ListId );
-                break;
-              }
-            case EvEventCodes.Identifier_Org_Id_Error:
-              {
-                this.ErrorMessage = EdLabels.SelectionList_Identifier_Empty_Error_Message;
+                    EdLabels.OageLayout_Duplicate_Error_Message,
+                    this.Session.AdminPageLayout.PageId );
                 break;
               }
             default:
               {
-                this.ErrorMessage = EdLabels.SelectionList_Update_Error_Message;
+                this.ErrorMessage = EdLabels.PageLayout_Update_Error_Message;
                 break;
               }
           }
@@ -1740,7 +1828,8 @@ namespace Evado.UniForm.Digital
         //
         // empty the selection lists to force a reload on the next initialisation.
         //
-        this.AdapterObjects.SelectionLists = new List<EdSelectionList> ( );
+        this.AdapterObjects.AllPageLayouts = new List<EdPageLayout> ( );
+
 
         this.LogMethodEnd ( "updateObject" );
         return new Model.UniForm.AppData ( );
@@ -1751,7 +1840,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EdLabels.SelectionList_Update_Error_Message;
+        this.ErrorMessage = EdLabels.PageLayout_Update_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -1783,13 +1872,13 @@ namespace Evado.UniForm.Digital
       //
       // Org name not defined.
       //
-      if ( this.Session.AdminSelectionList.ListId == String.Empty )
+      if ( this.Session.AdminPageLayout.PageId == String.Empty )
       {
         if ( this.ErrorMessage != String.Empty )
         {
           this.ErrorMessage += "\r\n ";
         }
-        this.ErrorMessage += EdLabels.SelectionList_List_Id_Error_Message;
+        this.ErrorMessage += EdLabels.PageLayout_Page_Id_Error_Message;
 
         bReturn = false;
       }
@@ -1797,13 +1886,13 @@ namespace Evado.UniForm.Digital
       //
       // Org name not defined.
       //
-      if ( this.Session.AdminSelectionList.Title == String.Empty )
+      if ( this.Session.AdminPageLayout.Title == String.Empty )
       {
         if ( this.ErrorMessage != String.Empty )
         {
           this.ErrorMessage += "\r\n ";
         }
-        this.ErrorMessage += EdLabels.SelectionList_Title_Error_Message;
+        this.ErrorMessage += EdLabels.PageLayout_Title_Error_Message;
 
         bReturn = false;
       }
@@ -1824,7 +1913,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogDebug ( "Parameters.Count: " + Parameters.Count );
-      this.LogDebug ( "Customer.Guid: " + this.Session.AdminSelectionList.Guid );
+      this.LogDebug ( "Customer.Guid: " + this.Session.AdminPageLayout.Guid );
 
       /// 
       /// Iterate through the parameter values updating the ResultData object
@@ -1833,17 +1922,16 @@ namespace Evado.UniForm.Digital
       {
         if ( parameter.Name.Contains ( Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == false
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
-          && parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
+          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION )
         {
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
           try
           {
-            EdSelectionList.SelectionListFieldNames fieldName =
-               Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SelectionListFieldNames> (
+            EdPageLayout.FieldNames fieldName =
+               Evado.Model.EvStatics.parseEnumValue<EdPageLayout.FieldNames> (
               parameter.Name );
 
-            this.Session.AdminSelectionList.setValue ( fieldName, parameter.Value );
+            this.Session.AdminPageLayout.setValue ( fieldName, parameter.Value );
 
           }
           catch ( Exception Ex )
@@ -1859,78 +1947,6 @@ namespace Evado.UniForm.Digital
       }// End iteration loop
 
     }//END updateObjectValue method.
-
-    // ==================================================================================
-    /// <summary>
-    /// THis method saves the ResultData object updating the field values contained in the 
-    /// parameter list.
-    /// </summary>
-    /// <param name="Parameters">List of field values to be updated.</param>
-    /// <returns></returns>
-    //  ----------------------------------------------------------------------------------
-    private void updateObjectTableValues (
-      List<Evado.Model.UniForm.Parameter> Parameters )
-    {
-      this.LogMethod ( "updateObjectTableValues" );
-      this.LogDebug ( "Parameters.Count: " + Parameters.Count );
-      this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
-      int count = 0;
-      /// 
-      /// Iterate through the parameter values updating the ResultData object
-      /// 
-      foreach ( Evado.Model.UniForm.Parameter parameter in Parameters )
-      {
-        if ( parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == true )
-        {
-          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
-          string name = parameter.Name;
-          string [ ] arName = name.Split ( '_' );
-          int arLength = arName.Length;
-          int column = EvStatics.getInteger ( arName [ arLength - 1 ] );
-          int row = EvStatics.getInteger ( arName [ arLength - 2 ] ) - 1;
-
-          this.LogDebug ( "Row {0}, Col {1}", row, column );
-
-          if ( row >= this.Session.AdminSelectionList.Items.Count )
-          {
-            this.LogDebug ( "Add option item" );
-            this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item ( ) );
-            this.Session.AdminSelectionList.Items [ row ].No = row + 1;
-          }
-
-          //
-          // User switch to determine which object value to updae.
-          //
-          switch ( column )
-          {
-            case 1:
-              {
-                this.LogDebug ( "Update Category" );
-                this.Session.AdminSelectionList.Items [ row ].Category = parameter.Value;
-                break;
-              }
-            case 2:
-              {
-                this.LogDebug ( "Update Value" );
-                this.Session.AdminSelectionList.Items [ row ].Value = parameter.Value;
-                break;
-              }
-            case 3:
-              {
-                this.LogDebug ( "Update Description" );
-                this.Session.AdminSelectionList.Items [ row ].Description = parameter.Value;
-                break;
-              }
-          }//END value switch
-        }
-        else
-        {
-          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
-        }
-
-      }// End iteration loop
-
-    }//END updateObjectTableValues method.
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

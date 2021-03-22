@@ -119,6 +119,12 @@ namespace Evado.UniForm.Digital
           this.Session.MenuPlatformId = this.AdapterObjects.PlatformId;
         }
 
+        //
+        // ensure that all page layouts have menu groups headers.
+        //
+        this.updatePageLayoutGroups ( );
+
+
         // 
         // Determine the method to be called
         // 
@@ -178,6 +184,130 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END getClientDataObject method
+    
+    // ==============================================================================
+    /// <summary>
+    /// This method updates the PageLayout Groups to ensure that all page layouts have
+    /// menu groups for them.
+    /// </summary>
+    //  ------------------------------------------------------------------------------
+    private void updatePageLayoutGroups ( )
+    {
+      this.LogMethod ( "updatePageLayoutGroups" );
+
+      //
+      // iterate through each of the issued pages to add a menu header item 
+      // if one does not exist.
+      //
+      foreach ( EdPageLayout page in this.AdapterObjects.AllPageLayouts )
+      {
+        if ( page.State == EdPageLayout.States.Issued )
+        {
+          if ( this.hasMenuHeader ( page ) == true )
+          {
+            continue;
+          }
+
+          this.addMenuHeader ( page );
+        }
+      }
+
+      this.LogMethodEnd ( "updatePageLayoutGroups" );
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method tests to see if the a page group header exists for the page.
+    /// </summary>
+    /// <param name="Page">EdPageLayout object</param>
+    /// <returns>True: menu group header exist.</returns>
+    //  ------------------------------------------------------------------------------
+    private bool hasMenuHeader ( EdPageLayout Page )
+    {
+      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
+      {
+        if ( item.GroupHeader == true
+          && item.Group.ToUpper() == Page.PageId.ToUpper() )
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method adds a menu header item for the page..
+    /// </summary>
+    /// <param name="Page">EdPageLayout object</param>
+    /// <returns>True: menu group header created.</returns>
+    //  ------------------------------------------------------------------------------
+    private bool addMenuHeader ( EdPageLayout Page )
+    {
+      //
+      // initialise the methods variables and objects.
+      //
+      EvMenuItem newHeader = new EvMenuItem ( );
+      int headerOrder = 0;
+
+
+      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
+      {
+        if ( item.GroupHeader == true )
+        {
+          headerOrder = item.Order;
+        }
+      }
+
+      headerOrder++;
+
+      //
+      // define the new menu group header object.
+      //
+      newHeader.PageId = "Home_Page";
+      newHeader.Group = Page.PageId.ToUpper ( );
+      newHeader.Title = Page.Title;
+      newHeader.GroupHeader = true;
+      newHeader.UserTypes = Page.UserType;
+      newHeader.Order = headerOrder;
+      newHeader.RoleList = "Administrator";
+      newHeader.Platform = "ADMIN";
+
+     var result = this._Bll_Menus.saveItem ( newHeader );
+
+     if ( result != EvEventCodes.Ok )
+     {
+       return false;
+     }
+
+      //
+      // define the new menu group header object.
+      //
+      newHeader = new EvMenuItem ( );
+      newHeader.PageId = "Home_Page";
+      newHeader.Group = Page.PageId;
+      newHeader.Title = Page.Title;
+      newHeader.GroupHeader = true;
+      newHeader.UserTypes = Page.UserType;
+      newHeader.Order = headerOrder;
+      newHeader.RoleList = "Administrator";
+      newHeader.Platform = "PROD";
+
+      result =this._Bll_Menus.saveItem ( newHeader );
+
+      if ( result != EvEventCodes.Ok )
+      {
+        return false;
+      }
+
+      //
+      // force a load of a fresh menu list.
+      //
+      this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
+
+      return true;
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -203,7 +333,6 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
 
         //
         // Determine if the user has access to this page and log and error if they do not.
@@ -319,7 +448,7 @@ namespace Evado.UniForm.Digital
     //  ---------------------------------------------------------------------------------
     public void loadGlobalMenu ( )
     {
-      this.LogMethod ( "loadGlobalMenu method" );
+      this.LogMethod ( "loadGlobalMenu" );
       this.LogDebug ( "PlatformId: " + this.ClassParameters.PlatformId );
       try
       {
@@ -391,16 +520,18 @@ namespace Evado.UniForm.Digital
       // 
       // Create the pageMenuGroup selection list.
       // 
-      List<Evado.Model.EvOption> groupList = this._Bll_Menus.getGroupList (
-        this.Session.MenuPlatformId );
+      List<Evado.Model.EvOption> groupList = this.GetGroupList ( );
 
-      pageField = pageGroup.createSelectionListField (
-        EuSession.CONST_MENU_GROUP_ID,
-        EdLabels.Menu_Group_ID,
-        this.Session.MenuGroupIdentifier,
-        groupList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      if ( groupList.Count > 1 )
+      {
+        pageField = pageGroup.createSelectionListField (
+          EuSession.CONST_MENU_GROUP_ID,
+          EdLabels.Menu_Group_ID,
+          this.Session.MenuGroupIdentifier,
+          groupList );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
+        pageField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      }
 
       //
       // Add the selection command
@@ -416,6 +547,33 @@ namespace Evado.UniForm.Digital
       // 
       selectionCommand.setCustomMethod ( Model.UniForm.ApplicationMethods.List_of_Objects );
 
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates a list of header options 
+    /// based on the currently loaded menu item list.
+    /// </summary>
+    /// <returns>List of EvOption objects</returns>
+    //  ------------------------------------------------------------------------------
+    private List<EvOption> GetGroupList ( )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+      optionList.Add ( new EvOption ( ) );
+
+      foreach ( EvMenuItem header in this.AdapterObjects.MenuList )
+      {
+        if( header.GroupHeader == true 
+          && header.Platform == this.Session.MenuPlatformId )
+        {
+          optionList.Add ( new EvOption ( header.Group, header.Title ) );
+        }
+      }
+
+      return optionList;
     }
 
     // ==============================================================================

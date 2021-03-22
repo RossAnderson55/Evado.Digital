@@ -287,6 +287,32 @@ namespace Evado.UniForm.Digital
               return pageCommand;
             }
 
+          case EdStaticPageIds.Page_Layout_View:
+            {
+              pageCommand = new Model.UniForm.Command (
+                Title,
+                EuAdapter.ADAPTER_ID,
+                EuAdapterClasses.Page_Layouts.ToString ( ),
+                Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+              pageCommand.SetPageId ( PageId );
+
+              return pageCommand;
+            }
+
+          case EdStaticPageIds.Page_Layout_Page:
+            {
+              pageCommand = new Model.UniForm.Command (
+                Title,
+                EuAdapter.ADAPTER_ID,
+                EuAdapterClasses.Page_Layouts.ToString ( ),
+                Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+              pageCommand.SetPageId ( PageId );
+
+              return pageCommand;
+            }
+
           case EdStaticPageIds.Selection_List_View:
             {
               pageCommand = new Model.UniForm.Command (
@@ -344,7 +370,7 @@ namespace Evado.UniForm.Digital
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         #endregion
 
-        #region project analysis and reporting menu items.
+        #region  analysis and reporting menu items.
         //
         // Project analysis and reporting menu commands.
         //

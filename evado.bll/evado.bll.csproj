@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyAttributes.cs" />
+    <Compile Include="digital\EdPageLayouts.cs" />
     <Compile Include="digital\EdAdapterConfig.cs" />
     <Compile Include="digital\EdEntities.cs" />
     <Compile Include="digital\EdEntityFields.cs">

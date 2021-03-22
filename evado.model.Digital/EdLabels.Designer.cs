@@ -5204,6 +5204,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is a duplicate of this page identifier..
+        /// </summary>
+        public static string OageLayout_Duplicate_Error_Message {
+            get {
+                return ResourceManager.GetString("OageLayout_Duplicate_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Take Evado Offline.
         /// </summary>
         public static string Offline_Command_Title {
@@ -5713,6 +5722,348 @@ namespace Evado.Model.Digital {
         public static string Page_Comment_Close_Label {
             get {
                 return ResourceManager.GetString("Page_Comment_Close_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Commands:.
+        /// </summary>
+        public static string PageLayout_Center_Command_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Center_Command_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Content:.
+        /// </summary>
+        public static string PageLayout_Center_Content_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Center_Content_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Groups:.
+        /// </summary>
+        public static string PageLayout_Center_Group_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Center_Group_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Center Column.
+        /// </summary>
+        public static string PageLayout_Center_Group_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Center_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Generated creating page layout object..
+        /// </summary>
+        public static string PageLayout_Creation_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Creation_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Default Home Page:.
+        /// </summary>
+        public static string PageLayout_DefaultHomePage_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_DefaultHomePage_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Page Layout.
+        /// </summary>
+        public static string PageLayout_Delete_Command_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Delete_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Page Layout.
+        /// </summary>
+        public static string PageLayout_Export_Command_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Export_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string PageLayout_General_Group_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_General_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header Commands:.
+        /// </summary>
+        public static string PageLayout_Header_Command_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Header_Command_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header Content:.
+        /// </summary>
+        public static string PageLayout_Header_Content_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Header_Content_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header Groups:.
+        /// </summary>
+        public static string PageLayout_Header_Group_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Header_Group_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Header.
+        /// </summary>
+        public static string PageLayout_Header_Group_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Header_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Page Layout.
+        /// </summary>
+        public static string PageLayout_Import_Command_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Import_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issue Page Layout.
+        /// </summary>
+        public static string PageLayout_Issue_Command_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Issue_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Commands:.
+        /// </summary>
+        public static string PageLayout_Left_Command_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Left_Command_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Content:.
+        /// </summary>
+        public static string PageLayout_Left_Content_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Left_Content_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Groups:.
+        /// </summary>
+        public static string PageLayout_Left_Group_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Left_Group_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left Column.
+        /// </summary>
+        public static string PageLayout_Left_Group_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Left_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}, Version {2}, State {3}.
+        /// </summary>
+        public static string PageLayout_Link_Text {
+            get {
+                return ResourceManager.GetString("PageLayout_Link_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}, (Default Home Page) Version {2}, State {3}.
+        /// </summary>
+        public static string PageLayout_Link_Text1 {
+            get {
+                return ResourceManager.GetString("PageLayout_Link_Text1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Page Layout.
+        /// </summary>
+        public static string PageLayout_New_List_Page_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_New_List_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Loading page layout..
+        /// </summary>
+        public static string PageLayout_Page_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Page_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Page identifier has not been entered..
+        /// </summary>
+        public static string PageLayout_Page_Id_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Page_Id_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Identifier:.
+        /// </summary>
+        public static string PageLayout_Page_Id_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Page_Id_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Layout {0} - {1} .
+        /// </summary>
+        public static string PageLayout_Page_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Commands:.
+        /// </summary>
+        public static string PageLayout_Right_Command_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Right_Command_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Content:.
+        /// </summary>
+        public static string PageLayout_Right_Content_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Right_Content_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column Groups:.
+        /// </summary>
+        public static string PageLayout_Right_Group_List_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Right_Group_List_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roght Column.
+        /// </summary>
+        public static string PageLayout_Right_Group_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Right_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Page Layout.
+        /// </summary>
+        public static string PageLayout_Save_Command_Title {
+            get {
+                return ResourceManager.GetString("PageLayout_Save_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All are selected.
+        /// </summary>
+        public static string PageLayout_Select_All_Option_Description {
+            get {
+                return ResourceManager.GetString("PageLayout_Select_All_Option_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The page title has not been entered..
+        /// </summary>
+        public static string PageLayout_Title_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Title_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Title:.
+        /// </summary>
+        public static string PageLayout_Title_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Title_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: An error was encountered updating this page layout object..
+        /// </summary>
+        public static string PageLayout_Update_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Update_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Type:.
+        /// </summary>
+        public static string PageLayout_User_Type_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_User_Type_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page version:.
+        /// </summary>
+        public static string PageLayout_Version_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Version_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Layout list page.
+        /// </summary>
+        public static string PageLayouts_List_Page_Title {
+            get {
+                return ResourceManager.GetString("PageLayouts_List_Page_Title", resourceCulture);
             }
         }
         

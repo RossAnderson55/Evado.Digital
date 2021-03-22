@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EdPageLayout.cs" />
     <Compile Include="EdArticle.cs" />
     <Compile Include="EdObjectParent.cs" />
     <Compile Include="EdLabels.Designer.cs">

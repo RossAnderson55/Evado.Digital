@@ -65,7 +65,7 @@ namespace Evado.Model
       /// <summary>
       /// This enumeration value defines Data Change on form selection fields table
       /// </summary>
-      EvFormFieldSelectionLists,
+      EdSelectionList,
 
       /// <summary>
       /// This enumeration value defines Data Change on records table
@@ -96,6 +96,11 @@ namespace Evado.Model
       /// This enumeration value defines Data Change on organisations table
       /// </summary>
       EvOrganisations,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on form selection fields table
+      /// </summary>
+      EdPageLayouts,
 
       /// <summary>
       /// This enumerated value defines the data change for activie directory services.

@@ -170,15 +170,15 @@ namespace Evado.Dal.Digital
         //
         // Add parameters into the arraylist
         //
-        new SqlParameter( PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter( PARM_PAGE_ID,SqlDbType.NVarChar, 100),
-        new SqlParameter( PARM_TITLE,SqlDbType.NVarChar, 20),
-        new SqlParameter( PARM_ORDER,SqlDbType.SmallInt),
-        new SqlParameter( PARM_GROUP,SqlDbType.NVarChar, 5),
-        new SqlParameter( PARM_GROUP_HEADER,SqlDbType.Bit),
-        new SqlParameter( PARM_PLATFORM,SqlDbType.NVarChar,10),
-        new SqlParameter( PARM_MODULES,SqlDbType.NVarChar, 250),
-        new SqlParameter( PARM_ROLES,SqlDbType.NVarChar, 250),
+        new SqlParameter( EdMenus.PARM_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter( EdMenus.PARM_PAGE_ID,SqlDbType.NVarChar, 100),
+        new SqlParameter( EdMenus.PARM_TITLE,SqlDbType.NVarChar, 20),
+        new SqlParameter( EdMenus.PARM_ORDER,SqlDbType.SmallInt),
+        new SqlParameter( EdMenus.PARM_GROUP,SqlDbType.NVarChar, 10),
+        new SqlParameter( EdMenus.PARM_GROUP_HEADER,SqlDbType.Bit),
+        new SqlParameter( EdMenus.PARM_PLATFORM,SqlDbType.NVarChar,10),
+        new SqlParameter( EdMenus.PARM_MODULES,SqlDbType.NVarChar, 250),
+        new SqlParameter( EdMenus.PARM_ROLES,SqlDbType.NVarChar, 250),
       };
 
       //
@@ -200,7 +200,9 @@ namespace Evado.Dal.Digital
     /// 1. Update MenuItem object'a values to the array of sql parameters. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms,  Evado.Model.Digital.EvMenuItem MenuItem )
+    private void SetParameters (
+      SqlParameter [ ] cmdParms,
+      Evado.Model.Digital.EvMenuItem MenuItem )
     {
       //
       // Update elements of MenuItem object to the cmdParms arraylist
@@ -212,7 +214,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 4 ].Value = MenuItem.Group;
       cmdParms [ 5 ].Value = MenuItem.GroupHeader;
       cmdParms [ 6 ].Value = MenuItem.Platform;
-      cmdParms [ 7 ].Value = String.Empty;
+      cmdParms [ 7 ].Value = MenuItem.UserTypes;
       cmdParms [ 8 ].Value = MenuItem.RoleList;
 
     }//END SetLetterParameters.
@@ -239,14 +241,12 @@ namespace Evado.Dal.Digital
     /// 4. Return the menu item object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public  Evado.Model.Digital.EvMenuItem getRowData ( DataRow Row )
+    public Evado.Model.Digital.EvMenuItem getRowData ( DataRow Row )
     {
-      //this.LogMethod( "getRowData method" );
-
       //
       // Initialise the menu item object and a page identifier string. 
       //
-       Evado.Model.Digital.EvMenuItem menu = new Evado.Model.Digital.EvMenuItem ( );
+      Evado.Model.Digital.EvMenuItem menu = new Evado.Model.Digital.EvMenuItem ( );
 
       menu.Guid = EvSqlMethods.getGuid ( Row, "MNU_GUID" );
       menu.PageId = EvSqlMethods.getString ( Row, "MNU_PAGE_ID" );
@@ -255,6 +255,7 @@ namespace Evado.Dal.Digital
       menu.Group = EvSqlMethods.getString ( Row, "MNU_GROUP" );
       menu.GroupHeader = EvSqlMethods.getBool ( Row, "MNU_GROUP_HEADER" );
       menu.Platform = EvSqlMethods.getString ( Row, "MNU_PLATFORM" );
+      menu.UserTypes = EvSqlMethods.getString ( Row, "MNU_MODULES" );
       menu.RoleList = EvSqlMethods.getString ( Row, "MNU_ROLES" );
 
       return menu;
@@ -287,21 +288,21 @@ namespace Evado.Dal.Digital
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public List< Evado.Model.Digital.EvMenuItem > getView ( 
-      String PlatformId, 
+    public List<Evado.Model.Digital.EvMenuItem> getView (
+      String PlatformId,
       String Group )
     {
       // 
       // Initialize a debug log 
       //
-      this.LogMethod( "getView method" );
+      this.LogMethod ( "getView method" );
       this.LogDebug ( "PlatformId: " + PlatformId );
       this.LogDebug ( "Group: " + Group );
 
       // 
       // Initialize a return list of menu item, site 1 and site 2. 
       // 
-      List< Evado.Model.Digital.EvMenuItem > view = new List< Evado.Model.Digital.EvMenuItem > ( );
+      List<Evado.Model.Digital.EvMenuItem> view = new List<Evado.Model.Digital.EvMenuItem> ( );
 
       // 
       // Define the SQL query parameters.
@@ -326,7 +327,7 @@ namespace Evado.Dal.Digital
 
       _sqlQueryString += " ORDER BY   Mnu_Order";
 
-      this.LogDebug( _sqlQueryString );
+      this.LogDebug ( _sqlQueryString );
 
       // 
       // Execute the query against the database.
@@ -343,7 +344,7 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
 
-           Evado.Model.Digital.EvMenuItem menu = this.getRowData ( row );
+          Evado.Model.Digital.EvMenuItem menu = this.getRowData ( row );
 
           // 
           // Append the value to the visit
@@ -357,7 +358,7 @@ namespace Evado.Dal.Digital
       //
       // Update debug log with a view count number
       //
-      this.LogDebug( "view count: " + view.Count );
+      this.LogDebug ( "view count: " + view.Count );
       // 
       // Pass back the result arrray.
       // 
@@ -386,7 +387,7 @@ namespace Evado.Dal.Digital
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public List<Evado.Model.EvOption> getGroupList ( 
+    public List<Evado.Model.EvOption> getGroupList (
       String PlatformId )
     {
       this.LogMethod ( "getGroupList, " );
@@ -412,7 +413,7 @@ namespace Evado.Dal.Digital
       _sqlQueryString = _sqlQuery_View + " WHERE ( MNU_PLATFORM = @PLATFORM)"
         + " AND (MNU_GROUP_HEADER = 1) ORDER BY MNU_ORDER";
 
-      this.LogDebug( _sqlQueryString );
+      this.LogDebug ( _sqlQueryString );
 
       // 
       // Execute the query against the database.
@@ -517,14 +518,14 @@ namespace Evado.Dal.Digital
     ///  
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public  Evado.Model.Digital.EvMenuItem getItem ( Guid MenuGuid )
+    public Evado.Model.Digital.EvMenuItem getItem ( Guid MenuGuid )
     {
       this.LogMethod ( "getItem" );
       this.LogDebug ( "MenuGuid: " + MenuGuid );
       //
       // Initialize a debug log and a menu item object
       //
-       Evado.Model.Digital.EvMenuItem menuItem = new Evado.Model.Digital.EvMenuItem ( );
+      Evado.Model.Digital.EvMenuItem menuItem = new Evado.Model.Digital.EvMenuItem ( );
 
       // 
       // Check that there is a valid unique identifier.
@@ -600,14 +601,14 @@ namespace Evado.Dal.Digital
     ///  
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public  Evado.Model.Digital.EvMenuItem getItem ( string Title )
+    public Evado.Model.Digital.EvMenuItem getItem ( string Title )
     {
       this.LogMethod ( "getItem" );
       this.LogDebug ( "Title: " + Title );
       //
       // Initialize a debug log and a menu item object
       //
-       Evado.Model.Digital.EvMenuItem menuItem = new Evado.Model.Digital.EvMenuItem ( );
+      Evado.Model.Digital.EvMenuItem menuItem = new Evado.Model.Digital.EvMenuItem ( );
 
       // 
       // Check that there is a valid name.
@@ -678,13 +679,13 @@ namespace Evado.Dal.Digital
     /// 4. Return update item code
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.EvEventCodes updateItem (  Evado.Model.Digital.EvMenuItem MenuItem )
+    public Evado.Model.EvEventCodes updateItem ( Evado.Model.Digital.EvMenuItem MenuItem )
     {
       this.LogMethod ( "updateItem method. " );
       this.LogDebug ( "Guid: " + MenuItem.Guid );
       this.LogDebug ( "Title: " + MenuItem.Title );
       this.LogDebug ( "RoleList: " + MenuItem.RoleList );
-      this.LogDebug ( "Platform: " +  MenuItem.Platform ); 
+      this.LogDebug ( "Platform: " + MenuItem.Platform );
       //
       // Initialize a debug log
       //
@@ -735,7 +736,7 @@ namespace Evado.Dal.Digital
     /// 5. Return update item code
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.EvEventCodes addItem (  Evado.Model.Digital.EvMenuItem MenuItem )
+    public Evado.Model.EvEventCodes addItem ( Evado.Model.Digital.EvMenuItem MenuItem )
     {
       this.LogMethod ( "addItem method" );
       this.LogDebug ( "Name: " + MenuItem.Title );
@@ -792,7 +793,7 @@ namespace Evado.Dal.Digital
     /// 4. Return update item code
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.EvEventCodes deleteItem (  Evado.Model.Digital.EvMenuItem MenuItem )
+    public Evado.Model.EvEventCodes deleteItem ( Evado.Model.Digital.EvMenuItem MenuItem )
     {
       this.LogMethod ( "addItem method" );
       this.LogDebug ( "Guid: " + MenuItem.Guid );

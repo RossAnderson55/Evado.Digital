@@ -34,7 +34,7 @@ namespace Evado.Dal.Digital
   /// <summary>
   /// This class is handles the data access layer for the form field selection list data object.
   /// </summary>
-  public class EdSelectionLists : EvDalBase
+  public class EdPageLayouts : EvDalBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -42,9 +42,9 @@ namespace Evado.Dal.Digital
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdSelectionLists ( )
+    public EdPageLayouts ( )
     {
-      this.ClassNameSpace = "Evado.Dal.Digital.EdSelectionLists.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdPageLayouts.";
     }
 
     // ==================================================================================
@@ -53,10 +53,10 @@ namespace Evado.Dal.Digital
     /// </summary>
     /// <param name="ClassParameters">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdSelectionLists ( EvClassParameters ClassParameters )
+    public EdPageLayouts ( EvClassParameters ClassParameters )
     {
       this.ClassParameters = ClassParameters;
-      this.ClassNameSpace = "Evado.Dal.Digital.EdSelectionLists.";
+      this.ClassNameSpace = "Evado.Dal.Digital.EdPageLayouts.";
     }
 
     #endregion
@@ -73,52 +73,82 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This constant defines sql query string for selecting all items from FormField selectionlist view.
     /// </summary>
-    private const string SQL_VIEW_QUERY = "Select * FROM ED_SELECTION_LISTS ";
+    private const string SQL_VIEW_QUERY = "Select * FROM ED_PAGE_LAYOUTS ";
 
     #region Define class Storeprocedure.
     /// <summary>
     /// This constant defines storeprocedure for adding items to formfield selection list table. 
     /// </summary>
-    private const string _STORED_PROCEDURE_AddItem = "USR_SELECTION_LIST_ADD";
+    private const string _STORED_PROCEDURE_AddItem = "USR_PAGE_LAYOUT_ADD";
 
     /// <summary>
     /// This constant defines storeprocedure for updating items on formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_UpdateItem = "USR_SELECTION_LIST_UPDATE";
+    private const string _STORED_PROCEDURE_UpdateItem = "USR_PAGE_LAYOUT_UPDATE";
 
     /// <summary>
     /// This constant defines storeprocedure for deleting items from formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_DeleteItem = "USR_SELECTION_LIST_DELETE";
+    private const string _STORED_PROCEDURE_DeleteItem = "USR_PAGE_LAYOUT_DELETE";
 
     /// <summary>
     /// This constant defines storeprocedure for withdrawing items from formfield selection list table
     /// </summary>
-    private const string _STORED_PROCEDURE_WithdrawItem = "USR_SELECTION_LIST_WITHDRAWN";
+    private const string _STORED_PROCEDURE_WithdrawItem = "USR_PAGE_LAYOUT_WITHDRAWN";
 
 
-    private const string DB_GUID = "EDSL_GUID";
-    private const String DB_LIST_ID = "EDSL_LIST_ID";
-    private const String DB_STATE = "EDSL_STATE";
-    private const String DB_TITLE = "EDSL_TITLE";
-    private const String DB_DESCRIPTION = "EDSL_DESCRIPTION";
-    private const String DB_ITEM_LIST = "EDSL_JSON_LIST";
-    private const String DB_VERSION = "EDSL_VERSION";
-    private const String DB_UPDATED_BY_USER_ID = "EDSL_UPDATED_BY_USER_ID";
-    private const String DB_UPDATED_BY = "EDSL_UPDATED_BY";
-    private const String DB_UPDATED_DATE = "EDSL_UPDATED_DATE";
-    private const String DB_DELETED = "EDSL_DELETED";
+    private const string DB_GUID = "EDPL_GUID";
+    private const String DB_PAGE_ID = "EDPL_PAGE_ID";
+    private const String DB_STATE = "EDPL_STATE";
+    private const String DB_USER_TYPE = "UP_TYPE";
+    private const String DB_TITLE = "EDPL_TITLE";
+    private const String DB_DEFAULT_HOME_PAGE = "EDPL_DEFAULT_HOME_PAGE";
+
+    private const String DB_HEADER_CONTENT = "EDPL_HEADER_CONTENT";
+    private const String DB_HEADER_GROUP_LIST = "EDPL_HEADER_GROUP_LIST";
+
+    private const String DB_LEFT_CONTENT = "EDPL_LEFT_CONTENT";
+    private const String DB_LEFT_GROUP_LIST = "EDPL_LEFT_GROUP_LIST";
+    private const String DB_LEFT_COLUMN_WIDTH = "EDPL_LEFT_COLUMN_WIDTH";
+
+    private const String DB_CENTER_CONTENT = "EDPL_CENTER_CONTENT";
+    private const String DB_CENTER_GROUP_LIST = "EDPL_CENTER_GROUP_LIST";
+
+    private const String DB_RIGHT_CONTENT = "EDPL_RIGHT_CONTENT";
+    private const String DB_RIGHT_GROUP_LIST = "EDPL_RIGHT_GROUP_LIST";
+    private const String DB_RIGHT_COLUMN_WIDTH = "EDPL_RIGHT_COLUMN_WIDTH";
+
+    private const String DB_VERSION = "EDPL_VERSION";
+    private const String DB_UPDATED_BY_USER_ID = "EDPL_UPDATED_BY_USER_ID";
+    private const String DB_UPDATED_BY = "EDPL_UPDATED_BY";
+    private const String DB_UPDATED_DATE = "EDPL_UPDATED_DATE";
+    private const String DB_DELETED = "EDPL_DELETED";
 
     /// <summary>
     /// This constant defines the parameter for global unique identifier of FormField selection list object
     /// </summary>
 
     private const String PARM_GUID = "@GUID";
-    private const String PARM_LIST_ID = "@LIST_ID";
+    private const String PARM_PAGE_ID = "@PAGE_ID";
     private const String PARM_STATE = "@STATE";
+    private const String PARM_USER_TYPE = "@USER_TYPE";
     private const String PARM_TITLE = "@TITLE";
-    private const String PARM_DESCRIPTION = "@DESCRIPTION";
-    private const String PARM_ITEM_LIST = "@JSON_LIST";
+    private const String PARM_DEFAULT_HOME_PAGE = "@DEFAULT_HOME_PAGE";
+
+    private const String PARM_HEADER_CONTENT = "@HEADER_CONTENT";
+    private const String PARM_HEADER_GROUP_LIST = "@HEADER_GROUP_LIST";
+
+    private const String PARM_LEFT_CONTENT = "@LEFT_CONTENT";
+    private const String PARM_LEFT_GROUP_LIST = "@LEFT_GROUP_LIST";
+    private const String PARM_LEFT_COLUMN_WIDTH = "@LEFT_COLUMN_WIDTH";
+
+    private const String PARM_CENTER_CONTENT = "@CENTER_CONTENT";
+    private const String PARM_CENTER_GROUP_LIST = "@CENTER_GROUP_LIST";
+
+    private const String PARM_RIGHT_CONTENT = "@RIGHT_CONTENT";
+    private const String PARM_RIGHT_GROUP_LIST = "@RIGHT_GROUP_LIST";
+    private const String PARM_RIGHT_COLUMN_WIDTH = "@RIGHT_COLUMN_WIDTH";
+
     private const String PARM_VERSION = "@VERSION";
     private const String PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const String PARM_UPDATED_BY = "@UPDATED_BY";
@@ -146,16 +176,31 @@ namespace Evado.Dal.Digital
     {
       SqlParameter [ ] parms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdSelectionLists.PARM_GUID, SqlDbType.UniqueIdentifier ),
-        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10 ),
-        new SqlParameter( EdSelectionLists.PARM_STATE, SqlDbType.NVarChar, 20 ),
-        new SqlParameter( EdSelectionLists.PARM_TITLE, SqlDbType.NVarChar, 100),
-        new SqlParameter( EdSelectionLists.PARM_DESCRIPTION, SqlDbType.NVarChar, 1000 ),
-        new SqlParameter( EdSelectionLists.PARM_ITEM_LIST, SqlDbType.NText ),
-        new SqlParameter( EdSelectionLists.PARM_VERSION, SqlDbType.Int ),
-        new SqlParameter( EdSelectionLists.PARM_UPDATED_BY_USER_ID,SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdSelectionLists.PARM_UPDATED_BY, SqlDbType.NVarChar, 100 ),
-        new SqlParameter( EdSelectionLists.PARM_UPDATED_DATE, SqlDbType.DateTime ),
+        new SqlParameter( EdPageLayouts.PARM_GUID, SqlDbType.UniqueIdentifier ),
+        new SqlParameter( EdPageLayouts.PARM_PAGE_ID, SqlDbType.NVarChar, 10 ),
+        new SqlParameter( EdPageLayouts.PARM_USER_TYPE, SqlDbType.NVarChar,50 ),
+        new SqlParameter( EdPageLayouts.PARM_STATE, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdPageLayouts.PARM_TITLE, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdPageLayouts.PARM_DEFAULT_HOME_PAGE, SqlDbType.Bit),
+
+        new SqlParameter( EdPageLayouts.PARM_HEADER_CONTENT, SqlDbType.NText ),
+        new SqlParameter( EdPageLayouts.PARM_HEADER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+
+        new SqlParameter( EdPageLayouts.PARM_LEFT_CONTENT, SqlDbType.NText ),
+        new SqlParameter( EdPageLayouts.PARM_LEFT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_LEFT_COLUMN_WIDTH, SqlDbType.SmallInt ),
+
+        new SqlParameter( EdPageLayouts.PARM_CENTER_CONTENT, SqlDbType.NText ),
+        new SqlParameter( EdPageLayouts.PARM_CENTER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+
+        new SqlParameter( EdPageLayouts.PARM_RIGHT_CONTENT, SqlDbType.NText ),
+        new SqlParameter( EdPageLayouts.PARM_RIGHT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_RIGHT_COLUMN_WIDTH, SqlDbType.SmallInt ),
+
+        new SqlParameter( EdPageLayouts.PARM_VERSION, SqlDbType.Int ),
+        new SqlParameter( EdPageLayouts.PARM_UPDATED_BY_USER_ID,SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdPageLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar, 100 ),
+        new SqlParameter( EdPageLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime ),
       };
       return parms;
     }//END GetParameters class
@@ -174,7 +219,7 @@ namespace Evado.Dal.Digital
     /// 2. Update the items values from formfield selectionlist object to the array of sql parameters.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] parms, EdSelectionList Item )
+    private void SetParameters ( SqlParameter [ ] parms, EdPageLayout Item )
     {
       //
       // Add new DB row Guid, if item's Guid is empty
@@ -188,21 +233,36 @@ namespace Evado.Dal.Digital
       // Update the items values from formfield selectionlist object to the array of sql parameters.
       //
       parms [ 0 ].Value = Item.Guid;
-      parms [ 1 ].Value = Item.ListId;
-      parms [ 2 ].Value = Item.State;
-      parms [ 3 ].Value = Item.Title;
-      parms [ 4 ].Value = Item.Description;
-      parms [ 5 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
-      parms [ 6 ].Value = Item.Version;
-      parms [ 7 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 8 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 9 ].Value = DateTime.Now;
+      parms [ 1 ].Value = Item.PageId;
+      parms [ 2 ].Value = Item.UserType;
+      parms [ 3 ].Value = Item.State;
+      parms [ 4 ].Value = Item.Title;
+      parms [ 5 ].Value = Item.DefaultHomePage;
+
+      parms [ 6 ].Value = Item.HeaderContent;
+      parms [ 7 ].Value = Item.HeaderGroupList;
+
+      parms [ 8 ].Value = Item.LeftColumnContent;
+      parms [ 9 ].Value = Item.LeftColumnGroupList;
+      parms [ 10 ].Value = Item.LeftColumnWidth;
+
+      parms [ 11 ].Value = Item.CenterColumnContent;
+      parms [ 12 ].Value = Item.CenterColumnGroupList;
+
+      parms [ 13 ].Value = Item.RightColumnContent;
+      parms [ 14 ].Value = Item.RightColumnGroupList;
+      parms [ 15 ].Value = Item.RightColumnWidth;
+
+      parms [ 16 ].Value = Item.Version;
+      parms [ 17 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 18 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 19 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
     #endregion
 
-    #region ExternalSelectionList Reader
+    #region PageLayout Reader
 
     // =====================================================================================
     /// <summary>
@@ -218,32 +278,41 @@ namespace Evado.Dal.Digital
     /// 2. Return the Formfield selectionlist object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private EdSelectionList readDataRow ( DataRow Row )
+    private EdPageLayout readDataRow ( DataRow Row )
     {
       // 
       // Initialise the formfield selectionlist object.
       // 
-      EdSelectionList Item = new EdSelectionList ( );
+      EdPageLayout Item = new EdPageLayout ( );
 
       //
       // Extract the compatible data row values to the formfield selectionlist object items.
       //
-      Item.Guid = EvSqlMethods.getGuid ( Row, EdSelectionLists.DB_GUID );
-      Item.ListId = EvSqlMethods.getString ( Row, EdSelectionLists.DB_LIST_ID );
-      Item.Title = EvSqlMethods.getString ( Row, EdSelectionLists.DB_TITLE );
-      Item.Description = EvSqlMethods.getString ( Row, EdSelectionLists.DB_DESCRIPTION );
-      Item.Version = EvSqlMethods.getInteger ( Row, EdSelectionLists.DB_VERSION );
+      Item.Guid = EvSqlMethods.getGuid ( Row, EdPageLayouts.DB_GUID );
+      Item.PageId = EvSqlMethods.getString ( Row, EdPageLayouts.DB_PAGE_ID );
+      Item.State = EvSqlMethods.getString<EdPageLayout.States> ( Row, EdPageLayouts.DB_STATE );
+      Item.UserType = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPE );
+      Item.Title = EvSqlMethods.getString ( Row, EdPageLayouts.DB_TITLE );
+      Item.DefaultHomePage = EvSqlMethods.getBool ( Row, EdPageLayouts.DB_DEFAULT_HOME_PAGE );
 
-      string xmlCodeItem = EvSqlMethods.getString ( Row, EdSelectionLists.DB_ITEM_LIST );
-      if ( xmlCodeItem != String.Empty )
-      {
-        Item.Items = Evado.Model.Digital.EvcStatics.DeserialiseObject<List<EdSelectionList.Item>> ( xmlCodeItem );
-      }
-      Item.State = Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SelectionListStates> (
-        EvSqlMethods.getString ( Row, EdSelectionLists.DB_STATE ) );
-      Item.UpdatedByUserId = EvSqlMethods.getString ( Row, EdSelectionLists.DB_UPDATED_BY_USER_ID );
-      Item.UpdatedBy = EvSqlMethods.getString ( Row, EdSelectionLists.DB_UPDATED_BY );
-      Item.UpdatedDate += EvSqlMethods.getDateTime ( Row, EdSelectionLists.DB_UPDATED_DATE );
+      Item.HeaderContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_CONTENT );
+      Item.HeaderGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_GROUP_LIST );
+
+      Item.LeftColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_CONTENT );
+      Item.LeftColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_GROUP_LIST );
+      Item.LeftColumnWidth = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_LEFT_COLUMN_WIDTH );
+
+      Item.CenterColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_CONTENT );
+      Item.CenterColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_GROUP_LIST );
+
+      Item.RightColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_CONTENT );
+      Item.RightColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_GROUP_LIST );
+      Item.RightColumnWidth = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_RIGHT_COLUMN_WIDTH );
+
+      Item.Version = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_VERSION );
+      Item.UpdatedByUserId = EvSqlMethods.getString ( Row, EdPageLayouts.DB_UPDATED_BY_USER_ID );
+      Item.UpdatedBy = EvSqlMethods.getString ( Row, EdPageLayouts.DB_UPDATED_BY );
+      Item.UpdatedDate += EvSqlMethods.getDateTime ( Row, EdPageLayouts.DB_UPDATED_DATE );
 
       // 
       // Return item
@@ -275,8 +344,8 @@ namespace Evado.Dal.Digital
     /// 5. Return the Formfield selection list. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public List<EdSelectionList> getView (
-      EdSelectionList.SelectionListStates State )
+    public List<EdPageLayout> getView (
+      EdPageLayout.States State )
     {
       //
       // Initialize the method status and a return list of formfield selectionlist object
@@ -284,14 +353,14 @@ namespace Evado.Dal.Digital
       this.LogMethod ( "getView method." );
       this._Log.AppendLine ( "State: " + State );
 
-      List<EdSelectionList> view = new List<EdSelectionList> ( );
+      List<EdPageLayout> view = new List<EdPageLayout> ( );
       String sqlQueryString = String.Empty;
       //
       // Define the sql query parameter and load the query values.
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(EdSelectionLists.PARM_STATE, SqlDbType.VarChar, 20)
+        new SqlParameter(EdPageLayouts.PARM_STATE, SqlDbType.VarChar, 20)
       };
       cmdParms [ 0 ].Value = State.ToString ( );
 
@@ -299,15 +368,15 @@ namespace Evado.Dal.Digital
       // Define the sql query string. 
       // 
       sqlQueryString = SQL_VIEW_QUERY;
-      if ( State != EdSelectionList.SelectionListStates.Null )
+      if ( State != EdPageLayout.States.Null )
       {
-        sqlQueryString += " WHERE ( " + EdSelectionLists.DB_STATE + " = " + EdSelectionLists.PARM_STATE + " ) "
-          + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
+        sqlQueryString += " WHERE ( " + EdPageLayouts.DB_STATE + " = " + EdPageLayouts.PARM_STATE + " ) "
+          + " ORDER BY " + EdPageLayouts.DB_PAGE_ID + ";";
       }
       else
       {
-        sqlQueryString += " WHERE (  " + EdSelectionLists.DB_STATE + " <> '" + EdSelectionList.SelectionListStates.Withdrawn + "' ) "
-          + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
+        sqlQueryString += " WHERE (  " + EdPageLayouts.DB_STATE + " <> '" + EdPageLayout.States.Withdrawn + "' ) "
+          + " ORDER BY " + EdPageLayouts.DB_PAGE_ID + ";";
       }
 
 
@@ -327,7 +396,7 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
 
-          EdSelectionList selectionList = this.readDataRow ( row );
+          EdPageLayout selectionList = this.readDataRow ( row );
 
           // 
           // Append the value to the visit
@@ -368,7 +437,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     //  ---------------------------------------------------------------------------------
     public List<EvOption> getList (
-      EdSelectionList.SelectionListStates State,
+      EdPageLayout.States State,
       bool SelectByGuid )
     {
       this.LogMethod ( "getList method." );
@@ -392,14 +461,14 @@ namespace Evado.Dal.Digital
       // 
       for ( int count = 0; count < selectionList.Count; count++ )
       {
-        EdSelectionList item = selectionList [ count ];
+        EdPageLayout item = selectionList [ count ];
         //
         // If SelectByGuid = True then optionId is to be the objects TestReport UID
         //
         if ( SelectByGuid == true )
         {
           option = new EvOption ( item.Guid.ToString ( ),
-            String.Format ( "{0} - {1} ", item.ListId, item.Title ) );
+            String.Format ( "{0} - {1} ", item.PageId, item.Title ) );
         }
 
         //
@@ -407,8 +476,8 @@ namespace Evado.Dal.Digital
         //
         else
         {
-          option = new EvOption ( item.ListId,
-            String.Format ( "{0} - {1} ", item.ListId, item.Title ) );
+          option = new EvOption ( item.PageId,
+            String.Format ( "{0} - {1} ", item.PageId, item.Title ) );
         }
 
         list.Add ( option );
@@ -435,7 +504,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class retrieves the formfield selection list based on Guid value
     /// </summary>
-    /// <param name="ListGuid">Guid: The Global unique identifier</param>
+    /// <param name="PageGuid">Guid: The Global unique identifier</param>
     /// <returns>EvFormFieldSelectionList: The formfield selection list object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -451,20 +520,20 @@ namespace Evado.Dal.Digital
     /// 5. Return the formfield selection list data object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EdSelectionList getItem ( Guid ListGuid )
+    public EdPageLayout getItem ( Guid PageGuid )
     {
       this.LogMethod ( "getItem" );
-      this._Log.AppendLine ( "ListGuid: " + ListGuid );
+      this._Log.AppendLine ( "PageGuid: " + PageGuid );
       //
       // Initialise the local variables
       //
-      EdSelectionList item = new EdSelectionList ( );
+      EdPageLayout item = new EdPageLayout ( );
       String sqlQueryString = String.Empty;
 
       //
       // If TestReport UID is null return empty checlist object.
       //
-      if ( ListGuid == Guid.Empty )
+      if ( PageGuid == Guid.Empty )
       {
         return item;
       }
@@ -474,14 +543,14 @@ namespace Evado.Dal.Digital
       //
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(EdSelectionLists.PARM_GUID, SqlDbType.UniqueIdentifier ),
+        new SqlParameter(EdPageLayouts.PARM_GUID, SqlDbType.UniqueIdentifier ),
       };
-      cmdParms [ 0 ].Value = ListGuid;
+      cmdParms [ 0 ].Value = PageGuid;
 
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdSelectionLists.DB_GUID + " = " + EdSelectionLists.PARM_GUID+ ";";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdPageLayouts.DB_GUID + " = " + EdPageLayouts.PARM_GUID+ ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -514,97 +583,6 @@ namespace Evado.Dal.Digital
 
     }//END EvFormFieldSelectionList method
 
-    // ====================================================================================
-    /// <summary>
-    /// This class retrieves the formfield selection list based on ListId and Issued condition
-    /// </summary>
-    /// <param name="ListId">string: the selection list identifier</param>
-    /// <param name="Issued">Boolean: true, if the selection list is issued.</param>
-    /// <returns>EvFormFieldSelectionList: a formfield selection list object</returns>
-    /// <remarks>
-    /// This method consists of the following steps: 
-    /// 
-    /// 1. Return an empty selection list if the list's identifier is empty. 
-    /// 
-    /// 2. Define the sql query string and sql query parameters. 
-    /// 
-    /// 3. Execute the sql query string and store the results on data table. 
-    /// 
-    /// 4. Extract the first row to the formfield selection list object. 
-    /// 
-    /// 5. Return the formfield selection list data object. 
-    /// </remarks>
-    //  ---------------------------------------------------------------------------------
-    public EdSelectionList getItem (
-      string ListId,
-      bool Issued )
-    {
-      this.LogMethod ( "getItem, ListId = " + ListId );
-      //
-      // Initialise the local variables
-      //
-      EdSelectionList item = new EdSelectionList ( );
-      String sqlQueryString = String.Empty;
-
-      //
-      // If the ListId is null then return empty Ethics object.
-      //
-      if ( ListId == string.Empty )
-      {
-        return item;
-      }
-
-      //
-      // Initialise the query parameters.
-      //
-      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
-      {
-        new SqlParameter(EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10),
-      };
-      cmdParms [ 0 ].Value = ListId;
-
-      // 
-      // Generate the Selection query string.
-      // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
-
-      if ( Issued == true )
-      {
-        sqlQueryString += " AND (" + EdSelectionLists.DB_STATE + " = '" + EdSelectionList.SelectionListStates.Issued + "'); ";
-      }
-
-      this.LogDebug ( sqlQueryString );
-
-
-      //
-      //Execute the query against the database
-      //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
-      {
-        // 
-        // If not rows the return
-        // 
-        if ( table.Rows.Count == 0 )
-        {
-          return item;
-        }
-
-        // 
-        // Extract the table row
-        // 
-        DataRow row = table.Rows [ 0 ];
-
-        item = this.readDataRow ( row );
-
-      }//END Using 
-
-      //
-      // Return the TestReport data object.
-      //
-      return item;
-
-    }// END getItem method
-
     #endregion
 
     #region SelectionList Update queries
@@ -629,14 +607,14 @@ namespace Evado.Dal.Digital
     /// 5. Return the event code for updating the items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes updateItem ( EdSelectionList Item )
+    public EvEventCodes updateItem ( EdPageLayout Item )
     {
       this.LogMethod ( "updateItem" );
 
       // 
       // Get the previous value
       // 
-      EdSelectionList oldItem = getItem ( Item.Guid );
+      EdPageLayout oldItem = getItem ( Item.Guid );
       if ( oldItem.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
@@ -647,7 +625,7 @@ namespace Evado.Dal.Digital
       // 
       EvDataChanges dataChanges = new EvDataChanges ( );
       EvDataChange dataChange = new EvDataChange ( );
-      dataChange.TableName = EvDataChange.DataChangeTableNames.EdSelectionList;
+      dataChange.TableName = EvDataChange.DataChangeTableNames.EdPageLayouts;
       dataChange.TrialId = String.Empty ;
       dataChange.RecordUid = -1;
       dataChange.RecordGuid = Item.Guid;
@@ -657,18 +635,65 @@ namespace Evado.Dal.Digital
       //
       // Add items to datachange object if they exist. 
       //
-      if ( Item.ListId != oldItem.ListId )
+      if ( Item.PageId != oldItem.PageId )
       {
-        dataChange.AddItem ( "ListId", oldItem.ListId, Item.ListId );
+        dataChange.AddItem ( "ListId", oldItem.PageId, Item.PageId );
       }
       if ( Item.Title != oldItem.Title )
       {
         dataChange.AddItem ( "Title", oldItem.Title, Item.Title );
       }
-      if ( Item.Description != oldItem.Description )
+      if ( Item.UserType != oldItem.UserType )
       {
-        dataChange.AddItem ( "Description", oldItem.Description, Item.Description );
+        dataChange.AddItem ( "UserType", oldItem.UserType, Item.UserType );
       }
+      if ( Item.State != oldItem.State )
+      {
+        dataChange.AddItem ( "State", oldItem.State, Item.State );
+      }
+      if ( Item.HeaderContent != oldItem.HeaderContent )
+      {
+        dataChange.AddItem ( "HeaderContent", Item.HeaderContent, Item.HeaderContent );
+      }
+      if ( Item.HeaderGroupList != oldItem.HeaderGroupList )
+      {
+        dataChange.AddItem ( "HeaderGroupList", oldItem.HeaderGroupList, Item.HeaderGroupList );
+      }
+      if ( Item.LeftColumnContent != oldItem.LeftColumnContent )
+      {
+        dataChange.AddItem ( "LeftColumnContent", oldItem.LeftColumnContent, Item.LeftColumnContent );
+      }
+      if ( Item.LeftColumnGroupList != oldItem.LeftColumnGroupList )
+      {
+        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnGroupList, Item.LeftColumnGroupList );
+      }
+      if ( Item.LeftColumnWidth != oldItem.LeftColumnWidth )
+      {
+        dataChange.AddItem ( "LeftColumnCommandList", oldItem.LeftColumnWidth, Item.LeftColumnWidth );
+      }
+
+      if ( Item.CenterColumnContent != oldItem.CenterColumnContent )
+      {
+        dataChange.AddItem ( "CenterColumnContent", oldItem.CenterColumnContent, Item.CenterColumnContent );
+      }
+      if ( Item.LeftColumnGroupList != oldItem.LeftColumnGroupList )
+      {
+        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnGroupList, Item.LeftColumnGroupList );
+      }
+
+      if ( Item.RightColumnContent != oldItem.RightColumnContent )
+      {
+        dataChange.AddItem ( "RightColumnContent", oldItem.RightColumnContent, Item.RightColumnContent );
+      }
+      if ( Item.RightColumnGroupList != oldItem.RightColumnGroupList )
+      {
+        dataChange.AddItem ( "RightColumnGroupList", oldItem.RightColumnGroupList, Item.RightColumnGroupList );
+      }
+      if ( Item.RightColumnWidth != oldItem.RightColumnWidth )
+      {
+        dataChange.AddItem ( "RightColumnCommandList", oldItem.RightColumnWidth, Item.RightColumnWidth );
+      }
+
       if ( Item.Version != oldItem.Version )
       {
         dataChange.AddItem ( "Version", oldItem.Version, Item.Version );
@@ -678,16 +703,6 @@ namespace Evado.Dal.Digital
         dataChange.AddItem ( "State", oldItem.State.ToString ( ), Item.State.ToString ( ) );
       }
 
-      string oldCodeItem =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
-
-      string newCodeItem =
-        Evado.Model.Digital.EvcStatics.SerialiseObject<List<EdSelectionList.Item>> ( Item.Items );
-
-      if ( newCodeItem != oldCodeItem )
-      {
-        dataChange.AddItem ( "Items", oldCodeItem, newCodeItem );
-      }
       // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
       // 
@@ -730,10 +745,10 @@ namespace Evado.Dal.Digital
     /// 4. Return the event code fore adding new items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes addItem ( EdSelectionList Item )
+    public EvEventCodes addItem ( EdPageLayout Item )
     {
       this.LogMethod ( "addItem method. " );
-      this.LogDebug ( "ListId: '" + Item.ListId );
+      this.LogDebug ( "ListId: '" + Item.PageId );
       this.LogDebug ( "Version: '" + Item.Version + "'" );
       String sqlQueryString = String.Empty;
 
@@ -743,14 +758,14 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdPageLayouts.PARM_PAGE_ID, SqlDbType.NVarChar, 10),
       };
-      cmdParms [ 0 ].Value = Item.ListId;
+      cmdParms [ 0 ].Value = Item.PageId;
 
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdPageLayouts.DB_PAGE_ID + " = " + EdPageLayouts.PARM_PAGE_ID + ") ";
 
       this.LogDebug ( "Duplication SQL Query:" + sqlQueryString );
 
@@ -810,7 +825,7 @@ namespace Evado.Dal.Digital
     /// 2. Return an event code for withdrawing items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes WithdrawIssuedList ( EdSelectionList Item )
+    public EvEventCodes WithdrawIssuedList ( EdPageLayout Item )
     {
       this.LogMethod ( "WithdrawIssuedList method. " );
       // 
@@ -818,12 +833,12 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] commandParameters = new SqlParameter [ ]
       {
-        new SqlParameter(EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 20),
-        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
-        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter(EdSelectionLists.PARM_UPDATED_DATE, SqlDbType.DateTime)
+        new SqlParameter(EdPageLayouts.PARM_PAGE_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime)
       };
-      commandParameters [ 0 ].Value = Item.ListId;
+      commandParameters [ 0 ].Value = Item.PageId;
       commandParameters [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
       commandParameters [ 2 ].Value = this.ClassParameters.UserProfile.CommonName;
       commandParameters [ 3 ].Value = DateTime.Now;
@@ -854,7 +869,7 @@ namespace Evado.Dal.Digital
     /// 2. Return an event code for deleting the items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes deleteItem ( EdSelectionList Item )
+    public EvEventCodes deleteItem ( EdPageLayout Item )
     {
       this.LogMethod ( "deleteItem method. " );
 
@@ -863,10 +878,10 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] commandParameters = new SqlParameter [ ]
       {
-        new SqlParameter(EdSelectionLists.PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_DATE, SqlDbType.DateTime)
+        new SqlParameter(EdPageLayouts.PARM_GUID, SqlDbType.UniqueIdentifier),
+        new SqlParameter(EdPageLayouts.DB_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter(EdPageLayouts.DB_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter(EdPageLayouts.DB_UPDATED_DATE, SqlDbType.DateTime)
       };
       commandParameters [ 0 ].Value = Item.Guid;
       commandParameters [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
@@ -888,6 +903,6 @@ namespace Evado.Dal.Digital
     #endregion
 
 
-  }//END EdSelectionLists class
+  }//END EdPageLayouts class
 
 }//END namespace Evado.Dal.Digital
