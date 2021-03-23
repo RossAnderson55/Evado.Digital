@@ -1202,6 +1202,8 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
+      this.Session.AdminPageLayout.PageCommands = String.Empty;
+
       // 
       // create the page pageMenuGroup
       // 
@@ -1251,11 +1253,16 @@ namespace Evado.UniForm.Digital
         EdLabels.PageLayout_DefaultHomePage_Field_Label,
         this.Session.AdminPageLayout.HomePage);
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
 
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
+      // 
+      // Create the page display main menu indicator object
+      // 
+      groupField = pageGroup.createBooleanField (
+        EdPageLayout.FieldNames.DisplayMainMenu,
+        EdLabels.PageLayout_DisplayMainMenu_Field_Label,
+        this.Session.AdminPageLayout.DisplayMainMenu );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
 
       //
       // create the user type selection list.

@@ -5789,6 +5789,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display the Main Menu:.
+        /// </summary>
+        public static string PageLayout_DisplayMainMenu_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_DisplayMainMenu_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Page Layout.
         /// </summary>
         public static string PageLayout_Export_Command_Title {

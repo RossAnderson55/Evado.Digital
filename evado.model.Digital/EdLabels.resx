@@ -2981,4 +2981,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Selection_Page_Error_Message" xml:space="preserve">
     <value>ERROR: Error occured loading the selected selection list page.</value>
   </data>
+  <data name="PageLayout_DisplayMainMenu_Field_Label" xml:space="preserve">
+    <value>Display the Main Menu:</value>
+  </data>
 </root>

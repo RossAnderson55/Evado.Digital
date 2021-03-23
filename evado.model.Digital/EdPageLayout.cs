@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// This is the data model for the form field selection list class.
   /// </summary>
   [Serializable]
-  public class EdPageLayout
+  public class EdPageLayout : Evado.Model.EvParameters 
   {
     #region Enumerators
     /// <summary>
@@ -49,6 +49,11 @@ namespace Evado.Model.Digital
       /// This enumeration defines the page layout title field
       /// </summary>
       Title,
+
+      /// <summary>
+      /// This enumeration defines the display main menu field
+      /// </summary>
+      DisplayMainMenu,
 
       /// <summary>
       /// This enumeration defines the default home page field
@@ -149,6 +154,10 @@ namespace Evado.Model.Digital
       /// </summary>
       Left_Column,
       /// <summary>
+      /// this enumeration the menu is displayed in the top in center column.
+      /// </summary>
+      Top_Center,
+      /// <summary>
       /// This enumeration the menu is displayed in the right column
       /// </summary>
       Right_Column,
@@ -243,6 +252,22 @@ namespace Evado.Model.Digital
     public bool HomePage { get; set; }
 
     /// <summary>
+    /// This property contains the HTTP reference link for the application.
+    /// </summary>
+    public bool DisplayMainMenu
+    {
+      get
+      {
+        return
+         EvStatics.getBool( this.getParameter ( EdPageLayout.FieldNames.DisplayMainMenu ) );
+      }
+      set
+      {
+        this.setParameter ( EdPageLayout.FieldNames.DisplayMainMenu,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+    /// <summary>
     /// This property contains the enumerated value to define where the menu is to be located.
     /// </summary>
     public MenuLocations MenuLocation { get; set; }
@@ -270,11 +295,11 @@ namespace Evado.Model.Digital
     /// </summary>
     public string LeftColumnGroupList { get; set; }
 
-    private int _LeftColumnWidth = 0;
+    private Int16 _LeftColumnWidth = 0;
     /// <summary>
     /// This property contains an page LeftColumn width width as a percentage between 0% - 33%.
     /// </summary>
-    public int LeftColumnWidth
+    public Int16 LeftColumnWidth
     {
       get
       {
@@ -318,11 +343,11 @@ namespace Evado.Model.Digital
     /// </summary>
     public string RightColumnGroupList { get; set; }
 
-    private int _RightColumnWidth = 0;
+    private Int16 _RightColumnWidth = 0;
     /// <summary>
     /// This property contains an page RightColumn width as a percentage between 0% - 33%.
     /// </summary>
-    public int RightColumnWidth
+    public Int16 RightColumnWidth
     {
       get
       {
@@ -474,6 +499,15 @@ namespace Evado.Model.Digital
             this.HomePage = EvStatics.getBool ( Value );
             return;
           }
+        case EdPageLayout.FieldNames.DisplayMainMenu:
+          {
+            this.setParameter ( EdPageLayout.FieldNames.DisplayMainMenu,
+              EvDataTypes.Boolean, Value.ToString ( ) );
+
+            return;
+          }
+
+
         case EdPageLayout.FieldNames.MenuLocation:
           {
             this.MenuLocation = EvStatics.parseEnumValue<MenuLocations> ( Value );
@@ -511,7 +545,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.LeftColumnWidth:
           {
-            this.LeftColumnWidth = EvStatics.getInteger ( Value );
+            this.LeftColumnWidth = EvStatics.getShort ( Value );
             return;
           }
         case EdPageLayout.FieldNames.CenterColumnContent:
@@ -536,7 +570,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.RightColumnWidth:
           {
-            this.RightColumnWidth = EvStatics.getInteger ( Value );
+            this.RightColumnWidth = EvStatics.getShort ( Value );
             return;
           }
         default:

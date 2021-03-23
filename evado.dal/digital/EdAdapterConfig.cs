@@ -60,11 +60,6 @@ namespace Evado.Dal.Digital
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvApplicationProfiles.";
-
-      if ( this.ClassParameters.LoggingLevel == 0 )
-      {
-        this.ClassParameters.LoggingLevel = Evado.Dal.EvStaticSetting.LoggingLevel;
-      }
     }
     #endregion
 

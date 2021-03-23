@@ -155,7 +155,7 @@ namespace Evado.Dal.Digital
     private const String PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const String PARM_UPDATED_BY = "@UPDATED_BY";
     private const String PARM_UPDATED_DATE = "@UPDATED_DATE";
- 
+
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -183,24 +183,24 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdPageLayouts.PARM_PAGE_ID, SqlDbType.NVarChar, 10 ),
         new SqlParameter( EdPageLayouts.PARM_USER_TYPE, SqlDbType.NVarChar,50 ),
         new SqlParameter( EdPageLayouts.PARM_STATE, SqlDbType.NVarChar, 30),
-        new SqlParameter( EdPageLayouts.PARM_TITLE, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdPageLayouts.PARM_TITLE, SqlDbType.NVarChar, 100), //4
 
         new SqlParameter( EdPageLayouts.PARM_HOME_PAGE, SqlDbType.Bit),
         new SqlParameter( EdPageLayouts.PARM_MENU_LOCATION, SqlDbType.NVarChar, 30),
         new SqlParameter( EdPageLayouts.PARM_PAGE_COMMANDS, SqlDbType.NVarChar, 250),
         new SqlParameter( EdPageLayouts.PARM_HEADER_CONTENT, SqlDbType.NText ),
-        new SqlParameter( EdPageLayouts.PARM_HEADER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_HEADER_GROUP_LIST, SqlDbType.NVarChar, 250 ), //9
 
         new SqlParameter( EdPageLayouts.PARM_LEFT_CONTENT, SqlDbType.NText ),
         new SqlParameter( EdPageLayouts.PARM_LEFT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
-        new SqlParameter( EdPageLayouts.PARM_LEFT_COLUMN_WIDTH, SqlDbType.SmallInt ),
+        new SqlParameter( EdPageLayouts.PARM_LEFT_COLUMN_WIDTH, SqlDbType.SmallInt ), //12
 
         new SqlParameter( EdPageLayouts.PARM_CENTER_CONTENT, SqlDbType.NText ),
         new SqlParameter( EdPageLayouts.PARM_CENTER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
 
         new SqlParameter( EdPageLayouts.PARM_RIGHT_CONTENT, SqlDbType.NText ),
         new SqlParameter( EdPageLayouts.PARM_RIGHT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
-        new SqlParameter( EdPageLayouts.PARM_RIGHT_COLUMN_WIDTH, SqlDbType.SmallInt ),
+        new SqlParameter( EdPageLayouts.PARM_RIGHT_COLUMN_WIDTH, SqlDbType.SmallInt ), //17
 
         new SqlParameter( EdPageLayouts.PARM_VERSION, SqlDbType.Int ),
         new SqlParameter( EdPageLayouts.PARM_UPDATED_BY_USER_ID,SqlDbType.NVarChar, 100 ),
@@ -260,10 +260,10 @@ namespace Evado.Dal.Digital
       parms [ 16 ].Value = Item.RightColumnGroupList;
       parms [ 17 ].Value = Item.RightColumnWidth;
 
-      parms [ 17 ].Value = Item.Version;
-      parms [ 18 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 20 ].Value = DateTime.Now;
+      parms [ 18 ].Value = Item.Version;
+      parms [ 19 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 20 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 21 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -309,14 +309,14 @@ namespace Evado.Dal.Digital
 
       Item.LeftColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_CONTENT );
       Item.LeftColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_GROUP_LIST );
-      Item.LeftColumnWidth = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_LEFT_COLUMN_WIDTH );
+      Item.LeftColumnWidth = (short) EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_LEFT_COLUMN_WIDTH );
 
       Item.CenterColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_CONTENT );
       Item.CenterColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_GROUP_LIST );
 
       Item.RightColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_CONTENT );
       Item.RightColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_GROUP_LIST );
-      Item.RightColumnWidth = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_RIGHT_COLUMN_WIDTH );
+      Item.RightColumnWidth = (short) EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_RIGHT_COLUMN_WIDTH );
 
       Item.Version = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_VERSION );
       Item.UpdatedByUserId = EvSqlMethods.getString ( Row, EdPageLayouts.DB_UPDATED_BY_USER_ID );
@@ -380,11 +380,13 @@ namespace Evado.Dal.Digital
       if ( State != EdPageLayout.States.Null )
       {
         sqlQueryString += " WHERE ( " + EdPageLayouts.DB_STATE + " = " + EdPageLayouts.PARM_STATE + " ) "
+          + " AND (" + EdPageLayouts.DB_DELETED + " = 0) "
           + " ORDER BY " + EdPageLayouts.DB_PAGE_ID + ";";
       }
       else
       {
         sqlQueryString += " WHERE (  " + EdPageLayouts.DB_STATE + " <> '" + EdPageLayout.States.Withdrawn + "' ) "
+          + " AND (" + EdPageLayouts.DB_DELETED + " = 0) "
           + " ORDER BY " + EdPageLayouts.DB_PAGE_ID + ";";
       }
 
@@ -405,12 +407,17 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ Count ];
 
-          EdPageLayout selectionList = this.readDataRow ( row );
+          EdPageLayout pageLayout = this.readDataRow ( row );
+
+          //
+          // retrieve the parameter object values.
+          //
+          pageLayout.Parameters = this.LoadObjectParameters ( pageLayout.Guid );
 
           // 
           // Append the value to the visit
           // 
-          view.Add ( selectionList );
+          view.Add ( pageLayout );
 
         } //END interation loop.
 
@@ -559,7 +566,7 @@ namespace Evado.Dal.Digital
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdPageLayouts.DB_GUID + " = " + EdPageLayouts.PARM_GUID+ ";";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdPageLayouts.DB_GUID + " = " + EdPageLayouts.PARM_GUID + ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -582,6 +589,11 @@ namespace Evado.Dal.Digital
         DataRow row = table.Rows [ 0 ];
 
         item = this.readDataRow ( row );
+
+        //
+        // retrieve the parameter object values.
+        //
+        item.Parameters = this.LoadObjectParameters ( item.Guid );
 
       }//END Using 
 
@@ -635,7 +647,7 @@ namespace Evado.Dal.Digital
       EvDataChanges dataChanges = new EvDataChanges ( );
       EvDataChange dataChange = new EvDataChange ( );
       dataChange.TableName = EvDataChange.DataChangeTableNames.EdPageLayouts;
-      dataChange.TrialId = String.Empty ;
+      dataChange.TrialId = String.Empty;
       dataChange.RecordUid = -1;
       dataChange.RecordGuid = Item.Guid;
       dataChange.UserId = Item.UpdatedByUserId;
@@ -727,6 +739,12 @@ namespace Evado.Dal.Digital
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
+
+      //
+      // update the parameter object values.
+      //
+      this.UpdateObjectParameters ( Item.Parameters, Item.Guid );
+
       // 
       // Add the change record
       // 
@@ -774,7 +792,8 @@ namespace Evado.Dal.Digital
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdPageLayouts.DB_PAGE_ID + " = " + EdPageLayouts.PARM_PAGE_ID + ") ";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdPageLayouts.DB_PAGE_ID + " = " + EdPageLayouts.PARM_PAGE_ID + ") "
+        + " AND (" + EdPageLayouts.DB_DELETED + " = 0);";
 
       this.LogDebug ( "Duplication SQL Query:" + sqlQueryString );
 
@@ -804,6 +823,8 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] commandParameters = GetParameters ( );
       SetParameters ( commandParameters, Item );
+
+      //this.LogDebug( EvSqlMethods.getParameterSqlText( commandParameters ) ) ;
 
       //
       // Execute the update command.
@@ -888,9 +909,9 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] commandParameters = new SqlParameter [ ]
       {
         new SqlParameter(EdPageLayouts.PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter(EdPageLayouts.DB_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
-        new SqlParameter(EdPageLayouts.DB_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter(EdPageLayouts.DB_UPDATED_DATE, SqlDbType.DateTime)
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter(EdPageLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime)
       };
       commandParameters [ 0 ].Value = Item.Guid;
       commandParameters [ 1 ].Value = this.ClassParameters.UserProfile.UserId;
