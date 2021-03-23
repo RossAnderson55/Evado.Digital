@@ -2969,4 +2969,16 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Version_Field_Label" xml:space="preserve">
     <value>Page version:</value>
   </data>
+  <data name="PageLayout_Menu_Location_Field_Label" xml:space="preserve">
+    <value>Menu location selection:</value>
+  </data>
+  <data name="SelectionList_Guid_Empty_Message" xml:space="preserve">
+    <value>ERROR: Selection List identifier is not defined.</value>
+  </data>
+  <data name="Selection_Export_Error_Message" xml:space="preserve">
+    <value>ERROR: Selection list export error occured parameters are missing or not defined.</value>
+  </data>
+  <data name="Selection_Page_Error_Message" xml:space="preserve">
+    <value>ERROR: Error occured loading the selected selection list page.</value>
+  </data>
 </root>

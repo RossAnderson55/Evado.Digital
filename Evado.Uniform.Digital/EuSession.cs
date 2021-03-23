@@ -481,25 +481,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public String UploadFileName { get; set; }
 
-    //
-    // this indicates if the forms where adapter loaded.
-    //
-    public bool EntityAdaperLoaded { get; set; }
-
-    /// <summary>
-    /// This property object contains a list of page layouts.
-    /// </summary>
-    public List<EdPageLayout> AdminPageLayouts { get; set; }
-
     /// <summary>
     /// This property object contains the an page layout object.
     /// </summary>
     public EdPageLayout AdminPageLayout { get; set; }
-
-    /// <summary>
-    /// This property object contains a list of external selection lists.
-    /// </summary>
-    public List<EdSelectionList> AdminSelectionLists { get; set; }
 
     /// <summary>
     /// This property object contains the an external selection list object.
@@ -560,12 +545,6 @@ namespace Evado.UniForm.Digital
     /// This property object contains the eClinical evFormField object for the currently selected record.
     /// </summary>
     public EdRecordField EntityField { get; set; }
-
-
-    /// <summary>
-    /// This property object contains a list of eClinical evForm object for the currently selected record.
-    /// </summary>
-    public List<EdRecord> EntityLayoutList { get; set; }
 
     /// <summary>
     /// This property defines the entity layout state selection filter.
@@ -883,11 +862,6 @@ namespace Evado.UniForm.Digital
     /// This property object contains the eClinical evForm object for the currently selected record.
     /// </summary>
     public EdRecord RecordLayout { get; set; }
-
-    /// <summary>
-    /// This property contains the record layout list.
-    /// </summary>
-    public List<EdRecord> RecordLayoutList { get; set; }
 
     ///<summary>
     /// this property deines the record state selection.

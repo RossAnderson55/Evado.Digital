@@ -218,11 +218,26 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes SaveItem ( EdSelectionList SelectionList )
     {
+      this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "saveItem" );
       // 
       // Initialise the local variables
       // 
       EvEventCodes iReturn = EvEventCodes.Ok;
+
+      // 
+      // If the Action is DELTE and the state is draft.
+      // 
+      if ( ( SelectionList.Title == String.Empty 
+          || SelectionList.Action == EdSelectionList.SaveActions.Delete_Object )
+        && SelectionList.Guid != Guid.Empty
+        && SelectionList.State == EdSelectionList.SelectionListStates.Draft )
+      {
+        iReturn = this._dal_SelectionLists.deleteItem ( SelectionList );
+        this.LogClass ( this._dal_SelectionLists.Log );
+
+        return iReturn;
+      }
 
       // 
       // Exit, if the ListId or UserCommonName is empty
@@ -266,18 +281,6 @@ namespace Evado.Bll.Digital
         return iReturn;
       }
 
-      // 
-      // If the Action is DELTE and the state is draft.
-      // 
-      if ( SelectionList.Title == String.Empty
-        && SelectionList.Guid != Guid.Empty
-        && SelectionList.State == EdSelectionList.SelectionListStates.Draft )
-      {
-        iReturn = this._dal_SelectionLists.deleteItem ( SelectionList );
-        this.LogClass ( this._dal_SelectionLists.Log );
-
-        return iReturn;
-      }
 
       // 
       // Update the ExternalSelectionList state based on the ExternalSelectionList object Action property.

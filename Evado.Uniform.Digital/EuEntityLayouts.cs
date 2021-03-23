@@ -78,9 +78,9 @@ namespace Evado.UniForm.Digital
 
       this._Bll_EntityLayouts = new EdEntityLayouts ( Settings );
 
-      if ( this.Session.EntityLayoutList == null )
+      if ( this.AdapterObjects.AllEntityLayouts == null )
       {
-        this.Session.EntityLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
       }
 
       if ( this.Session.EntityLayout == null )
@@ -358,7 +358,7 @@ namespace Evado.UniForm.Digital
       //
       if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
       {
-        this.Session.EntityLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
       }
 
       if ( PageCommand.hasParameter ( EdRecord.CONST_RECORD_TYPE ) == true )
@@ -368,7 +368,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EntityTypeSelection != recordType )
         {
           this.Session.EntityTypeSelection = recordType;
-          this.Session.RecordLayoutList = new List<EdRecord> ( );
+          this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
         }
       }
       this.LogValue ( "EntityType: " + this.Session.EntityTypeSelection );
@@ -380,14 +380,14 @@ namespace Evado.UniForm.Digital
 
         if ( this.Session.EntityStateSelection != stateValue )
         {
+          this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
+
           if ( stateValue != EdRecordObjectStates.Null )
           {
-            this.Session.EntityLayoutList = new List<EdRecord> ( );
             this.Session.EntityStateSelection = stateValue;
           }
           else
           {
-            this.Session.EntityLayoutList = new List<EdRecord> ( );
             this.Session.EntityStateSelection = EdRecordObjectStates.Null;
           }
         }
@@ -602,7 +602,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "EntityType '{0}'", this.Session.EntityTypeSelection );
       this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
 
-      if ( this.Session.EntityLayoutList.Count > 0 )
+      if ( this.AdapterObjects.AllEntityLayouts.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
@@ -614,12 +614,12 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.EntityLayoutList = this._Bll_EntityLayouts.getLayoutList (
+      this.AdapterObjects.AllEntityLayouts = this._Bll_EntityLayouts.getLayoutList (
         this.Session.EntityTypeSelection,
         this.Session.EntityLayoutStateSelection );
 
       this.LogDebugClass ( this._Bll_EntityLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.Session.EntityLayoutList.Count );
+      this.LogDebug ( "Form list count: " + this.AdapterObjects.AllEntityLayouts.Count );
 
       this.LogMethod ( "loadRecordLayoutList method" );
     }//ENd loadRecordLayoutList method
@@ -719,7 +719,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.EntityLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -915,7 +915,7 @@ namespace Evado.UniForm.Digital
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      pageGroup.Title += EdLabels.List_Count_Label + this.Session.EntityLayoutList.Count;
+      pageGroup.Title += EdLabels.List_Count_Label + this.AdapterObjects.AllEntityLayouts.Count;
 
       //
       // Add new form button if the user has configuration write access.
@@ -938,7 +938,7 @@ namespace Evado.UniForm.Digital
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
       // 
-      foreach ( Evado.Model.Digital.EdRecord form in this.Session.EntityLayoutList )
+      foreach ( Evado.Model.Digital.EdRecord form in this.AdapterObjects.AllEntityLayouts )
       {
         this.LogDebug ( "ID {0}, T: {1}, S: {2}", form.LayoutId, form.Title, form.State );
         EuAdapterClasses appObject = EuAdapterClasses.Entity_Layouts;
@@ -1306,7 +1306,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.EntityLayoutList.Count == 0 )
+      if ( this.AdapterObjects.AllEntityLayouts.Count == 0 )
       {
         this.loadRecordLayoutList ( );
       }
@@ -1314,7 +1314,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.Session.EntityLayoutList )
+      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
       {
         //
         // get the list issued version of the form.
@@ -2428,7 +2428,10 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 
@@ -2868,7 +2871,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        this.Session.EntityLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
         this.Session.EntityLayout = new Evado.Model.Digital.EdRecord ( );
         this.Session.EntityLayout.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
@@ -3057,7 +3060,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.EntityLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -3097,7 +3100,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.Session.EntityLayoutList )
+      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

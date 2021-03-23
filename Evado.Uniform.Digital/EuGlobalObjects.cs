@@ -276,7 +276,7 @@ namespace Evado.UniForm.Digital
     /// lists.
     /// </summary>
 
-    public List<EdSelectionList> SelectionLists
+    public List<EdSelectionList> AllSelectionLists
     {
       get { return _SelectionLists; }
       set { _SelectionLists = value; }

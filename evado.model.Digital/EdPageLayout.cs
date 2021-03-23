@@ -54,6 +54,16 @@ namespace Evado.Model.Digital
       /// This enumeration defines the default home page field
       /// </summary>
       DefaultHomePage,
+      
+      /// <summary>
+      /// This enumeration defines the Menu location field
+      /// </summary>
+      MenuLocation,
+
+      /// <summary>
+      /// This enumeration defines the page command list field
+      /// </summary>
+      PageCommands,
 
       /// <summary>
       /// This enumeration defines the page layout User type field
@@ -120,6 +130,28 @@ namespace Evado.Model.Digital
       /// </summary>
       State,
 
+    }
+    /// <summary>
+    /// This enumerated list defines the menu location on the page.
+    /// </summary>
+    public enum MenuLocations
+    {
+      /// <summary>
+      /// not value is set, menu not displayed.
+      /// </summary>
+      Null,
+      /// <summary>
+      /// THis enumeration the menu is displayed in the page header.
+      /// </summary>
+      Page_Menu,
+      /// <summary>
+      /// this enumeration the menu is displayed in the left column
+      /// </summary>
+      Left_Column,
+      /// <summary>
+      /// This enumeration the menu is displayed in the right column
+      /// </summary>
+      Right_Column,
     }
 
     /// <summary>
@@ -208,7 +240,17 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property indicates if this page is the default home page.
     /// </summary>
-    public bool DefaultHomePage { get; set; }
+    public bool HomePage { get; set; }
+
+    /// <summary>
+    /// This property contains the enumerated value to define where the menu is to be located.
+    /// </summary>
+    public MenuLocations MenuLocation { get; set; }
+
+    /// <summary>
+    /// This property contains an page command enumerated ';' list. 
+    /// </summary>
+    public string PageCommands { get; set; }
 
     /// <summary>
     /// This property contains an page header content as markdown text.
@@ -347,7 +389,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this.DefaultHomePage == true )
+        if ( this.HomePage == true )
         {
           return String.Format (
             EdLabels.PageLayout_Link_Text1,
@@ -373,7 +415,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this.DefaultHomePage == true )
+        if ( this.HomePage == true )
         {
           return new EvOption ( this.PageId,
             String.Format (
@@ -429,7 +471,17 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.DefaultHomePage:
           {
-            this.DefaultHomePage = EvStatics.getBool ( Value );
+            this.HomePage = EvStatics.getBool ( Value );
+            return;
+          }
+        case EdPageLayout.FieldNames.MenuLocation:
+          {
+            this.MenuLocation = EvStatics.parseEnumValue<MenuLocations> ( Value );
+            return;
+          }
+        case EdPageLayout.FieldNames.PageCommands:
+          {
+            this.PageCommands =  Value ;
             return;
           }
         case EdPageLayout.FieldNames.UserType:

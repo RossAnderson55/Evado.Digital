@@ -40,9 +40,11 @@ namespace Evado.UniForm.Digital
   public class EuRecords : EuClassAdapterBase
   {
     #region Class Initialisation
+    // ==================================================================================
     /// <summary>
     /// This method initialises the class.
     /// </summary>
+    //  ----------------------------------------------------------------------------------
     public EuRecords ( )
     {
       if ( this.Session.Record == null )
@@ -61,16 +63,24 @@ namespace Evado.UniForm.Digital
       this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
     }
 
+    // ==================================================================================
     /// <summary>
-    /// This method initialises the class and passs in the user profile.
+    /// This method initialises the class and passs in the initialisation objects.
     /// </summary>
+    /// <param name="AdapterObjects">EuGlobalObjects object</param>
+    /// <param name="ServiceUserProfile">EvUserProfileBase object</param>
+    /// <param name="SessionObjects">EuSession object</param>
+    /// <param name="UniFormBinaryFilePath">String: UniForm Binary file path.</param>
+    /// <param name="UniForm_BinaryServiceUrl">String UniFORm binary service URL</param>
+    /// <param name="ClassParameters">EvClassParameters class parameters</param>
+    //  ----------------------------------------------------------------------------------
     public EuRecords (
       EuGlobalObjects AdapterObjects,
       EvUserProfileBase ServiceUserProfile,
       EuSession SessionObjects,
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl,
-      EvClassParameters Settings )
+      EvClassParameters ClassParameters )
     {
       this.ClassNameSpace = " Evado.UniForm.Clinical.EuRecords.";
       this.AdapterObjects = AdapterObjects;
@@ -78,7 +88,7 @@ namespace Evado.UniForm.Digital
       this.Session = SessionObjects;
       this.UniForm_BinaryFilePath = UniForm_BinaryFilePath;
       this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
-      this.ClassParameters = Settings;
+      this.ClassParameters = ClassParameters;
 
       this.LogInitMethod ( "EuRecords initialisation" );
       this.LogInit ( "ServiceUserProfile.UserId: " + ServiceUserProfile.UserId );
@@ -89,11 +99,11 @@ namespace Evado.UniForm.Digital
 
 
       this.LogInit ( "Settings" );
-      this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
-      this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
-      this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
+      this.LogInit ( "-LoggingLevel: " + ClassParameters.LoggingLevel );
+      this.LogInit ( "-UserId: " + ClassParameters.UserProfile.UserId );
+      this.LogInit ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
 
-      this._Bll_FormRecords = new EdRecords ( Settings );
+      this._Bll_FormRecords = new EdRecords ( ClassParameters );
 
       if ( this.Session.Record == null )
       {
@@ -541,7 +551,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.RecordTypeSelection != recordType )
         {
           this.Session.RecordTypeSelection = PageCommand.GetParameter<EdRecordTypes> ( EdRecord.CONST_RECORD_TYPE );
-          this.Session.RecordLayoutList = new List<EdRecord> ( );
+          this.AdapterObjects.AllRecordLayouts = new List<EdRecord> ( );
           this.Session.RecordTypeSelection = recordType;
         }
       }
@@ -554,14 +564,14 @@ namespace Evado.UniForm.Digital
 
         if ( this.Session.RecordStateSelection != stateValue )
         {
+          this.AdapterObjects.AllRecordLayouts = new List<EdRecord> ( );
+
           if ( stateValue != EdRecordObjectStates.Null )
           {
-            this.Session.RecordLayoutList = new List<EdRecord> ( );
             this.Session.RecordStateSelection = stateValue;
           }
           else
           {
-            this.Session.RecordLayoutList = new List<EdRecord> ( );
             this.Session.RecordStateSelection = EdRecordObjectStates.Null;
           }
         }
@@ -1805,7 +1815,10 @@ namespace Evado.UniForm.Digital
 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 
@@ -2293,7 +2306,10 @@ namespace Evado.UniForm.Digital
       // 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 

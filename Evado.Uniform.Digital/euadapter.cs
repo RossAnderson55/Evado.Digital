@@ -918,6 +918,7 @@ namespace Evado.UniForm.Digital
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
+              this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
             selectionLists.LoggingLevel = this.LoggingLevel;

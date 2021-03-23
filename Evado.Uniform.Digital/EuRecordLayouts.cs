@@ -78,11 +78,6 @@ namespace Evado.UniForm.Digital
 
       this._Bll_RecordLayouts = new EdRecordLayouts ( Settings );
 
-      if ( this.Session.RecordLayoutList == null )
-      {
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
-      }
-
       if ( this.Session.RecordLayout == null )
       {
         this.Session.RecordLayout = new EdRecord ( );
@@ -499,7 +494,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the pageMenuGroup containing commands to open the records.
         // 
-        this.getLayoutList_Group ( clientDataObject.Page, this.Session.RecordLayoutList );
+        this.getLayoutList_Group ( clientDataObject.Page, this.AdapterObjects.AllEntityLayouts );
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
@@ -535,7 +530,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FormType '{0}'", this.Session.RecordLayoutTypeSelection );
       this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
 
-      if ( this.Session.RecordLayoutList.Count > 0 )
+      if ( this.AdapterObjects.AllEntityLayouts.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
@@ -549,12 +544,12 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.Session.RecordLayoutList = this._Bll_RecordLayouts.getLayoutList (
+      this.AdapterObjects.AllEntityLayouts = this._Bll_RecordLayouts.getLayoutList (
         this.Session.RecordLayoutTypeSelection,
         this.Session.RecordLayoutStateSelection );
 
       this.LogDebugClass ( this._Bll_RecordLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.Session.RecordLayoutList.Count );
+      this.LogDebug ( "Form list count: " + this.AdapterObjects.AllEntityLayouts.Count );
 
       this.LogMethod ( "loadRecordLayoutList method" );
     }//ENd loadRecordLayoutList method
@@ -654,7 +649,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -1253,7 +1248,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.RecordLayoutList.Count == 0 )
+      if ( this.AdapterObjects.AllEntityLayouts.Count == 0 )
       {
         this.loadRecordLayoutList ( );
       }
@@ -1261,7 +1256,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.Session.RecordLayoutList )
+      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
       {
         //
         // get the list issued version of the form.
@@ -2310,7 +2305,10 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 
@@ -2941,7 +2939,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.Session.RecordLayoutList = new List<EdRecord> ( );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -2981,7 +2979,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.Session.RecordLayoutList )
+      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

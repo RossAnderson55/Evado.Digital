@@ -38,24 +38,36 @@ namespace Evado.UniForm.Digital
   {
     #region Class initialisation methods.
 
-    //===================================================================================
+    // ==================================================================================
     /// <summary>
-    /// THis is the PageGenerator intialisation method.
+    /// This method initialises the class and passs in the initialisation objects.
     /// </summary>
-    /// <param name="ModuleList">String: encoded list of loaded application modules.</param>
-    //-----------------------------------------------------------------------------------
+    /// <param name="AdapterObjects">EuGlobalObjects object</param>
+    /// <param name="ServiceUserProfile">EvUserProfileBase object</param>
+    /// <param name="SessionObjects">EuSession object</param>
+    /// <param name="UniFormBinaryFilePath">String: UniForm Binary file path.</param>
+    /// <param name="UniForm_BinaryServiceUrl">String UniFORm binary service URL</param>
+    /// <param name="ClassParameters">EvClassParameters class parameters</param>
+    //  ----------------------------------------------------------------------------------
     public EuRecordGenerator (
-      EuGlobalObjects ApplicationObjects,
-      EuSession Session,
-      EvClassParameters Settings )
+      EuGlobalObjects AdapterObjects,
+      EvUserProfileBase ServiceUserProfile,
+      EuSession SessionObjects,
+      String UniFormBinaryFilePath,
+      String UniForm_BinaryServiceUrl,
+      EvClassParameters ClassParameters )
     {
       this.ClassNameSpace = "Evado.Model.UniForm.EuRecordGenerator.";
-      this.AdapterObjects = ApplicationObjects;
-      this.Session = Session;
-      this.ClassParameters = Settings;
+      this.AdapterObjects = AdapterObjects;
+      this.ServiceUserProfile = ServiceUserProfile;
+      this.Session = SessionObjects;
+      this.UniForm_BinaryFilePath = UniFormBinaryFilePath;
+      this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
+      this.ClassParameters = ClassParameters;
+
       this._ModuleList = new List<EdModuleCodes> ( );
 
-      this.LoggingLevel = Settings.LoggingLevel;
+      this.LoggingLevel = ClassParameters.LoggingLevel;
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -463,6 +475,31 @@ namespace Evado.UniForm.Digital
       return true;
 
     }//END public generateForm Method.
+
+
+    //=====================================================================================
+    /// <summary>
+    /// This method selects and returns the selected field and returns null if not found.
+    /// </summary>
+    /// <param name="FieldId">String: the selected field identifier</param>
+    /// <returns>EdRecordField object</returns>
+    //-------------------------------------------------------------------------------------
+    public EdRecordField GetFieldObject ( String FieldId )
+    {
+      FieldId = FieldId.Trim ( );
+      //
+      // iterate through the entity fields to find the selected field.
+      //
+      foreach ( EdRecordField field in this._Fields )
+      {
+        if ( field.FieldId.ToLower ( ) == FieldId.ToLower ( ) )
+        {
+          return field;
+        }
+      }
+
+      return null;
+    }//END GetFieldObject method
 
     // ***********************************************************************************
     #endregion
@@ -2418,13 +2455,24 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getExternalSelectonField" );
-      this.LogDebug ( "Options: " + Field.Design.Options );
 
       // 
       // Initialise the methods object and variables.
       // 
-      String listId = Field.Design.ExSelectionListId; 
-      String category = Field.Design.ExSelectionListId;
+      String listId = Field.Design.ExSelectionListId;
+      String category = Field.Design.ExSelectionListCategory;
+      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
+
+      //
+      // the category contains the category field then set the category value to this field value.
+      //
+      if ( category.Contains ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER ) == true )
+      {
+        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER, String.Empty );
+
+        category = this.GetFieldObject ( autoCategory ).ItemValue;
+        this.LogDebug ( "Auto Category: {0} ", category );
+      }
 
       //
       // get the external selection list options.
@@ -2441,6 +2489,108 @@ namespace Evado.UniForm.Digital
       GroupField.setBackgroundColor ( Model.UniForm.FieldParameterList.BG_Mandatory, Model.UniForm.Background_Colours.Red );
 
     }//END getSelectonField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the external selection list form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getExternalRadioButtonField (
+      Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getExternalRadioButtonField" );
+
+      // 
+      // Initialise the methods object and variables.
+      // 
+      String listId = Field.Design.ExSelectionListId;
+      String category = Field.Design.ExSelectionListCategory;
+      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
+
+      //
+      // the category contains the category field then set the category value to this field value.
+      //
+      if ( category.Contains ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER ) == true )
+      {
+        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER, String.Empty );
+
+        category = this.GetFieldObject ( autoCategory ).ItemValue;
+        this.LogDebug ( "Auto Category: {0} ", category );
+      }
+
+      //
+      // get the external selection list options.
+      //
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Radio_Button_List;
+      GroupField.Value = Field.ItemValue;
+      GroupField.OptionList = optionlist;
+      GroupField.Mandatory = Field.Design.Mandatory;
+      GroupField.setBackgroundColor ( Model.UniForm.FieldParameterList.BG_Mandatory, Model.UniForm.Background_Colours.Red );
+
+      this.LogMethodEnd ( "getExternalRadioButtonField" );
+
+    }//END getExternalRadioButtonField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the external selection list form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getExternalCheckBoxField (
+      Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getExternalCheckBoxField" );
+
+      // 
+      // Initialise the methods object and variables.
+      // 
+      String listId = Field.Design.ExSelectionListId;
+      String category = Field.Design.ExSelectionListCategory;
+      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
+
+      //
+      // the category contains the category field then set the category value to this field value.
+      //
+      if ( category.Contains ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER ) == true )
+      {
+        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER, String.Empty );
+
+        category = this.GetFieldObject ( autoCategory ).ItemValue;
+        this.LogDebug ( "Auto Category: {0} ", category );
+      }
+
+      //
+      // get the external selection list options.
+      //
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+
+      // 
+      // set the field properties and parameters.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Check_Box_List;
+      GroupField.Value = Field.ItemValue;
+      GroupField.OptionList = optionlist;
+      GroupField.Mandatory = Field.Design.Mandatory;
+      GroupField.setBackgroundColor ( Model.UniForm.FieldParameterList.BG_Mandatory, Model.UniForm.Background_Colours.Red );
+
+      this.LogMethodEnd ( "getExternalCheckBoxField" );
+
+    }//END getExternalRadioButtonField method.
 
     //  =================================================================================
     /// <summary>

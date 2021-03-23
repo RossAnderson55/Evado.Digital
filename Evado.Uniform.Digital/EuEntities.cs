@@ -579,7 +579,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EntityTypeSelection != recordType )
         {
           this.Session.EntityTypeSelection = recordType;
-          this.Session.RecordLayoutList = new List<EdRecord> ( );
+          this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
         }
       }
       this.LogValue ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
@@ -596,12 +596,12 @@ namespace Evado.UniForm.Digital
         {
           if ( stateValue != EdRecordObjectStates.Null )
           {
-            this.Session.RecordLayoutList = new List<EdRecord> ( );
+            this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
             this.Session.EntityStateSelection = stateValue;
           }
           else
           {
-            this.Session.RecordLayoutList = new List<EdRecord> ( );
+            this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
             this.Session.EntityStateSelection = EdRecordObjectStates.Null;
           }
         }
@@ -2259,7 +2259,10 @@ namespace Evado.UniForm.Digital
       //
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 
@@ -2873,7 +2876,10 @@ namespace Evado.UniForm.Digital
       // 
       EuRecordGenerator pageGenerator = new EuRecordGenerator (
         this.AdapterObjects,
+        this.ServiceUserProfile,
         this.Session,
+        this.UniForm_BinaryFilePath,
+        this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
       // 

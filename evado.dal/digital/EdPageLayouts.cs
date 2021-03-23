@@ -61,7 +61,6 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-
     #region Object Initialisation
 
     /* *********************************************************************************
@@ -75,7 +74,6 @@ namespace Evado.Dal.Digital
     /// </summary>
     private const string SQL_VIEW_QUERY = "Select * FROM ED_PAGE_LAYOUTS ";
 
-    #region Define class Storeprocedure.
     /// <summary>
     /// This constant defines storeprocedure for adding items to formfield selection list table. 
     /// </summary>
@@ -102,7 +100,9 @@ namespace Evado.Dal.Digital
     private const String DB_STATE = "EDPL_STATE";
     private const String DB_USER_TYPE = "UP_TYPE";
     private const String DB_TITLE = "EDPL_TITLE";
-    private const String DB_DEFAULT_HOME_PAGE = "EDPL_DEFAULT_HOME_PAGE";
+    private const String DB_HOME_PAGE = "EDPL_HOME_PAGE";
+    private const String DB_MENU_LOCATION = "EDPL_MENU_LOCATION";
+    private const String DB_PAGE_COMMANDS = "EDPL_PAGE_COMMANDS";
 
     private const String DB_HEADER_CONTENT = "EDPL_HEADER_CONTENT";
     private const String DB_HEADER_GROUP_LIST = "EDPL_HEADER_GROUP_LIST";
@@ -133,7 +133,9 @@ namespace Evado.Dal.Digital
     private const String PARM_STATE = "@STATE";
     private const String PARM_USER_TYPE = "@USER_TYPE";
     private const String PARM_TITLE = "@TITLE";
-    private const String PARM_DEFAULT_HOME_PAGE = "@DEFAULT_HOME_PAGE";
+    private const String PARM_HOME_PAGE = "@HOME_PAGE";
+    private const String PARM_MENU_LOCATION = "@MENU_LOCATION";
+    private const String PARM_PAGE_COMMANDS = "@PAGE_COMMANDS";
 
     private const String PARM_HEADER_CONTENT = "@HEADER_CONTENT";
     private const String PARM_HEADER_GROUP_LIST = "@HEADER_GROUP_LIST";
@@ -153,9 +155,10 @@ namespace Evado.Dal.Digital
     private const String PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const String PARM_UPDATED_BY = "@UPDATED_BY";
     private const String PARM_UPDATED_DATE = "@UPDATED_DATE";
+ 
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #endregion
 
     #region Set Query Parameters
 
@@ -181,8 +184,10 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdPageLayouts.PARM_USER_TYPE, SqlDbType.NVarChar,50 ),
         new SqlParameter( EdPageLayouts.PARM_STATE, SqlDbType.NVarChar, 30),
         new SqlParameter( EdPageLayouts.PARM_TITLE, SqlDbType.NVarChar, 100),
-        new SqlParameter( EdPageLayouts.PARM_DEFAULT_HOME_PAGE, SqlDbType.Bit),
 
+        new SqlParameter( EdPageLayouts.PARM_HOME_PAGE, SqlDbType.Bit),
+        new SqlParameter( EdPageLayouts.PARM_MENU_LOCATION, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdPageLayouts.PARM_PAGE_COMMANDS, SqlDbType.NVarChar, 250),
         new SqlParameter( EdPageLayouts.PARM_HEADER_CONTENT, SqlDbType.NText ),
         new SqlParameter( EdPageLayouts.PARM_HEADER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
 
@@ -237,26 +242,28 @@ namespace Evado.Dal.Digital
       parms [ 2 ].Value = Item.UserType;
       parms [ 3 ].Value = Item.State;
       parms [ 4 ].Value = Item.Title;
-      parms [ 5 ].Value = Item.DefaultHomePage;
 
-      parms [ 6 ].Value = Item.HeaderContent;
-      parms [ 7 ].Value = Item.HeaderGroupList;
+      parms [ 5 ].Value = Item.HomePage;
+      parms [ 6 ].Value = Item.MenuLocation;
+      parms [ 7 ].Value = Item.PageCommands;
+      parms [ 8 ].Value = Item.HeaderContent;
+      parms [ 9 ].Value = Item.HeaderGroupList;
 
-      parms [ 8 ].Value = Item.LeftColumnContent;
-      parms [ 9 ].Value = Item.LeftColumnGroupList;
-      parms [ 10 ].Value = Item.LeftColumnWidth;
+      parms [ 10 ].Value = Item.LeftColumnContent;
+      parms [ 11 ].Value = Item.LeftColumnGroupList;
+      parms [ 12 ].Value = Item.LeftColumnWidth;
 
-      parms [ 11 ].Value = Item.CenterColumnContent;
-      parms [ 12 ].Value = Item.CenterColumnGroupList;
+      parms [ 13 ].Value = Item.CenterColumnContent;
+      parms [ 14 ].Value = Item.CenterColumnGroupList;
 
-      parms [ 13 ].Value = Item.RightColumnContent;
-      parms [ 14 ].Value = Item.RightColumnGroupList;
-      parms [ 15 ].Value = Item.RightColumnWidth;
+      parms [ 15 ].Value = Item.RightColumnContent;
+      parms [ 16 ].Value = Item.RightColumnGroupList;
+      parms [ 17 ].Value = Item.RightColumnWidth;
 
-      parms [ 16 ].Value = Item.Version;
-      parms [ 17 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 18 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 19 ].Value = DateTime.Now;
+      parms [ 17 ].Value = Item.Version;
+      parms [ 18 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 19 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 20 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 
@@ -293,8 +300,10 @@ namespace Evado.Dal.Digital
       Item.State = EvSqlMethods.getString<EdPageLayout.States> ( Row, EdPageLayouts.DB_STATE );
       Item.UserType = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPE );
       Item.Title = EvSqlMethods.getString ( Row, EdPageLayouts.DB_TITLE );
-      Item.DefaultHomePage = EvSqlMethods.getBool ( Row, EdPageLayouts.DB_DEFAULT_HOME_PAGE );
 
+      Item.HomePage = EvSqlMethods.getBool ( Row, EdPageLayouts.DB_HOME_PAGE );
+      Item.MenuLocation = EvSqlMethods.getString<EdPageLayout.MenuLocations> ( Row, EdPageLayouts.DB_MENU_LOCATION );
+      Item.PageCommands = EvSqlMethods.getString ( Row, EdPageLayouts.DB_PAGE_COMMANDS );
       Item.HeaderContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_CONTENT );
       Item.HeaderGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_GROUP_LIST );
 

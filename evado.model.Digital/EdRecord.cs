@@ -1444,12 +1444,13 @@ namespace Evado.Model.Digital
     //-------------------------------------------------------------------------------------
     public EdRecordField GetFieldObject ( String FieldId )
     {
+      FieldId = FieldId.Trim ( );
       //
       // iterate through the entity fields to find the selected field.
       //
       foreach ( EdRecordField field in this.Fields )
       {
-        if ( field.FieldId == FieldId )
+        if ( field.FieldId.ToLower() == FieldId.ToLower() )
         {
           return field;
         }

@@ -374,14 +374,14 @@ namespace Evado.UniForm.Digital
     private void loadSelectionLists ( )
     {
       this.LogInitMethod ( "loadSelectionLists" );
-      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.SelectionLists.Count > 0 )
+      if ( this._AdapterObjects.AllSelectionLists.Count > 0 )
       {
-        this.LogInit ( "Record layouts loaded." );
+        this.LogInit ( "No Selection Lists." );
         this.LogInit ( "END loadSelectionLists" );
         return;
       }
@@ -395,13 +395,55 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the selection lists that are issued.
       // 
-      this._AdapterObjects.SelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Issued );
+      this._AdapterObjects.AllSelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
 
       this.LogInitClass ( bll_SelectionLists.Log );
 
-      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.SelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
 
       this.LogInit ( "END loadSelectionLists" );
+
+    }//END loadSelectionLists method
+
+    //===================================================================================
+    /// <summary>
+    /// This method executes the form list query 
+    /// </summary>
+    //-----------------------------------------------------------------------------------
+    private List<EdSelectionList> getSelectionLists ( )
+    {
+      this.LogInitMethod ( "getSelectionLists" );
+      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
+
+      //
+      // Exit the method if the list exists or the loaded entiy layout is false.
+      //
+      if ( this._AdapterObjects.AllSelectionLists.Count == 0 )
+      {
+        this.LogInit ( "No Selection Lists." );
+        this.LogInitMethodEnd ( "getSelectionLists" );
+        return new List<EdSelectionList>();
+      }
+
+      //
+      // Initialise methods variables and objects
+      //
+      List<EdSelectionList> selectionList = new List<EdSelectionList> ( );
+
+      //
+      // iterate through the all selection list extracting the issued selection lists.
+      //
+      foreach ( EdSelectionList list in this._AdapterObjects.AllSelectionLists )
+      {
+        if ( list.State == EdSelectionList.SelectionListStates.Issued )
+        {
+          selectionList.Add ( list );
+        }
+      }
+
+      this.LogInit ( "selectionList.Count: " + selectionList.Count );
+      this.LogInitMethodEnd ( "getSelectionLists" );
+      return selectionList;
 
     }//END loadSelectionLists method
 

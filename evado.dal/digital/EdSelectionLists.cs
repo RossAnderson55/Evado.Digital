@@ -302,11 +302,13 @@ namespace Evado.Dal.Digital
       if ( State != EdSelectionList.SelectionListStates.Null )
       {
         sqlQueryString += " WHERE ( " + EdSelectionLists.DB_STATE + " = " + EdSelectionLists.PARM_STATE + " ) "
+          + " AND  (" + EdSelectionLists.DB_DELETED + " = 0 )"
           + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
       }
       else
       {
         sqlQueryString += " WHERE (  " + EdSelectionLists.DB_STATE + " <> '" + EdSelectionList.SelectionListStates.Withdrawn + "' ) "
+          + " AND  (" + EdSelectionLists.DB_DELETED + " = 0 )"
           + " ORDER BY " + EdSelectionLists.DB_LIST_ID + ";";
       }
 
@@ -481,7 +483,7 @@ namespace Evado.Dal.Digital
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdSelectionLists.DB_GUID + " = " + EdSelectionLists.PARM_GUID+ ";";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE " + EdSelectionLists.DB_GUID + " = " + EdSelectionLists.PARM_GUID + ";";
 
       this.LogDebug ( sqlQueryString );
 
@@ -566,7 +568,8 @@ namespace Evado.Dal.Digital
       // 
       // Generate the Selection query string.
       // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
+      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") "
+        + " AND  (" + EdSelectionLists.DB_DELETED + " = 0 )";
 
       if ( Issued == true )
       {
@@ -631,6 +634,7 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes updateItem ( EdSelectionList Item )
     {
+      this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "updateItem" );
 
       // 
@@ -648,7 +652,7 @@ namespace Evado.Dal.Digital
       EvDataChanges dataChanges = new EvDataChanges ( );
       EvDataChange dataChange = new EvDataChange ( );
       dataChange.TableName = EvDataChange.DataChangeTableNames.EdSelectionList;
-      dataChange.TrialId = String.Empty ;
+      dataChange.TrialId = String.Empty;
       dataChange.RecordUid = -1;
       dataChange.RecordGuid = Item.Guid;
       dataChange.UserId = Item.UpdatedByUserId;
@@ -732,42 +736,23 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes addItem ( EdSelectionList Item )
     {
+      this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "addItem method. " );
       this.LogDebug ( "ListId: '" + Item.ListId );
       this.LogDebug ( "Version: '" + Item.Version + "'" );
       String sqlQueryString = String.Empty;
 
       //---------------------- Check for duplicate TestReport identifiers. ------------------
+
+      var oldSelectionList = this.getItem ( Item.ListId, false );
       // 
-      // Define the query parameters
+      // returned list has a guid there is a duplicate.
       // 
-      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      if ( oldSelectionList.Guid != Guid.Empty )
       {
-        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10),
-      };
-      cmdParms [ 0 ].Value = Item.ListId;
+        this.LogDebug ( "Duplication list found." );
 
-      // 
-      // Generate the SQL query string
-      // 
-      sqlQueryString = SQL_VIEW_QUERY + " WHERE (" + EdSelectionLists.DB_LIST_ID + " = " + EdSelectionLists.PARM_LIST_ID + ") ";
-
-      this.LogDebug ( "Duplication SQL Query:" + sqlQueryString );
-
-      //
-      // Execute the query against the database
-      //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
-      {
-        // 
-        // If not rows the return
-        // 
-        if ( table.Rows.Count > 0 )
-        {
-          this.LogDebug ( "Duplication list found." );
-
-          return EvEventCodes.Data_Duplicate_Id_Error;
-        }
+        return EvEventCodes.Data_Duplicate_Id_Error;
       }
 
       // 
@@ -812,6 +797,7 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes WithdrawIssuedList ( EdSelectionList Item )
     {
+      this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "WithdrawIssuedList method. " );
       // 
       // Define the query parameters
@@ -856,6 +842,7 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes deleteItem ( EdSelectionList Item )
     {
+      this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "deleteItem method. " );
 
       // 
@@ -864,9 +851,9 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] commandParameters = new SqlParameter [ ]
       {
         new SqlParameter(EdSelectionLists.PARM_GUID, SqlDbType.UniqueIdentifier),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_BY, SqlDbType.NVarChar, 100),
-        new SqlParameter(EdSelectionLists.DB_UPDATED_DATE, SqlDbType.DateTime)
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_BY, SqlDbType.NVarChar, 100),
+        new SqlParameter(EdSelectionLists.PARM_UPDATED_DATE, SqlDbType.DateTime)
       };
       commandParameters [ 0 ].Value = Item.Guid;
       commandParameters [ 1 ].Value = this.ClassParameters.UserProfile.UserId;

@@ -5915,6 +5915,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menu location selection:.
+        /// </summary>
+        public static string PageLayout_Menu_Location_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Menu_Location_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Page Layout.
         /// </summary>
         public static string PageLayout_New_List_Page_Title {
@@ -7368,6 +7377,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR: Selection list export error occured parameters are missing or not defined..
+        /// </summary>
+        public static string Selection_Export_Error_Message {
+            get {
+                return ResourceManager.GetString("Selection_Export_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Error occured loading the selected selection list page..
+        /// </summary>
+        public static string Selection_Page_Error_Message {
+            get {
+                return ResourceManager.GetString("Selection_Page_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Selection List.
         /// </summary>
         public static string SelectionList_Delete_Command_Title {
@@ -7418,6 +7445,15 @@ namespace Evado.Model.Digital {
         public static string SelectionList_General_Group_Title {
             get {
                 return ResourceManager.GetString("SelectionList_General_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Selection List identifier is not defined..
+        /// </summary>
+        public static string SelectionList_Guid_Empty_Message {
+            get {
+                return ResourceManager.GetString("SelectionList_Guid_Empty_Message", resourceCulture);
             }
         }
         

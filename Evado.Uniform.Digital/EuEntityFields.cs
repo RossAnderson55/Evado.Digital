@@ -906,7 +906,9 @@ namespace Evado.UniForm.Digital
       //
       // Create the external selection list,
       //
-      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
+      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_Selection_List
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_CheckBox_List
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_RadioButton_List )
       {
         optionList = this.AdapterObjects.getSelectionListOptions ( true );
 

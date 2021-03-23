@@ -46,11 +46,6 @@ namespace Evado.UniForm.Digital
     {
       this.ClassNameSpace = "Evado.UniForm.Digital.EuPageLayouts.";
 
-      if ( this.Session.AdminPageLayouts == null )
-      {
-        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
-      }
-
       if ( this.Session.AdminPageLayout == null )
       {
         this.Session.AdminPageLayout = new EdPageLayout ( );
@@ -92,11 +87,6 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
-
-      if ( this.Session.AdminPageLayouts == null )
-      {
-        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
-      }
 
       if ( this.Session.AdminPageLayout == null )
       {
@@ -386,17 +376,17 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "GetPageLayoutList" );
 
-      if ( this.Session.AdminPageLayouts.Count > 0 )
+      if ( this.AdapterObjects.AllPageLayouts.Count > 0 )
       {
         this.LogMethodEnd ( "GetPageLayoutList" );
         return;
       }
 
-      this.Session.AdminPageLayouts = this._Bll_PageLayouts.getView ( EdPageLayout.States.Null );
+      this.AdapterObjects.AllPageLayouts = this._Bll_PageLayouts.getView ( EdPageLayout.States.Null );
 
       this.LogDebugClass ( this._Bll_PageLayouts.Log );
 
-      this.LogDebug ( "Selection list count {0}.", this.Session.AdminPageLayouts.Count );
+      this.LogDebug ( "Selection list count {0}.", this.AdapterObjects.AllPageLayouts.Count );
 
       this.LogMethodEnd ( "GetPageLayoutList" );
 
@@ -439,7 +429,7 @@ namespace Evado.UniForm.Digital
         // 
         // generate the page links.
         // 
-        foreach ( EdPageLayout listItem in this.Session.AdminPageLayouts )
+        foreach ( EdPageLayout listItem in this.AdapterObjects.AllPageLayouts )
         {
           // 
           // Add the trial organisation to the list of organisations as a groupCommand.
@@ -691,7 +681,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.Session.AdminPageLayouts.Count == 0 )
+      if ( this.AdapterObjects.AllPageLayouts.Count == 0 )
       {
         this.GetPageLayoutList ( );
       }
@@ -699,7 +689,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdPageLayout pageLayout in this.Session.AdminPageLayouts )
+      foreach ( EdPageLayout pageLayout in this.AdapterObjects.AllPageLayouts )
       {
         //
         // get the list issued version of the form.
@@ -1259,7 +1249,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createBooleanField (
         EdPageLayout.FieldNames.DefaultHomePage,
         EdLabels.PageLayout_DefaultHomePage_Field_Label,
-        this.Session.AdminPageLayout.DefaultHomePage);
+        this.Session.AdminPageLayout.HomePage);
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
 
@@ -1284,6 +1274,21 @@ namespace Evado.UniForm.Digital
         EdPageLayout.FieldNames.UserType,
         EdLabels.PageLayout_User_Type_Field_Label,
         this.Session.AdminPageLayout.UserType,
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the user type selection list.
+      //
+      optionList = EvStatics.getOptionsFromEnum( typeof( EdPageLayout.MenuLocations), true );
+
+      // 
+      // Create the user type selection.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdPageLayout.FieldNames.MenuLocation,
+        EdLabels.PageLayout_Menu_Location_Field_Label,
+        this.Session.AdminPageLayout.MenuLocation,
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -1728,7 +1733,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the update variables.
         // 
-        this.Session.AdminPageLayouts = new List<EdPageLayout> ( );
+        this.AdapterObjects.AllPageLayouts = new List<EdPageLayout> ( );
 
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.

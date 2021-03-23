@@ -60,6 +60,7 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EuPageLayouts.cs" />
     <Compile Include="EuSelectionLists.cs" />
     <Compile Include="EuEntities.cs" />
     <Compile Include="EuEntityFields.cs">

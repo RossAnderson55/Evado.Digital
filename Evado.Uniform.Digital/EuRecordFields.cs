@@ -738,7 +738,17 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
       int formVersion = (int) this.Session.RecordLayout.Design.Version;
-      bool bEditType = this.Session.RecordField.Design.InitialVersion == formVersion;
+
+      Evado.Model.UniForm.EditAccess initialAccess = Model.UniForm.EditAccess.Disabled;
+
+      if ( this.Session.EntityField.Design.InitialVersion == formVersion )
+      {
+        initialAccess = Model.UniForm.EditAccess.Enabled;
+      }
+      this.LogValue ( "formVersion: " + formVersion );
+      this.LogValue ( "Field.InitialVersion: " + this.Session.EntityField.Design.InitialVersion );
+
+      this.LogValue ( "initialAccess: " + initialAccess );
 
       //
       // Define the general properties pageMenuGroup.
@@ -897,26 +907,40 @@ namespace Evado.UniForm.Digital
       //
       // Create the external selection list,
       //
-      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Selection_List )
-      {/*
-        optionList = EvFormField.getDataTypes ( false );
+      if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Selection_List
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_CheckBox_List
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_RadioButton_List )
+      {
+        optionList = this.AdapterObjects.getSelectionListOptions ( true );
 
         groupField = pageGroup.createSelectionListField (
-          EvFormField.FormFieldClassFieldNames.ExSelectionListId.ToString ( ),
+          EdRecordField.FieldClassFieldNames.ExSelectionListId,
           EdLabels.Form_Field_External_Selection_Field_Label,
-          this.SessionObjects.FormField.Design.ExSelectionListId,
+          this.Session.EntityField.Design.ExSelectionListId,
           optionList );
-        groupField.Layout = PageGenerator.ApplicationFieldLayout;
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-        optionList = EvFormField.getDataTypes (false  );
+        //
+        // this field is only editable when the field is initialised.
+        //
+        groupField.EditAccess = initialAccess;
+        if ( groupField.EditAccess == Model.UniForm.EditAccess.Enabled )
+        {
+          groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+        }
 
-        groupField = pageGroup.createSelectionListField (
-          EvFormField.FormFieldClassFieldNames.ExSelectionListCategory.ToString ( ),
+        groupField = pageGroup.createTextField (
+          EdRecordField.FieldClassFieldNames.ExSelectionListCategory,
           EdLabels.Form_Field_External_Selection_Category_Field_Label,
-          this.SessionObjects.FormField.Design.ExSelectionListCategory,
-          optionList );
-        groupField.Layout = PageGenerator.ApplicationFieldLayout;
-      */
+         EdLabels.EntityField_External_Selection_Category_Field_Description,
+          this.Session.EntityField.Design.ExSelectionListCategory,
+          20 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+        //
+        // this field is only editable when the field is initialised.
+        //
+        groupField.EditAccess = initialAccess;
       }
 
       //

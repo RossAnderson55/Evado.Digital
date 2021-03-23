@@ -195,6 +195,12 @@ namespace Evado.Model.Digital
 
     #endregion
 
+    #region Constants
+
+    public const string CONST_CATEGORY_FIELD_IDENTIFIER = "Auto:";
+
+    #endregion
+
     #region Properties
 
     /// <summary>
@@ -946,6 +952,10 @@ namespace Evado.Model.Digital
 
       list.Add ( EvStatics.getOption ( EvDataTypes.External_Selection_List ) );
 
+      list.Add ( EvStatics.getOption ( EvDataTypes.External_RadioButton_List ) );
+
+      list.Add ( EvStatics.getOption ( EvDataTypes.External_CheckBox_List ) );
+
       list.Add ( EvStatics.getOption ( EvDataTypes.Integer_Range ) );
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Float_Range ) );
@@ -987,15 +997,6 @@ namespace Evado.Model.Digital
       return list;
 
     }//END getDataTypes method
-
-    /// <summary>
-    /// this method returns an field object to empty.
-    /// </summary>
-    /// <returns>EvFormField object</returns>
-    public EdRecordField Empty ( )
-    {
-      return new EdRecordField ( );
-    }
 
     #endregion
 

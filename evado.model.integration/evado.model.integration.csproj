@@ -129,6 +129,10 @@
       <Project>{C85C0FC2-76E7-496C-AEA1-1F97FA573C93}</Project>
       <Name>Evado.Model.Digital</Name>
     </ProjectReference>
+    <ProjectReference Include="..\evado.model.uniform\evado.model.uniform.csproj">
+      <Project>{EB6A905C-2E28-4A70-B791-DC807165BCD7}</Project>
+      <Name>evado.model.uniform</Name>
+    </ProjectReference>
     <ProjectReference Include="..\evado.model\evado.model.csproj">
       <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
       <Name>evado.model</Name>

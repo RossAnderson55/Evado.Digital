@@ -273,6 +273,16 @@ namespace Evado.Model
     User_Endorsement = 45,
 
     /// <summary>
+    /// This enumeration define a radio button list with an external selection source.
+    /// </summary>
+    External_RadioButton_List = 96,
+
+    /// <summary>
+    /// This enumeration define a checkbox list with an external selection source.
+    /// </summary>
+    External_CheckBox_List = 97,
+
+    /// <summary>
     /// This enumeration define a selection list with an external selection source.
     /// </summary>
     External_Selection_List = 99,
