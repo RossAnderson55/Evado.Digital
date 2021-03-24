@@ -255,20 +255,44 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EdPageLayout> PageLayouts
     {
-      get {
+      get
+      {
         List<EdPageLayout> pageLayouts = new List<EdPageLayout> ( );
 
         foreach ( EdPageLayout layout in this._AllPageLayouts )
         {
-          if ( layout.State ==  EdPageLayout.States.Issued )
+          if ( layout.State == EdPageLayout.States.Issued )
           {
-            pageLayouts.Add (layout );
+            pageLayouts.Add ( layout );
           }
         }
 
         return pageLayouts;
       }
     }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a page layout object.
+    /// </summary>
+    /// <param name="PageLayoutId">String page layout identifier.</param>
+    /// <returns>EdPageLayout object</return>
+    // ----------------------------------------------------------------------------------
+    public EdPageLayout getPageLayout ( String PageLayoutId )
+    {
+      //
+      // iterate through the page layout lists.
+      //
+      foreach ( EdPageLayout pageLayout in this._AllPageLayouts )
+      {
+        if ( pageLayout.PageId.ToLower ( ) == PageLayoutId.ToLower ( ) )
+        {
+          return pageLayout;
+        }
+      }
+
+      return null;
+    }//END method
 
     private List<EdSelectionList> _SelectionLists = new List<EdSelectionList> ( );
     /// <summary>
@@ -313,7 +337,7 @@ namespace Evado.UniForm.Digital
       }
 
       return optionList;
-}
+    }
 
     // ==================================================================================
     /// <summary>
@@ -462,6 +486,12 @@ namespace Evado.UniForm.Digital
     /// This property contains a list of the adapters navigation commands.
     /// </summary>
     public List<EvOption> PageIdentifiers { get; set; }
+
+    /// <summary>
+    /// This property contains a list of the adapters compnent objects.
+    /// Selecting a component will then execute a generation process to build the page.
+    /// </summary>
+    public List<EvOption> PageComponents { get; set; }
 
     /// <summary>
     /// This property object contains a list of organisations. 

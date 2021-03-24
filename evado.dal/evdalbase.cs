@@ -108,13 +108,12 @@ namespace Evado.Dal
       // Initialise the methods variables and objects.
       //
       EvObjectParameters dllObjectParameters = new EvObjectParameters ( ClassParameters );
-
       //
       // Retrieve the list of parameters
       //
       var parameters = dllObjectParameters.getParameterList ( ObjectGuid );
 
-      this.LogDebugClass ( dllObjectParameters.Log );
+      //this.LogDebugClass ( dllObjectParameters.Log );
 
       //
       // Return the list of parameters.

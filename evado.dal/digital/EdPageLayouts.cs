@@ -105,17 +105,17 @@ namespace Evado.Dal.Digital
     private const String DB_PAGE_COMMANDS = "EDPL_PAGE_COMMANDS";
 
     private const String DB_HEADER_CONTENT = "EDPL_HEADER_CONTENT";
-    private const String DB_HEADER_GROUP_LIST = "EDPL_HEADER_GROUP_LIST";
+    private const String DB_HEADER_COMPONENT_LIST = "EDPL_HEADER_COMPONENT_LIST";
 
     private const String DB_LEFT_CONTENT = "EDPL_LEFT_CONTENT";
-    private const String DB_LEFT_GROUP_LIST = "EDPL_LEFT_GROUP_LIST";
+    private const String DB_LEFT_COMPONENT_LIST = "EDPL_LEFT_COMPONENT_LIST";
     private const String DB_LEFT_COLUMN_WIDTH = "EDPL_LEFT_COLUMN_WIDTH";
 
     private const String DB_CENTER_CONTENT = "EDPL_CENTER_CONTENT";
-    private const String DB_CENTER_GROUP_LIST = "EDPL_CENTER_GROUP_LIST";
+    private const String DB_CENTER_COMPONENT_LIST = "EDPL_CENTER_COMPONENT_LIST";
 
     private const String DB_RIGHT_CONTENT = "EDPL_RIGHT_CONTENT";
-    private const String DB_RIGHT_GROUP_LIST = "EDPL_RIGHT_GROUP_LIST";
+    private const String DB_RIGHT_COMPONENT_LIST = "EDPL_RIGHT_COMPONENT_LIST";
     private const String DB_RIGHT_COLUMN_WIDTH = "EDPL_RIGHT_COLUMN_WIDTH";
 
     private const String DB_VERSION = "EDPL_VERSION";
@@ -138,17 +138,17 @@ namespace Evado.Dal.Digital
     private const String PARM_PAGE_COMMANDS = "@PAGE_COMMANDS";
 
     private const String PARM_HEADER_CONTENT = "@HEADER_CONTENT";
-    private const String PARM_HEADER_GROUP_LIST = "@HEADER_GROUP_LIST";
+    private const String PARM_HEADER_COMPONENT_LIST = "@HEADER_COMPONENT_LIST";
 
     private const String PARM_LEFT_CONTENT = "@LEFT_CONTENT";
-    private const String PARM_LEFT_GROUP_LIST = "@LEFT_GROUP_LIST";
+    private const String PARM_LEFT_COMPONENT_LIST = "@LEFT_COMPONENT_LIST";
     private const String PARM_LEFT_COLUMN_WIDTH = "@LEFT_COLUMN_WIDTH";
 
     private const String PARM_CENTER_CONTENT = "@CENTER_CONTENT";
-    private const String PARM_CENTER_GROUP_LIST = "@CENTER_GROUP_LIST";
+    private const String PARM_CENTER_COMPONENT_LIST = "@CENTER_COMPONENT_LIST";
 
     private const String PARM_RIGHT_CONTENT = "@RIGHT_CONTENT";
-    private const String PARM_RIGHT_GROUP_LIST = "@RIGHT_GROUP_LIST";
+    private const String PARM_RIGHT_COMPONENT_LIST = "@RIGHT_COMPONENT_LIST";
     private const String PARM_RIGHT_COLUMN_WIDTH = "@RIGHT_COLUMN_WIDTH";
 
     private const String PARM_VERSION = "@VERSION";
@@ -158,7 +158,6 @@ namespace Evado.Dal.Digital
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
-
 
     #region Set Query Parameters
 
@@ -189,17 +188,17 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdPageLayouts.PARM_MENU_LOCATION, SqlDbType.NVarChar, 30),
         new SqlParameter( EdPageLayouts.PARM_PAGE_COMMANDS, SqlDbType.NVarChar, 250),
         new SqlParameter( EdPageLayouts.PARM_HEADER_CONTENT, SqlDbType.NText ),
-        new SqlParameter( EdPageLayouts.PARM_HEADER_GROUP_LIST, SqlDbType.NVarChar, 250 ), //9
+        new SqlParameter( EdPageLayouts.PARM_HEADER_COMPONENT_LIST, SqlDbType.NVarChar, 250 ), //9
 
         new SqlParameter( EdPageLayouts.PARM_LEFT_CONTENT, SqlDbType.NText ),
-        new SqlParameter( EdPageLayouts.PARM_LEFT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_LEFT_COMPONENT_LIST, SqlDbType.NVarChar, 250 ),
         new SqlParameter( EdPageLayouts.PARM_LEFT_COLUMN_WIDTH, SqlDbType.SmallInt ), //12
 
         new SqlParameter( EdPageLayouts.PARM_CENTER_CONTENT, SqlDbType.NText ),
-        new SqlParameter( EdPageLayouts.PARM_CENTER_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_CENTER_COMPONENT_LIST, SqlDbType.NVarChar, 250 ),
 
         new SqlParameter( EdPageLayouts.PARM_RIGHT_CONTENT, SqlDbType.NText ),
-        new SqlParameter( EdPageLayouts.PARM_RIGHT_GROUP_LIST, SqlDbType.NVarChar, 250 ),
+        new SqlParameter( EdPageLayouts.PARM_RIGHT_COMPONENT_LIST, SqlDbType.NVarChar, 250 ),
         new SqlParameter( EdPageLayouts.PARM_RIGHT_COLUMN_WIDTH, SqlDbType.SmallInt ), //17
 
         new SqlParameter( EdPageLayouts.PARM_VERSION, SqlDbType.Int ),
@@ -247,17 +246,17 @@ namespace Evado.Dal.Digital
       parms [ 6 ].Value = Item.MenuLocation;
       parms [ 7 ].Value = Item.PageCommands;
       parms [ 8 ].Value = Item.HeaderContent;
-      parms [ 9 ].Value = Item.HeaderGroupList;
+      parms [ 9 ].Value = Item.HeaderComponentList;
 
       parms [ 10 ].Value = Item.LeftColumnContent;
-      parms [ 11 ].Value = Item.LeftColumnGroupList;
+      parms [ 11 ].Value = Item.LeftColumnComponentList;
       parms [ 12 ].Value = Item.LeftColumnWidth;
 
       parms [ 13 ].Value = Item.CenterColumnContent;
-      parms [ 14 ].Value = Item.CenterColumnGroupList;
+      parms [ 14 ].Value = Item.CenterColumnComponentList;
 
       parms [ 15 ].Value = Item.RightColumnContent;
-      parms [ 16 ].Value = Item.RightColumnGroupList;
+      parms [ 16 ].Value = Item.RightColumnComponentList;
       parms [ 17 ].Value = Item.RightColumnWidth;
 
       parms [ 18 ].Value = Item.Version;
@@ -305,17 +304,17 @@ namespace Evado.Dal.Digital
       Item.MenuLocation = EvSqlMethods.getString<EdPageLayout.MenuLocations> ( Row, EdPageLayouts.DB_MENU_LOCATION );
       Item.PageCommands = EvSqlMethods.getString ( Row, EdPageLayouts.DB_PAGE_COMMANDS );
       Item.HeaderContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_CONTENT );
-      Item.HeaderGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_GROUP_LIST );
+      Item.HeaderComponentList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_HEADER_COMPONENT_LIST );
 
       Item.LeftColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_CONTENT );
-      Item.LeftColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_GROUP_LIST );
+      Item.LeftColumnComponentList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_LEFT_COMPONENT_LIST );
       Item.LeftColumnWidth = (short) EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_LEFT_COLUMN_WIDTH );
 
       Item.CenterColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_CONTENT );
-      Item.CenterColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_GROUP_LIST );
+      Item.CenterColumnComponentList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_CENTER_COMPONENT_LIST );
 
       Item.RightColumnContent = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_CONTENT );
-      Item.RightColumnGroupList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_GROUP_LIST );
+      Item.RightColumnComponentList = EvSqlMethods.getString ( Row, EdPageLayouts.DB_RIGHT_COMPONENT_LIST );
       Item.RightColumnWidth = (short) EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_RIGHT_COLUMN_WIDTH );
 
       Item.Version = EvSqlMethods.getInteger ( Row, EdPageLayouts.DB_VERSION );
@@ -676,17 +675,17 @@ namespace Evado.Dal.Digital
       {
         dataChange.AddItem ( "HeaderContent", Item.HeaderContent, Item.HeaderContent );
       }
-      if ( Item.HeaderGroupList != oldItem.HeaderGroupList )
+      if ( Item.HeaderComponentList != oldItem.HeaderComponentList )
       {
-        dataChange.AddItem ( "HeaderGroupList", oldItem.HeaderGroupList, Item.HeaderGroupList );
+        dataChange.AddItem ( "HeaderGroupList", oldItem.HeaderComponentList, Item.HeaderComponentList );
       }
       if ( Item.LeftColumnContent != oldItem.LeftColumnContent )
       {
         dataChange.AddItem ( "LeftColumnContent", oldItem.LeftColumnContent, Item.LeftColumnContent );
       }
-      if ( Item.LeftColumnGroupList != oldItem.LeftColumnGroupList )
+      if ( Item.LeftColumnComponentList != oldItem.LeftColumnComponentList )
       {
-        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnGroupList, Item.LeftColumnGroupList );
+        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnComponentList, Item.LeftColumnComponentList );
       }
       if ( Item.LeftColumnWidth != oldItem.LeftColumnWidth )
       {
@@ -697,18 +696,18 @@ namespace Evado.Dal.Digital
       {
         dataChange.AddItem ( "CenterColumnContent", oldItem.CenterColumnContent, Item.CenterColumnContent );
       }
-      if ( Item.LeftColumnGroupList != oldItem.LeftColumnGroupList )
+      if ( Item.LeftColumnComponentList != oldItem.LeftColumnComponentList )
       {
-        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnGroupList, Item.LeftColumnGroupList );
+        dataChange.AddItem ( "LeftColumnGroupList", oldItem.LeftColumnComponentList, Item.LeftColumnComponentList );
       }
 
       if ( Item.RightColumnContent != oldItem.RightColumnContent )
       {
         dataChange.AddItem ( "RightColumnContent", oldItem.RightColumnContent, Item.RightColumnContent );
       }
-      if ( Item.RightColumnGroupList != oldItem.RightColumnGroupList )
+      if ( Item.RightColumnComponentList != oldItem.RightColumnComponentList )
       {
-        dataChange.AddItem ( "RightColumnGroupList", oldItem.RightColumnGroupList, Item.RightColumnGroupList );
+        dataChange.AddItem ( "RightColumnGroupList", oldItem.RightColumnComponentList, Item.RightColumnComponentList );
       }
       if ( Item.RightColumnWidth != oldItem.RightColumnWidth )
       {

@@ -128,7 +128,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method gets the trial site object.
     /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object</param>
     /// <returns>ClientApplicationData</returns>
     //  ----------------------------------------------------------------------------------
     public Evado.Model.UniForm.AppData getDataObject (
@@ -1169,14 +1169,14 @@ namespace Evado.UniForm.Digital
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Version, PageLayout.Version );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.UserType, PageLayout.UserType );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderContent, PageLayout.HeaderContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderGroupList, PageLayout.HeaderGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderGroupList, PageLayout.HeaderComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnContent, PageLayout.LeftColumnContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnGroupList, PageLayout.LeftColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnGroupList, PageLayout.LeftColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnWidth, PageLayout.LeftColumnWidth );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnContent, PageLayout.CenterColumnContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnGroupList, PageLayout.CenterColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnGroupList, PageLayout.CenterColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnContent, PageLayout.RightColumnContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnGroupList, PageLayout.RightColumnGroupList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnGroupList, PageLayout.RightColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnWidth, PageLayout.RightColumnWidth );
 
 
@@ -1357,7 +1357,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdPageLayout.FieldNames.HeaderGroupList,
         EdLabels.PageLayout_Header_Group_List_Field_Label,
-        this.Session.AdminPageLayout.HeaderGroupList, 25, 5 );
+        this.Session.AdminPageLayout.HeaderComponentList, 25, 5 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getDataObjectHeaderGroup" );
@@ -1407,7 +1407,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdPageLayout.FieldNames.LeftColumnGroupList,
         EdLabels.PageLayout_Left_Group_List_Field_Label,
-        this.Session.AdminPageLayout.LeftColumnGroupList, 25, 5 );
+        this.Session.AdminPageLayout.LeftColumnComponentList, 25, 5 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       // 
@@ -1466,7 +1466,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdPageLayout.FieldNames.CenterColumnGroupList,
         EdLabels.PageLayout_Center_Group_List_Field_Label,
-        this.Session.AdminPageLayout.CenterColumnGroupList, 25, 5 );
+        this.Session.AdminPageLayout.CenterColumnComponentList, 25, 5 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       this.LogMethodEnd ( "getDataObject_CenterColumnGroup" );
@@ -1516,7 +1516,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createFreeTextField (
         EdPageLayout.FieldNames.RightColumnGroupList,
         EdLabels.PageLayout_Right_Group_List_Field_Label,
-        this.Session.AdminPageLayout.RightColumnGroupList, 25, 5 );
+        this.Session.AdminPageLayout.RightColumnComponentList, 25, 5 );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       // 
@@ -1661,15 +1661,15 @@ namespace Evado.UniForm.Digital
         this.Session.AdminPageLayout.State = EdPageLayout.States.Draft;
         this.Session.AdminPageLayout.UserType= String.Empty;
         this.Session.AdminPageLayout.CenterColumnContent= String.Empty;
-        this.Session.AdminPageLayout.CenterColumnGroupList = String.Empty;
+        this.Session.AdminPageLayout.CenterColumnComponentList = String.Empty;
         this.Session.AdminPageLayout.HeaderContent = String.Empty;
-        this.Session.AdminPageLayout.HeaderGroupList = String.Empty;
+        this.Session.AdminPageLayout.HeaderComponentList = String.Empty;
         this.Session.AdminPageLayout.LeftColumnWidth = 0;
         this.Session.AdminPageLayout.LeftColumnContent = String.Empty;
-        this.Session.AdminPageLayout.LeftColumnGroupList = String.Empty;
+        this.Session.AdminPageLayout.LeftColumnComponentList = String.Empty;
         this.Session.AdminPageLayout.RightColumnWidth = 0;
         this.Session.AdminPageLayout.RightColumnContent = String.Empty;
-        this.Session.AdminPageLayout.RightColumnGroupList = String.Empty;
+        this.Session.AdminPageLayout.RightColumnComponentList = String.Empty;
 
         this.getDataObject ( clientDataObject );
 

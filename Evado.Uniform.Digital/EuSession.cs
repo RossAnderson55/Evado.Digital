@@ -484,6 +484,11 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property object contains the an page layout object.
     /// </summary>
+    public EdPageLayout PageLayout { get; set; }
+
+    /// <summary>
+    /// This property object contains the an page layout for design object.
+    /// </summary>
     public EdPageLayout AdminPageLayout { get; set; }
 
     /// <summary>

@@ -181,7 +181,6 @@ namespace Evado.Dal
 
           EvObjectParameter parameter = this.readDataRow ( row );
 
-
           this.LogValue ( "parameter: " + parameter.Name + ", Selected: " + parameter.Value );
 
           parameterList.Add ( parameter );

@@ -284,7 +284,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an page header group list as delimited text.
     /// </summary>
-    public string HeaderGroupList { get; set; }
+    public string HeaderComponentList { get; set; }
 
     /// <summary>
     /// This property contains an page LeftColumn content as markdown text.
@@ -293,7 +293,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an page header group list as delimited text.
     /// </summary>
-    public string LeftColumnGroupList { get; set; }
+    public string LeftColumnComponentList { get; set; }
 
     private Int16 _LeftColumnWidth = 0;
     /// <summary>
@@ -331,7 +331,7 @@ namespace Evado.Model.Digital
     /// This property contains an page CenterColumn group list as delimited text.
     /// </summary>
     /// 
-    public string CenterColumnGroupList { get; set; }
+    public string CenterColumnComponentList { get; set; }
 
     /// <summary>
     /// This property contains an page RightColumn content as markdown text.
@@ -341,7 +341,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains an page right group list as delimited text.
     /// </summary>
-    public string RightColumnGroupList { get; set; }
+    public string RightColumnComponentList { get; set; }
 
     private Int16 _RightColumnWidth = 0;
     /// <summary>
@@ -530,7 +530,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.HeaderGroupList:
           {
-            this.HeaderGroupList = Value;
+            this.HeaderComponentList = Value;
             return;
           }
         case EdPageLayout.FieldNames.LeftColumnContent:
@@ -540,7 +540,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.LeftColumnGroupList:
           {
-            this.LeftColumnGroupList = Value;
+            this.LeftColumnComponentList = Value;
             return;
           }
         case EdPageLayout.FieldNames.LeftColumnWidth:
@@ -555,7 +555,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.CenterColumnGroupList:
           {
-            this.CenterColumnGroupList = Value;
+            this.CenterColumnComponentList = Value;
             return;
           }
         case EdPageLayout.FieldNames.RightColumnContent:
@@ -565,7 +565,7 @@ namespace Evado.Model.Digital
           }
         case EdPageLayout.FieldNames.RightColumnGroupList:
           {
-            this.RightColumnGroupList = Value;
+            this.RightColumnComponentList = Value;
             return;
           }
         case EdPageLayout.FieldNames.RightColumnWidth:

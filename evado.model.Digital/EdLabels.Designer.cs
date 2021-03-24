@@ -2466,6 +2466,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR: Error raised when retrieving a entity.
+        /// </summary>
+        public static string Entity_Retrieve_Error_Message {
+            get {
+                return ResourceManager.GetString("Entity_Retrieve_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR: Error was raised when generating a list of entities.
+        /// </summary>
+        public static string Entity_View_Error_Message {
+            get {
+                return ResourceManager.GetString("Entity_View_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of Entities.
         /// </summary>
         public static string Entity_View_Page_Title {
@@ -5816,6 +5834,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR: The selection page was not retrieved..
+        /// </summary>
+        public static string PageLayout_Get_Empty_Error_Message {
+            get {
+                return ResourceManager.GetString("PageLayout_Get_Empty_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Header Commands:.
         /// </summary>
         public static string PageLayout_Header_Command_List_Field_Label {
@@ -6419,7 +6446,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error raised when retrieving a record..
+        ///   Looks up a localized string similar to ERROR: Error raised when retrieving a record..
         /// </summary>
         public static string Record_Retrieve_Error_Message {
             get {
@@ -6518,7 +6545,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error raised when generating a list of records..
+        ///   Looks up a localized string similar to ERROR: Error raised when generating a list of records..
         /// </summary>
         public static string Record_View_Error_Message {
             get {

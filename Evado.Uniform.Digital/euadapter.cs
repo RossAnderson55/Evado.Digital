@@ -172,12 +172,18 @@ namespace Evado.UniForm.Digital
         //
         this.loadRecordLayoutList ( );
 
+        //
+        // load the page components.
+        //
+        this.LoadPageComponents ( );
+
+        /*
         this.LogInit ( "Page identifier list:" );
         foreach ( EvOption option in this._AdapterObjects.PageIdentifiers )
         {
           this.LogInit ( "-PageID: {0} - Desc: {1} ", option.Value, option.Description );
         }
-
+        */
         this.LogInit ( "ServiceUserProfile" );
         this.LogInit ( "-AdsCustomerGroup: " + this.ServiceUserProfile.AdsCustomerGroup );
 
@@ -276,7 +282,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constant contains the entity page identifier prefix
     /// </summary>
-    public const string CONST_ENTITY_PAGE_ID_PREFIX = "Entity_";
+    public const string CONST_ENTITY_PREFIX = "Entity_";
 
     /// <summary>
     /// This constant contains the entity prefix for a entity's organisation parent page identifier.
@@ -294,9 +300,29 @@ namespace Evado.UniForm.Digital
     public const string CONST_ENTITY_PARENT_PAGE_ID_SUFFIX = "_Entity_Parent";
 
     /// <summary>
+    /// This constant contains the entity list component prefix
+    /// </summary>
+    public const string CONST_ENTITY_LIST_PREFIX = "Entity_List_";
+
+    /// <summary>
+    /// This constant contains the entity filtered list component prefix
+    /// </summary>
+    public const string CONST_ENTITY_FILTERED_LIST_PREFIX = "Entity_Filtered_";
+
+    /// <summary>
+    /// This constant contains the record list component prefix
+    /// </summary>
+    public const string CONST_RECORD_LIST_PREFIX = "Record_List_";
+
+    /// <summary>
+    /// This constant contains the record filtered list component prefix
+    /// </summary>
+    public const string CONST_RECORD_FILTERED_LIST_PREFIX = "Recordy_Filtered_";
+
+    /// <summary>
     /// This constant contains the record page identifier prefix
     /// </summary>
-    public const string CONST_RECORD_PAGE_ID_PREFIX = "Record_";
+    public const string CONST_RECORD_PREFIX = "Record_";
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -415,14 +441,10 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
-        this.LogDebug ( "LastPage.Title {0}. ", this.Session.LastPage.Title );
-        this.LogDebug ( "AllEntityLayouts.Count {0}. ", this._AdapterObjects.AllEntityLayouts.Count );
-        this.LogDebug ( "Role ID: {0}. ", this._AdapterObjects.Settings.UserRoles );
 
         //
         // Turn on BLL debug to match the current class setting.
         //
-        Evado.Bll.EvStaticSetting.DebugOn = this.DebugOn;
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
         this._MenuUtility = new EuNavigation (
@@ -480,8 +502,6 @@ namespace Evado.UniForm.Digital
           this.LogMethodEnd ( "getPageObject" );
           return clientDataObject;
         }
-
-
 
         this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
 

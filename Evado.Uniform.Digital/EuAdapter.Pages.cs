@@ -84,7 +84,401 @@ namespace Evado.UniForm.Digital
       // 
       return clientDataObject;
 
-    }///END generateHomePage method
+    }//END generateNoProfilePage method
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Class generate page methods method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates a Page Layout 
+    /// 
+    /// </summary>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <returns>Evado.Model.UniForm.AppData</returns>
+    // ----------------------------------------------------------------------------------
+    public Evado.Model.UniForm.AppData generatePage (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "generatePage" );
+      this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      //
+      // initialise the methods objects and variables.
+      //
+      EdPageLayout pageLayout = new EdPageLayout();
+      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+      bool enableLeftColumn = false;
+      bool enableRightColumn = false;
+
+      string pageId = PageCommand.GetPageId ( );
+
+      this.LogDebug ( "Current PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
+      
+      //
+      // Update the page layout if it has changed.
+      //
+      if ( pageId != this.Session.PageLayout.PageId )
+      {
+        this.LogDebug ( "New paged will be loaded." );
+
+        pageLayout = this._AdapterObjects.getPageLayout ( pageId );
+
+        if ( pageLayout == null )
+        {
+          this.LogDebug ( "Page identifier not found" );
+
+          this.ErrorMessage = EdLabels.PageLayout_Get_Empty_Error_Message;
+
+          this.LogEvent (
+            String.Format ( "Page Id {0} was not retrieved from the page layout list.", pageId ) );
+
+          this.LogMethodEnd ( "generatePage" );
+          return this.Session.LastPage;
+        }
+
+        //
+        // update the current page layout.
+        //
+        this.Session.PageLayout = pageLayout;
+
+      }//END change page layout.
+   
+      //
+      // Initialise the page object.
+      //
+      clientDataObject.Id = this.Session.PageLayout.Guid;
+      clientDataObject.Page.Id = clientDataObject.Id;
+      clientDataObject.Title = this.Session.PageLayout.Title;
+
+      Evado.Model.UniForm.Page page = clientDataObject.Page;
+
+      page.Title = this.Session.PageLayout.Title;
+      page.PageId = this.Session.PageLayout.PageId;
+      page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+      if ( this.Session.PageLayout.LeftColumnWidth > 0 )
+      {
+        page.SetLeftColumnWidth ( this.Session.PageLayout.LeftColumnWidth );
+        enableLeftColumn = true;
+      }
+
+      if ( this.Session.PageLayout.DisplayMainMenu == true )
+      {
+        page.SetLeftColumnWidth ( 15 );
+        enableLeftColumn = true;
+      }
+
+      if ( this.Session.PageLayout.RightColumnWidth > 0 )
+      {
+        page.SetRightColumnWidth ( this.Session.PageLayout.RightColumnWidth );
+        enableRightColumn = true;
+      }
+
+      //
+      // generate the header comonents.
+      //
+      this.createPage_Header ( page, PageCommand );
+
+      //
+      // generate the left column content.
+      //
+      if ( enableLeftColumn == true )
+      {
+        this.createPage_LeftColumn ( page, PageCommand );
+      }
+
+      //
+      // create the center body column components
+      //
+      this.createPage_CenterColumn ( page, PageCommand );
+
+      //
+      // generate the right column content.
+      //
+      if ( enableRightColumn == true )
+      {
+        this.createPage_RightColumn ( page, PageCommand );
+      }
+
+      this.LogMethodEnd ( "generatePage" );
+
+      return clientDataObject;
+
+    }//END generatePage method.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates the left column of a page layout. 
+    /// </summary>
+    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    // ----------------------------------------------------------------------------------
+    private void createPage_Header (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "createPage_Header" );
+      // initialise the methods objects and variables.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+
+      //
+      // Add the column's text content.
+      //
+      if ( this.Session.PageLayout.HeaderContent != String.Empty )
+      {
+        pageGroup = PageObject.AddGroup (
+          String.Empty,
+          this.Session.PageLayout.HeaderContent,
+          Model.UniForm.EditAccess.Disabled );
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Page_Header;
+      }
+
+      //
+      // generate the page header component list.
+      //
+      if ( this.Session.PageLayout.HeaderComponentList != String.Empty )
+      {
+        //
+        // get the array of components.
+        //
+        string [ ] arrComponents = this.Session.PageLayout.HeaderComponentList.Split ( ';' );
+
+        //
+        // iterate through the components generating the page groups.
+        //
+        foreach ( String comp in arrComponents )
+        {
+          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
+          {
+            EuEntities entities = new EuEntities (
+                  this._AdapterObjects,
+                  this.ServiceUserProfile,
+                  this.Session,
+                  this.UniForm_BinaryFilePath,
+                  this.UniForm_BinaryServiceUrl,
+                  this.ClassParameters );
+
+            entities.getPageComponent ( PageObject, PageCommand );
+          }//END entity page object.
+
+        }// component iteration loop.
+
+      }//END page header group list .
+
+      this.LogMethodEnd ( "createPage_Header" );
+    }//ENd createPage_LeftColumn method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates the left column of a page layout. 
+    /// </summary>
+    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    // ----------------------------------------------------------------------------------
+    private void createPage_LeftColumn (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "createPage_LeftColumn" );
+      // initialise the methods objects and variables.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+      //
+      // Add the column's text content.
+      //
+      if ( this.Session.PageLayout.LeftColumnContent != String.Empty )
+      {
+        pageGroup = PageObject.AddGroup (
+          String.Empty,
+          this.Session.PageLayout.LeftColumnContent,
+          Model.UniForm.EditAccess.Disabled );
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
+      }
+
+      if ( this.Session.PageLayout.DisplayMainMenu == true )
+      {
+        this.generateMenuGroups ( PageObject, false );
+      }
+      else
+      {
+        //
+        // if RightColumnComponentList exit add the components to the list.
+        //
+        if ( this.Session.PageLayout.LeftColumnComponentList != String.Empty )
+        {
+          //
+          // get the array of components.
+          //
+          string [ ] arrComponents = this.Session.PageLayout.LeftColumnComponentList.Split ( ';' );
+
+          //
+          // iterate through the components generating the page groups.
+          //
+          foreach ( String comp in arrComponents )
+          {
+            if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
+            {
+              EuEntities entities = new EuEntities (
+                    this._AdapterObjects,
+                    this.ServiceUserProfile,
+                    this.Session,
+                    this.UniForm_BinaryFilePath,
+                    this.UniForm_BinaryServiceUrl,
+                    this.ClassParameters );
+
+              entities.getPageComponent ( PageObject, PageCommand );
+            }//END entity page object.
+
+          }// component iteration loop.
+
+        }//END left component exist.
+      }//END no menu.
+
+      this.LogMethodEnd ( "createPage_LeftColumn" );
+    }//ENd createPage_LeftColumn method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates the left column of a page layout. 
+    /// </summary>
+    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    // ----------------------------------------------------------------------------------
+    private void createPage_CenterColumn (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "createPage_Center" );
+      // initialise the methods objects and variables.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+
+      //
+      // Add the column's text content.
+      //
+      if ( this.Session.PageLayout.CenterColumnContent != String.Empty )
+      {
+        pageGroup = PageObject.AddGroup (
+          String.Empty,
+          this.Session.PageLayout.HeaderContent,
+          Model.UniForm.EditAccess.Disabled );
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Page_Header;
+      }
+
+      //
+      // generate the page header component list.
+      //
+      if ( this.Session.PageLayout.CenterColumnComponentList != String.Empty )
+      {
+        //
+        // get the array of components.
+        //
+        string [ ] arrComponents = this.Session.PageLayout.CenterColumnComponentList.Split ( ';' );
+
+        //
+        // iterate through the components generating the page groups.
+        //
+        foreach ( String comp in arrComponents )
+        {
+          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
+          {
+            EuEntities entities = new EuEntities (
+                  this._AdapterObjects,
+                  this.ServiceUserProfile,
+                  this.Session,
+                  this.UniForm_BinaryFilePath,
+                  this.UniForm_BinaryServiceUrl,
+                  this.ClassParameters );
+
+            entities.getPageComponent ( PageObject, PageCommand );
+          }//END entity page object.
+
+        }//END component iteration loop.
+
+      }//END page header group list .
+
+      this.LogMethodEnd ( "createPage_Center" );
+
+    }//END createPage_Center method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates the left column of a page layout. 
+    /// </summary>
+    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    // ----------------------------------------------------------------------------------
+    private void createPage_RightColumn (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "createPage_RightColumn" );
+      // initialise the methods objects and variables.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+      //
+      // Add the column's text content.
+      //
+      if ( this.Session.PageLayout.RightColumnContent != String.Empty )
+      {
+        pageGroup = PageObject.AddGroup (
+          String.Empty,
+          this.Session.PageLayout.RightColumnContent,
+          Model.UniForm.EditAccess.Disabled );
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Right );
+      }
+
+      //
+      // if RightColumnComponentList exit add the components to the list.
+      //
+      if ( this.Session.PageLayout.RightColumnComponentList != String.Empty )
+      {
+        //
+        // get the array of components.
+        //
+        string [ ] arrComponents = this.Session.PageLayout.RightColumnComponentList.Split ( ';' );
+
+        //
+        // iterate through the components generating the page groups.
+        //
+        foreach ( String comp in arrComponents )
+        {
+          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
+          {
+            EuEntities entities = new EuEntities (
+                  this._AdapterObjects,
+                  this.ServiceUserProfile,
+                  this.Session,
+                  this.UniForm_BinaryFilePath,
+                  this.UniForm_BinaryServiceUrl,
+                  this.ClassParameters );
+
+            entities.getPageComponent ( PageObject, PageCommand );
+          }//END entity page object.
+
+        }// component iteration loop.
+
+      }//END RightColumnComponentList components
+
+
+      this.LogMethodEnd ( "createPage_RightColumn" );
+    }//ENd createPage_RightColumn method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -853,7 +1247,7 @@ namespace Evado.UniForm.Digital
 
 
     }///END generateUerRoleGroup method
-     ///
+    ///
     /*
     // ==================================================================================
     /// <summary>

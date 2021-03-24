@@ -37,7 +37,6 @@ namespace Evado.UniForm.Digital
 {
   public partial class EuAdapter : Evado.Model.UniForm.ApplicationAdapterBase
   {
-
     // ==================================================================================
     /// <summary>
     /// This method gets the application object from the list.
@@ -449,7 +448,7 @@ namespace Evado.UniForm.Digital
 
     ///  =======================================================================================
     /// <summary>
-    /// This method loads the navigational command list for all static, entities and record layouts
+    /// This method loads the navigational page identifiers list for all static, entities and record layouts
     /// </summary>
     //  ---------------------------------------------------------------------------------
     public void LoadPageIdentifiers ( )
@@ -466,7 +465,7 @@ namespace Evado.UniForm.Digital
       // add the static page identifiers.
       //
 
-      this.LogInit ( "Generating the Static PageId list" );
+      //this.LogInit ( "Generating the Static PageId list" );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Home_Page ) );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Access_Denied ) );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_View ) );
@@ -537,7 +536,7 @@ namespace Evado.UniForm.Digital
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Upload_Page ) );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_View ) );
 
-      this.LogInit ( "Generating the PageLayout PageId list" );
+      //this.LogInit ( "Generating the PageLayout PageId list" );
       //
       // dynamic page identifiers for Entities by LayoutId
       //
@@ -548,12 +547,12 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserType );
+        //this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserType );
 
         String pageId = EuAdapter.CONST_PAGE_ID_PREFIX + pageLayout.PageId;
         String pageLabel = pageId.Replace ( "_", " " );
 
-        this.LogInit ( "Layout PageID: " + pageId );
+        //this.LogInit ( "Layout pageId: " + pageId );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLayout.Title ) );
 
@@ -561,7 +560,7 @@ namespace Evado.UniForm.Digital
 
 
 
-      this.LogInit ( "Generating the Entities PageId list" );
+      //this.LogInit ( "Generating the Entities PageId list" );
       //
       // dynamic page identifiers for Entities by LayoutId
       //
@@ -572,9 +571,9 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogInit ( "{0} - {1} > ParentType {2} ", entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
+        //this.LogInit ( "{0} - {1} > ParentType {2} ", entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
-        String pageId = EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX + entityLayout.LayoutId;
+        String pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
         this.LogInit ( "Layout PageID: " + pageId );
@@ -589,20 +588,20 @@ namespace Evado.UniForm.Digital
           case EdRecord.ParentTypeList.Organisation:
             {
 
-              pageId = EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "Org PageID: " + pageId );
+              //this.LogInit ( "Org PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
               break;
             }
           case EdRecord.ParentTypeList.User:
             {
-              pageId = EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "User PageID: " + pageId );
+              //this.LogInit ( "User PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -610,10 +609,10 @@ namespace Evado.UniForm.Digital
             }
           case EdRecord.ParentTypeList.Entity:
             {
-              pageId = EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "Entity PageID: " + pageId );
+              //this.LogInit ( "Entity PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -623,7 +622,7 @@ namespace Evado.UniForm.Digital
 
       }//END Entity list iteration
 
-      this.LogInit ( "Generating the Records PageId list" );
+      //this.LogInit ( "Generating the Records PageId list" );
       //
       // dynamic page identifiers for Entities by LayoutId
       //
@@ -634,7 +633,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        String pageId = EuAdapter.CONST_RECORD_PAGE_ID_PREFIX + recordLayouts.LayoutId;
+        String pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
@@ -646,10 +645,10 @@ namespace Evado.UniForm.Digital
         {
           case EdRecord.ParentTypeList.Organisation:
             {
-              pageId = EuAdapter.CONST_RECORD_PAGE_ID_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "PageID: " + pageId );
+              //this.LogInit ( "PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -657,10 +656,10 @@ namespace Evado.UniForm.Digital
             }
           case EdRecord.ParentTypeList.User:
             {
-              pageId = EuAdapter.CONST_RECORD_PAGE_ID_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "PageID: " + pageId );
+              //this.LogInit ( "PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -668,10 +667,10 @@ namespace Evado.UniForm.Digital
             }
           case EdRecord.ParentTypeList.Entity:
             {
-              pageId = EuAdapter.CONST_RECORD_PAGE_ID_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              this.LogInit ( "PageID: " + pageId );
+              //this.LogInit ( "PageID: " + pageId );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -686,6 +685,125 @@ namespace Evado.UniForm.Digital
       this.LogInitMethodEnd ( "LoadPageIdentifiers method" );
 
     }//END LoadPageIdentifiers method
+
+    ///  =======================================================================================
+    /// <summary>
+    /// This method loads the navigational page identifiers list for all static, entities and record layouts
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    public void LoadPageComponents ( )
+    {
+      this.LogInitMethod ( "LoadPageComponents method" );
+      this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      //
+      // Initialise the methods variables and objects.
+      //
+      this._AdapterObjects.PageComponents = new List<EvOption> ( );
+
+      this._AdapterObjects.PageComponents.Add ( new EvOption ( ) );
+
+      //this.LogInit ( "Generating the Entities component list" );
+      //
+      // dynamic page identifiers for Entities by LayoutId
+      //
+      foreach ( EdRecord entityLayout in this._AdapterObjects.AllEntityLayouts )
+      {
+        if ( entityLayout.State != EdRecordObjectStates.Form_Issued )
+        {
+          continue;
+        }
+
+        //this.LogInit ( "{0} - {1} ", entityLayout.LayoutId, entityLayout.Title );
+
+        //
+        // add the selection for the entity component.
+        //
+        String componentId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId;
+        String componentLabel = componentId.Replace ( "_", " " );
+
+        //.LogInit ( "Entity componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+        //
+        // add the selection for the entity list component.
+        //
+        componentId = EuAdapter.CONST_ENTITY_LIST_PREFIX + entityLayout.LayoutId;
+        componentLabel = componentId.Replace ( "_", " " );
+
+        //this.LogInit ( "Entity List componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+        //
+        // add the selection for the entity filtered list component.
+        //
+        componentId = EuAdapter.CONST_ENTITY_FILTERED_LIST_PREFIX + entityLayout.LayoutId;
+        componentLabel = componentId.Replace ( "_", " " );
+
+        //this.LogInit ( "Entity Filtered List componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+
+      }//END Entity list iteration
+
+      //this.LogInit ( "Generating the Records component list" );
+      //
+      // dynamic page identifiers for Records by LayoutId
+      //
+      foreach ( EdRecord recordLayout in this._AdapterObjects.AllRecordLayouts )
+      {
+        if ( recordLayout.State != EdRecordObjectStates.Form_Issued )
+        {
+          continue;
+        }
+
+        //this.LogInit ( "{0} - {1} ", recordLayout.LayoutId, recordLayout.Title );
+
+        //
+        // add the selection for the entity component.
+        //
+        String componentId = EuAdapter.CONST_RECORD_PREFIX + recordLayout.LayoutId;
+        String componentLabel = componentId.Replace ( "_", " " );
+
+        //.LogInit ( "Record componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+        //
+        // add the selection for the entity list component.
+        //
+        componentId = EuAdapter.CONST_RECORD_LIST_PREFIX + recordLayout.LayoutId;
+        componentLabel = componentId.Replace ( "_", " " );
+
+        //this.LogInit ( "Record List componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+        //
+        // add the selection for the entity filtered list component.
+        //
+        componentId = EuAdapter.CONST_RECORD_FILTERED_LIST_PREFIX + recordLayout.LayoutId;
+        componentLabel = componentId.Replace ( "_", " " );
+
+        //this.LogInit ( "Record Filtered List componentId: " + componentId );
+
+        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+
+      }//END Record list iteration
+
+      this.LogInit ( "PageComponents.Count: " + this._AdapterObjects.PageComponents.Count );
+
+      this.LogInit ( "Page component list:" );
+      foreach ( EvOption option in this._AdapterObjects.PageComponents )
+      {
+        this.LogInit ( "-{0} - Desc: {1} ", option.Value, option.Description );
+      }
+
+      this.LogInitMethodEnd ( "LoadPageComponents method" );
+
+    }//END LoadPageComponents method
 
   }///END EuAdapter class
 

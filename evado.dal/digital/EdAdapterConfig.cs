@@ -354,8 +354,6 @@ namespace Evado.Dal.Digital
         // and add record to the application profile table.
         if ( table.Rows.Count == 0 )
         {
-          adapterParameters = this.getReaderData ( table.Rows [ 0 ] );
-
           return adapterParameters;
         }
 

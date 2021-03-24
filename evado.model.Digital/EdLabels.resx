@@ -1852,7 +1852,7 @@ Select the roles who can edit this section's content.</value>
     <value>Please review the values and re-submit these items.</value>
   </data>
   <data name="Record_Retrieve_Error_Message" xml:space="preserve">
-    <value>Error raised when retrieving a record.</value>
+    <value>ERROR: Error raised when retrieving a record.</value>
   </data>
   <data name="Record_Save_Command_Title" xml:space="preserve">
     <value>Save Record</value>
@@ -1885,7 +1885,7 @@ Select the roles who can edit this section's content.</value>
     <value>Error raised when saving record.</value>
   </data>
   <data name="Record_View_Error_Message" xml:space="preserve">
-    <value>Error raised when generating a list of records.</value>
+    <value>ERROR: Error raised when generating a list of records.</value>
   </data>
   <data name="Record_View_Page_Title" xml:space="preserve">
     <value>Trial Records</value>
@@ -2983,5 +2983,14 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="PageLayout_DisplayMainMenu_Field_Label" xml:space="preserve">
     <value>Display the Main Menu:</value>
+  </data>
+  <data name="Entity_Retrieve_Error_Message" xml:space="preserve">
+    <value>ERROR: Error raised when retrieving a entity</value>
+  </data>
+  <data name="Entity_View_Error_Message" xml:space="preserve">
+    <value>ERROR: Error was raised when generating a list of entities</value>
+  </data>
+  <data name="PageLayout_Get_Empty_Error_Message" xml:space="preserve">
+    <value>ERROR: The selection page was not retrieved.</value>
   </data>
 </root>

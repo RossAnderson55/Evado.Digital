@@ -671,7 +671,7 @@ namespace Evado.UniForm.Digital
       {
 
         this.LogDebug ( "PageId: {0}, Title: {1} Org Parent.", PageId, Title ); 
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
@@ -696,7 +696,7 @@ namespace Evado.UniForm.Digital
       else if ( PageId.Contains ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX ) == true )
       {
         this.LogDebug ( "PageId: {0}, Title: {1} User  Parent.", PageId, Title ); 
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
@@ -721,7 +721,7 @@ namespace Evado.UniForm.Digital
       else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX ) == true )
       {
         this.LogDebug ( "PageId: {0}, Title: {1} Entity Parent.", PageId, Title ); 
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
@@ -741,10 +741,10 @@ namespace Evado.UniForm.Digital
       //
       // Create the command to access Entities by their layout identifers.
       //
-      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX ) == true )
+      else if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
       {
         this.LogDebug ( "PageId: {0}, Title: {1} Layout.", PageId, Title ); 
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
           Title,
@@ -763,9 +763,9 @@ namespace Evado.UniForm.Digital
       //
       // Create the command to access records by their layout identifers.
       //
-      if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX ) == true )
+      if ( PageId.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
       {
-        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PAGE_ID_PREFIX, String.Empty );
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
 
         pageCommand = new Model.UniForm.Command (
           Title,

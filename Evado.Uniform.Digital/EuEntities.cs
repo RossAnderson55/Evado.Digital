@@ -380,6 +380,341 @@ namespace Evado.UniForm.Digital
 
     }//END getRecordObject methods
 
+
+    // ===============================================================================
+    /// <summary>
+    /// This method gets the application object from the list.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <returns>Evado.Model.UniForm.AppData</returns>
+    //  ----------------------------------------------------------------------------------
+    public EvEventCodes getPageComponent (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getPageComponent" );
+      this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+
+      try
+      {
+        //
+        // UPdate the sessin variables.
+        //
+        this.updateSessionValue ( PageCommand );
+
+        string pageId = PageCommand.GetPageId ( );
+
+        this.LogDebug ( "Page identifier {0}.", pageId );
+
+        //
+        // get the entity list for the layout identifier.
+        //
+        if ( pageId.Contains ( EuAdapter.CONST_ENTITY_LIST_PREFIX ) == true )
+        {
+          var layoutId = pageId.Replace ( EuAdapter.CONST_ENTITY_LIST_PREFIX, String.Empty );
+
+          return this.getListObject ( PageObject, layoutId );          
+        }
+
+        //
+        // get the filters entity list for the layout identifier.
+        //
+        if ( pageId.Contains ( EuAdapter.CONST_ENTITY_FILTERED_LIST_PREFIX ) == true )
+        {
+          var layoutId = pageId.Replace ( EuAdapter.CONST_ENTITY_FILTERED_LIST_PREFIX, String.Empty );
+
+          return this.GetFilteredListObject( PageObject, layoutId );
+        }
+
+        //
+        // get the layout 
+        //
+        if ( pageId.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
+        {
+          var layoutId = pageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
+
+          return this.getObject ( PageObject, PageCommand );
+        }
+
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // If an exception is created log the error and return an error.
+        // 
+        this.LogException ( Ex );
+      }
+
+      return EvEventCodes.Page_Loading_General_Error;
+
+    }//END getRecordObject methods
+
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Page Component methods.
+    // ==============================================================================
+    /// <summary>
+    /// This method generates an enity list page groups.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
+    /// <param name="LayoutId">String: optional layout identifier.</param>
+    /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
+    //  -----------------------------------------------------------------------------
+    private EvEventCodes getListObject (
+      Evado.Model.UniForm.Page PageObject,
+      String LayoutId )
+    {
+      this.LogMethod ( "getListObject" );
+      this.LogValue ( "LayoutId: " + LayoutId );
+      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Entity_SelectedLayoutId );
+      try
+      {
+        // 
+        // If the user does not have monitor or ResultData manager roles exit the page.
+        // 
+        if ( this.Session.UserProfile.hasRole( this.Session.UserProfile.Roles ) == false )
+        {
+          this.LogIllegalAccess (
+            this.ClassNameSpace + "getListObject",
+            this.Session.UserProfile );
+
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
+
+          return EvEventCodes.User_Access_Error; 
+        }
+
+        // 
+        // Log the user's access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "getListObject",
+          this.Session.UserProfile );
+
+        //
+        // Update the layoutId if passed as a parameter.
+        //
+        if ( this.Session.Entity_SelectedLayoutId != LayoutId
+          && LayoutId != String.Empty )
+        {
+          this.Session.Entity_SelectedLayoutId = LayoutId;
+        }
+
+        //
+        // Execute the monitor list record query.
+        //
+        this.executeRecordQuery ( );
+
+        // 
+        // Create the new pageMenuGroup for query selection.
+        // 
+        this.getList_SelectionGroup ( PageObject );
+
+        // 
+        // Create the pageMenuGroup containing commands to open the records.
+        //         
+        this.getRecord_ListGroup ( PageObject );
+
+
+        return  EvEventCodes.Ok;
+
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // Create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Entity_View_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+      return  EvEventCodes.Page_Loading_General_Error ;
+
+    }//END getListObject method.
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generate filter list of entities..
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
+    /// <param name="LayoutId">String: optional layout identifier.</param>
+    /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
+    //  -----------------------------------------------------------------------------
+    private EvEventCodes GetFilteredListObject (
+      Evado.Model.UniForm.Page PageObject,
+      String LayoutId )
+    {
+      this.LogMethod ( "GetFilteredListObject" );
+      this.LogValue ( "LayoutId: " + LayoutId );
+      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Entity_SelectedLayoutId );
+      try
+      {
+        // 
+        // If the user does not have monitor or ResultData manager roles exit the page.
+        // 
+        if ( this.Session.UserProfile.hasRole ( this.Session.UserProfile.Roles ) == false )
+        {
+          this.LogIllegalAccess (
+            this.ClassNameSpace + "GetFilteredListObject",
+            this.Session.UserProfile );
+
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
+
+          this.LogMethodEnd ( "GetFilteredListObject" );
+          return EvEventCodes.User_Access_Error; 
+        }
+        // 
+        // Log the user's access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "GetFilteredListObject",
+          this.Session.UserProfile );
+
+        //
+        // Update the layoutId if passed as a parameter.
+        //
+        if ( this.Session.Entity_SelectedLayoutId != LayoutId
+          && LayoutId != String.Empty )
+        {
+          this.Session.Entity_SelectedLayoutId = LayoutId;
+        }
+
+        //
+        // Execute the monitor list record query.
+        //
+        this.executeRecordQuery ( );
+
+        // 
+        // Create the new pageMenuGroup for query selection.
+        // 
+        this.getQueryList_SelectionGroup ( PageObject );
+
+        // 
+        // Create the pageMenuGroup containing commands to open the records.
+        //         
+        this.getRecord_ListGroup ( PageObject );
+
+        this.LogMethodEnd ( "GetFilteredListObject" );
+        return EvEventCodes.Ok;
+
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // Create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Entity_View_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+      this.LogMethodEnd ( "GetFilteredListObject" );
+      return EvEventCodes.Page_Loading_General_Error;
+
+    }//END GetFilteredListObject method.
+
+    // ==============================================================================
+    /// <summary>
+    /// This method generates an entity data page.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
+    //  ------------------------------------------------------------------------------
+    private EvEventCodes getObject (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getObject" );
+      try
+      {
+        // 
+        // If the user does not have monitor or ResultData manager roles exit the page.
+        // 
+        if ( this.Session.UserProfile.hasRole ( this.Session.UserProfile.Roles ) == false )
+        {
+          this.LogIllegalAccess (
+            this.ClassNameSpace + "getObject",
+            this.Session.UserProfile );
+
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
+
+          return EvEventCodes.User_Access_Error; 
+        }
+
+        // 
+        // Log access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "getObject",
+          this.Session.UserProfile );
+
+        //
+        // Get the record.
+
+        var result = this.GetEntity ( PageCommand );
+
+        // 
+        // if the guid is empty the parameter was not found to exit.
+        // 
+        if ( result != EvEventCodes.Ok )
+        {
+          this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
+
+          this.LogError ( EvEventCodes.Database_Record_Retrieval_Error, "Retrieved Record is empty." );
+          this.LogMethodEnd ( "getObject" );
+          return EvEventCodes.Database_Record_Retrieval_Error; 
+        }
+
+        this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
+
+
+        this.LogValue ( "Entity.EntityId: " + this.Session.Entity.EntityId );
+
+        //
+        // Rung the server script if server side scripts are enabled.
+        //
+        this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
+
+        // 
+        // Generate the client ResultData object for the UniForm client.
+        // 
+        this.getClientData ( PageObject );
+
+        // 
+        // Return the client ResultData object to the calling method.
+        // 
+        this.LogMethodEnd ( "getObject" );
+        return EvEventCodes.Ok;
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // On an exception raised create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Entity_Retrieve_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+
+      this.LogMethodEnd ( "getObject" );
+      return EvEventCodes.Page_Loading_General_Error;
+
+    }//END getObject method
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -716,7 +1051,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasAdministrationAccess == false )
+        if ( this.Session.UserProfile.hasRole ( this.Session.UserProfile.Roles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getListObject",
@@ -792,14 +1127,10 @@ namespace Evado.UniForm.Digital
     /// This method creates the record view pageMenuGroup containing a list of commands to 
     /// open the form record.
     /// </summary>
-    /// <param name="Page">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
-    /// <param name="subjects">EvSubjects subjects to add to selection groups</param>
-    /// <param name="subjectVisits">EvSubjectMilestones visits for each subject</param>
-    /// <param name="QueryParameters">EvQueryParameters: conting the query parameters</param>
-    /// <param name="ApplicationObject">Adapter.ApplicationObjects object.</param>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
     //  ------------------------------------------------------------------------------
     private void getList_SelectionGroup (
-      Evado.Model.UniForm.Page Page )
+      Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getList_SelectionGroup" );
       this.LogDebug ( "RecordLayoutList.Count {0}. ", this.AdapterObjects.IssuedRecordLayouts.Count );
@@ -819,7 +1150,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the new pageMenuGroup for record selection.
       // 
-      pageGroup = Page.AddGroup (
+      pageGroup = PageObject.AddGroup (
         EdLabels.Record_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
@@ -1830,9 +2161,33 @@ namespace Evado.UniForm.Digital
         this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
 
         // 
+        // Initialise the client object.
+        // 
+        clientDataObject.Page.Id = clientDataObject.Id;
+        clientDataObject.Page.PageDataGuid = clientDataObject.Id;
+        clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
+        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+        clientDataObject.Id = this.Session.Entity.Guid;
+        clientDataObject.Title = this.Session.Entity.CommandTitle;
+
+        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        {
+          clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+        }
+
+
+        clientDataObject.Page.Title = clientDataObject.Title;
+        this.LogDebug
+          ( "Title.Length: " + clientDataObject.Title.Length );
+
+        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+
+
+        // 
         // Generate the client ResultData object for the UniForm client.
         // 
-        this.getClientData ( clientDataObject );
+        this.getClientData ( clientDataObject.Page );
 
         // 
         // Return the client ResultData object to the calling method.
@@ -1845,7 +2200,7 @@ namespace Evado.UniForm.Digital
         // 
         // On an exception raised create the error message to be displayed to the user.
         // 
-        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
+        this.ErrorMessage = EdLabels.Entity_Retrieve_Error_Message;
 
         // 
         // Generate the log the error event.
@@ -2241,10 +2596,10 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
     private void getClientData (
-      Evado.Model.UniForm.AppData ClientDataObject )
+      Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getClientData" );
       // 
@@ -2265,52 +2620,27 @@ namespace Evado.UniForm.Digital
         this.UniForm_BinaryServiceUrl,
         this.ClassParameters );
 
-      // 
-      // Initialise the client ResultData object.
-      // 
-      ClientDataObject.Page.Id = ClientDataObject.Id;
-      ClientDataObject.Page.PageDataGuid = ClientDataObject.Id;
-      ClientDataObject.Page.PageId = this.Session.Entity.LayoutId;
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-
-      ClientDataObject.Id = this.Session.Entity.Guid;
-      ClientDataObject.Title = this.Session.Entity.CommandTitle;
-
-      if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
-      {
-        ClientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
-      }
-
-
-      ClientDataObject.Page.Title = ClientDataObject.Title;
-      this.LogDebug
-        ( "Title.Length: " + ClientDataObject.Title.Length );
-
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-
       //
       // The locked status of the record.
       //
-      if ( this.checkRecordLockStatus ( ClientDataObject.Page ) == false )
+      if ( this.checkRecordLockStatus ( PageObject ) == false )
       {
         this.LogValue ( "The record is not locked." );
 
-        this.getDataObject_PageCommands ( ClientDataObject.Page );
+        this.getDataObject_PageCommands ( PageObject );
       }
-      ClientDataObject.Message = this.ErrorMessage;
 
-      this.LogValue ( "GENERATE FORM" );
+      this.LogValue ( "GENERATE LAYOUT" );
 
       // 
       // Call the page generation method
       // 
       bool result = pageGenerator.generateLayout (
         this.Session.Entity,
-        ClientDataObject.Page,
+        PageObject,
         this.UniForm_BinaryFilePath );
 
       this.LogClass ( pageGenerator.Log );
-
 
       //
       // Return null and an error message if the page generator exits with an error.
@@ -2324,11 +2654,15 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      this.getDataObject_GroupCommands ( ClientDataObject.Page );
+      //
+      // generate the group commands.
+      //
+      this.getDataObject_GroupCommands ( PageObject );
+
       //
       // if the entity has child entities add a group to display them.
       //
-      this.getDataObject_ChildEntities ( ClientDataObject.Page );
+      this.getDataObject_ChildEntities ( PageObject );
 
       this.LogMethodEnd ( "getClientData" );
 
@@ -2390,6 +2724,7 @@ namespace Evado.UniForm.Digital
     }
 
     private readonly string ChildEntityGroupID = "ChildEntities";
+
     // ==============================================================================
     /// <summary>
     /// This method displays the entity's chiled entities
@@ -2662,9 +2997,31 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( "CREATED Record Id: " + this.Session.Entity.RecordId );
 
         // 
+        // Initialise the client object.
+        // 
+        clientDataObject.Page.Id = clientDataObject.Id;
+        clientDataObject.Page.PageDataGuid = clientDataObject.Id;
+        clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
+        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+        clientDataObject.Id = this.Session.Entity.Guid;
+        clientDataObject.Title = this.Session.Entity.CommandTitle;
+
+        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        {
+          clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+        }
+
+        clientDataObject.Page.Title = clientDataObject.Title;
+        this.LogDebug
+          ( "Title.Length: " + clientDataObject.Title.Length );
+
+        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+
+        // 
         // Generate the new page layout 
         // 
-        this.getClientData ( clientDataObject );
+        this.getClientData ( clientDataObject.Page );
 
         this.Session.EntityList = new List<EdRecord> ( );
         // 
