@@ -87,11 +87,23 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This constant defines the admin menu group identifier.
     /// </summary>
-    public const string CONST_MENU_ADMIN_GROUP_ID = "ADMIN";
+    public const string CONST_MAIN_MENU_ID = "MAIN";
+    /// <summary>
+    /// This constant defines the admin menu group identifier.
+    /// </summary>
+    public const string CONST_MENU_STATIC_ADMIN_GROUP_ID = "ADMIN";
     /// <summary>
     /// this constant defines the management menu group identifier.
     /// </summary>
-    public const string CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID = "MGT";
+    public const string CONST_MENU_STATIC_MANAGEMENT_GROUP_ID = "MGT";
+    /// <summary>
+    /// this constant defines the management menu group identifier.
+    /// </summary>
+    public const string CONST_MENU_STATIC_RECORD_GROUP_ID = "REC";
+    /// <summary>
+    /// this constant defines the management menu group identifier.
+    /// </summary>
+    public const string CONST_MENU_STATIC_ANALYSIS_GROUP_ID = "ANA";
     /// <summary>
     /// this constant defines the project record menu group identifier.
     /// </summary>

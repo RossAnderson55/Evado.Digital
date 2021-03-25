@@ -1166,6 +1166,13 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( "HOME PAGE SELECTED." );
 
+            String pageId = PageCommand.GetPageId();
+
+            if ( pageId != String.Empty )
+            {
+              return this.generatePage ( PageCommand );
+            }
+
             // 
             // Return the instance to the list.
             // 

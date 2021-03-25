@@ -167,7 +167,7 @@
     <Compile Include="EdRecordComments.cs" />
     <Compile Include="EdRecordSection.cs" />
     <Compile Include="evformstaticfield.cs" />
-    <Compile Include="evmenuitem.cs" />
+    <Compile Include="EvMenuItem.cs" />
     <Compile Include="EvcStatics.cs" />
     <Compile Include="EvClassParameters.cs" />
     <Compile Include="EdQueryParameters.cs" />

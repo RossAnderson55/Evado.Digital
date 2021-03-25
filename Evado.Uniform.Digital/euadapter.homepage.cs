@@ -84,736 +84,8 @@ namespace Evado.UniForm.Digital
       // 
       return clientDataObject;
 
-    }//END generateNoProfilePage method
+    }///END generateHomePage method
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Class generate page methods method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates a Page Layout 
-    /// 
-    /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    /// <returns>Evado.Model.UniForm.AppData</returns>
-    // ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.AppData generatePage (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "generatePage" );
-      this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
-      //
-      // initialise the methods objects and variables.
-      //
-      EdPageLayout pageLayout = new EdPageLayout ( );
-      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      bool enableLeftColumn = false;
-      bool enableRightColumn = false;
-
-      if ( this.Session.PageLayout == null )
-      {
-        this.Session.PageLayout = new EdPageLayout ( );
-        this.Session.PageLayout.PageId = String.Empty;
-      }
-
-      string pageId = PageCommand.GetPageId ( );
-
-      this.LogDebug ( "Current PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
-
-      if ( pageId == String.Empty )
-      {
-        this.LogDebug( "No Page ID provided ");
-        this.LogMethodEnd ( "generatePage" );
-        return this.Session.LastPage;
-      }
-
-      //
-      // Update the page layout if it has changed.
-      //
-      if ( pageId != this.Session.PageLayout.PageId )
-      {
-        this.LogDebug ( "New paged will be loaded." );
-
-        pageLayout = this._AdapterObjects.getPageLayout ( pageId );
-
-        if ( pageLayout == null )
-        {
-          this.LogDebug ( "Page identifier not found" );
-
-          this.ErrorMessage = EdLabels.PageLayout_Get_Empty_Error_Message;
-
-          this.LogEvent (
-            String.Format ( "Page Id {0} was not retrieved from the page layout list.", pageId ) );
-
-          this.LogMethodEnd ( "generatePage" );
-          return this.Session.LastPage;
-        }
-
-        //
-        // update the current page layout.
-        //
-        this.Session.PageLayout = pageLayout;
-
-      }//END change page layout.
-
-      //
-      // Initialise the page object.
-      //
-      clientDataObject.Id = this.Session.PageLayout.Guid;
-      clientDataObject.Page.Id = clientDataObject.Id;
-      clientDataObject.Title = this.Session.PageLayout.Title;
-
-      Evado.Model.UniForm.Page page = clientDataObject.Page;
-
-      page.Title = this.Session.PageLayout.Title;
-      page.PageId = this.Session.PageLayout.PageId;
-      page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-
-      if ( this.Session.PageLayout.LeftColumnWidth > 0 )
-      {
-        page.SetLeftColumnWidth ( this.Session.PageLayout.LeftColumnWidth );
-        enableLeftColumn = true;
-      }
-
-      if ( this.Session.PageLayout.DisplayMainMenu == true )
-      {
-        page.SetLeftColumnWidth ( 15 );
-        enableLeftColumn = true;
-      }
-
-      if ( this.Session.PageLayout.RightColumnWidth > 0 )
-      {
-        page.SetRightColumnWidth ( this.Session.PageLayout.RightColumnWidth );
-        enableRightColumn = true;
-      }
-
-      //
-      // create the main page menu.
-      //
-      this.CreateMainMenu ( page );
-
-      //
-      // generate the header comonents.
-      //
-      this.createPage_Header ( page, PageCommand );
-
-      //
-      // generate the left column content.
-      //
-      if ( enableLeftColumn == true )
-      {
-        this.createPage_LeftColumn ( page, PageCommand );
-      }
-
-      //
-      // create the center body column components
-      //
-      this.createPage_CenterColumn ( page, PageCommand );
-
-      //
-      // generate the right column content.
-      //
-      if ( enableRightColumn == true )
-      {
-        this.createPage_RightColumn ( page, PageCommand );
-      }
-
-      this.LogMethodEnd ( "generatePage" );
-
-      return clientDataObject;
-
-    }//END generatePage method.
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the left column of a page layout. 
-    /// </summary>
-    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    // ----------------------------------------------------------------------------------
-    private void createPage_Header (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "createPage_Header" );
-      // initialise the methods objects and variables.
-      //
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-
-      //
-      // Add the column's text content.
-      //
-      if ( this.Session.PageLayout.HeaderContent != String.Empty )
-      {
-        pageGroup = PageObject.AddGroup (
-          String.Empty,
-          this.Session.PageLayout.HeaderContent,
-          Model.UniForm.EditAccess.Disabled );
-        pageGroup.Layout = Model.UniForm.GroupLayouts.Page_Header;
-      }
-
-      //
-      // generate the page header component list.
-      //
-      if ( this.Session.PageLayout.HeaderComponentList != String.Empty )
-      {
-        //
-        // get the array of components.
-        //
-        string [ ] arrComponents = this.Session.PageLayout.HeaderComponentList.Split ( ';' );
-
-        //
-        // iterate through the components generating the page groups.
-        //
-        foreach ( String comp in arrComponents )
-        {
-          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
-          {
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
-
-            entities.getPageComponent ( PageObject, PageCommand );
-          }//END entity page object.
-
-        }// component iteration loop.
-
-      }//END page header group list .
-
-      this.LogMethodEnd ( "createPage_Header" );
-    }//ENd createPage_LeftColumn method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the left column of a page layout. 
-    /// </summary>
-    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    // ----------------------------------------------------------------------------------
-    private void createPage_LeftColumn (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "createPage_LeftColumn" );
-      // initialise the methods objects and variables.
-      //
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      //
-      // Add the column's text content.
-      //
-      if ( this.Session.PageLayout.LeftColumnContent != String.Empty )
-      {
-        pageGroup = PageObject.AddGroup (
-          String.Empty,
-          this.Session.PageLayout.LeftColumnContent,
-          Model.UniForm.EditAccess.Disabled );
-        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-      }
-
-      if ( this.Session.PageLayout.DisplayMainMenu == false)
-      {
-        //
-        // if RightColumnComponentList exit add the components to the list.
-        //
-        if ( this.Session.PageLayout.LeftColumnComponentList != String.Empty )
-        {
-          //
-          // get the array of components.
-          //
-          string [ ] arrComponents = this.Session.PageLayout.LeftColumnComponentList.Split ( ';' );
-
-          //
-          // iterate through the components generating the page groups.
-          //
-          foreach ( String comp in arrComponents )
-          {
-            if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
-            {
-              EuEntities entities = new EuEntities (
-                    this._AdapterObjects,
-                    this.ServiceUserProfile,
-                    this.Session,
-                    this.UniForm_BinaryFilePath,
-                    this.UniForm_BinaryServiceUrl,
-                    this.ClassParameters );
-
-              entities.getPageComponent ( PageObject, PageCommand );
-            }//END entity page object.
-
-          }// component iteration loop.
-
-        }//END left component exist.
-      }//END no menu.
-
-      this.LogMethodEnd ( "createPage_LeftColumn" );
-    }//ENd createPage_LeftColumn method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the left column of a page layout. 
-    /// </summary>
-    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    // ----------------------------------------------------------------------------------
-    private void createPage_CenterColumn (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "createPage_Center" );
-      // initialise the methods objects and variables.
-      //
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-
-      //
-      // Add the column's text content.
-      //
-      if ( this.Session.PageLayout.CenterColumnContent != String.Empty )
-      {
-        pageGroup = PageObject.AddGroup (
-          String.Empty,
-          this.Session.PageLayout.HeaderContent,
-          Model.UniForm.EditAccess.Disabled );
-        pageGroup.Layout = Model.UniForm.GroupLayouts.Page_Header;
-      }
-
-      //
-      // generate the page header component list.
-      //
-      if ( this.Session.PageLayout.CenterColumnComponentList != String.Empty )
-      {
-        //
-        // get the array of components.
-        //
-        string [ ] arrComponents = this.Session.PageLayout.CenterColumnComponentList.Split ( ';' );
-
-        //
-        // iterate through the components generating the page groups.
-        //
-        foreach ( String comp in arrComponents )
-        {
-          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
-          {
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
-
-            entities.getPageComponent ( PageObject, PageCommand );
-          }//END entity page object.
-
-        }//END component iteration loop.
-
-      }//END page header group list .
-
-      this.LogMethodEnd ( "createPage_Center" );
-
-    }//END createPage_Center method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the left column of a page layout. 
-    /// </summary>
-    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    // ----------------------------------------------------------------------------------
-    private void createPage_RightColumn (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "createPage_RightColumn" );
-      // initialise the methods objects and variables.
-      //
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      //
-      // Add the column's text content.
-      //
-      if ( this.Session.PageLayout.RightColumnContent != String.Empty )
-      {
-        pageGroup = PageObject.AddGroup (
-          String.Empty,
-          this.Session.PageLayout.RightColumnContent,
-          Model.UniForm.EditAccess.Disabled );
-        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Right );
-      }
-
-      //
-      // if RightColumnComponentList exit add the components to the list.
-      //
-      if ( this.Session.PageLayout.RightColumnComponentList != String.Empty )
-      {
-        //
-        // get the array of components.
-        //
-        string [ ] arrComponents = this.Session.PageLayout.RightColumnComponentList.Split ( ';' );
-
-        //
-        // iterate through the components generating the page groups.
-        //
-        foreach ( String comp in arrComponents )
-        {
-          if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
-          {
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
-
-            entities.getPageComponent ( PageObject, PageCommand );
-          }//END entity page object.
-
-        }// component iteration loop.
-
-      }//END RightColumnComponentList components
-
-
-      this.LogMethodEnd ( "createPage_RightColumn" );
-    }//ENd createPage_RightColumn method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the home page menu based on user roles.
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    /// <param name="OnlyAdministrationMenu">Bool: display administration menu.</param>
-    // ----------------------------------------------------------------------------------
-    public void CreateMainMenu (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      this.LogMethod ( "CreateMainMenu" );
-
-      this.LogDebug ( this.Session.PageLayout.CommandText );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Group menuGroup = new Model.UniForm.Group ( );
-      List<Evado.Model.UniForm.Command> menuCommands = new List<Model.UniForm.Command> ( );
-
-      //
-      // exit if the main menu is not displayed.
-      //
-      if ( this.Session.PageLayout.DisplayMainMenu == false )
-      {
-        return;
-      }
-       
-
-      //
-      // get the main menu commands.
-      //
-      menuCommands = this.CreateMenuCommands ( EvMenuItem.CONST_MAIN_MENU_ID );
-
-      //
-      //  Create the menu if the commands exist.
-      //
-      if ( menuCommands.Count > 0  )
-      {
-        PageObject.SetLeftColumnWidth ( 15 );
-          // 
-          // Create the menu pageheaders MenuGroup object
-          // 
-        menuGroup = PageObject.AddGroup (
-            EdLabels.HomePage_Menu_Header_Group_Title,
-            Evado.Model.UniForm.EditAccess.Enabled );
-        menuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-        menuGroup.Layout = Model.UniForm.GroupLayouts.Dynamic;
-        menuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-
-        menuGroup.CommandList = menuCommands;
-      }//END command exist.
-
-
-
-      this.LogMethodEnd ( "CreateMainMenu" );
-
-    }//END CreateMainMenu method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the home page menu based on user roles.
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    /// <param name="OnlyAdministrationMenu">Bool: display administration menu.</param>
-    // ----------------------------------------------------------------------------------
-    public void CreateMenuGroup (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      this.LogMethod ( "CreatePageMenu" );
-      this.LogValue ( "MenuLocation: " + this.Session.PageLayout.MenuLocation );
-      this.LogValue ( "PageId: " + this.Session.PageLayout.PageId );
-
-      this.LogDebug ( this.Session.PageLayout.CommandText );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Group menuGroup = new Model.UniForm.Group ( );
-      List<EvMenuItem> menuHeaders = new List<EvMenuItem> ( );
-      string menuSelection = String.Empty;
-
-      menuSelection = this.Session.PageLayout.PageId; 
-
-      //
-      // Display the main menu.
-      //
-      switch ( this.Session.PageLayout.MenuLocation )
-      {
-        case EdPageLayout.MenuLocations.Page_Menu:
-          {
-            PageObject.CommandList = this.CreateMenuCommands ( menuSelection );
-            break;
-          }
-        case EdPageLayout.MenuLocations.Left_Column:
-          {
-            // 
-            // Create the menu pageheaders MenuGroup object
-            // 
-            menuGroup = new Model.UniForm.Group (
-                EdLabels.HomePage_Menu_Header_Group_Title,
-                Evado.Model.UniForm.EditAccess.Enabled );
-            menuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-            menuGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-            menuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-
-            menuGroup.CommandList = this.CreateMenuCommands ( menuSelection );
-
-            break;
-          }
-        case EdPageLayout.MenuLocations.Top_Center:
-          {
-            // 
-            // Create the menu pageheaders MenuGroup object
-            // 
-            menuGroup = new Model.UniForm.Group (
-                EdLabels.HomePage_Menu_Header_Group_Title,
-                Evado.Model.UniForm.EditAccess.Enabled );
-            menuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
-            menuGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-            menuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-
-            menuGroup.CommandList = this.CreateMenuCommands ( menuSelection );
-            break;
-          }
-        case EdPageLayout.MenuLocations.Right_Column:
-          {// 
-            // Create the menu pageheaders MenuGroup object
-            // 
-            menuGroup = new Model.UniForm.Group (
-                EdLabels.HomePage_Menu_Header_Group_Title,
-                Evado.Model.UniForm.EditAccess.Enabled );
-            menuGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
-            menuGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-            menuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Right );
-
-            menuGroup.CommandList = this.CreateMenuCommands ( menuSelection );
-            break;
-          }
-      }
-
-      this.LogMethodEnd ( "CreatePageMenu" );
-
-    }//END generateMenuGroups method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the home page menu based on user roles.
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    /// <param name="OnlyAdministrationMenu">Bool: display administration menu.</param>
-    /// <returns>List of Evado.Model.UniForm.Command objects.</returns>
-    // ----------------------------------------------------------------------------------
-    public List<Evado.Model.UniForm.Command> CreateMenuCommands (
-      String SelectedMenu )
-    {
-      this.LogMethod ( "CreatePageMenu" );
-      this.LogValue ( "SelectedMenu: " + SelectedMenu );
-      this.LogDebug ( "User Role: " + this.Session.UserProfile.Roles );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      List<Evado.Model.UniForm.Command> menuCommands = new List<Model.UniForm.Command> ( );
-      int countOfGroups = 0;
-      Evado.Model.UniForm.Group pageHeaderMenuGroup = new Model.UniForm.Group ( );
-      List<EvMenuItem> menuHeaders = new List<EvMenuItem> ( );
-      List<EvMenuItem> menuGroups = new List<EvMenuItem> ( );
-
-      //
-      // get the selected  menu groups.
-      //
-      menuGroups = this._AdapterObjects.getMenuGroups ( SelectedMenu );
-
-      //
-      // Iterate through the menu items to extract the menu groups.
-      //
-      foreach ( EvMenuItem groupHeader in menuGroups )
-      {
-        this.LogDebug ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", groupHeader.Group, groupHeader.PageId, groupHeader.Title, groupHeader.RoleList );
-
-        //
-        // Validate the menu item
-        //
-        if ( groupHeader.SelectMenuHeader (
-          this.Session.UserProfile.Roles ) == false )
-        {
-          this.LogDebug ( "SKIPPED HEADER" );
-          continue;
-        }
-
-        countOfGroups++;
-        menuHeaders.Add ( groupHeader );
-
-      }//END iteration.
-
-      this.LogDebug ( "Header group count : " + countOfGroups );
-
-      // 
-      // Iterate through teh groups building the user _Menus.
-      // 
-      foreach ( EvMenuItem groupHeader in menuHeaders )
-      {
-
-        //
-        // If the group header length 1 set the header to the menu group item.
-        //
-        if ( countOfGroups == 1 )
-        {
-          this.Session.MenuGroupItem.Group = groupHeader.Group;
-          //this.LogDebugValue ( "MenuGroupItem group: " + groupHeader.Group + " - " + groupHeader.Title );
-        }
-
-        //this.LogValue ( "Header group: " + groupHeader.Group + " - " + groupHeader.Title );
-
-        // 
-        // Add a header groupCommand 
-        // 
-        Evado.Model.UniForm.Command command = new Model.UniForm.Command (
-            groupHeader.Title,
-            EuAdapter.ADAPTER_ID,
-            EuAdapterClasses.Home_Page.ToString ( ),
-            Evado.Model.UniForm.ApplicationMethods.Custom_Method );
-
-        command.setCustomMethod ( Model.UniForm.ApplicationMethods.Get_Object );
-
-        command.AddParameter (
-          EuAdapter.CONST_MENU_GROUP_FIELD_ID,
-          groupHeader.Group );
-
-        if ( this.Session.MenuGroupItem.Group == groupHeader.Group )
-        {
-          command.Type = Model.UniForm.CommandTypes.Null;
-
-          //pageMenuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-
-          //this.LogDebugValue ( "groupHeader.Title: " + groupHeader.Title );
-
-          this.getMenuGroupItems ( groupHeader, menuCommands );
-        }
-
-      }//END pageMenuGroup header iteration loop.
-
-      this.LogValue ( "CommandList.Count: " + menuCommands.Count );
-
-      this.LogMethodEnd ( "generateMenuGroups" );
-      return menuCommands;
-
-    }//END generateMenuGroups method
-
-    // ==================================================================================
-    /// <summary>
-    /// This method generates a menu pageMenuGroup menu items as a new pageMenuGroup.
-    /// </summary>
-    /// <param name="GroupHeader">Evado.Model.Digital.EvMenuItem object</param>
-    /// <param name="CommandList">Evado.Model.UniForm.Page object</param>
-    // ----------------------------------------------------------------------------------
-    public void getMenuGroupItems (
-      EvMenuItem GroupHeader,
-      List<Evado.Model.UniForm.Command> CommandList )
-    {
-      this.LogMethod ( "getMenuGroupItems" );
-      this.LogDebug ( "GroupHeader Group: " + GroupHeader.Group );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
-
-      // 
-      // Iterate through the menu extracting the groups items.
-      // 
-      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
-      {
-        // 
-        // Create a new pageMenuGroup if the headers do not match.
-        // 
-        if ( item.GroupHeader == true )
-        {
-          continue;
-        }
-
-        if ( GroupHeader.Group != item.Group )
-        {
-          continue;
-        }
-
-        this.LogDebug ( "PageId: {0}, User Role: {1}, Item Roles: {2}",
-          item.PageId,
-          this.Session.UserProfile.Roles,
-          item.RoleList );
-
-        //
-        // Validate the menu item
-        //
-        if ( item.SelectMenuItem (
-          this.Session.UserProfile.Roles ) == false )
-        {
-          this.LogDebug ( "SKIPPED item not selected." );
-          continue;
-        }
-
-        // 
-        // Create the groupCommand
-        // 
-        groupCommand = this._MenuUtility.GetNavigationCommand ( item );
-
-        this.LogDebug ( this._MenuUtility.Log );
-
-        if ( groupCommand != null )
-        {
-          groupCommand.Title = groupCommand.Title;
-          groupCommand.Title = "- " + groupCommand.Title;
-          CommandList.Add ( groupCommand );
-        }
-
-      }//END pageMenuGroup menu item iteration loop.
-
-      this.LogDebug ( "Command list count {0}.",
-        CommandList.Count );
-
-      this.LogMethodEnd ( "getMenuGroupItems" );
-
-    }//END getMenuGroupItems method
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -1173,9 +445,14 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the menu items to extract the menu groups.
       //
-      foreach ( EvMenuItem groupHeader in this._AdapterObjects.getMenuGroups( EvMenuItem.CONST_MAIN_MENU_ID)  )
+      foreach ( EvMenuItem groupHeader in this._AdapterObjects.MenuList )
       {
-        this.LogDebug ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", groupHeader.Group, groupHeader.PageId, groupHeader.Title, groupHeader.RoleList );
+        /*
+        if ( groupHeader.Group == "TR" )
+        {
+          this.LogDebugFormat ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", groupHeader.Group, groupHeader.PageId, groupHeader.Title, groupHeader.Modules );
+        }
+        */
 
         // 
         // if the pageMenuGroup is not a header skip it.
@@ -1185,10 +462,15 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogDebug ( "Group: {0}, User Role: {1}, HR: {2},",
+        /*
+        this.LogDebugFormat ( "Group: {0}, User Role: {1}, HR: {2}, EDC: {3}, CTMS: {4}, PR: (5)",
           groupHeader.Group,
-          this.Session.UserProfile.Roles,
-          groupHeader.RoleList );
+          this.Session.UserProfile.RoleId,
+          groupHeader.RoleList,
+           this.Session.Project.Data.EnableEdc,
+           this.Session.Project.Data.EnableCtms,
+           this.Session.Project.Data.EnablePatientRecords );
+        */
         //
         // Validate the menu item
         //
@@ -1256,7 +538,7 @@ namespace Evado.UniForm.Digital
 
           //this.LogDebugValue ( "groupHeader.Title: " + groupHeader.Title );
 
-          this.getMenuGroupItems ( groupHeader, pageHeaderMenuGroup.CommandList );
+          this.getMenuGroupItems ( groupHeader, pageHeaderMenuGroup );
         }
 
       }//END pageMenuGroup header iteration loop.
@@ -1311,8 +593,8 @@ namespace Evado.UniForm.Digital
         //
         // Display only Admin menu if OnlyAdminMenu = true 
         //
-        if ( groupHeader.Group != EvMenuItem.CONST_MENU_STATIC_ADMIN_GROUP_ID
-          && groupHeader.Group != EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID )
+        if ( groupHeader.Group != EvMenuItem.CONST_MENU_ADMIN_GROUP_ID
+          && groupHeader.Group != EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID )
         {
           continue;
         }
@@ -1386,7 +668,7 @@ namespace Evado.UniForm.Digital
 
           this.LogDebug ( "PageId {0}", item.PageId );
 
-          if ( item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
+          if ( item.Group == EvMenuItem.CONST_MENU_PROJECT_MANAGEMENT_GROUP_ID
             && item.PageId != EdStaticPageIds.Report_Template_Page.ToString ( )
             && item.PageId != EdStaticPageIds.Operational_Report_Page.ToString ( ) )
           {
@@ -1438,6 +720,93 @@ namespace Evado.UniForm.Digital
 
     }//END generateAdminMenuGroups method
 
+    // ==================================================================================
+    /// <summary>
+    /// This method generates a menu pageMenuGroup menu items as a new pageMenuGroup.
+    /// </summary>
+    /// <param name="GroupHeader">Evado.Model.Digital.EvMenuItem object</param>
+    /// <param name="GroupObject">Evado.Model.UniForm.Page object</param>
+    // ----------------------------------------------------------------------------------
+    public void getMenuGroupItems (
+      EvMenuItem GroupHeader,
+      Evado.Model.UniForm.Group GroupObject )
+    {
+      this.LogMethod ( "getMenuGroupItems" );
+      this.LogDebug ( "GroupHeader Group: " + GroupHeader.Group );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      List<Evado.Model.UniForm.Command> commandList = new List<Model.UniForm.Command> ( );
+
+      // 
+      // Iterate through the menu extracting the groups items.
+      // 
+      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
+      {
+        // 
+        // Create a new pageMenuGroup if the headers do not match.
+        // 
+        if ( item.GroupHeader == true )
+        {
+          continue;
+        }
+
+        if ( GroupHeader.Group != item.Group )
+        {
+          continue;
+        }
+
+        this.LogDebug ( "PageId: {0}, User Role: {1}, Item Roles: {2}",
+          item.PageId,
+          this.Session.UserProfile.Roles,
+          item.RoleList );
+
+        //
+        // Validate the menu item
+        //
+        if ( item.SelectMenuItem (
+          this.Session.UserProfile.Roles ) == false )
+        {
+          this.LogDebug ( "SKIPPED item not selected." );
+          continue;
+        }
+
+        // 
+        // Create the groupCommand
+        // 
+        groupCommand = this._MenuUtility.GetNavigationCommand ( item );
+
+        this.LogDebug ( this._MenuUtility.Log );
+
+        if ( groupCommand != null )
+        {
+          groupCommand.Title = groupCommand.Title;
+          groupCommand.Title = "- " + groupCommand.Title;
+          commandList.Add ( groupCommand );
+        }
+        else
+        {
+          this.LogDebug ( "Command is null." );
+        }
+
+        this.LogDebug ( "Command list count {0}.",
+          commandList.Count );
+      }//END pageMenuGroup menu item iteration loop.
+
+      //
+      // Add the menu pageMenuGroup if there are commands in the pageMenuGroup.
+      //
+      if ( commandList.Count > 0 )
+      {
+        foreach ( Evado.Model.UniForm.Command command in commandList )
+        {
+          GroupObject.addCommand ( command );
+        }
+      }
+      this.LogMethodEnd ( "getMenuGroupItems" );
+
+    }//END getMenuGroupItems method
 
     // ==================================================================================
     /// <summary>
@@ -1484,7 +853,7 @@ namespace Evado.UniForm.Digital
 
 
     }///END generateUerRoleGroup method
-    ///
+     ///
     /*
     // ==================================================================================
     /// <summary>

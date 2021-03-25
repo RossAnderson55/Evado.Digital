@@ -48,7 +48,7 @@ namespace Evado.UniForm.Digital
     public EuGlobalObjects ( )
     {
       this.ClassParameters = new EvClassParameters ( );
-      this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
+      this._ClassNameSpace = "Evado.UniForm.Digital.EuAdapterObjects.";
     }
 
     //===================================================================================
@@ -59,7 +59,7 @@ namespace Evado.UniForm.Digital
     public EuGlobalObjects (
       EvClassParameters ClassParameters )
     {
-      this._ClassNameSpace = "Evado.UniForm.Clinical.EuAdapterObjects.";
+      this._ClassNameSpace = "Evado.UniForm.Digital.EuAdapterObjects.";
       this.ClassParameters = ClassParameters;
 
       this._LoggingLevel = this.ClassParameters.LoggingLevel;
@@ -482,6 +482,106 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EvMenuItem> MenuList { get; set; }
 
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of options for menu groups
+    /// </summary>
+    /// <returns>List of EvOption objects</return>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> getMenuSelectionList (  )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+      optionList.Add ( new EvOption ( String.Empty ) );
+      String menuList = String.Empty ;
+
+      //
+      // iterate through the issues selection lists.
+      //
+      foreach ( EvMenuItem item in this.MenuList )
+      {
+        if ( item.GroupHeader == false )
+        {
+          continue;
+        }
+
+        if ( item.Group == EvMenuItem.CONST_MENU_STATIC_ADMIN_GROUP_ID
+          || item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
+          || item.Group == EvMenuItem.CONST_MENU_STATIC_RECORD_GROUP_ID
+          || item.Group == EvMenuItem.CONST_MENU_STATIC_ANALYSIS_GROUP_ID
+          || item.Group == EvMenuItem.CONST_MENU_AUDIT_GROUP_ID )
+        {
+          if ( menuList.Contains ( EvMenuItem.CONST_MAIN_MENU_ID ) == false )
+          {
+            optionList.Add ( new EvOption ( EvMenuItem.CONST_MAIN_MENU_ID, "Main Menu" ) );
+            menuList += EvMenuItem.CONST_MAIN_MENU_ID + ";";
+          }
+        }
+
+
+        if ( menuList.Contains ( item.Group ) == false )
+        {
+          optionList.Add ( new EvOption ( item.Group, item.Title ) );
+          menuList += item.Group + ";";
+        }
+     }//END menu item iteration loop.
+
+      return optionList;
+    }//END menu selection method.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of menu item for menu selection
+    /// </summary>
+    /// <returns>List of EvOption objects</return>
+    // ----------------------------------------------------------------------------------
+    public List<EvMenuItem> getMenuGroups ( String SelectedMenu )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      List<EvMenuItem> menuList = new List<EvMenuItem> ( );
+
+      //
+      // iterate through the issues selection lists.
+      //
+      foreach ( EvMenuItem item in this.MenuList )
+      {
+        if ( item.GroupHeader == false )
+        {
+          continue;
+        }
+
+        //
+        // generate the menu menu list.
+        //
+        if ( SelectedMenu == EvMenuItem.CONST_MAIN_MENU_ID )
+        {
+          if ( item.Group == EvMenuItem.CONST_MENU_STATIC_ADMIN_GROUP_ID
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_RECORD_GROUP_ID
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_ANALYSIS_GROUP_ID
+            || item.Group == EvMenuItem.CONST_MENU_AUDIT_GROUP_ID )
+          {
+            menuList.Add ( item );
+          }
+          continue;
+        }
+
+        //
+        // generate the selecte menu group menuitem list.
+        //
+        if ( item.Group == SelectedMenu )
+        {
+          menuList.Add ( item );
+        }
+      }//END menu item iteration loop.
+
+      return menuList;
+    }//END menu selection method.
+
     /// <summary>
     /// This property contains a list of the adapters navigation commands.
     /// </summary>
@@ -718,12 +818,12 @@ namespace Evado.UniForm.Digital
 
         this.LogDebugClass ( bll_Menu.Log );
         this.LogInitValue ( "MenuList .Count: " + this.MenuList.Count );
-
+        /*
         foreach ( EvMenuItem itm in this.MenuList )
         {
           this.LogDebug ( "PageId: {0}, Group {1}, Roles {2}: ", itm.PageId, itm.Group, itm.RoleList );
         }
-
+        */
       }
       catch ( Exception Ex )
       {
@@ -968,7 +1068,6 @@ namespace Evado.UniForm.Digital
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
-
 
     #region Debug methods.
 

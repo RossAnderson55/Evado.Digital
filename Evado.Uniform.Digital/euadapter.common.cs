@@ -241,7 +241,7 @@ namespace Evado.UniForm.Digital
     //-----------------------------------------------------------------------------------
     private void loadPageLayoutList ( )
     {
-      this.LogInitMethod ( "loadEnityLayoutList" );
+      this.LogInitMethod ( "loadPageLayoutList" );
       this.LogDebug ( "AllPageLayouts.Count: " + this._AdapterObjects.AllPageLayouts.Count );
 
       //
@@ -250,7 +250,7 @@ namespace Evado.UniForm.Digital
       if ( this._AdapterObjects.AllPageLayouts.Count > 0 )
       {
         this.LogInit ( "Page layouts loaded." );
-        this.LogInit ( "END loadRecordLayoutList" );
+        this.LogInitMethodEnd ( "loadPageLayoutList" ); 
         return;
       }
 
@@ -269,9 +269,9 @@ namespace Evado.UniForm.Digital
 
       this.LogInit ( "AllPageLayouts.Count: " + this._AdapterObjects.AllPageLayouts.Count );
 
-      this.LogInit ( "END  loadEnityLayoutList" );
+      this.LogInitMethodEnd ( "loadPageLayoutList" );
 
-    }//END loadEnityLayoutList method
+    }//END loadPageLayoutList method
 
     //===================================================================================
     /// <summary>
@@ -464,7 +464,7 @@ namespace Evado.UniForm.Digital
       //
       // add the static page identifiers.
       //
-
+      #region static page identifiers.
       //this.LogInit ( "Generating the Static PageId list" );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Home_Page ) );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Access_Denied ) );
@@ -536,7 +536,10 @@ namespace Evado.UniForm.Digital
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Upload_Page ) );
       this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_View ) );
 
-      //this.LogInit ( "Generating the PageLayout PageId list" );
+      #endregion
+
+
+      this.LogInit ( "Generating the PageLayout PageId list" );
       //
       // dynamic page identifiers for Entities by LayoutId
       //
@@ -547,12 +550,12 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        //this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserType );
+        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserType );
 
         String pageId = EuAdapter.CONST_PAGE_ID_PREFIX + pageLayout.PageId;
         String pageLabel = pageId.Replace ( "_", " " );
 
-        //this.LogInit ( "Layout pageId: " + pageId );
+        this.LogInit ( "Layout pageId: " + pageId );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLayout.Title ) );
 
@@ -576,7 +579,7 @@ namespace Evado.UniForm.Digital
         String pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
-        this.LogInit ( "Layout PageID: " + pageId );
+        //this.LogInit ( "Layout PageID: " + pageId );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
