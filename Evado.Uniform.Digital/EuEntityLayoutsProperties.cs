@@ -235,7 +235,7 @@ namespace Evado.UniForm.Digital
       //
       // Define the form save commands.
       //
-      this.setFormSaveGroupCommands ( pageGroup );
+      this.GetProperty_GroupCommands ( pageGroup );
 
       //
       // Form type selection list.
@@ -378,7 +378,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.GroupParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
 
-      this.setFormSaveGroupCommands ( pageGroup );
+      this.GetProperty_GroupCommands ( pageGroup );
 
       //
       // Form Update reason

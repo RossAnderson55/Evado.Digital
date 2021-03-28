@@ -44,14 +44,14 @@ namespace Evado.UniForm.Digital
     public EuNavigation (
       EuGlobalObjects AdapterObjects,
       EuSession Session,
-      EvClassParameters Settings )
+      EvClassParameters ClassParameters )
     {
       this.ClassNameSpace = "Evado.UniForm.Clinical.EuNavigationCommands.";
       this.LogInitMethod ( "EuNavigationCommands initialisation" );
       this.ServiceUserProfile = ServiceUserProfile;
       this.Session = Session;
       this.AdapterObjects = AdapterObjects;
-      this.ClassParameters = Settings;
+      this.ClassParameters = ClassParameters;
 
       this.LoggingLevel = this.ClassParameters.LoggingLevel;
 
@@ -675,7 +675,7 @@ namespace Evado.UniForm.Digital
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Home_Page.ToString ( ),
+          EuAdapterClasses.Page.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( stPageId );

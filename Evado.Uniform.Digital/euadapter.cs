@@ -337,7 +337,7 @@ namespace Evado.UniForm.Digital
 
     private String ErrorMessage = String.Empty;
 
-    EuNavigation _MenuUtility;
+    EuNavigation _Navigation;
 
     private string _EventLogSource = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_EVENT_LOG_KEY ];
 
@@ -447,7 +447,7 @@ namespace Evado.UniForm.Digital
         //
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
-        this._MenuUtility = new EuNavigation (
+        this._Navigation = new EuNavigation (
         this._AdapterObjects, 
         this.Session, 
         this.ClassParameters );
@@ -1160,6 +1160,23 @@ namespace Evado.UniForm.Digital
             this.LogAdapter ( records.Log );
 
             break;
+          }
+        case EuAdapterClasses.Page:
+          {
+            this.LogDebug ( "PAGE LAYOUT SELECTED." );
+
+            String pageId = PageCommand.GetPageId ( );
+
+            this.LogDebug ( "pageId {0}.", pageId );
+            if ( pageId != String.Empty )
+            {
+              return this.generatePage ( PageCommand );
+            }
+
+            // 
+            // Return the instance to the list.
+            // 
+            return this.generateHomePage ( PageCommand );
           }
         case EuAdapterClasses.Home_Page:
         default:

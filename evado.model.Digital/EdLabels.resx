@@ -2864,8 +2864,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Center_Content_Field_Label" xml:space="preserve">
     <value>Column Content:</value>
   </data>
-  <data name="PageLayout_Center_Group_List_Field_Label" xml:space="preserve">
-    <value>Column Groups:</value>
+  <data name="PageLayout_Center_Components_Field_Label" xml:space="preserve">
+    <value>Column Components:</value>
   </data>
   <data name="PageLayout_Center_Group_Title" xml:space="preserve">
     <value>Center Column</value>
@@ -2891,8 +2891,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Header_Content_Field_Label" xml:space="preserve">
     <value>Header Content:</value>
   </data>
-  <data name="PageLayout_Header_Group_List_Field_Label" xml:space="preserve">
-    <value>Header Groups:</value>
+  <data name="PageLayout_Header_Components_Field_Label" xml:space="preserve">
+    <value>Header Components:</value>
   </data>
   <data name="PageLayout_Header_Group_Title" xml:space="preserve">
     <value>Page Header</value>
@@ -2909,8 +2909,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Left_Content_Field_Label" xml:space="preserve">
     <value>Column Content:</value>
   </data>
-  <data name="PageLayout_Left_Group_List_Field_Label" xml:space="preserve">
-    <value>Column Groups:</value>
+  <data name="PageLayout_Left_Components_Field_Label" xml:space="preserve">
+    <value>Column Components:</value>
   </data>
   <data name="PageLayout_Left_Group_Title" xml:space="preserve">
     <value>Left Column</value>
@@ -2942,8 +2942,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Right_Content_Field_Label" xml:space="preserve">
     <value>Column Content:</value>
   </data>
-  <data name="PageLayout_Right_Group_List_Field_Label" xml:space="preserve">
-    <value>Column Groups:</value>
+  <data name="PageLayout_Right_Components_Field_Label" xml:space="preserve">
+    <value>Column Components:</value>
   </data>
   <data name="PageLayout_Right_Group_Title" xml:space="preserve">
     <value>Roght Column</value>

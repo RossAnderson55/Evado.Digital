@@ -1169,14 +1169,14 @@ namespace Evado.UniForm.Digital
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Version, PageLayout.Version );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.UserType, PageLayout.UserType );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderContent, PageLayout.HeaderContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderGroupList, PageLayout.HeaderComponentList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderComponentList, PageLayout.HeaderComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnContent, PageLayout.LeftColumnContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnGroupList, PageLayout.LeftColumnComponentList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnComponentList, PageLayout.LeftColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnWidth, PageLayout.LeftColumnWidth );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnContent, PageLayout.CenterColumnContent );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.CenterColumnGroupList, PageLayout.CenterColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnContent, PageLayout.RightColumnContent );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnGroupList, PageLayout.RightColumnComponentList );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnComponentList, PageLayout.RightColumnComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.RightColumnWidth, PageLayout.RightColumnWidth );
 
 
@@ -1354,10 +1354,11 @@ namespace Evado.UniForm.Digital
       // 
       // Create the left column group identifiers object
       // 
-      groupField = pageGroup.createFreeTextField (
-        EdPageLayout.FieldNames.HeaderGroupList,
-        EdLabels.PageLayout_Header_Group_List_Field_Label,
-        this.Session.AdminPageLayout.HeaderComponentList, 25, 5 );
+      groupField = pageGroup.createCheckBoxListField (
+        EdPageLayout.FieldNames.HeaderComponentList,
+        EdLabels.PageLayout_Header_Components_Field_Label,
+        this.Session.AdminPageLayout.HeaderComponentList,
+         this.AdapterObjects.PageComponents );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       this.LogMethodEnd ( "getDataObjectHeaderGroup" );
@@ -1404,10 +1405,11 @@ namespace Evado.UniForm.Digital
       // 
       // Create the left column group identifiers object
       // 
-      groupField = pageGroup.createFreeTextField (
-        EdPageLayout.FieldNames.LeftColumnGroupList,
-        EdLabels.PageLayout_Left_Group_List_Field_Label,
-        this.Session.AdminPageLayout.LeftColumnComponentList, 25, 5 );
+      groupField = pageGroup.createCheckBoxListField (
+        EdPageLayout.FieldNames.LeftColumnComponentList,
+        EdLabels.PageLayout_Left_Components_Field_Label,
+        this.Session.AdminPageLayout.LeftColumnComponentList,
+         this.AdapterObjects.PageComponents );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       // 
@@ -1463,10 +1465,11 @@ namespace Evado.UniForm.Digital
       // 
       // Create the left column group identifiers object
       // 
-      groupField = pageGroup.createFreeTextField (
+      groupField = pageGroup.createCheckBoxListField (
         EdPageLayout.FieldNames.CenterColumnGroupList,
-        EdLabels.PageLayout_Center_Group_List_Field_Label,
-        this.Session.AdminPageLayout.CenterColumnComponentList, 25, 5 );
+        EdLabels.PageLayout_Center_Components_Field_Label,
+        this.Session.AdminPageLayout.CenterColumnComponentList,
+         this.AdapterObjects.PageComponents );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       this.LogMethodEnd ( "getDataObject_CenterColumnGroup" );
@@ -1513,10 +1516,11 @@ namespace Evado.UniForm.Digital
       // 
       // Create the left column group identifiers object
       // 
-      groupField = pageGroup.createFreeTextField (
-        EdPageLayout.FieldNames.RightColumnGroupList,
-        EdLabels.PageLayout_Right_Group_List_Field_Label,
-        this.Session.AdminPageLayout.RightColumnComponentList, 25, 5 );
+      groupField = pageGroup.createCheckBoxListField (
+        EdPageLayout.FieldNames.RightColumnComponentList,
+        EdLabels.PageLayout_Right_Components_Field_Label,
+        this.Session.AdminPageLayout.RightColumnComponentList,
+         this.AdapterObjects.PageComponents);
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       // 

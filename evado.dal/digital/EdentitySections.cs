@@ -378,7 +378,7 @@ namespace Evado.Dal.Digital
         + ", " + EdEntitySections.DB_DEFAULT_EDIT_ROLES
         + "  ) " );
         sbSQL_AddQuery.AppendLine ( "VALUES "
-        + "  " + EdEntitySections.PARM_LAYOUT_GUID
+        + "( " + EdEntitySections.PARM_LAYOUT_GUID
         + ", " + EdEntitySections.PARM_NUMBER + "_" + count
         + ", " + EdEntitySections.PARM_ORDER + "_" + count
         + ", " + EdEntitySections.PARM_NAME + "_" + count

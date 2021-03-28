@@ -67,6 +67,11 @@ namespace Evado.UniForm.Digital
       Applications,
 
       /// <summary>
+      /// This option identifies the page class object.
+      /// </summary>
+      Page,
+
+      /// <summary>
       /// This option identifies the page layouts class object.
       /// </summary>
       Page_Layouts,

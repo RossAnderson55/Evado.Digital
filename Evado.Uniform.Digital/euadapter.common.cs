@@ -703,8 +703,6 @@ namespace Evado.UniForm.Digital
       //
       this._AdapterObjects.PageComponents = new List<EvOption> ( );
 
-      this._AdapterObjects.PageComponents.Add ( new EvOption ( ) );
-
       //this.LogInit ( "Generating the Entities component list" );
       //
       // dynamic page identifiers for Entities by LayoutId

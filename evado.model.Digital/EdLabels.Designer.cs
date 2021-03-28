@@ -5753,20 +5753,20 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Column Components:.
+        /// </summary>
+        public static string PageLayout_Center_Components_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Center_Components_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Content:.
         /// </summary>
         public static string PageLayout_Center_Content_Field_Label {
             get {
                 return ResourceManager.GetString("PageLayout_Center_Content_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Column Groups:.
-        /// </summary>
-        public static string PageLayout_Center_Group_List_Field_Label {
-            get {
-                return ResourceManager.GetString("PageLayout_Center_Group_List_Field_Label", resourceCulture);
             }
         }
         
@@ -5852,20 +5852,20 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Header Components:.
+        /// </summary>
+        public static string PageLayout_Header_Components_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Header_Components_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Header Content:.
         /// </summary>
         public static string PageLayout_Header_Content_Field_Label {
             get {
                 return ResourceManager.GetString("PageLayout_Header_Content_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Header Groups:.
-        /// </summary>
-        public static string PageLayout_Header_Group_List_Field_Label {
-            get {
-                return ResourceManager.GetString("PageLayout_Header_Group_List_Field_Label", resourceCulture);
             }
         }
         
@@ -5906,20 +5906,20 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Column Components:.
+        /// </summary>
+        public static string PageLayout_Left_Components_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Left_Components_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Content:.
         /// </summary>
         public static string PageLayout_Left_Content_Field_Label {
             get {
                 return ResourceManager.GetString("PageLayout_Left_Content_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Column Groups:.
-        /// </summary>
-        public static string PageLayout_Left_Group_List_Field_Label {
-            get {
-                return ResourceManager.GetString("PageLayout_Left_Group_List_Field_Label", resourceCulture);
             }
         }
         
@@ -6014,20 +6014,20 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Column Components:.
+        /// </summary>
+        public static string PageLayout_Right_Components_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Right_Components_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Content:.
         /// </summary>
         public static string PageLayout_Right_Content_Field_Label {
             get {
                 return ResourceManager.GetString("PageLayout_Right_Content_Field_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Column Groups:.
-        /// </summary>
-        public static string PageLayout_Right_Group_List_Field_Label {
-            get {
-                return ResourceManager.GetString("PageLayout_Right_Group_List_Field_Label", resourceCulture);
             }
         }
         

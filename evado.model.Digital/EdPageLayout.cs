@@ -83,7 +83,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the header Group list field
       /// </summary>
-      HeaderGroupList,
+      HeaderComponentList,
 
       /// <summary>
       /// This enumeration defines the left column comment field
@@ -93,7 +93,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the left column Group list field
       /// </summary>
-      LeftColumnGroupList,
+      LeftColumnComponentList,
 
       /// <summary>
       /// This enumeration defines the left column command lilst field
@@ -118,7 +118,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the right column Group list field
       /// </summary>
-      RightColumnGroupList,
+      RightColumnComponentList,
 
       /// <summary>
       /// This enumeration defines the right column command lilst field
@@ -528,7 +528,7 @@ namespace Evado.Model.Digital
             this.HeaderContent = Value;
             return;
           }
-        case EdPageLayout.FieldNames.HeaderGroupList:
+        case EdPageLayout.FieldNames.HeaderComponentList:
           {
             this.HeaderComponentList = Value;
             return;
@@ -538,7 +538,7 @@ namespace Evado.Model.Digital
             this.LeftColumnContent = Value;
             return;
           }
-        case EdPageLayout.FieldNames.LeftColumnGroupList:
+        case EdPageLayout.FieldNames.LeftColumnComponentList:
           {
             this.LeftColumnComponentList = Value;
             return;
@@ -563,7 +563,7 @@ namespace Evado.Model.Digital
             this.RightColumnContent = Value;
             return;
           }
-        case EdPageLayout.FieldNames.RightColumnGroupList:
+        case EdPageLayout.FieldNames.RightColumnComponentList:
           {
             this.RightColumnComponentList = Value;
             return;

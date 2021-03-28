@@ -2186,7 +2186,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <returns>Evado.Model.UniForm.Page object</returns>
     //  ------------------------------------------------------------------------------
-    private void setFormSaveGroupCommands (
+    private void GetProperty_GroupCommands (
       Evado.Model.UniForm.Group PageGroup )
     {
       this.LogMethod ( "setFormSaveGroupCommands" );
@@ -2586,7 +2586,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the save commandS for the page.
       //
-      this.setFormSaveGroupCommands ( pageGroup );
+      this.GetProperty_GroupCommands ( pageGroup );
 
       //
       // Form title
