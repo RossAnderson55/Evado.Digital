@@ -1217,7 +1217,7 @@ namespace Evado.UniForm.Digital
       this.getDataObject_GroupCommands ( pageGroup );
 
       // 
-      // Create the customer id object
+      // Create the page id object
       // 
       groupField = pageGroup.createTextField (
         EdPageLayout.FieldNames.PageId,

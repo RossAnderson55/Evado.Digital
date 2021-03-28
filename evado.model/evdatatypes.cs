@@ -291,6 +291,15 @@ namespace Evado.Model
     /// This enumeration define a special matrix, a table with readonly fields.
     /// </summary>
     Special_Matrix = 100,
+    /// <summary>
+    /// This enumeration define a special medication summary data type.
+    /// </summary>
+    Special_Medication_Summary = 101,
+
+    /// <summary>
+    /// This enumeration define a special demographics summary data type.
+    /// </summary>
+    Special_Subject_Demographics = 102,
 
     /// <summary>
     /// This enumeration define a special site name data type.
@@ -298,9 +307,27 @@ namespace Evado.Model
     Special_Subsitute_Data = 103,
 
     /// <summary>
+    /// This enumeration define a special checokbox to query the field instruction content for 
+    /// consent forms.
+    /// </summary>
+    Special_Query_Checkbox = 104,
+
+    /// <summary>
+    /// This enumeration define a special checokbox to YesNo the field instruction content for 
+    /// consent forms.
+    /// </summary>
+    Special_Query_YesNo = 105,
+
+    /// <summary>
+    /// This enumeration define a special checokbox to YesNo the field instruction content for 
+    /// consent forms.
+    /// </summary>
+    Special_Quiz_Radio_Buttons = 106,
+
+    /// <summary>
     /// This enumeration define a special site document data type.
     /// </summary>
-    Special_Document = 106,
+    Special_Document = 107,
 
 
   }//END Enumeration
