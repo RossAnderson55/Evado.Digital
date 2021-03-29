@@ -1380,9 +1380,19 @@ namespace Evado.UniForm.Digital
             this.getRadioButtonListField ( Field, groupField );
             return;
           }
+        case Evado.Model.EvDataTypes.External_RadioButton_List:
+          {
+            this.getExternalRadioButtonField ( Field, groupField );
+            return;
+          }
         case Evado.Model.EvDataTypes.Check_Box_List:
           {
             this.getCheckButtonListField ( Field, groupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.External_CheckBox_List:
+          {
+            this.getExternalCheckBoxField ( Field, groupField );
             return;
           }
         case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:

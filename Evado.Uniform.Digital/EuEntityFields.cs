@@ -1869,7 +1869,8 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageCommand">Evado.Model.UniForm.Command objects.</param>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValues ( Evado.Model.UniForm.Command PageCommand )
+    private void updateObjectValues ( 
+      Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogValue ( "PageCommand.Parameters List.Count: " + PageCommand.Parameters.Count );
