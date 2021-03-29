@@ -98,7 +98,7 @@ namespace Evado.Dal.Digital
     private const string DB_GUID = "EDPL_GUID";
     private const String DB_PAGE_ID = "EDPL_PAGE_ID";
     private const String DB_STATE = "EDPL_STATE";
-    private const String DB_USER_TYPE = "UP_TYPE";
+    private const String DB_USER_TYPES = "EDPL_USER_TYPES";
     private const String DB_TITLE = "EDPL_TITLE";
     private const String DB_HOME_PAGE = "EDPL_HOME_PAGE";
     private const String DB_MENU_LOCATION = "EDPL_MENU_LOCATION";
@@ -131,7 +131,7 @@ namespace Evado.Dal.Digital
     private const String PARM_GUID = "@GUID";
     private const String PARM_PAGE_ID = "@PAGE_ID";
     private const String PARM_STATE = "@STATE";
-    private const String PARM_USER_TYPE = "@USER_TYPE";
+    private const String PARM_USER_TYPES = "@USER_TYPES";
     private const String PARM_TITLE = "@TITLE";
     private const String PARM_HOME_PAGE = "@HOME_PAGE";
     private const String PARM_MENU_LOCATION = "@MENU_LOCATION";
@@ -180,7 +180,7 @@ namespace Evado.Dal.Digital
       {
         new SqlParameter( EdPageLayouts.PARM_GUID, SqlDbType.UniqueIdentifier ),
         new SqlParameter( EdPageLayouts.PARM_PAGE_ID, SqlDbType.NVarChar, 10 ),
-        new SqlParameter( EdPageLayouts.PARM_USER_TYPE, SqlDbType.NVarChar,50 ),
+        new SqlParameter( EdPageLayouts.PARM_USER_TYPES, SqlDbType.NVarChar,50 ),
         new SqlParameter( EdPageLayouts.PARM_STATE, SqlDbType.NVarChar, 30),
         new SqlParameter( EdPageLayouts.PARM_TITLE, SqlDbType.NVarChar, 100), //4
 
@@ -297,7 +297,7 @@ namespace Evado.Dal.Digital
       Item.Guid = EvSqlMethods.getGuid ( Row, EdPageLayouts.DB_GUID );
       Item.PageId = EvSqlMethods.getString ( Row, EdPageLayouts.DB_PAGE_ID );
       Item.State = EvSqlMethods.getString<EdPageLayout.States> ( Row, EdPageLayouts.DB_STATE );
-      Item.UserType = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPE );
+      Item.UserType = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPES );
       Item.Title = EvSqlMethods.getString ( Row, EdPageLayouts.DB_TITLE );
 
       Item.HomePage = EvSqlMethods.getBool ( Row, EdPageLayouts.DB_HOME_PAGE );

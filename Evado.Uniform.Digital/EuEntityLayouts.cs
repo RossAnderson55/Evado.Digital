@@ -272,7 +272,7 @@ namespace Evado.UniForm.Digital
                   }
                 default:
                   {
-                    clientDataObject = this.getFormLayoutObject ( PageCommand );
+                    clientDataObject = this.getEntityLayoutObject ( PageCommand );
                     break;
                   }
               }
@@ -1538,200 +1538,14 @@ namespace Evado.UniForm.Digital
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
-    //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormLayoutObject (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "getFormLayoutObject" );
-
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      Guid formGuid = Guid.Empty;
-
-      //
-      // Determine if the user has access to this page and log and error if they do not.
-      //
-      if ( this.Session.UserProfile.hasManagementAccess == false )
-      {
-        this.LogIllegalAccess (
-          this.ClassNameSpace + "getObject",
-          this.Session.UserProfile );
-
-        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
-
-        return null;
-      }
-
-      // 
-      // Log access to page.
-      // 
-      this.LogPageAccess (
-        this.ClassNameSpace + "getObject",
-        this.Session.UserProfile );
-
-
-      try
-      {
-        if ( this.getLayoutObject ( PageCommand, false ) == false )
-        {
-          return null;
-        }
-
-        //
-        // if there are no field display the draft layout page.
-        //
-        if ( this.Session.EntityLayout.Fields.Count == 0 )
-        {
-          this.getDraftDataObject ( clientDataObject );
-
-          return clientDataObject;
-        }
-
-        //
-        // if there are is not page type defines and draft state display the draft page.
-        //
-        if ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Draft
-          && this.Session.PageId == String.Empty )
-        {
-          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString ( );
-          this.getDraftDataObject ( clientDataObject );
-
-          return clientDataObject;
-        }
-
-        if ( this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString ( )
-          && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
-          && this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
-          && this.Session.PageId != EdStaticPageIds.Form_Annotated_Page.ToString ( ) )
-        {
-          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString ( );
-        }
-
-        //
-        // Rung the server script if server side scripts are enabled.
-        //
-        this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
-
-        //
-        // generate the page layout.
-        //
-        this.getFormDataObject ( clientDataObject );
-
-        // 
-        // Return the client ResultData object to the calling method.
-        // 
-        return clientDataObject;
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // On an exception raised create the error message to be displayed to the user.
-        // 
-        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
-
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
-
-      return null;
-
-    }//END getLayoutObject method
-
-    // ==============================================================================
-    /// <summary>
-    /// This method returns a client application ResultData object
-    /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
-    //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getDraftLayoutObject (
-      Evado.Model.UniForm.Command PageCommand )
-    {
-      this.LogMethod ( "getDraftLayoutObject" );
-
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      Guid formGuid = Guid.Empty;
-
-      //
-      // Determine if the user has access to this page and log and error if they do not.
-      //
-      if ( this.Session.UserProfile.hasManagementAccess == false )
-      {
-        this.LogIllegalAccess (
-          this.ClassNameSpace + "getDraftLayoutObject",
-          this.Session.UserProfile );
-
-        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
-
-        return this.Session.LastPage;
-      }
-
-      // 
-      // Log access to page.
-      // 
-      this.LogPageAccess (
-        this.ClassNameSpace + "getDraftLayoutObject",
-        this.Session.UserProfile );
-
-
-      try
-      {
-        if ( this.getLayoutObject ( PageCommand, true ) == false )
-        {
-          this.LogMethodEnd ( "getDraftLayoutObject" );
-          return this.Session.LastPage;
-        }
-
-        //
-        // generate the page layout.
-        //
-        this.getDraftDataObject ( clientDataObject );
-
-        // 
-        // Return the client ResultData object to the calling method.
-        // 
-        this.LogMethodEnd ( "getDraftLayoutObject" );
-        return clientDataObject;
-      }
-      catch ( Exception Ex )
-      {
-        // 
-        // On an exception raised create the error message to be displayed to the user.
-        // 
-        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
-
-        // 
-        // Generate the log the error event.
-        // 
-        this.LogException ( Ex );
-      }
-
-      this.LogMethodEnd ( "getDraftLayoutObject" );
-      return this.Session.LastPage;
-
-    }//END getLayoutObject method
-
-    // ==============================================================================
-    /// <summary>
     /// This method creates the pages save commands objects.
     /// </summary>
     /// <returns>Evado.Model.UniForm.Page object</returns>
     //  ------------------------------------------------------------------------------
-    private void setLayoutSave_PageCommands (
+    private void GetDataObject_PageCommands (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "setLayoutSave_PageCommands" );
+      this.LogMethod ( "GetDataObject_PageCommands" );
       this.LogDebug ( "Layout Design State {0}. ", this.Session.EntityLayout.State );
       // 
       // Initialise the methods variables and objects.
@@ -1950,22 +1764,20 @@ namespace Evado.UniForm.Digital
           }
       }//END Switch statement 
 
-      this.LogMethodEnd ( "setLayoutSave_PageCommands" );
+      this.LogMethodEnd ( "GetDataObject_PageCommands" );
 
-    }//END setFormPageCommands method
+    }//END GetLayout_PageCommands method
 
     // ==============================================================================
     /// <summary>
     /// This method creates the pages save commands objects.
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    /// <param name="EditAccess">Bool: true user has edit access</param>
-    /// <returns>Evado.Model.UniForm.Page object</returns>
     //  ------------------------------------------------------------------------------
-    private void setFormPageLayoutCommands (
+    private void GetDataObject_LayoutCommands (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "setFormPageLayoutCommands" );
+      this.LogMethod ( "GetDataObject_LayoutCommands" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2176,20 +1988,20 @@ namespace Evado.UniForm.Digital
           }
       }//End Sticeh statement
 
-      this.LogMethodEnd ( "setFormPageLayoutCommands" );
+      this.LogMethodEnd ( "GetDataObject_LayoutCommands" );
 
-    }//END setFormPageLayoutCommands method
+    }//END GetDataObject_LayoutCommands method
 
     // ==============================================================================
     /// <summary>
-    /// This method creates the pages save commands objects.
+    /// This method creates the pages layout commands objects.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.Page object</returns>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
     //  ------------------------------------------------------------------------------
-    private void GetProperty_GroupCommands (
+    private void GetDataObject_GroupCommands (
       Evado.Model.UniForm.Group PageGroup )
     {
-      this.LogMethod ( "setFormSaveGroupCommands" );
+      this.LogMethod ( "GetDataObject_GroupCommands" );
 
       if ( PageGroup.EditAccess != Model.UniForm.EditAccess.Enabled )
       {
@@ -2300,7 +2112,7 @@ namespace Evado.UniForm.Digital
               }
             }
 
-            return;
+            break;
           }
         case EdRecordObjectStates.Form_Reviewed:
           {
@@ -2342,7 +2154,7 @@ namespace Evado.UniForm.Digital
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
              EdRecord.SaveActionCodes.Form_Approved.ToString ( ) );
 
-            return;
+            break;
           }
         case EdRecordObjectStates.Form_Issued:
           {
@@ -2400,14 +2212,427 @@ namespace Evado.UniForm.Digital
             EuEntityLayouts.CONST_FORM_COMMAND_PARAMETER,
             EuEntityLayouts.CONST_REVISE_FORM_COMMAND_VALUE );
 
-            return;
+            break;
           }
         default:
           {
-            return;
+            break;
           }
+      }//End Switch 
+
+      this.LogMethodEnd ( "GetDataObject_GroupCommands" );
+
+    }//END GetDataObject_GroupCommands method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates the group layout commands objects.
+    /// </summary>
+    /// <param name="PageGroup">Evado.Model.UniForm.Page object</param>
+    //  ------------------------------------------------------------------------------
+    private void GetDataObject_LayoutCommands (
+      Evado.Model.UniForm.Group PageGroup )
+    {
+      this.LogMethod ( "GetDataObject_LayoutCommands" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      Evado.Model.UniForm.Command pageCommand = new Model.UniForm.Command ( );
+
+      EdStaticPageIds pageId = EdStaticPageIds.Null;
+
+      if ( EvStatics.tryParseEnumValue<EdStaticPageIds> ( this.Session.PageId, out pageId ) == false )
+      {
+        pageId = EdStaticPageIds.Null;
       }
-    }//END setFormSaveCommands method
+
+      switch ( pageId )
+      {
+        case EdStaticPageIds.Form_Draft_Page:
+          {
+            //
+            // Add the properties page command
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Properties_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            //
+            // The full layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Full_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            //
+            // The annotated layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Annotated_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Annotated_Page );
+            break;
+          }
+        case EdStaticPageIds.Form_Properties_Page:
+          {
+            //
+            // Add the draft page layout.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Draft_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
+
+            //
+            // The full layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Full_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+
+            //
+            // The annotated layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Annotated_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Annotated_Page );
+            break;
+          }
+        case EdStaticPageIds.Record_Layout_Page:
+          {
+            //
+            // Add the draft page layout.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Draft_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
+
+            //
+            // Add the properties page command
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Properties_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            //
+            // The annotated layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Annotated_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Annotated_Page );
+            break;
+          }
+        case EdStaticPageIds.Form_Annotated_Page:
+          {
+            //
+            // Add the draft page layout.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Draft_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Draft_Page );
+
+            //
+            // Add the properties page command
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Properties_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Form_Properties_Page );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+            //
+            // The full layout button.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Full_Layout_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+            pageCommand.setCustomMethod (
+              Model.UniForm.ApplicationMethods.Get_Object );
+
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+
+            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            break;
+          }
+      }//End Sticeh statement
+
+      this.LogMethodEnd ( "GetDataObject_LayoutCommands" );
+
+    }//END GetDataObject_LayoutCommands method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    //  ------------------------------------------------------------------------------
+    private Evado.Model.UniForm.AppData getEntityLayoutObject (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getEntityLayoutObject" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+      Guid formGuid = Guid.Empty;
+
+      //
+      // Determine if the user has access to this page and log and error if they do not.
+      //
+      if ( this.Session.UserProfile.hasManagementAccess == false )
+      {
+        this.LogIllegalAccess (
+          this.ClassNameSpace + "getEntityLayoutObject",
+          this.Session.UserProfile );
+
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
+
+        return null;
+      }
+
+      // 
+      // Log access to page.
+      // 
+      this.LogPageAccess (
+        this.ClassNameSpace + "getEntityLayoutObject",
+        this.Session.UserProfile );
+
+
+      try
+      {
+        if ( this.getLayoutObject ( PageCommand, false ) == false )
+        {
+          return null;
+        }
+
+        //
+        // if there are no field display the draft layout page.
+        //
+        if ( this.Session.EntityLayout.Fields.Count == 0 )
+        {
+          this.getDraftDataObject ( clientDataObject );
+
+          return clientDataObject;
+        }
+
+        //
+        // if there are is not page type defines and draft state display the draft page.
+        //
+        if ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Draft
+          && this.Session.PageId == String.Empty )
+        {
+          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString ( );
+          this.getDraftDataObject ( clientDataObject );
+
+          return clientDataObject;
+        }
+
+        if ( this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
+          && this.Session.PageId != EdStaticPageIds.Form_Annotated_Page.ToString ( ) )
+        {
+          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString ( );
+        }
+
+        //
+        // Rung the server script if server side scripts are enabled.
+        //
+        this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
+
+        //
+        // generate the page layout.
+        //
+        this.getFormDataObject ( clientDataObject );
+
+        // 
+        // Return the client ResultData object to the calling method.
+        // 
+        return clientDataObject;
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // On an exception raised create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+      return null;
+
+    }//END getEntityLayoutObject method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    //  ------------------------------------------------------------------------------
+    private Evado.Model.UniForm.AppData getDraftLayoutObject (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getDraftLayoutObject" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+      Guid formGuid = Guid.Empty;
+
+      //
+      // Determine if the user has access to this page and log and error if they do not.
+      //
+      if ( this.Session.UserProfile.hasManagementAccess == false )
+      {
+        this.LogIllegalAccess (
+          this.ClassNameSpace + "getDraftLayoutObject",
+          this.Session.UserProfile );
+
+        this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
+
+        return this.Session.LastPage;
+      }
+
+      // 
+      // Log access to page.
+      // 
+      this.LogPageAccess (
+        this.ClassNameSpace + "getDraftLayoutObject",
+        this.Session.UserProfile );
+
+
+      try
+      {
+        if ( this.getLayoutObject ( PageCommand, true ) == false )
+        {
+          this.LogMethodEnd ( "getDraftLayoutObject" );
+          return this.Session.LastPage;
+        }
+
+        //
+        // generate the page layout.
+        //
+        this.getDraftDataObject ( clientDataObject );
+
+        // 
+        // Return the client ResultData object to the calling method.
+        // 
+        this.LogMethodEnd ( "getDraftLayoutObject" );
+        return clientDataObject;
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // On an exception raised create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+      this.LogMethodEnd ( "getDraftLayoutObject" );
+      return this.Session.LastPage;
+
+    }//END getLayoutObject method
 
     // ==============================================================================
     /// <summary>
@@ -2461,12 +2686,12 @@ namespace Evado.UniForm.Digital
       //
       // Add the save commandS for the page.
       //
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+      this.GetDataObject_PageCommands ( ClientDataObject.Page );
 
       //
-      // Add the page navigation commands.
+      // Add the page layout commands
       //
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+      this.GetDataObject_LayoutCommands ( ClientDataObject.Page );
 
       this.LogValue ( "GENERATE FORM" );
 
@@ -2522,12 +2747,12 @@ namespace Evado.UniForm.Digital
       //
       // Add the save commandS for the page.
       //
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+      this.GetDataObject_PageCommands ( ClientDataObject.Page );
 
       //
-      // add the page layout commands.
+      // Add the page layout commands
       //
-      this.setFormPageLayoutCommands ( ClientDataObject.Page );
+      this.GetDataObject_LayoutCommands ( ClientDataObject.Page );
 
       //
       // Add the form header pageMenuGroup.
@@ -2586,7 +2811,12 @@ namespace Evado.UniForm.Digital
       //
       // Add the save commandS for the page.
       //
-      this.GetProperty_GroupCommands ( pageGroup );
+      this.GetDataObject_GroupCommands ( pageGroup );
+
+      //
+      // Define the page layout selection
+      //
+      this.GetDataObject_LayoutCommands ( pageGroup );
 
       //
       // Form title

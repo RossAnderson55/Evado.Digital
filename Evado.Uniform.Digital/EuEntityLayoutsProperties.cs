@@ -176,8 +176,12 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "GENERATE FORM" );
 
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
-      this.setFormPageLayoutCommands ( ClientDataObject.Page );
+      this.GetDataObject_PageCommands ( ClientDataObject.Page );
+
+      //
+      // Add the page layout commands
+      //
+      this.GetDataObject_LayoutCommands ( ClientDataObject.Page );
 
       //
       // Add the general field properties pageMenuGroup.
@@ -235,7 +239,12 @@ namespace Evado.UniForm.Digital
       //
       // Define the form save commands.
       //
-      this.GetProperty_GroupCommands ( pageGroup );
+      this.GetDataObject_GroupCommands ( pageGroup );
+
+      //
+      // Define the page layout selection
+      //
+      this.GetDataObject_LayoutCommands ( pageGroup );
 
       //
       // Form type selection list.
@@ -378,7 +387,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.GroupParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
 
-      this.GetProperty_GroupCommands ( pageGroup );
+      this.GetDataObject_GroupCommands ( pageGroup );
 
       //
       // Form Update reason

@@ -1480,6 +1480,7 @@ namespace Evado.UniForm.Digital
       // 
       if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Form_Designer )
       {
+        GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
         sbDescription.Append (
            "Form field identifier: " + Field.FieldId );
         if ( Field.Design.IsSummaryField == true )

@@ -388,14 +388,19 @@ namespace Evado.UniForm.Digital
               continue;
             }
 
-            if ( Category == String.Empty )
-            {
-              optionList.Add ( item.GetOption ( true ) );
-            }
-            else if ( item.Category == Category )
+            if ( Category == String.Empty
+              && item.Category == String.Empty )
             {
               optionList.Add ( item.GetOption ( false ) );
             }
+            else if ( Category == String.Empty )
+              {
+                optionList.Add ( item.GetOption ( true ) );
+              }
+              else if ( item.Category == Category )
+              {
+                optionList.Add ( item.GetOption ( false ) );
+              }
 
           }// List item iteration loop
         }//END list selection
