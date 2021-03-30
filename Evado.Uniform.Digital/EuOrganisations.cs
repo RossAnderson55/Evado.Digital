@@ -788,12 +788,27 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      pageField = pageGroup.createTextField (
+      pageField = pageGroup.createImageField (
         EdOrganisation.OrganisationFieldNames.Image_File_Name.ToString ( ),
         EdLabels.Organisation_ImageFileame_Field_Label,
         this.Session.AdminOrganisation.ImageFileName,
-        50 );
+        300, 200 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      try
+      {
+        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminOrganisation.ImageFileName;
+        String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminOrganisation.ImageFileName;
+
+        this.LogDebug ( "Target path {0}.", stTargetPath );
+        this.LogDebug ( "Image path {0}.", stImagePath );
+
+        //
+        // copy the file into the image directory.
+        //
+        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+      }
+      catch { }
 
       // 
       // Create the street address 1
@@ -1066,10 +1081,10 @@ namespace Evado.UniForm.Digital
         this.LogMethod ( "updateObject" );
         this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
-        this.LogDebug ( "AdminOrganisation"
-          + " Guid: " + this.Session.AdminOrganisation.Guid
-          + " OrgId: " + this.Session.AdminOrganisation.OrgId
-          + " Title: " + this.Session.AdminOrganisation.Name );
+        this.LogDebug ( "AdminOrganisation" );
+        this.LogDebug ( "-Guid: " + this.Session.AdminOrganisation.Guid );
+        this.LogDebug ( "-OrgId: " + this.Session.AdminOrganisation.OrgId );
+        this.LogDebug ( "-Title: " + this.Session.AdminOrganisation.Name );
         EdOrganisation.ActionCodes saveAction = EdOrganisation.ActionCodes.Save;
 
         // 

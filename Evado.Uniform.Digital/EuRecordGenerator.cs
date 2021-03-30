@@ -65,6 +65,8 @@ namespace Evado.UniForm.Digital
       this.UniForm_BinaryServiceUrl = UniForm_BinaryServiceUrl;
       this.ClassParameters = ClassParameters;
 
+      this.LogInit ( "UniForm_ImageFilePath: " + UniForm_ImageFilePath );
+
       this._ModuleList = new List<EdModuleCodes> ( );
 
       this.LoggingLevel = ClassParameters.LoggingLevel;
@@ -1254,7 +1256,6 @@ namespace Evado.UniForm.Digital
       //
       if ( Field.TypeId == EvDataTypes.Read_Only_Text
         || Field.TypeId == EvDataTypes.External_Image
-        || Field.TypeId == EvDataTypes.Image
         || Field.TypeId == EvDataTypes.Streamed_Video
         || Field.TypeId == EvDataTypes.Html_Content )
       {
@@ -1780,24 +1781,33 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "getImageField" );
-
-      // 
-      // Initialise local variables.
-      // 
-      if ( GroupField.EditAccess == Model.UniForm.EditAccess.Disabled )
-      {
-        GroupField.Type = Evado.Model.EvDataTypes.Binary_File;
-        GroupField.Value = Field.ItemValue;
-        GroupField.Description = String.Empty;
-        return;
-      }
-
+      this.LogDebug ( "Field.ItemValue {0}.", Field.ItemValue );
+      //
+      // initialise the methods variables and objects.
+      //
       GroupField.Type = Evado.Model.EvDataTypes.Image;
       GroupField.Value = Field.ItemValue;
       GroupField.Description = String.Empty;
 
+      //
+      // define the source and target directory paths.
+      //
+      if ( Field.ItemValue != String.Empty )
+      {
+        String stTargetPath = this.UniForm_BinaryFilePath + Field.ItemValue;
+        String stImagePath = this.UniForm_ImageFilePath + Field.ItemValue;
+
+        this.LogDebug ( "Target path {0}.", stTargetPath );
+        this.LogDebug ( "Image path {0}.", stImagePath );
+
+        //
+        // copy the file into the image directory.
+        //
+        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+      }
+
       this.LogDebug ( "JavaScript: " + Field.Design.JavaScript );
-      int iWidth = 0;
+      int iWidth = 250;
       int iHeight = 0;
       if ( Field.Design.JavaScript != String.Empty )
       {
@@ -2265,6 +2275,7 @@ namespace Evado.UniForm.Digital
       GroupField.Value = Field.ItemValue;
 
     }//END getEmailAddressField method.
+
     //  =================================================================================
     /// <summary>
     /// Description:
@@ -3186,7 +3197,7 @@ namespace Evado.UniForm.Digital
           case Evado.Model.EvDataTypes.Free_Text:
           case Evado.Model.EvDataTypes.Signature:
             {
-              //this.LogDebugValue ( "Process free text or signature field." );
+              //this.LogDebug ( "Process free text or signature field." );
               //
               // Update the field value if it has changed.
               //
@@ -3195,14 +3206,14 @@ namespace Evado.UniForm.Digital
                 FormField,
                 true );
 
-              //this.LogDebugValue ( "Value: " + FormField.ItemText );
+              //this.LogDebug ( "Value: " + FormField.ItemText );
               break;
             }// END Update single value fields.
 
           case Evado.Model.EvDataTypes.Special_Matrix:
           case Evado.Model.EvDataTypes.Table:
             {
-              //this.LogDebugValue ( "Process table field." );
+              //this.LogDebug ( "Process table field." );
 
               this.updateFormTableFields ( CommandParameters, FormField );
               break;
@@ -3217,7 +3228,7 @@ namespace Evado.UniForm.Digital
             }
           default:
             {
-              //this.LogDebugValue ( "Process single value field." );
+              //this.LogDebug ( "Process single value field." );
               //
               // Update the field value if it has changed.
               //
@@ -3225,6 +3236,11 @@ namespace Evado.UniForm.Digital
                 CommandParameters,
                 FormField,
                 false );
+
+              //
+              // upload the image if present.
+              //
+              this.saveImageFile ( FormField );
 
               break;
 
@@ -3255,19 +3271,18 @@ namespace Evado.UniForm.Digital
     /// <param name="FormField">  Evado.Model.Digital.EvFormField object containing test field ResultData.</param>
     /// <param name="CommandParameters">Containing the returned formfield values.</param>
     /// <param name="IsFreeText">boolean: if the field is free text or not.</param>
-    /// <returns>String Returns a form field commenet.</returns>
     //  ----------------------------------------------------------------------------------
     private void updateTextField (
       List<Evado.Model.UniForm.Parameter> CommandParameters,
         Evado.Model.Digital.EdRecordField FormField,
        bool IsFreeText )
     {
-      //this.LogMethod ( "updateTextField method " );
-      //this.LogDebugValue ( "FormField.FieldId: " + FormField.FieldId );
-      //this.LogDebugValue ( "IsFreeText: " + IsFreeText );
+      this.LogMethod ( "updateTextField method " );
+      this.LogDebug ( "FormField.FieldId: " + FormField.FieldId );
+      this.LogDebug ( "IsFreeText: " + IsFreeText );
 
       String stValue = this.GetParameterValue ( CommandParameters, FormField.FieldId );
-      //this.LogDebugValue ( "stValue: " + stValue );
+      this.LogDebug ( "stValue: " + stValue );
 
       // 
       // Does the returned field value exist
@@ -3295,8 +3310,8 @@ namespace Evado.UniForm.Digital
           }
           else
           {
-            // this.LogDebugValue ( "Field Change: FieldId: '" + FormField.FieldId
-            //  + "' Old: '" + FormField.ItemValue + "' New: '" + stValue + "' " );
+            this.LogDebug ( "Field Change: FieldId: '{0}' Old: '{1}' New: {2}'",
+              FormField.FieldId,  FormField.ItemValue, stValue );
 
             FormField.ItemValue = stValue;
 
@@ -3314,6 +3329,59 @@ namespace Evado.UniForm.Digital
       }//END Value exists.
 
     }//END updateTextField method
+
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method copies the upload image file to the image directory.
+    /// </summary>
+    /// <param name="FormField">  Evado.Model.Digital.EvFormField object containing test field ResultData.</param>
+    /// <param name="CommandParameters">Containing the returned formfield values.</param>
+    //  ----------------------------------------------------------------------------------
+    private void saveImageFile ( 
+        Evado.Model.Digital.EdRecordField FormField )
+    {
+      this.LogMethod ( "saveImageFile" );
+
+      if ( FormField.TypeId != EvDataTypes.Image )
+      {
+        this.LogDebug ( "Not an image field" );
+        this.LogMethodEnd ( "saveImageFile" );
+        return;
+      }
+
+      this.LogDebug ( "Field Id {0}, Value '{1}'", FormField.FieldId, FormField.ItemValue );
+
+      if ( FormField.ItemValue == String.Empty )
+      {
+        this.LogDebug ( "Empty Field" );
+        this.LogMethodEnd ( "saveImageFile" );
+        return;
+      }
+
+
+      //
+      // Initialise the method variables and objects.
+      //
+      String stSourcePath = this.UniForm_BinaryFilePath + FormField.ItemValue;
+      String stImagePath = this.UniForm_ImageFilePath + FormField.ItemValue;
+
+      this.LogDebug ( "Source path '{0}'.", stSourcePath );
+      this.LogDebug ( "Image path '{0}'.", stImagePath );
+
+      //
+      // Save the file to the directory repository.
+      //
+      try
+      {
+        System.IO.File.Copy ( stSourcePath, stImagePath, true );
+      }
+      catch (Exception ex )
+      {
+        this.LogException ( ex );
+      }
+      this.LogMethodEnd ( "saveImageFile" );
+    }//END saveImageFile method
 
     //  =============================================================================== 
     /// <summary>

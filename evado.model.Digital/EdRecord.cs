@@ -334,7 +334,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration set the command link to display the first record field content.
       /// </summary>
-      First_Field,
+      First_Text_Field,
     }
 
 
@@ -903,31 +903,33 @@ namespace Evado.Model.Digital
         //
         // select the link display 
         //
-        switch ( this.Design.LinkContentSetting )
+        if ( this.Design.LinkContentSetting == LinkContentSetting.Display_Summary )
         {
-          case LinkContentSetting.Display_Summary:
-            {
-              return this.RecordSummary;
-            }
-          case LinkContentSetting.First_Field:
-            {
-              if ( this.Fields.Count > 1 )
-              {
-                link = this.Fields [ 0 ].ItemValue;
+          return this.RecordSummary;
+        }
 
-                if ( this.Design.DisplayAuthorDetails == true )
-                {
-                  link += EdLabels.Label_by + this.Updated;
-                }
+        //
+        // Display the first field with a text value.
+        //
+        if ( this.Design.LinkContentSetting == LinkContentSetting.First_Text_Field
+          && this.Fields.Count > 1 )
+        {
+          foreach ( EdRecordField field in this.Fields )
+          {
+            if ( field.TypeId == EvDataTypes.Text )
+            {
+              link = this.Fields [ 0 ].ItemValue;
+
+              if ( this.Design.DisplayAuthorDetails == true )
+              {
+                link += EdLabels.Label_by + this.Updated;
               }
               return link;
             }
-          default:
-            {
-              return link;
-            }//END default case
-        }//END switch statement
+          }
+        }
 
+        return link;
       }//Get method
 
     }//END method
@@ -1450,7 +1452,7 @@ namespace Evado.Model.Digital
       //
       foreach ( EdRecordField field in this.Fields )
       {
-        if ( field.FieldId.ToLower() == FieldId.ToLower() )
+        if ( field.FieldId.ToLower ( ) == FieldId.ToLower ( ) )
         {
           return field;
         }

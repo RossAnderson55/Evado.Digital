@@ -1428,8 +1428,8 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createTableField (
         EdSelectionList.SelectionListFieldNames.Items.ToString ( ),
         EdLabels.SelectionList_Options_Field_Label,
-        this.Session.AdminSelectionList.ListId, 3 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
+        3 );
+      groupField.Layout =  Model.UniForm.FieldLayoutCodes.Column_Layout;
 
       groupField.Table.Header [ 0 ].No = 1;
       groupField.Table.Header [ 0 ].Text = EdLabels.SelectionList_Table_Column_1_Title;

@@ -450,7 +450,6 @@ namespace Evado.UniForm.Digital
 
     }//END getRecordObject methods
 
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -1133,7 +1132,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getList_SelectionGroup" );
-      this.LogDebug ( "RecordLayoutList.Count {0}. ", this.AdapterObjects.IssuedRecordLayouts.Count );
+      this.LogDebug ( "IssuedEntityLayouts.Count {0}. ", this.AdapterObjects.IssuedEntityLayouts.Count );
       //
       // Initialise the methods variables and objects.
       //
@@ -1513,9 +1512,9 @@ namespace Evado.UniForm.Digital
     private void executeRecordQuery ( )
     {
       this.LogMethod ( "executeRecordQuery" );
-      this.LogValue ( "EntityLayoutIdSelection: " + this.Session.Entity_SelectedLayoutId );
-      this.LogValue ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
-      this.LogValue ( "EntityStateSelection: " + this.Session.EntityStateSelection );
+      this.LogDebug ( "EntityLayoutIdSelection: " + this.Session.Entity_SelectedLayoutId );
+      this.LogDebug ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
+      this.LogDebug ( "EntityStateSelection: " + this.Session.EntityStateSelection );
       //
       // Initialise the methods variables and objects.
       //
@@ -1544,19 +1543,19 @@ namespace Evado.UniForm.Digital
         queryParameters.NotSelectedState = false;
       }
 
-      this.LogValue ( "Selected LayoutId: '" + queryParameters.LayoutId + "'" );
+      this.LogDebug ( "Selected LayoutId: '" + queryParameters.LayoutId + "'" );
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
       if ( queryParameters.LayoutId != String.Empty )
       {
-        this.LogValue ( "Querying form records" );
+        this.LogDebug ( "Querying form records" );
         this.Session.EntityList = this._Bll_Entities.GetEntityList ( queryParameters );
 
         this.LogDebugClass ( this._Bll_Entities.Log );
-        this.LogValue ( "list count: " + this.Session.EntityList.Count );
       }
+      this.LogDebug ( "EntityList.Count: " + this.Session.EntityList.Count );
 
       this.LogMethodEnd ( "executeRecordQuery" );
 
@@ -1608,6 +1607,7 @@ namespace Evado.UniForm.Digital
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
       }
 
+      this.LogDebug ( "EntityList.Count: " + this.Session.EntityList.Count );
       // 
       // Iterate through the record list generating a groupCommand to access each record
       // then append the groupCommand to the record pageMenuGroup view's groupCommand list.
@@ -2216,12 +2216,9 @@ namespace Evado.UniForm.Digital
 
     //  =============================================================================== 
     /// <summary>
-    /// runServerScript  method
-    /// 
-    /// Description:
-    ///  This method initiates the execution of the server side CS scripts.
-    /// 
+    ///  This method retrieves the entity into memory
     /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     //  ---------------------------------------------------------------------------------
     private EvEventCodes GetEntity (
       Evado.Model.UniForm.Command PageCommand )
@@ -2439,11 +2436,7 @@ namespace Evado.UniForm.Digital
 
     //  =============================================================================== 
     /// <summary>
-    /// runServerScript  method
-    /// 
-    /// Description:
     ///  This method initiates the execution of the server side CS scripts.
-    /// 
     /// </summary>
     //  ---------------------------------------------------------------------------------
     private bool runServerScript (
@@ -2495,7 +2488,6 @@ namespace Evado.UniForm.Digital
       return true;
 
     }//END runServerScript method
-
 
     // ==============================================================================
     /// <summary>
@@ -2625,12 +2617,12 @@ namespace Evado.UniForm.Digital
       //
       if ( this.checkRecordLockStatus ( PageObject ) == false )
       {
-        this.LogValue ( "The record is not locked." );
+        this.LogDebug ( "The record is not locked." );
 
         this.getDataObject_PageCommands ( PageObject );
       }
 
-      this.LogValue ( "GENERATE LAYOUT" );
+      this.LogDebug ( "GENERATE LAYOUT" );
 
       // 
       // Call the page generation method

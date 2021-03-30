@@ -823,7 +823,7 @@ namespace Evado.Dal.Digital
           // Attach fields and other trial data.
           // 
           if ( QueryParameters.IncludeRecordValues == true
-            || record.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Field )
+            || record.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
           {
             if ( inResultCount < QueryParameters.ResultStartRange
               || inResultCount >= ( QueryParameters.ResultFinishRange ) )
@@ -2135,6 +2135,7 @@ namespace Evado.Dal.Digital
         Entity.Fields.Add ( field );
 
         this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
+        this.LogDebug ( "{0} - {1} > T: {2} ", field.FieldId, field.Title, field.TypeId );
       }
 
       this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
@@ -2172,7 +2173,7 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-    #region Form Record Update queries
+    #region Entity Update queries
 
     // =====================================================================================
     /// <summary>

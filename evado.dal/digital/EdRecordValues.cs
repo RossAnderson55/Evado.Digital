@@ -503,7 +503,7 @@ namespace Evado.Dal.Digital
             //
             // skip all non summary field if summary fields is selected.
             //
-            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Text_Field
               && Record.SelectOnlySummaryFields == true
               && recordField.Design.IsSummaryField == false )
             {
@@ -514,7 +514,7 @@ namespace Evado.Dal.Digital
             //
             // skip all non summary field if summary fields is selected.
             //
-            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
+            if ( Record.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Text_Field
               && count > 1 )
             {
               this.LogDebug ( "{0} first field retrieved so SKIPPED.", recordField.FieldId );

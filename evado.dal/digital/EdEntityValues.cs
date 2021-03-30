@@ -401,6 +401,7 @@ namespace Evado.Dal.Digital
       List<EdRecordField> recordFieldList = new List<EdRecordField> ( );
       EdRecordField recordField = new EdRecordField ( );
       Guid previousValueGuid = Guid.Empty;
+      bool firstTextFound = false;
 
       // 
       // Validate whether the record Guid is not empty. 
@@ -487,21 +488,10 @@ namespace Evado.Dal.Digital
             //
             // skip all non summary field if summary fields is selected.
             //
-            if ( Entity.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
-              && Entity.SelectOnlySummaryFields == true
+            if ( Entity.SelectOnlySummaryFields == true
               && recordField.Design.IsSummaryField == false )
             {
-              this.LogDebug ( "{0} is a summary field so SKIPPED.", recordField.FieldId );
-              continue;
-            }
-
-            //
-            // skip all non summary field if summary fields is selected.
-            //
-            if ( Entity.Design.LinkContentSetting != EdRecord.LinkContentSetting.First_Field
-              && count > 1 )
-            {
-              this.LogDebug ( "{0} first field retrieved so SKIPPED.", recordField.FieldId );
+              this.LogDebug ( "{0} is NOT a summary field so SKIPPED.", recordField.FieldId );
               continue;
             }
 

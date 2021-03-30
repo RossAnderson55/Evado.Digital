@@ -397,11 +397,11 @@ namespace Evado.Model.Digital
         {
           case Evado.Model.EvDataTypes.Computed_Field:
           case Evado.Model.EvDataTypes.Read_Only_Text:
+          case Evado.Model.EvDataTypes.Binary_File:
           case Evado.Model.EvDataTypes.Sound:
           case Evado.Model.EvDataTypes.Hidden:
           case Evado.Model.EvDataTypes.Html_Link:
           case Evado.Model.EvDataTypes.Video:
-          case Evado.Model.EvDataTypes.Image:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:
           case Evado.Model.EvDataTypes.Line_Chart:

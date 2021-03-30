@@ -190,6 +190,7 @@ namespace Evado.Model
         }
         return false;
       }
+
       // ==================================================================================
       /// <summary>
       /// This method saves a text file to the temporary directory.
