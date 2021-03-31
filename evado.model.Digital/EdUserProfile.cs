@@ -58,6 +58,32 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list defines field names used in User profile class
     /// </summary>
+    public enum UserSystemTypes
+    {
+      /// <summary>
+      /// This enumeration defines the null or not selection state
+      /// </summary>
+      Null,
+
+      /// <summary>
+      /// This enumeration defines the organisation identifier in user profile
+      /// </summary>
+      Evado,
+
+      /// <summary>
+      /// This enumeration defines the user image or photo filename.
+      /// </summary>
+      Customer,
+
+      /// <summary>
+      /// This enumeration defines the user identifier in user profile
+      /// </summary>
+      End_User,
+    }
+
+    /// <summary>
+    /// This enumeration list defines field names used in User profile class
+    /// </summary>
     public enum UserProfileFieldNames
     {
       /// <summary>
@@ -86,9 +112,14 @@ namespace Evado.Model.Digital
       Password,
 
       /// <summary>
-      /// This enumeration defines the organization idenfier in user profile
+      /// This enumeration defines the customer defined user category in user profile
       /// </summary>
-      User_Type_Id,
+      User_Category,
+
+      /// <summary>
+      /// This enumeration defines the customer defined user type in user profile
+      /// </summary>
+      User_Type,
 
       /// <summary>
       /// This enumeration defines Active Directory based on user identifier
@@ -216,12 +247,22 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property defines the user type and used to control user access to the platform.
     /// </summary>
-    public String TypeId { get; set; }
+    public String UserCategory { get; set; }
+
+    /// <summary>
+    /// This property defines the user type and used to control user access to the platform.
+    /// </summary>
+    public String UserType { get; set; }
 
     /// <summary>
     /// This property contains the image (logo) filename for the organisation.
     /// </summary>
     public string ImageFileName { get; set; }
+
+    /// <summary>
+    /// This property contains the current image (logo) filename for the organisation.
+    /// </summary>
+    public string CurrentImageFileName { get; set; }
 
     private String _Roles = String.Empty;
     /// <summary>
@@ -259,8 +300,6 @@ namespace Evado.Model.Digital
       set
       {
         var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Default_Display_Parameters, value );
-
-        //this.debug += "\r\n"+ debug;
       }
     }
 
@@ -307,7 +346,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado" )
+        if ( ( this.UserType == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -323,7 +362,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado" )
+        if ( ( this.UserType == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
@@ -341,7 +380,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado" )
+        if ( ( this.UserType == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
@@ -360,7 +399,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado" )
+        if ( ( this.UserType == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -376,8 +415,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado"
-            || this.TypeId == "Customer" )
+        if ( ( this.UserType == "Evado"
+            || this.UserType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true ) )
         {
@@ -395,8 +434,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado"
-            || this.TypeId == "Customer" )
+        if ( ( this.UserType == "Evado"
+            || this.UserType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
@@ -414,8 +453,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.TypeId == "Evado"
-            || this.TypeId == "Customer" )
+        if ( ( this.UserType == "Evado"
+            || this.UserType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
@@ -435,8 +474,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this.TypeId != "Evado"
-            || this.TypeId != "Customer" )
+        if ( this.UserType != "Evado"
+            || this.UserType != "Customer" )
         {
           return true;
         }
@@ -450,7 +489,7 @@ namespace Evado.Model.Digital
     /// </summary>
     public bool IsUserType ( String UserType )
     {
-      if ( this.TypeId == UserType )
+      if ( this.UserType == UserType )
       {
         return true;
       }
@@ -516,7 +555,7 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "Title: " + this.Title );
       sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
       sbText.AppendLine ( "RoleId: " + this.Roles );
-      sbText.AppendLine ( "TypeId: " + this.TypeId );
+      sbText.AppendLine ( "TypeId: " + this.UserType );
 
       if ( this.DomainGroupNames != String.Empty )
       {
@@ -617,9 +656,14 @@ namespace Evado.Model.Digital
             this.ImageFileName = value;
             break;
           }
-        case UserProfileFieldNames.User_Type_Id:
+        case UserProfileFieldNames.User_Type:
           {
-            this.TypeId = value ;
+            this.UserType = value ;
+            break;
+          }
+        case UserProfileFieldNames.User_Category:
+          {
+            this.UserCategory = value;
             break;
           }
         case UserProfileFieldNames.ActiveDirectoryUserId:

@@ -483,7 +483,7 @@ namespace Evado.UniForm.Digital
           return generateNoProfilePage ( );
         }
         this.LogDebug ( "User Roles: {0}, ", this.Session.UserProfile.Roles );
-        this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.TypeId );
+        this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.UserType );
 
         //
         // load the user's organisation.

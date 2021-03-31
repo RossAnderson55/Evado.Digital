@@ -346,18 +346,25 @@ namespace Evado.UniForm.Digital
     /// <param name="ListId">String: the list identifier.</param>
     /// <param name="Category">String: the list category.</param>
     /// <param name="CategoryOnly">bool true only return categories.</param>
+    /// <param name="IsSelectionList">bool true add empty selection.</param>
     /// <returns>List of EvOption objects</return>
     // ----------------------------------------------------------------------------------
-    public List<EvOption> getExternalSelectionOptions (
+    public List<EvOption> getSelectionOptions (
       String ListId,
       String Category,
-      bool CategoryOnly )
+      bool CategoryOnly,
+      bool IsSelectionList )
     {
       //
       // Initialise the methods variables and objects.
       //
       List<EvOption> optionList = new List<EvOption> ( );
       string categories = String.Empty;
+
+      if ( IsSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( ) );
+      }
 
       //
       // iterate through the issues selection lists.
@@ -394,13 +401,13 @@ namespace Evado.UniForm.Digital
               optionList.Add ( item.GetOption ( false ) );
             }
             else if ( Category == String.Empty )
-              {
-                optionList.Add ( item.GetOption ( true ) );
-              }
-              else if ( item.Category == Category )
-              {
-                optionList.Add ( item.GetOption ( false ) );
-              }
+            {
+              optionList.Add ( item.GetOption ( true ) );
+            }
+            else if ( item.Category == Category )
+            {
+              optionList.Add ( item.GetOption ( false ) );
+            }
 
           }// List item iteration loop
         }//END list selection
@@ -410,6 +417,59 @@ namespace Evado.UniForm.Digital
       // Return the selection list's options.
       //
       return optionList;
+
+    }//END method.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns category for a given list option value.
+    /// </summary>
+    /// <param name="ListId">String: the list identifier.</param>
+    /// <param name="OptionValue">String: the option value.</param>
+    /// <returns>List of EvOption objects</return>
+    // ----------------------------------------------------------------------------------
+    public String getSelectionCategory (
+      String ListId,
+      String OptionValue )
+    {
+      //
+      // Initialise the methods variables and objects.
+      //
+      string category = String.Empty;
+
+      //
+      // Exit if parameters are empty.
+      //
+      if ( ListId == String.Empty
+        || OptionValue == String.Empty )
+      {
+        return String.Empty;
+      }
+
+      //
+      // iterate through the issued selection lists.
+      //
+      foreach ( EdSelectionList list in this._SelectionLists )
+      {
+        if ( list.ListId == ListId )
+        {
+          foreach ( EdSelectionList.Item item in list.Items )
+          {
+            //
+            // if the value matches the option value return the category.
+            //
+            if ( item.Value.ToLower ( ) == OptionValue.ToLower ( ) )
+            {
+              return item.Category;
+            }
+          }// List item iteration loop
+        }//END list selection
+      }//Selection list iteration loop
+
+      //
+      // Return empty string if nothing is found.
+      //
+      return String.Empty;
 
     }//END method.
 
@@ -493,14 +553,14 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <returns>List of EvOption objects</return>
     // ----------------------------------------------------------------------------------
-    public List<EvOption> getMenuSelectionList (  )
+    public List<EvOption> getMenuSelectionList ( )
     {
       //
       // Initialise the methods variables and objects.
       //
       List<EvOption> optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( String.Empty ) );
-      String menuList = String.Empty ;
+      String menuList = String.Empty;
 
       //
       // iterate through the issues selection lists.
@@ -531,7 +591,7 @@ namespace Evado.UniForm.Digital
           optionList.Add ( new EvOption ( item.Group, item.Title ) );
           menuList += item.Group + ";";
         }
-     }//END menu item iteration loop.
+      }//END menu item iteration loop.
 
       return optionList;
     }//END menu selection method.

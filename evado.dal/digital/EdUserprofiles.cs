@@ -113,6 +113,7 @@ namespace Evado.Dal.Digital
     public const string DB_EMAIL_ADDRESS = "UP_EMAIL_ADDRESS";
     public const string DB_ROLES = "UP_ROLES";
     public const string DB_TYPE = "UP_TYPE";
+    public const string DB_CATEGORY = "UP_CATEGORY";
     public const string DB_IMAGE_FILENAME = "UP_IMAGE_FILENAME";
     public const string DB_UPDATED_BY_USER_ID = "UP_UPDATED_BY_USER_ID";
     public const string DB_UPDATE_BY = "UP_UPDATED_BY";
@@ -144,6 +145,7 @@ namespace Evado.Dal.Digital
     private const string PARM_EmailAddress = "@EmailAddress";
     private const string PARM_RoleId = "@RoleId";
     private const string PARM_TYPE = "@TYPE";
+    private const string PARM_CATEGORY = "@CATEGORY";
     private const string PARM_Title = "@Title";
     private const string PARM_IMAGE_FILENAME = "@IMAGE_FILENAME";
     private const string PARM_UpdatedByUserId = "@UpdatedByUserId";
@@ -195,7 +197,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdUserProfiles.PARM_CommonName, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_EmailAddress, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_RoleId, SqlDbType.NVarChar, 100),
-        new SqlParameter( EdUserProfiles.PARM_TYPE, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_TYPE, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_CATEGORY, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_Title, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_EXPIRY_DATE, SqlDbType.DateTime),
         new SqlParameter( EdUserProfiles.PARM_IMAGE_FILENAME, SqlDbType.NVarChar, 100),
@@ -242,13 +245,14 @@ namespace Evado.Dal.Digital
       parms [ 16 ].Value = UserProfile.CommonName;
       parms [ 17 ].Value = UserProfile.EmailAddress.ToLower ( );
       parms [ 18 ].Value = UserProfile.Roles;
-      parms [ 19 ].Value = UserProfile.TypeId;
-      parms [ 20 ].Value = UserProfile.Title;
-      parms [ 21 ].Value = UserProfile.ExpiryDate;
-      parms [ 22 ].Value = UserProfile.ImageFileName;
-      parms [ 23 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 24 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 25 ].Value = DateTime.Now;
+      parms [ 19 ].Value = UserProfile.UserType;
+      parms [ 20 ].Value = UserProfile.UserCategory;
+      parms [ 21 ].Value = UserProfile.Title;
+      parms [ 22 ].Value = UserProfile.ExpiryDate;
+      parms [ 23 ].Value = UserProfile.ImageFileName;
+      parms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 26 ].Value = DateTime.Now;
 
 
     }//END setUsersParameters class.
@@ -289,7 +293,8 @@ namespace Evado.Dal.Digital
       profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, DB_AD_NAME );
       profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
       profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
-      profile.TypeId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE );
+      profile.UserType = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE );
+      profile.UserCategory = EvSqlMethods.getString ( Row, EdUserProfiles.DB_CATEGORY );
 
       profile.Prefix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_PREFIX );
       profile.GivenName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_GIVEN_NAME );
@@ -1214,9 +1219,9 @@ namespace Evado.Dal.Digital
       //
       // Add items to the datachange object, if they do not exist on Old User Profile object. 
       //
-      if ( UserProfile.TypeId != oldUser.TypeId )
+      if ( UserProfile.UserType != oldUser.UserType )
       {
-        dataChange.AddItem ( "UserTypeId", oldUser.TypeId, UserProfile.TypeId );
+        dataChange.AddItem ( "UserTypeId", oldUser.UserType, UserProfile.UserType );
       }
       if ( UserProfile.UserId != oldUser.UserId )
       {

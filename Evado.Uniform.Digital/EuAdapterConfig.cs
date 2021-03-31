@@ -2022,9 +2022,9 @@ namespace Evado.UniForm.Digital
       // create the user home header on all pages.
       //
       pageField = pageGroup.createBooleanField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages,
-        EdLabels.Config_User_Home_Page_OnAll_Pages_Field_Label,
-        this.AdapterObjects.Settings.UserHomePageOnAllPages );
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Use_Home_Page_Header_On_All_Pages,
+        EdLabels.Config_Use_HomePageHeaderOnAllPages_Field_Label,
+        this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
 
@@ -2035,6 +2035,15 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data,
         EdLabels.Config_Enable_Binary_Data_Field_Label,
         this.AdapterObjects.Settings.EnableBinaryData );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the user category selection list field
+      //
+      pageField = pageGroup.createTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Category_List.ToString ( ),
+        EdLabels.Config_UserCategoryList_Field_Label,
+        this.AdapterObjects.Settings.UserCategoryList, 20 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
@@ -2070,8 +2079,7 @@ namespace Evado.UniForm.Digital
       //
       // create the defult organisation type selection. 
       //
-      optionList = new List<EvOption> ( );
-      optionList.Add ( new EvOption ( ) );
+        optionList = new List<EvOption> ( );
       foreach ( String value in this.AdapterObjects.Settings.OrgTypes.Split( ';' ) )
       {
         optionList.Add ( new EvOption( value ) );
@@ -2083,38 +2091,6 @@ namespace Evado.UniForm.Digital
         this.AdapterObjects.Settings.DefaultOrgType,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      //
-      // create the organisation types field
-      //
-      string userType = this.AdapterObjects.Settings.UserTypes;
-      userType = userType.Replace ( ";", "\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Types.ToString ( ),
-        EdLabels.Config_UserType_List_Field_Label,
-        EdLabels.Config_UserType_List_Field_Description,
-        userType, 20, 10 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      this.LogDebug ( "UserTypes {0}.", this.AdapterObjects.Settings.UserTypes );
-
-      //
-      // create the defult organisation type selection. 
-      //
-      optionList = new List<EvOption> ( );
-      optionList.Add ( new EvOption ( ) );
-      foreach ( String value in this.AdapterObjects.Settings.UserTypes.Split ( ';' ) )
-      {
-        optionList.Add ( new EvOption ( value ) );
-      }
-
-      pageField = pageGroup.createSelectionListField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.Default_User_Type,
-        EdLabels.Config_Default_User_Type_Field_Label,
-        this.AdapterObjects.Settings.DefaultOrgType,
-        optionList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
       
       //
       // create the user primary entity selection. 
@@ -2122,6 +2098,8 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( new EvOption ( ) );
+      optionList.Add ( new EvOption ( "USER_CAT", "Use User Category to select primary Entity" ) );
+      optionList.Add ( new EvOption ( "USER_TYPE", "Use User Type to select primary Entity" ) );
       foreach ( EdRecord entity in this.AdapterObjects.IssuedEntityLayouts )
       {
         optionList.Add ( entity.SelectionOption );

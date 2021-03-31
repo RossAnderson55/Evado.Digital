@@ -1980,11 +1980,11 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Home Page Title on all pages..
+        ///   Looks up a localized string similar to Use Home Page Header Title on all pages..
         /// </summary>
-        public static string Config_User_Home_Page_OnAll_Pages_Field_Label {
+        public static string Config_Use_HomePageHeaderOnAllPages_Field_Label {
             get {
-                return ResourceManager.GetString("Config_User_Home_Page_OnAll_Pages_Field_Label", resourceCulture);
+                return ResourceManager.GetString("Config_Use_HomePageHeaderOnAllPages_Field_Label", resourceCulture);
             }
         }
         
@@ -1994,6 +1994,15 @@ namespace Evado.Model.Digital {
         public static string Config_User_Primary_Entity_Field_Label {
             get {
                 return ResourceManager.GetString("Config_User_Primary_Entity_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Category List Identifier:.
+        /// </summary>
+        public static string Config_UserCategoryList_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_UserCategoryList_Field_Label", resourceCulture);
             }
         }
         

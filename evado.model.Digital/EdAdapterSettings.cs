@@ -130,7 +130,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
-      User_Home_Page_On_All_Pages,
+      Use_Home_Page_Header_On_All_Pages,
 
       /// <summary>
       /// this enumeration defines the roles in the application.
@@ -143,6 +143,11 @@ namespace Evado.Model.Digital
       Default_User_Roles,
 
       /// <summary>
+      /// this enumeration defines the user category list for the application
+      /// </summary>
+      User_Category_List,
+
+      /// <summary>
       /// This enumeration defines the OrgTypes in the application
       /// </summary>
       Org_Types,
@@ -151,16 +156,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines the default organisation type
       /// </summary>
       Default_User_Org_Type,
-
-      /// <summary>
-      /// This enumeration defines the UserTypes in the application
-      /// </summary>
-      User_Types,
-
-      /// <summary>
-      /// This enumeration defines the default user type
-      /// </summary>
-      Default_User_Type,
 
       /// <summary>
       /// this enumeration defines the hidden user fields the application.
@@ -393,16 +388,16 @@ namespace Evado.Model.Digital
     /// This property indicates to user the home header for all entity and record pages.
     /// </summary>
     // -------------------------------------------------------------------------------------
-    public bool UserHomePageOnAllPages
+    public bool UseHomePageHeaderOnAllPages
     {
       get
       {
         return EvStatics.getBool (
-          this.getParameter ( EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages ) );
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Use_Home_Page_Header_On_All_Pages ) );
       }
       set
       {
-        this.setParameter ( EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages,
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Use_Home_Page_Header_On_All_Pages,
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
@@ -514,6 +509,21 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property defines the a user category list to be use to define user categories and types.
+    /// </summary>
+    public String UserCategoryList
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.User_Category_List );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.User_Category_List, EvDataTypes.Text, value );
+      }
+    }
+
+    /// <summary>
     /// This property defines the a organisation's primary entity to be created when registering.
     /// </summary>
     public String OrganisationPrimaryEntity
@@ -601,96 +611,6 @@ namespace Evado.Model.Digital
       for ( int i = 0; i < arOrgTypes.Length; i++ )
       {
         string str = arOrgTypes [ i ].Trim ( );
-
-        if ( str == String.Empty
-          || str.ToLower ( ) == "null" )
-        {
-          continue;
-        }
-
-        optionList.Add ( new EvOption ( str, str.Replace ( "_", " " ) ) );
-      }
-
-      //
-      // return the list of selected roles
-      //
-      return optionList;
-    }//END method
-
-    #endregion
-
-    #region User Types Group
-
-
-    public const String StaticUserType = "Evado;Customer;End_User;";
-
-    /// <summary>
-    /// This property contains the name of the person who last updated the trial object.
-    /// </summary>
-    public string UserTypes
-    {
-      get
-      {
-        return this.getParameter ( AdapterFieldNames.User_Types );
-      }
-      set
-      {
-        this.setParameter ( AdapterFieldNames.User_Types, EvDataTypes.Text, value );
-      }
-    }
-
-    /// <summary>
-    /// This property contains the default organisation type
-    /// </summary>
-    public String DefaultUserType
-    {
-      get
-      {
-        return
-          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Type );
-      }
-      set
-      {
-        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Default_User_Type,
-          EvDataTypes.Text, value.ToString ( ) );
-      }
-    }
-
-    // ==================================================================================
-    /// <summary>
-    /// This method returns a selected list of application roles based on the delimited
-    /// list of selected roles that are passed to the method.
-    /// </summary>
-    /// <param name="SelectedUserTypeIds">Delimited string of role identifiers</param>
-    /// <returns>List of EdUserType objects</returns>
-    // ----------------------------------------------------------------------------------
-    public List<EvOption> GetUserTypeList ( bool ForSelectionList )
-    {
-      //
-      // Initialise the methods variables and objects.
-      //
-      List<EvOption> optionList = new List<EvOption> ( );
-
-      if ( ForSelectionList == true )
-      {
-        optionList.Add ( new EvOption ( ) );
-      }
-
-      optionList.Add ( new EvOption ( "Evado" ) );
-      optionList.Add ( new EvOption ( "Customer" ) );
-      optionList.Add ( new EvOption ( "End_User" ) );
-
-      //
-      // get an array of org types
-      //
-      String [ ] arUserTypes = this.UserTypes.Split ( ';' );
-
-      //
-      // iterate through the list creating selection options.
-      //
-      for ( int i = 0; i < arUserTypes.Length; i++ )
-      {
-        string str = arUserTypes [ i ].Trim ( );
 
         if ( str == String.Empty
           || str.ToLower ( ) == "null" )
@@ -1142,9 +1062,9 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdAdapterSettings.AdapterFieldNames.User_Home_Page_On_All_Pages:
+        case EdAdapterSettings.AdapterFieldNames.Use_Home_Page_Header_On_All_Pages:
           {
-            this.setParameter ( AdapterFieldNames.User_Home_Page_On_All_Pages, EvDataTypes.Boolean, Value );
+            this.setParameter ( AdapterFieldNames.Use_Home_Page_Header_On_All_Pages, EvDataTypes.Boolean, Value );
             return;
           }
 
@@ -1180,22 +1100,6 @@ namespace Evado.Model.Digital
             return;
           }
 
-        case EdAdapterSettings.AdapterFieldNames.User_Types:
-          {
-            string orgType = Value;
-            orgType = orgType.Replace ( "\r\n", ";" );
-            orgType = orgType.Replace ( "; ", ";" );
-            orgType = orgType.Replace ( " ;", ";" );
-            this.UserTypes = orgType.Replace ( ";;", ";" );
-            return;
-          }
-
-        case EdAdapterSettings.AdapterFieldNames.Default_User_Type:
-          {
-            this.DefaultUserType = Value;
-            return;
-          }
-
         case EdAdapterSettings.AdapterFieldNames.Hidden_User_Fields:
           {
             this.HiddenUserFields = Value;
@@ -1226,7 +1130,13 @@ namespace Evado.Model.Digital
             return;
           }
 
+        case EdAdapterSettings.AdapterFieldNames.User_Category_List:
+          {
+            this.UserCategoryList = Value;
+            return;
+          }
 
+          
         default:
 
           return;

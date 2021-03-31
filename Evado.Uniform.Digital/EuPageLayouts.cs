@@ -1267,7 +1267,7 @@ namespace Evado.UniForm.Digital
       //
       // create the user type selection list.
       //
-      optionList = this.AdapterObjects.Settings.GetUserTypeList ( true );
+      optionList = this.AdapterObjects.getSelectionOptions ( "User01", String.Empty, false, true );
 
       //
       // set the first option (empty) to indicate that all are selected.

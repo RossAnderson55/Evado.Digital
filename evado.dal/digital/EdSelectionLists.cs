@@ -61,7 +61,6 @@ namespace Evado.Dal.Digital
 
     #endregion
 
-
     #region Object Initialisation
 
     /* *********************************************************************************
@@ -147,7 +146,7 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] parms = new SqlParameter [ ] 
       {
         new SqlParameter( EdSelectionLists.PARM_GUID, SqlDbType.UniqueIdentifier ),
-        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 10 ),
+        new SqlParameter( EdSelectionLists.PARM_LIST_ID, SqlDbType.NVarChar, 20 ),
         new SqlParameter( EdSelectionLists.PARM_STATE, SqlDbType.NVarChar, 20 ),
         new SqlParameter( EdSelectionLists.PARM_TITLE, SqlDbType.NVarChar, 100),
         new SqlParameter( EdSelectionLists.PARM_DESCRIPTION, SqlDbType.NVarChar, 1000 ),

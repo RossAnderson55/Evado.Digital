@@ -1,4 +1,4 @@
-/****** File: 007_R1.0_ED_USERS_ED_CREATE_PROCEDURES..sql ******/
+/****** File: 007_R1.0_ED_USERS_PROFILE_CREATE_PROCEDURES.sql ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,11 +10,11 @@ GO
 DECLARE @RC int
 
 EXECUTE @RC = dbo.usr_DB_Add_Database_Update 
-   007, 'R1.0','ED_USER7', 
+   007, 'R1.0','ED_USER_PROFILE', 
    'CREATE PROCEDURES.'
 GO
 
-PRINT N'START: 007_R1.0_ED_USERS_ED_CREATE_PROCEDURES..'; 
+PRINT N'START: 007_R1.0_ED_USERS_PROFILE_CREATE_PROCEDURES..'; 
 GO
 
 /****** Object:  StoredProcedure [dbo].[usr_UserProfile_add]    Script Date: 02/08/2021 12:36:05 ******/
@@ -72,7 +72,8 @@ CREATE             PROCEDURE [dbo].[USR_USER_PROFILE_ADD]
  @TELEPHONE nvarchar(20),
  @MOBILE_PHONE nvarchar(20),
  @EmailAddress nvarchar(100),
- @RoleId nvarchar(100),
+ @ROLEID nvarchar(100),
+ @CATEGORY nvarchar(50),
  @TYPE nvarchar(50),
  @IMAGE_FILENAME nvarchar(100),
  @EXPIRY_DATE datetime,
@@ -101,6 +102,7 @@ Insert Into ED_USER_PROFILES
   , UP_TELEPHONE 
   , UP_EMAIL_ADDRESS 
   , UP_ROLES 
+  , UP_CATEGORY 
   , UP_TYPE 
   , UP_IMAGE_FILENAME 
   , UP_EXPIRY_DATE 
@@ -128,7 +130,8 @@ values
  @TELEPHONE,
  @MOBILE_PHONE,
  @EmailAddress,
- @RoleId,
+ @ROLEID,
+ @CATEGORY,
  @TYPE,
  @IMAGE_FILENAME,
  @EXPIRY_DATE,
@@ -183,7 +186,8 @@ CREATE      PROCEDURE [dbo].[USR_USER_PROFILE_UPDATE]
  @TELEPHONE nvarchar(20),
  @MOBILE_PHONE nvarchar(20),
  @EmailAddress nvarchar(100),
- @RoleId nvarchar(100),
+ @ROLEID nvarchar(100),
+ @CATEGORY nvarchar(50),
  @TYPE nvarchar(50),
  @IMAGE_FILENAME nvarchar(100),
  @EXPIRY_DATE datetime,
@@ -211,7 +215,8 @@ SET
   UP_MOBILE_PHONE = @MOBILE_PHONE, 
   UP_COMMON_NAME = @CommonName, 
   UP_EMAIL_ADDRESS = @EmailAddress, 
-  UP_ROLES = @RoleId, 
+  UP_ROLES = @ROLEID, 
+  UP_CATEGORY = @CATEGORY,
   UP_TYPE = @TYPE,
   UP_Title = @Title, 
   UP_IMAGE_FILENAME= @IMAGE_FILENAME,
@@ -227,5 +232,5 @@ WHERE UP_Guid = @Guid;
 GO
 
 
-PRINT N'FINISH: 007_R1.0_ED_USERS_ED_CREATE_PROCEDURES..'; 
+PRINT N'FINISH: 007_R1.0_ED_USERS_PROFILE_CREATE_PROCEDURES..'; 
 GO

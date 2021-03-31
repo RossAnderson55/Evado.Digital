@@ -1080,7 +1080,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Entity_View_Page_Title;
 
-        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }
@@ -1258,7 +1258,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Entity_View_Page_Title;
 
-        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }
@@ -2171,7 +2171,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
 
-        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }
@@ -2999,7 +2999,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
 
-        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }

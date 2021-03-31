@@ -2807,8 +2807,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Config_Title_Field_Label" xml:space="preserve">
     <value>Platform Title:</value>
   </data>
-  <data name="Config_User_Home_Page_OnAll_Pages_Field_Label" xml:space="preserve">
-    <value>User Home Page Title on all pages.</value>
+  <data name="Config_Use_HomePageHeaderOnAllPages_Field_Label" xml:space="preserve">
+    <value>Use Home Page Header Title on all pages.</value>
   </data>
   <data name="Entity_View_Page_Title" xml:space="preserve">
     <value>List of Entities</value>
@@ -2992,5 +2992,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="PageLayout_Get_Empty_Error_Message" xml:space="preserve">
     <value>ERROR: The selection page was not retrieved.</value>
+  </data>
+  <data name="Config_UserCategoryList_Field_Label" xml:space="preserve">
+    <value>User Category List Identifier:</value>
   </data>
 </root>

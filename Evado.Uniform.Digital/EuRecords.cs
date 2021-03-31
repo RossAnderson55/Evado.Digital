@@ -667,7 +667,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Title = EdLabels.Record_View_Page_Title;
 
-        if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+        if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }
@@ -1832,7 +1832,7 @@ namespace Evado.UniForm.Digital
       ClientDataObject.Id = this.Session.Record.Guid;
       ClientDataObject.Title = this.Session.Entity.CommandTitle;
 
-      if ( this.AdapterObjects.Settings.UserHomePageOnAllPages == true )
+      if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
       {
         ClientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
       }

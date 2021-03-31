@@ -459,7 +459,7 @@ namespace Evado.UniForm.Digital
            Model.UniForm.ApplicationMethods.Get_Object );
 
         command.AddParameter (
-          EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString(),
+          EdUserProfile.UserProfileFieldNames.User_Type.ToString(),
           file.GroupId );
 
         command.AddParameter ( EuBinaryFiles.CONST_BINARY_FILE_ID,
@@ -579,9 +579,9 @@ namespace Evado.UniForm.Digital
       //
       // if the org Id parameter exists update the setting.
       //
-      if ( PageCommand.hasParameter ( EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() ) == true )
+      if ( PageCommand.hasParameter ( EdUserProfile.UserProfileFieldNames.User_Type.ToString() ) == true )
       {
-        value = PageCommand.GetParameter ( EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString() );
+        value = PageCommand.GetParameter ( EdUserProfile.UserProfileFieldNames.User_Type.ToString() );
 
 
         if ( this.Session.BinaryFileOrgId != value )
@@ -817,7 +817,7 @@ namespace Evado.UniForm.Digital
       {
         if ( parameter.Name == Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER
           || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          || parameter.Name == EdUserProfile.UserProfileFieldNames.User_Type_Id.ToString()
+          || parameter.Name == EdUserProfile.UserProfileFieldNames.User_Type.ToString()
           || parameter.Name == EuBinaryFiles.CONST_UPLOAD_PARM_ID )
         {
           continue;

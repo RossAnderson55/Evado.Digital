@@ -1446,7 +1446,7 @@ namespace Evado.UniForm.Digital
       groupField.Table.Header [ 2 ].No = 3;
       groupField.Table.Header [ 2 ].Text = EdLabels.SelectionList_Table_Column_3_Title;
       groupField.Table.Header [ 2 ].ColumnId = groupField.Table.Header [ 2 ].Text;
-      groupField.Table.Header [ 2 ].Width = "40";
+      groupField.Table.Header [ 2 ].Width = "80";
       groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Text;
 
       //

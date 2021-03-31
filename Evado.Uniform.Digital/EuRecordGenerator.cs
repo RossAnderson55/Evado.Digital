@@ -2499,7 +2499,7 @@ namespace Evado.UniForm.Digital
       //
       // get the external selection list options.
       //
-      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getSelectionOptions ( listId, category, false, true );
 
       // 
       // set the field properties and parameters.
@@ -2548,7 +2548,7 @@ namespace Evado.UniForm.Digital
       //
       // get the external selection list options.
       //
-      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getSelectionOptions ( listId, category, false, false );
 
       // 
       // set the field properties and parameters.
@@ -2599,7 +2599,7 @@ namespace Evado.UniForm.Digital
       //
       // get the external selection list options.
       //
-      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getExternalSelectionOptions ( listId, category, false );
+      List<Evado.Model.EvOption> optionlist = this.AdapterObjects.getSelectionOptions ( listId, category, false, false );
 
       // 
       // set the field properties and parameters.
