@@ -255,14 +255,19 @@ namespace Evado.Model.Digital
     public String UserType { get; set; }
 
     /// <summary>
-    /// This property contains the image (logo) filename for the organisation.
+    /// This property contains the image (logo) filename for the user.
     /// </summary>
     public string ImageFileName { get; set; }
 
     /// <summary>
-    /// This property contains the current image (logo) filename for the organisation.
+    /// This property contains the current image (logo) filename for the user.
     /// </summary>
     public string CurrentImageFileName { get; set; }
+
+    /// <summary>
+    /// This property contains the user's organisation type
+    /// </summary>
+    public string OrgType { get; set; }
 
     private String _Roles = String.Empty;
     /// <summary>
@@ -346,7 +351,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado" )
+        if ( ( this.OrgId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -362,7 +367,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado" )
+        if ( ( this.OrgId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
@@ -380,7 +385,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado" )
+        if ( ( this.OrgId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
@@ -399,7 +404,7 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado" )
+        if ( ( this.OrgId == "Evado" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
         {
           return true;
@@ -415,8 +420,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado"
-            || this.UserType == "Customer" )
+        if ( ( this.OrgId == "Evado"
+            || this.OrgType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true ) )
         {
@@ -434,8 +439,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado"
-            || this.UserType == "Customer" )
+        if ( ( this.OrgId == "Evado"
+            || this.OrgType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
         {
@@ -453,8 +458,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( ( this.UserType == "Evado"
-            || this.UserType == "Customer" )
+        if ( ( this.OrgId == "Evado"
+            || this.OrgType == "Customer" )
           && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
             || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
@@ -474,8 +479,8 @@ namespace Evado.Model.Digital
     {
       get
       {
-        if ( this.UserType != "Evado"
-            || this.UserType != "Customer" )
+        if ( this.OrgType != "Evado"
+            || this.OrgType != "Customer" )
         {
           return true;
         }
@@ -555,7 +560,9 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "Title: " + this.Title );
       sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
       sbText.AppendLine ( "RoleId: " + this.Roles );
+      sbText.AppendLine ( "OrgType: " + this.OrgType );
       sbText.AppendLine ( "TypeId: " + this.UserType );
+      sbText.AppendLine ( "UserCategory: " + this.UserCategory );
 
       if ( this.DomainGroupNames != String.Empty )
       {

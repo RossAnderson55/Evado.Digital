@@ -146,7 +146,6 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "loadUserOrganisation" );
       this.LogDebug ( "User OrgId: " + this.Session.UserProfile.OrgId );
-
       // 
       // Initialise the methods variables and objects.
       // 
@@ -186,6 +185,11 @@ namespace Evado.UniForm.Digital
         this.LogMethodEnd ( "loadUserOrganisation" );
         return false;
       }
+
+      this.Session.UserProfile.OrgType = this.Session.Organisation.OrgType;
+      this.Session.UserProfile.OrganisationName = this.Session.Organisation.Name;
+
+      this.LogDebug ( "Org Type " + this.Session.Organisation.OrgType  );
 
       this.LogAction ( "Organisation for " + this.Session.Organisation.OrgId + " GENERATED" );
 

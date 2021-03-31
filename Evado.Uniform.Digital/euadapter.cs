@@ -484,11 +484,15 @@ namespace Evado.UniForm.Digital
         }
         this.LogDebug ( "User Roles: {0}, ", this.Session.UserProfile.Roles );
         this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.UserType );
+        this.LogDebug ( "User UserCategory: " + this.Session.UserProfile.UserCategory );
 
         //
         // load the user's organisation.
         //
-        this.loadUserOrganisation ( );
+        this.loadUserOrganisation ( ); ;
+
+        this.LogDebug ( "User OrgType: " + this.Session.UserProfile.OrgType );
+
 
         //
         // Process a demonstration user registration request. 
