@@ -247,23 +247,12 @@ namespace Evado.UniForm.Digital
       this.GetDataObject_LayoutCommands ( pageGroup );
 
       //
-      // Form type selection list.
+      // Set the entity type
       //
-      optionList = EdRecord.getFormTypes ( );
-
       if ( this.Session.EntityLayout.Design.TypeId == EdRecordTypes.Null )
       {
         this.Session.EntityLayout.Design.TypeId = EdRecordTypes.Normal_Record;
       }
-
-      groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.TypeId.ToString ( ),
-        EdLabels.Form_Type_Field_Label,
-        this.Session.EntityLayout.Design.TypeId.ToString ( ),
-        optionList );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.EditAccess = initialAccess;
-      groupField.AddParameter ( Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       //
       // Form title
@@ -448,14 +437,7 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.EntityLayout.Design.ParentType == EdRecord.ParentTypeList.Entity )
       {
-        optionList = new List<EvOption> ( );
-        foreach ( EdRecord layout in this.AdapterObjects.IssuedEntityLayouts )
-        {
-          if ( layout.LayoutId != this.Session.EntityLayout.LayoutId )
-          {
-            optionList.Add ( new EvOption ( layout.LayoutId, layout.LayoutId = " - " + layout.Title ) );
-          }
-        }
+        optionList = this.AdapterObjects.GetIssuedEntityOptions ( false );
 
         groupField = pageGroup.createCheckBoxListField (
           EdRecord.RecordFieldNames.ParentEntities.ToString ( ),

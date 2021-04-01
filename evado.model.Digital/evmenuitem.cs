@@ -223,6 +223,7 @@ namespace Evado.Model.Digital
           this.PageId,
           this.Title,
           this.Order,
+          this.UserTypes,
           this.RoleList );
 
       

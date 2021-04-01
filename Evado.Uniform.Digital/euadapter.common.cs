@@ -554,7 +554,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserType );
+        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
 
         String pageId = EuAdapter.CONST_PAGE_ID_PREFIX + pageLayout.PageId;
         String pageLabel = pageId.Replace ( "_", " " );

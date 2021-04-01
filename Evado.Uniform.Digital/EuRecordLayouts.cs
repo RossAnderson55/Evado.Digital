@@ -463,21 +463,6 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.PageId = EdStaticPageIds.Record_Layout_View.ToString ( );
 
         //
-        // Define the icon urls.
-        //
-        clientDataObject.Page.setImageUrl (
-          Model.UniForm.PageImageUrls.Image0_Url,
-          EuRecordLayouts.ICON_FORM_DRAFT );
-
-        clientDataObject.Page.setImageUrl (
-          Model.UniForm.PageImageUrls.Image1_Url,
-          EuRecordLayouts.ICON_FORM_REVIEWED );
-
-        clientDataObject.Page.setImageUrl (
-          Model.UniForm.PageImageUrls.Image2_Url,
-          EuRecordLayouts.ICON_FORM_ISSUED );
-
-        //
         // Define the page commands
         //
         this.createFormList_PageCommands ( clientDataObject.Page );
@@ -494,7 +479,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the pageMenuGroup containing commands to open the records.
         // 
-        this.getLayoutList_Group ( clientDataObject.Page, this.AdapterObjects.AllEntityLayouts );
+        this.getLayoutList_Group ( clientDataObject.Page, this.AdapterObjects.AllRecordLayouts );
 
         this.LogValue ( " data.Title: " + clientDataObject.Title );
         this.LogValue ( " data.Page.Title: " + clientDataObject.Page.Title );
@@ -530,7 +515,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FormType '{0}'", this.Session.RecordLayoutTypeSelection );
       this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
 
-      if ( this.AdapterObjects.AllEntityLayouts.Count > 0 )
+      if ( this.AdapterObjects.AllRecordLayouts.Count > 0 )
       {
         this.LogMethod ( "loadRecordLayoutList method" );
         return;
@@ -544,12 +529,12 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this.AdapterObjects.AllEntityLayouts = this._Bll_RecordLayouts.getLayoutList (
+      this.AdapterObjects.AllRecordLayouts= this._Bll_RecordLayouts.getLayoutList (
         this.Session.RecordLayoutTypeSelection,
         this.Session.RecordLayoutStateSelection );
 
       this.LogDebugClass ( this._Bll_RecordLayouts.Log );
-      this.LogDebug ( "Form list count: " + this.AdapterObjects.AllEntityLayouts.Count );
+      this.LogDebug ( "Form list count: " + this.AdapterObjects.AllRecordLayouts.Count );
 
       this.LogMethod ( "loadRecordLayoutList method" );
     }//ENd loadRecordLayoutList method
@@ -649,7 +634,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
+        this.AdapterObjects.AllRecordLayouts = new List<EdRecord> ( );
 
       }
       catch ( Exception Ex )
@@ -1248,7 +1233,7 @@ namespace Evado.UniForm.Digital
       //
       // Get the list of forms to determine if there is an existing draft form.
       //
-      if ( this.AdapterObjects.AllEntityLayouts.Count == 0 )
+      if ( this.AdapterObjects.AllRecordLayouts.Count == 0 )
       {
         this.loadRecordLayoutList ( );
       }
@@ -1256,7 +1241,7 @@ namespace Evado.UniForm.Digital
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
+      foreach ( EdRecord form in this.AdapterObjects.AllRecordLayouts )
       {
         //
         // get the list issued version of the form.
@@ -2939,7 +2924,7 @@ namespace Evado.UniForm.Digital
         //
         // If a revision or copy is made rebuild the list
         //
-        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
+        this.AdapterObjects.AllRecordLayouts = new List<EdRecord> ( );
 
         this.LogMethodEnd ( "updateObject" );
 
@@ -2979,7 +2964,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the form fields checking to ensure there are not duplicate field identifiers.
       //
-      foreach ( EdRecord form in this.AdapterObjects.AllEntityLayouts )
+      foreach ( EdRecord form in this.AdapterObjects.AllRecordLayouts )
       {
         this.LogValue ( "Form.Guid: " + form.Guid + ", FormId: " + form.LayoutId );
 

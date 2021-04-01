@@ -769,21 +769,6 @@ namespace Evado.UniForm.Digital
       // 
       // Display form type selection list
       // 
-      optionList = EdRecord.getFormTypes ( );
-      optionList [ 0 ].Value = EdRecordTypes.Null.ToString ( );
-
-      selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.TypeId.ToString ( ),
-       EdLabels.Form_Type_Selection_Label,
-       this.Session.EntityTypeSelection.ToString ( ),
-       optionList );
-
-      selectionField.Layout = EuAdapter.DefaultFieldLayout;
-      selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-
-      // 
-      // Display form type selection list
-      // 
       optionList = EdRecord.getFormStates ( );
       optionList [ 0 ].Value = EdRecordTypes.Null.ToString ( );
 

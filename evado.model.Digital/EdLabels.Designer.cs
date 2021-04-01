@@ -1962,7 +1962,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adapte Roles:.
+        ///   Looks up a localized string similar to Adapter Roles:.
         /// </summary>
         public static string Config_Role_List_Field_Label {
             get {
@@ -4925,7 +4925,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} - {1} &gt; Order: {2}, Roles: {3}.
+        ///   Looks up a localized string similar to {0} - {1} &gt; Order: {2}, Users: {3}, Roles: {4}.
         /// </summary>
         public static string Menu_List_Link_Format {
             get {
@@ -5789,6 +5789,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Page Active Components:.
+        /// </summary>
+        public static string PageLayout_Component_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Component_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ERROR: Generated creating page layout object..
         /// </summary>
         public static string PageLayout_Creation_Error_Message {
@@ -6095,11 +6104,11 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Type:.
+        ///   Looks up a localized string similar to User Types:.
         /// </summary>
-        public static string PageLayout_User_Type_Field_Label {
+        public static string PageLayout_User_Types_Field_Label {
             get {
-                return ResourceManager.GetString("PageLayout_User_Type_Field_Label", resourceCulture);
+                return ResourceManager.GetString("PageLayout_User_Types_Field_Label", resourceCulture);
             }
         }
         

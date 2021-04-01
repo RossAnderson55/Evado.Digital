@@ -174,34 +174,46 @@ namespace Evado.UniForm.Digital
       page.PageId = this.Session.PageLayout.PageId;
       page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
+      this.LogDebug ( "Title {0}. ", this.Session.PageLayout.Title );
+      this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
+      this.LogDebug ( "LayoutComponents {0}. ", this.Session.PageLayout.LayoutComponents );
       this.LogDebug ( "LeftColumnWidth {0}. ", this.Session.PageLayout.LeftColumnWidth );
       this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
       this.LogDebug ( "RightColumnWidth {0}. ", this.Session.PageLayout.RightColumnWidth );
+
+      this.LogDebug ( "HeaderComponentList {0}. ", this.Session.PageLayout.HeaderComponentList );
+      this.LogDebug ( "LeftColumnComponentList {0}. ", this.Session.PageLayout.LeftColumnComponentList );
+      this.LogDebug ( "CenterColumnComponentList {0}. ", this.Session.PageLayout.CenterColumnComponentList );
+      this.LogDebug ( "RightColumnComponentList {0}. ", this.Session.PageLayout.RightColumnComponentList );
 
       if ( this.Session.PageLayout.LeftColumnWidth > 0 )
       {
         page.SetLeftColumnWidth ( this.Session.PageLayout.LeftColumnWidth );
         enableLeftColumn = true;
+        this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
       }
 
       if ( this.Session.PageLayout.DisplayMainMenu == true )
       {
         page.SetLeftColumnWidth ( 15 );
         enableLeftColumn = true;
+        this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
       }
-      this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
 
       if ( this.Session.PageLayout.RightColumnWidth > 0 )
       {
         page.SetRightColumnWidth ( this.Session.PageLayout.RightColumnWidth );
         enableRightColumn = true;
+        this.LogDebug ( "page.right column width {0}.", page.GetRightColumnWidth ( ) );
       }
-      this.LogDebug ( "page.left column width {0}.", page.GetRightColumnWidth ( ) );
 
       //
-      // create the main page menu.
+      // create the main page menu if main menu is selected.
       //
-      this.generateMainMenu ( page );
+      if ( this.Session.PageLayout.DisplayMainMenu == true )
+      {
+        this.generateMainMenu ( page );
+      }
 
       //
       // generate the page menu if it exists.
@@ -409,6 +421,7 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.PageLayout.CenterColumnComponentList != String.Empty )
       {
+        this.LogDebug ( "Create center column components" );
         //
         // get the array of components.
         //
@@ -419,8 +432,14 @@ namespace Evado.UniForm.Digital
         //
         foreach ( String comp in arrComponents )
         {
+
+          this.LogDebug ( "Component: {0}", comp );
+
           if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
           {
+            this.LogDebug ( "Entity selected" );
+
+
             EuEntities entities = new EuEntities (
                   this._AdapterObjects,
                   this.ServiceUserProfile,

@@ -43,16 +43,16 @@ CREATE    PROCEDURE [dbo].[usr_Menu_add]
  @ORDER smallint,
  @GROUP nvarchar(10),
  @GROUP_HEADER bit,
- @MODULES nvarchar(250),
+ @USER_TYPES nvarchar(250),
  @ROLES nvarchar(250)
 AS
 
 Insert Into EV_MENUS 
 ( Mnu_Guid, MNU_PAGE_ID, MNU_TITLE, MNU_ORDER, MNU_GROUP, MNU_GROUP_HEADER, 
-	MNU_PLATFORM, MNU_MODULES, MNU_ROLES ) 
+	MNU_PLATFORM, MNU_USER_TYPES, MNU_ROLES ) 
 values
 ( @Guid, @PAGE_ID, @TITLE,  @ORDER, @GROUP, @GROUP_HEADER,
-	@PLATFORM, @MODULES, @ROLES );
+	@PLATFORM, @USER_TYPES, @ROLES );
 
 GO
 
@@ -66,7 +66,7 @@ CREATE   PROCEDURE [dbo].[usr_Menu_update]
  @ORDER smallint,
  @GROUP nvarchar(10),
  @GROUP_HEADER bit,
- @MODULES nvarchar(250),
+ @USER_TYPES nvarchar(250),
  @ROLES nvarchar(250)
 AS
 
@@ -78,7 +78,7 @@ set
 	MNU_GROUP = @GROUP,  
 	MNU_GROUP_HEADER = @GROUP_HEADER,  
 	MNU_PLATFORM = @PLATFORM,  
-  MNU_MODULES = @MODULES, 
+  MNU_USER_TYPES = @USER_TYPES, 
   MNU_ROLES  = @ROLES
 WHERE 	Mnu_Guid = @Guid;
 

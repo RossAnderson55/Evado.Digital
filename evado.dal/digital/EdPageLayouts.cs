@@ -238,7 +238,7 @@ namespace Evado.Dal.Digital
       //
       parms [ 0 ].Value = Item.Guid;
       parms [ 1 ].Value = Item.PageId;
-      parms [ 2 ].Value = Item.UserType;
+      parms [ 2 ].Value = Item.UserTypes;
       parms [ 3 ].Value = Item.State;
       parms [ 4 ].Value = Item.Title;
 
@@ -297,7 +297,7 @@ namespace Evado.Dal.Digital
       Item.Guid = EvSqlMethods.getGuid ( Row, EdPageLayouts.DB_GUID );
       Item.PageId = EvSqlMethods.getString ( Row, EdPageLayouts.DB_PAGE_ID );
       Item.State = EvSqlMethods.getString<EdPageLayout.States> ( Row, EdPageLayouts.DB_STATE );
-      Item.UserType = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPES );
+      Item.UserTypes = EvSqlMethods.getString ( Row, EdPageLayouts.DB_USER_TYPES );
       Item.Title = EvSqlMethods.getString ( Row, EdPageLayouts.DB_TITLE );
 
       Item.HomePage = EvSqlMethods.getBool ( Row, EdPageLayouts.DB_HOME_PAGE );
@@ -663,9 +663,9 @@ namespace Evado.Dal.Digital
       {
         dataChange.AddItem ( "Title", oldItem.Title, Item.Title );
       }
-      if ( Item.UserType != oldItem.UserType )
+      if ( Item.UserTypes != oldItem.UserTypes )
       {
-        dataChange.AddItem ( "UserType", oldItem.UserType, Item.UserType );
+        dataChange.AddItem ( "UserType", oldItem.UserTypes, Item.UserTypes );
       }
       if ( Item.State != oldItem.State )
       {

@@ -27,7 +27,7 @@ namespace Evado.Model.Digital
   /// This is the data model for the form field selection list class.
   /// </summary>
   [Serializable]
-  public class EdPageLayout : Evado.Model.EvParameters 
+  public class EdPageLayout : Evado.Model.EvParameters
   {
     #region Enumerators
     /// <summary>
@@ -59,7 +59,12 @@ namespace Evado.Model.Digital
       /// This enumeration defines the default home page field
       /// </summary>
       DefaultHomePage,
-      
+
+      /// <summary>
+      /// The page components on this layout.
+      /// </summary>
+      LayoutComponents,
+
       /// <summary>
       /// This enumeration defines the Menu location field
       /// </summary>
@@ -73,7 +78,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the page layout User type field
       /// </summary>
-      UserType,
+      User_Types,
 
       /// <summary>
       /// This enumeration defines the header comment field
@@ -136,6 +141,33 @@ namespace Evado.Model.Digital
       State,
 
     }
+
+    /// <summary>
+    /// This enumerated list defines the menu location on the page.
+    /// </summary>
+    public enum LayoutComponentList
+    {
+      /// <summary>
+      /// not value is set, menu not displayed.
+      /// </summary>
+      Null,
+
+      /// <summary>
+      /// THis enumeration the menu is displayed in the page header.
+      /// </summary>
+      Page_Header,
+
+      /// <summary>
+      /// this enumeration the menu is displayed in the left column
+      /// </summary>
+      Left_Column,
+
+      /// <summary>
+      /// This enumeration the menu is displayed in the right column
+      /// </summary>
+      Right_Column,
+    }
+
     /// <summary>
     /// This enumerated list defines the menu location on the page.
     /// </summary>
@@ -219,7 +251,6 @@ namespace Evado.Model.Digital
       Delete
     }
 
-
     #endregion
 
     public EdPageLayout ( )
@@ -259,7 +290,7 @@ namespace Evado.Model.Digital
       get
       {
         return
-         EvStatics.getBool( this.getParameter ( EdPageLayout.FieldNames.DisplayMainMenu ) );
+         EvStatics.getBool ( this.getParameter ( EdPageLayout.FieldNames.DisplayMainMenu ) );
       }
       set
       {
@@ -267,6 +298,43 @@ namespace Evado.Model.Digital
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
+
+    /// <summary>
+    /// This property page components on this page.
+    /// </summary>
+    public String LayoutComponents
+    {
+      get
+      {
+        return
+          this.getParameter ( EdPageLayout.FieldNames.LayoutComponents );
+      }
+      set
+      {
+        this.setParameter ( EdPageLayout.FieldNames.LayoutComponents,
+          EvDataTypes.Text, value.ToString ( ) );
+      }
+    }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns true if the component is an active page component.
+    /// </summary>
+    /// <param name="Component">LayoutComponentList enumerated list.</param>
+    /// <returns>True: component found</returns>
+    // ----------------------------------------------------------------------------------
+    public bool hasActiveLayout ( LayoutComponentList Component )
+    {
+      String component = Component.ToString();
+
+      if ( LayoutComponents.Contains( component ) == true )
+      {
+        return true;
+      }
+       return false;
+    }
+
+
     /// <summary>
     /// This property contains the enumerated value to define where the menu is to be located.
     /// </summary>
@@ -384,7 +452,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a reference of selection list
     /// </summary>
-    public string UserType { get; set; }
+    public string UserTypes { get; set; }
 
     /// <summary>
     /// This property contains a save actions
@@ -513,14 +581,23 @@ namespace Evado.Model.Digital
             this.MenuLocation = EvStatics.parseEnumValue<MenuLocations> ( Value );
             return;
           }
-        case EdPageLayout.FieldNames.PageCommands:
+
+        case EdPageLayout.FieldNames.LayoutComponents:
           {
-            this.PageCommands =  Value ;
+            this.setParameter ( EdPageLayout.FieldNames.LayoutComponents,
+              EvDataTypes.Text, Value );
             return;
           }
-        case EdPageLayout.FieldNames.UserType:
+
+
+        case EdPageLayout.FieldNames.PageCommands:
           {
-            this.UserType = Value;
+            this.PageCommands = Value;
+            return;
+          }
+        case EdPageLayout.FieldNames.User_Types:
+          {
+            this.UserTypes = Value;
             return;
           }
         case EdPageLayout.FieldNames.HeaderContent:

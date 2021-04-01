@@ -112,6 +112,14 @@ namespace Evado.Dal.Digital
     public const string DB_DISPLAY_ENTITIES = "EDRL_DISPLAY_ENTITIES";
     public const string DB_DISPLAY_AUTHOR_DETAILS = "EDRL_DISPLAY_AUTHOR_DETAILS";
     public const string DB_RECORD_PREFIX = "EDRL_RECORD_PREFIX";
+    /// <summary>
+    /// The database entity layout header format column name
+    /// </summary>
+    public const string DB_HEADER_FORMAT = "EDRL_HEADER_FORMAT";
+    /// <summary>
+    /// The database entity layout footer format column name
+    /// </summary>
+    public const string DB_FOOTER_FORMAT = "EDRL_FOOTER_FORMAT";
 
     public const string DB_UPDATED_BY_USER_ID = "EDRL_UPDATED_BY_USER_ID";
     public const string DB_UPDATED_BY = "EDRL_UPDATED_BY";
@@ -146,6 +154,8 @@ namespace Evado.Dal.Digital
     private const string PARM_DISPLAY_ENTITIES = "@DISPLAY_ENTITIES";
     private const string PARM_DISPLAY_AUTHOR_DETAILS = "@DISPLAY_AUTHOR_DETAILS";
     private const string PARM_RECORD_PREFIX = "@RECORD_PREFIX";
+    private const string PARM_HEADER_FORMAT = "@HEADER_FORMAT";
+    private const string PARM_FOOTER_FORMAT = "@FOOTER_FORMAT";
 
     private const string PARM_UPDATED_BY_USER_ID = "@UPDATED_BY_USER_ID";
     private const string PARM_UPDATED_BY = "@UPDATED_BY";
@@ -206,6 +216,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdRecordLayouts.PARM_RECORD_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdRecordLayouts.PARM_PARENT_TYPE, SqlDbType.NVarChar, 50),
         new SqlParameter( EdRecordLayouts.PARM_PARENT_ACCESS, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdRecordLayouts.PARM_HEADER_FORMAT, SqlDbType.NVarChar, 30),
+        new SqlParameter( EdRecordLayouts.PARM_FOOTER_FORMAT, SqlDbType.NVarChar, 30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdRecordLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -267,9 +279,11 @@ namespace Evado.Dal.Digital
       cmdParms [ 21 ].Value = Form.Design.RecordPrefix;
       cmdParms [ 22 ].Value = Form.Design.ParentType;
       cmdParms [ 23 ].Value = Form.Design.AuthorAccess;
-      cmdParms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 26 ].Value = DateTime.Now;
+      cmdParms [ 24 ].Value = Form.Design.HeaderFormat;
+      cmdParms [ 25 ].Value = Form.Design.FooterFormat;
+      cmdParms [ 26 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 27 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 28 ].Value = DateTime.Now;
 
     }//END SetParameters class.
 

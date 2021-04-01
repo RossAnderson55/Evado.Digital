@@ -119,12 +119,6 @@ namespace Evado.UniForm.Digital
           this.Session.MenuPlatformId = this.AdapterObjects.PlatformId;
         }
 
-        //
-        // ensure that all page layouts have menu groups headers.
-        //
-        this.updatePageLayoutGroups ( );
-
-
         // 
         // Determine the method to be called
         // 
@@ -185,130 +179,6 @@ namespace Evado.UniForm.Digital
 
     }//END getClientDataObject method
     
-    // ==============================================================================
-    /// <summary>
-    /// This method updates the PageLayout Groups to ensure that all page layouts have
-    /// menu groups for them.
-    /// </summary>
-    //  ------------------------------------------------------------------------------
-    private void updatePageLayoutGroups ( )
-    {
-      this.LogMethod ( "updatePageLayoutGroups" );
-
-      //
-      // iterate through each of the issued pages to add a menu header item 
-      // if one does not exist.
-      //
-      foreach ( EdPageLayout page in this.AdapterObjects.AllPageLayouts )
-      {
-        if ( page.State == EdPageLayout.States.Issued )
-        {
-          if ( this.hasMenuHeader ( page ) == true )
-          {
-            continue;
-          }
-
-          this.addMenuHeader ( page );
-        }
-      }
-
-      this.LogMethodEnd ( "updatePageLayoutGroups" );
-    }
-
-    // ==============================================================================
-    /// <summary>
-    /// This method tests to see if the a page group header exists for the page.
-    /// </summary>
-    /// <param name="Page">EdPageLayout object</param>
-    /// <returns>True: menu group header exist.</returns>
-    //  ------------------------------------------------------------------------------
-    private bool hasMenuHeader ( EdPageLayout Page )
-    {
-      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
-      {
-        if ( item.GroupHeader == true
-          && item.Group.ToUpper() == Page.PageId.ToUpper() )
-        {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    // ==============================================================================
-    /// <summary>
-    /// This method adds a menu header item for the page..
-    /// </summary>
-    /// <param name="Page">EdPageLayout object</param>
-    /// <returns>True: menu group header created.</returns>
-    //  ------------------------------------------------------------------------------
-    private bool addMenuHeader ( EdPageLayout Page )
-    {
-      //
-      // initialise the methods variables and objects.
-      //
-      EvMenuItem newHeader = new EvMenuItem ( );
-      int headerOrder = 0;
-
-
-      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
-      {
-        if ( item.GroupHeader == true )
-        {
-          headerOrder = item.Order;
-        }
-      }
-
-      headerOrder++;
-
-      //
-      // define the new menu group header object.
-      //
-      newHeader.PageId = "Home_Page";
-      newHeader.Group = Page.PageId.ToUpper ( );
-      newHeader.Title = Page.Title;
-      newHeader.GroupHeader = true;
-      newHeader.UserTypes = Page.UserType;
-      newHeader.Order = headerOrder;
-      newHeader.RoleList = "Administrator";
-      newHeader.Platform = "ADMIN";
-
-     var result = this._Bll_Menus.saveItem ( newHeader );
-
-     if ( result != EvEventCodes.Ok )
-     {
-       return false;
-     }
-
-      //
-      // define the new menu group header object.
-      //
-      newHeader = new EvMenuItem ( );
-      newHeader.PageId = "Home_Page";
-      newHeader.Group = Page.PageId;
-      newHeader.Title = Page.Title;
-      newHeader.GroupHeader = true;
-      newHeader.UserTypes = Page.UserType;
-      newHeader.Order = headerOrder;
-      newHeader.RoleList = "Administrator";
-      newHeader.Platform = "PROD";
-
-      result =this._Bll_Menus.saveItem ( newHeader );
-
-      if ( result != EvEventCodes.Ok )
-      {
-        return false;
-      }
-
-      //
-      // force a load of a fresh menu list.
-      //
-      this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
-
-      return true;
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -387,6 +257,11 @@ namespace Evado.UniForm.Digital
         this.loadGlobalMenu ( );
 
         //
+        // ensure that all page layouts have menu groups headers.
+        //
+        this.updatePageLayoutGroups ( );
+
+        //
         // Initialise the ResultData object.
         //
         clientDataObject.Title = EdLabels.Menu_Item_List;
@@ -440,7 +315,6 @@ namespace Evado.UniForm.Digital
 
     }//END getListObject method.
 
-
     ///  =======================================================================================
     /// <summary>
     /// This method loades the global menu objects
@@ -477,6 +351,142 @@ namespace Evado.UniForm.Digital
 
       this.LogMethodEnd ( "loadGlobalMenu" );
     }//END loadMenu method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method updates the PageLayout Groups to ensure that all page layouts have
+    /// menu groups for them.
+    /// </summary>
+    //  ------------------------------------------------------------------------------
+    private void updatePageLayoutGroups ( )
+    {
+      this.LogMethod ( "updatePageLayoutGroups" );
+
+      if ( this.AdapterObjects.MenuList.Count == 0 )
+      {
+        return;
+      }
+
+      //
+      // iterate through each of the issued pages to add a menu header item 
+      // if one does not exist.
+      //
+      foreach ( EdPageLayout page in this.AdapterObjects.AllPageLayouts )
+      {
+        if ( this.hasMenuHeader ( page ) == true )
+        {
+          continue;
+        }
+
+        this.addMenuHeader ( page );
+      }
+
+      this.LogMethodEnd ( "updatePageLayoutGroups" );
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method tests to see if the a page group header exists for the page.
+    /// </summary>
+    /// <param name="Page">EdPageLayout object</param>
+    /// <returns>True: menu group header exist.</returns>
+    //  ------------------------------------------------------------------------------
+    private bool hasMenuHeader ( EdPageLayout Page )
+    {
+      this.LogMethod ( "hasMenuHeader" );
+
+      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
+      {
+        if ( item.GroupHeader == true
+          && item.Group.ToUpper ( ) == Page.PageId.ToUpper ( ) )
+        {
+          this.LogDebug ( "Page Group found" );
+          return true;
+        }
+      }
+
+      this.LogDebug ( "Page Group NOT found" );
+      return false;
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method adds a menu header item for the page..
+    /// </summary>
+    /// <param name="Page">EdPageLayout object</param>
+    /// <returns>True: menu group header created.</returns>
+    //  ------------------------------------------------------------------------------
+    private bool addMenuHeader ( EdPageLayout Page )
+    {
+      this.LogMethod ( "addMenuHeader" );
+      //
+      // initialise the methods variables and objects.
+      //
+      EvMenuItem newHeader = new EvMenuItem ( );
+      int headerOrder = 0;
+
+      //
+      // iterate through the list of menu items 
+      //
+      foreach ( EvMenuItem item in this.AdapterObjects.MenuList )
+      {
+        if ( item.GroupHeader == false )
+        {
+          continue;
+        }
+
+        headerOrder = item.Order;
+      }
+
+      headerOrder++;
+
+      //
+      // define the new menu group header object.
+      //
+      newHeader.PageId = EdStaticPageIds.Home_Page.ToString ( );
+      newHeader.Group = Page.PageId.ToUpper ( );
+      newHeader.Title = Page.Title;
+      newHeader.GroupHeader = true;
+      newHeader.UserTypes = Page.UserTypes;
+      newHeader.Order = headerOrder;
+      newHeader.RoleList = "Administrator";
+      newHeader.Platform = "ADMIN";
+
+      var result = this._Bll_Menus.saveItem ( newHeader );
+
+      if ( result != EvEventCodes.Ok )
+      {
+        return false;
+      }
+
+      //
+      // define the new menu group header object.
+      //
+      newHeader = new EvMenuItem ( );
+      newHeader.PageId = EdStaticPageIds.Home_Page.ToString ( );
+      newHeader.Group = Page.PageId;
+      newHeader.Title = Page.Title;
+      newHeader.GroupHeader = true;
+      newHeader.UserTypes = Page.UserTypes;
+      newHeader.Order = headerOrder;
+      newHeader.RoleList = "Administrator";
+      newHeader.Platform = "PROD";
+
+      result = this._Bll_Menus.saveItem ( newHeader );
+
+      if ( result != EvEventCodes.Ok )
+      {
+        return false;
+      }
+
+      //
+      // force a load of a fresh menu list.
+      //
+      this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
+
+      return true;
+    }
+
 
     // ==============================================================================
     /// <summary>

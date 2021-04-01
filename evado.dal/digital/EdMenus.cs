@@ -127,7 +127,7 @@ namespace Evado.Dal.Digital
     // 
     // This constant defines a module parameter
     // 
-    private const string PARM_MODULES = "@MODULES";
+    private const string PARM_USER_TYPES = "@USER_TYPES";
 
     // 
     // This constant defines a role list parameter
@@ -177,7 +177,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdMenus.PARM_GROUP,SqlDbType.NVarChar, 10),
         new SqlParameter( EdMenus.PARM_GROUP_HEADER,SqlDbType.Bit),
         new SqlParameter( EdMenus.PARM_PLATFORM,SqlDbType.NVarChar,10),
-        new SqlParameter( EdMenus.PARM_MODULES,SqlDbType.NVarChar, 250),
+        new SqlParameter( EdMenus.PARM_USER_TYPES,SqlDbType.NVarChar, 250),
         new SqlParameter( EdMenus.PARM_ROLES,SqlDbType.NVarChar, 250),
       };
 
@@ -255,7 +255,7 @@ namespace Evado.Dal.Digital
       menu.Group = EvSqlMethods.getString ( Row, "MNU_GROUP" );
       menu.GroupHeader = EvSqlMethods.getBool ( Row, "MNU_GROUP_HEADER" );
       menu.Platform = EvSqlMethods.getString ( Row, "MNU_PLATFORM" );
-      menu.UserTypes = EvSqlMethods.getString ( Row, "MNU_MODULES" );
+      menu.UserTypes = EvSqlMethods.getString ( Row, "MNU_USER_TYPES" );
       menu.RoleList = EvSqlMethods.getString ( Row, "MNU_ROLES" );
 
       return menu;

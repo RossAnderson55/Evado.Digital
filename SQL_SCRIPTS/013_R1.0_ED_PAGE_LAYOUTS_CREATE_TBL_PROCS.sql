@@ -89,7 +89,7 @@ CREATE PROCEDURE dbo.USR_PAGE_LAYOUT_ADD
  @GUID UniqueIdentifier,
  @PAGE_ID NVarChar(10),
  @STATE  NVarChar(30),
- @USER_TYPES  NVarChar(20),
+ @USER_TYPES  NVarChar(150),
  @HOME_PAGE BIT,
  
  @TITLE NVarChar(100),
@@ -192,7 +192,7 @@ CREATE PROCEDURE dbo.USR_PAGE_LAYOUT_UPDATE
  @GUID UniqueIdentifier,
  @PAGE_ID NVarChar(10),
  @STATE  NVarChar(30),
- @USER_TYPES  NVarChar(20),
+ @USER_TYPES  NVarChar(150),
  @HOME_PAGE BIT,
  
  @TITLE NVarChar(100),

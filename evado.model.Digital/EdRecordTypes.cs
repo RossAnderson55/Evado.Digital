@@ -36,7 +36,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration defines the trial record form type.
     /// </summary>
-    Normal_Record ,
+    Normal_Record,
 
     /// <summary>
     /// This enumeration defines the updateable medical record form type.
@@ -47,6 +47,11 @@ namespace Evado.Model.Digital
     /// This enumeration defines a backward compatible 'Questionnaire'. 
     /// </summary>
     Questionnaire,
+
+    /// <summary>
+    /// This enumeration defines a backward comment record. 
+    /// </summary>
+    Comment_Record,
 
   }
 

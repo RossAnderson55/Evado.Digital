@@ -1995,9 +1995,12 @@ namespace Evado.Model.Digital
       //
       list.Add ( EvStatics.getOption ( EdRecordTypes.Normal_Record ) );
 
+      list.Add ( EvStatics.getOption ( EdRecordTypes.Comment_Record ) );
+
       list.Add ( EvStatics.getOption ( EdRecordTypes.Questionnaire ) );
 
       list.Add ( EvStatics.getOption ( EdRecordTypes.Updatable_Record ) );
+
 
       return list;
     }//END getCommonFormTypes method

@@ -39,10 +39,10 @@ namespace Evado.UniForm.Digital
   /// </summary>
   public partial class EuRecordLayouts : EuClassAdapterBase
   {
-    
+
     #region Class form property page methods
 
-    private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null; 
+    private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null;
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -246,7 +246,7 @@ namespace Evado.UniForm.Digital
       // Define the general properties pageMenuGroup..
       //
       pageGroup = PageObject.AddGroup (
-        EdLabels.Form_Properties_General_Group_Title);
+        EdLabels.Form_Properties_General_Group_Title );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -382,7 +382,7 @@ namespace Evado.UniForm.Digital
       //
       // Layout author only draft record access
       //
-      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.AuthorAccessList ), false ); 
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.AuthorAccessList ), false );
 
       pageField = pageGroup.createRadioButtonListField (
         EdRecord.RecordFieldNames.AuthorAccess.ToString ( ),
@@ -395,24 +395,12 @@ namespace Evado.UniForm.Digital
       //
       // Layout author only edit record access
       //
-      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
-
-      pageField = pageGroup.createRadioButtonListField (
-        EdRecord.RecordFieldNames.ParentType.ToString ( ),
-        EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
-        this.Session.RecordLayout.Design.ParentType,
-        optionList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
-
+      this.Session.RecordLayout.Design.ParentType = EdRecord.ParentTypeList.Entity;
+      
       //
       // Layout parent entity selection list.
       //
-      optionList = new List<EvOption> ( );
-      foreach ( EdRecord layout in this.AdapterObjects.IssuedEntityLayouts )
-      {
-        optionList.Add ( new EvOption ( layout.LayoutId, layout.LayoutId = " - " + layout.Title ) );
-      }
+      optionList = this.AdapterObjects.GetIssuedEntityOptions ( false );
 
       pageField = pageGroup.createCheckBoxListField (
         EdRecord.RecordFieldNames.ParentEntities.ToString ( ),
@@ -484,7 +472,7 @@ namespace Evado.UniForm.Digital
       //
       // Form Update reason
       //
-      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
 
       pageField = pageGroup.createSelectionListField (
         EdRecord.RecordFieldNames.LinkContentSetting.ToString ( ),

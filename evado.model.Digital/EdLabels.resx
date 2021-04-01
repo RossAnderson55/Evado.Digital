@@ -2483,7 +2483,7 @@ __Note__: all of these text substitutions are case sensitive.
     <value>Error encountered update the user profile.</value>
   </data>
   <data name="Config_Role_List_Field_Label" xml:space="preserve">
-    <value>Adapte Roles:</value>
+    <value>Adapter Roles:</value>
   </data>
   <data name="Label_Organisation_Id" xml:space="preserve">
     <value>Organisation ID:</value>
@@ -2850,7 +2850,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
     <value>Configurable User Types:</value>
   </data>
   <data name="Menu_List_Link_Format" xml:space="preserve">
-    <value>{0} - {1} &gt; Order: {2}, Roles: {3}</value>
+    <value>{0} - {1} &gt; Order: {2}, Users: {3}, Roles: {4}</value>
   </data>
   <data name="OageLayout_Duplicate_Error_Message" xml:space="preserve">
     <value>There is a duplicate of this page identifier.</value>
@@ -2963,8 +2963,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Update_Error_Message" xml:space="preserve">
     <value>ERROR: An error was encountered updating this page layout object.</value>
   </data>
-  <data name="PageLayout_User_Type_Field_Label" xml:space="preserve">
-    <value>User Type:</value>
+  <data name="PageLayout_User_Types_Field_Label" xml:space="preserve">
+    <value>User Types:</value>
   </data>
   <data name="PageLayout_Version_Field_Label" xml:space="preserve">
     <value>Page version:</value>
@@ -2995,5 +2995,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="Config_UserCategoryList_Field_Label" xml:space="preserve">
     <value>User Category List Identifier:</value>
+  </data>
+  <data name="PageLayout_Component_Field_Label" xml:space="preserve">
+    <value>Page Active Components:</value>
   </data>
 </root>

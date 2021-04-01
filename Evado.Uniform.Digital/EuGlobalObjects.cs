@@ -360,6 +360,7 @@ namespace Evado.UniForm.Digital
       //
       List<EvOption> optionList = new List<EvOption> ( );
       string categories = String.Empty;
+      bool hasCategories = true;
 
       if ( IsSelectionList == true )
       {
@@ -373,17 +374,42 @@ namespace Evado.UniForm.Digital
       {
         if ( list.ListId == ListId )
         {
+          //
+          // the first option category is empty then list does not have 
+          // categories so use options only.
+          //
+          if ( list.Items [ 0 ].Category == String.Empty )
+          {
+            hasCategories = false;
+          }
+
+          //
+          // iterate through the list items.
+          //
           foreach ( EdSelectionList.Item item in list.Items )
           {
+            //
+            // skip empty values.
+            //
             if ( item.Value == String.Empty )
             {
               continue;
             }
 
             //
+            // the first option category is empty then list does not have 
+            // categories so use options only.
+            //
+            if ( item.Category == String.Empty )
+            {
+              hasCategories = false;
+            }
+
+            //
             // if category only is selected the only return the categories as a list.
             //
-            if ( CategoryOnly == true )
+            if ( CategoryOnly == true
+              && hasCategories == true )
             {
               if ( item.Category != String.Empty )
               {
@@ -395,6 +421,9 @@ namespace Evado.UniForm.Digital
               continue;
             }
 
+            //
+            // return only option list.
+            //
             if ( Category == String.Empty
               && item.Category == String.Empty )
             {
@@ -433,11 +462,6 @@ namespace Evado.UniForm.Digital
       String OptionValue )
     {
       //
-      // Initialise the methods variables and objects.
-      //
-      string category = String.Empty;
-
-      //
       // Exit if parameters are empty.
       //
       if ( ListId == String.Empty
@@ -453,6 +477,9 @@ namespace Evado.UniForm.Digital
       {
         if ( list.ListId == ListId )
         {
+          //
+          // iterate through the list items.
+          //
           foreach ( EdSelectionList.Item item in list.Items )
           {
             //
@@ -460,10 +487,20 @@ namespace Evado.UniForm.Digital
             //
             if ( item.Value.ToLower ( ) == OptionValue.ToLower ( ) )
             {
-              return item.Category;
-            }
-          }// List item iteration loop
+              //
+              // return the item if it exists or option value if not.
+              //
+              if ( item.Category != String.Empty )
+              {
+                return item.Category;
+              }
+              return item.Value;
+            }//END value match test.
+
+          }//END List item iteration loop
+
         }//END list selection
+
       }//Selection list iteration loop
 
       //
@@ -805,6 +842,29 @@ namespace Evado.UniForm.Digital
 
         return recordLayoutList;
       }
+    }
+    /// <summary>
+    /// This method returns a list of entity selectoin options.
+    /// </summary>
+    /// <param name="IsSelectionList">Bool: true for selection list.</param>
+    /// <returns></returns>
+    public List<EvOption> GetIssuedEntityOptions ( bool IsSelectionList )
+    {
+      List<EvOption> optionList = new List<EvOption> ( );
+      if ( IsSelectionList == true )
+      {
+        optionList.Add ( new EvOption ( ) );
+      }
+
+      foreach ( EdRecord layout in _AllEntityLayouts )
+      {
+        if ( layout.State == EdRecordObjectStates.Form_Issued )
+        {
+          optionList.Add ( new EvOption ( layout.LayoutId, layout.LayoutId + " - " + layout.Title ) );
+        }
+      }
+
+      return optionList;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

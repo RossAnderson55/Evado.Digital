@@ -899,9 +899,6 @@ namespace Evado.UniForm.Digital
       ClientDataObject.Page.Title = ClientDataObject.Title;
       ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
-      ClientDataObject.Page.SetLeftColumnWidth ( 25 );
-
-      ClientDataObject.Page.SetRightColumnWidth ( 25 );
 
       //
       // Set the user edit access to the objects.
@@ -930,23 +927,33 @@ namespace Evado.UniForm.Digital
       //
       // display the header properties group.
       //
+      if ( this.Session.AdminPageLayout.hasActiveLayout( EdPageLayout.LayoutComponentList.Page_Header ) == true )
+      {
       this.getDataObjectHeaderGroup ( ClientDataObject.Page );
+      }
 
       //
       // display the left column properties group.
       //
-      this.getDataObject_LeftColumnGroup ( ClientDataObject.Page );
+      if ( this.Session.AdminPageLayout.hasActiveLayout ( EdPageLayout.LayoutComponentList.Left_Column ) == true )
+      {
+        this.getDataObject_LeftColumnGroup ( ClientDataObject.Page );
+        ClientDataObject.Page.SetLeftColumnWidth ( 25 );
+      }
 
       //
       // display the center column properties group.
       //
-      this.getDataObject_CenterColumnGroup ( ClientDataObject.Page );
-
+        this.getDataObject_CenterColumnGroup ( ClientDataObject.Page );
       //
       // display the right column properties group.
       //
-      this.getDataObject_RightColumnGroup ( ClientDataObject.Page );
+        if ( this.Session.AdminPageLayout.hasActiveLayout ( EdPageLayout.LayoutComponentList.Right_Column ) == true )
+        {
+          this.getDataObject_RightColumnGroup ( ClientDataObject.Page );
 
+          ClientDataObject.Page.SetRightColumnWidth ( 25 );
+        }
       this.LogMethodEnd ( "getDataObject" );
 
     }//END Method
@@ -1167,7 +1174,7 @@ namespace Evado.UniForm.Digital
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.PageId, PageLayout.PageId );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Title, PageLayout.Title );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.Version, PageLayout.Version );
-      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.UserType, PageLayout.UserType );
+      sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.User_Types, PageLayout.UserTypes );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderContent, PageLayout.HeaderContent );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.HeaderComponentList, PageLayout.HeaderComponentList );
       sbCsvData.AppendFormat ( outputFormat, EdPageLayout.FieldNames.LeftColumnContent, PageLayout.LeftColumnContent );
@@ -1214,7 +1221,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group commands
       //
-      this.getDataObject_GroupCommands ( pageGroup );
+      this.getDataObject_GroupCommands ( pageGroup, true );
 
       // 
       // Create the page id object
@@ -1263,24 +1270,19 @@ namespace Evado.UniForm.Digital
         this.Session.AdminPageLayout.DisplayMainMenu );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-
       //
       // create the user type selection list.
       //
-      optionList = this.AdapterObjects.getSelectionOptions ( "User01", String.Empty, false, true );
-
-      //
-      // set the first option (empty) to indicate that all are selected.
-      //
-      optionList [ 0 ].Description = EdLabels.PageLayout_Select_All_Option_Description;
+      String userSelectionList = this.AdapterObjects.Settings.UserCategoryList;
+      optionList = this.AdapterObjects.getSelectionOptions ( userSelectionList, String.Empty, false, false );
 
       // 
       // Create the user type selection.
       // 
-      groupField = pageGroup.createSelectionListField (
-        EdPageLayout.FieldNames.UserType,
-        EdLabels.PageLayout_User_Type_Field_Label,
-        this.Session.AdminPageLayout.UserType,
+      groupField = pageGroup.createCheckBoxListField (
+        EdPageLayout.FieldNames.User_Types,
+        EdLabels.PageLayout_User_Types_Field_Label,
+        this.Session.AdminPageLayout.UserTypes,
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -1296,6 +1298,21 @@ namespace Evado.UniForm.Digital
         EdPageLayout.FieldNames.MenuLocation,
         EdLabels.PageLayout_Menu_Location_Field_Label,
         this.Session.AdminPageLayout.MenuLocation,
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the user type selection list.
+      //
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdPageLayout.LayoutComponentList ), false );
+
+      // 
+      // Create the user type selection.
+      // 
+      groupField = pageGroup.createCheckBoxListField (
+        EdPageLayout.FieldNames.LayoutComponents,
+        EdLabels.PageLayout_Component_Field_Label,
+        this.Session.AdminPageLayout.LayoutComponents,
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -1340,7 +1357,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group commands
       //
-      this.getDataObject_GroupCommands ( pageGroup );
+      this.getDataObject_GroupCommands ( pageGroup, false );
 
       // 
       // Create the left column (top )content object
@@ -1391,7 +1408,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group commands
       //
-      this.getDataObject_GroupCommands ( pageGroup );
+      this.getDataObject_GroupCommands ( pageGroup, false );
 
       // 
       // Create the left column (top )content object
@@ -1451,7 +1468,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group commands
       //
-      this.getDataObject_GroupCommands ( pageGroup );
+      this.getDataObject_GroupCommands ( pageGroup, false );
 
       // 
       // Create the left column (top )content object
@@ -1502,7 +1519,7 @@ namespace Evado.UniForm.Digital
       //
       // Add the group commands
       //
-      this.getDataObject_GroupCommands ( pageGroup );
+      this.getDataObject_GroupCommands ( pageGroup, false );
 
       // 
       // Create the left column (top )content object
@@ -1541,9 +1558,11 @@ namespace Evado.UniForm.Digital
     /// This method add the group commands to the grop.
     /// </summary>
     /// <param name="PageGroup">Evado.Model.UniForm.Group object.</param>
+    /// <param name="IsGeneralGroup">True = Display General group commands.</param>
     //  ------------------------------------------------------------------------------
     private void getDataObject_GroupCommands (
-      Evado.Model.UniForm.Group PageGroup )
+      Evado.Model.UniForm.Group PageGroup,
+      bool IsGeneralGroup )
     {
       this.LogMethod ( "getDataObject_GroupCommands" );
       // 
@@ -1569,6 +1588,12 @@ namespace Evado.UniForm.Digital
         pageCommand.AddParameter (
            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
           EdPageLayout.SaveActions.Save.ToString ( ) );
+
+        if ( IsGeneralGroup == false )
+        {
+          this.LogMethodEnd ( "getDataObject_GroupCommands" );
+          return;
+        }
 
         //
         // Issue command
@@ -1663,7 +1688,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminPageLayout.PageId = String.Empty;
         this.Session.AdminPageLayout.Title = String.Empty;
         this.Session.AdminPageLayout.State = EdPageLayout.States.Draft;
-        this.Session.AdminPageLayout.UserType= String.Empty;
+        this.Session.AdminPageLayout.UserTypes= String.Empty;
         this.Session.AdminPageLayout.CenterColumnContent= String.Empty;
         this.Session.AdminPageLayout.CenterColumnComponentList = String.Empty;
         this.Session.AdminPageLayout.HeaderContent = String.Empty;
@@ -1772,7 +1797,7 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( "-Guid: " + this.Session.AdminPageLayout.Guid );
         this.LogDebug ( "-ListId: " + this.Session.AdminPageLayout.PageId );
         this.LogDebug ( "-Title: " + this.Session.AdminPageLayout.Title );
-        this.LogDebug ( "-UserType: " + this.Session.AdminPageLayout.UserType );
+        this.LogDebug ( "-UserType: " + this.Session.AdminPageLayout.UserTypes );
 
         //
         // check that the mandatory fields have been filed.
