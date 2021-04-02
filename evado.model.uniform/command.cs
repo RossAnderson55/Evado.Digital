@@ -393,6 +393,11 @@ namespace Evado.Model.UniForm
     //  ---------------------------------------------------------------------------------
     public void AddParameter ( String Name, String Value )
     {
+      if ( Name == null
+        || Value == null )
+      {
+        return;
+      }
       //
       // get the string value of the parameter list.
       //

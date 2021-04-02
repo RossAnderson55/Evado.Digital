@@ -945,6 +945,7 @@ namespace Evado.UniForm.Digital
         return this.Session.LastPage;
       }
 
+
       // 
       // return the client ResultData object for the customer.
       // 
@@ -995,6 +996,8 @@ namespace Evado.UniForm.Digital
         // Retrieve the customer object from the database via the DAL and BLL layers.
         // 
         this.Session.AdminSelectionList = this._Bll_SelectionLists.getItem ( ListGuid );
+
+        this.Session.AdminSelectionList.RemoveEmptyItems ( );
 
         this.LogValue ( this._Bll_SelectionLists.Log );
 
@@ -1456,29 +1459,34 @@ namespace Evado.UniForm.Digital
       {
         for ( int i = 0; i < rowCount_Inital; i++ )
         {
-          groupField.Table.addRow ( );
+          this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item(
+            i+1, String.Empty, String.Empty, String.Empty ) );
         }
       }
       else
       {
-        for ( int count = 0; count < this.Session.AdminSelectionList.Items.Count; count++ )
-        {
-          EdSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
-
-          var row = groupField.Table.addRow ( );
-          row.No = count + 1;
-          row.Column [ 0 ] = item.Category;
-          row.Column [ 1 ] = item.Value;
-          row.Column [ 2 ] = item.Description;
-        }
-
-        //
-        // Add extract rows to allow for more options to be added.
-        //
         for ( int i = 0; i < rowCount_Extend; i++ )
         {
-          groupField.Table.addRow ( );
+          this.LogDebug ( "Adding Item" );
+          this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item (
+            this.Session.AdminSelectionList.Items.Count + i , String.Empty, String.Empty, String.Empty ) );
         }
+      }
+      this.LogDebug ( "Item count {0}",
+        this.Session.AdminSelectionList.Items.Count );
+
+      //
+      // Create the table rows.
+      //
+      for ( int count = 0; count < this.Session.AdminSelectionList.Items.Count; count++ )
+      {
+        EdSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
+
+        var row = groupField.Table.addRow ( );
+        row.No = count + 1;
+        row.Column [ 0 ] = item.Category;
+        row.Column [ 1 ] = item.Value;
+        row.Column [ 2 ] = item.Description;
       }
 
       this.LogMethodEnd ( "getDataObject_OptionGroup" );
@@ -1540,19 +1548,22 @@ namespace Evado.UniForm.Digital
         //
         // Delete command
         //
-        pageCommand = PageGroup.addCommand (
-          EdLabels.SelectionList_Delete_Command_Title,
-          EuAdapter.ADAPTER_ID,
-          EuAdapterClasses.Selection_Lists.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        if ( this.Session.AdminSelectionList.State == EdSelectionList.SelectionListStates.Draft )
+        {
+          pageCommand = PageGroup.addCommand (
+            EdLabels.SelectionList_Delete_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Selection_Lists.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-        // 
-        // Define the save and delete groupCommand parameters
-        // 
-        pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
-        pageCommand.AddParameter (
-           Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+          // 
+          // Define the save and delete groupCommand parameters
+          // 
+          pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
+          pageCommand.AddParameter (
+             Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+            EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+        }
       }
 
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
@@ -1709,6 +1720,11 @@ namespace Evado.UniForm.Digital
         //
         this.updateObjectTableValues ( PageCommand.Parameters );
 
+        //
+        // remove empty items.
+        //
+        this.Session.AdminSelectionList.RemoveEmptyItems ( );
+
         this.LogDebug ( "AdminSelectionList:" );
         this.LogDebug ( "-Guid: " + this.Session.AdminSelectionList.Guid );
         this.LogDebug ( "-ListId: " + this.Session.AdminSelectionList.ListId );
@@ -1723,18 +1739,6 @@ namespace Evado.UniForm.Digital
         {
           this.LogMethodEnd ( "updateObject" );
           return this.Session.LastPage;
-        }
-
-        //
-        // remove the empty rows from the list.
-        //
-        for ( int i = 0; i < this.Session.AdminSelectionList.Items.Count; i++ )
-        {
-          if ( this.Session.AdminSelectionList.Items [ i ].Value == String.Empty )
-          {
-            this.Session.AdminSelectionList.Items.RemoveAt ( i );
-            i--;
-          }
         }
 
         // 
@@ -1916,7 +1920,7 @@ namespace Evado.UniForm.Digital
         }
         else
         {
-          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
+          //this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
         }
 
       }// End iteration loop
@@ -1936,60 +1940,63 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "updateObjectTableValues" );
       this.LogDebug ( "Parameters.Count: " + Parameters.Count );
-      this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
-      int count = 0;
-      /// 
-      /// Iterate through the parameter values updating the ResultData object
-      /// 
+      //
+      // Initialise the methods variables and objects.
+      //
+
+      // 
+      // Iterate through the parameter values updating the ResultData object
+      // 
       foreach ( Evado.Model.UniForm.Parameter parameter in Parameters )
       {
-        if ( parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == true )
+        if ( parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
         {
-          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
-          string name = parameter.Name;
-          string [ ] arName = name.Split ( '_' );
-          int arLength = arName.Length;
-          int column = EvStatics.getInteger ( arName [ arLength - 1 ] );
-          int row = EvStatics.getInteger ( arName [ arLength - 2 ] ) - 1;
-
-          this.LogDebug ( "Row {0}, Col {1}", row, column );
-
-          if ( row >= this.Session.AdminSelectionList.Items.Count )
-          {
-            this.LogDebug ( "Add option item" );
-            this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item ( ) );
-            this.Session.AdminSelectionList.Items [ row ].No = row + 1;
-          }
-
-          //
-          // User switch to determine which object value to updae.
-          //
-          switch ( column )
-          {
-            case 1:
-              {
-                this.LogDebug ( "Update Category" );
-                this.Session.AdminSelectionList.Items [ row ].Category = parameter.Value;
-                break;
-              }
-            case 2:
-              {
-                this.LogDebug ( "Update Value" );
-                this.Session.AdminSelectionList.Items [ row ].Value = parameter.Value;
-                break;
-              }
-            case 3:
-              {
-                this.LogDebug ( "Update Description" );
-                this.Session.AdminSelectionList.Items [ row ].Description = parameter.Value;
-                break;
-              }
-          }//END value switch
+          continue;
         }
-        else
+
+        //
+        // update a selection list value.
+        //
+        //this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
+        string name = parameter.Name;
+        string [ ] arName = name.Split ( '_' );
+        int arLength = arName.Length;
+        int column = EvStatics.getInteger ( arName [ arLength - 1 ] );
+        int row = EvStatics.getInteger ( arName [ arLength - 2 ] ) - 1;
+
+        //this.LogDebug ( "Row {0}, Col {1}", row, column );
+
+        if ( this.Session.AdminSelectionList.Items.Count <= row )
         {
-          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
+          //this.LogDebug ( " Row {0} exceeds the item count or {1}.", row, this.Session.AdminSelectionList.Items.Count );
+          continue;
         }
+
+        //this.LogDebug ( "Updating Item {0}, Col {1} with '{2}' ", row, column, parameter.Value );
+        //
+        // User switch to determine which object value to updae.
+        //
+        switch ( column )
+        {
+          case 1:
+            {
+              //this.LogDebug ( "Update Category" );
+              this.Session.AdminSelectionList.Items [ row ].Category = parameter.Value;
+              break;
+            }
+          case 2:
+            {
+              //this.LogDebug ( "Update Value" );
+              this.Session.AdminSelectionList.Items [ row ].Value = parameter.Value;
+              break;
+            }
+          case 3:
+            {
+              //this.LogDebug ( "Update Description" );
+              this.Session.AdminSelectionList.Items [ row ].Description = parameter.Value;
+              break;
+            }
+        }//END value switch
 
       }// End iteration loop
 

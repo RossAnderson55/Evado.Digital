@@ -255,6 +255,24 @@ namespace Evado.Model.Digital
     public List<Item> Items { get; set; }
 
     /// <summary>
+    /// This method removes the empty items from the list.
+    /// </summary>
+    public void RemoveEmptyItems ()
+    {
+      //
+      // remove the empty rows from the list.
+      //
+      for ( int i = 0; i < this.Items.Count; i++ )
+      {
+        if ( this.Items [ i ].Value == String.Empty )
+        {
+          this.Items.RemoveAt ( i );
+          i--;
+        }
+      }
+  }
+
+    /// <summary>
     /// This property contains a version of  selection list
     /// </summary>
     public int Version { get; set; }

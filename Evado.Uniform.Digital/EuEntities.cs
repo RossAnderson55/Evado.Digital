@@ -1758,7 +1758,7 @@ namespace Evado.UniForm.Digital
       //
       List<EvOption> optionList = new List<EvOption> ( );
       String listId = Field.Design.ExSelectionListId;
-      String category = Field.Design.ExSelectionListCategory;
+      String category = Field.Design.ExSelectionListCategory.ToUpper ( );
       this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
 
       //
@@ -1768,6 +1768,7 @@ namespace Evado.UniForm.Digital
       {
         var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER, String.Empty );
 
+        this.LogDebug ( "autoCategory: {0} ", autoCategory );
         //
         // search the filterfields for a matching field identifier then retrieve the matching filter value
         // as the category for this selection list.
