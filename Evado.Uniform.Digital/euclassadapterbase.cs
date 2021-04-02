@@ -140,7 +140,7 @@ namespace Evado.UniForm.Digital
     }
 
 
-    private Evado.Model.Digital.EvClassParameters _Settings = new Evado.Model.Digital.EvClassParameters ( );
+    private Evado.Model.Digital.EvClassParameters _ClassParameters = new Evado.Model.Digital.EvClassParameters ( );
     /// <summary>
     /// This property contains the setting data object. 
     /// </summary>
@@ -148,13 +148,12 @@ namespace Evado.UniForm.Digital
     {
       get
       {
-        return _Settings;
+        return _ClassParameters;
       }
       set
       {
-        this._Settings = value;
-
-        //this._Bll_ApplicationEvents = new Bll.EvApplicationEvents ( this._Settings );
+        this._ClassParameters = value;
+        this._LoggingLevel = ClassParameters.LoggingLevel;
       }
     }
 
@@ -445,7 +444,7 @@ namespace Evado.UniForm.Digital
 
       this.AddEvent ( applicationEvent );
 
-      if ( this._Settings.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._AdapterLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._AdapterLog.AppendLine ( value );

@@ -110,6 +110,8 @@ namespace Evado.UniForm.Digital
 
     private Evado.Bll.Digital.EdOrganisations _Bll_Organisations = new Evado.Bll.Digital.EdOrganisations ( );
 
+    private String _CurrentFileName = String.Empty;
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -134,9 +136,9 @@ namespace Evado.UniForm.Digital
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
 
-        if ( PageCommand.hasParameter ( EdOrganisation.OrganisationFieldNames.Org_Type ) == true )
+        if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Org_Type ) == true )
         {
-          this.Session.SelectedOrganisationType = PageCommand.GetParameter ( EdOrganisation.OrganisationFieldNames.Org_Type );
+          this.Session.SelectedOrganisationType = PageCommand.GetParameter ( EdOrganisation.FieldNames.Org_Type );
         }
         if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
         {
@@ -353,7 +355,7 @@ namespace Evado.UniForm.Digital
       // Set the selection to the current site org id.
       // 
       groupField = pageGroup.createSelectionListField (
-        EdOrganisation.OrganisationFieldNames.Org_Type,
+        EdOrganisation.FieldNames.Org_Type,
         EdLabels.Config_OrgType_List_Field_Label,
         this.Session.SelectedOrganisationType.ToString ( ),
         optionList );
@@ -737,7 +739,7 @@ namespace Evado.UniForm.Digital
       // Create the customer id object
       // 
       pageField = pageGroup.createTextField (
-        EdOrganisation.OrganisationFieldNames.OrgId.ToString ( ),
+        EdOrganisation.FieldNames.OrgId.ToString ( ),
         EdLabels.Label_Organisation_Id,
         String.Empty,
         this.Session.AdminOrganisation.OrgId, 10 );
@@ -753,7 +755,7 @@ namespace Evado.UniForm.Digital
       // Generate the organisation type radio button list field object.
       //
       pageField = pageGroup.createSelectionListField (
-        EdOrganisation.OrganisationFieldNames.Org_Type.ToString ( ),
+        EdOrganisation.FieldNames.Org_Type.ToString ( ),
         EdLabels.Organisation_Type_Field_Label,
         EdLabels.Organisation_Type_Field_Description,
         this.Session.AdminOrganisation.OrgType,
@@ -774,7 +776,7 @@ namespace Evado.UniForm.Digital
       // Create the customer name object
       // 
       pageField = pageGroup.createTextField (
-        EdOrganisation.OrganisationFieldNames.Name.ToString ( ),
+        EdOrganisation.FieldNames.Name.ToString ( ),
         EdLabels.Organisation_Name_Field_Label,
         this.Session.AdminOrganisation.Name,
         50 );
@@ -789,7 +791,7 @@ namespace Evado.UniForm.Digital
       // Create the customer name object
       // 
       pageField = pageGroup.createImageField (
-        EdOrganisation.OrganisationFieldNames.Image_File_Name.ToString ( ),
+        EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
         EdLabels.Organisation_ImageFileame_Field_Label,
         this.Session.AdminOrganisation.ImageFileName,
         300, 200 );
@@ -814,10 +816,10 @@ namespace Evado.UniForm.Digital
       // Create the street address 1
       //
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Address_1 ) == false )
+        EdOrganisation.FieldNames.Address_1 ) == false )
       {
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_1,
+          EdOrganisation.FieldNames.Address_1,
           EdLabels.Organisation_Address_Street_Field_Label,
           this.Session.AdminOrganisation.AddressStreet_1, 50 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -826,7 +828,7 @@ namespace Evado.UniForm.Digital
         // Create the street address 2
         // 
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_2,
+          EdOrganisation.FieldNames.Address_2,
           EdLabels.Organisation_Address_Street_Field_Label,
           this.Session.AdminOrganisation.AddressStreet_2, 50 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -836,10 +838,10 @@ namespace Evado.UniForm.Digital
       // Create the street address city
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Address_City ) == false )
+        EdOrganisation.FieldNames.Address_City ) == false )
       {
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_City,
+          EdOrganisation.FieldNames.Address_City,
           EdLabels.Organisation_Address_City_Field_Label,
           this.Session.AdminOrganisation.AddressCity, 50 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -849,10 +851,10 @@ namespace Evado.UniForm.Digital
       // Create the street address state
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Address_State ) == false )
+        EdOrganisation.FieldNames.Address_State ) == false )
       {
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_State,
+          EdOrganisation.FieldNames.Address_State,
           EdLabels.Organisation_Address_State_Field_Label,
           this.Session.AdminOrganisation.AddressState, 10 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -862,10 +864,10 @@ namespace Evado.UniForm.Digital
       // Create the street address 1
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Address_Post_Code ) == false )
+        EdOrganisation.FieldNames.Address_Post_Code ) == false )
       {
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_Post_Code,
+          EdOrganisation.FieldNames.Address_Post_Code,
           EdLabels.Organisation_Address_City_Field_Label,
           this.Session.AdminOrganisation.AddressPostCode, 50 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -875,10 +877,10 @@ namespace Evado.UniForm.Digital
       // Create the street address 1
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Address_Country ) == false )
+        EdOrganisation.FieldNames.Address_Country ) == false )
       {
         pageField = pageGroup.createTextField (
-          EdOrganisation.OrganisationFieldNames.Address_Country,
+          EdOrganisation.FieldNames.Address_Country,
           EdLabels.Organisation_Address_Country_Field_Label,
           this.Session.AdminOrganisation.AddressCountry, 50 );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -888,10 +890,10 @@ namespace Evado.UniForm.Digital
       // Create the organisation telephone number object
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Telephone ) == false )
+        EdOrganisation.FieldNames.Telephone ) == false )
       {
         pageField = pageGroup.createTelephoneNumberField (
-          EdOrganisation.OrganisationFieldNames.Telephone.ToString ( ),
+          EdOrganisation.FieldNames.Telephone.ToString ( ),
           EdLabels.Organisation_Telephone_Field_Label,
           this.Session.AdminOrganisation.Telephone );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -901,10 +903,10 @@ namespace Evado.UniForm.Digital
       // Create the organisation fax number object
       // 
       if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
-        EdOrganisation.OrganisationFieldNames.Email_Address ) == false )
+        EdOrganisation.FieldNames.Email_Address ) == false )
       {
         pageField = pageGroup.createEmailAddressField (
-          EdOrganisation.OrganisationFieldNames.Email_Address.ToString ( ),
+          EdOrganisation.FieldNames.Email_Address.ToString ( ),
           EdLabels.Organisation_Email_Field_Label,
           this.Session.AdminOrganisation.EmailAddress );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1086,6 +1088,7 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( "-OrgId: " + this.Session.AdminOrganisation.OrgId );
         this.LogDebug ( "-Title: " + this.Session.AdminOrganisation.Name );
         EdOrganisation.ActionCodes saveAction = EdOrganisation.ActionCodes.Save;
+        this._CurrentFileName = this.Session.AdminOrganisation.ImageFileName;
 
         // 
         // Log access to page.
@@ -1230,7 +1233,10 @@ namespace Evado.UniForm.Digital
       {
         return;
       }
-
+     if ( this._CurrentFileName == this.Session.AdminOrganisation.ImageFileName )
+     {
+       return;
+     }
       //
       // Initialise the method variables and objects.
       //
@@ -1324,8 +1330,8 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
           try
           {
-            EdOrganisation.OrganisationFieldNames fieldName =
-               Evado.Model.EvStatics.parseEnumValue<EdOrganisation.OrganisationFieldNames> (
+            EdOrganisation.FieldNames fieldName =
+               Evado.Model.EvStatics.parseEnumValue<EdOrganisation.FieldNames> (
               parameter.Name );
 
             this.Session.AdminOrganisation.setValue ( fieldName, parameter.Value );

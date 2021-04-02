@@ -153,6 +153,11 @@ namespace Evado.Model.Digital
       Org_Types,
 
       /// <summary>
+      /// This enumeration defines the Entity Query filter static options.
+      /// </summary>
+      Static_Query_Filter_Options,
+
+      /// <summary>
       /// This enumeration defines the default organisation type
       /// </summary>
       Default_User_Org_Type,
@@ -424,6 +429,21 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains demonstration account expiry in days
     /// </summary>
+    public String StaticQueryFilterOptions
+    {
+      get
+      {
+        return this.getParameter ( AdapterFieldNames.Static_Query_Filter_Options );
+      }
+      set
+      {
+        this.setParameter ( AdapterFieldNames.Static_Query_Filter_Options, EvDataTypes.Text, value );
+      }
+    }
+
+    /// <summary>
+    /// This property contains demonstration account expiry in days
+    /// </summary>
     public String HiddenUserFields
     {
       get
@@ -441,7 +461,7 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="Field">EdUserProfile.UserProfileFieldNames</param>
     /// <returns>bool</returns>
-    public bool hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames Field )
+    public bool hasHiddenUserProfileField ( EdUserProfile.FieldNames Field )
     {
       if ( this.HiddenUserFields.Contains ( Field.ToString ( ) ) == true )
       {
@@ -469,7 +489,7 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="Field">EdOrganisation.OrganisationFieldNames value</param>
     /// <returns>Bool</returns>
-    public bool hasHiddenOrganisationField ( EdOrganisation.OrganisationFieldNames Field )
+    public bool hasHiddenOrganisationField ( EdOrganisation.FieldNames Field )
     {
       if ( this.HiddenOrganisationFields.Contains ( Field.ToString ( ) ) == true )
       {
@@ -1097,6 +1117,12 @@ namespace Evado.Model.Digital
         case EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type:
           {
             this.DefaultOrgType = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Static_Query_Filter_Options:
+          {
+            this.setParameter ( AdapterFieldNames.Static_Query_Filter_Options, EvDataTypes.Text, Value );
             return;
           }
 

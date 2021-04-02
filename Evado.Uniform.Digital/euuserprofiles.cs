@@ -300,13 +300,13 @@ namespace Evado.UniForm.Digital
       // Update the user selection.
       //
       this.Session.SelectedUserType = PageCommand.GetParameter (
-        EdUserProfile.UserProfileFieldNames.User_Type );
+        EdUserProfile.FieldNames.User_Type );
 
       //
       // Update the user organisation selection.
       //
       this.Session.SelectedOrgId = PageCommand.GetParameter (
-        EdUserProfile.UserProfileFieldNames.OrgId );
+        EdUserProfile.FieldNames.OrgId );
 
       this.LogMethodEnd ( "getUpdateSelectionParameters" );
 
@@ -374,10 +374,10 @@ namespace Evado.UniForm.Digital
       // get the current user type selection identifier.
       // 
       if ( PageCommand.hasParameter (
-          EdUserProfile.UserProfileFieldNames.User_Type.ToString ( ) ) == true )
+          EdUserProfile.FieldNames.User_Type.ToString ( ) ) == true )
       {
         userType = PageCommand.GetParameter (
-          EdUserProfile.UserProfileFieldNames.User_Type );
+          EdUserProfile.FieldNames.User_Type );
 
         this.LogDebug ( "Parameter set User Type: " + userType );
 
@@ -688,16 +688,16 @@ namespace Evado.UniForm.Digital
       //
       if ( userProfileList.Count > 0 )
       {
-        String csvText = "\"" + EdUserProfile.UserProfileFieldNames.UserId + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Password + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.User_Type + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Prefix + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Given_Name + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Family_Name + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.CommonName + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Title + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.Email_Address + "\","
-          + "\"" + EdUserProfile.UserProfileFieldNames.RoleId + "\"";
+        String csvText = "\"" + EdUserProfile.FieldNames.UserId + "\","
+          + "\"" + EdUserProfile.FieldNames.Password + "\","
+          + "\"" + EdUserProfile.FieldNames.User_Type + "\","
+          + "\"" + EdUserProfile.FieldNames.Prefix + "\","
+          + "\"" + EdUserProfile.FieldNames.Given_Name + "\","
+          + "\"" + EdUserProfile.FieldNames.Family_Name + "\","
+          + "\"" + EdUserProfile.FieldNames.CommonName + "\","
+          + "\"" + EdUserProfile.FieldNames.Title + "\","
+          + "\"" + EdUserProfile.FieldNames.Email_Address + "\","
+          + "\"" + EdUserProfile.FieldNames.RoleId + "\"";
 
         outputFile.AppendLine ( csvText );
 
@@ -803,7 +803,7 @@ namespace Evado.UniForm.Digital
       // Set the selection to the current site org id.
       // 
       groupField = pageGroup.createSelectionListField (
-        EdUserProfile.UserProfileFieldNames.User_Type,
+        EdUserProfile.FieldNames.User_Type,
         EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.SelectedUserType.ToString ( ),
         optionList );
@@ -827,7 +827,7 @@ namespace Evado.UniForm.Digital
       // Set the selection to the current site org id.
       // 
       groupField = pageGroup.createSelectionListField (
-        EdUserProfile.UserProfileFieldNames.OrgId,
+        EdUserProfile.FieldNames.OrgId,
         EdLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.SelectedUserType.ToString ( ),
         optionList );
@@ -885,7 +885,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Create_Object );
 
         newCommand.AddParameter (
-          EdUserProfile.UserProfileFieldNames.User_Type.ToString ( ),
+          EdUserProfile.FieldNames.User_Type.ToString ( ),
           this.Session.SelectedUserType.ToString ( ) );
 
         newCommand.SetBackgroundColour (
@@ -1192,7 +1192,7 @@ namespace Evado.UniForm.Digital
       // Set the selection to the current site org id.
       // 
       groupField = pageGroup.createSelectionListField (
-        EdUserProfile.UserProfileFieldNames.OrgId,
+        EdUserProfile.FieldNames.OrgId,
         EdLabels.User_Profile_Organisation_List_Field_Label,
         this.Session.UserProfile.OrgId.ToString ( ),
         optionList );
@@ -1202,7 +1202,7 @@ namespace Evado.UniForm.Digital
       // Create the user id object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.UserId.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.UserId.ToString ( ),
         EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
@@ -1251,10 +1251,10 @@ namespace Evado.UniForm.Digital
       //
       // add the user tilte field
       //
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Title ) == false )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
       {
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Title,
+           Evado.Model.Digital.EdUserProfile.FieldNames.Title,
           EdLabels.UserProfile_Title_Field_Label,
           this.Session.AdminUserProfile.Title, 50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1266,20 +1266,20 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "Given Name:" + this.Session.AdminUserProfile.GivenName );
       this.LogValue ( "Family Name:" + this.Session.AdminUserProfile.FamilyName );
 
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Prefix ) == false )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Prefix ) == false )
       {
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Prefix,
+           Evado.Model.Digital.EdUserProfile.FieldNames.Prefix,
           EdLabels.UserProfile_Prefix_Field_Label,
           this.Session.AdminUserProfile.Prefix, 10 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
 
       bool userFamilyName = false;
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Given_Name ) == false )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Given_Name ) == false )
       {
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
+           Evado.Model.Digital.EdUserProfile.FieldNames.Given_Name,
           EdLabels.UserProfile_GivenName_Field_Label,
           this.Session.AdminUserProfile.GivenName, 50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1296,10 +1296,10 @@ namespace Evado.UniForm.Digital
         userFamilyName = false;
       }
 
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Family_Name ) == false )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Family_Name ) == false )
       {
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
+           Evado.Model.Digital.EdUserProfile.FieldNames.Family_Name,
           EdLabels.UserProfile_FamilyName_Field_Label,
           this.Session.AdminUserProfile.FamilyName, 50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1320,7 +1320,7 @@ namespace Evado.UniForm.Digital
       // Create the comon name object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.CommonName,
+         Evado.Model.Digital.EdUserProfile.FieldNames.CommonName,
         EdLabels.UserProfile_CommonName_Field_Label,
         String.Empty,
         this.Session.AdminUserProfile.CommonName,
@@ -1345,7 +1345,7 @@ namespace Evado.UniForm.Digital
       #region User Address 
       if ( this.Session.CollectUserAddress == true )
       {
-        if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.UserProfileFieldNames.Address_1 ) == false )
+        if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Address_1 ) == false )
         {
           this.LogDebug ( "Address_1:" + this.Session.UserProfile.Address_1 );
           this.LogDebug ( "Address_2:" + this.Session.UserProfile.Address_2 );
@@ -1377,7 +1377,7 @@ namespace Evado.UniForm.Digital
       // Create the user's email address object
       // 
       groupField = pageGroup.createEmailAddressField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1397,7 +1397,7 @@ namespace Evado.UniForm.Digital
       // Generate the user role radio button list field object.
       //
       groupField = pageGroup.createCheckBoxListField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.RoleId.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.RoleId.ToString ( ),
         EdLabels.UserProfile_Role_Field_Label,
         EdLabels.UserProfile_Role_Field_Description,
         this.Session.AdminUserProfile.Roles,
@@ -1419,7 +1419,7 @@ namespace Evado.UniForm.Digital
       // Set the selection to the current site org id.
       // 
       groupField = pageGroup.createSelectionListField (
-        EdUserProfile.UserProfileFieldNames.User_Type,
+        EdUserProfile.FieldNames.User_Type,
         EdLabels.UserProfile_User_Type_Field_Label,
         this.Session.AdminUserProfile.UserType.ToString ( ),
         optionList );
@@ -1435,7 +1435,7 @@ namespace Evado.UniForm.Digital
       {
 
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Expiry_Date.ToString ( ),
+           Evado.Model.Digital.EdUserProfile.FieldNames.Expiry_Date.ToString ( ),
           EdLabels.UserProfile_Expiry_Date_Field_Label,
           EvStatics.getDateAsString ( this.Session.AdminUserProfile.ExpiryDate ),
           15 );
@@ -1796,7 +1796,7 @@ namespace Evado.UniForm.Digital
       //
       EdUserProfile userProfile = new EdUserProfile ( );
       EdUserProfile uploadedUserProfile = new EdUserProfile ( );
-      EdUserProfile.UserProfileFieldNames field = EdUserProfile.UserProfileFieldNames.Null;
+      EdUserProfile.FieldNames field = EdUserProfile.FieldNames.Null;
 
       //
       // Iterate through the columns filling the values into the uploaded user profile.
@@ -1807,7 +1807,7 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Column: " + value + ", Value: " + DataRow [ columnCount ] );
 
-        if ( EvStatics.tryParseEnumValue<EdUserProfile.UserProfileFieldNames> (
+        if ( EvStatics.tryParseEnumValue<EdUserProfile.FieldNames> (
           value, out field ) == true )
         {
           uploadedUserProfile.setValue ( field, DataRow [ columnCount ] );
@@ -2153,8 +2153,8 @@ namespace Evado.UniForm.Digital
           this.LogTextEnd ( " >> UPDATED" );
           try
           {
-            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
-              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
+            Evado.Model.Digital.EdUserProfile.FieldNames fieldName =
+              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.FieldNames> (
              parameter.Name );
 
             this.Session.AdminUserProfile.setValue ( fieldName, parameter.Value );

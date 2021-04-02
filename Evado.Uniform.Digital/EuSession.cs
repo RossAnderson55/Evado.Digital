@@ -221,6 +221,11 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property contains the current user type selection.
     /// </summary>
+    public String SelectedUserCategory { get; set; }
+
+    /// <summary>
+    /// This property contains the current user type selection.
+    /// </summary>
     public String SelectedOrgId { get; set; }
 
     Evado.Model.Digital.EdUserProfile _UserProfile = new EdUserProfile ( );
@@ -565,6 +570,22 @@ namespace Evado.UniForm.Digital
     /// This property contains the list of Form Versions.
     /// </summary>
     public List<EvOption> LayoutVersionList { get; set; }
+
+
+    /// <summary>
+    /// This property object contains the organisation country selection value
+    /// </summary>
+    public String SelectedOrganisationCountry { get; set; }
+
+    /// <summary>
+    /// This property object contains the organisation country selection value
+    /// </summary>
+    public String SelectedOrganisationCity { get; set; }
+
+    /// <summary>
+    /// This property object contains the organisation country selection value
+    /// </summary>
+    public String SelectedOrganisationPostCode { get; set; }
 
 
     // ==================================================================================

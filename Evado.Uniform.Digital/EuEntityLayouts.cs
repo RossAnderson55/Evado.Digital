@@ -118,10 +118,6 @@ namespace Evado.UniForm.Digital
     public const string CONST_IMPORT_FORM_DATA = "IMPORT";
     public const string CONST_SAVE_ACTION_PARM = "ACTION";
     public const string CONST_PARTICIPANT_SIGNATURE_FIELD_ID = "PARTSIG";
-    public const string CONST_CONFIRM_CONSENT_FIELD_ID = "PCTC";
-    public const string CONST_CONFIRM_DATA_CONSENT_STATUS = "PDCST";
-    public const string CONST_CONFIRM_SHARE_CONSENT_STATUS = "PSCST";
-    public const string CONST_CONFIRM_CONFIRM_CONSENT_STATUS = "PCCST";
 
     public const string CONST_TEMPLATE_FIELD_ID = "IFTF";
 
@@ -552,7 +548,7 @@ namespace Evado.UniForm.Digital
         //
         // Define the page commands
         //
-        this.createFormList_PageCommands ( clientDataObject.Page );
+        this.createEntitList_PageCommands ( clientDataObject.Page );
         // 
         // Create the new pageMenuGroup for query selection.
         // 
@@ -590,6 +586,52 @@ namespace Evado.UniForm.Digital
       return null;
 
     }//END getListObject method.
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates the record view pageMenuGroup containing a list of commands to 
+    /// open the form record.
+    /// </summary>
+    /// <param name="Page">Evado.Model.UniForm.Page object.</param>
+    /// <param name="FormList">List<EvForm> object.</param>
+    /// <returns>Evado.Model.UniForm.Group</returns>
+    //  ------------------------------------------------------------------------------
+    private void createEntitList_PageCommands (
+      Evado.Model.UniForm.Page Page )
+    {
+      this.LogMethod ( "createFormList_PageCommands" );
+
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      Evado.Model.UniForm.Command pageCommand = new Model.UniForm.Command ( );
+
+      // 
+      // Add the selection groupCommand
+      // 
+      pageCommand = Page.addCommand (
+        EdLabels.EntittLayout_List_Refresh_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entity_Layouts.ToString ( ),
+         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+      pageCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+      pageCommand.AddParameter ( EuEntityLayouts.CONST_REFRESH, "1" );
+
+      //
+      // Entity template upload command
+      //
+      pageCommand = Page.addCommand (
+        EdLabels.Form_Template_Upload_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+      // 
+      // Define the save groupCommand parameters.
+      // 
+      pageCommand.SetPageId ( EdStaticPageIds.Form_Template_Upload );
+    }
 
     //===================================================================================
     /// <summary>
@@ -781,7 +823,6 @@ namespace Evado.UniForm.Digital
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
       selectionField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
-
       // 
       // Add the selection groupCommand
       // 
@@ -810,18 +851,14 @@ namespace Evado.UniForm.Digital
       String parameterValue = String.Empty;
 
       // 
-      // Get the form record type parameter value
+      // IF the refresh parameter exists the empty the entity lists so they are reloaded.
       // 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.TypeId.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EuEntityLayouts.CONST_REFRESH ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdRecord.RecordFieldNames.TypeId.ToString ( ) );
+        this.AdapterObjects.AllEntityLayouts = new List<EdRecord> ( );
 
-        this.LogValue ( "Selected Form Type: " + parameterValue );
-
-        this.Session.EntityTypeSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( parameterValue );
+        this.Session.EntityList = new List<EdRecord> ( );
       }
-      this.LogValue ( "SessionObjects.FormType: "
-        + this.Session.EntityTypeSelection );
 
       // 
       // Get the form record type parameter value
@@ -838,38 +875,6 @@ namespace Evado.UniForm.Digital
         + this.Session.RecordLayoutStateSelection );
 
     }//END updateSessionObjects method
-
-    // ==============================================================================
-    /// <summary>
-    /// This method creates the record view pageMenuGroup containing a list of commands to 
-    /// open the form record.
-    /// </summary>
-    /// <param name="Page">Evado.Model.UniForm.Page object.</param>
-    /// <param name="FormList">List<EvForm> object.</param>
-    /// <returns>Evado.Model.UniForm.Group</returns>
-    //  ------------------------------------------------------------------------------
-    private void createFormList_PageCommands (
-      Evado.Model.UniForm.Page Page )
-    {
-      this.LogMethod ( "createFormList_PageCommands" );
-
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
-      Evado.Model.UniForm.Command pageCommand = new Model.UniForm.Command ( );
-
-      pageCommand = Page.addCommand (
-        EdLabels.Form_Template_Upload_Command_Title,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entity_Layouts.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Get_Object );
-
-      // 
-      // Define the save groupCommand parameters.
-      // 
-      pageCommand.SetPageId ( EdStaticPageIds.Form_Template_Upload );
-    }
 
     // ==============================================================================
     /// <summary>

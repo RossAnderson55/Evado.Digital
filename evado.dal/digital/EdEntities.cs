@@ -772,12 +772,34 @@ namespace Evado.Dal.Digital
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getEntityList method." );
+      this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
+      this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
       //
       // Initialize the method debug log, a return form list and a number of result count. 
       //
       List<EdRecord> view = new List<EdRecord> ( );
       String sqlQueryString = String.Empty;
       int inResultCount = 0;
+
+      if ( QueryParameters.Org_City.Contains ( "_" ) == true )
+      {
+        String [ ] arrCity = QueryParameters.Org_City.Split ( '_' );
+        QueryParameters.Org_Country = arrCity [ 0 ];
+        QueryParameters.Org_City = arrCity [ 1 ];
+
+        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        this.LogDebug ( "City {0} ", QueryParameters.Org_City );
+      }
+
+      if ( QueryParameters.Org_PostCode.Contains ( "_" ) == true )
+      {
+        String [ ] arrCity = QueryParameters.Org_PostCode.Split ( '_' );
+        QueryParameters.Org_Country = arrCity [ 0 ];
+        QueryParameters.Org_PostCode = arrCity [ 1 ];
+
+        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
+      }
 
       // 
       // Define the query parameters.
@@ -946,6 +968,14 @@ namespace Evado.Dal.Digital
         if ( QueryParameters.Org_Country != String.Empty )
         {
           sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_COUNTRY + " = " + EdOrganisations.PARM_COUNTRY + " ) " );
+        }
+
+        //
+        // filter by country if provided.
+        //
+        if ( QueryParameters.Org_PostCode != String.Empty )
+        {
+          sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_ADDRESS_POST_CODE + " = " + EdOrganisations.PARM_ADDRESS_POST_CODE + " ) " );
         }
       }
 

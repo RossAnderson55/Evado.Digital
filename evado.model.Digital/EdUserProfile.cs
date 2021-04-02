@@ -84,7 +84,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list defines field names used in User profile class
     /// </summary>
-    public enum UserProfileFieldNames
+    public enum FieldNames
     {
       /// <summary>
       /// This enumeration defines the null or not selection state
@@ -300,11 +300,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Default_Display_Parameters );
+        return this.getParameter ( EdUserProfile.FieldNames.Default_Display_Parameters );
       }
       set
       {
-        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Default_Display_Parameters, value );
+        var debug = this.setParameter ( EdUserProfile.FieldNames.Default_Display_Parameters, value );
       }
     }
 
@@ -315,11 +315,11 @@ namespace Evado.Model.Digital
     {
       get
       {
-        return this.getParameter ( EdUserProfile.UserProfileFieldNames.Current_Display_Parameters );
+        return this.getParameter ( EdUserProfile.FieldNames.Current_Display_Parameters );
       }
       set
       {
-        var debug = this.setParameter ( EdUserProfile.UserProfileFieldNames.Current_Display_Parameters, value );
+        var debug = this.setParameter ( EdUserProfile.FieldNames.Current_Display_Parameters, value );
         //this.debug += "\r\n" + debug;
       }
     }
@@ -635,7 +635,7 @@ namespace Evado.Model.Digital
     /// 2. Update the related field name with value
     /// </remarks>
     //-----------------------------------------------------------------------------------
-    public EvEventCodes setValue ( UserProfileFieldNames fieldName, String value )
+    public EvEventCodes setValue ( FieldNames fieldName, String value )
     {
       // this.debug = String.Empty;
       //
@@ -643,127 +643,127 @@ namespace Evado.Model.Digital
       //
       switch ( fieldName )
       {
-        case UserProfileFieldNames.OrgId:
+        case FieldNames.OrgId:
           {
             this.OrgId = value;
             break;
           }
-        case UserProfileFieldNames.UserId:
+        case FieldNames.UserId:
           {
             this.UserId = value;
             break;
           }
-        case UserProfileFieldNames.Password:
+        case FieldNames.Password:
           {
             this.Password = value;
             break;
           }
-        case UserProfileFieldNames.Image_File_Name:
+        case FieldNames.Image_File_Name:
           {
             this.ImageFileName = value;
             break;
           }
-        case UserProfileFieldNames.User_Type:
+        case FieldNames.User_Type:
           {
             this.UserType = value ;
             break;
           }
-        case UserProfileFieldNames.User_Category:
+        case FieldNames.User_Category:
           {
             this.UserCategory = value;
             break;
           }
-        case UserProfileFieldNames.ActiveDirectoryUserId:
+        case FieldNames.ActiveDirectoryUserId:
           {
             this.ActiveDirectoryUserId = value;
             break;
           }
-        case UserProfileFieldNames.Prefix:
+        case FieldNames.Prefix:
           {
             this.Prefix = value;
             break;
           }
-        case UserProfileFieldNames.Given_Name:
+        case FieldNames.Given_Name:
           {
             this.GivenName = value;
             break;
           }
-        case UserProfileFieldNames.Family_Name:
+        case FieldNames.Family_Name:
           {
             this.FamilyName = value;
             break;
           }
-        case UserProfileFieldNames.Suffix:
+        case FieldNames.Suffix:
           {
             this.Suffix = value;
             break;
           }
-        case UserProfileFieldNames.CommonName:
+        case FieldNames.CommonName:
           {
             this.CommonName = value;
             break;
           }
-        case UserProfileFieldNames.Title:
+        case FieldNames.Title:
           {
             this.Title = value;
             break;
           }
-        case UserProfileFieldNames.Email_Address:
+        case FieldNames.Email_Address:
           {
             this.EmailAddress = value;
             break;
           }
-        case UserProfileFieldNames.Address_1:
+        case FieldNames.Address_1:
           {
             this.Address_1 = value;
             break;
           }
-        case UserProfileFieldNames.Address_2:
+        case FieldNames.Address_2:
           {
             this.Address_2 = value;
             break;
           }
-        case UserProfileFieldNames.Address_City:
+        case FieldNames.Address_City:
           {
             this.AddressCity = value;
             break;
           }
-        case UserProfileFieldNames.Address_Post_Code:
+        case FieldNames.Address_Post_Code:
           {
             this.AddressPostCode = value;
             break;
           }
-        case UserProfileFieldNames.Address_Country:
+        case FieldNames.Address_Country:
           {
             this.AddressCountry = value;
             break;
           }
-        case UserProfileFieldNames.Telephone:
+        case FieldNames.Telephone:
           {
             this.Telephone = value;
             break;
           }
-        case UserProfileFieldNames.Mobile_Phone:
+        case FieldNames.Mobile_Phone:
           {
             this.MobilePhone = value;
             break;
           }
-        case UserProfileFieldNames.Default_Display_Parameters:
+        case FieldNames.Default_Display_Parameters:
           {
             this.DefaultDisplayParameters = value;
             break;
           }
-        case UserProfileFieldNames.Current_Display_Parameters:
+        case FieldNames.Current_Display_Parameters:
           {
             this.CurrentDisplayParameters = value;
             break;
           }
-        case UserProfileFieldNames.RoleId:
+        case FieldNames.RoleId:
           {
             this.Roles = value;
             break;
           }
-        case UserProfileFieldNames.Expiry_Date:
+        case FieldNames.Expiry_Date:
           {
             this.ExpiryDate = EvStatics.getDateTime ( value );
             break;

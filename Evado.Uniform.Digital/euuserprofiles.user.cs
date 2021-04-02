@@ -222,13 +222,13 @@ namespace Evado.UniForm.Digital
       // Create the  name object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Prefix,
+         Evado.Model.Digital.EdUserProfile.FieldNames.Prefix,
         EdLabels.UserProfile_Prefix_Field_Label,
         this.Session.UserProfile.Prefix, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Given_Name,
+         Evado.Model.Digital.EdUserProfile.FieldNames.Given_Name,
         EdLabels.UserProfile_GivenName_Field_Label,
         this.Session.UserProfile.GivenName, 50 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -238,7 +238,7 @@ namespace Evado.UniForm.Digital
         Model.UniForm.Background_Colours.Red );
 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Family_Name,
+         Evado.Model.Digital.EdUserProfile.FieldNames.Family_Name,
         EdLabels.UserProfile_FamilyName_Field_Label,
         this.Session.UserProfile.FamilyName, 50 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -278,7 +278,7 @@ namespace Evado.UniForm.Digital
       // Create the customer telephone number object
       // 
       groupField = pageGroup.createTelephoneNumberField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Telephone.ToString ( ),
         EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.UserProfile.Telephone );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -287,7 +287,7 @@ namespace Evado.UniForm.Digital
       // Create the customer telephone number object
       // 
       groupField = pageGroup.createTelephoneNumberField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Mobile_Phone.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Mobile_Phone.ToString ( ),
         EdLabels.UserProfile_Mobilephone_Field_Label,
         this.Session.UserProfile.MobilePhone );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -296,7 +296,7 @@ namespace Evado.UniForm.Digital
       // Create the customer fax number object
       // 
       groupField = pageGroup.createEmailAddressField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.UserProfile.EmailAddress );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -617,8 +617,8 @@ namespace Evado.UniForm.Digital
           this.LogTextEnd ( " >> UPDATED" );
           try
           {
-            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
-              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
+            Evado.Model.Digital.EdUserProfile.FieldNames fieldName =
+              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.FieldNames> (
              parameter.Name );
 
             this.Session.UserProfile.setValue ( fieldName, parameter.Value );

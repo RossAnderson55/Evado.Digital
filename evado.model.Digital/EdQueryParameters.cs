@@ -73,6 +73,11 @@ namespace Evado.Model.Digital
     public string Org_Country = String.Empty;
 
     /// <summary>
+    /// This field defines the organisation post code filter.
+    /// </summary>
+    public string Org_PostCode = String.Empty;
+
+    /// <summary>
     /// This field defines the entity record identifier.
     /// </summary>
     public string EntityId = String.Empty;

@@ -160,7 +160,7 @@ namespace Evado.Dal.Digital
     /// This constant defines the organisation city parameter.
     /// </summary>
     public const string PARM_Address_City = "@ADDRESS_CITY";
-    private const string PARM_Address_Post_Code = "@ADDRESS_POST_CODE";
+    public const string PARM_ADDRESS_POST_CODE = "@ADDRESS_POST_CODE";
     private const string PARM_Address_State = "@ADDRESS_STATE";
     /// <summary>
     /// This constant defines the organisation country parameter field.
@@ -202,7 +202,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdOrganisations.PARM_Address_1, SqlDbType.NVarChar, 50),
         new SqlParameter( EdOrganisations.PARM_Address_2, SqlDbType.NVarChar, 50),
         new SqlParameter( EdOrganisations.PARM_Address_City, SqlDbType.NVarChar, 50),
-        new SqlParameter( EdOrganisations.PARM_Address_Post_Code, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdOrganisations.PARM_ADDRESS_POST_CODE, SqlDbType.NVarChar, 10),
         new SqlParameter( EdOrganisations.PARM_Address_State, SqlDbType.NVarChar, 50),
         new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
         new SqlParameter( EdOrganisations.PARM_TELEPHONE, SqlDbType.NVarChar, 15),

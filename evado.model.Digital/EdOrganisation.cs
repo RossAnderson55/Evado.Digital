@@ -31,7 +31,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list defines the field names of organization
     /// </summary>
-    public enum OrganisationFieldNames
+    public enum FieldNames
     {
       /// <summary>
       /// This enumeration defines null value or non selection state
@@ -493,51 +493,51 @@ namespace Evado.Model.Digital
     /// 1. Switch FieldName and get value defining by the organization field name.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public string getValue ( EdOrganisation.OrganisationFieldNames FieldName )
+    public string getValue ( EdOrganisation.FieldNames FieldName )
     {
       //
       // Switch FieldName and get value defining by the organization field name.
       //
       switch ( FieldName )
       {
-        case EdOrganisation.OrganisationFieldNames.OrgId:
+        case EdOrganisation.FieldNames.OrgId:
           return this._OrgId;
-        case EdOrganisation.OrganisationFieldNames.Name:
+        case EdOrganisation.FieldNames.Name:
           return this._Name;
 
-        case EdOrganisation.OrganisationFieldNames.Image_File_Name:
+        case EdOrganisation.FieldNames.Image_File_Name:
           {
             return this.ImageFileName;
           }
 
-        case EdOrganisation.OrganisationFieldNames.Org_Type:
+        case EdOrganisation.FieldNames.Org_Type:
           return this._OrgType;
 
-        case EdOrganisation.OrganisationFieldNames.Address:
+        case EdOrganisation.FieldNames.Address:
           return this.Address;
 
-        case EdOrganisation.OrganisationFieldNames.Address_1:
+        case EdOrganisation.FieldNames.Address_1:
           return this.AddressStreet_1;
 
-        case EdOrganisation.OrganisationFieldNames.Address_2:
+        case EdOrganisation.FieldNames.Address_2:
           return this.AddressStreet_2;
 
-        case EdOrganisation.OrganisationFieldNames.Address_City:
+        case EdOrganisation.FieldNames.Address_City:
           return this.AddressCity;
 
-        case EdOrganisation.OrganisationFieldNames.Address_State:
+        case EdOrganisation.FieldNames.Address_State:
           return this.AddressState;
 
-        case EdOrganisation.OrganisationFieldNames.Address_Post_Code:
+        case EdOrganisation.FieldNames.Address_Post_Code:
           return this.AddressPostCode;
 
-        case EdOrganisation.OrganisationFieldNames.Address_Country:
+        case EdOrganisation.FieldNames.Address_Country:
           return this.AddressCountry;
 
-        case EdOrganisation.OrganisationFieldNames.Telephone:
+        case EdOrganisation.FieldNames.Telephone:
           return this._Telephone;
 
-        case EdOrganisation.OrganisationFieldNames.Email_Address:
+        case EdOrganisation.FieldNames.Email_Address:
           return this._EmailAddress;
         default:
           return String.Empty;
@@ -560,7 +560,7 @@ namespace Evado.Model.Digital
     /// 2. Switch the FieldName and update the Value on the organization field names.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public void setValue ( EdOrganisation.OrganisationFieldNames FieldName, string Value )
+    public void setValue ( EdOrganisation.FieldNames FieldName, string Value )
     {
       //
       // Initialize the internal variables
@@ -571,68 +571,68 @@ namespace Evado.Model.Digital
       //
       switch ( FieldName )
       {
-        case EdOrganisation.OrganisationFieldNames.OrgId:
+        case EdOrganisation.FieldNames.OrgId:
           {
             this._OrgId = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Name:
+        case EdOrganisation.FieldNames.Name:
           {
             this._Name = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Image_File_Name:
+        case EdOrganisation.FieldNames.Image_File_Name:
           {
             this.ImageFileName = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address:
+        case EdOrganisation.FieldNames.Address:
           {
             this.Address = Value;
           } return;
 
-        case EdOrganisation.OrganisationFieldNames.Address_1:
+        case EdOrganisation.FieldNames.Address_1:
           {
             this._AddressStreet_1 = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address_2:
+        case EdOrganisation.FieldNames.Address_2:
           {
             this._AddressStreet_2 = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address_City:
+        case EdOrganisation.FieldNames.Address_City:
           {
             this._AddressCity = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address_State:
+        case EdOrganisation.FieldNames.Address_State:
           {
             this._AddressState = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address_Post_Code:
+        case EdOrganisation.FieldNames.Address_Post_Code:
           {
             this._AddressPostCode = Value;
             return;
           }
-        case EdOrganisation.OrganisationFieldNames.Address_Country:
+        case EdOrganisation.FieldNames.Address_Country:
           this._Country = Value;
           return;
 
-        case EdOrganisation.OrganisationFieldNames.Telephone:
+        case EdOrganisation.FieldNames.Telephone:
           {
             this._Telephone = Value;
             return;
           }
 
-        case EdOrganisation.OrganisationFieldNames.Email_Address:
+        case EdOrganisation.FieldNames.Email_Address:
           {
             this._EmailAddress = Value;
             return;
           }
 
-        case EdOrganisation.OrganisationFieldNames.Org_Type:
+        case EdOrganisation.FieldNames.Org_Type:
           {
             this._OrgType =  Value;
             return;

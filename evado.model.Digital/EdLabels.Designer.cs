@@ -61,6 +61,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adapter Properties.
+        /// </summary>
+        public static string AdapterConfig_Properties_Group_Title {
+            get {
+                return ResourceManager.GetString("AdapterConfig_Properties_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Static query filter list components:.
+        /// </summary>
+        public static string AdapterConfig_QueryStaticFilter_Field_Label {
+            get {
+                return ResourceManager.GetString("AdapterConfig_QueryStaticFilter_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current online users.
         /// </summary>
         public static string Admin_User_Session_Group_Title {
@@ -2448,11 +2466,47 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Selection.
+        /// </summary>
+        public static string Entities_Selection_Command_Title {
+            get {
+                return ResourceManager.GetString("Entities_Selection_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection Filters.
+        /// </summary>
+        public static string Entities_Selection_Group_Title {
+            get {
+                return ResourceManager.GetString("Entities_Selection_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Entity List.
+        /// </summary>
+        public static string EntittLayout_List_Refresh_Command_Title {
+            get {
+                return ResourceManager.GetString("EntittLayout_List_Refresh_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Page.
         /// </summary>
         public static string Entity_Enable_Edit_Command_Title {
             get {
                 return ResourceManager.GetString("Entity_Enable_Edit_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of Entities.
+        /// </summary>
+        public static string Entity_List_Group_Title {
+            get {
+                return ResourceManager.GetString("Entity_List_Group_Title", resourceCulture);
             }
         }
         
@@ -7854,6 +7908,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entities_Selection_Command_Title.
+        /// </summary>
+        public static string String {
+            get {
+                return ResourceManager.GetString("String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The UniFORM image path is emty..
         /// </summary>
         public static string UniForm_Binary_Path_Error_Message {
@@ -8477,6 +8540,15 @@ namespace Evado.Model.Digital {
         public static string UserProfile_UploadImage_Field_Label {
             get {
                 return ResourceManager.GetString("UserProfile_UploadImage_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Category:.
+        /// </summary>
+        public static string UserProfile_User_Category_Field_Label {
+            get {
+                return ResourceManager.GetString("UserProfile_User_Category_Field_Label", resourceCulture);
             }
         }
         

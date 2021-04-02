@@ -421,59 +421,44 @@ namespace Evado.UniForm.Digital
       }
 
       //
-      // Add the save groupCommand for the page.
+      // Add the same groupCommand.
       //
-      switch ( this.Session.EntityLayout.State )
+      groupCommand = PageGroup.addCommand (
+        EdLabels.Form_Field_Save_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+      // 
+      // Define the save groupCommand parameters.
+      // 
+      groupCommand.SetGuid ( this.Session.EntityField.Guid );
+
+      groupCommand.AddParameter (
+        Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+       EdEntityFields.Action_Save );
+
+      //
+      // Add the same groupCommand.
+      //
+      int majorVersion = (int) this.Session.EntityLayout.Design.Version;
+      if ( this.Session.EntityField.Design.InitialVersion == majorVersion )
       {
-        case EdRecordObjectStates.Form_Draft:
-        case EdRecordObjectStates.Form_Reviewed:
-          {
-            //
-            // Add the same groupCommand.
-            //
-            groupCommand = PageGroup.addCommand (
-              EdLabels.Form_Field_Save_Command_Title,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        groupCommand = PageGroup.addCommand (
+          EdLabels.Form_Field_Delete_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        // 
+        // Define the save groupCommand parameters.
+        // 
+        groupCommand.SetGuid ( this.Session.EntityField.Guid );
 
-            // 
-            // Define the save groupCommand parameters.
-            // 
-            groupCommand.SetGuid ( this.Session.EntityField.Guid );
-
-            groupCommand.AddParameter (
-              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdEntityFields.Action_Save );
-
-            //
-            // Add the same groupCommand.
-            //
-            int majorVersion = (int) this.Session.EntityLayout.Design.Version;
-            if ( this.Session.EntityField.Design.InitialVersion == majorVersion )
-            {
-              groupCommand = PageGroup.addCommand (
-                EdLabels.Form_Field_Delete_Command_Title,
-                EuAdapter.ADAPTER_ID,
-                EuAdapterClasses.Entity_Layout_Fields.ToString ( ),
-                Evado.Model.UniForm.ApplicationMethods.Save_Object );
-              // 
-              // Define the save groupCommand parameters.
-              // 
-              groupCommand.SetGuid ( this.Session.EntityField.Guid );
-
-              groupCommand.AddParameter (
-                Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdEntityFields.Action_Delete );
-            }
-
-            return;
-          }
-        default:
-          {
-            return;
-          }
+        groupCommand.AddParameter (
+          Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+         EdEntityFields.Action_Delete );
       }
+
     }//END getSaveCommand Method
 
     // ==============================================================================
@@ -757,7 +742,6 @@ namespace Evado.UniForm.Digital
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
-
       //
       // Form field order
       //
@@ -991,7 +975,8 @@ namespace Evado.UniForm.Digital
       //
       // Form summary field  field
       //
-      if ( this.Session.EntityField.isSingleValue == true )
+      if ( this.Session.EntityField.isSingleValue == true
+        || this.Session.EntityField.TypeId == EvDataTypes.External_CheckBox_List )
       {
         groupField = pageGroup.createBooleanField (
           EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
@@ -1015,7 +1000,7 @@ namespace Evado.UniForm.Digital
         // Form hide ResultData point field
         //
         if ( this.Session.EntityField.TypeId != Evado.Model.EvDataTypes.Read_Only_Text
-        &&  this.Session.EntityField.TypeId != Evado.Model.EvDataTypes.Free_Text
+        && this.Session.EntityField.TypeId != Evado.Model.EvDataTypes.Free_Text
           && this.Session.EntityField.TypeId != Evado.Model.EvDataTypes.Password
           && this.Session.EntityField.TypeId != Evado.Model.EvDataTypes.Signature )
         {
@@ -1869,7 +1854,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageCommand">Evado.Model.UniForm.Command objects.</param>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValues ( 
+    private void updateObjectValues (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "updateObjectValue" );

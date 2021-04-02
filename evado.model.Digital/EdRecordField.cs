@@ -374,6 +374,8 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Numeric:
           case Evado.Model.EvDataTypes.Radio_Button_List:
           case Evado.Model.EvDataTypes.Selection_List:
+          case Evado.Model.EvDataTypes.External_RadioButton_List:
+          case Evado.Model.EvDataTypes.External_Selection_List:
           case Evado.Model.EvDataTypes.Text:
           case Evado.Model.EvDataTypes.Telephone_Number:
           case Evado.Model.EvDataTypes.Time:

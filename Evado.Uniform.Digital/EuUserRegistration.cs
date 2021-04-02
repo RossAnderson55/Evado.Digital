@@ -504,7 +504,7 @@ namespace Evado.UniForm.Digital
       // Create the user id object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.UserId.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.UserId.ToString ( ),
         EdLabels.User_Profile_Identifier_Field_Label,
         this.Session.AdminUserProfile.UserId,
         80 );
@@ -516,7 +516,7 @@ namespace Evado.UniForm.Digital
       // Create the comon name object
       // 
       groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.CommonName,
+         Evado.Model.Digital.EdUserProfile.FieldNames.CommonName,
         EdLabels.Dem_Registration_CommonName_Field_Label,
         this.Session.AdminUserProfile.CommonName,
         80 );
@@ -527,7 +527,7 @@ namespace Evado.UniForm.Digital
       // Create the user's email address object
       // 
       groupField = pageGroup.createTelephoneNumberField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Telephone.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Telephone.ToString ( ),
         EdLabels.UserProfile_Telephone_Field_Label,
         this.Session.AdminUserProfile.Telephone );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -537,7 +537,7 @@ namespace Evado.UniForm.Digital
       // Create the user's email address object
       // 
       groupField = pageGroup.createEmailAddressField (
-         Evado.Model.Digital.EdUserProfile.UserProfileFieldNames.Email_Address.ToString ( ),
+         Evado.Model.Digital.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.AdminUserProfile.EmailAddress );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -846,8 +846,8 @@ namespace Evado.UniForm.Digital
           this.LogTextEnd ( " >> UPDATED" );
           try
           {
-            Evado.Model.Digital.EdUserProfile.UserProfileFieldNames fieldName =
-              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.UserProfileFieldNames> (
+            Evado.Model.Digital.EdUserProfile.FieldNames fieldName =
+              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.FieldNames> (
              parameter.Name );
 
             this.Session.AdminUserProfile.setValue ( fieldName, parameter.Value );

@@ -2999,4 +2999,28 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="PageLayout_Component_Field_Label" xml:space="preserve">
     <value>Page Active Components:</value>
   </data>
+  <data name="AdapterConfig_Properties_Group_Title" xml:space="preserve">
+    <value>Adapter Properties</value>
+  </data>
+  <data name="AdapterConfig_QueryStaticFilter_Field_Label" xml:space="preserve">
+    <value>Static query filter list components:</value>
+  </data>
+  <data name="Entities_Selection_Command_Title" xml:space="preserve">
+    <value>Update Selection</value>
+  </data>
+  <data name="Entities_Selection_Group_Title" xml:space="preserve">
+    <value>Selection Filters</value>
+  </data>
+  <data name="EntittLayout_List_Refresh_Command_Title" xml:space="preserve">
+    <value>Refresh Entity List</value>
+  </data>
+  <data name="Entity_List_Group_Title" xml:space="preserve">
+    <value>List of Entities</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>Entities_Selection_Command_Title</value>
+  </data>
+  <data name="UserProfile_User_Category_Field_Label" xml:space="preserve">
+    <value>User Category:</value>
+  </data>
 </root>

@@ -1853,8 +1853,12 @@ namespace Evado.UniForm.Digital
       this.createGeneralGroup ( ClientDataObject.Page );
 
       //
-      // create the configuration pageMenuGroup object.
+      // create the properties gorup object.
       //
+      this.createPropertiesGroup ( ClientDataObject.Page );
+
+      //
+      // create the configuratin group 
       this.createConfigurationGroup ( ClientDataObject.Page );
 
       //  
@@ -1975,10 +1979,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void createConfigurationGroup (
+    private void createPropertiesGroup (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "createConfigurationGroup" );
+      this.LogMethod ( "createPropertiesGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1991,7 +1995,7 @@ namespace Evado.UniForm.Digital
       // create the page pageMenuGroup
       // 
       Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-        EdLabels.ApplicationProfile_Configuration_Group_Title,
+        EdLabels.AdapterConfig_Properties_Group_Title,
         Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1999,7 +2003,7 @@ namespace Evado.UniForm.Digital
       // Add the group commands.
       //
       this.AddGroupCommands ( pageGroup );
-
+      /*
       //
       // create the home page header text.
       //
@@ -2008,7 +2012,7 @@ namespace Evado.UniForm.Digital
         EdLabels.Config_Title_Field_Label,
         this.AdapterObjects.Settings.Title, 50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-
+      */
       //
       // create the home page header text.
       //
@@ -2040,57 +2044,14 @@ namespace Evado.UniForm.Digital
       //
       // create the user category selection list field
       //
-      pageField = pageGroup.createTextField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Category_List.ToString ( ),
-        EdLabels.Config_UserCategoryList_Field_Label,
-        this.AdapterObjects.Settings.UserCategoryList, 20 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      //
-      // create the application role llist 
-      //
-      string roles = this.AdapterObjects.Settings.UserRoles;
-      roles = roles.Replace ( ";", "\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Roles.ToString ( ),
-        EdLabels.Config_Role_List_Field_Label,
-        EdLabels.Config_Role_List_Field_Description,
-       roles, 20, 10 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      this.LogDebug ( "Roles {0}.", this.AdapterObjects.Settings.UserRoles );
-
-      //
-      // create the organisation types field
-      //
-      string orgType = this.AdapterObjects.Settings.OrgTypes;
-      orgType = orgType.Replace ( ";", "\r\n" );
-
-      pageField = pageGroup.createFreeTextField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.Org_Types.ToString ( ),
-        EdLabels.Config_OrgType_List_Field_Label,
-        EdLabels.Config_OrgType_List_Field_Description,
-        orgType, 20, 10 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      this.LogDebug ( "OrgTypes {0}.", this.AdapterObjects.Settings.OrgTypes );
-
-      //
-      // create the defult organisation type selection. 
-      //
-        optionList = new List<EvOption> ( );
-      foreach ( String value in this.AdapterObjects.Settings.OrgTypes.Split( ';' ) )
-      {
-        optionList.Add ( new EvOption( value ) );
-      }
+      optionList = this.AdapterObjects.getSelectionListOptions ( true );
 
       pageField = pageGroup.createSelectionListField (
-        Model.Digital.EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type,
-        EdLabels.Config_Default_Org_Type_Field_Label,
-        this.AdapterObjects.Settings.DefaultOrgType,
-        optionList );
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Category_List.ToString ( ),
+        EdLabels.Config_UserCategoryList_Field_Label,
+        this.AdapterObjects.Settings.UserCategoryList, optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
+
       
       //
       // create the user primary entity selection. 
@@ -2132,21 +2093,39 @@ namespace Evado.UniForm.Digital
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
+
       //
       // create the hidden user profile fields checkbox list.
       //
       optionList = new List<EvOption> ( );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Given_Name ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Family_Name ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Title ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_1 ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_City ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Post_Code ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_State ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Address_Country ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Telephone ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Suffix ) );
-      optionList.Add ( EvStatics.getOption ( EdUserProfile.UserProfileFieldNames.Prefix ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_Post_Code) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_Country ) );
+
+
+      pageField = pageGroup.createCheckBoxListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Static_Query_Filter_Options.ToString ( ),
+        EdLabels.AdapterConfig_QueryStaticFilter_Field_Label,
+        this.AdapterObjects.Settings.StaticQueryFilterOptions, optionList );
+
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+
+      //
+      // create the hidden user profile fields checkbox list.
+      //
+      optionList = new List<EvOption> ( );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Given_Name ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Family_Name ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Title ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_Country ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Telephone ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Suffix ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Prefix ) );
 
 
       pageField = pageGroup.createCheckBoxListField (
@@ -2160,13 +2139,13 @@ namespace Evado.UniForm.Digital
       // create the hidden organisastion checkbox list.
       //
       optionList = new List<EvOption> ( );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_1 ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_City ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Post_Code ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_State ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Address_Country ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Telephone ) );
-      optionList.Add ( EvStatics.getOption ( EdOrganisation.OrganisationFieldNames.Email_Address ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_1 ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_City ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_Post_Code ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_State ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_Country ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Telephone ) );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Email_Address ) );
 
       pageField = pageGroup.createCheckBoxListField (
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Hidden_Organisation_Fields.ToString ( ),
@@ -2183,6 +2162,87 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.DemoAccountExpiryDays.ToString ( ),
         EdLabels.Settings_Demo_Account_Expiry_Field_Label,
         this.AdapterObjects.Settings.DemoAccountExpiryDays, 0, 365 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogMethodEnd ( "createPropertiesGroup" );
+
+    }//END createPropertiesGroup method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a general configuration Group object.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void createConfigurationGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "createConfigurationGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      String stOptionListValue = String.Empty;
+      List<EvOption> optionList = new List<EvOption> ( );
+
+      // 
+      // create the page pageMenuGroup
+      // 
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+        EdLabels.ApplicationProfile_Configuration_Group_Title,
+        Evado.Model.UniForm.EditAccess.Inherited );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // Add the group commands.
+      //
+      this.AddGroupCommands ( pageGroup );
+
+      //
+      // create the application role llist 
+      //
+      string roles = this.AdapterObjects.Settings.UserRoles;
+      roles = roles.Replace ( ";", "\r\n" );
+
+      pageField = pageGroup.createFreeTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.User_Roles.ToString ( ),
+        EdLabels.Config_Role_List_Field_Label,
+        EdLabels.Config_Role_List_Field_Description,
+       roles, 20, 10 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogDebug ( "Roles {0}.", this.AdapterObjects.Settings.UserRoles );
+
+      //
+      // create the organisation types field
+      //
+      string orgType = this.AdapterObjects.Settings.OrgTypes;
+      orgType = orgType.Replace ( ";", "\r\n" );
+
+      pageField = pageGroup.createFreeTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Org_Types.ToString ( ),
+        EdLabels.Config_OrgType_List_Field_Label,
+        EdLabels.Config_OrgType_List_Field_Description,
+        orgType, 20, 10 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      this.LogDebug ( "OrgTypes {0}.", this.AdapterObjects.Settings.OrgTypes );
+
+      //
+      // create the defult organisation type selection. 
+      //
+      optionList = new List<EvOption> ( );
+      foreach ( String value in this.AdapterObjects.Settings.OrgTypes.Split ( ';' ) )
+      {
+        optionList.Add ( new EvOption ( value ) );
+      }
+
+      pageField = pageGroup.createSelectionListField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Default_User_Org_Type,
+        EdLabels.Config_Default_Org_Type_Field_Label,
+        this.AdapterObjects.Settings.DefaultOrgType,
+        optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
@@ -2204,9 +2264,9 @@ namespace Evado.UniForm.Digital
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-      this.LogMethodEnd ( "createEmailGroup" );
+      this.LogMethodEnd ( "createConfigurationGroup" );
 
-    }//END createEmailGroup method
+    }//END createConfigurationGroup method
 
     // ==============================================================================
     /// <summary>

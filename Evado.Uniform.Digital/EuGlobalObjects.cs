@@ -700,6 +700,94 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EdOrganisation> OrganisationList { get; set; }
 
+
+    // ==================================================================================
+    /// <summary>
+    /// This private method creates the entity parent list.
+    /// </summary>
+    /// <param name="Filter">EdOrganisation.FieldNames enumerated value</param>
+    /// <param name="SelectionList">bool selection list options.</param>
+    /// <returns>List of EvOptions</returns>
+    // ----------------------------------------------------------------------------------
+    public List<EvOption> GetOrganisationFilterList ( EdOrganisation.FieldNames Filter, bool SelectionList )
+    {
+      //
+      // Initialise the method variables and objects.
+      //
+      List<EvOption> optionList = new List<EvOption> ( );
+      EvOption option = new EvOption ( );
+      String stOptions = String.Empty;
+
+      if ( SelectionList == true )
+      {
+        optionList.Add ( option );
+      }
+      if ( OrganisationList != null )
+      {
+        foreach ( EdOrganisation org in this.OrganisationList )
+        {
+          switch ( Filter )
+          {
+            case EdOrganisation.FieldNames.Address_City:
+              {
+                if ( org.AddressCity == String.Empty
+                  || org.AddressCountry == String.Empty )
+                {
+                  continue;
+                }
+                string val = org.AddressCountry + "_" + org.AddressCity;
+                string desc = String.Format ( "{0} ({1}) ", org.AddressCity, org.AddressCountry );
+                option = new EvOption ( val, desc );
+
+                if ( stOptions.Contains ( val ) == false )
+                {
+                  optionList.Add ( option );
+                  stOptions += ";" + val;
+                }
+                continue;
+              }
+            case EdOrganisation.FieldNames.Address_Country:
+              {
+                if ( org.AddressCountry == String.Empty )
+                {
+                  continue;
+                }
+                option = new EvOption ( org.AddressCountry );
+
+                if ( stOptions.Contains ( org.AddressCountry ) == false )
+                {
+                  optionList.Add ( option );
+                  stOptions += ";" + org.AddressCountry;
+                }
+                continue;
+              }
+            case EdOrganisation.FieldNames.Address_Post_Code:
+              {
+                if ( org.AddressPostCode == String.Empty
+                  || org.AddressCountry == String.Empty )
+                {
+                  continue;
+                }
+                string val = org.AddressCountry + "_" + org.AddressPostCode;
+                string desc = String.Format ( "{0} ({1}) ", org.AddressPostCode, org.AddressCountry );
+                option = new EvOption ( val, desc );
+
+                if ( stOptions.Contains ( val ) == false )
+                {
+                  optionList.Add ( option );
+                  stOptions += ";" + val;
+                }
+                continue;
+              }
+          }//END organisation field switch statement
+        }//END orgnaisation iteration loop.
+      }// Organisation list exists.
+
+
+      return optionList;
+
+    }//END Method
+
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -725,6 +813,7 @@ namespace Evado.UniForm.Digital
 
 
     List<EdObjectParent> _EntityParents = new List<EdObjectParent> ( );
+
     // ==================================================================================
     /// <summary>
     /// This private method creates the entity parent list.
