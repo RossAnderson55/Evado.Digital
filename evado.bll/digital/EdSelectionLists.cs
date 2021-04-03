@@ -226,20 +226,6 @@ namespace Evado.Bll.Digital
       EvEventCodes iReturn = EvEventCodes.Ok;
 
       // 
-      // If the Action is DELTE and the state is draft.
-      // 
-      if ( ( SelectionList.Title == String.Empty 
-          || SelectionList.Action == EdSelectionList.SaveActions.Delete_Object )
-        && SelectionList.Guid != Guid.Empty
-        && SelectionList.State == EdSelectionList.SelectionListStates.Draft )
-      {
-        iReturn = this._dal_SelectionLists.deleteItem ( SelectionList );
-        this.LogClass ( this._dal_SelectionLists.Log );
-
-        return iReturn;
-      }
-
-      // 
       // Exit, if the ListId or UserCommonName is empty
       // 
       if ( SelectionList.ListId == String.Empty )
@@ -251,52 +237,38 @@ namespace Evado.Bll.Digital
         SelectionList.State = EdSelectionList.SelectionListStates.Draft;
       }
 
+      //
+      // Remove empty items.
+      //
+      SelectionList.RemoveEmptyItems ( );
+
       // 
-      // Remove the empty items from the list.
+      // delete selection list .
       // 
-      for ( int count = 0; count < SelectionList.Items.Count; count++ )
+      if ( SelectionList.Action == EdSelectionList.SaveActions.Delete_Object )
       {
-        EdSelectionList.Item item = (EdSelectionList.Item) SelectionList.Items [ count ];
+        this.LogDebug ( "Delete SelectionList " );
 
-        if ( item.Value == String.Empty )
-        {
-          SelectionList.Items.Remove ( item );
-        }
-
-        // 
-        // Reset the item tableColumn.
-        // 
-        item.No = count;
-
-      }//END item iteration loop.
-
-      if ( SelectionList.Guid == Guid.Empty
-        && SelectionList.State == EdSelectionList.SelectionListStates.Draft )
-      {
-        SelectionList.State = EdSelectionList.SelectionListStates.Draft;
-
-        iReturn = this._dal_SelectionLists.addItem ( SelectionList );
+        iReturn = this._dal_SelectionLists.deleteItem ( SelectionList );
         this.LogClass ( this._dal_SelectionLists.Log );
-
         return iReturn;
       }
 
-
       // 
-      // Update the ExternalSelectionList state based on the ExternalSelectionList object Action property.
+      // Update the SelectionList state based on the SelectionList object Action property.
       // 
       this.updateState ( SelectionList );
       this.LogDebug ( " Record State: " + SelectionList.State );
 
       // 
       // If the unique identifier is null then add this object as a new 
-      // ExternalSelectionList object.
+      // SelectionList object.
       // 
       this.LogDebug ( "Save Object to Database." );
 
       if ( SelectionList.Guid == Guid.Empty )	// Add new record
       {
-        this.LogDebug ( "Add ExternalSelectionList to database" );
+        this.LogDebug ( "Add SelectionList to database" );
         iReturn = this._dal_SelectionLists.addItem ( SelectionList );
 
         this.LogClass ( this._dal_SelectionLists.Log );
@@ -319,7 +291,7 @@ namespace Evado.Bll.Digital
       // 
       // Update the checklist object.
       // 
-      this.LogDebug ( "Update ExternalSelectionList " );
+      this.LogDebug ( "Update SelectionList " );
 
       iReturn = this._dal_SelectionLists.updateItem ( SelectionList );		// Update ExternalSelectionList properties.
       this.LogClass ( this._dal_SelectionLists.Log );

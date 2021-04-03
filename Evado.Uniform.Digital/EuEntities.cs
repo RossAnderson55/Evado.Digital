@@ -409,7 +409,6 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getPageComponent" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
       this.LogValue ( "Component: " + Component );
-      this.LogValue ( "ClassParameters.LoggingLevel: " + this.ClassParameters.LoggingLevel );
 
       //
       // Initialise the methods variables and objects.
@@ -1250,7 +1249,8 @@ namespace Evado.UniForm.Digital
       // 
       // Add the selection groupCommand
       // 
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( EdLabels.Select_Records_Command_Title,
+      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( 
+        EdLabels.Select_Records_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Custom_Method );
@@ -1456,7 +1456,7 @@ namespace Evado.UniForm.Digital
         for ( int filterIndex = 0; filterIndex < queryLayout.FilterFieldIds.Length; filterIndex++ )
         {
           string fieldId = queryLayout.FilterFieldIds [ filterIndex ];
-          this.LogDebug ( "Index {0}, FieldId {1}. ", filterIndex, fieldId );
+          //this.LogDebug ( "Index {0}, FieldId {1}. ", filterIndex, fieldId );
 
           if ( fieldId == String.Empty )
           {
@@ -1497,7 +1497,8 @@ namespace Evado.UniForm.Digital
       selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
       selectionCommand.SetPageId ( EdStaticPageIds.Entity_Query_View );
-
+      ;
+      this.LogDebug ( "Group Command Count {0}. ", pageGroup.CommandList.Count  );
       this.LogMethodEnd ( "getQueryList_SelectionGroup" );
 
     }//ENd getQueryList_SelectionGroup method
@@ -1641,16 +1642,17 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getQueryList_SelectionField" );
 
+      this.LogDebug ( "FilterIndex: {0}, SelectionFilter: {1}. ", FilterIndex, SelectionFilter );
       this.LogDebug ( "F: {0}, T: {1}, Type {2}. ", Field.FieldId, Field.Title, Field.TypeId );
 
       List<EvOption> optionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
         Field.Design.Options );
 
-      List<EvOption> SelOptionList = new List<EvOption> ( );
-      SelOptionList.Add ( new EvOption ( ) );
+      List<EvOption> selectionOptionList = new List<EvOption> ( );
+      selectionOptionList.Add ( new EvOption ( ) );
       foreach ( EvOption opt in optionList )
       {
-        SelOptionList.Add ( opt );
+        selectionOptionList.Add ( opt );
       }
 
       //
@@ -1668,7 +1670,7 @@ namespace Evado.UniForm.Digital
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
-            return;
+            break;
           }
         case EvDataTypes.Yes_No:
         case EvDataTypes.Boolean:
@@ -1680,7 +1682,7 @@ namespace Evado.UniForm.Digital
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
-            return;
+            break;
           }
         case EvDataTypes.Selection_List:
         case EvDataTypes.Radio_Button_List:
@@ -1689,18 +1691,19 @@ namespace Evado.UniForm.Digital
               EuEntities.CONST_SELECTION_FIELD + FilterIndex,
               Field.Title,
               SelectionFilter,
-              SelOptionList );
+              selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-            return;
+
+            break;
           }
         case EvDataTypes.External_Selection_List:
         case EvDataTypes.External_RadioButton_List:
           {
             this.LogDebug ( "External_Selection_List filter" );
-            SelOptionList = getQueryList_SelectionOptions ( Field, true );
+            selectionOptionList = this.getQueryList_SelectionOptions ( Field, true );
 
-            if ( SelOptionList.Count <= 1 )
+            if ( selectionOptionList.Count <= 1 )
             {
               this.LogDebug ( "No Selection list options" );
               break;
@@ -1710,17 +1713,17 @@ namespace Evado.UniForm.Digital
               EuEntities.CONST_SELECTION_FIELD + FilterIndex,
               Field.Title,
               SelectionFilter,
-              SelOptionList );
+              selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-            return;
+            break;
           }
         case EvDataTypes.External_CheckBox_List:
           {
             this.LogDebug ( "External_CheckBox_List filter" );
-            SelOptionList = getQueryList_SelectionOptions ( Field, false );
+            selectionOptionList = this.getQueryList_SelectionOptions ( Field, false );
 
-            if ( SelOptionList.Count == 0 )
+            if ( selectionOptionList.Count == 0 )
             {
               this.LogDebug ( "No CheckBox list options" );
               break;
@@ -1730,14 +1733,15 @@ namespace Evado.UniForm.Digital
               EuEntities.CONST_SELECTION_FIELD + FilterIndex,
               Field.Title,
               SelectionFilter,
-              SelOptionList );
+              selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
-            return;
+            break;
           }
       }//END switch statment
 
+      this.LogMethodEnd ( "getQueryList_SelectionField" );
     }//END getQueryList_SelectionField Query
 
     // ==============================================================================
@@ -1759,14 +1763,14 @@ namespace Evado.UniForm.Digital
       List<EvOption> optionList = new List<EvOption> ( );
       String listId = Field.Design.ExSelectionListId;
       String category = Field.Design.ExSelectionListCategory.ToUpper ( );
-      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
+      this.LogDebug ( "Field: {0}, List: {1}, Category: {2} ", Field.FieldId,  listId, category );
 
       //
       // the category contains the category field then set the category value to this field value.
       //
-      if ( category.Contains ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER ) == true )
+      if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTI_FIELD_IDENTIFIER ) == true )
       {
-        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_FIELD_IDENTIFIER, String.Empty );
+        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTI_FIELD_IDENTIFIER, String.Empty );
 
         this.LogDebug ( "autoCategory: {0} ", autoCategory );
         //
@@ -1781,6 +1785,14 @@ namespace Evado.UniForm.Digital
           }
         }
         this.LogDebug ( "Auto Category: {0} ", category );
+
+        //
+        // the auto category selection value is empty exit.
+        //
+        if ( category == String.Empty )
+        {
+          return optionList;
+        }
       }
 
       this.LogDebug ( "Parameters List: {0}, Category: {1} ", listId, category );

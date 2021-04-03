@@ -372,74 +372,83 @@ namespace Evado.UniForm.Digital
       //
       foreach ( EdSelectionList list in this._SelectionLists )
       {
-        if ( list.ListId == ListId )
+        if ( list.ListId != ListId )
         {
+          continue;
+        }
+
+        //
+        // the first option category is empty then list does not have 
+        // categories so use options only.
+        //
+        if ( list.Items [ 0 ].Category == String.Empty )
+        {
+          hasCategories = false;
+        }
+
+        //
+        // iterate through the list items.
+        //
+        foreach ( EdSelectionList.Item item in list.Items )
+        {
+          if ( item == null )
+          {
+            continue;
+          }
+
+          //
+          // skip empty values.
+          //
+          if ( item.Value == String.Empty
+            || item.Description == String.Empty )
+          {
+            continue;
+          }
+
           //
           // the first option category is empty then list does not have 
           // categories so use options only.
           //
-          if ( list.Items [ 0 ].Category == String.Empty )
+          if ( item.Category == String.Empty )
           {
             hasCategories = false;
           }
 
           //
-          // iterate through the list items.
+          // if category only is selected the only return the categories as a list.
           //
-          foreach ( EdSelectionList.Item item in list.Items )
+          if ( CategoryOnly == true
+            && hasCategories == true )
           {
-            //
-            // skip empty values.
-            //
-            if ( item.Value == String.Empty )
+            if ( item.Category != String.Empty )
             {
-              continue;
-            }
-
-            //
-            // the first option category is empty then list does not have 
-            // categories so use options only.
-            //
-            if ( item.Category == String.Empty )
-            {
-              hasCategories = false;
-            }
-
-            //
-            // if category only is selected the only return the categories as a list.
-            //
-            if ( CategoryOnly == true
-              && hasCategories == true )
-            {
-              if ( item.Category != String.Empty )
+              if ( categories.Contains ( item.Category ) == false )
               {
-                if ( categories.Contains ( item.Category ) == false )
-                {
-                  optionList.Add ( new EvOption ( item.Category ) );
-                }
+                optionList.Add ( new EvOption ( item.Category ) );
               }
-              continue;
             }
+            continue;
+          }
 
-            //
-            // return only option list.
-            //
-            if ( Category == String.Empty
-              && item.Category == String.Empty )
-            {
-              optionList.Add ( item.GetOption ( false ) );
-            }
-            else if ( Category == String.Empty )
-            {
-              optionList.Add ( item.GetOption ( true ) );
-            }
-            else if ( item.Category == Category )
-            {
-              optionList.Add ( item.GetOption ( false ) );
-            }
+          //
+          // return only option list.
+          //
+          if ( Category == String.Empty
+            && item.Category == String.Empty )
+          {
+            optionList.Add ( item.GetOption ( false ) );
+          }
+          else if ( Category == String.Empty )
+          {
+            optionList.Add ( item.GetOption ( true ) );
+          }
+          else if ( item.Category == Category )
+          {
+            optionList.Add ( item.GetOption ( false ) );
+          }
 
-          }// List item iteration loop
-        }//END list selection
+        }// List item iteration loop
+
       }//Selection list iteration loop
 
       //

@@ -118,6 +118,7 @@ namespace Evado.UniForm.Digital
 
         Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
+
         //
         // Define the settings object.
         //
@@ -171,6 +172,11 @@ namespace Evado.UniForm.Digital
         // load the list of issued record layouts in the application
         //
         this.loadRecordLayoutList ( );
+
+        //
+        // update the page identifiers.
+        //
+        this.LoadPageIdentifiers ( );
 
         //
         // load the page components.
@@ -448,8 +454,8 @@ namespace Evado.UniForm.Digital
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
         this._Navigation = new EuNavigation (
-        this._AdapterObjects, 
-        this.Session, 
+        this._AdapterObjects,
+        this.Session,
         this.ClassParameters );
 
         //
@@ -1187,7 +1193,7 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( "HOME PAGE SELECTED." );
 
-            String pageId = PageCommand.GetPageId();
+            String pageId = PageCommand.GetPageId ( );
 
             if ( pageId != String.Empty )
             {

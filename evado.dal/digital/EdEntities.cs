@@ -814,12 +814,13 @@ namespace Evado.Dal.Digital
       cmdParms [ 1 ].Value = QueryParameters.Org_City;
       cmdParms [ 2 ].Value = QueryParameters.Org_Country;
 
-      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
-
       //
       // Generate the SQL query string.
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
+
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+
       this.LogDebug ( sqlQueryString );
 
       this.LogDebug ( "Execute Query" );
@@ -1166,7 +1167,8 @@ namespace Evado.Dal.Digital
     /// <returns>List of EdRecord (Entity) objects</returns>
     /// <returns>List of EdRecord  objects</returns>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getChildEntityList ( EdRecord Entity )
+    public List<EdRecord> getChildEntityList ( 
+      EdRecord Entity )
     {
       this.LogMethod ( "getChildEntityList" );
       this.LogDebug ( "LayoutId {0}.", Entity.LayoutId );
@@ -1284,7 +1286,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This class retrieves an option list based on query parameters and the useGuid condition
     /// </summary>
-    /// <param name="Query">EvQueryParameters: The Query selection values.</param>
+    /// <param name="QueryParameters">EvQueryParameters: The Query selection values.</param>
     /// <param name="UseGuid">Boolean: true, if the option uses Guid.</param>
     /// <returns>List of EvOption: a list of option object</returns>
     /// <remarks>
@@ -1298,7 +1300,7 @@ namespace Evado.Dal.Digital
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getOptionList (
-      EdQueryParameters Query,
+      EdQueryParameters QueryParameters,
       bool UseGuid )
     {
       this.LogMethod ( "getOptionList method. " );
@@ -1308,32 +1310,76 @@ namespace Evado.Dal.Digital
       // Initialize the debug log, a return list of options and an option object.
       //
       List<EvOption> list = new List<EvOption> ( );
-
-      // 
-      // Add the null first option to the selection visitSchedule.
-      // 
       EvOption option = new EvOption ( );
+      String sqlQueryString = String.Empty;
+
       if ( UseGuid )
       {
         option = new EvOption ( Guid.Empty.ToString ( ), String.Empty );
       }
       list.Add ( option );
 
-      // 
-      // Execute method and return the values.
-      // 
-      List<EdRecord> view = this.getEntityList ( Query );
+      if ( QueryParameters.Org_City.Contains ( "_" ) == true )
+      {
+        String [ ] arrCity = QueryParameters.Org_City.Split ( '_' );
+        QueryParameters.Org_Country = arrCity [ 0 ];
+        QueryParameters.Org_City = arrCity [ 1 ];
+
+        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        this.LogDebug ( "City {0} ", QueryParameters.Org_City );
+      }
+
+      if ( QueryParameters.Org_PostCode.Contains ( "_" ) == true )
+      {
+        String [ ] arrCity = QueryParameters.Org_PostCode.Split ( '_' );
+        QueryParameters.Org_Country = arrCity [ 0 ];
+        QueryParameters.Org_PostCode = arrCity [ 1 ];
+
+        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
+      }
 
       // 
-      // if the selectionList exits process it.
+      // Define the query parameters.
       // 
-      if ( view.Count > 0 )
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdOrganisations.PARM_Address_City, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
+      };
+      cmdParms [ 0 ].Value = QueryParameters.LayoutId;
+      cmdParms [ 1 ].Value = QueryParameters.Org_City;
+      cmdParms [ 2 ].Value = QueryParameters.Org_Country;
+
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+
+      //
+      // Generate the SQL query string.
+      //
+      sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
+
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+      this.LogDebug ( sqlQueryString );
+
+      this.LogDebug ( "Execute Query" );
+      //
+      //Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
       {
         // 
-        // Iterate through the array visitSchedule extracting the trial records.
+        // Iterate through the results extracting the role information.
         // 
-        foreach ( EdRecord record in view )
+        for ( int count = 0; count < table.Rows.Count; count++ )
         {
+          // 
+          // Extract the table row
+          // 
+          DataRow row = table.Rows [ count ];
+
+          EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
+
           option = new EvOption ( record.RecordId, String.Empty );
 
           if ( UseGuid == true )
@@ -1350,7 +1396,7 @@ namespace Evado.Dal.Digital
 
         }//End iteration loop
 
-      }//END selectionList visitSchedule exists.
+      }//END using statement.
 
       // 
       // Get the array length
@@ -2105,7 +2151,8 @@ namespace Evado.Dal.Digital
       // Get the record fields
       // 
       Entity.Fields = dal_EntityValues.GetlEntityValues ( Entity );
-      this.LogClass ( dal_EntityValues.Log );
+      //this.LogClass ( dal_EntityValues.Log );
+
       this.LogValue ( "Field count: " + Entity.Fields.Count );
       this.LogMethodEnd ( "GetEntityData" );
 
@@ -2153,7 +2200,7 @@ namespace Evado.Dal.Digital
       // Get the record fields
       // 
       var fieldList = dal_EntityFields.GetFieldList ( Entity.LayoutGuid );
-      this.LogDebugClass ( dal_EntityFields.Log );
+      //this.LogDebugClass ( dal_EntityFields.Log );
 
       for ( int i = 0; i < fieldList.Count; i++ )
       {

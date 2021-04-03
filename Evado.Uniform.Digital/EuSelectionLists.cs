@@ -1671,7 +1671,8 @@ namespace Evado.UniForm.Digital
     /// </remarks>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData updateObject ( Evado.Model.UniForm.Command PageCommand )
+    private Evado.Model.UniForm.AppData updateObject ( 
+      Evado.Model.UniForm.Command PageCommand )
     {
       try
       {
@@ -1719,11 +1720,6 @@ namespace Evado.UniForm.Digital
         // Update the table values.
         //
         this.updateObjectTableValues ( PageCommand.Parameters );
-
-        //
-        // remove empty items.
-        //
-        this.Session.AdminSelectionList.RemoveEmptyItems ( );
 
         this.LogDebug ( "AdminSelectionList:" );
         this.LogDebug ( "-Guid: " + this.Session.AdminSelectionList.Guid );

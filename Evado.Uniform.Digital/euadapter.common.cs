@@ -189,7 +189,7 @@ namespace Evado.UniForm.Digital
       this.Session.UserProfile.OrgType = this.Session.Organisation.OrgType;
       this.Session.UserProfile.OrganisationName = this.Session.Organisation.Name;
 
-      this.LogDebug ( "Org Type " + this.Session.Organisation.OrgType  );
+      this.LogDebug ( "Org Type " + this.Session.Organisation.OrgType );
 
       this.LogAction ( "Organisation for " + this.Session.Organisation.OrgId + " GENERATED" );
 
@@ -254,7 +254,7 @@ namespace Evado.UniForm.Digital
       if ( this._AdapterObjects.AllPageLayouts.Count > 0 )
       {
         this.LogInit ( "Page layouts loaded." );
-        this.LogInitMethodEnd ( "loadPageLayoutList" ); 
+        this.LogInitMethodEnd ( "loadPageLayoutList" );
         return;
       }
 
@@ -270,6 +270,11 @@ namespace Evado.UniForm.Digital
       this._AdapterObjects.AllPageLayouts = bll_PageLayouts.getView ( EdPageLayout.States.Null );
 
       this.LogInitClass ( bll_PageLayouts.Log );
+
+      foreach ( EdPageLayout pageLayout in this._AdapterObjects.AllPageLayouts )
+      {
+        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
+      }
 
       this.LogInit ( "AllPageLayouts.Count: " + this._AdapterObjects.AllPageLayouts.Count );
 
@@ -314,11 +319,6 @@ namespace Evado.UniForm.Digital
 
       this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
 
-      //
-      // update the page identifiers.
-      //
-      this.LoadPageIdentifiers ( );
-
       this.LogInit ( "END  loadEnityLayoutList" );
 
     }//END loadEnityLayoutList method
@@ -359,11 +359,6 @@ namespace Evado.UniForm.Digital
       this.LogInitClass ( bll_RecordLayouts.Log );
 
       this.LogInit ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
-
-      //
-      // update the page identifiers.
-      //
-      this.LoadPageIdentifiers ( );
 
       this.LogInit ( "END loadRecordLayoutList" );
 
@@ -425,7 +420,7 @@ namespace Evado.UniForm.Digital
       {
         this.LogInit ( "No Selection Lists." );
         this.LogInitMethodEnd ( "getSelectionLists" );
-        return new List<EdSelectionList>();
+        return new List<EdSelectionList> ( );
       }
 
       //
@@ -458,6 +453,18 @@ namespace Evado.UniForm.Digital
     public void LoadPageIdentifiers ( )
     {
       this.LogInitMethod( "LoadPageIdentifiers method" );
+
+      if ( this._AdapterObjects.PageIdentifiers == null )
+      {
+        this._AdapterObjects.PageIdentifiers = new List<EvOption> ( );
+      }
+          
+
+      if( this._AdapterObjects.PageIdentifiers.Count > 0 )
+      {  
+        return;
+      }
+
       //
       // Initialise the methods variables and objects.
       //
@@ -554,14 +561,12 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
-
         String pageId = EuAdapter.CONST_PAGE_ID_PREFIX + pageLayout.PageId;
         String pageLabel = pageId.Replace ( "_", " " );
 
-        this.LogInit ( "Layout pageId: " + pageId );
+        this.LogInit ( "{0} = {1} - {2} > UserType {3} ", pageId, pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
 
-        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLayout.Title ) );
+        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageId + " - "+ pageLayout.Title ) );
 
       }//END page list iteration
 
@@ -575,15 +580,14 @@ namespace Evado.UniForm.Digital
       {
         if ( entityLayout.State != EdRecordObjectStates.Form_Issued )
         {
+          this.LogInit ( "NOT ISSUED: {0} - {1} > ParentType {2} ", entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
           continue;
         }
-
-        //this.LogInit ( "{0} - {1} > ParentType {2} ", entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
         String pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
-        //this.LogInit ( "Layout PageID: " + pageId );
+        this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -598,7 +602,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "Org PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
               break;
@@ -608,7 +612,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "User PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -619,7 +623,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "Entity PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -643,6 +647,8 @@ namespace Evado.UniForm.Digital
         String pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
 
+        this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
+
         this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
         //
@@ -655,7 +661,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -666,7 +672,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -677,7 +683,7 @@ namespace Evado.UniForm.Digital
               pageId = EuAdapter.CONST_RECORD_PREFIX + recordLayouts.LayoutId + EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX;
               pageLabel = pageId.Replace ( "_", " " );
 
-              //this.LogInit ( "PageID: " + pageId );
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
               this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
@@ -702,6 +708,16 @@ namespace Evado.UniForm.Digital
     {
       this.LogInitMethod ( "LoadPageComponents method" );
       this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+
+      if ( this._AdapterObjects.PageComponents == null )
+      {
+        this._AdapterObjects.PageComponents = new List<EvOption> ( );
+      }
+
+      if ( this._AdapterObjects.PageComponents.Count > 0 )
+      {
+        return;
+      }
       //
       // Initialise the methods variables and objects.
       //

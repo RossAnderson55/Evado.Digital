@@ -43,8 +43,11 @@ namespace Evado.Model.Digital
       /// </summary>
       public Item ( )
       {
-
+        this.Value = String.Empty;
+        this.Description = String.Empty;
+        this.Category = String.Empty;
       }
+
       /// <summary>
       ///  Initialise the class object.
       /// </summary>
@@ -84,12 +87,13 @@ namespace Evado.Model.Digital
       /// </summary>
       public EvOption GetOption ( bool withCategory )
       {
-        if ( withCategory == true )
+        if ( withCategory == true
+          && Category != String.Empty )
         {
-          return new EvOption ( Value, Category + " - " + Description );
+          return new EvOption ( this.Value, this.Category + " - " + this.Description );
         }
 
-        return new EvOption ( Value, Description );
+        return new EvOption ( this.Value, this.Description );
       }
 
       #endregion
@@ -257,7 +261,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This method removes the empty items from the list.
     /// </summary>
-    public void RemoveEmptyItems ()
+    public void RemoveEmptyItems ( )
     {
       //
       // remove the empty rows from the list.
@@ -270,7 +274,7 @@ namespace Evado.Model.Digital
           i--;
         }
       }
-  }
+    }
 
     /// <summary>
     /// This property contains a version of  selection list
