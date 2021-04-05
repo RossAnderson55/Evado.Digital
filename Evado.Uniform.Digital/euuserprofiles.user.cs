@@ -211,7 +211,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createImageField (
         Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
         EdLabels.UserProfile_ImageFileame_Field_Label,
-        this.UniForm_ImageServiceUrl + this.Session.UserProfile.ImageFileName,
+        this.Session.UserProfile.ImageFileName,
         300,
         300 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;

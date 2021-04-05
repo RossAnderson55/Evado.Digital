@@ -788,7 +788,7 @@ namespace Evado.UniForm.Digital
     /// <param name="GroupHeader">Evado.Model.Digital.EvMenuItem object</param>
     /// <param name="CommandList">Evado.Model.UniForm.Page object</param>
     // ----------------------------------------------------------------------------------
-    public List<Evado.Model.UniForm.Command> getPagesMenuCommands (  )
+    public List<Evado.Model.UniForm.Command> getPagesMenuCommands ( )
     {
       this.LogMethod ( "getPagesMenuCommands" );
       // 
@@ -840,7 +840,7 @@ namespace Evado.UniForm.Digital
         if ( groupCommand != null )
         {
           groupCommand.Title = groupCommand.Title;
-          groupCommand.Title = "- " + groupCommand.Title;
+          groupCommand.Title = groupCommand.Title;
           commandList.Add ( groupCommand );
         }
 
