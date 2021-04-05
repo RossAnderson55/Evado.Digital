@@ -1349,6 +1349,7 @@ namespace Evado.UniForm.Digital
 
       }// End iteration loop
 
+      this.LogMethodEnd ( "updateObjectValue" );
     }//END updateObjectValue method.
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

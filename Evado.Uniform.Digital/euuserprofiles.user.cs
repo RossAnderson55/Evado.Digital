@@ -116,6 +116,8 @@ namespace Evado.UniForm.Digital
 
       this.getDataObject_MUP_DetailsGroup ( ClientDataObject.Page );
 
+      this.getDataObject_MUP_OrganisationGroup ( ClientDataObject.Page );
+
       this.getDataObject_MUP_PersonaliseGroup ( ClientDataObject.Page );
 
       this.LogMethodEnd ( "getDataObject_MUP_Page" );
@@ -214,6 +216,21 @@ namespace Evado.UniForm.Digital
         300 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
+      try
+      {
+        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.UserProfile.ImageFileName;
+        String stImagePath = this.UniForm_ImageFilePath + this.Session.UserProfile.ImageFileName;
+
+        this.LogDebug ( "Target path {0}.", stTargetPath );
+        this.LogDebug ( "Image path {0}.", stImagePath );
+
+        //
+        // copy the file into the image directory.
+        //
+        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+      }
+      catch { }
+
 
       if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
       {
@@ -232,63 +249,17 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createNameField (
          Evado.Model.Digital.EdUserProfile.FieldNames.Delimted_Name,
         EdLabels.UserProfile_Name_Field_Label,
-        this.Session.UserProfile.DelimitedName, 
-        true, 
+        this.Session.UserProfile.DelimitedName,
+        true,
         false );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-/*
-      // 
-      // Create the  name object
-      // 
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Prefix ) == false )
-      {
-        groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.FieldNames.Prefix,
-          EdLabels.UserProfile_Prefix_Field_Label,
-          this.Session.UserProfile.Prefix, 10 );
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
-      }
 
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Given_Name ) == false )
-      {
-        groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.FieldNames.Given_Name,
-          EdLabels.UserProfile_GivenName_Field_Label,
-          this.Session.UserProfile.GivenName, 50 );
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
-        groupField.Mandatory = true;
-        groupField.setBackgroundColor (
-          Model.UniForm.FieldParameterList.BG_Mandatory,
-          Model.UniForm.Background_Colours.Red );
-      }
-      else
-      {
-        this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
-      }
-
-      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Family_Name ) == false )
-      {
-        groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.FieldNames.Family_Name,
-          EdLabels.UserProfile_FamilyName_Field_Label,
-          this.Session.UserProfile.FamilyName, 50 );
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
-        groupField.Mandatory = true;
-        groupField.setBackgroundColor (
-          Model.UniForm.FieldParameterList.BG_Mandatory,
-          Model.UniForm.Background_Colours.Red );
-      }
-      else
-      {
-        this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
-      }
- * 
- */
       #region address block
       //
       // define the user address field.
       //
-      if ( this.Session.CollectUserAddress == true )
+      if ( this.AdapterObjects.Settings.EnableUserAddressUpdate == true
+        && this.AdapterObjects.Settings.EnableUserOrganisationUpdate == false )
       {
         this.LogDebug ( "Address_1:" + this.Session.UserProfile.Address_1 );
         this.LogDebug ( "Address_2:" + this.Session.UserProfile.Address_2 );
@@ -346,14 +317,197 @@ namespace Evado.UniForm.Digital
 
     }//END getDataObject_MUP_DetailsGroup Method
 
+    private const string CONST_ORG_PREFIX = "ORG_";
     // ==============================================================================
     /// <summary>
     /// This method add the user personaliseation group
     /// </summary>
     /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
+    private void getDataObject_MUP_OrganisationGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_MUP_OrganisationGroup" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      List<EvOption> optionList = new List<EvOption> ( );
+
+      if ( this.AdapterObjects.Settings.EnableUserOrganisationUpdate == false )
+      {
+        this.LogDebug ( "Update update of organisations is disabled." );
+        this.LogMethodEnd ( "getDataObject_MUP_OrganisationGroup" );
+        return;
+      }
+
+      // 
+      // create the page pageMenuGroup
+      // 
+      pageGroup = PageObject.AddGroup (
+        String.Empty );
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+      //
+      // Add the groups commands.
+      //
+      this.getDataObject_UserGroupCommands ( pageGroup );
+
+      // 
+      // Create the customer name object
+      // 
+      groupField = pageGroup.createTextField (
+        EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Name.ToString ( ),
+        EdLabels.Organisation_Name_Field_Label,
+        this.Session.Organisation.Name,
+        50 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Mandatory = true;
+
+      groupField.setBackgroundColor (
+        Model.UniForm.FieldParameterList.BG_Mandatory,
+        Model.UniForm.Background_Colours.Red );
+
+      // 
+      // Create the customer name object
+      // 
+      groupField = pageGroup.createImageField (
+        EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
+        EdLabels.Organisation_ImageFileame_Field_Label,
+        this.Session.Organisation.ImageFileName,
+        300, 200 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      try
+      {
+        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.Organisation.ImageFileName;
+        String stImagePath = this.UniForm_ImageFilePath + this.Session.Organisation.ImageFileName;
+
+        this.LogDebug ( "Target path {0}.", stTargetPath );
+        this.LogDebug ( "Image path {0}.", stImagePath );
+
+        //
+        // copy the file into the image directory.
+        //
+        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+      }
+      catch { }
+
+      // 
+      // Create the street address 1
+      //
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Address_1 ) == false )
+      {
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_1,
+          EdLabels.Organisation_Address_Street_Field_Label,
+          this.Session.Organisation.AddressStreet_1, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+        // 
+        // Create the street address 2
+        // 
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_2,
+          EdLabels.Organisation_Address_Street_Field_Label,
+          this.Session.Organisation.AddressStreet_2, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address city
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Address_City ) == false )
+      {
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_City,
+          EdLabels.Organisation_Address_City_Field_Label,
+          this.Session.Organisation.AddressCity, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address state
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Address_State ) == false )
+      {
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_State,
+          EdLabels.Organisation_Address_State_Field_Label,
+          this.Session.Organisation.AddressState, 10 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address 1
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Address_Post_Code ) == false )
+      {
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_Post_Code,
+          EdLabels.Organisation_Address_City_Field_Label,
+          this.Session.Organisation.AddressPostCode, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the street address 1
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Address_Country ) == false )
+      {
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Address_Country,
+          EdLabels.Organisation_Address_Country_Field_Label,
+          this.Session.Organisation.AddressCountry, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the organisation telephone number object
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Telephone ) == false )
+      {
+        groupField = pageGroup.createTelephoneNumberField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Telephone.ToString ( ),
+          EdLabels.Organisation_Telephone_Field_Label,
+          this.Session.Organisation.Telephone );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      // 
+      // Create the organisation fax number object
+      // 
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField (
+        EdOrganisation.FieldNames.Email_Address ) == false )
+      {
+        groupField = pageGroup.createEmailAddressField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Email_Address.ToString ( ),
+          EdLabels.Organisation_Email_Field_Label,
+          this.Session.Organisation.EmailAddress );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+
+      this.LogMethodEnd ( "getDataObject_MUP_OrganisationGroup" );
+    }
+
+    // ==============================================================================
+    /// <summary>
+    /// This method add the user personaliseation group
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
     private void getDataObject_MUP_PersonaliseGroup (
-      Evado.Model.UniForm.Page Page )
+      Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_MUP_PersonaliseGroup" );
       // 
@@ -367,7 +521,7 @@ namespace Evado.UniForm.Digital
       // 
       // create the page pageMenuGroup
       // 
-      pageGroup = Page.AddGroup (
+      pageGroup = new Model.UniForm.Group (
          EdLabels.UserProfile_Dashboard_Field_Group_Title,
          Evado.Model.UniForm.EditAccess.Inherited );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
@@ -418,6 +572,12 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
     }
       */
+
+      if ( pageGroup.FieldList.Count > 0 )
+      {
+        PageObject.AddGroup ( pageGroup );
+      }
+
       this.LogMethodEnd ( "getDataObject_MUP_PersonaliseGroup" );
     }
 
@@ -521,6 +681,8 @@ namespace Evado.UniForm.Digital
         //
         this.updateUserAddressValue ( PageCommand );
 
+        this.updateOrganisationValues ( PageCommand );
+
         //
         // save the image file if it exists.
         //
@@ -540,23 +702,26 @@ namespace Evado.UniForm.Digital
         // 
         // update the object.
         // 
-        result = this._Bll_UserProfiles.saveItem ( this.Session.UserProfile );
-
-        // 
-        // get the debug ResultData.
-        // 
-        this.LogDebugClass ( this._Bll_UserProfiles.Log );
+        result = saveUserProfile ( PageCommand );
 
         // 
         // if an error state is returned create log the event.
         //
         if ( result != EvEventCodes.Ok )
         {
-          string StEvent = this._Bll_UserProfiles.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
-          this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
+          return this.Session.LastPage;
+        }
 
-          this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
+        //
+        // Update the organisation.
+        //
+        result = this.saveOrganisationValue ( );
 
+        // 
+        // if an error state is returned create log the event.
+        //
+        if ( result != EvEventCodes.Ok )
+        {
           return this.Session.LastPage;
         }
 
@@ -584,6 +749,97 @@ namespace Evado.UniForm.Digital
 
     }//END method
 
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method updates the organisation object.
+    /// </summary>
+    //  ----------------------------------------------------------------------------------
+    private EvEventCodes saveUserProfile ( Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "saveUserProfile" );
+      //
+      // Initialise the methods variables and objecs.
+      //
+
+      // 
+      // Get the save action message value.
+      // 
+      String stSaveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
+
+      // 
+      // update the object.
+      // 
+      var result = this._Bll_UserProfiles.saveItem ( this.Session.UserProfile );
+
+      // 
+      // get the debug ResultData.
+      // 
+      this.LogDebugClass ( this._Bll_UserProfiles.Log );
+
+      // 
+      // if an error state is returned create log the event.
+      //
+      if ( result != EvEventCodes.Ok )
+      {
+        string StEvent = this._Bll_UserProfiles.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
+        this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
+
+        this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
+
+        return result;
+      }
+
+      this.LogMethodEnd ( "saveUserProfile" );
+      return EvEventCodes.Ok;
+    }//ENd saveUserProfile method
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method updates the organisation object.
+    /// </summary>
+    //  ----------------------------------------------------------------------------------
+    private EvEventCodes saveOrganisationValue ( )
+    {
+      this.LogMethod ( "saveOrganisationValue" );
+      //
+      // Initialise the methods variables and objecs.
+      //
+      EdOrganisations bll_organisations = new EdOrganisations ( this.ClassParameters );
+
+      // 
+      // update the object.
+      // 
+      EvEventCodes result = bll_organisations.saveItem ( this.Session.Organisation );
+
+      // 
+      // get the debug ResultData.
+      // 
+      this.LogDebugClass ( bll_organisations.Log );
+
+      // 
+      // if an error state is returned create log the event.
+      // 
+      if ( result != EvEventCodes.Ok )
+      {
+        string StEvent = bll_organisations.Log + " returned error message: " + Evado.Model.Digital.EvcStatics.getEventMessage ( result );
+        this.LogError ( EvEventCodes.Database_Record_Update_Error, StEvent );
+
+        switch ( result )
+        {
+          default:
+            {
+              this.ErrorMessage = EdLabels.Organisation_Update_Error_Message;
+              break;
+            }
+        }
+        return result;
+      }//END save error returned.
+
+
+      this.LogMethodEnd ( "saveOrganisationValue" );
+      return EvEventCodes.Ok;
+    }//ENd saveOrganisationValue method
 
 
     // ==================================================================================
@@ -633,6 +889,77 @@ namespace Evado.UniForm.Digital
       }
       this.LogMethodEnd ( "saveImageFile" );
     }//END saveImageFile method
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method saves the ResultData object updating the field values contained in the 
+    /// parameter list.
+    /// </summary>
+    /// <param name="Parameters">List of field values to be updated.</param>
+    /// <returns></returns>
+    //  ----------------------------------------------------------------------------------
+    private bool updateUserObjectValue (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "updateUserObjectValue" );
+      this.LogDebug ( "Parameters.Count: " + PageCommand.Parameters.Count );
+      this.LogDebug ( "UserProfile.Guid: " + this.Session.UserProfile.Guid );
+
+      // 
+      // Iterate through the parameter values updating the ResultData object
+      // 
+      foreach ( Evado.Model.UniForm.Parameter parameter in PageCommand.Parameters )
+      {
+        if ( parameter.Name.Contains ( Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == false
+          && parameter.Name.Contains ( EuUserProfiles.CONST_ORG_PREFIX ) == false
+          && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
+          && parameter.Name != Evado.Model.UniForm.CommandParameters.Page_Id.ToString ( )
+          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
+          && parameter.Name != EuUserProfiles.CONST_ADDRESS_FIELD_ID
+          && parameter.Name != EuUserProfiles.CONST_CURRENT_FIELD_ID
+          && parameter.Name != EuUserProfiles.CONST_NEW_PASSWORD_PARAMETER )
+        {
+          this.LogDebug ( "{0} + '{1}' >> UPDATED", parameter.Name, parameter.Value );
+          try
+          {
+            Evado.Model.Digital.EdUserProfile.FieldNames fieldName =
+              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.FieldNames> (
+             parameter.Name );
+
+            this.Session.UserProfile.setValue ( fieldName, parameter.Value );
+
+            //if ( this.Session.UserProfile.debug != String.Empty )
+            //{
+            //   this.LogDebugValue ( this.Session.UserProfile.debug );
+            // }
+          }
+          catch ( Exception Ex )
+          {
+            this.LogException ( Ex );
+
+            this.LogMethodEnd ( "updateUserObjectValue" );
+            return false;
+          }
+        }
+        else
+        {
+          this.LogTextEnd ( " >> SKIPPED" );
+        }
+
+      }// End iteration loop
+
+      //
+      // IF the AD user id is empty set it to save value as the UserID.
+      //
+      if ( this.Session.UserProfile.ActiveDirectoryUserId == String.Empty )
+      {
+        this.Session.UserProfile.ActiveDirectoryUserId = this.Session.UserProfile.UserId;
+      }
+
+      this.LogMethodEnd ( "updateUserObjectValue" );
+      return true;
+
+    }//END updateObjectValue method.
 
     // ==================================================================================
     /// <summary>
@@ -691,72 +1018,48 @@ namespace Evado.UniForm.Digital
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="Parameters">List of field values to be updated.</param>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command updated.</param>
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
-    private bool updateUserObjectValue (
+    private void updateOrganisationValues (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "updateUserObjectValue" );
+      this.LogMethod ( "updateOrganisationValues" );
       this.LogDebug ( "Parameters.Count: " + PageCommand.Parameters.Count );
-      this.LogDebug ( "UserProfile.Guid: " + this.Session.UserProfile.Guid );
 
-      // 
-      // Iterate through the parameter values updating the ResultData object
-      // 
+      /// 
+      /// Iterate through the parameter values updating the ResultData object
+      /// 
       foreach ( Evado.Model.UniForm.Parameter parameter in PageCommand.Parameters )
       {
-        this.LogTextStart ( parameter.Name + " = " + parameter.Value );
-
-        if ( parameter.Name.Contains ( Evado.Model.Digital.EvcStatics.CONST_GUID_IDENTIFIER ) == false
-          && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
-          && parameter.Name != Evado.Model.UniForm.CommandParameters.Page_Id.ToString ( )
-          && parameter.Name != Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION
-          && parameter.Name != EuUserProfiles.CONST_ADDRESS_FIELD_ID
-          && parameter.Name != EuUserProfiles.CONST_CURRENT_FIELD_ID
-          && parameter.Name != EuUserProfiles.CONST_NEW_PASSWORD_PARAMETER )
+        if ( parameter.Name.Contains ( EuUserProfiles.CONST_ORG_PREFIX ) == true )
         {
-          this.LogTextEnd ( " >> UPDATED" );
+          string orgFieldName = parameter.Name.Replace ( EuUserProfiles.CONST_ORG_PREFIX, String.Empty );
+
+          this.LogDebug ( orgFieldName + " = " + parameter.Value + " >> UPDATED" );
           try
           {
-            Evado.Model.Digital.EdUserProfile.FieldNames fieldName =
-              Evado.Model.EvStatics.parseEnumValue<Evado.Model.Digital.EdUserProfile.FieldNames> (
-             parameter.Name );
+            EdOrganisation.FieldNames fieldName =
+               Evado.Model.EvStatics.parseEnumValue<EdOrganisation.FieldNames> (
+              orgFieldName );
 
-            this.Session.UserProfile.setValue ( fieldName, parameter.Value );
+            this.Session.Organisation.setValue ( fieldName, parameter.Value );
 
-            //if ( this.Session.UserProfile.debug != String.Empty )
-            //{
-            //   this.LogDebugValue ( this.Session.UserProfile.debug );
-            // }
           }
           catch ( Exception Ex )
           {
             this.LogException ( Ex );
-
-            this.LogMethodEnd ( "updateUserObjectValue" );
-            return false;
           }
         }
         else
         {
-          this.LogTextEnd ( " >> SKIPPED" );
+          this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> SKIPPED" );
         }
 
       }// End iteration loop
+      this.LogMethodEnd ( "updateOrganisationValues" );
 
-      //
-      // IF the AD user id is empty set it to save value as the UserID.
-      //
-      if ( this.Session.UserProfile.ActiveDirectoryUserId == String.Empty )
-      {
-        this.Session.UserProfile.ActiveDirectoryUserId = this.Session.UserProfile.UserId;
-      }
-
-      this.LogMethodEnd ( "updateUserObjectValue" );
-      return true;
-
-    }//END updateObjectValue method.
+    }//END updateOrganisationValues Method
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

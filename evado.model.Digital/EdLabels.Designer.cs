@@ -1926,6 +1926,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable user profile update to update the user&apos;s organisation:.
+        /// </summary>
+        public static string Config_Enable_User_Org_Update_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Enable_User_Org_Update_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden Organisation Fields:.
         /// </summary>
         public static string Config_HiddenOrgFields_List_Field_Label {

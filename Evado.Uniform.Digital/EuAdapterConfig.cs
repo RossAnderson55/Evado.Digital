@@ -2041,6 +2041,16 @@ namespace Evado.UniForm.Digital
         this.AdapterObjects.Settings.EnableBinaryData );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
+
+      //
+      // create the enable the user to also update their organisation details.
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update,
+        EdLabels.Config_Enable_User_Org_Update_Field_Label,
+        this.AdapterObjects.Settings.EnableUserOrganisationUpdate );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
       //
       // create the user category selection list field
       //

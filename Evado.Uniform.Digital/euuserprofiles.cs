@@ -1342,7 +1342,7 @@ namespace Evado.UniForm.Digital
       // define the user address field.
       //
       #region User Address 
-      if ( this.Session.CollectUserAddress == true )
+      if ( this.AdapterObjects.Settings.EnableUserAddressUpdate == true )
       {
         if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Address_1 ) == false )
         {

@@ -3023,6 +3023,9 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="UserProfile_User_Category_Field_Label" xml:space="preserve">
     <value>User Category:</value>
   </data>
+  <data name="Config_Enable_User_Org_Update_Field_Label" xml:space="preserve">
+    <value>Enable user profile update to update the user's organisation:</value>
+  </data>
   <data name="UserProfile_Name_Field_Label" xml:space="preserve">
     <value>User Name:</value>
   </data>

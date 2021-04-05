@@ -128,6 +128,16 @@ namespace Evado.Model.Digital
       Enable_Binary_Data,
       
       /// <summary>
+      /// This enumeration defines if the user profile update can update the user's organisation details.
+      /// </summary>
+      Enable_User_Organisation_Update,
+
+      /// <summary>
+      /// This enumeration defines if the user address is to be collected.
+      /// </summary>
+      Enable_User_Address_Update,
+
+      /// <summary>
       /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
       Use_Home_Page_Header_On_All_Pages,
@@ -422,6 +432,44 @@ namespace Evado.Model.Digital
       set
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property if the user can update their organisation deails.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableUserOrganisationUpdate
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property if the user can update their organisation deails.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableUserAddressUpdate
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Enable_User_Address_Update ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_User_Address_Update,
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
@@ -1079,6 +1127,18 @@ namespace Evado.Model.Digital
         case EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data:
           {
             this.setParameter ( AdapterFieldNames.Enable_Binary_Data, EvDataTypes.Boolean, Value );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update:
+          {
+            this.setParameter ( AdapterFieldNames.Enable_User_Organisation_Update, EvDataTypes.Boolean, Value );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Enable_User_Address_Update:
+          {
+            this.setParameter ( AdapterFieldNames.Enable_User_Address_Update, EvDataTypes.Boolean, Value );
             return;
           }
 

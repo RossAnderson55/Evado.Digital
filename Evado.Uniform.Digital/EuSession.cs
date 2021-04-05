@@ -203,16 +203,6 @@ namespace Evado.UniForm.Digital
       set { _MenuGroupItem = value; }
     }
 
-    bool _CollectUserAddress = false;
-    /// <summary>
-    /// This property indicates if the user address is to be collected.
-    /// </summary>
-    public bool CollectUserAddress
-    {
-      get { return _CollectUserAddress; }
-      set { _CollectUserAddress = value; }
-    }
-
     /// <summary>
     /// This property contains the current user type selection.
     /// </summary>
