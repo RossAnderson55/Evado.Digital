@@ -508,7 +508,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class copies items from form object to database. 
     /// </summary>
-    /// <param name="Form">EvForm: a form object</param>
+    /// <param name="Layout">EvForm: a form object</param>
     /// <param name="UserCommonName">string: a user common name</param>
     /// <returns>EvEventCodes: an event code for copying items</returns>
     /// <remarks>
@@ -521,10 +521,10 @@ namespace Evado.Bll.Digital
     /// 3. Return an event code for copying items
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes CopyForm ( EdRecord Form )
+    public EvEventCodes CopyLayout ( EdRecord Layout )
     {
-       this.LogMethod ( "CopyForm method." );
-      this.LogValue ( "FormGuid: " + Form.Guid );
+      this.LogMethod ( "CopyLayout" );
+      this.LogValue ( "LayoutGuid: " + Layout.Guid );
       // 
       // Initialise the local variables
       // 
@@ -533,12 +533,12 @@ namespace Evado.Bll.Digital
       // 
       // Check that the user id is valid
       // 
-      if ( Form.Guid == Guid.Empty )
+      if ( Layout.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
-      iReturn = this._Dal_RecordLayouts.CopyForm ( Form, true );
+      iReturn = this._Dal_RecordLayouts.CopyLayout ( Layout, true );
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 
@@ -585,7 +585,7 @@ namespace Evado.Bll.Digital
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
-      iReturn = this._Dal_RecordLayouts.CopyForm ( Form, false );
+      iReturn = this._Dal_RecordLayouts.CopyLayout ( Form, false );
       this.LogClass ( this._Dal_RecordLayouts.Log );
 
       // 

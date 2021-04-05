@@ -740,13 +740,14 @@ namespace Evado.UniForm.Digital
 
         this.LogClass ( this._Bll_EntityLayouts.Log );
 
-        this.LogValue ( "SessionObjects.Form.FormId: " + this.Session.EntityLayout.LayoutId );
+        this.LogDebug ( "SessionObjects.EntityLayout.LayoutId: " + this.Session.EntityLayout.LayoutId );
 
         //
         // Call the method to revise the form layout.
         //
         if ( stCommandAction == EuEntityLayouts.CONST_REVISE_FORM_COMMAND_VALUE )
         {
+          this.LogDebug ( "Revising the form layout" );
           this._Bll_EntityLayouts.ReviseForm ( this.Session.EntityLayout );
         }
 
@@ -755,7 +756,8 @@ namespace Evado.UniForm.Digital
         //
         if ( stCommandAction == EuEntityLayouts.CONST_COPY_FORM_COMMAND_VALUE )
         {
-          this._Bll_EntityLayouts.CopyForm ( this.Session.EntityLayout );
+          this.LogDebug ( "Copying the form layout" );
+          this._Bll_EntityLayouts.CopyLayout ( this.Session.EntityLayout );
         }
 
         //

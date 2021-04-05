@@ -1661,7 +1661,7 @@ namespace Evado.Dal.Digital
     /// 5. Return the event code for copying items.
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes CopyForm ( EdRecord Layout, bool Copy )
+    public EvEventCodes CopyLayout ( EdRecord Layout, bool Copy )
     {
       //
       // Initialize the method status, a number of affected records and a numeric version

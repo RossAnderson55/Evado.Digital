@@ -1738,6 +1738,11 @@ namespace Evado.UniForm.Digital
         this.updateMatrixValues ( PageCommand );
 
         //
+        // Update the layout identifier to match the entity layout.
+        //
+        this.Session.EntityField.LayoutId = this.Session.EntityLayout.LayoutId;
+
+        //
         // Validate that the field identifier is valid.
         //
         if ( this.validateFieldId ( PageCommand ) == false )

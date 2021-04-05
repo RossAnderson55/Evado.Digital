@@ -90,7 +90,7 @@ namespace Evado.UniForm.Digital
       {
         this.ClassParameters.UserProfile = this.Session.UserProfile;
 
-        this.LogDebug ( "User profile for{0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
+        this.LogDebug ( "User profile for {0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
 
         return true;
       }

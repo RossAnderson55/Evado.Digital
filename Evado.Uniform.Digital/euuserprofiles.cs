@@ -1159,6 +1159,14 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
+      Evado.Model.UniForm.EditAccess initialAccess = Model.UniForm.EditAccess.Enabled;
+
+      if ( this.Session.AdminUserProfile.Guid != Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
+      {
+        initialAccess = Evado.Model.UniForm.EditAccess.Disabled;
+      }
+      this.LogDebug ( "Initial EditAcess {0}.", initialAccess );
+
       // 
       // create the page pageMenuGroup
       // 
@@ -1211,11 +1219,7 @@ namespace Evado.UniForm.Digital
       groupField.setBackgroundColor (
         Model.UniForm.FieldParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
-
-      if ( this.Session.AdminUserProfile.Guid != Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID )
-      {
-        groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      }
+      groupField.EditAccess = initialAccess;
 
       // 
       // Create the Password object
@@ -1240,13 +1244,31 @@ namespace Evado.UniForm.Digital
       // 
       this.Session.AdminUserProfile.CurrentImageFileName = this.Session.AdminUserProfile.ImageFileName;
 
-        groupField = pageGroup.createImageField (
-          "Disp_Image",
-          EdLabels.UserProfile_ImageFileame_Field_Label,
-          this.UniForm_ImageServiceUrl + this.Session.AdminUserProfile.ImageFileName,
-          300,
-          300 );
-        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField = pageGroup.createImageField (
+        Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
+        EdLabels.UserProfile_ImageFileame_Field_Label,
+        this.Session.AdminUserProfile.ImageFileName,
+        300,
+        300 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      try
+      {
+        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
+        String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
+
+        this.LogDebug ( "Target path {0}.", stTargetPath );
+        this.LogDebug ( "Image path {0}.", stImagePath );
+
+        //
+        // copy the file into the image directory.
+        //
+        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+      }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
+      }
 
       //
       // add the user tilte field
@@ -1874,7 +1896,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "updateObject" );
       this.LogValue ( "Parameter: " + PageCommand.getAsString ( false, false ) );
 
-      this.LogValue ( "eClinical.AdminUserProfile:" );
+      this.LogValue ( "Session.AdminUserProfile:" );
       this.LogValue ( "Guid: " + this.Session.AdminUserProfile.Guid );
       this.LogValue ( "UserId: " + this.Session.AdminUserProfile.UserId );
       this.LogValue ( "CommonName: " + this.Session.AdminUserProfile.CommonName );
@@ -1922,7 +1944,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "AdminUserProfile.UserCategory: {0}. ", this.Session.AdminUserProfile.UserCategory );
 
         this.Session.AdminUserProfile.UserId = EvStatics.CleanSamUserId (
-          this.Session.UserProfile.UserId );
+          this.Session.AdminUserProfile.UserId );
 
         //
         // Update the address field.

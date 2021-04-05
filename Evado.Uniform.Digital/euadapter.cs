@@ -492,9 +492,9 @@ namespace Evado.UniForm.Digital
           // 
           return generateNoProfilePage ( );
         }
-        this.LogDebug ( "User Roles: {0}, ", this.Session.UserProfile.Roles );
-        this.LogDebug ( "User TypeId: {0}, ", this.Session.UserProfile.UserType );
-        this.LogDebug ( "User UserCategory: " + this.Session.UserProfile.UserCategory );
+        this.LogDebug ( "User Roles: {0}. ", this.Session.UserProfile.Roles );
+        this.LogDebug ( "User TypeId: {0}. ", this.Session.UserProfile.UserType );
+        this.LogDebug ( "User UserCategory:  {0}", this.Session.UserProfile.UserCategory );
 
         //
         // load the user's organisation.

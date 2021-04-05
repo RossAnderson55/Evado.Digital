@@ -229,7 +229,10 @@ namespace Evado.UniForm.Digital
         //
         System.IO.File.Copy ( stImagePath, stTargetPath, true );
       }
-      catch { }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
+      }
 
 
       if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
