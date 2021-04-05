@@ -827,6 +827,29 @@ namespace Evado.Model.Digital
         this._Fields = value;
       }
     }
+    /// <summary>
+    /// this property returns the filename for the first image field with a field value.
+    /// </summary>
+    public String ImageFileName
+    {
+      get
+      {
+        //
+        // Iterate through the fields to find the first image field
+        // with a value and return the filename.
+        //
+        foreach ( EdRecordField field in this.Fields )
+        {
+          if ( field.TypeId == EvDataTypes.Image
+            && field.ItemValue != String.Empty )
+          {
+            return field.ItemValue;
+          }
+        }
+
+        return String.Empty;
+      }
+    }
 
     private List<EdRecord> _ChildEntities = new List<EdRecord> ( );
     /// <summary>
@@ -935,7 +958,6 @@ namespace Evado.Model.Digital
     }//END method
 
 
-
     private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );
 
     /// <summary>
@@ -1027,7 +1049,7 @@ namespace Evado.Model.Digital
       }
     }
 
-    private DateTime _RecordDate = EvcStatics.CONST_DATE_NULL;
+    private DateTime _RecordDate = EvStatics.CONST_DATE_NULL;
     /// <summary>
     /// This property contains a record date of a form. 
     /// </summary>

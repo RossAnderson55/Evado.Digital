@@ -138,8 +138,14 @@
   <data name="Label_Activity_Id" xml:space="preserve">
     <value>ActivityId: </value>
   </data>
+  <data name="Label_by" xml:space="preserve">
+    <value> by </value>
+  </data>
   <data name="Label_No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Label_on" xml:space="preserve">
+    <value> on </value>
   </data>
   <data name="Label_Yes" xml:space="preserve">
     <value>Yes</value>

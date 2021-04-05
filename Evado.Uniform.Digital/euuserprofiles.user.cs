@@ -209,7 +209,7 @@ namespace Evado.UniForm.Digital
       this.Session.UserProfile.CurrentImageFileName = this.Session.UserProfile.ImageFileName;
 
       groupField = pageGroup.createImageField (
-        "Disp_Image",
+        Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
         EdLabels.UserProfile_ImageFileame_Field_Label,
         this.UniForm_ImageServiceUrl + this.Session.UserProfile.ImageFileName,
         300,
@@ -235,7 +235,7 @@ namespace Evado.UniForm.Digital
       if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
       {
         groupField = pageGroup.createTextField (
-           Evado.Model.Digital.EdUserProfile.FieldNames.Title,
+          Evado.Model.Digital.EdUserProfile.FieldNames.Title,
           EdLabels.UserProfile_Title_Field_Label,
           this.Session.UserProfile.Title, 50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -247,7 +247,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Delimited Name: " + this.Session.UserProfile.DelimitedName );
 
       groupField = pageGroup.createNameField (
-         Evado.Model.Digital.EdUserProfile.FieldNames.Delimted_Name,
+        Evado.Model.Digital.EdUserProfile.FieldNames.Delimted_Name,
         EdLabels.UserProfile_Name_Field_Label,
         this.Session.UserProfile.DelimitedName,
         true,
@@ -652,16 +652,6 @@ namespace Evado.UniForm.Digital
           this.ClassNameSpace + "updateObject",
           this.Session.UserProfile );
 
-        // 
-        // Update the object.
-        // 
-        if ( this.updateUserObjectValue ( PageCommand ) == false )
-        {
-          this.ErrorMessage = EdLabels.UserProfile_Value_Update_Error_Message;
-
-          return this.Session.LastPage;
-        }
-
 
         if ( this.Session.UserProfile.Parameters != null )
         {
@@ -675,6 +665,17 @@ namespace Evado.UniForm.Digital
             }
           }
         }
+
+        // 
+        // Update the object.
+        // 
+        if ( this.updateUserObjectValue ( PageCommand ) == false )
+        {
+          this.ErrorMessage = EdLabels.UserProfile_Value_Update_Error_Message;
+
+          return this.Session.LastPage;
+        }
+
 
         //
         // Update the address field.
@@ -841,7 +842,6 @@ namespace Evado.UniForm.Digital
       return EvEventCodes.Ok;
     }//ENd saveOrganisationValue method
 
-
     // ==================================================================================
     /// <summary>
     /// THis method copies the upload image file to the image directory.
@@ -849,20 +849,24 @@ namespace Evado.UniForm.Digital
     //  ----------------------------------------------------------------------------------
     private void saveUserImageFile ( )
     {
-      this.LogMethod ( "saveImageFile" );
+      this.LogMethod ( "saveUserImageFile" );
 
       if ( this.Session.UserProfile.ImageFileName == null )
       {
+        this.LogMethodEnd ( "saveUserImageFile" );
         return;
       }
 
       if ( this.Session.UserProfile.ImageFileName == String.Empty )
       {
+        this.LogDebug ( "Image filename is empty" );
+        this.LogMethodEnd ( "saveUserImageFile" );
         return;
       }
 
       if ( this.Session.UserProfile.CurrentImageFileName == this.Session.UserProfile.ImageFileName )
       {
+        this.LogMethodEnd ( "saveUserImageFile" );
         return;
       }
 
@@ -887,7 +891,7 @@ namespace Evado.UniForm.Digital
       {
         this.LogException ( Ex );
       }
-      this.LogMethodEnd ( "saveImageFile" );
+      this.LogMethodEnd ( "saveUserImageFile" );
     }//END saveImageFile method
 
     // ==================================================================================
@@ -943,7 +947,7 @@ namespace Evado.UniForm.Digital
         }
         else
         {
-          this.LogTextEnd ( " >> SKIPPED" );
+          this.LogDebug ( "{0} + '{1}' >> SKIPPED", parameter.Name, parameter.Value );
         }
 
       }// End iteration loop

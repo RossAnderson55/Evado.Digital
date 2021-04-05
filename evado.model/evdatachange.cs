@@ -37,10 +37,26 @@ namespace Evado.Model
     /// </summary>
     public enum DataChangeTableNames
     {
+ 
       /// <summary>
       /// This enumeration value defines Data Change to be null 
       /// </summary>
       Null,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on ApplicationSettings table
+      /// </summary>
+      EdApplicationSettings,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on ancillary records table
+      /// </summary>
+      EvAncilliaryRecords,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on Activities table
+      /// </summary>
+      EvActivities,
 
       /// <summary>
       /// This enumeration value defines Data Change on Alert table
@@ -48,9 +64,59 @@ namespace Evado.Model
       EvAlerts,
 
       /// <summary>
-      /// This enumeration value defines Data Change on Application Settings table
+      /// This enumeration value defines Data Change on budtget table
       /// </summary>
-      EdApplicationSettings,
+      EvBudget,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on budget item table
+      /// </summary>
+      EvBudgetItem,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on budget item organisation table
+      /// </summary>
+      EvBudgetItemOrganization,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on billing record table
+      /// </summary>
+      EvBillingRecord,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on billing record item table
+      /// </summary>
+      EvBillingRecordItem,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on common form table
+      /// </summary>
+      EvCommonForms,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on common form fields table
+      /// </summary>
+      EvCommonFormFields,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on common records table
+      /// </summary>
+      EvCommonRecords,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on Data dictionary table
+      /// </summary>
+      EvDataDictionary,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on ethic tracking table
+      /// </summary>
+      EvEthicsTracking,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on form field selection table
+      /// </summary>
+      EvFormFieldSelectionLists,
 
       /// <summary>
       /// This emumeration value defines Data Change on form table
@@ -63,9 +129,29 @@ namespace Evado.Model
       EvFormFields,
 
       /// <summary>
-      /// This enumeration value defines Data Change on form selection fields table
+      /// This enumeration value defines Data Change on subject groups table
       /// </summary>
-      EdSelectionList,
+      EvGroups,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on milestones table
+      /// </summary>
+      EvMilestones,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on organistions stable
+      /// </summary>
+      EvOrganisations,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on particpants table
+      /// </summary>
+      EvPatients,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on roles table
+      /// </summary>
+      EvRoles,
 
       /// <summary>
       /// This enumeration value defines Data Change on records table
@@ -73,19 +159,54 @@ namespace Evado.Model
       EvRecords,
 
       /// <summary>
-      /// This enumeration value defines Data Change on ancilliary record table
-      /// </summary>
-      EvAncilliaryRecords,
-
-      /// <summary>
       /// This enumeration value defines Data Change on report templates table
       /// </summary>
       EvReportTemplates,
 
       /// <summary>
+      /// This enumeration value defines Data Change on Serious Adverse Event status table
+      /// </summary>
+      EvSaeStatus,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on schedules table
+      /// </summary>
+      EvSchedules,
+
+      /// <summary>
       /// This enumeration value defines Data Change on site profile table
       /// </summary>
-      EdAdapterSettings,
+      EvSiteProfile,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on subject milestones table
+      /// </summary>
+      EvSubjectMilestones,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on subject records table
+      /// </summary>
+      EvSubjectRecords,
+      
+      /// <summary>
+      /// This enumeration value defines Data Change on subjects table
+      /// </summary>
+      EvSubjects,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on trial organisations table
+      /// </summary>
+      EvTrialOrganisations,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on trial roles table
+      /// </summary>
+      EvTrialRoles,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on trials table
+      /// </summary>
+      EvTrials,
 
       /// <summary>
       /// This enumeration value defines Data Change on userprofiles table
@@ -93,19 +214,22 @@ namespace Evado.Model
       EvUserProfiles,
 
       /// <summary>
-      /// This enumeration value defines Data Change on organisations table
+      /// This enumerated value defines the data change for activie directory services.
       /// </summary>
-      EvOrganisations,
+      ActiveDirectoryServices,
+
+      EdSelectionList,
+
+      /// <summary>
+      /// This enumeration value defines Data Change on site profile table
+      /// </summary>
+      EdAdapterSettings,
 
       /// <summary>
       /// This enumeration value defines Data Change on form selection fields table
       /// </summary>
       EdPageLayouts,
 
-      /// <summary>
-      /// This enumerated value defines the data change for activie directory services.
-      /// </summary>
-      ActiveDirectoryServices
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

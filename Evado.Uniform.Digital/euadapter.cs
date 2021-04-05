@@ -283,6 +283,10 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constant contains the page identifier prefix
     /// </summary>
+    public const string CONST_IMAGE_FILE_DIRECTORY = "images/";
+    /// <summary>
+    /// This constant contains the page identifier prefix
+    /// </summary>
     public const string CONST_PAGE_ID_PREFIX = "Page_";
 
     /// <summary>

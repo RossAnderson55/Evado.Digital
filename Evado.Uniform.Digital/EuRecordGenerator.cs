@@ -208,6 +208,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "generateEntityLayout" );
       this.LogDebug ( "Entity.Title: " + Entity.Title );
       this.LogDebug ( "Entity.State: " + Entity.State );
+      this.LogDebug ( "Entity.Design.FooterFormat: " + Entity.Design.FooterFormat );
       //
       // Initialise the methods variables and objects.
       //

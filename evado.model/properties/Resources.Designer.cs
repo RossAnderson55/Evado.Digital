@@ -124,11 +124,29 @@ namespace evado.model.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  by .
+        /// </summary>
+        public static string Label_by {
+            get {
+                return ResourceManager.GetString("Label_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string Label_No {
             get {
                 return ResourceManager.GetString("Label_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  on .
+        /// </summary>
+        public static string Label_on {
+            get {
+                return ResourceManager.GetString("Label_on", resourceCulture);
             }
         }
         

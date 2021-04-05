@@ -995,9 +995,9 @@ namespace Evado.UniForm.Digital
         this.Session.SelectedOrganisationPostCode = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Post_Code );
       }
       this.LogValue ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
-      
-      
-      
+
+
+
       //
       // Interate through the selection filters and save the value in the session entity selection filters array.
       //
@@ -1249,7 +1249,7 @@ namespace Evado.UniForm.Digital
       // 
       // Add the selection groupCommand
       // 
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand ( 
+      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
         EdLabels.Select_Records_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
@@ -1498,7 +1498,7 @@ namespace Evado.UniForm.Digital
 
       selectionCommand.SetPageId ( EdStaticPageIds.Entity_Query_View );
       ;
-      this.LogDebug ( "Group Command Count {0}. ", pageGroup.CommandList.Count  );
+      this.LogDebug ( "Group Command Count {0}. ", pageGroup.CommandList.Count );
       this.LogMethodEnd ( "getQueryList_SelectionGroup" );
 
     }//ENd getQueryList_SelectionGroup method
@@ -1763,7 +1763,7 @@ namespace Evado.UniForm.Digital
       List<EvOption> optionList = new List<EvOption> ( );
       String listId = Field.Design.ExSelectionListId;
       String category = Field.Design.ExSelectionListCategory.ToUpper ( );
-      this.LogDebug ( "Field: {0}, List: {1}, Category: {2} ", Field.FieldId,  listId, category );
+      this.LogDebug ( "Field: {0}, List: {1}, Category: {2} ", Field.FieldId, listId, category );
 
       //
       // the category contains the category field then set the category value to this field value.
@@ -1859,7 +1859,7 @@ namespace Evado.UniForm.Digital
         || queryParameters.Org_Country != String.Empty
         || queryParameters.Org_PostCode != String.Empty )
       {
-        queryParameters.EnableOrganisationFilter =true;
+        queryParameters.EnableOrganisationFilter = true;
       }
 
       this.LogDebug ( "Selected LayoutId: '" + queryParameters.LayoutId + "'" );
@@ -1911,9 +1911,9 @@ namespace Evado.UniForm.Digital
 
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      if( this.Session.EntityList.Count > 0)
+      if ( this.Session.EntityList.Count > 0 )
       {
-      pageGroup.Title += EdLabels.List_Count_Label + this.Session.EntityList.Count;
+        pageGroup.Title += EdLabels.List_Count_Label + this.Session.EntityList.Count;
       }
 
       //
@@ -1997,7 +1997,11 @@ namespace Evado.UniForm.Digital
       groupCommand.AddParameter (
         Model.UniForm.CommandParameters.Short_Title,
         EdLabels.Label_Record_Id + CommandEntity.RecordId );
-
+      if ( CommandEntity.ImageFileName != String.Empty )
+      {
+        string relativeURL = EuAdapter.CONST_IMAGE_FILE_DIRECTORY + CommandEntity.ImageFileName;
+        groupCommand.AddParameter ( Model.UniForm.CommandParameters.Image_Url, relativeURL );
+      }
       return groupCommand;
 
     }//END getGroupListCommand method

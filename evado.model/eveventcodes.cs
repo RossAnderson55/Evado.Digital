@@ -247,6 +247,13 @@ namespace Evado.Model
     /// </summary>
     /// // ------------------------------------------------------------------------------
     Database_Update_Error = -211,
+
+    // ==================================================================================
+    /// <summary>
+    /// This enumeration defines that a database delete error event occured.
+    /// </summary>
+    /// // ------------------------------------------------------------------------------
+    Database_0_records_deleted = -212, 
     #endregion
 
     #region Object events
