@@ -113,6 +113,11 @@ namespace Evado.Model.UniForm
     /// This constant defines the Field annotation suffice
     /// </summary>
     public const string CONST_FIELD_ANNOTATION_SUFFIX = "_FAnnotation";
+
+    public const string CONST_NAME_FORMAT_PREFIX = "PRE;";
+    public const string CONST_NAME_FORMAT_GIVEN_NAME = "GN;";
+    public const string CONST_NAME_FORMAT_MIDDLE_NAME = "MN;";
+    public const string CONST_NAME_FORMAT_FAMILY_NAME = "FN;";
     #endregion 
 
     #region Class properties.

@@ -111,7 +111,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration value is the user profile page identifier.
     /// </summary>
-    User_Profile_Update_Page,
+    My_User_Profile_Update_Page,
 
     /// <summary>
     /// This enumeration value is the user profile password page.

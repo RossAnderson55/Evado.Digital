@@ -44,10 +44,10 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getObject_UserProfile (
+    private Evado.Model.UniForm.AppData getObject_MyUserProfile (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getObject_UserProfile" );
+      this.LogMethod ( "getObject_MyUserProfile" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -56,18 +56,12 @@ namespace Evado.UniForm.Digital
 
       try
       {
-        //
-        // Initialise the client ResultData object.
-        //
-        clientDataObject.Id = this.Session.UserProfile.Guid;
-        clientDataObject.Page.Id = clientDataObject.Id;
-        clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         // 
         // return the client ResultData object for the customer.
         // 
-        this.getDataObject_UserPage ( clientDataObject );
+        this.getDataObject_MUP_Page ( clientDataObject );
 
-        this.LogMethodEnd ( "getObject_UserProfile" );
+        this.LogMethodEnd ( "getObject_MyUserProfile" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -83,7 +77,7 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-      this.LogMethodEnd ( "getObject_UserProfile" );
+      this.LogMethodEnd ( "getObject_MyUserProfile" );
       return this.Session.LastPage;
 
     }//END getObject method
@@ -94,10 +88,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_UserPage (
+    private void getDataObject_MUP_Page (
       Evado.Model.UniForm.AppData ClientDataObject )
     {
-      this.LogMethod ( "getDataObject_UserPage" );
+      this.LogMethod ( "getDataObject_MUP_Page" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -118,26 +112,26 @@ namespace Evado.UniForm.Digital
 
       this.LogDebug ( "clientDataObject status: " + ClientDataObject.Page.EditAccess );
 
-      this.getDataObject_UserGeneralGroup ( ClientDataObject.Page );
+      this.getDataObject_MUP_GeneralGroup ( ClientDataObject.Page );
 
-      this.getDataObject_UserDetailsGroup ( ClientDataObject.Page );
+      this.getDataObject_MUP_DetailsGroup ( ClientDataObject.Page );
 
-      this.getDataObject_DashboardGroup ( ClientDataObject.Page );
+      this.getDataObject_MUP_PersonaliseGroup ( ClientDataObject.Page );
 
-      this.LogMethodEnd ( "getDataObject_UserPage" );
+      this.LogMethodEnd ( "getDataObject_MUP_Page" );
 
     }//END getclientDataObject Method
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
+    /// This method adds the user generation group.
     /// </summary>
     /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_UserGeneralGroup (
+    private void getDataObject_MUP_GeneralGroup (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "getDataObject_UserGeneralGroup" );
+      this.LogMethod ( "getDataObject_MUP_GeneralGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -152,10 +146,7 @@ namespace Evado.UniForm.Digital
       pageGroup = Page.AddGroup (
         EdLabels.UserProfile_General_Field_Group_Title );
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-      pageGroup.SetCommandBackBroundColor (
-        Model.UniForm.GroupParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
+      pageGroup.EditAccess = Model.UniForm.EditAccess.Disabled;
 
       // 
       // Create the user id object
@@ -168,31 +159,21 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
-      //
-      // Generate the organisation type radio button list field object.
-      //
-      groupField = pageGroup.createTextField ( String.Empty,
-        EdLabels.User_Profile_Role_Label,
-         EvStatics.enumValueToString ( this.Session.UserProfile.Roles ),
-        30 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
+      this.LogMethodEnd ( "getDataObject_MUP_GeneralGroup" );
 
-      this.LogMethodEnd ( "getDataObject_UserGeneralGroup" );
-
-    }//END getDataObject_FieldGroup Method
+    }//END getDataObject_MUP_GeneralGroup Method
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
+    /// This method add the user personal details update group.
     /// </summary>
     /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_UserDetailsGroup (
+    private void getDataObject_MUP_DetailsGroup (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "getDataObject_UserDetailsGroup" );
+      this.LogMethod ( "getDataObject_MUP_DetailsGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -218,35 +199,92 @@ namespace Evado.UniForm.Digital
       //
       this.getDataObject_UserGroupCommands ( pageGroup );
 
+
+      this.LogDebug ( "ImageFileName {0}.", this.Session.UserProfile.ImageFileName );
+      // 
+      // Create the customer name object
+      // 
+      this.Session.UserProfile.CurrentImageFileName = this.Session.UserProfile.ImageFileName;
+
+      groupField = pageGroup.createImageField (
+        "Disp_Image",
+        EdLabels.UserProfile_ImageFileame_Field_Label,
+        this.UniForm_ImageServiceUrl + this.Session.UserProfile.ImageFileName,
+        300,
+        300 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.FieldNames.Title,
+          EdLabels.UserProfile_Title_Field_Label,
+          this.Session.UserProfile.Title, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+
+      //
+      // create the name field.
+      //
+      this.LogDebug ( "Delimited Name: " + this.Session.UserProfile.DelimitedName );
+
+      groupField = pageGroup.createNameField (
+         Evado.Model.Digital.EdUserProfile.FieldNames.Delimted_Name,
+        EdLabels.UserProfile_Name_Field_Label,
+        this.Session.UserProfile.DelimitedName, 
+        true, 
+        false );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+/*
       // 
       // Create the  name object
       // 
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.FieldNames.Prefix,
-        EdLabels.UserProfile_Prefix_Field_Label,
-        this.Session.UserProfile.Prefix, 10 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Prefix ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.FieldNames.Prefix,
+          EdLabels.UserProfile_Prefix_Field_Label,
+          this.Session.UserProfile.Prefix, 10 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
 
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.FieldNames.Given_Name,
-        EdLabels.UserProfile_GivenName_Field_Label,
-        this.Session.UserProfile.GivenName, 50 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Given_Name ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.FieldNames.Given_Name,
+          EdLabels.UserProfile_GivenName_Field_Label,
+          this.Session.UserProfile.GivenName, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        groupField.Mandatory = true;
+        groupField.setBackgroundColor (
+          Model.UniForm.FieldParameterList.BG_Mandatory,
+          Model.UniForm.Background_Colours.Red );
+      }
+      else
+      {
+        this.Session.AdminUserProfile.GivenName = this.Session.AdminUserProfile.UserId;
+      }
 
-      groupField = pageGroup.createTextField (
-         Evado.Model.Digital.EdUserProfile.FieldNames.Family_Name,
-        EdLabels.UserProfile_FamilyName_Field_Label,
-        this.Session.UserProfile.FamilyName, 50 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.Mandatory = true;
-      groupField.setBackgroundColor (
-        Model.UniForm.FieldParameterList.BG_Mandatory,
-        Model.UniForm.Background_Colours.Red );
-
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Family_Name ) == false )
+      {
+        groupField = pageGroup.createTextField (
+           Evado.Model.Digital.EdUserProfile.FieldNames.Family_Name,
+          EdLabels.UserProfile_FamilyName_Field_Label,
+          this.Session.UserProfile.FamilyName, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+        groupField.Mandatory = true;
+        groupField.setBackgroundColor (
+          Model.UniForm.FieldParameterList.BG_Mandatory,
+          Model.UniForm.Background_Colours.Red );
+      }
+      else
+      {
+        this.Session.AdminUserProfile.FamilyName = this.Session.AdminUserProfile.UserId;
+      }
+ * 
+ */
+      #region address block
       //
       // define the user address field.
       //
@@ -274,6 +312,8 @@ namespace Evado.UniForm.Digital
 
         this.LogDebug ( "AddresS:" + groupField.Value );
       }
+      #endregion
+      #region contact details
       // 
       // Create the customer telephone number object
       // 
@@ -300,21 +340,22 @@ namespace Evado.UniForm.Digital
         EdLabels.UserProfile_Email_Field_Label,
         this.Session.UserProfile.EmailAddress );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
+      #endregion
 
-      this.LogMethodEnd ( "getDataObject_UserDetailsGroup" );
+      this.LogMethodEnd ( "getDataObject_MUP_DetailsGroup" );
 
-    }//END getDataObject_FieldGroup Method
+    }//END getDataObject_MUP_DetailsGroup Method
 
     // ==============================================================================
     /// <summary>
-    /// This method returns a client application ResultData object
+    /// This method add the user personaliseation group
     /// </summary>
     /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void getDataObject_DashboardGroup (
+    private void getDataObject_MUP_PersonaliseGroup (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "getDataObject_DashboardGroup" );
+      this.LogMethod ( "getDataObject_MUP_PersonaliseGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -377,7 +418,7 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuFormGenerator.ApplicationFieldLayout;
     }
       */
-      this.LogMethodEnd ( "getDataObject_DashboardGroup" );
+      this.LogMethodEnd ( "getDataObject_MUP_PersonaliseGroup" );
     }
 
     // ==============================================================================
@@ -404,7 +445,7 @@ namespace Evado.UniForm.Digital
         EuAdapterClasses.Users.ToString ( ),
         Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-      groupCommand.SetPageId ( EdStaticPageIds.User_Profile_Update_Page );
+      groupCommand.SetPageId ( EdStaticPageIds.My_User_Profile_Update_Page );
 
       // 
       // Define the save and delete groupCommand parameters
@@ -480,6 +521,17 @@ namespace Evado.UniForm.Digital
         //
         this.updateUserAddressValue ( PageCommand );
 
+        //
+        // save the image file if it exists.
+        //
+        this.saveUserImageFile ( );
+
+
+        this.LogDebug ( "DelimitedName: " + this.Session.UserProfile.DelimitedName );
+        this.LogDebug ( "GivenName: " + this.Session.UserProfile.GivenName );
+        this.LogDebug ( "MiddleName: " + this.Session.UserProfile.MiddleName );
+        this.LogDebug ( "FamilyName: " + this.Session.UserProfile.FamilyName );
+
         // 
         // Get the save action message value.
         // 
@@ -531,6 +583,56 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage; ;
 
     }//END method
+
+
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method copies the upload image file to the image directory.
+    /// </summary>
+    //  ----------------------------------------------------------------------------------
+    private void saveUserImageFile ( )
+    {
+      this.LogMethod ( "saveImageFile" );
+
+      if ( this.Session.UserProfile.ImageFileName == null )
+      {
+        return;
+      }
+
+      if ( this.Session.UserProfile.ImageFileName == String.Empty )
+      {
+        return;
+      }
+
+      if ( this.Session.UserProfile.CurrentImageFileName == this.Session.UserProfile.ImageFileName )
+      {
+        return;
+      }
+
+
+      //
+      // Initialise the method variables and objects.
+      //
+      String stSourcePath = this.UniForm_BinaryFilePath + this.Session.UserProfile.ImageFileName;
+      String stImagePath = this.UniForm_ImageFilePath + this.Session.UserProfile.ImageFileName;
+
+      this.LogDebug ( "Source path {0}.", stSourcePath );
+      this.LogDebug ( "Image path {0}.", stImagePath );
+
+      //
+      // Save the file to the directory repository.
+      //
+      try
+      {
+        System.IO.File.Copy ( stSourcePath, stImagePath, true );
+      }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
+      }
+      this.LogMethodEnd ( "saveImageFile" );
+    }//END saveImageFile method
 
     // ==================================================================================
     /// <summary>

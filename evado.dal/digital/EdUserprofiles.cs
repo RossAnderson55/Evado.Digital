@@ -100,6 +100,7 @@ namespace Evado.Dal.Digital
     public const string DB_TITLE = "UP_TITLE";
     public const string DB_PREFIX = "UP_PREFIX";
     public const string DB_GIVEN_NAME = "UP_GIVEN_NAME";
+    public const string DB_MIDDLE_NAME = "UP_MIDDLE_NAME";
     public const string DB_FAMILY_NAME = "UP_FAMILY_NAME";
     public const string DB_SUFFIX = "UP_SUFFIX";
     public const string DB_ADDRESS_1 = "UP_ADDRESS_1";
@@ -131,6 +132,7 @@ namespace Evado.Dal.Digital
     private const string PARM_ACTIVE_DIRECTORY_NAME = "@ActiveDirectName";
     private const string PARM_PREFIX = "@PREFIX";
     private const string PARM_GIVEN_NAME = "@GIVEN_NAME";
+    private const string PARM_MIDDLE_NAME = "@MIDDLE_NAME";
     private const string PARM_FAMILY_NAME = "FAMILY_NAME";
     private const string PARM_SUFFIX = "@SUFFIX";
     private const string PARM_ADDRESS_1 = "@ADDRESS_1";
@@ -184,6 +186,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdUserProfiles.PARM_GIVEN_NAME, SqlDbType.NVarChar, 50),
+        new SqlParameter( EdUserProfiles.PARM_MIDDLE_NAME, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_FAMILY_NAME, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_SUFFIX, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_ADDRESS_1, SqlDbType.NVarChar, 50),
@@ -232,27 +235,28 @@ namespace Evado.Dal.Digital
       parms [ 3 ].Value = UserProfile.ActiveDirectoryUserId;
       parms [ 4 ].Value = UserProfile.Prefix;
       parms [ 5 ].Value = UserProfile.GivenName;
-      parms [ 6 ].Value = UserProfile.FamilyName;
-      parms [ 7 ].Value = UserProfile.Suffix;
-      parms [ 8 ].Value = UserProfile.Address_1;
-      parms [ 9 ].Value = UserProfile.Address_2;
-      parms [ 10 ].Value = UserProfile.AddressCity;
-      parms [ 11 ].Value = UserProfile.AddressState;
-      parms [ 12 ].Value = UserProfile.AddressPostCode;
-      parms [ 13 ].Value = UserProfile.AddressCountry;
-      parms [ 14 ].Value = UserProfile.Telephone;
-      parms [ 15 ].Value = UserProfile.MobilePhone;
-      parms [ 16 ].Value = UserProfile.CommonName;
-      parms [ 17 ].Value = UserProfile.EmailAddress.ToLower ( );
-      parms [ 18 ].Value = UserProfile.Roles;
-      parms [ 19 ].Value = UserProfile.UserType;
-      parms [ 20 ].Value = UserProfile.UserCategory;
-      parms [ 21 ].Value = UserProfile.Title;
-      parms [ 22 ].Value = UserProfile.ExpiryDate;
-      parms [ 23 ].Value = UserProfile.ImageFileName;
-      parms [ 24 ].Value = this.ClassParameters.UserProfile.UserId;
-      parms [ 25 ].Value = this.ClassParameters.UserProfile.CommonName;
-      parms [ 26 ].Value = DateTime.Now;
+      parms [ 6 ].Value = UserProfile.MiddleName;
+      parms [ 7 ].Value = UserProfile.FamilyName;
+      parms [ 8 ].Value = UserProfile.Suffix;
+      parms [ 9 ].Value = UserProfile.Address_1;
+      parms [ 10 ].Value = UserProfile.Address_2;
+      parms [ 11 ].Value = UserProfile.AddressCity;
+      parms [ 12 ].Value = UserProfile.AddressState;
+      parms [ 13 ].Value = UserProfile.AddressPostCode;
+      parms [ 14 ].Value = UserProfile.AddressCountry;
+      parms [ 15 ].Value = UserProfile.Telephone;
+      parms [ 16 ].Value = UserProfile.MobilePhone;
+      parms [ 17 ].Value = UserProfile.CommonName;
+      parms [ 18 ].Value = UserProfile.EmailAddress.ToLower ( );
+      parms [ 19 ].Value = UserProfile.Roles;
+      parms [ 20 ].Value = UserProfile.UserType;
+      parms [ 21 ].Value = UserProfile.UserCategory;
+      parms [ 22 ].Value = UserProfile.Title;
+      parms [ 23 ].Value = UserProfile.ExpiryDate;
+      parms [ 24 ].Value = UserProfile.ImageFileName;
+      parms [ 25 ].Value = this.ClassParameters.UserProfile.UserId;
+      parms [ 26 ].Value = this.ClassParameters.UserProfile.CommonName;
+      parms [ 27 ].Value = DateTime.Now;
 
 
     }//END setUsersParameters class.
@@ -298,6 +302,7 @@ namespace Evado.Dal.Digital
 
       profile.Prefix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_PREFIX );
       profile.GivenName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_GIVEN_NAME );
+      profile.MiddleName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_MIDDLE_NAME);
       profile.FamilyName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_FAMILY_NAME );
       profile.Suffix = EvSqlMethods.getString ( Row, EdUserProfiles.DB_SUFFIX );
       profile.Address_1 = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_1 );
@@ -1237,11 +1242,15 @@ namespace Evado.Dal.Digital
       }
       if ( UserProfile.GivenName != oldUser.GivenName )
       {
-        dataChange.AddItem ( "GivenName", oldUser.CommonName, UserProfile.GivenName );
+        dataChange.AddItem ( "GivenName", oldUser.GivenName, UserProfile.GivenName );
+      }
+      if ( UserProfile.MiddleName != oldUser.MiddleName )
+      {
+        dataChange.AddItem ( "MiddleName", oldUser.MiddleName, UserProfile.MiddleName );
       }
       if ( UserProfile.FamilyName != oldUser.FamilyName )
       {
-        dataChange.AddItem ( "FamilyName", oldUser.CommonName, UserProfile.FamilyName );
+        dataChange.AddItem ( "FamilyName", oldUser.FamilyName, UserProfile.FamilyName );
       }
       if ( UserProfile.Suffix != oldUser.Suffix )
       {
@@ -1303,6 +1312,8 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = getItemsParameters ( );
       setUsersParameters ( cmdParms, UserProfile );
+
+      this.LogDebug( EvSqlMethods.getParameterSqlText( cmdParms ) );
 
       //
       // Execute the update command.

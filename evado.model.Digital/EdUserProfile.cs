@@ -134,6 +134,11 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines common name in user profile
       /// </summary>
+      Delimted_Name,
+
+      /// <summary>
+      /// This enumeration defines common name in user profile
+      /// </summary>
       Given_Name,
 
       /// <summary>
@@ -243,6 +248,52 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Class Properties
+
+    /// <summary>
+    /// This property contains delimited ';' use name
+    /// </summary>
+    public string DelimitedName
+    {
+      get
+      {
+        return this.Prefix + ";" + this.GivenName + ";" + this.MiddleName + ";" + this.FamilyName + ";";
+      }
+      set
+      {
+        string [ ] arName = value.Split ( ';' );
+
+        switch ( arName.Length )
+        {
+          case 1:
+            {
+              this.FamilyName = arName [ 0 ];
+              break;
+            }
+          case 2:
+            {
+              this.GivenName = arName [ 0 ];
+              this.FamilyName = arName [ 1 ];
+              break;
+            }
+          case 3:
+            {
+              this.Prefix = arName [ 0 ];
+              this.GivenName = arName [ 1 ];
+              this.FamilyName = arName [ 2 ];
+              break;
+            }
+          case 4:
+            {
+              this.Prefix = arName [ 0 ];
+              this.GivenName = arName [ 1 ];
+              this.MiddleName = arName [ 2 ];
+              this.FamilyName = arName [ 3 ];
+              break;
+            }
+        }
+
+      }
+    }
 
     /// <summary>
     /// This property defines the user type and used to control user access to the platform.
@@ -681,6 +732,11 @@ namespace Evado.Model.Digital
         case FieldNames.Prefix:
           {
             this.Prefix = value;
+            break;
+          }
+        case FieldNames.Delimted_Name:
+          {
+           this.DelimitedName = value;
             break;
           }
         case FieldNames.Given_Name:

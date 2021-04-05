@@ -17,6 +17,17 @@ GO
 PRINT N'START: 007_R1.0_ED_USERS_PROFILE_CREATE_PROCEDURES..'; 
 GO
 
+IF NOT EXISTS( SELECT 1 FROM sys.columns 
+          WHERE Name = N'UP_MIDDLE_NAME'
+          AND Object_ID = Object_ID(N'ED_USER_PROFILES' ))
+BEGIN
+ALTER TABLE ED_USER_PROFILES
+ ADD 
+  [UP_MIDDLE_NAME]  NVARCHAR(50) NULL
+END
+GO
+
+
 /****** Object:  StoredProcedure [dbo].[usr_UserProfile_add]    Script Date: 02/08/2021 12:36:05 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[usr_UserProfile_add]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[usr_UserProfile_add]
@@ -61,6 +72,7 @@ CREATE             PROCEDURE [dbo].[USR_USER_PROFILE_ADD]
  @Title nvarchar(100),
  @PREFIX nvarchar(10),
  @GIVEN_NAME nvarchar(50),
+ @MIDDLE_NAME nvarchar(50),
  @FAMILY_NAME nvarchar(50),
  @SUFFIX nvarchar(50),
  @ADDRESS_1 nvarchar(50),
@@ -90,6 +102,7 @@ Insert Into ED_USER_PROFILES
   , UP_TITLE 
   , UP_PREFIX 
   , UP_GIVEN_NAME 
+  , UP_MIDDLE_NAME
   , UP_FAMILY_NAME 
   , UP_SUFFIX 
   , UP_ADDRESS_1 
@@ -119,6 +132,7 @@ values
  @Title,
  @PREFIX,
  @GIVEN_NAME,
+ @MIDDLE_NAME,
  @FAMILY_NAME,
  @SUFFIX,
  @ADDRESS_1,
@@ -175,6 +189,7 @@ CREATE      PROCEDURE [dbo].[USR_USER_PROFILE_UPDATE]
  @Title nvarchar(100),
  @PREFIX nvarchar(10),
  @GIVEN_NAME nvarchar(50),
+ @MIDDLE_NAME nvarchar(50),
  @FAMILY_NAME nvarchar(50),
  @SUFFIX nvarchar(50),
  @ADDRESS_1 nvarchar(50),
@@ -203,6 +218,7 @@ SET
   UP_ACTIVE_DIRECTORY_NAME = @ActiveDirectName, 
   UP_PREFIX = @PREFIX, 
   UP_GIVEN_NAME = 	@GIVEN_NAME, 
+  UP_MIDDLE_NAME = @MIDDLE_NAME,
   UP_FAMILY_NAME = 	@FAMILY_NAME, 
   UP_SUFFIX = 	@SUFFIX, 
   UP_ADDRESS_1 = @ADDRESS_1,

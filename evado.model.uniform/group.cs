@@ -3679,8 +3679,7 @@ namespace Evado.Model.UniForm
     public Field createNameField (
       object FieldId,
       String FieldTitle,
-      String Value,
-      int Size )
+      String Value)
     {
       if ( Value == null )
       {
@@ -3695,6 +3694,71 @@ namespace Evado.Model.UniForm
       pageField.Value = Value;
       pageField.AddParameter ( FieldParameterList.Width, "40" );
       pageField.EditAccess = this.EditAccess;
+
+      //
+      // Add the field to the group list.
+      //
+      this._FieldList.Add ( pageField );
+
+      //
+      // Return the field object.
+      //
+      return pageField;
+    }//END createNameField method 
+    // ==================================================================================
+    /// <summary>
+    /// This method creates a Name page field object.
+    ///
+    /// </summary>
+    /// <param name="FieldId">String: the field data identifier</param>
+    /// <param name="FieldTitle">String: Field title</param>
+    /// <param name="Value">String: barcode value </param>
+    /// <param name="Size">Int: length of the field in characters</param>
+    /// <returns>Field object</returns>
+    /// <remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Add the field to the group list. 
+    /// 
+    /// 2. Return the field object. 
+    /// 
+    /// </remarks>
+    // ----------------------------------------------------------------------------------
+    public Field createNameField (
+      object FieldId,
+      String FieldTitle,
+      String Value,
+      bool Format_Prefix,
+      bool Format_Middle  )
+    {
+      if ( Value == null )
+      {
+        Value = String.Empty;
+      }
+      Field pageField = new Field ( );
+      String format = String.Empty;
+
+      pageField.Id = Guid.NewGuid ( );
+      pageField.Type = EvDataTypes.Name;
+      pageField.FieldId = FieldId.ToString ( );
+      pageField.Title = FieldTitle;
+      pageField.Value = Value;
+      pageField.AddParameter ( FieldParameterList.Width, "40" );
+      pageField.EditAccess = this.EditAccess;
+
+      if ( Format_Prefix == true )
+      {
+        format += Field.CONST_NAME_FORMAT_PREFIX;
+      }
+      format += Field.CONST_NAME_FORMAT_GIVEN_NAME;
+
+      if ( Format_Middle == true )
+      {
+        format += Field.CONST_NAME_FORMAT_MIDDLE_NAME;
+      }
+      format += Field.CONST_NAME_FORMAT_FAMILY_NAME;
+
+      pageField.AddParameter ( FieldParameterList.Format, format );
 
       //
       // Add the field to the group list.
@@ -3733,8 +3797,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       String FieldDescription,
-      String Value,
-      int Size )
+      String Value )
     {
       if ( Value == null )
       {

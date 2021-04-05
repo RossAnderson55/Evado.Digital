@@ -142,6 +142,19 @@ namespace Evado.Model
       }
     }
 
+    private string _MiddleName = String.Empty;
+    /// <summary>
+    /// This property contains user's given name
+    /// </summary>
+    public string MiddleName
+    {
+      get { return this._MiddleName; }
+      set
+      {
+        this._MiddleName = value;
+      }
+    }
+
     private string _FamilyName = String.Empty;
     /// <summary>
     /// This property contains user family name
@@ -384,10 +397,10 @@ namespace Evado.Model
     /// This property contains user organisation identifier
     /// </summary>
     public string OrgId
-     {
-       get { return this._OrgId; }
-       set { this._OrgId = value; }
-     }
+    {
+      get { return this._OrgId; }
+      set { this._OrgId = value; }
+    }
 
     private string _SessionId = String.Empty;
     /// <summary>

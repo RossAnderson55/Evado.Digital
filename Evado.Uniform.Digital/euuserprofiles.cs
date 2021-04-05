@@ -156,7 +156,7 @@ namespace Evado.UniForm.Digital
         //
         // Skip if the updating the current user properties.
         //
-        if ( this.PageId != EdStaticPageIds.User_Profile_Update_Page )
+        if ( this.PageId != EdStaticPageIds.My_User_Profile_Update_Page )
         {
           if ( this.Session.AdminUserProfile == null )
           {
@@ -180,7 +180,7 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EdStaticPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.My_User_Profile_Update_Page:
                   {
                     clientDataObject = this.Session.LastPage;
                     break;
@@ -200,9 +200,9 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EdStaticPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.My_User_Profile_Update_Page:
                   {
-                    clientDataObject = this.getObject_UserProfile ( PageCommand );
+                    clientDataObject = this.getObject_MyUserProfile ( PageCommand );
                     break;
                   }
                 default:
@@ -227,7 +227,7 @@ namespace Evado.UniForm.Digital
 
               switch ( this.PageId )
               {
-                case EdStaticPageIds.User_Profile_Update_Page:
+                case EdStaticPageIds.My_User_Profile_Update_Page:
                   {
                     clientDataObject = this.updateUserObject ( PageCommand );
                     break;
@@ -1238,7 +1238,7 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      this.Session.UserProfile.CurrentImageFileName = this.Session.AdminUserProfile.ImageFileName;
+      this.Session.AdminUserProfile.CurrentImageFileName = this.Session.AdminUserProfile.ImageFileName;
 
         groupField = pageGroup.createImageField (
           "Disp_Image",
@@ -1286,7 +1286,6 @@ namespace Evado.UniForm.Digital
         groupField.setBackgroundColor (
           Model.UniForm.FieldParameterList.BG_Mandatory,
           Model.UniForm.Background_Colours.Red );
-
 
         userFamilyName = true;
       }
@@ -1922,7 +1921,7 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "AdminUserProfile.UserType: {0}. ", this.Session.AdminUserProfile.UserType );
         this.LogValue ( "AdminUserProfile.UserCategory: {0}. ", this.Session.AdminUserProfile.UserCategory );
 
-        this.Session.UserProfile.UserId = EvStatics.CleanSamUserId (
+        this.Session.AdminUserProfile.UserId = EvStatics.CleanSamUserId (
           this.Session.UserProfile.UserId );
 
         //
@@ -2006,12 +2005,17 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "saveImageFile" );
 
+      if ( this.Session.AdminUserProfile.ImageFileName == null )
+      {
+        return;
+      }
+
       if ( this.Session.AdminUserProfile.ImageFileName == String.Empty )
       {
         return;
       }
 
-      if ( this.Session.UserProfile.CurrentImageFileName == this.Session.AdminUserProfile.ImageFileName )
+      if ( this.Session.AdminUserProfile.CurrentImageFileName == this.Session.AdminUserProfile.ImageFileName )
       {
         return;
       }

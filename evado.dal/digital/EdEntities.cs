@@ -772,8 +772,8 @@ namespace Evado.Dal.Digital
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getEntityList method." );
-      this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
-      this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
+      //this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
+      //this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
       //
       // Initialize the method debug log, a return form list and a number of result count. 
       //
@@ -787,8 +787,8 @@ namespace Evado.Dal.Digital
         QueryParameters.Org_Country = arrCity [ 0 ];
         QueryParameters.Org_City = arrCity [ 1 ];
 
-        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
-        this.LogDebug ( "City {0} ", QueryParameters.Org_City );
+       // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+       // this.LogDebug ( "City {0} ", QueryParameters.Org_City );
       }
 
       if ( QueryParameters.Org_PostCode.Contains ( "_" ) == true )
@@ -797,8 +797,8 @@ namespace Evado.Dal.Digital
         QueryParameters.Org_Country = arrCity [ 0 ];
         QueryParameters.Org_PostCode = arrCity [ 1 ];
 
-        this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
-        this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
+       // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+       // this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
       }
 
       // 
@@ -819,11 +819,11 @@ namespace Evado.Dal.Digital
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
-      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+     // this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
-      this.LogDebug ( sqlQueryString );
+     // this.LogDebug ( sqlQueryString );
 
-      this.LogDebug ( "Execute Query" );
+     // this.LogDebug ( "Execute Query" );
       //
       //Execute the query against the database.
       //
@@ -841,7 +841,7 @@ namespace Evado.Dal.Digital
 
           EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
 
-          this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
+         // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
           // 
           // Attach fields and other trial data.
           // 
@@ -851,7 +851,7 @@ namespace Evado.Dal.Digital
             if ( inResultCount < QueryParameters.ResultStartRange
               || inResultCount >= ( QueryParameters.ResultFinishRange ) )
             {
-              this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
+          //    this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
 
               //
               // Increment the result count.
@@ -1200,7 +1200,7 @@ namespace Evado.Dal.Digital
       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
       this.LogDebug ( sqlQueryString.ToString ( ) );
 
-      this.LogDebug ( " Execute Query" );
+   //   this.LogDebug ( " Execute Query" );
 
       //
       //Execute the query against the database.
@@ -2020,7 +2020,7 @@ namespace Evado.Dal.Digital
     public EdRecord GetEntity ( String EntityId )
     {
       this.LogMethod ( "GetEntity" );
-      this.LogDebug ( "EntityId: " + EntityId );
+     // this.LogDebug ( "EntityId: " + EntityId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
@@ -2114,7 +2114,7 @@ namespace Evado.Dal.Digital
     private void GetRecordSections (
       EdRecord Entity )
     {
-      this.LogMethod ( "GetRecordSections method." );
+      this.LogMethod ( "GetRecordSections" );
       //
       // Initialise the methods variables and objects.
       //
@@ -2122,8 +2122,8 @@ namespace Evado.Dal.Digital
 
       Entity.Design.FormSections = sections.getSectionList ( Entity.LayoutGuid );
 
-      this.LogClass ( sections.Log );
-      this.LogDebug ( "Section Count {0}.", Entity.Design.FormSections.Count );
+     // this.LogClass ( sections.Log );
+     // this.LogDebug ( "Section Count {0}.", Entity.Design.FormSections.Count );
 
       this.LogMethodEnd ( "GetRecordSections" );
     }//END UpdateFieldSectionReferences method.
@@ -2141,7 +2141,7 @@ namespace Evado.Dal.Digital
       EdRecord Entity )
     {
       this.LogMethod ( "GetEntityData." );
-      this.LogDebug ( "State: " + Entity.State );
+   //   this.LogDebug ( "State: " + Entity.State );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2183,11 +2183,11 @@ namespace Evado.Dal.Digital
       EdRecord Entity )
     {
       this.LogMethod ( "getLayoutFields." );
-      this.LogDebug ( "Entity Guid {0}, LayoutGuid: {1} ", Entity.Guid, Entity.LayoutGuid );
+     // this.LogDebug ( "Entity Guid {0}, LayoutGuid: {1} ", Entity.Guid, Entity.LayoutGuid );
 
       if ( Entity.Fields.Count > 0 )
       {
-        this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
+     //   this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
         this.LogMethodEnd ( "getLayoutFields" );
         return;
       }
@@ -2211,11 +2211,11 @@ namespace Evado.Dal.Digital
 
         Entity.Fields.Add ( field );
 
-        this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
+      //  this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
         this.LogDebug ( "{0} - {1} > T: {2} ", field.FieldId, field.Title, field.TypeId );
       }
 
-      this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
+     // this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
       this.LogMethodEnd ( "getLayoutFields" );
 
     }//END getRecordData method

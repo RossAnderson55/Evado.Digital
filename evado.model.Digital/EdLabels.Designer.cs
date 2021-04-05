@@ -8418,6 +8418,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Name:.
+        /// </summary>
+        public static string UserProfile_Name_Field_Label {
+            get {
+                return ResourceManager.GetString("UserProfile_Name_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The user {0} does not have the patient role..
         /// </summary>
         public static string UserProfile_Not_Patient_Error_Message {

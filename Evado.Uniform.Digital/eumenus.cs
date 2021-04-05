@@ -516,12 +516,17 @@ namespace Evado.UniForm.Digital
       //
       // Add the platform selection list
       //
-      optionList.Add ( new EvOption ( EuMenus.CONST_ADMIN_APPLICATION_IDENTIFIER, "Administration Platform" ) );
-      optionList.Add ( new EvOption ( EuMenus.CONST_PRODUCTION_APPLICATION_IDENTIFIER, "Production Platform" ) );
+      optionList.Add ( new EvOption (
+        EuMenus.CONST_ADMIN_APPLICATION_IDENTIFIER,
+        EdLabels.Menu_Admin_Platform_Option_Description ) );
+
+      optionList.Add ( new EvOption (
+        EuMenus.CONST_PRODUCTION_APPLICATION_IDENTIFIER,
+        EdLabels.Menu_Production_Platform_Option_Description ) );
 
       pageField = pageGroup.createSelectionListField (
         EvMenuItem.MenuFieldNames.Platform.ToString ( ),
-        "Platform identifier: ",
+        EdLabels.Menu_Platform_Field_Label,
         this.Session.MenuPlatformId,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
@@ -579,7 +584,7 @@ namespace Evado.UniForm.Digital
         if( header.GroupHeader == true 
           && header.Platform == this.Session.MenuPlatformId )
         {
-          optionList.Add ( new EvOption ( header.Group, header.Title ) );
+          optionList.Add ( new EvOption ( header.Group, header.Group + " - "+ header.Title ) );
         }
       }
 

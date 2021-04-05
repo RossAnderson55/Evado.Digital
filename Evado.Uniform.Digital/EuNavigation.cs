@@ -224,7 +224,7 @@ namespace Evado.UniForm.Digital
               return pageCommand;
             }
 
-          case EdStaticPageIds.User_Profile_Update_Page:
+          case EdStaticPageIds.My_User_Profile_Update_Page:
             {
               pageCommand = new Model.UniForm.Command (
                 Title,

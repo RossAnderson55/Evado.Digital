@@ -176,6 +176,7 @@ namespace Evado.UniForm.Digital
 
       this.LogDebug ( "Title {0}. ", this.Session.PageLayout.Title );
       this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
+      this.LogDebug ( "MenuLocation {0}. ", this.Session.PageLayout.MenuLocation );
       this.LogDebug ( "LayoutComponents {0}. ", this.Session.PageLayout.LayoutComponents );
       this.LogDebug ( "LeftColumnWidth {0}. ", this.Session.PageLayout.LeftColumnWidth );
       this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
@@ -186,26 +187,44 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "CenterColumnComponentList {0}. ", this.Session.PageLayout.CenterColumnComponentList );
       this.LogDebug ( "RightColumnComponentList {0}. ", this.Session.PageLayout.RightColumnComponentList );
 
+
       if ( this.Session.PageLayout.LeftColumnWidth > 0 )
       {
         page.SetLeftColumnWidth ( this.Session.PageLayout.LeftColumnWidth );
         enableLeftColumn = true;
-        this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
+      }
+      //
+      // set the column widths for page menus in columns.
+      //
+      switch ( this.Session.PageLayout.MenuLocation )
+      {
+        case EdPageLayout.MenuLocations.Left_Column:
+          {
+            page.SetLeftColumnWidth ( 15 );
+            enableLeftColumn = true;
+            break;
+          }
+        case EdPageLayout.MenuLocations.Right_Column:
+          {
+            page.SetRightColumnWidth ( 15 );
+            enableRightColumn = true;
+            break;
+          }
       }
 
       if ( this.Session.PageLayout.DisplayMainMenu == true )
       {
         page.SetLeftColumnWidth ( 15 );
         enableLeftColumn = true;
-        this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
       }
 
       if ( this.Session.PageLayout.RightColumnWidth > 0 )
       {
         page.SetRightColumnWidth ( this.Session.PageLayout.RightColumnWidth );
         enableRightColumn = true;
-        this.LogDebug ( "page.right column width {0}.", page.GetRightColumnWidth ( ) );
       }
+      this.LogDebug ( "page.left column width {0}.", page.GetLeftColumnWidth ( ) );
+      this.LogDebug ( "page.right column width {0}.", page.GetRightColumnWidth ( ) );
 
       //
       // create the main page menu if main menu is selected.
@@ -349,6 +368,11 @@ namespace Evado.UniForm.Digital
           Model.UniForm.EditAccess.Disabled );
         pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
         pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
+      }
+
+      if ( this.Session.PageLayout.MenuLocation == EdPageLayout.MenuLocations.Left_Column )
+      {
+
       }
 
       if ( this.Session.PageLayout.DisplayMainMenu == false)
@@ -685,6 +709,8 @@ namespace Evado.UniForm.Digital
       if ( this.Session.PageLayout.DisplayMainMenu == true
         && this.Session.PageLayout.MenuLocation == EdPageLayout.MenuLocations.Left_Column )
       {
+        this.LogDebug ( "Main Menu enabled." );
+        this.LogMethodEnd ( "generatePageMenu" );
         return;
       }
 
@@ -698,6 +724,7 @@ namespace Evado.UniForm.Digital
       //
       if ( commandList.Count == 0 )
       {
+        this.LogDebug ( "ERROR Page Menu command list is empty." );
         this.LogMethodEnd ( "generatePageMenu" );
         return;
       }
@@ -716,6 +743,7 @@ namespace Evado.UniForm.Digital
             pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
             pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
             pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
+            pageGroup.CommandList = commandList;
             break;
           }
         case EdPageLayout.MenuLocations.Right_Column:
@@ -727,6 +755,7 @@ namespace Evado.UniForm.Digital
             pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
             pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
             pageGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Right );
+            pageGroup.CommandList = commandList;
             break;
           }
         case EdPageLayout.MenuLocations.Page_Menu:
@@ -742,9 +771,11 @@ namespace Evado.UniForm.Digital
 
             pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Horizontal_Orientation;
             pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+            pageGroup.CommandList = commandList;
             break;
           }
       }
+
 
       this.LogMethodEnd ( "generatePageMenu" );
 
