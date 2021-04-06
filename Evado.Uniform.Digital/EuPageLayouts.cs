@@ -1870,7 +1870,10 @@ namespace Evado.UniForm.Digital
         // empty the selection lists to force a reload on the next initialisation.
         //
         this.AdapterObjects.AllPageLayouts = new List<EdPageLayout> ( );
-
+        if ( this.Session.AdminPageLayout.Action == EdPageLayout.SaveActions.Issue )
+        {
+          this.AdapterObjects.PageComponents = new List<EvOption> ( );
+        }
 
         this.LogMethodEnd ( "updateObject" );
         return new Model.UniForm.AppData ( );

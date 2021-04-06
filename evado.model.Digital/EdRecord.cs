@@ -183,6 +183,17 @@ namespace Evado.Model.Digital
       Organisation,
 
       /// <summary>
+      /// This enumeration defines the object parent type to be a user default.
+      /// </summary>
+      User_Default,
+
+      /// <summary>
+      /// This enumeration defines the object parent type to be an organsiation default.
+      /// This enables all user within that organisation to access and edit the object.
+      /// </summary>
+      Organisation_Default,
+
+      /// <summary>
       /// This enumeration defines the object parent is another entity.
       /// this selection enables the 
       /// </summary>
@@ -1654,7 +1665,6 @@ namespace Evado.Model.Digital
       }
 
     }//END updateFormState method
-
 
     //  =================================================================================
     /// <summary>

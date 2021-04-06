@@ -153,12 +153,6 @@ namespace Evado.UniForm.Digital
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Class enumerations
-
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
     #region Class constants and variables.
 
     private Evado.Bll.Digital.EdEntities _Bll_Entities = new Evado.Bll.Digital.EdEntities ( );
@@ -714,6 +708,11 @@ namespace Evado.UniForm.Digital
 
         this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
 
+        foreach ( EdRecord entity in this.Session.EntityDictionary )
+        {
+          this.LogDebug ( "Loaded Entity {0} LayoutId {1} - {2}",
+            entity.EntityId, entity.LayoutId, entity.Title );
+        }
 
         this.LogValue ( "Entity.EntityId: " + this.Session.Entity.EntityId );
 
@@ -1949,7 +1948,7 @@ namespace Evado.UniForm.Digital
         && pageGroup.EditAccess == Model.UniForm.EditAccess.Enabled )
       {
         groupCommand = pageGroup.addCommand (
-          "New Record",
+          String.Format( EdLabels.Entity_Create_New_List_Command_Title, this.Session.EntityLayout.Title ),
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Model.UniForm.ApplicationMethods.Create_Object );

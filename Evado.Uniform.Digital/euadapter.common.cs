@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.UniForm.Clinical\ApplicationService.cs" 
+ * <copyright file="Evado.UniForm.Digital\ApplicationService.cs" 
  *  company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c)  2002 - 2021  EVADO HOLDING PTY. LTD..  All rights reserved.
@@ -198,6 +198,97 @@ namespace Evado.UniForm.Digital
 
     }//END loadUserProfile method.
 
+    // ==================================================================================
+    /// <summary>
+    /// This method gets the application object from the list.
+    /// 
+    /// </summary>
+    /// <returns>ClientApplicationData</returns>
+    // ----------------------------------------------------------------------------------
+    private bool loadDefaultChildEntity ( )
+    {
+      this.LogMethod ( "loadDefaultChildEntity" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Evado.Bll.Digital.EdEntities bll_Entities =
+        new Evado.Bll.Digital.EdEntities ( this.ClassParameters );
+      bool defaultEnityFound = false;
+
+      //
+      // IF the dictionary is empty load the first entity if there is one for the user or organisation.
+      //
+      if ( this.Session.EntityDictionary.Count > 0 )
+      {
+        this.LogMethodEnd ( "loadDefaultChildEntity" );
+        return true ;
+      }
+
+      //
+      // iterate through the list of entitiy layouts.
+      //
+      foreach ( EdRecord layout in EuAdapter.AdapterObjects.AllEntityLayouts )
+      {
+        if ( defaultEnityFound == true
+          && layout.Design.ParentType != EdRecord.ParentTypeList.User_Default
+          && layout.Design.ParentType != EdRecord.ParentTypeList.Organisation_Default )
+        {
+          continue;
+        }
+
+        if ( this.Session.UserProfile.hasRole( layout.Design.EditAccessRoles ) == false )
+        {
+          continue;
+        }
+
+        this.LogDebug ( "{0} - {1} PT: {2}.", layout.LayoutId, layout.Title, layout.Design.ParentType );
+        //
+        // try and retrieve the user's child entity.
+        //
+        if ( layout.Design.ParentType == EdRecord.ParentTypeList.User_Default )
+        {
+          this.LogDebug ( "User Default child" );
+
+          var entity = bll_Entities.GetItemByParentUserId (
+            layout.LayoutId,
+            this.Session.UserProfile.UserId );
+
+          if ( entity.Guid != Guid.Empty )
+          {
+            this.Session.Entity = entity;
+            this.Session.PushEntity ( this.Session.Entity );
+            //defaultEnityFound = true;
+            break;
+          }
+        }
+        else
+        {
+          this.LogDebug ( "User Default child" );
+          //
+          // try and retrieve the user's org entity.
+          //
+          var entity = bll_Entities.GetItemByParentOrgId (
+            layout.LayoutId,
+            this.Session.UserProfile.OrgId );
+
+          if ( entity.Guid != Guid.Empty )
+          {
+            this.Session.Entity = entity;
+            this.Session.PushEntity ( this.Session.Entity );
+            //defaultEnityFound = true;
+
+            break;
+          }
+        }
+
+      }//END iteration loop
+
+      this.LogDebug ( "{0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
+      this.LogMethodEnd ( "loadDefaultChildEntity" );
+      return true;
+
+    }//END loadDefaultChildEntity method.
+
     //===================================================================================
     /// <summary>
     /// This method executes the form list query 
@@ -207,12 +298,8 @@ namespace Evado.UniForm.Digital
     {
       this.LogInitMethod ( "loadOrganisationList" );
 
-      if ( this._AdapterObjects.OrganisationList == null )
-      {
-        this._AdapterObjects.OrganisationList = new List<EdOrganisation> ( );
-      }
 
-      if ( this._AdapterObjects.OrganisationList.Count > 0 )
+      if ( EuAdapter.AdapterObjects.OrganisationList.Count > 0 )
       {
         this.LogInit ( "Organistion list layout loaded." );
         this.LogInit ( "END loadOrganisationList" );
@@ -228,11 +315,11 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this._AdapterObjects.OrganisationList = bll_Organisations.getView ( );
+      EuAdapter.AdapterObjects.OrganisationList = bll_Organisations.getView ( );
 
       this.LogInitClass ( bll_Organisations.Log );
 
-      this.LogInit ( "Organisation list count: " + this._AdapterObjects.OrganisationList.Count );
+      this.LogInit ( "Organisation list count: " + EuAdapter.AdapterObjects.OrganisationList.Count );
 
       this.LogInit ( "END loadOrganisationList" );
 
@@ -246,12 +333,12 @@ namespace Evado.UniForm.Digital
     private void loadPageLayoutList ( )
     {
       this.LogInitMethod ( "loadPageLayoutList" );
-      this.LogDebug ( "AllPageLayouts.Count: " + this._AdapterObjects.AllPageLayouts.Count );
+      this.LogDebug ( "AllPageLayouts.Count: " + EuAdapter.AdapterObjects.AllPageLayouts.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllPageLayouts.Count > 0 )
+      if ( EuAdapter.AdapterObjects.AllPageLayouts.Count > 0 )
       {
         this.LogInit ( "Page layouts loaded." );
         this.LogInitMethodEnd ( "loadPageLayoutList" );
@@ -267,16 +354,16 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this._AdapterObjects.AllPageLayouts = bll_PageLayouts.getView ( EdPageLayout.States.Null );
+      EuAdapter.AdapterObjects.AllPageLayouts = bll_PageLayouts.getView ( EdPageLayout.States.Null );
 
       this.LogInitClass ( bll_PageLayouts.Log );
 
-      foreach ( EdPageLayout pageLayout in this._AdapterObjects.AllPageLayouts )
+      foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
       {
         this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
       }
 
-      this.LogInit ( "AllPageLayouts.Count: " + this._AdapterObjects.AllPageLayouts.Count );
+      this.LogInit ( "AllPageLayouts.Count: " + EuAdapter.AdapterObjects.AllPageLayouts.Count );
 
       this.LogInitMethodEnd ( "loadPageLayoutList" );
 
@@ -290,12 +377,12 @@ namespace Evado.UniForm.Digital
     private void loadEnityLayoutList ( )
     {
       this.LogInitMethod ( "loadEnityLayoutList" );
-      this.LogDebug ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      this.LogDebug ( "AllEntityLayouts.Count: " + EuAdapter.AdapterObjects.AllEntityLayouts.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllEntityLayouts.Count > 0 )
+      if ( EuAdapter.AdapterObjects.AllEntityLayouts.Count > 0 )
       {
         this.LogInit ( "Entity layouts loaded." );
         this.LogInit ( "END loadRecordLayoutList" );
@@ -311,13 +398,13 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this._AdapterObjects.AllEntityLayouts = bll_EntityLayouts.GetRecordLayoutListWithFields (
+      EuAdapter.AdapterObjects.AllEntityLayouts = bll_EntityLayouts.GetRecordLayoutListWithFields (
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
       this.LogInitClass ( bll_EntityLayouts.Log );
 
-      this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      this.LogInit ( "AllEntityLayouts.Count: " + EuAdapter.AdapterObjects.AllEntityLayouts.Count );
 
       this.LogInit ( "END  loadEnityLayoutList" );
 
@@ -331,12 +418,12 @@ namespace Evado.UniForm.Digital
     private void loadRecordLayoutList ( )
     {
       this.LogInitMethod ( "loadRecordLayoutList" );
-      this.LogInit ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInit ( "AllRecordLayouts.Count: " + EuAdapter.AdapterObjects.AllRecordLayouts.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllRecordLayouts.Count > 0 )
+      if ( EuAdapter.AdapterObjects.AllRecordLayouts.Count > 0 )
       {
         this.LogInit ( "Record layouts loaded." );
         this.LogInit ( "END loadRecordLayoutList" );
@@ -352,13 +439,13 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
       // 
-      this._AdapterObjects.AllRecordLayouts = bll_RecordLayouts.GetRecordLayoutListWithFields (
+      EuAdapter.AdapterObjects.AllRecordLayouts = bll_RecordLayouts.GetRecordLayoutListWithFields (
         EdRecordTypes.Null,
         EdRecordObjectStates.Null );
 
       this.LogInitClass ( bll_RecordLayouts.Log );
 
-      this.LogInit ( "AllRecordLayouts.Count: " + this._AdapterObjects.AllRecordLayouts.Count );
+      this.LogInit ( "AllRecordLayouts.Count: " + EuAdapter.AdapterObjects.AllRecordLayouts.Count );
 
       this.LogInit ( "END loadRecordLayoutList" );
 
@@ -372,12 +459,12 @@ namespace Evado.UniForm.Digital
     private void loadSelectionLists ( )
     {
       this.LogInitMethod ( "loadSelectionLists" );
-      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + EuAdapter.AdapterObjects.AllSelectionLists.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllSelectionLists.Count > 0 )
+      if ( EuAdapter.AdapterObjects.AllSelectionLists.Count > 0 )
       {
         this.LogInit ( "No Selection Lists." );
         this.LogInit ( "END loadSelectionLists" );
@@ -393,11 +480,11 @@ namespace Evado.UniForm.Digital
       // 
       // Query the database to retrieve a list of the selection lists that are issued.
       // 
-      this._AdapterObjects.AllSelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
+      EuAdapter.AdapterObjects.AllSelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
 
       this.LogInitClass ( bll_SelectionLists.Log );
 
-      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + EuAdapter.AdapterObjects.AllSelectionLists.Count );
 
       this.LogInit ( "END loadSelectionLists" );
 
@@ -411,12 +498,12 @@ namespace Evado.UniForm.Digital
     private List<EdSelectionList> getSelectionLists ( )
     {
       this.LogInitMethod ( "getSelectionLists" );
-      this.LogInit ( "SelectionLists.Count: " + this._AdapterObjects.AllSelectionLists.Count );
+      this.LogInit ( "SelectionLists.Count: " + EuAdapter.AdapterObjects.AllSelectionLists.Count );
 
       //
       // Exit the method if the list exists or the loaded entiy layout is false.
       //
-      if ( this._AdapterObjects.AllSelectionLists.Count == 0 )
+      if ( EuAdapter.AdapterObjects.AllSelectionLists.Count == 0 )
       {
         this.LogInit ( "No Selection Lists." );
         this.LogInitMethodEnd ( "getSelectionLists" );
@@ -431,7 +518,7 @@ namespace Evado.UniForm.Digital
       //
       // iterate through the all selection list extracting the issued selection lists.
       //
-      foreach ( EdSelectionList list in this._AdapterObjects.AllSelectionLists )
+      foreach ( EdSelectionList list in EuAdapter.AdapterObjects.AllSelectionLists )
       {
         if ( list.State == EdSelectionList.SelectionListStates.Issued )
         {
@@ -454,13 +541,13 @@ namespace Evado.UniForm.Digital
     {
       this.LogInitMethod( "LoadPageIdentifiers method" );
 
-      if ( this._AdapterObjects.PageIdentifiers == null )
+      if ( EuAdapter.AdapterObjects.PageIdentifiers == null )
       {
-        this._AdapterObjects.PageIdentifiers = new List<EvOption> ( );
+        EuAdapter.AdapterObjects.PageIdentifiers = new List<EvOption> ( );
       }
           
 
-      if( this._AdapterObjects.PageIdentifiers.Count > 0 )
+      if( EuAdapter.AdapterObjects.PageIdentifiers.Count > 0 )
       {  
         return;
       }
@@ -468,84 +555,84 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the methods variables and objects.
       //
-      this._AdapterObjects.PageIdentifiers = new List<EvOption> ( );
+      EuAdapter.AdapterObjects.PageIdentifiers = new List<EvOption> ( );
 
-      this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( ) );
 
       //
       // add the static page identifiers.
       //
       #region static page identifiers.
       //this.LogInit ( "Generating the Static PageId list" );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Home_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Access_Denied ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Profile ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Database_Version ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Home_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Access_Denied ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Alert_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Ancillary_Record_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Event_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Application_Profile ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Database_Version ) );
 
       //this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_View ) );
       //this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_Page ) );
       //this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Data_Dictionary_Upload ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Draft_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Section_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Field_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Upload ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Download ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Draft_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Properties_Section_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Field_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Upload ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Form_Template_Download ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Email_Templates_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Email_Templates_Page ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Admin_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Export_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Query_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Admin_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Export_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Query_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_View ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Login_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Login_Page ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Menu_Page ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_List ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Operational_Report_List ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Organisation_View ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_Upload ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Page_Layout_Upload ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Saved_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Column_Selection_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Upload ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Download ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Saved_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Column_Selection_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Upload ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Report_Template_Download ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Admin_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Records_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_View ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Admin_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Records_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Record_Layout_Page ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Upload ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Upload ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Selection_List_View ) );
 
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_DownLoad_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.My_User_Profile_Update_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Password_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Upload_Page ) );
-      this._AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_DownLoad_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.My_User_Profile_Update_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Profile_Password_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_Upload_Page ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.User_View ) );
 
       #endregion
 
@@ -554,7 +641,7 @@ namespace Evado.UniForm.Digital
       //
       // dynamic page identifiers for Entities by LayoutId
       //
-      foreach ( EdPageLayout pageLayout in this._AdapterObjects.AllPageLayouts )
+      foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
       {
         if ( pageLayout.State !=  EdPageLayout.States.Issued )
         {
@@ -566,7 +653,7 @@ namespace Evado.UniForm.Digital
 
         this.LogInit ( "{0} = {1} - {2} > UserType {3} ", pageId, pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
 
-        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageId + " - "+ pageLayout.Title ) );
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageId + " - "+ pageLayout.Title ) );
 
       }//END page list iteration
 
@@ -576,7 +663,7 @@ namespace Evado.UniForm.Digital
       //
       // dynamic page identifiers for Entities by LayoutId
       //
-      foreach ( EdRecord entityLayout in this._AdapterObjects.AllEntityLayouts )
+      foreach ( EdRecord entityLayout in EuAdapter.AdapterObjects.AllEntityLayouts )
       {
         if ( entityLayout.State != EdRecordObjectStates.Form_Issued )
         {
@@ -589,7 +676,7 @@ namespace Evado.UniForm.Digital
 
         this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
-        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
         //
         // add the page identifier for child entities.
@@ -604,7 +691,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
               break;
             }
           case EdRecord.ParentTypeList.User:
@@ -614,7 +701,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
               break;
             }
@@ -625,7 +712,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
               break;
             }
@@ -637,7 +724,7 @@ namespace Evado.UniForm.Digital
       //
       // dynamic page identifiers for Entities by LayoutId
       //
-      foreach ( EdRecord recordLayouts in this._AdapterObjects.AllRecordLayouts )
+      foreach ( EdRecord recordLayouts in EuAdapter.AdapterObjects.AllRecordLayouts )
       {
         if ( recordLayouts.State != EdRecordObjectStates.Form_Issued )
         {
@@ -649,7 +736,7 @@ namespace Evado.UniForm.Digital
 
         this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
-        this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
         //
         // add the page identifier for child entities.
@@ -663,7 +750,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
               break;
             }
@@ -674,7 +761,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
               break;
             }
@@ -685,7 +772,7 @@ namespace Evado.UniForm.Digital
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, recordLayouts.LayoutId, recordLayouts.Title, recordLayouts.Design.ParentType );
 
-              this._AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
               break;
             }
@@ -693,7 +780,7 @@ namespace Evado.UniForm.Digital
 
       }//END Record list iteration 
 
-      this.LogInit ( "PageIdentifiers.Count: " + this._AdapterObjects.PageIdentifiers.Count );
+      this.LogInit ( "PageIdentifiers.Count: " + EuAdapter.AdapterObjects.PageIdentifiers.Count );
 
       this.LogInitMethodEnd ( "LoadPageIdentifiers method" );
 
@@ -707,27 +794,27 @@ namespace Evado.UniForm.Digital
     public void LoadPageComponents ( )
     {
       this.LogInitMethod ( "LoadPageComponents method" );
-      this.LogInit ( "AllEntityLayouts.Count: " + this._AdapterObjects.AllEntityLayouts.Count );
+      this.LogInit ( "AllEntityLayouts.Count: " + EuAdapter.AdapterObjects.AllEntityLayouts.Count );
 
-      if ( this._AdapterObjects.PageComponents == null )
+      if ( EuAdapter.AdapterObjects.PageComponents == null )
       {
-        this._AdapterObjects.PageComponents = new List<EvOption> ( );
+        EuAdapter.AdapterObjects.PageComponents = new List<EvOption> ( );
       }
 
-      if ( this._AdapterObjects.PageComponents.Count > 0 )
+      if ( EuAdapter.AdapterObjects.PageComponents.Count > 0 )
       {
         return;
       }
       //
       // Initialise the methods variables and objects.
       //
-      this._AdapterObjects.PageComponents = new List<EvOption> ( );
+      EuAdapter.AdapterObjects.PageComponents = new List<EvOption> ( );
 
       //this.LogInit ( "Generating the Entities component list" );
       //
       // dynamic page identifiers for Entities by LayoutId
       //
-      foreach ( EdRecord entityLayout in this._AdapterObjects.AllEntityLayouts )
+      foreach ( EdRecord entityLayout in EuAdapter.AdapterObjects.AllEntityLayouts )
       {
         if ( entityLayout.State != EdRecordObjectStates.Form_Issued )
         {
@@ -744,7 +831,7 @@ namespace Evado.UniForm.Digital
 
         //.LogInit ( "Entity componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
         //
         // add the selection for the entity list component.
@@ -754,7 +841,7 @@ namespace Evado.UniForm.Digital
 
         //this.LogInit ( "Entity List componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
         //
         // add the selection for the entity filtered list component.
@@ -764,7 +851,7 @@ namespace Evado.UniForm.Digital
 
         //this.LogInit ( "Entity Filtered List componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
 
       }//END Entity list iteration
@@ -773,7 +860,7 @@ namespace Evado.UniForm.Digital
       //
       // dynamic page identifiers for Records by LayoutId
       //
-      foreach ( EdRecord recordLayout in this._AdapterObjects.AllRecordLayouts )
+      foreach ( EdRecord recordLayout in EuAdapter.AdapterObjects.AllRecordLayouts )
       {
         if ( recordLayout.State != EdRecordObjectStates.Form_Issued )
         {
@@ -790,7 +877,7 @@ namespace Evado.UniForm.Digital
 
         //.LogInit ( "Record componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
         //
         // add the selection for the entity list component.
@@ -800,7 +887,7 @@ namespace Evado.UniForm.Digital
 
         //this.LogInit ( "Record List componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
         //
         // add the selection for the entity filtered list component.
@@ -810,14 +897,14 @@ namespace Evado.UniForm.Digital
 
         //this.LogInit ( "Record Filtered List componentId: " + componentId );
 
-        this._AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
+        EuAdapter.AdapterObjects.PageComponents.Add ( new EvOption ( componentId, componentLabel ) );
 
       }//END Record list iteration
 
-      this.LogInit ( "PageComponents.Count: " + this._AdapterObjects.PageComponents.Count );
+      this.LogInit ( "PageComponents.Count: " + EuAdapter.AdapterObjects.PageComponents.Count );
 
       this.LogInit ( "Page component list:" );
-      foreach ( EvOption option in this._AdapterObjects.PageComponents )
+      foreach ( EvOption option in EuAdapter.AdapterObjects.PageComponents )
       {
         this.LogInit ( "-{0} - Desc: {1} ", option.Value, option.Description );
       }

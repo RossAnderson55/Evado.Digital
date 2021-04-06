@@ -704,10 +704,24 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EvOption> PageComponents { get; set; }
 
+
+    private List<EdOrganisation> _OrganisationList = new List<EdOrganisation> ( );
     /// <summary>
     /// This property object contains a list of organisations. 
     /// </summary>
-    public List<EdOrganisation> OrganisationList { get; set; }
+    public List<EdOrganisation> OrganisationList
+    {
+      get { return this._OrganisationList; }
+      set
+      {
+        this._OrganisationList = value;
+
+        //
+        // Create the entiy parent list.
+        //
+        this.createEntityParents ( );
+      }
+    }
 
 
     // ==================================================================================

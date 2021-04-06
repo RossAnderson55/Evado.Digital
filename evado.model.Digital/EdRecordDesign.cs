@@ -35,6 +35,16 @@ namespace Evado.Model.Digital
       this.AuthorAccess = EdRecord.AuthorAccessList.Null;
       this.ParentType = EdRecord.ParentTypeList.Null;
       this.ParentEntities = String.Empty;
+      this.Description = String.Empty;
+      this.Title = String.Empty;
+      this.HttpReference = String.Empty;
+      this.UpdateReason = EdRecord.UpdateReasonList.Minor_Update;
+      this.ReadAccessRoles = String.Empty;
+      this.EditAccessRoles = String.Empty;
+      this.RecordCategory = String.Empty;
+      this.TypeId = EdRecordTypes.Normal_Record;
+      this.LinkContentSetting = EdRecord.LinkContentSetting.Default;
+    
     }
     #region Globals and constants.
     /// <summary>
@@ -48,37 +58,17 @@ namespace Evado.Model.Digital
 
     public bool IsEntity = false; 
 
-    private string _Title = String.Empty;
     /// <summary>
     /// This property contains a title of a form design.
     /// </summary>
-    public string Title
-    {
-      get
-      {
-        return this._Title;
-      }
-      set
-      {
-        this._Title = value;
-      }
-    }
+    public string Title { get; set; }
 
     private string _HttpReference = String.Empty;
     /// <summary>
     /// This property contains a reference of a form design.
     /// </summary>
-    public string HttpReference
-    {
-      get
-      {
-        return this._HttpReference;
-      }
-      set
-      {
-        this._HttpReference = value;
-      }
-    }
+    public string HttpReference { get; set; }
+
     private string _Instructions = String.Empty;
     /// <summary>
     /// This property contains an instruction of a form design.
@@ -104,70 +94,27 @@ namespace Evado.Model.Digital
       }
     }
 
-    private string _Description = String.Empty;
     /// <summary>
     /// This property contains a description of a form containing update notes. 
     /// </summary>
-    public string Description
-    {
-      get
-      {
-        return this._Description;
-      }
-      set
-      {
-        this._Description = value;
-      }
-    }
+    public string Description { get; set; }
 
 
     private EdRecord.UpdateReasonList _UpdateReason = EdRecord.UpdateReasonList.Minor_Update;
     /// <summary>
     /// This property contains an update reason enumerated value 
     /// </summary>
-    public EdRecord.UpdateReasonList UpdateReason
-    {
-      get
-      {
-        return this._UpdateReason;
-      }
-      set
-      {
-        this._UpdateReason = value;
-      }
-    }
+    public EdRecord.UpdateReasonList UpdateReason { get; set; }
 
-    private string _ReadAccessRoles = String.Empty;
     /// <summary>
     /// This property contains a list of read acces roles
     /// </summary>
-    public string ReadAccessRoles
-    {
-      get
-      {
-        return this._ReadAccessRoles;
-      }
-      set
-      {
-        this._ReadAccessRoles = value;
-      }
-    }
+    public string ReadAccessRoles { get; set; }
 
-    private string _EditAccessRoles = String.Empty;
     /// <summary>
     /// This property contains a list of edit acces roles
     /// </summary>
-    public string EditAccessRoles
-    {
-      get
-      {
-        return this._EditAccessRoles;
-      }
-      set
-      {
-        this._EditAccessRoles = value;
-      }
-    }
+    public string EditAccessRoles { get; set; }
 
     /// <summary>
     /// This property indicates that only the author has edit access to the record.
@@ -224,58 +171,26 @@ namespace Evado.Model.Digital
     /// </summary>
     public string Approval { get; set; }
     
-    private string _RecordCategory = String.Empty;
+
     /// <summary>
     /// This property contains a form category of a form design.
     /// </summary>
-    public string RecordCategory
-    {
-      get
-      {
-        return this._RecordCategory;
-      }
-      set
-      {
-        this._RecordCategory = value;
-      }
-    }
+    public string RecordCategory { get; set; }
     
-    private EdRecordTypes _TypeId = EdRecordTypes.Null;
     /// <summary>
     /// This property contains a type identifier of a form design.
     /// </summary>
-    public EdRecordTypes TypeId
-    {
-      get
-      {
-        return this._TypeId;
-      }
-      set
-      {
-        this._TypeId = value;
-      }
-    }
+    public EdRecordTypes TypeId { get; set; }
 
     /// <summary>
     /// This property contains the page layout enumerated value 
     /// </summary>
     public object DefaultPageLayout { get; set; }
 
-    private EdRecord.LinkContentSetting _LinkContentSetting = EdRecord.LinkContentSetting.Default;
     /// <summary>
     /// This property indicated whether record summary content is to be displayed in command titles of the page.
     /// </summary>
-    public EdRecord.LinkContentSetting LinkContentSetting
-    {
-      get
-      {
-        return this._LinkContentSetting;
-      }
-      set
-      {
-        this._LinkContentSetting = value;
-      }
-    }
+    public EdRecord.LinkContentSetting LinkContentSetting { get; set; }
 
     /// <summary>
     /// This property indicated whether related entities are to be displayed at the bottom of the page.

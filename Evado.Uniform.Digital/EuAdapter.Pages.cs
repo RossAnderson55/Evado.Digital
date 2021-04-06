@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.UniForm.Clinical\ApplicationService.cs" 
+ * <copyright file="Evado.UniForm.Digital\EuAdapter.cs" 
  *  company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c)  2002 - 2021  EVADO HOLDING PTY. LTD..  All rights reserved.
@@ -105,6 +105,8 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "generatePage" );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+
+      this.LogDebug ( "Current Entity: {0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
       //
       // initialise the methods objects and variables.
       //
@@ -134,7 +136,7 @@ namespace Evado.UniForm.Digital
       {
         this.LogDebug ( "New paged will be loaded." );
 
-        pageLayout = this._AdapterObjects.getPageLayout ( pageId );
+        pageLayout = EuAdapter.AdapterObjects.getPageLayout ( pageId );
 
         if ( pageLayout == null )
         {
@@ -571,7 +573,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "generateMainMenu" );
-      this.LogValue ( "WebSiteIdentifier: " + this._AdapterObjects.PlatformId );
+      this.LogValue ( "WebSiteIdentifier: " + EuAdapter.AdapterObjects.PlatformId );
       this.LogValue ( "selectedMenuGroup : " + this.Session.MenuGroupItem.Group );
       this.LogDebug ( "User Role: " + this.Session.UserProfile.Roles );
       // 
@@ -584,7 +586,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the menu items to extract the menu groups.
       //
-      foreach ( EvMenuItem groupHeader in this._AdapterObjects.getMenuGroups ( EvMenuItem.CONST_MAIN_MENU_ID ) )
+      foreach ( EvMenuItem groupHeader in EuAdapter.AdapterObjects.getMenuGroups ( EvMenuItem.CONST_MAIN_MENU_ID ) )
       {
         this.LogDebug ( "Group: {0}, PageId: {1}, Title: {2}, Roles: {3}", groupHeader.Group, groupHeader.PageId, groupHeader.Title, groupHeader.RoleList );
 
@@ -799,7 +801,7 @@ namespace Evado.UniForm.Digital
       // 
       // Iterate through the menu extracting the groups items.
       // 
-      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
+      foreach ( EvMenuItem item in EuAdapter.AdapterObjects.MenuList )
       {
         // 
         // Create a new pageMenuGroup if the headers do not match.
@@ -874,7 +876,7 @@ namespace Evado.UniForm.Digital
       // 
       // Iterate through the menu extracting the groups items.
       // 
-      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
+      foreach ( EvMenuItem item in EuAdapter.AdapterObjects.MenuList )
       {
         // 
         // Create a new pageMenuGroup if the headers do not match.
@@ -961,7 +963,7 @@ namespace Evado.UniForm.Digital
       // Initialise the menus class for generating the home page menus.
       // 
       this._Navigation = new EuNavigation (
-        this._AdapterObjects,
+        EuAdapter.AdapterObjects,
         this.Session,
         this.ClassParameters );
 
@@ -971,9 +973,9 @@ namespace Evado.UniForm.Digital
       this.getSelectedGroupItem ( PageCommand );
 
       String pageTitle = Evado.Model.Digital.EdLabels.Default_Home_Page_Title;
-      if ( this._AdapterObjects.Settings.HomePageHeaderText != String.Empty )
+      if ( EuAdapter.AdapterObjects.Settings.HomePageHeaderText != String.Empty )
       {
-        pageTitle = this._AdapterObjects.Settings.HomePageHeaderText;
+        pageTitle = EuAdapter.AdapterObjects.Settings.HomePageHeaderText;
       }
 
       //
@@ -1006,7 +1008,7 @@ namespace Evado.UniForm.Digital
       // 
       // if menu items eise then generate dashboard items.
       // 
-      if ( this._AdapterObjects.MenuList.Count > 0 )
+      if ( EuAdapter.AdapterObjects.MenuList.Count > 0 )
       {
         // 
         // generate the page menu for the user.
@@ -1157,7 +1159,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the user menu list to return the selected menu item.
       //
-      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
+      foreach ( EvMenuItem item in EuAdapter.AdapterObjects.MenuList )
       {
         if ( item.Group == selectedMenuGroup
           && item.GroupHeader == true )

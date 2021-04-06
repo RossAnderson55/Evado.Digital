@@ -2502,6 +2502,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new {0} .
+        /// </summary>
+        public static string Entity_Create_New_List_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_Create_New_List_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Page.
         /// </summary>
         public static string Entity_Enable_Edit_Command_Title {

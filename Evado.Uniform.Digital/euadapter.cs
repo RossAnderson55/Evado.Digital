@@ -57,6 +57,11 @@ namespace Evado.UniForm.Digital
 
       Evado.Bll.EvStaticSetting.DebugOn = false;
 
+      if ( EuAdapter.AdapterObjects.OrganisationList == null )
+      {
+        EuAdapter.AdapterObjects.OrganisationList = new List<EdOrganisation> ( );
+      }
+
     }//END ApplicationService method
 
     // ==================================================================================
@@ -124,8 +129,9 @@ namespace Evado.UniForm.Digital
         this.ClassParameters.UserProfile = new EdUserProfile ( this.ServiceUserProfile );
         this.ClassParameters.LoggingLevel = 5;
 
-        this._AdapterObjects = new EuGlobalObjects ( this.ClassParameters );
-        this._AdapterObjects.LoggingLevel = 5;
+        EuAdapter.AdapterObjects = new EuGlobalObjects ( this.ClassParameters );
+        EuAdapter.AdapterObjects.LoggingLevel = 5;
+
         //
         // Delete the old application objects.
         //
@@ -139,8 +145,8 @@ namespace Evado.UniForm.Digital
         //
         // Define the application Guid
         //
-        this.ClassParameters.AdapterGuid = this._AdapterObjects.Settings.Guid;
-        this.ClassParameters.PlatformId = this._AdapterObjects.PlatformId;
+        this.ClassParameters.AdapterGuid = EuAdapter.AdapterObjects.Settings.Guid;
+        this.ClassParameters.PlatformId = EuAdapter.AdapterObjects.PlatformId;
 
         //
         // load the user's session object in to memory.
@@ -186,6 +192,11 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EntityDictionary == null )
         {
           this.Session.EntityDictionary = new List<EdRecord> ( );
+        }
+
+        if ( EuAdapter.AdapterObjects.OrganisationList == null )
+        {
+          EuAdapter.AdapterObjects.OrganisationList = new List<EdOrganisation> ( );
         }
 
         /*
@@ -346,7 +357,7 @@ namespace Evado.UniForm.Digital
 
     public static readonly EdRecordObjectStates CONST_RECORD_STATE_SELECTION_DEFAULT = EdRecordObjectStates.Withdrawn;
 
-    private EuGlobalObjects _AdapterObjects = new EuGlobalObjects ( );
+    public static EuGlobalObjects AdapterObjects = new EuGlobalObjects ( );
 
     private EuSession Session = new EuSession ( );
 
@@ -473,7 +484,7 @@ namespace Evado.UniForm.Digital
         this.ClassParameters.LoggingLevel = this.LoggingLevel;
 
         this._Navigation = new EuNavigation (
-        this._AdapterObjects,
+        EuAdapter.AdapterObjects,
         this.Session,
         this.ClassParameters );
 
@@ -495,7 +506,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
-        Evado.Bll.EvStaticSetting.SiteGuid = this._AdapterObjects.Settings.Guid;
+        Evado.Bll.EvStaticSetting.SiteGuid = EuAdapter.AdapterObjects.Settings.Guid;
 
         // 
         // Load the user profile.
@@ -519,7 +530,11 @@ namespace Evado.UniForm.Digital
         this.loadUserOrganisation ( ); ;
 
         this.LogDebug ( "User OrgType: " + this.Session.UserProfile.OrgType );
-
+        
+        //
+        // load the default child entity.
+        //
+        this.loadDefaultChildEntity ( );
 
         //
         // Process a demonstration user registration request. 
@@ -626,7 +641,7 @@ namespace Evado.UniForm.Digital
       // initialise patient adapter the service object.
       //
       EuUserRegistration demonstrationUserRegistration = new EuUserRegistration (
-        this._AdapterObjects,
+        EuAdapter.AdapterObjects,
         this.ServiceUserProfile,
         this.Session,
         this.UniForm_BinaryFilePath,
@@ -642,7 +657,7 @@ namespace Evado.UniForm.Digital
       //
       // Update the application and session objects.
       //
-      this._AdapterObjects = demonstrationUserRegistration.AdapterObjects;
+      EuAdapter.AdapterObjects = demonstrationUserRegistration.AdapterObjects;
       this.Session = demonstrationUserRegistration.Session;
 
       //
@@ -697,7 +712,7 @@ namespace Evado.UniForm.Digital
       // Define the records class
       //
       this._Records = new EuRecords (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -710,7 +725,7 @@ namespace Evado.UniForm.Digital
       // Initialise the entities class
       //
       this._Entities = new EuEntities (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -722,7 +737,7 @@ namespace Evado.UniForm.Digital
       // 
       // Save the application parameters to global objects.
       // 
-      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = EuAdapter.AdapterObjects;
 
       // 
       // Get the application object enumeration value.
@@ -753,7 +768,7 @@ namespace Evado.UniForm.Digital
             // Initialise the methods variables and objects.
             // 
             EuAdapterConfig applicationProfiles = new EuAdapterConfig (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -776,7 +791,7 @@ namespace Evado.UniForm.Digital
             // Initialise the methods variables and objects.
             // 
             EuApplicationEvents applicationProfiles = new EuApplicationEvents (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -798,7 +813,7 @@ namespace Evado.UniForm.Digital
             // Initialise the methods variables and objects.
             // 
             EuStaticContentTemplates emailTemplates = new EuStaticContentTemplates (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath );
@@ -819,7 +834,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuOrganisations organisations = new EuOrganisations ( this._AdapterObjects,
+            EuOrganisations organisations = new EuOrganisations ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -842,7 +857,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuUserProfiles userProfiles = new EuUserProfiles ( this._AdapterObjects,
+            EuUserProfiles userProfiles = new EuUserProfiles ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -866,7 +881,7 @@ namespace Evado.UniForm.Digital
             // Initialise the methods variables and objects.
             // 
             EuMenus menus = new EuMenus (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -878,7 +893,7 @@ namespace Evado.UniForm.Digital
             // 
             // Save the application parameters to global objects.
             // 
-            this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
+            this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = EuAdapter.AdapterObjects;
 
             this.ErrorMessage = menus.ErrorMessage;
             this.LogAdapter ( menus.Log );
@@ -894,7 +909,7 @@ namespace Evado.UniForm.Digital
             // Initialise the methods variables and objects.
             // 
             EuBinaryFiles binaryFiles = new EuBinaryFiles (
-              this._AdapterObjects,
+              EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -943,7 +958,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuPageLayouts pageLayouts = new EuPageLayouts ( this._AdapterObjects,
+            EuPageLayouts pageLayouts = new EuPageLayouts ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -965,7 +980,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuSelectionLists selectionLists = new EuSelectionLists ( this._AdapterObjects,
+            EuSelectionLists selectionLists = new EuSelectionLists ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -988,7 +1003,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordLayouts recordLayouts = new EuRecordLayouts ( this._AdapterObjects,
+            EuRecordLayouts recordLayouts = new EuRecordLayouts ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1011,7 +1026,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuRecordFields recordLayoutFields = new EuRecordFields ( this._AdapterObjects,
+            EuRecordFields recordLayoutFields = new EuRecordFields ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1032,7 +1047,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuEntityLayouts entityLayouts = new EuEntityLayouts ( this._AdapterObjects,
+            EuEntityLayouts entityLayouts = new EuEntityLayouts ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1053,7 +1068,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuEntityFields entityLayoutFields = new EuEntityFields ( this._AdapterObjects,
+            EuEntityFields entityLayoutFields = new EuEntityFields ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1093,7 +1108,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuReportTemplates reportTemplates = new EuReportTemplates ( this._AdapterObjects,
+            EuReportTemplates reportTemplates = new EuReportTemplates ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1123,7 +1138,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuReports reports = new EuReports ( this._AdapterObjects,
+            EuReports reports = new EuReports ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1153,7 +1168,7 @@ namespace Evado.UniForm.Digital
             // 
             // Initialise the methods variables and objects.
             // 
-            EuAnalysis analysis = new EuAnalysis ( this._AdapterObjects,
+            EuAnalysis analysis = new EuAnalysis ( EuAdapter.AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
               this.UniForm_BinaryFilePath,
@@ -1228,7 +1243,7 @@ namespace Evado.UniForm.Digital
             {
               LogDebug ( "User Home page null" );
 
-              foreach ( EdPageLayout pageLayout in this._AdapterObjects.AllPageLayouts )
+              foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
               {
                 if ( pageLayout.hasUserType ( this.Session.UserProfile ) == true )
                 {
@@ -1333,7 +1348,7 @@ namespace Evado.UniForm.Digital
       // 
       if ( this.GlobalObjectList.ContainsKey ( EuAdapter.GLOBAL_OBJECT ) == true )
       {
-        this._AdapterObjects =
+        EuAdapter.AdapterObjects =
           (EuGlobalObjects) this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ];
       }
       // 
@@ -1346,12 +1361,12 @@ namespace Evado.UniForm.Digital
       }
       this.LogInit ( "PlatformId: '" + this._PlatformId + "'" );
       this.ClassParameters.PlatformId = this._PlatformId;
-      this._AdapterObjects.PlatformId = this._PlatformId;
+      EuAdapter.AdapterObjects.PlatformId = this._PlatformId;
 
       //  
       // Load the paremeters from the web.config if not already loaded.
       // 
-      if ( this._AdapterObjects.Settings.Guid != Guid.Empty )
+      if ( EuAdapter.AdapterObjects.Settings.Guid != Guid.Empty )
       {
         this.LogInit ( "APPLICATION OBJECT IS LOADED" );
         return;
@@ -1362,30 +1377,30 @@ namespace Evado.UniForm.Digital
       // 
       // Update the application path.
       // 
-      this._AdapterObjects.ApplicationPath = this.ApplicationPath;
+      EuAdapter.AdapterObjects.ApplicationPath = this.ApplicationPath;
 
       //
       // The object is empty so load the application parameter values.
       //
-      int loggingLevel = this._AdapterObjects.LoggingLevel;
-      this._AdapterObjects.LoggingLevel = 5;
+      int loggingLevel = EuAdapter.AdapterObjects.LoggingLevel;
+      EuAdapter.AdapterObjects.LoggingLevel = 5;
 
-      this._AdapterObjects.loadGlobalParameters ( );
+      EuAdapter.AdapterObjects.loadGlobalParameters ( );
 
-      this.LogInitClass ( this._AdapterObjects.Log );
-      this.LogInit ( "Version: " + this._AdapterObjects.Settings.Version );
-      this.LogInit ( "HiddenOrganisationFields: " + this._AdapterObjects.Settings.HiddenOrganisationFields );
-      this.LogInit ( "HiddenUserFields: " + this._AdapterObjects.Settings.HiddenUserFields );
+      this.LogInitClass ( EuAdapter.AdapterObjects.Log );
+      this.LogInit ( "Version: " + EuAdapter.AdapterObjects.Settings.Version );
+      this.LogInit ( "HiddenOrganisationFields: " + EuAdapter.AdapterObjects.Settings.HiddenOrganisationFields );
+      this.LogInit ( "HiddenUserFields: " + EuAdapter.AdapterObjects.Settings.HiddenUserFields );
 
       // 
       // Save the application parameters to global objects.
       // 
-      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = EuAdapter.AdapterObjects;
 
       this.LogInit ( "GlobalObjects: " + this.GlobalObjectList.Count );
 
       this.LogInit ( "GLOBAL APPLICATION OBJECT VALUES LOADED" );
-      this._AdapterObjects.LoggingLevel = loggingLevel;
+      EuAdapter.AdapterObjects.LoggingLevel = loggingLevel;
 
     }//END loadGlobalApplicationObjects method
 
@@ -1409,7 +1424,7 @@ namespace Evado.UniForm.Digital
         //
         // exit if web site is defined.
         //
-        if ( this._AdapterObjects.PlatformId != String.Empty )
+        if ( EuAdapter.AdapterObjects.PlatformId != String.Empty )
         {
           this.LogInit ( "The web site identifier exists to exit." );
           return;
@@ -1589,7 +1604,7 @@ namespace Evado.UniForm.Digital
       //
       // Save the application session for the next user generated groupCommand.
       //
-      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = this._AdapterObjects;
+      this.GlobalObjectList [ EuAdapter.GLOBAL_OBJECT ] = EuAdapter.AdapterObjects;
 
       this.LogValue ( "GlobalObjects.Count: " + this.GlobalObjectList.Count );
 
