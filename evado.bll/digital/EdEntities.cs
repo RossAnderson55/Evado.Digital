@@ -99,7 +99,7 @@ namespace Evado.Bll.Digital
     public int geyEntityCount (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "geyEntityCount method. " );
+      this.LogMethod ( "geyEntityCount" );
       this.LogValue ( "EdQueryParameters parameters." );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
@@ -139,7 +139,7 @@ namespace Evado.Bll.Digital
     public List<EdRecord> GetEntityList (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "GetEntityList method. " );
+      this.LogMethod ( "GetEntityList" );
       this.LogDebug ( "Parameters." );
       this.LogValue ( "-LayoutId: " + QueryParameters.LayoutId );
       this.LogValue ( "-IncludeRecordValues: " + QueryParameters.IncludeRecordValues );

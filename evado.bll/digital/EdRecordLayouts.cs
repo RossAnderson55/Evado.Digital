@@ -331,7 +331,7 @@ namespace Evado.Bll.Digital
       // 
       // If the Action is DELETE and the state is draft.
       // 
-      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Form_Deleted
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Deleted
         && Layout.State == EdRecordObjectStates.Form_Draft )
       {
         iReturn = this._Dal_RecordLayouts.DeleteItem ( Layout );
@@ -389,7 +389,7 @@ namespace Evado.Bll.Digital
       // 
       // If the trial being approved then withdraw the pervious issues trial
       // 
-      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Form_Approved )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
       {
         this.LogValue ( "Withdraw the form" );
 
@@ -449,7 +449,7 @@ namespace Evado.Bll.Digital
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Saved )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Saved )
       {
         this.LogValue ( "Saving  Form" );
 
@@ -462,7 +462,7 @@ namespace Evado.Bll.Digital
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Reviewed )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Reviewed )
       {
         this.LogValue ( "Reviewing Form" );
 
@@ -471,7 +471,7 @@ namespace Evado.Bll.Digital
         return;
       }
 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Approved )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
       {
         this.LogValue ( "Issuing Form" );
 
@@ -481,7 +481,7 @@ namespace Evado.Bll.Digital
         return;
       }
 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Form_Withdrawn )
+      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Withdrawn )
       {
         Form.State = EdRecordObjectStates.Withdrawn;
         return;

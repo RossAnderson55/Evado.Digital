@@ -57,27 +57,27 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the save form save action
       /// </summary>
-      Form_Saved,
+      Layout_Saved,
 
       /// <summary>
       /// This enumeration defines the form reciew save action
       /// </summary>
-      Form_Reviewed,
+      Layout_Reviewed,
 
       /// <summary>
       /// This enumeration defines the form approved save action.
       /// </summary>
-      Form_Approved,
+      Layout_Approved,
 
       /// <summary>
       /// This enumeratin defines the form withdrawn save action.
       /// </summary>
-      Form_Withdrawn,
+      Layout_Withdrawn,
 
       /// <summary>
       /// This enumeration defines the form deleted save action.
       /// </summary>
-      Form_Deleted,
+      Layout_Deleted,
 
       /// <summary>
       /// This enumeration defines the record saved save action.
@@ -1489,6 +1489,36 @@ namespace Evado.Model.Digital
     /// </summary>
     /// <param name="UserProfile">EvUserProfile Object</param>
     //-------------------------------------------------------------------------------------
+    public bool createUserAccess ( EdUserProfile UserProfile )
+    {
+
+      //
+      // Set the designer access.
+      //
+      if ( UserProfile.hasDesignAccess == true
+        && ( this.State == EdRecordObjectStates.Form_Draft
+          || this.State == EdRecordObjectStates.Form_Reviewed ) )
+      {
+        return false;
+      }
+
+      //
+      // Set the default edit access 
+      //
+      if ( UserProfile.hasRole ( this.Design.EditAccessRoles ) == true )
+      {
+        return true;
+      }
+      return false;
+
+    }//END createUserAccess method
+
+    //=====================================================================================
+    /// <summary>
+    /// This method sets the Form Role property 
+    /// </summary>
+    /// <param name="UserProfile">EvUserProfile Object</param>
+    //-------------------------------------------------------------------------------------
     public void setUserAccess ( EdUserProfile UserProfile )
     {
       //
@@ -1514,6 +1544,16 @@ namespace Evado.Model.Digital
       {
         case AuthorAccessList.Only_Author_Selectable:
           {
+            if ( this.AuthorUserId == UserProfile.UserId )
+            {
+              this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
+              return;
+            }
+
+            /* 
+             * FURTHER CONDITIONS WILL BE ADDED WHEN MULTIPLE USERS HAVE ACCESS TO THE ENTITY.
+             */
+
             this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             return;
 

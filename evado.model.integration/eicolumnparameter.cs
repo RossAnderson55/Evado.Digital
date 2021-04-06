@@ -165,7 +165,6 @@ namespace Evado.Model.Integration
     /// <param name="Name">String: column name</param>
     /// <param name="EvadoFieldId">object Evado Field identifier</param>
     /// <param name="Index">Bool: True column is the index</param>
-    /// <param name="MetaData">String: column metadata</param>
     // -----------------------------------------------------------------------------------
     public EiColumnParameters (
       EiDataTypes Datatype,

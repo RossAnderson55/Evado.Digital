@@ -850,8 +850,9 @@ namespace Evado.Dal.Digital
         // 
         userProfile = this.readRow ( row );
 
-        this.LogDebug ( "UserProfile.UserId: " + userProfile.UserId );
-        this.LogDebug ( "UserProfile.CommonName: " + userProfile.CommonName );
+        //this.LogDebug ( "UserProfile.UserId: " + userProfile.UserId );
+        //this.LogDebug ( "UserProfile.CommonName: " + userProfile.CommonName );
+        //this.LogDebug ( "UserProfile.OrgId: " + userProfile.OrgId );
 
       }//END Using
 

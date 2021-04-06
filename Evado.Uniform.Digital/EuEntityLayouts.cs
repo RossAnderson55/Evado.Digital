@@ -159,13 +159,13 @@ namespace Evado.UniForm.Digital
         //
         if ( this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
           && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
-          && this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString() )
+          && this.Session.PageId != EdStaticPageIds.Entity_Layout_Page.ToString ( ) )
         {
-          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString();
-        }
-        if ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Issued )
-        {
-          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString();
+          this.Session.PageId = EdStaticPageIds.Form_Draft_Page.ToString ( );
+          if ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Issued )
+          {
+            this.Session.PageId = EdStaticPageIds.Entity_Layout_Page.ToString ( );
+          }
         }
 
         String stPageId = PageCommand.GetParameter (
@@ -173,7 +173,7 @@ namespace Evado.UniForm.Digital
 
         if ( stPageId != String.Empty )
         {
-          this.Session.PageId = stPageId ;
+          this.Session.PageId = stPageId;
         }
         this.LogValue ( "this.Session.PageId : " + this.Session.PageId );
 
@@ -188,8 +188,8 @@ namespace Evado.UniForm.Digital
         // Update the session form object if a new section is added to the page.
         //
         if ( value == "1"
-          && ( this.Session.PageId == EdStaticPageIds.Form_Properties_Section_Page.ToString()
-            || this.Session.PageId == EdStaticPageIds.Form_Properties_Page.ToString() ) )
+          && ( this.Session.PageId == EdStaticPageIds.Form_Properties_Section_Page.ToString ( )
+            || this.Session.PageId == EdStaticPageIds.Form_Properties_Page.ToString ( ) ) )
         {
           //
           // Update the section table values.
@@ -1325,7 +1325,7 @@ namespace Evado.UniForm.Digital
         {
           processLog.AppendLine ( "Existing draft version of " + UploadedForm.LayoutId + " " + UploadedForm.Title + " found." );
 
-          form.SaveAction = EdRecord.SaveActionCodes.Form_Deleted;
+          form.SaveAction = EdRecord.SaveActionCodes.Layout_Deleted;
 
           result = this._Bll_EntityLayouts.SaveItem ( form );
 
@@ -1568,7 +1568,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // For a new form do not display the delete or review commands.
@@ -1591,13 +1591,13 @@ namespace Evado.UniForm.Digital
 
               pageCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+               EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
 
               if ( this.Session.EntityLayout.Fields.Count > 0 )
               {
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
                 //
                 // Add the same groupCommand.
                 //
@@ -1614,7 +1614,7 @@ namespace Evado.UniForm.Digital
 
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Reviewed.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Reviewed.ToString ( ) );
 
               }//END Form field exist.
             }//END form exists.
@@ -1639,7 +1639,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // Add the same groupCommand.
@@ -1657,7 +1657,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Approved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Approved.ToString ( ) );
 
             break;
           }
@@ -1679,7 +1679,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
             //
             // Add the same groupCommand.
             //
@@ -1814,7 +1814,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
             //
             // The annotated layout button.
             //
@@ -1864,7 +1864,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
             //
             // The annotated layout button.
@@ -1883,7 +1883,7 @@ namespace Evado.UniForm.Digital
             pageCommand.SetPageId ( EdStaticPageIds.Form_Annotated_Page );
             break;
           }
-        case EdStaticPageIds.Record_Layout_Page:
+        case EdStaticPageIds.Entity_Layout_Page:
           {
             //
             // Add the draft page layout.
@@ -1975,7 +1975,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
             break;
           }
       }//End Sticeh statement
@@ -2052,11 +2052,11 @@ namespace Evado.UniForm.Digital
             }
             else
             {
-              pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
             }
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // For a new form do not display the delete or review commands.
@@ -2076,11 +2076,11 @@ namespace Evado.UniForm.Digital
               // Define the save groupCommand parameters.
               // 
               pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
-              pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+              pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
               pageCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+               EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
               //
               // Add the same groupCommand.
               //
@@ -2096,11 +2096,11 @@ namespace Evado.UniForm.Digital
                 // Define the save groupCommand parameters.
                 // 
                 pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
-                pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+                pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Reviewed.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Reviewed.ToString ( ) );
               }
             }
 
@@ -2121,11 +2121,11 @@ namespace Evado.UniForm.Digital
             // Define the save groupCommand parameters.
             // 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // Add the same groupCommand.
@@ -2140,11 +2140,11 @@ namespace Evado.UniForm.Digital
             // Define the save groupCommand parameters.
             // 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Approved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Approved.ToString ( ) );
 
             break;
           }
@@ -2166,7 +2166,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Withdrawn.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Withdrawn.ToString ( ) );
 
             //
             // Add the copy groupCommand.
@@ -2270,7 +2270,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
             //
             // The annotated layout button.
             //
@@ -2320,7 +2320,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
 
             //
             // The annotated layout button.
@@ -2339,7 +2339,7 @@ namespace Evado.UniForm.Digital
             pageCommand.SetPageId ( EdStaticPageIds.Form_Annotated_Page );
             break;
           }
-        case EdStaticPageIds.Record_Layout_Page:
+        case EdStaticPageIds.Entity_Layout_Page:
           {
             //
             // Add the draft page layout.
@@ -2431,7 +2431,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
 
-            pageCommand.SetPageId ( EdStaticPageIds.Record_Layout_Page );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
             break;
           }
       }//End Sticeh statement
@@ -2509,12 +2509,12 @@ namespace Evado.UniForm.Digital
           return clientDataObject;
         }
 
-        if ( this.Session.PageId != EdStaticPageIds.Record_Layout_Page.ToString ( )
+        if ( this.Session.PageId != EdStaticPageIds.Entity_Layout_Page.ToString ( )
           && this.Session.PageId != EdStaticPageIds.Form_Properties_Page.ToString ( )
           && this.Session.PageId != EdStaticPageIds.Form_Draft_Page.ToString ( )
           && this.Session.PageId != EdStaticPageIds.Form_Annotated_Page.ToString ( ) )
         {
-          this.Session.PageId = EdStaticPageIds.Record_Layout_Page.ToString ( );
+          this.Session.PageId = EdStaticPageIds.Entity_Layout_Page.ToString ( );
         }
 
         //
@@ -3234,7 +3234,7 @@ namespace Evado.UniForm.Digital
         // 
         // Get the save action message value.
         // 
-        this.Session.EntityLayout.SaveAction = EdRecord.SaveActionCodes.Form_Saved;
+        this.Session.EntityLayout.SaveAction = EdRecord.SaveActionCodes.Layout_Saved;
         String saveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
         if ( saveAction != String.Empty )
         {
@@ -3247,7 +3247,7 @@ namespace Evado.UniForm.Digital
         // 
         if ( this.Session.EntityLayout.SaveAction == EdRecord.SaveActionCodes.Save )
         {
-          this.Session.EntityLayout.SaveAction = EdRecord.SaveActionCodes.Form_Saved;
+          this.Session.EntityLayout.SaveAction = EdRecord.SaveActionCodes.Layout_Saved;
         }
         this.LogValue ( "Save Action: " + this.Session.EntityLayout.SaveAction );
 

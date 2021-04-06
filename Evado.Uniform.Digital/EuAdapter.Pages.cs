@@ -96,6 +96,7 @@ namespace Evado.UniForm.Digital
     /// This method generates a Page Layout 
     /// 
     /// </summary>
+    /// <param name="PageId">String: page identifer.</param>
     /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
     /// <returns>Evado.Model.UniForm.AppData</returns>
     // ----------------------------------------------------------------------------------
@@ -108,12 +109,6 @@ namespace Evado.UniForm.Digital
       // initialise the methods objects and variables.
       //
       EdPageLayout pageLayout = new EdPageLayout ( );
-      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
-      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      bool enableLeftColumn = false;
-      bool enableRightColumn = false;
 
       if ( this.Session.PageLayout == null )
       {
@@ -153,13 +148,52 @@ namespace Evado.UniForm.Digital
           this.LogMethodEnd ( "generatePage" );
           return this.Session.LastPage;
         }
-
         //
         // update the current page layout.
         //
         this.Session.PageLayout = pageLayout;
 
       }//END change page layout.
+
+      //
+      // Generate the page's layout
+      //
+      return this.generatePage ( pageLayout, PageCommand );
+
+    }//END generate Pagemethod.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates a Page Layout 
+    /// 
+    /// </summary>
+    /// <param name="PageId">String: page identifer.</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <returns>Evado.Model.UniForm.AppData</returns>
+    // ----------------------------------------------------------------------------------
+    public Evado.Model.UniForm.AppData generatePage (
+      EdPageLayout PageLayout,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "generatePage" );
+      this.LogDebug ( "Page {0} - {1}",
+         this.Session.UserProfile.HomePage.PageId,
+         this.Session.UserProfile.HomePage.Title );
+      this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      //
+      // initialise the methods objects and variables.
+      //
+      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
+      Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
+      Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+      bool enableLeftColumn = false;
+      bool enableRightColumn = false;
+
+      //
+      // Set the session payout layout.
+      //
+      this.Session.PageLayout = PageLayout;
 
       //
       // Initialise the page object.
@@ -318,19 +352,9 @@ namespace Evado.UniForm.Digital
         {
           if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
           {
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
+            this._Entities.getPageComponent ( PageObject, PageCommand, comp );
 
-            entities.LoggingLevel = 5;
-
-            entities.getPageComponent ( PageObject, PageCommand, comp );
-
-            this.LogAdapter ( entities.Log  );
+            this.LogAdapter ( this._Entities.Log );
           }//END entity page object.
 
         }// component iteration loop.
@@ -394,17 +418,9 @@ namespace Evado.UniForm.Digital
           {
             if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
             {
-              EuEntities entities = new EuEntities (
-                    this._AdapterObjects,
-                    this.ServiceUserProfile,
-                    this.Session,
-                    this.UniForm_BinaryFilePath,
-                    this.UniForm_BinaryServiceUrl,
-                    this.ClassParameters );
+              this._Entities.getPageComponent ( PageObject, PageCommand, comp );
 
-              entities.getPageComponent ( PageObject, PageCommand, comp );
-
-              this.LogAdapter ( entities.Log );
+              this.LogAdapter ( this._Entities.Log );
             }//END entity page object.
 
           }// component iteration loop.
@@ -470,19 +486,10 @@ namespace Evado.UniForm.Digital
             this.LogDebug ( "Entity selected {0}", comp );
             this.LogDebug ( "PageId {0}", PageCommand.GetPageId() );
 
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
+            this._Entities.getPageComponent ( PageObject, PageCommand, comp );
 
-            entities.getPageComponent ( PageObject, PageCommand, comp );
+            this.LogAdapter ( this._Entities.Log );
 
-            this.LogAdapter ( entities.Log );
-
-            this.LogAdapter ( entities.Log );
           }//END entity page object.
 
         }//END component iteration loop.
@@ -540,17 +547,9 @@ namespace Evado.UniForm.Digital
         {
           if ( comp.Contains ( EuAdapter.CONST_ENTITY_PREFIX ) == true )
           {
-            EuEntities entities = new EuEntities (
-                  this._AdapterObjects,
-                  this.ServiceUserProfile,
-                  this.Session,
-                  this.UniForm_BinaryFilePath,
-                  this.UniForm_BinaryServiceUrl,
-                  this.ClassParameters );
+            this._Entities.getPageComponent ( PageObject, PageCommand, comp );
 
-            entities.getPageComponent ( PageObject, PageCommand, comp );
-
-            this.LogAdapter ( entities.Log );
+            this.LogAdapter ( this._Entities.Log );
           }//END entity page object.
 
         }// component iteration loop.

@@ -360,9 +360,6 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Layout.Title: " + Layout.Title );
       this.LogDebug ( "Layout.State: " + Layout.State );
 
-      this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
-      this.LogDebug ( "Layout.ReadAccessRoles: " + Layout.Design.ReadAccessRoles );
-      this.LogDebug ( "Layout.EditAccessRoles: " + Layout.Design.EditAccessRoles );
       Layout.setUserAccess ( this.Session.UserProfile );
       this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
 
@@ -415,14 +412,14 @@ namespace Evado.UniForm.Digital
       {
         case Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author:
           {
-            //this.LogDebug ( "Record Author "  );
+            this.LogDebug ( "Record Author "  );
             PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
             break;
           }
         default:
           {
-            //this.LogDebug ( "default" );
+            this.LogDebug ( "default" );
             PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
             PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
             break;

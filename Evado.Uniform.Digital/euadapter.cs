@@ -118,7 +118,6 @@ namespace Evado.UniForm.Digital
 
         Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
-
         //
         // Define the settings object.
         //
@@ -182,6 +181,12 @@ namespace Evado.UniForm.Digital
         // load the page components.
         //
         this.LoadPageComponents ( );
+
+
+        if ( this.Session.EntityDictionary == null )
+        {
+          this.Session.EntityDictionary = new List<EdRecord> ( );
+        }
 
         /*
         this.LogInit ( "Page identifier list:" );
@@ -371,6 +376,10 @@ namespace Evado.UniForm.Digital
 
     private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
 
+    private EuRecords _Records = new EuRecords ( );
+
+    private EuEntities _Entities = new EuEntities ( );
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -452,6 +461,12 @@ namespace Evado.UniForm.Digital
         this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
 
+        foreach ( EdRecord entity in this.Session.EntityDictionary )
+        {
+          this.LogDebug( "Loaded Entity {0} LayoutId {1} - {2}",
+            entity.EntityId, entity.LayoutId, entity.Title );
+        }
+
         //
         // Turn on BLL debug to match the current class setting.
         //
@@ -492,8 +507,10 @@ namespace Evado.UniForm.Digital
           // 
           return generateNoProfilePage ( );
         }
+        this.LogDebug ( "User OrgId: {0}. ", this.Session.UserProfile.OrgId );
+        this.LogDebug ( "User OrgType: {0}. ", this.Session.UserProfile.OrgType );
         this.LogDebug ( "User Roles: {0}. ", this.Session.UserProfile.Roles );
-        this.LogDebug ( "User TypeId: {0}. ", this.Session.UserProfile.UserType );
+        this.LogDebug ( "User UserTypeId: {0}. ", this.Session.UserProfile.UserType );
         this.LogDebug ( "User UserCategory:  {0}", this.Session.UserProfile.UserCategory );
 
         //
@@ -679,7 +696,7 @@ namespace Evado.UniForm.Digital
       //
       // Define the records class
       //
-      EuRecords records = new EuRecords (
+      this._Records = new EuRecords (
               this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -687,12 +704,12 @@ namespace Evado.UniForm.Digital
               this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
-      records.unLockRecord ( );
+      this._Records.unLockRecord ( );
 
       //
       // Initialise the entities class
       //
-      EuEntities entities = new EuEntities (
+      this._Entities = new EuEntities (
               this._AdapterObjects,
               this.ServiceUserProfile,
               this.Session,
@@ -700,7 +717,7 @@ namespace Evado.UniForm.Digital
               this.UniForm_BinaryServiceUrl,
               this.ClassParameters );
 
-      entities.unLockRecord ( );
+      this._Entities.unLockRecord ( );
 
       // 
       // Save the application parameters to global objects.
@@ -1053,11 +1070,11 @@ namespace Evado.UniForm.Digital
           {
             this.LogDebug ( "ENTITY CLASS SELECTED." );
 
-            entities.LoggingLevel = this.LoggingLevel;
+            _Entities.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = entities.getDataObject ( PageCommand );
-            this.ErrorMessage = entities.ErrorMessage;
-            LogAdapter ( entities.Log );
+            clientDataObject = _Entities.getDataObject ( PageCommand );
+            this.ErrorMessage = _Entities.ErrorMessage;
+            LogAdapter ( _Entities.Log );
             break;
           }
 
@@ -1167,11 +1184,11 @@ namespace Evado.UniForm.Digital
             // 
             // Create the common record object.
             // 
-            records.LoggingLevel = this.LoggingLevel;
+            _Records.LoggingLevel = this.LoggingLevel;
 
-            clientDataObject = records.getDataObject ( PageCommand );
-            this.ErrorMessage = records.ErrorMessage;
-            this.LogAdapter ( records.Log );
+            clientDataObject = _Records.getDataObject ( PageCommand );
+            this.ErrorMessage = _Records.ErrorMessage;
+            this.LogAdapter ( _Records.Log );
 
             break;
           }
@@ -1202,6 +1219,30 @@ namespace Evado.UniForm.Digital
             if ( pageId != String.Empty )
             {
               return this.generatePage ( PageCommand );
+            }
+
+            //
+            // If the user's home page is null load if based on teh user access to the page.
+            //
+            if ( this.Session.UserProfile.HomePage == null )
+            {
+              LogDebug ( "User Home page null" );
+
+              foreach ( EdPageLayout pageLayout in this._AdapterObjects.AllPageLayouts )
+              {
+                if ( pageLayout.hasUserType ( this.Session.UserProfile ) == true )
+                {
+                  this.Session.UserProfile.HomePage = pageLayout;
+                }
+              }
+            }
+
+            //
+            // Generate the user home page's layout if it is not null.
+            //
+            if ( this.Session.UserProfile.HomePage != null )
+            {
+              return this.generatePage ( this.Session.UserProfile.HomePage, PageCommand );
             }
 
             // 

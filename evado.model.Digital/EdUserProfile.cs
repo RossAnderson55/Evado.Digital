@@ -294,6 +294,9 @@ namespace Evado.Model.Digital
 
       }
     }
+    /// This property contains the user home page layout object.
+    /// </summary>
+    public EdPageLayout HomePage { get; set; }
 
     /// <summary>
     /// This property defines the user type and used to control user access to the platform.

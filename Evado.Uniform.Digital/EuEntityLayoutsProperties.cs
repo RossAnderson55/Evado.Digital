@@ -42,7 +42,9 @@ namespace Evado.UniForm.Digital
     
     #region Class form property page methods
 
-    private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null; 
+    private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null;
+
+    private Model.UniForm.EditAccess _InitialAccess = Model.UniForm.EditAccess.Null; 
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -130,7 +132,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getPropertiesDataObject" );
 
       // 
-      // Initialise the client ResultData object.
+      // Initialise the client data object.
       // 
       if ( this.Session.EntityLayout.Guid != Guid.Empty )
       {
@@ -156,17 +158,35 @@ namespace Evado.UniForm.Digital
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
-
+      //
+      // initialise the methods variables and objects.
+      //
       this._DesignAccess = ClientDataObject.Page.EditAccess;
+        
       //
       // Design access is only available for un-issued layouts.  After issue
       // parameter changes can be made provided that don't change the data integrity.
       //
-      if ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Issued
-        || this.Session.EntityLayout.State == EdRecordObjectStates.Withdrawn )
+      if ( ( this.Session.EntityLayout.State == EdRecordObjectStates.Form_Issued
+          || this.Session.EntityLayout.State == EdRecordObjectStates.Withdrawn )
+        && ( this.Session.UserProfile.hasAdministrationAccess == false ) )
       {
         this._DesignAccess = Model.UniForm.EditAccess.Disabled;
       }
+
+      //
+      // Set the initial configuration access.
+      //
+      this._InitialAccess = this._DesignAccess;
+
+      if ( this.Session.EntityLayout.Design.Version >= 1 )
+      {
+        this._InitialAccess = Model.UniForm.EditAccess.Disabled;
+      }
+      this.LogDebug ( "Design Access {0}, Initial Acccess {1}",
+        this._DesignAccess, this._InitialAccess );
+
+
 
       //
       // Set the user's edit access if they have configuration edit access.
@@ -218,13 +238,6 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      Model.UniForm.EditAccess initialAccess = this._DesignAccess;
-
-      if ( this.Session.EntityLayout.Design.Version >= 1 )
-      {
-        initialAccess = Model.UniForm.EditAccess.Disabled;
-      }
-
       //
       // Define the general properties pageMenuGroup..
       //
@@ -263,7 +276,7 @@ namespace Evado.UniForm.Digital
         this.Session.EntityLayout.LayoutId,
         10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.EditAccess = initialAccess;
+      groupField.EditAccess = this._InitialAccess;
 
       //
       // Form title
@@ -274,7 +287,7 @@ namespace Evado.UniForm.Digital
         this.Session.EntityLayout.Design.RecordPrefix,
         5 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.EditAccess = initialAccess;
+      groupField.EditAccess = this._InitialAccess;
 
       //
       // Form title

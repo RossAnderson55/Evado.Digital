@@ -273,7 +273,7 @@ namespace Evado.IntegrationClient
         {
           queryType = (string) ConfigurationManager.AppSettings [ "QueryType" ];
 
-          Program.QueryType = Evado.Model.EvStatics.Enumerations.parseEnumValue<EiQueryTypes> ( queryType );
+          Program.QueryType = Evado.Model.EvStatics.parseEnumValue<EiQueryTypes> ( queryType );
         }
       }
       catch
@@ -424,7 +424,7 @@ namespace Evado.IntegrationClient
           stArgument = stArgument.Replace ( "QT=", String.Empty );
           EiQueryTypes queryType = EiQueryTypes.Null;
 
-          if ( Evado.Model.EvStatics.Enumerations.tryParseEnumValue<EiQueryTypes> ( stArgument, out queryType ) == true )
+          if ( Evado.Model.EvStatics.tryParseEnumValue<EiQueryTypes> ( stArgument, out queryType ) == true )
           {
             Program.QueryType = queryType;
           }
@@ -1091,7 +1091,7 @@ namespace Evado.IntegrationClient
         {
           if ( csvRowArray [ 0 ] == EiData.CONST_QUERY_TYPE )
           {
-            dataObject.QueryType = Evado.Model.EvStatics.Enumerations.parseEnumValue<EiQueryTypes> ( csvRowArray [ 1 ] );
+            dataObject.QueryType = Evado.Model.EvStatics.parseEnumValue<EiQueryTypes> ( csvRowArray [ 1 ] );
 
             Program.writeDebugLog ( "QUERY TYPE FOUND: QueryType: " + dataObject.QueryType );
 
@@ -1136,7 +1136,7 @@ namespace Evado.IntegrationClient
               //
               try
               {
-                EiQueryParameterNames name = Evado.Model.EvStatics.Enumerations.parseEnumValue<EiQueryParameterNames> ( csvRowArray [ 1 ] );
+                EiQueryParameterNames name = Evado.Model.EvStatics.parseEnumValue<EiQueryParameterNames> ( csvRowArray [ 1 ] );
                 dataObject.AddQueryParameter ( name, csvRowArray [ 2 ] );
 
               }
@@ -1192,7 +1192,7 @@ namespace Evado.IntegrationClient
                   String stDataType = csvRowArray [ columnCount ];
                   try
                   {
-                    EiDataTypes datatype = Evado.Model.EvStatics.Enumerations.parseEnumValue<EiDataTypes> ( stDataType );
+                    EiDataTypes datatype = Evado.Model.EvStatics.parseEnumValue<EiDataTypes> ( stDataType );
 
                     dataObject.Columns [ dataIndex ].DataType = datatype;
                   }

@@ -2529,6 +2529,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of {0} Entities.
+        /// </summary>
+        public static string Entity_List_Title_Group_Title {
+            get {
+                return ResourceManager.GetString("Entity_List_Title_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new {0} - {1}.
         /// </summary>
         public static string Entity_New_Entity_Command_Title {

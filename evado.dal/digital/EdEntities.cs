@@ -771,7 +771,7 @@ namespace Evado.Dal.Digital
     public List<EdRecord> getEntityList (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getEntityList method." );
+      this.LogMethod ( "getEntityList" );
       //this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
       //this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
       //
@@ -2187,7 +2187,7 @@ namespace Evado.Dal.Digital
 
       if ( Entity.Fields.Count > 0 )
       {
-     //   this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
+     //   this.LogDebug ( "Field Count {0}.", Entity.Fields.Count );
         this.LogMethodEnd ( "getLayoutFields" );
         return;
       }
@@ -2212,7 +2212,7 @@ namespace Evado.Dal.Digital
         Entity.Fields.Add ( field );
 
       //  this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
-        this.LogDebug ( "{0} - {1} > T: {2} ", field.FieldId, field.Title, field.TypeId );
+        //this.LogDebug ( "{0} - {1} > T: {2} ", field.FieldId, field.Title, field.TypeId );
       }
 
      // this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );

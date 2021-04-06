@@ -1260,7 +1260,7 @@ namespace Evado.UniForm.Digital
         {
           processLog.AppendLine ( "Existing draft version of " + UploadedForm.LayoutId + " " + UploadedForm.Title + " found." );
 
-          form.SaveAction = EdRecord.SaveActionCodes.Form_Deleted;
+          form.SaveAction = EdRecord.SaveActionCodes.Layout_Deleted;
 
           result = this._Bll_RecordLayouts.SaveItem ( form );
 
@@ -1700,7 +1700,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // For a new form do not display the delete or review commands.
@@ -1723,13 +1723,13 @@ namespace Evado.UniForm.Digital
 
               pageCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+               EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
 
               if ( this.Session.RecordLayout.Fields.Count > 0 )
               {
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
                 //
                 // Add the same groupCommand.
                 //
@@ -1746,7 +1746,7 @@ namespace Evado.UniForm.Digital
 
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Reviewed.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Reviewed.ToString ( ) );
 
               }//END Form field exist.
             }//END form exists.
@@ -1771,7 +1771,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // Add the same groupCommand.
@@ -1789,7 +1789,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Approved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Approved.ToString ( ) );
 
             break;
           }
@@ -1811,7 +1811,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
             //
             // Add the same groupCommand.
             //
@@ -2113,7 +2113,7 @@ namespace Evado.UniForm.Digital
             }
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // For a new form do not display the delete or review commands.
@@ -2137,7 +2137,7 @@ namespace Evado.UniForm.Digital
 
               pageCommand.AddParameter (
                 Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Form_Deleted.ToString ( ) );
+               EdRecord.SaveActionCodes.Layout_Deleted.ToString ( ) );
 
               //
               // Add the same groupCommand.
@@ -2158,7 +2158,7 @@ namespace Evado.UniForm.Digital
 
                 pageCommand.AddParameter (
                   Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-                 EdRecord.SaveActionCodes.Form_Reviewed.ToString ( ) );
+                 EdRecord.SaveActionCodes.Layout_Reviewed.ToString ( ) );
               }
             }
 
@@ -2183,7 +2183,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
 
             //
             // Add the same groupCommand.
@@ -2202,7 +2202,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Approved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Approved.ToString ( ) );
 
             return;
           }
@@ -2224,7 +2224,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Form_Withdrawn.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Withdrawn.ToString ( ) );
 
             //
             // Add the copy groupCommand.
@@ -2875,7 +2875,7 @@ namespace Evado.UniForm.Digital
         // 
         // Get the save action message value.
         // 
-        this.Session.RecordLayout.SaveAction = EdRecord.SaveActionCodes.Form_Saved;
+        this.Session.RecordLayout.SaveAction = EdRecord.SaveActionCodes.Layout_Saved;
         String saveAction = PageCommand.GetParameter ( Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION );
         if ( saveAction != String.Empty )
         {
@@ -2889,7 +2889,7 @@ namespace Evado.UniForm.Digital
         // 
         if ( this.Session.RecordLayout.SaveAction == EdRecord.SaveActionCodes.Save )
         {
-          this.Session.RecordLayout.SaveAction = EdRecord.SaveActionCodes.Form_Saved;
+          this.Session.RecordLayout.SaveAction = EdRecord.SaveActionCodes.Layout_Saved;
         }
 
         // 

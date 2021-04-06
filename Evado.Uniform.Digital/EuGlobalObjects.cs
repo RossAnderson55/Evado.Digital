@@ -878,7 +878,7 @@ namespace Evado.UniForm.Digital
       //
       // return null if not found.
       //
-      return null;
+      return new EdRecord();
 
     }//END method
 

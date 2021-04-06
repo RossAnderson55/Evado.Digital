@@ -3029,4 +3029,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="UserProfile_Name_Field_Label" xml:space="preserve">
     <value>User Name:</value>
   </data>
+  <data name="Entity_List_Title_Group_Title" xml:space="preserve">
+    <value>List of {0} Entities</value>
+  </data>
 </root>

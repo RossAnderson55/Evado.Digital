@@ -29,7 +29,11 @@ namespace Evado.Model.Integration
   [Serializable]
   public enum EiDataTypes
   {
+    /// <summary>
+    /// this eunumeration value indicated null selection.
+    /// </summary>
     Null = 0, 
+
     /// <summary>
     /// This enumeration defines string text data QueryType.
     /// </summary>

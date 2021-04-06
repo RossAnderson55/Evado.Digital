@@ -454,6 +454,39 @@ namespace Evado.Model.Digital
     /// </summary>
     public string UserTypes { get; set; }
 
+    // ==================================================================================
+    /// <summary>
+    /// This method determines if the page layout has user type.
+    /// </summary>
+    /// <param name="UserProfile">Evado.Model.Digital.EdUserProfile object</param>
+    /// <returns>bool: true if found.</return>
+    // ----------------------------------------------------------------------------------
+    public bool hasUserType ( EdUserProfile UserProfile )
+    {
+      if ( UserTypes == null )
+      {
+        return false;
+      }
+      //
+      // Initialise the methods variables and objects.
+      //
+      string [ ] arrUserType = UserProfile.UserType.Split ( ';' );
+      string [ ] arrPageUserType = UserTypes.Split ( ';' );
+
+      foreach ( String str1 in arrUserType )
+      {
+        foreach ( String str2 in arrPageUserType )
+        {
+          if ( str1.ToLower() == str2.ToLower() )
+          {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
     /// <summary>
     /// This property contains a save actions
     /// </summary>
