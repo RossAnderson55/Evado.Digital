@@ -346,6 +346,11 @@ namespace Evado.Model.Digital
       /// This enumeration set the command link to display the first record field content.
       /// </summary>
       First_Text_Field,
+
+      /// <summary>
+      /// This enumeration set the command link to display the summary field content.
+      /// </summary>
+      Summary_Fields,
     }
 
 

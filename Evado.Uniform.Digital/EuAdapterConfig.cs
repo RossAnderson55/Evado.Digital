@@ -2041,7 +2041,6 @@ namespace Evado.UniForm.Digital
         this.AdapterObjects.Settings.EnableBinaryData );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-
       //
       // create the enable the user to also update their organisation details.
       //
@@ -2049,6 +2048,24 @@ namespace Evado.UniForm.Digital
         Model.Digital.EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update,
         EdLabels.Config_Enable_User_Org_Update_Field_Label,
         this.AdapterObjects.Settings.EnableUserOrganisationUpdate );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the entity enable edit buttons to update entities.
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Enable_Entity_Edit_Button_Update,
+        EdLabels.Config_Enable_Entity_Edit_Update_Field_Label,
+        this.AdapterObjects.Settings.EnableEntityEditButtonUpdate );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the entity enable save buttons to update entities.
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.Enable_Entity_Save_Button_Update,
+        EdLabels.Config_Enable_Entity_Save_Update_Field_Label,
+        this.AdapterObjects.Settings.EnableEntitySaveButtonUpdate );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
@@ -2126,6 +2143,7 @@ namespace Evado.UniForm.Digital
       //
       optionList = new List<EvOption> ( );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Given_Name ) );
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Middle_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Family_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Title ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Address_1 ) );

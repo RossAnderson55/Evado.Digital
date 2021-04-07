@@ -104,6 +104,9 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-UserCommonName: " + this.ClassParameters.UserProfile.CommonName );
 
       this._Bll_Entities = new EdEntities ( ClassParameters );
+      this.EnableEntityEditButtonUpdate = this.AdapterObjects.Settings.EnableEntityEditButtonUpdate;
+      this.EnableEntitySaveButtonUpdate = this.AdapterObjects.Settings.EnableEntitySaveButtonUpdate;
+
 
       if ( this.Session.Entity == null )
       {
@@ -160,6 +163,10 @@ namespace Evado.UniForm.Digital
 
     bool _HideSelectionGroup = false;
 
+    bool EnableEntitySaveButtonUpdate = false;
+    bool EnableEntityEditButtonUpdate = false;
+    bool Entity_EditMode = false;
+
     private EdRecord queryLayout = null;
     //
     // Initialise the page labels
@@ -184,6 +191,10 @@ namespace Evado.UniForm.Digital
     /// This constand definee the include test sites property identifier
     /// </summary>
     private const string CONST_SELECTION_FIELD = "SFID_";
+    /// <summary>
+    /// This constand definee the include test sites property identifier
+    /// </summary>
+    private const string CONST_EDIT_MODE_FIELD = "EM01";
 
     /// <summary>
     /// This constant defines the draft record icon URL.
@@ -244,6 +255,8 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getDataObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      this.LogValue ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
+      this.LogValue ( "EnableEntitySaveButtonUpdate: " + this.EnableEntitySaveButtonUpdate );
 
       try
       {
@@ -403,6 +416,8 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getPageComponent" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
       this.LogValue ( "Component: " + Component );
+      this.LogValue ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
+      this.LogValue ( "EnableEntitySaveButtonUpdate: " + this.EnableEntitySaveButtonUpdate );
       //
       // initialise the methods variables and objects.
       //
@@ -932,6 +947,15 @@ namespace Evado.UniForm.Digital
       //
       // if the entity layout is defined in the page command then update its value.
       //
+      if ( PageCommand.hasParameter ( EuEntities.CONST_EDIT_MODE_FIELD ) == true )
+      {
+        this.Session.Entity_EditModeEnabled = true;
+      }
+      this.LogValue ( "HideSelectionGroup: " + this._HideSelectionGroup );
+
+      //
+      // if the entity layout is defined in the page command then update its value.
+      //
       if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) ) == true )
       {
         this.Session.Entity_SelectedLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) );
@@ -1344,13 +1368,13 @@ namespace Evado.UniForm.Digital
         // 
         // Create the new pageMenuGroup for query selection.
         // 
-        this.getQueryList_SelectionGroup ( 
+        this.getQueryList_SelectionGroup (
           clientDataObject.Page );
 
         // 
         // Create the pageMenuGroup containing commands to open the records.
         //         
-        this.getEntity_ListGroup ( 
+        this.getEntity_ListGroup (
           clientDataObject.Page );
 
         this.LogValue ( "data.Page.Title: " + clientDataObject.Page.Title );
@@ -1930,8 +1954,8 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.EntityLayout.Title != String.Empty )
       {
-        pageGroup.Title = String.Format( 
-          EdLabels.Entity_List_Title_Group_Title, 
+        pageGroup.Title = String.Format (
+          EdLabels.Entity_List_Title_Group_Title,
           this.Session.EntityLayout.Title );
       }
 
@@ -1948,7 +1972,7 @@ namespace Evado.UniForm.Digital
         && pageGroup.EditAccess == Model.UniForm.EditAccess.Enabled )
       {
         groupCommand = pageGroup.addCommand (
-          String.Format( EdLabels.Entity_Create_New_List_Command_Title, this.Session.EntityLayout.Title ),
+          String.Format ( EdLabels.Entity_Create_New_List_Command_Title, this.Session.EntityLayout.Title ),
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Model.UniForm.ApplicationMethods.Create_Object );
@@ -2975,6 +2999,7 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getClientData" );
 
     }//END getClientData Method
+
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -2990,6 +3015,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       //
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+      String stSubmitCommandTitle = EdLabels.Entity_Submit_Command;
 
       // 
       // Set the user access to the records content.
@@ -2997,81 +3023,97 @@ namespace Evado.UniForm.Digital
       this.Session.Entity.setUserAccess ( this.Session.UserProfile );
       this.LogDebug ( "Entity.FormAccessRole {0}. ", this.Session.Entity.FormAccessRole );
 
-      switch ( this.Session.Entity.FormAccessRole )
+      if ( this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Author )
       {
-        case EdRecord.FormAccessRoles.Record_Author:
-          {
-            // 
-            // If the user has author access. 
-            // 
-            // Set the page status to edit enabled
-            // 
-            PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-            PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
+        this.LogMethodEnd ( "getDataObject_PageCommands" );
+        return;
+      }
 
+      // 
+      // Add the Edit command to the page.
+      //
+      if ( this.Session.Entity_EditModeEnabled == false
+        && this.EnableEntityEditButtonUpdate == true )
+      {
+        pageCommand = PageObject.addCommand (
+          EdLabels.Entity_Edit_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
-            // 
-            // Add the save groupCommand and add it to the page groupCommand list.
-            // 
-            pageCommand = PageObject.addCommand (
-              EdLabels.Record_Save_Command_Title,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entities.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        pageCommand.SetGuid ( this.Session.Entity.Guid );
 
-            pageCommand.SetGuid ( this.Session.Entity.Guid );
+        pageCommand.AddParameter ( EuEntities.CONST_EDIT_MODE_FIELD, "yes" );
 
-            pageCommand.AddParameter (
-              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
+      }
+      else
+      {
+        // 
+        // If the user has author access. 
+        // 
+        // Set the page status to edit enabled
+        // 
+        PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+        PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
 
-            // 
-            // Add the submit comment to the page groupCommand list.
-            // 
-            pageCommand = PageObject.addCommand (
-              EdLabels.Record_Submit_Command,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entities.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        // 
+        // Add the save groupCommand and add it to the page groupCommand list.
+        // 
+        if ( this.EnableEntitySaveButtonUpdate == true )
+        {
+          pageCommand = PageObject.addCommand (
+            EdLabels.Entity_Save_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Entities.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-            pageCommand.SetGuid ( this.Session.Entity.Guid );
-            pageCommand.AddParameter (
-              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
+          pageCommand.SetGuid ( this.Session.Entity.Guid );
 
-            pageCommand.setEnableForMandatoryFields ( );
+          pageCommand.AddParameter (
+            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+           EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
+        }
+        else
+        {
+          stSubmitCommandTitle = EdLabels.Entity_Save_Command_Title;
+        }
 
-            // 
-            // Add the wihdrawn groupCommand to the page groupCommand list.
-            // 
-            if ( ( this.Session.Entity.State == EdRecordObjectStates.Draft_Record
-                || this.Session.Entity.State == EdRecordObjectStates.Empty_Record
-                || this.Session.Entity.State == EdRecordObjectStates.Completed_Record ) )
-            {
-              pageCommand = PageObject.addCommand (
-                EdLabels.Record_Withdraw_Command,
-                EuAdapter.ADAPTER_ID,
-                EuAdapterClasses.Entities.ToString ( ),
-                Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        // 
+        // Add the submit comment to the page groupCommand list.
+        // 
+        pageCommand = PageObject.addCommand (
+          stSubmitCommandTitle,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-              pageCommand.SetGuid ( this.Session.Entity.Guid );
-              pageCommand.AddParameter (
-                Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Withdrawn_Record.ToString ( ) );
-            }
+        pageCommand.SetGuid ( this.Session.Entity.Guid );
+        pageCommand.AddParameter (
+          Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+         EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
 
-            // 
-            // Set the Record display state to edit enable the page.
-            // 
-            break;
-          }
-        default:
-          {
-            PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+        pageCommand.setEnableForMandatoryFields ( );
 
-            break;
-          }
-      } //END record access switch.
+        // 
+        // Add the wihdrawn groupCommand to the page groupCommand list.
+        // 
+        if ( ( this.Session.Entity.State == EdRecordObjectStates.Draft_Record
+            || this.Session.Entity.State == EdRecordObjectStates.Empty_Record
+            || this.Session.Entity.State == EdRecordObjectStates.Completed_Record ) )
+        {
+          pageCommand = PageObject.addCommand (
+            EdLabels.Record_Withdraw_Command,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Entities.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+          pageCommand.SetGuid ( this.Session.Entity.Guid );
+          pageCommand.AddParameter (
+            Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+           EdRecord.SaveActionCodes.Withdrawn_Record.ToString ( ) );
+        }
+
+      }//END in edit mode.
 
       this.LogMethodEnd ( "getDataObject_PageCommands" );
 
@@ -3090,8 +3132,9 @@ namespace Evado.UniForm.Digital
       //
       // Display save command in the last group.
       //
-      if ( PageObject.EditAccess != Model.UniForm.EditAccess.Enabled
-        && PageObject.GroupList.Count == 0 )
+      if ( this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Author
+        || this.Session.Entity_EditModeEnabled == false
+        || PageObject.GroupList.Count == 0 )
       {
         this.LogMethodEnd ( "getDataObject_GroupCommands" );
         return;
@@ -3102,68 +3145,67 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+      String stSubmitCommandTitle = EdLabels.Entity_Submit_Command;
 
       this.LogValue ( "Including save commands in the last group." );
       pageGroup = PageObject.GroupList [ PageObject.GroupList.Count - 1 ];
 
-      this.LogDebug ( "Entity.FormAccessRole {0}. ", this.Session.Entity.FormAccessRole );
-      switch ( this.Session.Entity.FormAccessRole )
+      // 
+      // Add the save groupCommand and add it to the page groupCommand list.
+      //  
+      if ( this.EnableEntitySaveButtonUpdate == true )
       {
-        case EdRecord.FormAccessRoles.Record_Author:
-          {
-            // 
-            // Add the save groupCommand and add it to the page groupCommand list.
-            // 
-            pageCommand = pageGroup.addCommand (
-              EdLabels.Record_Save_Command_Title,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entities.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        pageCommand = pageGroup.addCommand (
+          EdLabels.Entity_Save_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-            pageCommand.SetGuid ( this.Session.Entity.Guid );
+        pageCommand.SetGuid ( this.Session.Entity.Guid );
 
-            pageCommand.AddParameter (
-              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
+        pageCommand.AddParameter (
+          Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+         EdRecord.SaveActionCodes.Save_Record.ToString ( ) );
+      }
+      else
+      {
+        stSubmitCommandTitle = EdLabels.Entity_Save_Command_Title;
+      }
 
-            // 
-            // Add the submit comment to the page groupCommand list.
-            // 
-            pageCommand = pageGroup.addCommand (
-              EdLabels.Record_Submit_Command,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entities.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+      // 
+      // Add the submit comment to the page groupCommand list.
+      // 
+      pageCommand = pageGroup.addCommand (
+        stSubmitCommandTitle,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entities.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-            pageCommand.SetGuid ( this.Session.Entity.Guid );
-            pageCommand.AddParameter (
-              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
+      pageCommand.SetGuid ( this.Session.Entity.Guid );
+      pageCommand.AddParameter (
+        Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+       EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
 
-            pageCommand.setEnableForMandatoryFields ( );
+      pageCommand.setEnableForMandatoryFields ( );
 
-            // 
-            // Add the wihdrawn groupCommand to the page groupCommand list.
-            // 
-            if ( ( this.Session.Entity.State == EdRecordObjectStates.Draft_Record
-                || this.Session.Entity.State == EdRecordObjectStates.Empty_Record
-                || this.Session.Entity.State == EdRecordObjectStates.Completed_Record ) )
-            {
-              pageCommand = pageGroup.addCommand (
-                EdLabels.Record_Withdraw_Command,
-                EuAdapter.ADAPTER_ID,
-                EuAdapterClasses.Entities.ToString ( ),
-                Evado.Model.UniForm.ApplicationMethods.Save_Object );
+      // 
+      // Add the wihdrawn groupCommand to the page groupCommand list.
+      // 
+      if ( ( this.Session.Entity.State == EdRecordObjectStates.Draft_Record
+          || this.Session.Entity.State == EdRecordObjectStates.Empty_Record
+          || this.Session.Entity.State == EdRecordObjectStates.Completed_Record ) )
+      {
+        pageCommand = pageGroup.addCommand (
+          EdLabels.Record_Withdraw_Command,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Save_Object );
 
-              pageCommand.SetGuid ( this.Session.Entity.Guid );
-              pageCommand.AddParameter (
-                Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-               EdRecord.SaveActionCodes.Withdrawn_Record.ToString ( ) );
-            }
-
-            break;
-          }
-      } //END record access switch.
+        pageCommand.SetGuid ( this.Session.Entity.Guid );
+        pageCommand.AddParameter (
+          Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+         EdRecord.SaveActionCodes.Withdrawn_Record.ToString ( ) );
+      }
 
       this.LogMethodEnd ( "getDataObject_GroupCommands" );
     }
@@ -3390,7 +3432,7 @@ namespace Evado.UniForm.Digital
     /// <param name="ParentGuid">Guid: parent Entity Guid.</param>
     /// <returns>Evado.Model.Digital.EdRecord</returns>
     //  ----------------------------------------------------------------------------------
-    private EdRecord CreateNewEntity ( 
+    private EdRecord CreateNewEntity (
       String LayoutId,
       Guid ParentGuid )
     {
@@ -3443,10 +3485,10 @@ namespace Evado.UniForm.Digital
       // 
       var entity = this._Bll_Entities.CreateEntity ( newRecord );
 
-       this.LogClass ( this._Bll_Entities.Log );
+      this.LogClass ( this._Bll_Entities.Log );
 
-       this.LogMethodEnd ( "CreateNewEntity" );
-       return entity;
+      this.LogMethodEnd ( "CreateNewEntity" );
+      return entity;
     }//END MEthod.
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3574,6 +3616,7 @@ namespace Evado.UniForm.Digital
         // Force a refresh of hte form record list.
         //
         this.Session.EntityList = new List<EdRecord> ( );
+        this.Session.Entity_EditModeEnabled = false;
 
         if ( this.Session.Entity.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
         {

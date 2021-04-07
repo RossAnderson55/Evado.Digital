@@ -137,12 +137,17 @@ namespace Evado.Model.Digital
       Delimted_Name,
 
       /// <summary>
-      /// This enumeration defines common name in user profile
+      /// This enumeration defines Given name in user profile
       /// </summary>
       Given_Name,
 
       /// <summary>
-      /// This enumeration defines common name in user profile
+      /// This enumeration defines middle name in user profile
+      /// </summary>
+      Middle_Name,
+
+      /// <summary>
+      /// This enumeration defines family name in user profile
       /// </summary>
       Family_Name,
 
@@ -745,6 +750,11 @@ namespace Evado.Model.Digital
         case FieldNames.Given_Name:
           {
             this.GivenName = value;
+            break;
+          }
+        case FieldNames.Middle_Name:
+          {
+            this.MiddleName = value;
             break;
           }
         case FieldNames.Family_Name:

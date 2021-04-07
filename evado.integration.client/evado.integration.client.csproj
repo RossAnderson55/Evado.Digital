@@ -59,13 +59,13 @@
     <Content Include="data1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\evado.uniform\evado.model\evado.model.csproj">
-      <Project>{1FF5B08D-74A0-452D-A8A2-2534D985F8BE}</Project>
-      <Name>evado.model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\evado.model.integration\evado.model.integration.csproj">
       <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
       <Name>evado.model.integration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
+      <Name>evado.model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

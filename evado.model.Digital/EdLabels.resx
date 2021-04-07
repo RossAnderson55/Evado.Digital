@@ -3035,4 +3035,19 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Entity_List_Title_Group_Title" xml:space="preserve">
     <value>List of {0} Entities</value>
   </data>
+  <data name="Config_Enable_Entity_Edit_Update_Field_Label" xml:space="preserve">
+    <value>Enable Edit buttons to update Entities:</value>
+  </data>
+  <data name="Config_Enable_Entity_Save_Update_Field_Label" xml:space="preserve">
+    <value>Enable Save buttons to save un-submitted Entities:</value>
+  </data>
+  <data name="Entity_Edit_Command_Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Entity_Save_Command_Title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Entity_Submit_Command" xml:space="preserve">
+    <value>Submit Entity</value>
+  </data>
 </root>

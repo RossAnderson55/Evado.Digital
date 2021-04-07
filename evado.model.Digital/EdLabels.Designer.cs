@@ -1926,6 +1926,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Edit buttons to update Entities:.
+        /// </summary>
+        public static string Config_Enable_Entity_Edit_Update_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Enable_Entity_Edit_Update_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Save buttons to save un-submitted Entities:.
+        /// </summary>
+        public static string Config_Enable_Entity_Save_Update_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Enable_Entity_Save_Update_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable user profile update to update the user&apos;s organisation:.
         /// </summary>
         public static string Config_Enable_User_Org_Update_Field_Label {
@@ -2511,6 +2529,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Entity_Edit_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_Edit_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Page.
         /// </summary>
         public static string Entity_Enable_Edit_Command_Title {
@@ -2561,6 +2588,24 @@ namespace Evado.Model.Digital {
         public static string Entity_Retrieve_Error_Message {
             get {
                 return ResourceManager.GetString("Entity_Retrieve_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Entity_Save_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_Save_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit Entity.
+        /// </summary>
+        public static string Entity_Submit_Command {
+            get {
+                return ResourceManager.GetString("Entity_Submit_Command", resourceCulture);
             }
         }
         

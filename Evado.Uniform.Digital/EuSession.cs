@@ -503,6 +503,11 @@ namespace Evado.UniForm.Digital
     public EdRecord Entity { get; set; }
 
     /// <summary>
+    /// This property enables the entity edit button
+    /// </summary>
+    public bool Entity_EditModeEnabled { get; set; }
+
+    /// <summary>
     /// This property contains dictionary of the Entity hiararchy.
     /// The Guid key is the Entity's Guid identifier.
     /// The dictionary value is the Entity object.

@@ -126,11 +126,22 @@ namespace Evado.Model.Digital
       /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
       Enable_Binary_Data,
-      
+
       /// <summary>
       /// This enumeration defines if the user profile update can update the user's organisation details.
       /// </summary>
       Enable_User_Organisation_Update,
+
+      /// <summary>
+      /// This enumeration defines if the enables edit button to update entities details.
+      /// </summary>
+      Enable_Entity_Edit_Button_Update,
+
+      /// <summary>
+      /// This enumeration defines if the enables save button to update entities details.
+      /// Submit button is there by default.
+      /// </summary>
+      Enable_Entity_Save_Button_Update,
 
       /// <summary>
       /// This enumeration defines if the user address is to be collected.
@@ -432,6 +443,44 @@ namespace Evado.Model.Digital
       set
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Binary_Data,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property if the user can update their organisation deails.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableEntityEditButtonUpdate
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Edit_Button_Update ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Edit_Button_Update,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property if the user can update their organisation deails.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableEntitySaveButtonUpdate
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Save_Button_Update ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Save_Button_Update,
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
@@ -1130,6 +1179,20 @@ namespace Evado.Model.Digital
             return;
           }
 
+        case EdAdapterSettings.AdapterFieldNames.Enable_Entity_Edit_Button_Update:
+          {
+            this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Edit_Button_Update,
+              EvDataTypes.Boolean, Value.ToString ( ) );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.Enable_Entity_Save_Button_Update:
+          {
+            this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_Entity_Save_Button_Update,
+              EvDataTypes.Boolean, Value.ToString ( ) );
+            return;
+          }
+
         case EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update:
           {
             this.setParameter ( AdapterFieldNames.Enable_User_Organisation_Update, EvDataTypes.Boolean, Value );
@@ -1222,7 +1285,7 @@ namespace Evado.Model.Digital
             return;
           }
 
-          
+
         default:
 
           return;
