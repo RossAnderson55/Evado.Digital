@@ -421,7 +421,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class updates the form state and approve records for the trial.
     /// </summary>
-    /// <param name="Form">EvForm: a form object</param>
+    /// <param name="Layout">EvForm: a form object</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -430,10 +430,10 @@ namespace Evado.Bll.Digital
     /// 2. Update the form object's values and its state based on the form actions: review, approved, withdrawn or draft. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void updateState ( EdRecord Form )
+    private void updateState ( EdRecord Layout )
     {
        this.LogMethod ( "updateState." );
-      this.LogValue ( "Action: " + Form.SaveAction );
+      this.LogValue ( "Action: " + Layout.SaveAction );
 
       // 
       // Initialise the local variables
@@ -443,17 +443,28 @@ namespace Evado.Bll.Digital
       // If the form has an authenticated signoff pass the user id to the 
       // to the DAL layer and DB.
       // 
-      string  AuthenticatedUserId = this.ClassParameter.UserProfile.UserId;
+      string  AuthenticatedUserId = this.ClassParameter.UserProfile.UserId;  
 
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Saved )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Update )
+      {
+        this.LogValue ( "Layout updated" );
+
+        Layout.Design.Version += 0.01F;
+
+        return;
+      }
+      // 
+      // Set the form to reviewed.
+      // 
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Saved )
       {
         this.LogValue ( "Saving  Form" );
 
-        Form.State = EdRecordObjectStates.Form_Draft;
-        Form.Design.Version += 0.01F;
+        Layout.State = EdRecordObjectStates.Form_Draft;
+        Layout.Design.Version += 0.01F;
 
         return;
       }
@@ -461,40 +472,40 @@ namespace Evado.Bll.Digital
       // 
       // Set the form to reviewed.
       // 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Reviewed )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Reviewed )
       {
         this.LogValue ( "Reviewing Form" );
 
-        Form.State = EdRecordObjectStates.Form_Reviewed;
+        Layout.State = EdRecordObjectStates.Form_Reviewed;
 
         return;
       }
 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
       {
         this.LogValue ( "Issuing Form" );
 
-        Form.State = EdRecordObjectStates.Form_Issued;
-        int version = (int) Form.Design.Version;
-        Form.Design.Version = version + 1.00F;
+        Layout.State = EdRecordObjectStates.Form_Issued;
+        int version = (int) Layout.Design.Version;
+        Layout.Design.Version = version + 1.00F;
         return;
       }
 
-      if ( Form.SaveAction == EdRecord.SaveActionCodes.Layout_Withdrawn )
+      if ( Layout.SaveAction == EdRecord.SaveActionCodes.Layout_Withdrawn )
       {
-        Form.State = EdRecordObjectStates.Withdrawn;
+        Layout.State = EdRecordObjectStates.Withdrawn;
         return;
       }
 
       // 
       // If none of the above occur, save the record
       // 
-      this.LogValue ( "Saving Form. State:" + Form.State );
-      if ( Form.State == EdRecordObjectStates.Null )
+      this.LogValue ( "Saving Form. State:" + Layout.State );
+      if ( Layout.State == EdRecordObjectStates.Null )
       {
-        Form.State = EdRecordObjectStates.Form_Draft;
+        Layout.State = EdRecordObjectStates.Form_Draft;
       }
-      Form.Design.Version += 0.01F;
+      Layout.Design.Version += 0.01F;
 
       return;
 

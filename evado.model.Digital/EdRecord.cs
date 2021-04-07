@@ -70,6 +70,11 @@ namespace Evado.Model.Digital
       Layout_Approved,
 
       /// <summary>
+      /// This enumeration defines the save form save action
+      /// </summary>
+      Layout_Update,
+
+      /// <summary>
       /// This enumeratin defines the form withdrawn save action.
       /// </summary>
       Layout_Withdrawn,
@@ -453,6 +458,11 @@ namespace Evado.Model.Digital
       /// This enumeration identifies the form has CS script field.
       /// </summary>
       HasCsScript,
+
+      /// <summary>
+      /// This enumeration identifies field titles are to be hiden in display model field.
+      /// </summary>
+      HideFieldTitlesWhenReadOnly,
 
       /// <summary>
       /// This enumeration identifies the record subject field.
@@ -1921,6 +1931,11 @@ namespace Evado.Model.Digital
         case RecordFieldNames.HasCsScript:
           {
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
+            return;
+          }
+        case RecordFieldNames.HideFieldTitlesWhenReadOnly:
+          {
+            this._Design.HideFieldTitlesWhenReadOnly = EvcStatics.getBool ( Value );
             return;
           }
         case RecordFieldNames.DefaultPageLayout:

@@ -1917,6 +1917,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display Administrator Group on Entity Pages:.
+        /// </summary>
+        public static string Config_Enable_AdminGroupOnEntities_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_Enable_AdminGroupOnEntities_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable Binary Data:.
         /// </summary>
         public static string Config_Enable_Binary_Data_Field_Label {
@@ -2520,6 +2529,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator Entity Header.
+        /// </summary>
+        public static string Entity_Administrator_Header_Group_Title {
+            get {
+                return ResourceManager.GetString("Entity_Administrator_Header_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command Title:.
+        /// </summary>
+        public static string Entity_Commend_Title_Field_Title {
+            get {
+                return ResourceManager.GetString("Entity_Commend_Title_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new {0} .
         /// </summary>
         public static string Entity_Create_New_List_Command_Title {
@@ -2543,6 +2570,15 @@ namespace Evado.Model.Digital {
         public static string Entity_Enable_Edit_Command_Title {
             get {
                 return ResourceManager.GetString("Entity_Enable_Edit_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity Identifier:.
+        /// </summary>
+        public static string Entity_Entity_Identifier_Field_Title {
+            get {
+                return ResourceManager.GetString("Entity_Entity_Identifier_Field_Title", resourceCulture);
             }
         }
         
@@ -2637,6 +2673,24 @@ namespace Evado.Model.Digital {
         public static string EntityField_External_Selection_Category_Field_Description {
             get {
                 return ResourceManager.GetString("EntityField_External_Selection_Category_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display Related Child Entities:.
+        /// </summary>
+        public static string EntityLayout_Display_Related_Entities_Field_Title {
+            get {
+                return ResourceManager.GetString("EntityLayout_Display_Related_Entities_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide field title when entity is displayed:.
+        /// </summary>
+        public static string EntityLayout_HideFieldTItlesInDisplay_Field_Title {
+            get {
+                return ResourceManager.GetString("EntityLayout_HideFieldTItlesInDisplay_Field_Title", resourceCulture);
             }
         }
         
@@ -5929,6 +5983,24 @@ namespace Evado.Model.Digital {
         public static string PageLayout_Creation_Error_Message {
             get {
                 return ResourceManager.GetString("PageLayout_Creation_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This entity will be displayed at the top of the Center column when defined..
+        /// </summary>
+        public static string PageLayout_Default_Page_Entity_Id_Field_Description {
+            get {
+                return ResourceManager.GetString("PageLayout_Default_Page_Entity_Id_Field_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the Default Entity ID for this page:.
+        /// </summary>
+        public static string PageLayout_Default_Page_Entity_Id_Field_Label {
+            get {
+                return ResourceManager.GetString("PageLayout_Default_Page_Entity_Id_Field_Label", resourceCulture);
             }
         }
         

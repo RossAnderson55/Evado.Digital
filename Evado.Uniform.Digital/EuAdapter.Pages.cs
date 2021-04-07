@@ -213,7 +213,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Title {0}. ", this.Session.PageLayout.Title );
       this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
       this.LogDebug ( "MenuLocation {0}. ", this.Session.PageLayout.MenuLocation );
-      this.LogDebug ( "LayoutComponents {0}. ", this.Session.PageLayout.LayoutComponents );
+      this.LogDebug ( "LayoutComponents {0}. ", this.Session.PageLayout.ActiveLayoutComponents );
       this.LogDebug ( "LeftColumnWidth {0}. ", this.Session.PageLayout.LeftColumnWidth );
       this.LogDebug ( "DisplayMainMenu {0}. ", this.Session.PageLayout.DisplayMainMenu );
       this.LogDebug ( "RightColumnWidth {0}. ", this.Session.PageLayout.RightColumnWidth );
@@ -464,6 +464,11 @@ namespace Evado.UniForm.Digital
         pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       }
 
+      if ( this.Session.PageLayout.DefaultPageEntity != String.Empty )
+      {
+        this.AddDefaultEntity ( PageObject, PageCommand );
+      }
+
       //
       // generate the page header component list.
       //
@@ -501,6 +506,29 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "createPage_Center" );
 
     }//END createPage_Center method
+    
+    // ==================================================================================
+    /// <summary>
+    /// This method generates the left column of a page layout. 
+    /// </summary>
+    /// <param name="PageObject">ClientPateEvado.Model.UniForm.Page object</param>
+    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    // ----------------------------------------------------------------------------------
+    private void AddDefaultEntity (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "AddDefaultEntity" );
+      // 
+      // initialise the methods objects and variables.
+      //
+      this._Entities.getEntityClientData ( PageObject,
+        PageCommand,
+        this.Session.PageLayout.DefaultPageEntity );
+
+
+      this.LogMethodEnd ( "AddDefaultEntity" );
+    }//END Method.
 
     // ==================================================================================
     /// <summary>

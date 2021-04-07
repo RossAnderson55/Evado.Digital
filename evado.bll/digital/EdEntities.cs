@@ -309,6 +309,28 @@ namespace Evado.Bll.Digital
 
     // =====================================================================================
     /// <summary>
+    /// This class returns the guid identifier for an entity identifier
+    /// </summary>
+    /// <param name="EntityId">string: (Mandatory) entity identifier.</param>
+    /// <returns>Guid identifier.</returns>
+    //  ----------------------------------------------------------------------------------
+    public Guid GetEntityGuid ( String EntityId )
+    {
+      this.LogMethod ( "GetEntityGuid" );
+      this.LogValue ( "EntityId: " + EntityId );
+      //
+      // Execute the query
+      //
+      var entityGuid = this._DalEntities.GetEntityGuid ( EntityId );
+      this.LogClass ( this._DalEntities.Log );
+
+      this.LogMethodEnd ( "GetEntityGuid" );
+      return entityGuid;
+
+    }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
     /// This class retrieves a form object based on RecordId
     /// </summary>
     /// <param name="SourceId">String containing the external source identifier</param>

@@ -66,6 +66,11 @@ namespace Evado.Model.Digital
       LayoutComponents,
 
       /// <summary>
+      /// The enumeration identifies the page's default entity.
+      /// </summary>
+      DefaultPageEntity,
+
+      /// <summary>
       /// This enumeration defines the Menu location field
       /// </summary>
       MenuLocation,
@@ -302,7 +307,24 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property page components on this page.
     /// </summary>
-    public String LayoutComponents
+    public String DefaultPageEntity
+    {
+      get
+      {
+        return
+          this.getParameter ( EdPageLayout.FieldNames.DefaultPageEntity );
+      }
+      set
+      {
+        this.setParameter ( EdPageLayout.FieldNames.DefaultPageEntity,
+          EvDataTypes.Text, value.ToString ( ) );
+      }
+    }
+
+    /// <summary>
+    /// This property page components on this page.
+    /// </summary>
+    public String ActiveLayoutComponents
     {
       get
       {
@@ -327,7 +349,7 @@ namespace Evado.Model.Digital
     {
       String component = Component.ToString();
 
-      if ( LayoutComponents.Contains( component ) == true )
+      if ( ActiveLayoutComponents.Contains( component ) == true )
       {
         return true;
       }
@@ -622,7 +644,13 @@ namespace Evado.Model.Digital
             return;
           }
 
-
+        case EdPageLayout.FieldNames.DefaultPageEntity:
+          {
+            this.setParameter ( EdPageLayout.FieldNames.DefaultPageEntity,
+              EvDataTypes.Text, Value );
+            return;
+          }
+          
         case EdPageLayout.FieldNames.PageCommands:
           {
             this.PageCommands = Value;

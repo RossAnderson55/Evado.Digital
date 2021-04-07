@@ -3035,19 +3035,43 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Entity_List_Title_Group_Title" xml:space="preserve">
     <value>List of {0} Entities</value>
   </data>
+  <data name="Config_Enable_AdminGroupOnEntities_Field_Label" xml:space="preserve">
+    <value>Display Administrator Group on Entity Pages:</value>
+  </data>
   <data name="Config_Enable_Entity_Edit_Update_Field_Label" xml:space="preserve">
     <value>Enable Edit buttons to update Entities:</value>
   </data>
   <data name="Config_Enable_Entity_Save_Update_Field_Label" xml:space="preserve">
     <value>Enable Save buttons to save un-submitted Entities:</value>
   </data>
+  <data name="EntityLayout_Display_Related_Entities_Field_Title" xml:space="preserve">
+    <value>Display Related Child Entities:</value>
+  </data>
+  <data name="EntityLayout_HideFieldTItlesInDisplay_Field_Title" xml:space="preserve">
+    <value>Hide field title when entity is displayed:</value>
+  </data>
+  <data name="Entity_Administrator_Header_Group_Title" xml:space="preserve">
+    <value>Administrator Entity Header</value>
+  </data>
+  <data name="Entity_Commend_Title_Field_Title" xml:space="preserve">
+    <value>Command Title:</value>
+  </data>
   <data name="Entity_Edit_Command_Title" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Entity_Entity_Identifier_Field_Title" xml:space="preserve">
+    <value>Entity Identifier:</value>
   </data>
   <data name="Entity_Save_Command_Title" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="Entity_Submit_Command" xml:space="preserve">
     <value>Submit Entity</value>
+  </data>
+  <data name="PageLayout_Default_Page_Entity_Id_Field_Description" xml:space="preserve">
+    <value>This entity will be displayed at the top of the Center column when defined.</value>
+  </data>
+  <data name="PageLayout_Default_Page_Entity_Id_Field_Label" xml:space="preserve">
+    <value>Enter the Default Entity ID for this page:</value>
   </data>
 </root>

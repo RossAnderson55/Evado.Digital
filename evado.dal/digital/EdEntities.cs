@@ -611,6 +611,7 @@ namespace Evado.Dal.Digital
         entity.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
         entity.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
         entity.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
+        entity.Design.HideFieldTitlesWhenReadOnly = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HIDE_FIELD_TITLES_IN_DISPLAY );
 
         entity.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
         if ( entity.Updated != string.Empty )
@@ -2102,6 +2103,66 @@ namespace Evado.Dal.Digital
       // Return the trial record.
       // 
       return entity;
+
+    }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class returns the guid identifier for an entity identifier
+    /// </summary>
+    /// <param name="EntityId">string: (Mandatory) entity identifier.</param>
+    /// <returns>Guid identifier.</returns>
+    //  ----------------------------------------------------------------------------------
+    public Guid GetEntityGuid ( String EntityId )
+    {
+      this.LogMethod ( "GetEntityGuid" );
+      // this.LogDebug ( "EntityId: " + EntityId );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // TestReport that the data object has a valid record identifier.
+      // 
+      if ( EntityId == String.Empty )
+      {
+        return Guid.Empty;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter(PARM_ENTITY_ID, SqlDbType.NVarChar, 20),
+      };
+      cmdParms [ 0 ].Value = EntityId;
+
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return Guid.Empty;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        return EvSqlMethods.getGuid ( row, EdEntities.DB_ENTITY_GUID );
+
+      }//END Using method
 
     }//END getRecord method
 

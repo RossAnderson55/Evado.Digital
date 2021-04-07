@@ -116,6 +116,11 @@ namespace Evado.UniForm.Digital
     //
     // The form access role
     //
+    EdRecordDesign _Design = new EdRecordDesign ( );
+
+    //
+    // The form access role
+    //
     EdRecord.FormAccessRoles _FormAccessRole = EdRecord.FormAccessRoles.Null;
 
     //
@@ -141,7 +146,6 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.FieldLayoutCodes _FieldLayout = EuAdapter.DefaultFieldLayout;
 
     private String _PageId = String.Empty;
-
 
     private bool _FieldDebug = false;
     //  =================================================================================
@@ -359,8 +363,8 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "generateLayout" );
       this.LogDebug ( "Layout.Title: " + Layout.Title );
       this.LogDebug ( "Layout.State: " + Layout.State );
-
-      Layout.setUserAccess ( this.Session.UserProfile );
+      this.LogDebug ( "Layout.DefaultPageLayout: " + Layout.Design.DefaultPageLayout );
+      this.LogDebug ( "Layout.HideFieldTitlesWhenReadOnly: " + Layout.Design.HideFieldTitlesWhenReadOnly );
       this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
 
       // 
@@ -372,6 +376,7 @@ namespace Evado.UniForm.Digital
       this._FormAccessRole = Layout.FormAccessRole;
       this._FormState = Layout.State;
       this._Fields = Layout.Fields;
+      this._Design = Layout.Design;
 
       this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
@@ -1224,12 +1229,13 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getFormField" );
       this.LogDebug ( "FieldId: " + Field.FieldId );
       this.LogDebug ( "TypeId: " + Field.TypeId );
+      this.LogDebug ( "FieldLayout {0}. ", this._FieldLayout );
+      this.LogDebug ( "HideFieldTitlesWhenReadOnly {0}. ", this._Design.HideFieldTitlesWhenReadOnly );
 
       // 
       // If the not valid sex rules match the FirstSubject's sex then
       // only display the field.
       // 
-
       if ( Field.Design.HideField == true )
       {
         this.LogDebug ( "Hidden field." );
@@ -1240,14 +1246,6 @@ namespace Evado.UniForm.Digital
       // set the field layout setting.
       //
       Evado.Model.UniForm.FieldLayoutCodes layout = this._FieldLayout;
-
-      if ( Field.Design.FieldLayout != null )
-      {
-        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout.ToString ( ), out layout ) == false )
-        {
-          layout = this._FieldLayout;
-        }
-      }
 
       //
       // IF the field had static readonly field display them across the entire page.
@@ -1285,6 +1283,17 @@ namespace Evado.UniForm.Digital
       // Define the field header.
       // 
       this.createFormFieldHeader ( Field, groupField );
+
+      //
+      // If the title is to be hidden then delete the uniform field values.
+      //
+      if ( this._Design.HideFieldTitlesWhenReadOnly == true
+        && groupField.EditAccess != Model.UniForm.EditAccess.Enabled )
+      {
+        groupField.Title = String.Empty;
+        groupField.Description = String.Empty;
+        groupField.Mandatory = false;
+      }
 
       // 
       // Select the method to generate the correct mobile field type.

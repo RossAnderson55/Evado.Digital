@@ -165,7 +165,7 @@ namespace Evado.UniForm.Digital
 
     bool EnableEntitySaveButtonUpdate = false;
     bool EnableEntityEditButtonUpdate = false;
-    bool Entity_EditMode = false;
+    bool EntityInEditMode = false;
 
     private EdRecord queryLayout = null;
     //
@@ -739,7 +739,7 @@ namespace Evado.UniForm.Digital
         // 
         // Generate the client ResultData object for the UniForm client.
         // 
-        this.getClientData ( PageObject );
+        this.getEntityClientData ( PageObject );
 
         // 
         // Return the client ResultData object to the calling method.
@@ -1135,6 +1135,7 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "EntitySelectionState: " + this.Session.EntityStateSelection );
       this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Entity_SelectedLayoutId );
       this.LogValue ( "EntityLayout.ReadAccessRoles: " + this.Session.EntityLayout.Design.ReadAccessRoles );
+      this.LogValue ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
       try
       {
         // 
@@ -1145,6 +1146,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
+        /*
         if ( this.Session.UserProfile.hasRole ( this.Session.EntityLayout.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
@@ -1155,6 +1157,7 @@ namespace Evado.UniForm.Digital
 
           return this.Session.LastPage; ;
         }
+        */
         // 
         // Log the user's access to page.
         // 
@@ -1326,6 +1329,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
+        /*
         if ( this.Session.UserProfile.hasRole ( this.Session.EntityLayout.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
@@ -1336,7 +1340,8 @@ namespace Evado.UniForm.Digital
 
           this.LogMethodEnd ( "GetFilteredListObject" );
           return this.Session.LastPage; ;
-        }
+        }*/
+
         // 
         // Log the user's access to page.
         // 
@@ -2053,6 +2058,12 @@ namespace Evado.UniForm.Digital
         string relativeURL = EuAdapter.CONST_IMAGE_FILE_DIRECTORY + CommandEntity.ImageFileName;
         groupCommand.AddParameter ( Model.UniForm.CommandParameters.Image_Url, relativeURL );
       }
+
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        groupCommand.Title = CommandEntity.EntityId + " >> " + groupCommand.Title;
+      }
+
       return groupCommand;
 
     }//END getGroupListCommand method
@@ -2479,6 +2490,98 @@ namespace Evado.UniForm.Digital
     /// This method returns a client application ResultData object
     /// </summary>
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="EntityId">String: Entity identifier</param>
+    //  ------------------------------------------------------------------------------
+    public void getEntityClientData (
+      Evado.Model.UniForm.Page PageObject,
+      Evado.Model.UniForm.Command PageCommand,
+      String EntityId )
+    {
+      this.LogMethod ( "getObject" );
+      try
+      {
+        // 
+        // Initialise the methods variables and objects.
+        // 
+
+        //
+        // load a new entity if it is not loaded.
+        //
+        if ( this.Session.Entity.EntityId != EntityId )
+        {
+          Guid entityGuid = this._Bll_Entities.GetEntityGuid ( EntityId );
+
+          this.LogDebug ( "Guid {0} == EntityId {1}: ", EntityId, entityGuid );
+
+          PageCommand.SetGuid ( entityGuid );
+          //
+          // Get the record.
+
+          var result = this.GetEntity ( PageCommand );
+
+          // 
+          // if the guid is empty the parameter was not found to exit.
+          // 
+          if ( result != EvEventCodes.Ok )
+          {
+            this.ErrorMessage = EdLabels.Record_Retrieve_Error_Message;
+
+            this.LogError ( EvEventCodes.Database_Record_Retrieval_Error, "Retrieved Record is empty." );
+            this.LogMethodEnd ( "getObject" );
+            return;
+          }
+
+          this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
+          this.LogValue ( "Entity.EntityId: " + this.Session.Entity.EntityId );
+        }
+
+        // 
+        // Log access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "getObject",
+          this.Session.UserProfile );
+
+        //
+        // Rung the server script if server side scripts are enabled.
+        //
+        this.runServerScript ( EvServerPageScript.ScripEventTypes.OnOpen );
+
+        // 
+        // Generate the client ResultData object for the UniForm client.
+        // 
+        this.getEntityClientData ( PageObject );
+
+        // 
+        // Return the client ResultData object to the calling method.
+        // 
+        this.LogMethodEnd ( "getObject" );
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // On an exception raised create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.Entity_Retrieve_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+
+      this.LogMethodEnd ( "getObject" );
+      return;
+
+    }//END getObject method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
     private Evado.Model.UniForm.AppData getObject (
@@ -2491,27 +2594,6 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
-        // 
-        // If the user does not have monitor or ResultData manager roles exit the page.
-        // 
-        if ( this.Session.UserProfile.hasRole ( this.Session.UserProfile.Roles ) == false )
-        {
-          this.LogIllegalAccess (
-            this.ClassNameSpace + "getObject",
-            this.Session.UserProfile );
-
-          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
-
-          return this.Session.LastPage; ;
-        }
-
-        // 
-        // Log access to page.
-        // 
-        this.LogPageAccess (
-          this.ClassNameSpace + "getObject",
-          this.Session.UserProfile );
 
         //
         // Get the record.
@@ -2533,6 +2615,26 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
         this.LogValue ( "Entity.EntityId: " + this.Session.Entity.EntityId );
 
+        // 
+        // If the user does not have monitor or ResultData manager roles exit the page.
+        // 
+        if ( this.Session.UserProfile.hasRole ( this.Session.Entity.EntityAccess ) == false )
+        {
+          this.LogIllegalAccess (
+            this.ClassNameSpace + "getObject",
+            this.Session.UserProfile );
+
+          this.ErrorMessage = EdLabels.Record_Access_Error_Message;
+
+          return this.Session.LastPage; ;
+        }
+
+        // 
+        // Log access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "getObject",
+          this.Session.UserProfile );
         //
         // Rung the server script if server side scripts are enabled.
         //
@@ -2564,7 +2666,7 @@ namespace Evado.UniForm.Digital
         // 
         // Generate the client ResultData object for the UniForm client.
         // 
-        this.getClientData ( clientDataObject.Page );
+        this.getEntityClientData ( clientDataObject.Page );
 
         // 
         // Return the client ResultData object to the calling method.
@@ -2922,11 +3024,12 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getClientData (
+    private void getEntityClientData (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getClientData" );
       this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
+      this.LogDebug ( "Entity.DefaultPageLayout: " + this.Session.Entity.Design.DefaultPageLayout );
       this.LogDebug ( "Entity.ReadAccessRoles: " + this.Session.Entity.Design.ReadAccessRoles );
       this.LogDebug ( "Entity.EditAccessRoles: " + this.Session.Entity.Design.EditAccessRoles );
       this.LogDebug ( "Entity.AuthorAccess: " + this.Session.Entity.Design.AuthorAccess );
@@ -2934,11 +3037,14 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Entity.ParentGuid: " + this.Session.Entity.ParentGuid );
       this.LogDebug ( "Entity.ParentOrgId: " + this.Session.Entity.ParentOrgId );
       this.LogDebug ( "Entity.ParentUserId: " + this.Session.Entity.ParentUserId );
+      this.LogDebug ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
+      this.LogDebug ( "EntityInEditMode: " + this.EntityInEditMode );
+      
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
 
       //
@@ -2963,6 +3069,37 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogDebug ( "GENERATE LAYOUT" );
+
+      //
+      // if edit enabled mode is running ensure that layout is readonly.
+      //
+      if ( this.EntityInEditMode == false
+        && this.EnableEntityEditButtonUpdate == true )
+      {
+        this.Session.Entity.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
+      }
+
+      //
+      // Display the administrator group for the group.
+      //
+      if ( this.Session.UserProfile.hasAdministrationAccess == true
+        && this.AdapterObjects.Settings.EnableAdminGroupOnEntityPages == true )
+      {
+        pageGroup = PageObject.AddGroup (
+          EdLabels.Entity_Administrator_Header_Group_Title );
+        pageGroup.EditAccess = Model.UniForm.EditAccess.Disabled;
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+
+        groupField = pageGroup.createTextField (
+          String.Empty,
+          EdLabels.Entity_Entity_Identifier_Field_Title,
+          this.Session.Entity.EntityId, 20 );
+
+        groupField = pageGroup.createTextField (
+          String.Empty,
+          EdLabels.Entity_Entity_Identifier_Field_Title,
+          this.Session.Entity.CommandTitle, 80 );
+      }
 
       // 
       // Call the page generation method
@@ -3395,7 +3532,7 @@ namespace Evado.UniForm.Digital
         // 
         // Generate the new page layout 
         // 
-        this.getClientData ( clientDataObject.Page );
+        this.getEntityClientData ( clientDataObject.Page );
 
         this.Session.EntityList = new List<EdRecord> ( );
         // 

@@ -1270,6 +1270,17 @@ namespace Evado.UniForm.Digital
         this.Session.AdminPageLayout.DisplayMainMenu );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
+      // 
+      // Create the user type selection.
+      // 
+      groupField = pageGroup.createTextField (
+        EdPageLayout.FieldNames.DefaultPageEntity,
+        EdLabels.PageLayout_Default_Page_Entity_Id_Field_Label,
+        EdLabels.PageLayout_Default_Page_Entity_Id_Field_Description,
+        this.Session.AdminPageLayout.DefaultPageEntity,
+        20 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
       //
       // create the user type selection list.
       //
@@ -1312,7 +1323,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createCheckBoxListField (
         EdPageLayout.FieldNames.LayoutComponents,
         EdLabels.PageLayout_Component_Field_Label,
-        this.Session.AdminPageLayout.LayoutComponents,
+        this.Session.AdminPageLayout.ActiveLayoutComponents,
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 

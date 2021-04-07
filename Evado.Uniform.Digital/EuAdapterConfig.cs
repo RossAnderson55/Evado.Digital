@@ -2031,6 +2031,14 @@ namespace Evado.UniForm.Digital
         this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
+      //
+      // create the enable admin group on all entity pages.
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.EnableAdminGroupOnEntitPages,
+        EdLabels.Config_Enable_AdminGroupOnEntities_Field_Label,
+        this.AdapterObjects.Settings.EnableAdminGroupOnEntityPages );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // create the enable binary data collection.

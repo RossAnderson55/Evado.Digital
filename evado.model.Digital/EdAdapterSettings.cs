@@ -147,6 +147,12 @@ namespace Evado.Model.Digital
       /// This enumeration defines if the user address is to be collected.
       /// </summary>
       Enable_User_Address_Update,
+      
+      /// <summary>
+      /// This enumeration indicates that the admin group is to be displayed
+      /// to administrators on all entity pages.
+      /// </summary>
+      EnableAdminGroupOnEntitPages,
 
       /// <summary>
       /// This enumeration definse a collecting binary data field name of a trial
@@ -424,6 +430,25 @@ namespace Evado.Model.Digital
       set
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Use_Home_Page_Header_On_All_Pages,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property indicates to user the home header for all entity and record pages.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableAdminGroupOnEntityPages
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.EnableAdminGroupOnEntitPages) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.EnableAdminGroupOnEntitPages,
           EvDataTypes.Boolean, value.ToString ( ) );
       }
     }
@@ -1170,6 +1195,13 @@ namespace Evado.Model.Digital
         case EdAdapterSettings.AdapterFieldNames.Description:
           {
             this._HttpReference = Value;
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.EnableAdminGroupOnEntitPages:
+          {
+            this.setParameter ( EdAdapterSettings.AdapterFieldNames.EnableAdminGroupOnEntitPages,
+              EvDataTypes.Boolean, Value.ToString ( ) );
             return;
           }
 

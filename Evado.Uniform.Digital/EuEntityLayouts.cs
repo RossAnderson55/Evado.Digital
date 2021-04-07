@@ -1679,26 +1679,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
-            //
-            // Add the same groupCommand.
-            //
-            /*
-            pageCommand = PageObject.addCommand (
-              EdLabels.Form_Withdrawn_Command_Title,
-              Adapter.ApplicationId,
-              Adapter.ApplicationObjects.Project_Forms.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Save_Object );
-
-            // 
-            // Define the save groupCommand parameters.
-            // 
-            pageCommand.setParameterGuid ( this.SessionObjects.Form.Guid );
-
-            pageCommand.AddParameter (
-              Evado.Model.Digital.EvStatics.CONST_SAVE_ACTION,
-             EvForm.SaveActionCodes.Form_Withdrawn.ToString ( ) );
-            */
+             EdRecord.SaveActionCodes.Layout_Update.ToString ( ) );
 
             //
             // Add the form template save command.
@@ -2125,7 +2106,7 @@ namespace Evado.UniForm.Digital
 
             pageCommand.AddParameter (
               Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
-             EdRecord.SaveActionCodes.Layout_Saved.ToString ( ) );
+             EdRecord.SaveActionCodes.Layout_Update.ToString ( ) );
 
             //
             // Add the same groupCommand.
@@ -2150,6 +2131,25 @@ namespace Evado.UniForm.Digital
           }
         case EdRecordObjectStates.Form_Issued:
           {
+            //
+            // Add the same groupCommand.
+            //
+            pageCommand = PageGroup.addCommand (
+              EdLabels.Form_Save_Command_Title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entity_Layouts.ToString ( ),
+              Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+            // 
+            // Define the save groupCommand parameters.
+            // 
+            pageCommand.SetGuid ( this.Session.EntityLayout.Guid );
+            pageCommand.SetPageId ( EdStaticPageIds.Entity_Layout_Page );
+
+            pageCommand.AddParameter (
+              Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+             EdRecord.SaveActionCodes.Layout_Update.ToString ( ) );
+
             //
             // Add the same groupCommand.
             //
@@ -2517,6 +2517,7 @@ namespace Evado.UniForm.Digital
           this.Session.PageId = EdStaticPageIds.Entity_Layout_Page.ToString ( );
         }
 
+        this.LogDebug ( "EntityLayout.DefaultPageLayout: " + this.Session.EntityLayout.Design.DefaultPageLayout );
         //
         // Rung the server script if server side scripts are enabled.
         //

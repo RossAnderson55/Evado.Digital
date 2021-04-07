@@ -45,6 +45,7 @@ namespace Evado.UniForm.Digital
     private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null;
 
     private Model.UniForm.EditAccess _InitialAccess = Model.UniForm.EditAccess.Null; 
+
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -392,6 +393,16 @@ namespace Evado.UniForm.Digital
       this.GetDataObject_GroupCommands ( pageGroup );
 
       //
+      // Enable display if chiled entities.
+      //
+      groupField = pageGroup.createBooleanField (
+        EdRecord.RecordFieldNames.HideFieldTitlesWhenReadOnly,
+        EdLabels.EntityLayout_HideFieldTItlesInDisplay_Field_Title,
+        this.Session.EntityLayout.Design.HideFieldTitlesWhenReadOnly );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
       // Form Update reason
       //
       optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
@@ -430,6 +441,16 @@ namespace Evado.UniForm.Digital
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.EditAccess = this._DesignAccess;
+
+      //
+      // Enable display if chiled entities.
+      //
+      groupField = pageGroup.createBooleanField (
+        EdRecord.RecordFieldNames.DisplayRelatedEntities.ToString ( ),
+        EdLabels.EntityLayout_Display_Related_Entities_Field_Title,
+        this.Session.EntityLayout.Design.DisplayRelatedEntities );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Layout author only edit record access
