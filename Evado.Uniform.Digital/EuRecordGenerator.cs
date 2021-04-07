@@ -364,7 +364,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Layout.Title: " + Layout.Title );
       this.LogDebug ( "Layout.State: " + Layout.State );
       this.LogDebug ( "Layout.DefaultPageLayout: " + Layout.Design.DefaultPageLayout );
-      this.LogDebug ( "Layout.HideFieldTitlesWhenReadOnly: " + Layout.Design.HideFieldTitlesWhenReadOnly );
+      this.LogDebug ( "Layout.HideFieldTitlesWhenReadOnly: " + Layout.Design.FieldReadonlyDisplayFormat );
       this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
 
       // 
@@ -381,8 +381,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
       {
-        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( 
-          Layout.Design.DefaultPageLayout.ToString ( ), 
+        if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> (
+          Layout.Design.DefaultPageLayout.ToString ( ),
           out this._FieldLayout ) == false )
         {
           this._FieldLayout = EuAdapter.DefaultFieldLayout;
@@ -417,7 +417,7 @@ namespace Evado.UniForm.Digital
       {
         case Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author:
           {
-            this.LogDebug ( "Record Author "  );
+            this.LogDebug ( "Record Author " );
             PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
             break;
@@ -890,10 +890,10 @@ namespace Evado.UniForm.Digital
       // 
       // Add the form record approval as a readonly field.
       // 
-     var groupField = footerGroup.createReadOnlyTextField (
-        String.Empty,
-        String.Empty,
-        Layout.Design.Approval );
+      var groupField = footerGroup.createReadOnlyTextField (
+         String.Empty,
+         String.Empty,
+         Layout.Design.Approval );
       groupField.Layout = Model.UniForm.FieldLayoutCodes.Center_Justified;
 
     }//END method
@@ -1108,20 +1108,20 @@ namespace Evado.UniForm.Digital
           && PageObject.EditAccess == Model.UniForm.EditAccess.Disabled
           && Layout.Author == this.Session.UserProfile.UserId )
         {
-          var groupCommand = fieldGroup.addCommand( 
+          var groupCommand = fieldGroup.addCommand (
             EdLabels.Entity_Enable_Edit_Command_Title,
               EuAdapter.ADAPTER_ID,
               EuAdapterClasses.Entities.ToString ( ),
               Evado.Model.UniForm.ApplicationMethods.Custom_Method );
-            groupCommand.SetGuid ( this.Session.Entity.Guid );
+          groupCommand.SetGuid ( this.Session.Entity.Guid );
 
-            groupCommand.AddParameter (
-             EuRecordGenerator.CONST_ENABLE_EDIT_FIELD, "Yes");
+          groupCommand.AddParameter (
+           EuRecordGenerator.CONST_ENABLE_EDIT_FIELD, "Yes" );
 
-            if ( Layout.Design.IsEntity == false )
-            {
-              groupCommand.Object = EuAdapterClasses.Records.ToString ( );
-            }
+          if ( Layout.Design.IsEntity == false )
+          {
+            groupCommand.Object = EuAdapterClasses.Records.ToString ( );
+          }
 
         }//END command selection block.
 
@@ -1230,7 +1230,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FieldId: " + Field.FieldId );
       this.LogDebug ( "TypeId: " + Field.TypeId );
       this.LogDebug ( "FieldLayout {0}. ", this._FieldLayout );
-      this.LogDebug ( "HideFieldTitlesWhenReadOnly {0}. ", this._Design.HideFieldTitlesWhenReadOnly );
+      this.LogDebug ( "FormAccessRole {0}. ", this._FormAccessRole );
+      this.LogDebug ( "HideFieldTitlesWhenReadOnly {0}. ", this._Design.FieldReadonlyDisplayFormat );
 
       // 
       // If the not valid sex rules match the FirstSubject's sex then
@@ -1270,6 +1271,7 @@ namespace Evado.UniForm.Digital
       groupField.Layout = layout;
 
       this.LogDebug ( "groupField.Layout {0}. ", groupField.Layout );
+      this.LogDebug ( "groupField.EditAccess {0}. ", groupField.EditAccess );
       //
       // If the field is mandatory and is empty then shade the background to identify
       // the field as a mandatory field.
@@ -1287,13 +1289,36 @@ namespace Evado.UniForm.Digital
       //
       // If the title is to be hidden then delete the uniform field values.
       //
-      if ( this._Design.HideFieldTitlesWhenReadOnly == true
-        && groupField.EditAccess != Model.UniForm.EditAccess.Enabled )
+      if ( groupField.EditAccess != Model.UniForm.EditAccess.Enabled )
       {
-        groupField.Title = String.Empty;
-        groupField.Description = String.Empty;
-        groupField.Mandatory = false;
-      }
+        switch ( this._Design.FieldReadonlyDisplayFormat )
+        {
+          case EdRecord.FieldReadonlyDisplayFormats.Hide_Field_Titles:
+            {
+              groupField.Title = String.Empty;
+              groupField.Description = String.Empty;
+              groupField.Mandatory = false;
+              break;
+            }
+
+          case EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles:
+            {
+              groupField.Title = String.Empty;
+              groupField.Description = String.Empty;
+              groupField.Mandatory = false;
+
+              this.createFormDisplayLayout ( Field, groupField );
+              return;
+            }
+          case EdRecord.FieldReadonlyDisplayFormats.Document_Layout:
+            {
+              groupField.Mandatory = false;
+
+              this.createFormDisplayLayout ( Field, groupField );
+              return;
+            }
+        }//END switch statment
+      }//END if statement
 
       // 
       // Select the method to generate the correct mobile field type.
@@ -1475,6 +1500,135 @@ namespace Evado.UniForm.Digital
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
+    private void createFormDisplayLayout (
+       Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "createFormDisplayLayout" );
+      
+      // 
+      // Select the method to generate the correct mobile field type.
+      // 
+      switch ( Field.TypeId )
+      {
+        case Evado.Model.EvDataTypes.Computed_Field:
+        case Evado.Model.EvDataTypes.Text:
+        case Evado.Model.EvDataTypes.Boolean:
+        case Evado.Model.EvDataTypes.Yes_No:
+        case Evado.Model.EvDataTypes.Numeric:
+        case Evado.Model.EvDataTypes.Integer:
+        case Evado.Model.EvDataTypes.Float_Range:
+        case Evado.Model.EvDataTypes.Date_Range:
+        case Evado.Model.EvDataTypes.Date:
+        case Evado.Model.EvDataTypes.Time:
+        case Evado.Model.EvDataTypes.Telephone_Number:
+        case Evado.Model.EvDataTypes.Email_Address:
+        case Evado.Model.EvDataTypes.Selection_List:
+        case Evado.Model.EvDataTypes.External_Selection_List:
+        case Evado.Model.EvDataTypes.Radio_Button_List:
+        case Evado.Model.EvDataTypes.External_RadioButton_List:
+        case Evado.Model.EvDataTypes.Read_Only_Text:
+        case Evado.Model.EvDataTypes.Special_Subsitute_Data:
+          {
+            this.getDisplayField ( Field, GroupField );
+            return;
+          }
+
+        case Evado.Model.EvDataTypes.Free_Text:
+          {
+            this.getFreeTextField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Integer_Range:
+          {
+            this.getIntegerRangeField ( Field, GroupField );
+            break;
+          }
+        case Evado.Model.EvDataTypes.Address:
+          {
+            this.getAddressField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Name:
+          {
+            this.getNameField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Check_Box_List:
+          {
+            this.getCheckButtonListField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.External_CheckBox_List:
+          {
+            this.getExternalCheckBoxField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:
+          {
+            this.getHorizontalRadioButtonField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Analogue_Scale:
+          {
+            this.getAnalogueScaleField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Streamed_Video:
+          {
+            this.getStreamedVideoField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Image:
+          {
+            this.getImageField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.External_Image:
+          {
+            this.getExternalImageField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Html_Link:
+          {
+            this.getHttpLinkField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Signature:
+          {
+            this.getSignatureField ( Field, GroupField, EdRecordObjectStates.Submitted_Record );
+            return;
+          }
+        case Evado.Model.EvDataTypes.User_Endorsement:
+          {
+            this.getUserEndorsementField ( Field, GroupField );
+            return;
+          }
+        case Evado.Model.EvDataTypes.Table:
+        case Evado.Model.EvDataTypes.Special_Matrix:
+          {
+            this.getTableField ( Field, GroupField );
+            return;
+          }
+        default:
+          {
+            this.getDisplayField ( Field, GroupField );
+            return;
+          }
+      }
+      this.LogMethodEnd ( "createFormDisplayLayout" );
+    }//END MEthod
+ 
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the form field object header as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
+    //  ---------------------------------------------------------------------------------
     private void createFormFieldHeader (
        Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
@@ -1574,6 +1728,31 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "createFormFieldHeader" );
 
     }//END getFormFieldHeader
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayField (
+        Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField )
+    {
+      this.LogMethod ( "getDisplayField" );
+
+      // 
+      // Initialise local variables.
+      // 
+      GroupField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
+      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, 50 );
+      GroupField.Description = String.Empty;
+
+      return;
+
+    }//END getReadOnlyField method.
 
     //  =================================================================================
     /// <summary>
@@ -1684,6 +1863,11 @@ namespace Evado.UniForm.Digital
       GroupField.Value = Field.ItemText;
       GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, 50 );
       GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Height, 5 );
+
+      if ( GroupField.EditAccess != Model.UniForm.EditAccess.Enabled )
+      {
+        GroupField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
+      }
 
     }//END getFreeTextField method.
 
@@ -2435,7 +2619,7 @@ namespace Evado.UniForm.Digital
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
     //  ---------------------------------------------------------------------------------
-    private void getSelectonField ( 
+    private void getSelectonField (
       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
@@ -2479,7 +2663,7 @@ namespace Evado.UniForm.Digital
     /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
     /// <param name="GroupField"> Evado.Model.UniForm.Field  object.</param>
     //  ---------------------------------------------------------------------------------
-    private void getExternalSelectonField ( 
+    private void getExternalSelectonField (
       Evado.Model.Digital.EdRecordField Field,
       Evado.Model.UniForm.Field GroupField )
     {
@@ -3318,7 +3502,7 @@ namespace Evado.UniForm.Digital
           else
           {
             this.LogDebug ( "Field Change: FieldId: '{0}' Old: '{1}' New: {2}'",
-              FormField.FieldId,  FormField.ItemValue, stValue );
+              FormField.FieldId, FormField.ItemValue, stValue );
 
             FormField.ItemValue = stValue;
 
@@ -3345,7 +3529,7 @@ namespace Evado.UniForm.Digital
     /// <param name="FormField">  Evado.Model.Digital.EvFormField object containing test field ResultData.</param>
     /// <param name="CommandParameters">Containing the returned formfield values.</param>
     //  ----------------------------------------------------------------------------------
-    private void saveImageFile ( 
+    private void saveImageFile (
         Evado.Model.Digital.EdRecordField FormField )
     {
       this.LogMethod ( "saveImageFile" );
@@ -3383,7 +3567,7 @@ namespace Evado.UniForm.Digital
       {
         System.IO.File.Copy ( stSourcePath, stImagePath, true );
       }
-      catch (Exception ex )
+      catch ( Exception ex )
       {
         this.LogException ( ex );
       }

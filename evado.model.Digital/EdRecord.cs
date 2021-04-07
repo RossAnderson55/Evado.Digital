@@ -35,6 +35,7 @@ namespace Evado.Model.Digital
     {
       this.Design.AuthorAccess = AuthorAccessList.Only_Author;
       this.Design.ParentType = ParentTypeList.User;
+      this.Design.FieldReadonlyDisplayFormat = FieldReadonlyDisplayFormats.Default;
       this.Visabilty = VisabilityList.Public;
     }
 
@@ -332,6 +333,35 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list 
     /// </summary>
+    public enum FieldReadonlyDisplayFormats
+    {
+      /// <summary>
+      /// The value is not set.
+      /// </summary>
+      Null = 0,
+      /// <summary>
+      /// This enumeration set the command link to display the default content.
+      /// </summary>
+      Default = 0,
+      /// <summary>
+      /// This enumeration sets the command link to display the record summary.
+      /// </summary>
+      Hide_Field_Titles,
+
+      /// <summary>
+      /// This enumeration set the command link to display the first record field content.
+      /// </summary>
+      Document_Layout,
+
+      /// <summary>
+      /// This enumeration set the command link to display the summary field content.
+      /// </summary>
+      Document_Layout_No_Titles,
+    }
+
+    /// <summary>
+    /// This enumeration list 
+    /// </summary>
     public enum LinkContentSetting
     {
       /// <summary>
@@ -462,7 +492,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies field titles are to be hiden in display model field.
       /// </summary>
-      HideFieldTitlesWhenReadOnly,
+      FieldReadonlyDisplayFormat,
 
       /// <summary>
       /// This enumeration identifies the record subject field.
@@ -1933,9 +1963,10 @@ namespace Evado.Model.Digital
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
             return;
           }
-        case RecordFieldNames.HideFieldTitlesWhenReadOnly:
+        case RecordFieldNames.FieldReadonlyDisplayFormat:
           {
-            this._Design.HideFieldTitlesWhenReadOnly = EvcStatics.getBool ( Value );
+            this._Design.FieldReadonlyDisplayFormat =
+              EvStatics.parseEnumValue < FieldReadonlyDisplayFormats> ( Value );
             return;
           }
         case RecordFieldNames.DefaultPageLayout:

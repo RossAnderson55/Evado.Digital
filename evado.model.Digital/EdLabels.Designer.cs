@@ -2686,11 +2686,11 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hide field title when entity is displayed:.
+        ///   Looks up a localized string similar to Field read-only display format:.
         /// </summary>
-        public static string EntityLayout_HideFieldTItlesInDisplay_Field_Title {
+        public static string EntityLayout_FieldDisplayFormat_Field_Title {
             get {
-                return ResourceManager.GetString("EntityLayout_HideFieldTItlesInDisplay_Field_Title", resourceCulture);
+                return ResourceManager.GetString("EntityLayout_FieldDisplayFormat_Field_Title", resourceCulture);
             }
         }
         

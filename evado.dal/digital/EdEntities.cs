@@ -611,7 +611,9 @@ namespace Evado.Dal.Digital
         entity.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
         entity.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
         entity.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
-        entity.Design.HideFieldTitlesWhenReadOnly = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HIDE_FIELD_TITLES_IN_DISPLAY );
+
+        entity.Design.FieldReadonlyDisplayFormat = EvSqlMethods.getString<EdRecord.FieldReadonlyDisplayFormats> ( 
+          Row, EdEntityLayouts.DB_FIELD_DISPLAY_FORMAT );
 
         entity.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
         if ( entity.Updated != string.Empty )

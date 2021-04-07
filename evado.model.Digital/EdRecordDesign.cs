@@ -193,9 +193,9 @@ namespace Evado.Model.Digital
     public EdRecord.LinkContentSetting LinkContentSetting { get; set; }
 
     /// <summary>
-    /// This property indicated whether the field titles are to be hidden when the page is reonly.
+    /// This property defines how the layout fields are to be displayed when readonly.
     /// </summary>
-    public bool HideFieldTitlesWhenReadOnly { get; set; }
+    public EdRecord.FieldReadonlyDisplayFormats FieldReadonlyDisplayFormat { get; set; }
 
     /// <summary>
     /// This property indicated whether related entities are to be displayed at the bottom of the page.

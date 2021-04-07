@@ -505,7 +505,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property enables the entity edit button
     /// </summary>
-    public bool Entity_EditModeEnabled { get; set; }
+    public bool EntityEditModeEnabled { get; set; }
 
     /// <summary>
     /// This property contains dictionary of the Entity hiararchy.

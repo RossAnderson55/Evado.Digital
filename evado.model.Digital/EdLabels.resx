@@ -3047,9 +3047,6 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="EntityLayout_Display_Related_Entities_Field_Title" xml:space="preserve">
     <value>Display Related Child Entities:</value>
   </data>
-  <data name="EntityLayout_HideFieldTItlesInDisplay_Field_Title" xml:space="preserve">
-    <value>Hide field title when entity is displayed:</value>
-  </data>
   <data name="Entity_Administrator_Header_Group_Title" xml:space="preserve">
     <value>Administrator Entity Header</value>
   </data>
@@ -3073,5 +3070,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="PageLayout_Default_Page_Entity_Id_Field_Label" xml:space="preserve">
     <value>Enter the Default Entity ID for this page:</value>
+  </data>
+  <data name="EntityLayout_FieldDisplayFormat_Field_Title" xml:space="preserve">
+    <value>Field read-only display format:</value>
   </data>
 </root>

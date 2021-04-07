@@ -339,6 +339,7 @@ namespace Evado.Model.UniForm
         Title,
         DataType,
         Value );
+      field.EditAccess = this._EditAccess;
 
       //
       // Add the field to the field list.

@@ -165,7 +165,6 @@ namespace Evado.UniForm.Digital
 
     bool EnableEntitySaveButtonUpdate = false;
     bool EnableEntityEditButtonUpdate = false;
-    bool EntityInEditMode = false;
 
     private EdRecord queryLayout = null;
     //
@@ -949,9 +948,9 @@ namespace Evado.UniForm.Digital
       //
       if ( PageCommand.hasParameter ( EuEntities.CONST_EDIT_MODE_FIELD ) == true )
       {
-        this.Session.Entity_EditModeEnabled = true;
+        this.Session.EntityEditModeEnabled = true;
       }
-      this.LogValue ( "HideSelectionGroup: " + this._HideSelectionGroup );
+      this.LogValue ( "EntityEditModeEnabled: " + this.Session.EntityEditModeEnabled );
 
       //
       // if the entity layout is defined in the page command then update its value.
@@ -2613,12 +2612,12 @@ namespace Evado.UniForm.Digital
         }
 
         this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
-        this.LogValue ( "Entity.EntityId: " + this.Session.Entity.EntityId );
+        this.LogDebug ( "Entity.EntityId: " + this.Session.Entity.EntityId );
 
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasRole ( this.Session.Entity.EntityAccess ) == false )
+        if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getObject",
@@ -3030,6 +3029,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getClientData" );
       this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
       this.LogDebug ( "Entity.DefaultPageLayout: " + this.Session.Entity.Design.DefaultPageLayout );
+      this.LogDebug ( "Entity.FieldReadonlyDisplayFormat: " + this.Session.Entity.Design.FieldReadonlyDisplayFormat );
       this.LogDebug ( "Entity.ReadAccessRoles: " + this.Session.Entity.Design.ReadAccessRoles );
       this.LogDebug ( "Entity.EditAccessRoles: " + this.Session.Entity.Design.EditAccessRoles );
       this.LogDebug ( "Entity.AuthorAccess: " + this.Session.Entity.Design.AuthorAccess );
@@ -3038,8 +3038,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Entity.ParentOrgId: " + this.Session.Entity.ParentOrgId );
       this.LogDebug ( "Entity.ParentUserId: " + this.Session.Entity.ParentUserId );
       this.LogDebug ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
-      this.LogDebug ( "EntityInEditMode: " + this.EntityInEditMode );
-      
+      this.LogDebug ( "EntityEditModeEnabled: " + this.Session.EntityEditModeEnabled );
+
       // 
       // Initialise the methods variables and objects.
       // 
@@ -3073,8 +3073,8 @@ namespace Evado.UniForm.Digital
       //
       // if edit enabled mode is running ensure that layout is readonly.
       //
-      if ( this.EntityInEditMode == false
-        && this.EnableEntityEditButtonUpdate == true )
+      if ( this.EnableEntityEditButtonUpdate == true
+        && this.Session.EntityEditModeEnabled == false )
       {
         this.Session.Entity.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
       }
@@ -3169,7 +3169,7 @@ namespace Evado.UniForm.Digital
       // 
       // Add the Edit command to the page.
       //
-      if ( this.Session.Entity_EditModeEnabled == false
+      if ( this.Session.EntityEditModeEnabled == false
         && this.EnableEntityEditButtonUpdate == true )
       {
         pageCommand = PageObject.addCommand (
@@ -3181,7 +3181,6 @@ namespace Evado.UniForm.Digital
         pageCommand.SetGuid ( this.Session.Entity.Guid );
 
         pageCommand.AddParameter ( EuEntities.CONST_EDIT_MODE_FIELD, "yes" );
-
       }
       else
       {
@@ -3270,7 +3269,7 @@ namespace Evado.UniForm.Digital
       // Display save command in the last group.
       //
       if ( this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Author
-        || this.Session.Entity_EditModeEnabled == false
+        || this.Session.EntityEditModeEnabled == false
         || PageObject.GroupList.Count == 0 )
       {
         this.LogMethodEnd ( "getDataObject_GroupCommands" );
@@ -3362,7 +3361,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
       this.LogDebug ( "Entity.ChildEntities.Count {0}.", this.Session.Entity.ChildEntities.Count );
 
-      if ( this.Session.Entity.Design.DisplayRelatedEntities == false )
+      if ( this.Session.Entity.Design.DisplayRelatedEntities == false
+        || this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
       {
         this.LogDebug ( "No displaying related entities." );
         this.LogMethodEnd ( "getDataObject_ChildEntities" );
@@ -3386,6 +3386,7 @@ namespace Evado.UniForm.Digital
       {
         pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
         pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Command_Width, "20%" );
+        pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Command_Height, "50px" );
       }
 
       //
@@ -3753,7 +3754,7 @@ namespace Evado.UniForm.Digital
         // Force a refresh of hte form record list.
         //
         this.Session.EntityList = new List<EdRecord> ( );
-        this.Session.Entity_EditModeEnabled = false;
+        this.Session.EntityEditModeEnabled = false;
 
         if ( this.Session.Entity.SaveAction == EdRecord.SaveActionCodes.Layout_Approved )
         {

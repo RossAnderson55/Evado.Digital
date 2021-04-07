@@ -192,7 +192,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// The database entity layout footer format column name
     /// </summary>
-    public const string DB_HIDE_FIELD_TITLES_IN_DISPLAY = "EDEL_HIDE_FIELD_TITLES_IN_DISPLAY";
+    public const string DB_FIELD_DISPLAY_FORMAT = "EDEL_FIELD_DISPLAY_FORMAT";
     /// <summary>
     /// This database entity layout field Id filter 0
     /// </summary>
@@ -263,7 +263,7 @@ namespace Evado.Dal.Digital
     private const string PARM_PARENT_ACCESS = "@PARENT_ACCESS";
     private const string PARM_HEADER_FORMAT = "@HEADER_FORMAT";
     private const string PARM_FOOTER_FORMAT = "@FOOTER_FORMAT";
-    private const string PARM_HIDE_FIELD_TITLES_IN_DISPLAY = "@HIDE_FIELD_TITLES_IN_DISPLAY";
+    private const string PARM_FIELD_DISPLAY_FORMAT = "@FIELD_DISPLAY_FORMAT";
     /// <summary>
     /// This is the entity layout field id 0 parameter
     /// </summary>
@@ -357,7 +357,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_3, SqlDbType.NVarChar, 30),
 
         new SqlParameter( EdEntityLayouts.PARM_FILTER_FIELD_4, SqlDbType.NVarChar, 30),
-        new SqlParameter( EdEntityLayouts.PARM_HIDE_FIELD_TITLES_IN_DISPLAY, SqlDbType.Bit),
+        new SqlParameter( EdEntityLayouts.PARM_FIELD_DISPLAY_FORMAT, SqlDbType.NVarChar, 30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
@@ -488,7 +488,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 29 ].Value = EntityLayout.FilterFieldIds [ 3 ];
 
       cmdParms [ 30 ].Value = EntityLayout.FilterFieldIds [ 4 ];
-      cmdParms [ 31 ].Value = EntityLayout.Design.HideFieldTitlesWhenReadOnly;
+      cmdParms [ 31 ].Value = EntityLayout.Design.FieldReadonlyDisplayFormat;
       cmdParms [ 32 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 33 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 34 ].Value = DateTime.Now;
@@ -570,7 +570,8 @@ namespace Evado.Dal.Digital
       layout.Design.HeaderFormat = EvSqlMethods.getString<EdRecord.HeaderFormat> ( Row, EdEntityLayouts.DB_HEADER_FORMAT );
       layout.Design.FooterFormat = EvSqlMethods.getString<EdRecord.FooterFormat> ( Row, EdEntityLayouts.DB_FOOTER_FORMAT );
 
-      layout.Design.HideFieldTitlesWhenReadOnly = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HIDE_FIELD_TITLES_IN_DISPLAY);
+      layout.Design.FieldReadonlyDisplayFormat = EvSqlMethods.getString<EdRecord.FieldReadonlyDisplayFormats> (
+          Row, EdEntityLayouts.DB_FIELD_DISPLAY_FORMAT );
 
       layout.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
       layout.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );

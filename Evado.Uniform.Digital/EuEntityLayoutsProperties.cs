@@ -393,13 +393,16 @@ namespace Evado.UniForm.Digital
       this.GetDataObject_GroupCommands ( pageGroup );
 
       //
-      // Enable display if chiled entities.
+      // Layout field readonly display format settings
       //
-      groupField = pageGroup.createBooleanField (
-        EdRecord.RecordFieldNames.HideFieldTitlesWhenReadOnly,
-        EdLabels.EntityLayout_HideFieldTItlesInDisplay_Field_Title,
-        this.Session.EntityLayout.Design.HideFieldTitlesWhenReadOnly );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.FieldReadonlyDisplayFormats ), false );
 
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.RecordFieldNames.FieldReadonlyDisplayFormat.ToString ( ),
+        EdLabels.EntityLayout_FieldDisplayFormat_Field_Title,
+        this.Session.EntityLayout.Design.FieldReadonlyDisplayFormat,
+        optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
