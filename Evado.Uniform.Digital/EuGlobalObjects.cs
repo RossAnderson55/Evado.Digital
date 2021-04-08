@@ -845,8 +845,10 @@ namespace Evado.UniForm.Digital
     private void createEntityParents ( )
     {
       this.LogInitMethod ( "createEntityParents" );
-
-      _EntityParents = new List<EdObjectParent> ( );
+      //
+      // initialise the methods variables and objects.
+      //
+      this._EntityParents = new List<EdObjectParent> ( );
 
       //
       // Iterate through the entity list.
@@ -855,7 +857,6 @@ namespace Evado.UniForm.Digital
       {
 
         this.LogInitValue ( "L: " + entity.LayoutId + ",  T: " + entity.Title + ", R" + entity.Design.EditAccessRoles );
-
 
         string [ ] parentEntities = entity.Design.ParentEntities.Split ( ';' );
 
@@ -866,6 +867,9 @@ namespace Evado.UniForm.Digital
 
         }//END parent iteration loop
       }//End entity iteration loop
+
+
+      this.LogInitValue ( "END createEntityParents" );
     }//ENd method
 
     // ==================================================================================

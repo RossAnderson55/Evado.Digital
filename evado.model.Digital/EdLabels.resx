@@ -3074,4 +3074,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="EntityLayout_FieldDisplayFormat_Field_Title" xml:space="preserve">
     <value>Field read-only display format:</value>
   </data>
+  <data name="Entity_Withdraw_Command" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

@@ -364,7 +364,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Layout.Title: " + Layout.Title );
       this.LogDebug ( "Layout.State: " + Layout.State );
       this.LogDebug ( "Layout.DefaultPageLayout: " + Layout.Design.DefaultPageLayout );
-      this.LogDebug ( "Layout.HideFieldTitlesWhenReadOnly: " + Layout.Design.FieldReadonlyDisplayFormat );
+      this.LogDebug ( "Layout.FieldReadonlyDisplayFormat: " + Layout.Design.FieldReadonlyDisplayFormat );
       this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
 
       // 

@@ -383,6 +383,11 @@ namespace Evado.Model.Digital
       First_Text_Field,
 
       /// <summary>
+      /// This enumeration set the command link to display the Abstract field content.
+      /// </summary>
+      Abstract,
+
+      /// <summary>
       /// This enumeration set the command link to display the summary field content.
       /// </summary>
       Summary_Fields,
@@ -816,6 +821,22 @@ namespace Evado.Model.Digital
       set
       {
         this._EntityAccess = value;
+      }
+    }
+    bool _ButtonEditModeEnabled = false;
+    /// <summary>
+    /// This property enables the entity edit button
+    /// </summary>
+    public bool ButtonEditModeEnabled
+    {
+      get
+      {
+
+        return this._ButtonEditModeEnabled;
+      }
+      set
+      {
+        this._ButtonEditModeEnabled = value;
       }
     }
 
@@ -1514,6 +1535,80 @@ namespace Evado.Model.Digital
     #endregion
 
     #region class methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method test to see if the user has a role contain in the roles delimited list.
+    /// </summary>
+    /// <param name="Roles">';' delimted string of roles</param>
+    /// <returns>True: if the role exists.</returns>
+    // -------------------------------------------------------------------------------------
+    public bool hasReadAccess ( String Roles )
+    {
+      if ( Roles == null )
+      {
+        return false;
+      }
+
+      //
+      // an empty role is passed and the entity had read access roles return false.
+      //
+      if ( Roles == String.Empty
+        && this.Design.ReadAccessRoles != String.Empty )
+      {
+        return false;
+      }
+
+      //
+      // Iterate through the roles looking for a match.
+      //
+      foreach ( String role in Roles.Split ( ';' ) )
+      {
+        foreach ( String role1 in this.Design.ReadAccessRoles.Split ( ';' ) )
+        {
+          if ( role1.ToLower ( ) == role.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }//END method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method test to see if the user has a role contain in the roles delimited list.
+    /// </summary>
+    /// <param name="Roles">';' delimted string of roles</param>
+    /// <returns>True: if the role exists.</returns>
+    // -------------------------------------------------------------------------------------
+    public bool hasEditAccess ( String Roles )
+    {
+      if ( Roles == null )
+      {
+        return false;
+      }
+      if ( Roles == String.Empty
+        && this.Design.EditAccessRoles != String.Empty )
+      {
+        return false;
+      }
+
+      //
+      // iterate through the roles looking for a match.
+      //
+      foreach ( String role in Roles.Split ( ';' ) )
+      {
+        foreach ( String role1 in this.Design.EditAccessRoles.Split ( ';' ) )
+        {
+          if ( role1.ToLower ( ) == role.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }//END method
 
     //=====================================================================================
     /// <summary>

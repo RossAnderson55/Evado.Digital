@@ -547,19 +547,6 @@ namespace Evado.Model.Digital
         return false;
       }
     }
-    
-    /// <summary>
-    /// this method indicates if the user has a metching type.
-    /// </summary>
-    public bool IsUserType ( String UserType )
-    {
-      if ( this.UserType == UserType )
-      {
-        return true;
-      }
-      return false;
-    }
-
     #endregion
 
     #region Class General Methods
@@ -577,6 +564,7 @@ namespace Evado.Model.Digital
       {
         return false;
       }
+
       foreach ( String role in Roles.Split ( ';' ) )
       {
         foreach ( String role1 in this._Roles.Split ( ';' ) )

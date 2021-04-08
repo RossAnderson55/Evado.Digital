@@ -503,11 +503,6 @@ namespace Evado.UniForm.Digital
     public EdRecord Entity { get; set; }
 
     /// <summary>
-    /// This property enables the entity edit button
-    /// </summary>
-    public bool EntityEditModeEnabled { get; set; }
-
-    /// <summary>
     /// This property contains dictionary of the Entity hiararchy.
     /// The Guid key is the Entity's Guid identifier.
     /// The dictionary value is the Entity object.
@@ -559,7 +554,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This property defines the entity layout id selection filter/
     /// </summary>
-    public String Entity_SelectedLayoutId { get; set; }
+    public String Selected_EntityLayoutId { get; set; }
 
     /// <summary>
     /// This property contains the list of Form Versions.

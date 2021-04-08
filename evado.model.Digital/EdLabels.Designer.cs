@@ -2664,6 +2664,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Entity_Withdraw_Command {
+            get {
+                return ResourceManager.GetString("Entity_Withdraw_Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The selection list category field enables the selection list object to display a list sub-category.  
         /// 
         ///If the selection lis is uncategories the list items will be displayed, if the selection list is categorised, the the categories will be lists.

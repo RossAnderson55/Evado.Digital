@@ -93,9 +93,9 @@ namespace Evado.UniForm.Digital
         this.Session.EntityField = new EdRecordField ( );
       }
 
-      if ( this.Session.Entity_SelectedLayoutId == null )
+      if ( this.Session.Selected_EntityLayoutId == null )
       {
-        this.Session.Entity_SelectedLayoutId = String.Empty;
+        this.Session.Selected_EntityLayoutId = String.Empty;
       }
 
     }//END Method

@@ -775,8 +775,8 @@ namespace Evado.Dal.Digital
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getEntityList" );
-      //this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
-      //this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
+      this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
+      this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
       //
       // Initialize the method debug log, a return form list and a number of result count. 
       //
@@ -842,19 +842,19 @@ namespace Evado.Dal.Digital
           // 
           DataRow row = table.Rows [ count ];
 
-          EdRecord record = this.getRowData ( row, QueryParameters.IncludeSummary );
+          EdRecord entity = this.getRowData ( row, QueryParameters.IncludeSummary );
 
          // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
           // 
           // Attach fields and other trial data.
           // 
           if ( QueryParameters.IncludeRecordValues == true
-            || record.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
+            || entity.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
           {
             if ( inResultCount < QueryParameters.ResultStartRange
               || inResultCount >= ( QueryParameters.ResultFinishRange ) )
             {
-          //    this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
+              //this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
 
               //
               // Increment the result count.
@@ -864,20 +864,29 @@ namespace Evado.Dal.Digital
               continue;
             }
 
+            if ( this.ClassParameters.UserProfile.hasRole ( entity.Design.ReadAccessRoles ) == false )
+            {
+              this.LogDebug ( "User Role: {0}, does no have access to {1}, roles: {2}",
+                this.ClassParameters.UserProfile.Roles,
+                entity.LayoutId, 
+                entity.Design.ReadAccessRoles );
+              continue;
+            }
+
             // 
             // Get the trial record fields
             // 
-            this.GetEntityValues ( record );
+            this.GetEntityValues ( entity );
 
             //
             // Attach the entity list.
             //
-            this.getRecordEntities ( record );
+            this.getRecordEntities ( entity );
 
             //
             // attach the record sections.
             //
-            this.GetRecordSections ( record );
+            this.GetRecordSections ( entity );
 
             //
             // Increment the result count.
@@ -887,7 +896,7 @@ namespace Evado.Dal.Digital
             // 
           }//END query selection state not set.
 
-          view.Add ( record );
+          view.Add ( entity );
 
         }//END record iteration loop
 

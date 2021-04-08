@@ -39,12 +39,10 @@ namespace Evado.Model.Digital
       this.Title = String.Empty;
       this.HttpReference = String.Empty;
       this.UpdateReason = EdRecord.UpdateReasonList.Minor_Update;
-      this.ReadAccessRoles = String.Empty;
-      this.EditAccessRoles = String.Empty;
       this.RecordCategory = String.Empty;
       this.TypeId = EdRecordTypes.Normal_Record;
       this.LinkContentSetting = EdRecord.LinkContentSetting.Default;
-    
+
     }
     #region Globals and constants.
     /// <summary>
@@ -56,7 +54,7 @@ namespace Evado.Model.Digital
 
     #region class property
 
-    public bool IsEntity = false; 
+    public bool IsEntity = false;
 
     /// <summary>
     /// This property contains a title of a form design.
@@ -106,15 +104,79 @@ namespace Evado.Model.Digital
     /// </summary>
     public EdRecord.UpdateReasonList UpdateReason { get; set; }
 
+    private string _ReadAccessRoles = String.Empty;
     /// <summary>
     /// This property contains a list of read acces roles
     /// </summary>
-    public string ReadAccessRoles { get; set; }
+    public string ReadAccessRoles
+    {
+      get
+      {
+        return this._ReadAccessRoles;
+      }
+      set
+      {
+        this._ReadAccessRoles = value;
 
+        this.updateReadAccessRole ( );
+      }
+    }
+
+    private string _EditAccessRoles = String.Empty;
     /// <summary>
     /// This property contains a list of edit acces roles
     /// </summary>
-    public string EditAccessRoles { get; set; }
+    public string EditAccessRoles
+    {
+      get
+      {
+        return this._EditAccessRoles;
+      }
+      set
+      {
+        this._EditAccessRoles = value;
+
+        this.updateReadAccessRole ( );
+      }
+    }
+
+    // ===================================================================================
+    /// <summary>
+    /// This method updates the read access roles to ensure that all 
+    /// edit roles are included.
+    /// </summary>
+    // ----------------------------------------------------------------------------------
+    private void updateReadAccessRole ( )
+    {
+      //
+      // exit if the edit roles are not defined.
+      //
+      if ( this._EditAccessRoles == String.Empty )
+      {
+        return;
+      }
+
+      //
+      // create an array of edit roles.
+      //
+      string [ ] arrEditRole = this._EditAccessRoles.Split ( ';' );
+
+      //
+      // Iterate through the edit roles add those that are not in the read access roles.
+      //
+      for ( int i = 0; i < arrEditRole.Length; i++ )
+      {
+        if ( this._ReadAccessRoles.Contains ( arrEditRole [ i ] ) == false )
+        {
+          if ( i > 0 )
+          {
+            this._ReadAccessRoles += ";";
+          }
+          this._ReadAccessRoles += arrEditRole [ i ];
+        }
+      }
+
+    }//END Method.
 
     /// <summary>
     /// This property indicates that only the author has edit access to the record.
@@ -170,13 +232,13 @@ namespace Evado.Model.Digital
     /// This property contains a form approval for display on records.
     /// </summary>
     public string Approval { get; set; }
-    
+
 
     /// <summary>
     /// This property contains a form category of a form design.
     /// </summary>
     public string RecordCategory { get; set; }
-    
+
     /// <summary>
     /// This property contains a type identifier of a form design.
     /// </summary>
@@ -300,7 +362,7 @@ namespace Evado.Model.Digital
     }
 
 
-    
+
     #endregion
 
     //===================================================================================
