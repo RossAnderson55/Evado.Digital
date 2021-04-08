@@ -1675,9 +1675,14 @@ namespace Evado.Dal.Digital
       //
       // Initialize the method status, a number of affected records and a numeric version
       //
-      this.LogMethod ( "CopyForm method. FormId; " + Layout.LayoutId );
+      this.LogMethod ( "CopyForm");
+      this.LogDebug ( "LayoutId {0}. ", Layout.LayoutId );
+      this.LogDebug ( "Copy {0}. ", Copy );
 
       int databaseRecordAffected = 0;
+      string layoutId = Layout.LayoutId;
+      string title = Layout.Title;
+      float version = Layout.Design.Version;
 
       // 
       // Validate whether the form Guid and user common name are not empty
@@ -1702,12 +1707,17 @@ namespace Evado.Dal.Digital
           return EvEventCodes.Data_Duplicate_Id_Error;
         }
 
-        Layout.Design.Version += 0.01F;
+        version += 0.01F;
       }
       else
       {
-        Layout.Design.Version = 0.00F;
+        layoutId = Layout.LayoutId + "_CPY";
+        title = Layout.Title + " (COPY)";
+        version = 0.0F;
       }
+      this.LogDebug ( "layoutId {0}. ", layoutId );
+      this.LogDebug ( "title {0}. ", title );
+      this.LogDebug ( "version {0}. ", version );
 
       // 
       // Define the query parameters
@@ -1715,18 +1725,22 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter(EdEntityLayouts.PARM_LAYOUT_GUID, SqlDbType.UniqueIdentifier ),
-        new SqlParameter(EdEntityLayouts.PARM_Copy, SqlDbType.Bit),
-        new SqlParameter(EdEntityLayouts.PARM_VERSION, SqlDbType.Float),
+        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter( EdEntityLayouts.PARM_TITLE, SqlDbType.NVarChar, 80),
+        new SqlParameter( EdEntityLayouts.PARM_VERSION, SqlDbType.Float),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY_USER_ID, SqlDbType.NVarChar,100),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_BY, SqlDbType.NVarChar,30),
         new SqlParameter( EdEntityLayouts.PARM_UPDATED_DATE, SqlDbType.DateTime),
       };
       cmdParms [ 0 ].Value = Layout.Guid;
-      cmdParms [ 1 ].Value = Copy;
-      cmdParms [ 2 ].Value = Layout.Design.Version;
-      cmdParms [ 3 ].Value = this.ClassParameters.UserProfile.UserId;
-      cmdParms [ 4 ].Value = this.ClassParameters.UserProfile.CommonName;
-      cmdParms [ 5 ].Value = DateTime.Now;
+      cmdParms [ 1 ].Value = layoutId;
+      cmdParms [ 2 ].Value = title;
+      cmdParms [ 3 ].Value = version;
+      cmdParms [ 4 ].Value = this.ClassParameters.UserProfile.UserId;
+      cmdParms [ 5 ].Value = this.ClassParameters.UserProfile.CommonName;
+      cmdParms [ 6 ].Value = DateTime.Now;
+
+      this.LogDebug( EvSqlMethods.getParameterSqlText( cmdParms ) );
 
       //
       // Execute the update command.

@@ -684,6 +684,7 @@ namespace Evado.UniForm.Digital
         // 
         EdEntityLayouts forms = new EdEntityLayouts ( );
         String stCommandAction = PageCommand.GetParameter ( EuEntityLayouts.CONST_FORM_COMMAND_PARAMETER );
+        this.LogDebug ( " stCommandAction: " + stCommandAction );
 
         //
         // if the groupCommand action is not a revise or copy groupCommand exit.
@@ -692,7 +693,6 @@ namespace Evado.UniForm.Digital
           && stCommandAction != EuEntityLayouts.CONST_REVISE_FORM_COMMAND_VALUE )
         {
           this.LogValue ( "EXIT: not a revision or copy command." );
-
           return;
         }
 
@@ -702,7 +702,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.UserProfile.hasManagementAccess == false )
         {
           this.LogIllegalAccess (
-            this.ClassNameSpace + "getListObject",
+            this.ClassNameSpace + "copyForm",
             this.Session.UserProfile );
 
           this.ErrorMessage = EdLabels.Record_Access_Error_Message;
@@ -714,21 +714,21 @@ namespace Evado.UniForm.Digital
         // Log the user's access to page.
         // 
         this.LogPageAccess (
-          this.ClassNameSpace + "getListObject",
+          this.ClassNameSpace + "copyForm",
           this.Session.UserProfile );
 
         //
         // get the form guid.
         //
-        Guid formGuid = PageCommand.GetGuid ( );
-        this.LogValue ( " recordGuid: " + formGuid );
+        Guid layoutGuid = PageCommand.GetGuid ( );
+        this.LogDebug ( " layoutGuid: " + layoutGuid );
 
         // 
         // if the guid is empty the parameter was not found to exit.
         // 
-        if ( formGuid == Guid.Empty )
+        if ( layoutGuid == Guid.Empty )
         {
-          this.LogValue ( "formGuid is EMPTY" );
+          this.LogEvent ( "copyForm is EMPTY" );
 
           return;
         }
@@ -736,9 +736,12 @@ namespace Evado.UniForm.Digital
         // 
         // Retrieve the record object from the database via the DAL and BLL layers.
         // 
-        this.Session.EntityLayout = this._Bll_EntityLayouts.GetLayout ( formGuid );
+        if ( layoutGuid != this.Session.EntityLayout.Guid )
+        {
+          this.Session.EntityLayout = this._Bll_EntityLayouts.GetLayout ( layoutGuid );
 
-        this.LogClass ( this._Bll_EntityLayouts.Log );
+          this.LogClass ( this._Bll_EntityLayouts.Log );
+        }
 
         this.LogDebug ( "SessionObjects.EntityLayout.LayoutId: " + this.Session.EntityLayout.LayoutId );
 

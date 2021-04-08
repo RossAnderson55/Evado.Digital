@@ -200,7 +200,7 @@ namespace Evado.Bll.Digital
       // 
       // Initialise the methods objects and variables.
       // 
-      this.LogMethod ( "GetLayout method." );
+      this.LogMethod ( "GetLayout" );
       this.LogValue ( "Guid: " + Guid );
       EdRecord form = new EdRecord ( );
 
@@ -222,7 +222,6 @@ namespace Evado.Bll.Digital
     /// This class retrieves a form object based on TrialId and FormId
     /// </summary>
     /// <param name="LayoutId">string: a form identifier</param>
-    /// <param name="ApplicationId">string: a trial identifier</param>
     /// <returns>EvForm: a form ResultData object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -235,7 +234,7 @@ namespace Evado.Bll.Digital
     public EdRecord GetLayout ( 
       String LayoutId )
     {
-      this.LogMethod ( "GetLayout method." );
+      this.LogMethod ( "GetLayout" );
       this.LogValue ( "FormId:" + LayoutId );
       // 
       // Initialise the methods objects and variables.
@@ -259,7 +258,6 @@ namespace Evado.Bll.Digital
     /// This class retrieves an issued form object based on TrialId and FormId
     /// </summary>
     /// <param name="FormId">string: a form identifier</param>
-    /// <param name="TrialId">string: a trial identifier</param>
     /// <returns>EvForm: a form ResultData object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -271,7 +269,7 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public EdRecord GetIssuedItem (string FormId )
     {
-       this.LogMethod ( "GetIssuedItem method." );
+       this.LogMethod ( "GetIssuedItem" );
       // 
       // Execute the DAL method to retrieve the form object and process the 
       // result.
@@ -313,7 +311,7 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public EvEventCodes SaveItem ( EdRecord Layout )
     {
-       this.LogMethod ( "saveForm method." );
+       this.LogMethod ( "saveForm" );
       this.LogValue ( "Action: " + Layout.SaveAction );
       // 
       // Initialise the local variables
@@ -519,8 +517,7 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class copies items from form object to database. 
     /// </summary>
-    /// <param name="Layout">EvForm: a form object</param>
-    /// <param name="UserCommonName">string: a user common name</param>
+    /// <param name="Layout">EdRecord: a layout object</param>
     /// <returns>EvEventCodes: an event code for copying items</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -555,6 +552,7 @@ namespace Evado.Bll.Digital
       // 
       // Return the response.
       // 
+      this.LogMethodEnd ( "CopyLayout" );
       return iReturn;
     }//END CopyForm class
 
