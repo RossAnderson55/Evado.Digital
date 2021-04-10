@@ -236,7 +236,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        if ( this.Session.UserProfile.hasRole( layout.Design.EditAccessRoles ) == false )
+        if ( layout.hasReadAccess(  this.Session.UserProfile.Roles ) == false )
         {
           continue;
         }

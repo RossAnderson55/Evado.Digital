@@ -1548,6 +1548,47 @@ namespace Evado.Model.Digital
 
     // =====================================================================================
     /// <summary>
+    /// This method returns the first field.
+    /// </summary>
+    /// <param name="FirstFreeText">Bool: true = return first free text field.</param>
+    /// <returns>string: field value.</returns>
+    // -------------------------------------------------------------------------------------
+    public string getFirstTextField ( bool FirstFreeText )
+    {
+      String stValue = String.Empty;
+      foreach ( EdRecordField field in this.Fields )
+      {
+        if ( FirstFreeText == false )
+        {
+          if ( field.TypeId == EvDataTypes.Text )
+          {
+            stValue = this.Fields [ 0 ].ItemValue;
+
+            if ( this.Design.DisplayAuthorDetails == true )
+            {
+              stValue += EdLabels.Label_by + this.Updated;
+            }
+            return stValue;
+          }
+        }
+        else
+        {
+          if ( field.TypeId == EvDataTypes.Text )
+          {
+            stValue = this.Fields [ 0 ].ItemValue;
+
+            if ( this.Design.DisplayAuthorDetails == true )
+            {
+              stValue += EdLabels.Label_by + this.Updated;
+            }
+            return stValue;
+          }
+        }
+      }
+      return String.Empty ;
+    }
+    // =====================================================================================
+    /// <summary>
     /// This method test to see if the user has a role contain in the roles delimited list.
     /// </summary>
     /// <param name="Roles">';' delimted string of roles</param>
@@ -1686,7 +1727,7 @@ namespace Evado.Model.Digital
       //
       // Set the default edit access 
       //
-      if ( UserProfile.hasRole ( this.Design.EditAccessRoles ) == true )
+      if ( this.hasEditAccess(  UserProfile.Roles ) == true )
       {
         return true;
       }
@@ -1771,7 +1812,7 @@ namespace Evado.Model.Digital
             //
             // Set the reader access 
             //
-            if ( UserProfile.hasRole ( this.Design.ReadAccessRoles ) == true )
+            if (  this.hasReadAccess(  UserProfile.Roles ) == true )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             }
@@ -1779,7 +1820,7 @@ namespace Evado.Model.Digital
             //
             // Set the default edit access 
             //
-            if ( UserProfile.hasRole ( this.Design.EditAccessRoles ) == true )
+            if ( this.hasEditAccess ( UserProfile.Roles ) == true )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
             }

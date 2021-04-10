@@ -182,6 +182,7 @@ namespace Evado.UniForm.Digital
          this.Session.UserProfile.HomePage.PageId,
          this.Session.UserProfile.HomePage.Title );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      this.LogDebug( this.Session.UserProfile.getUserProfile( true) );
       //
       // initialise the methods objects and variables.
       //
@@ -975,6 +976,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "generateHomePage" );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      this.LogDebug ( this.Session.UserProfile.getUserProfile ( true ) );
       // 
       // initialise the methods variables and objects.
       // 

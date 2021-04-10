@@ -2493,7 +2493,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Children.
+        ///   Looks up a localized string similar to Items associated with {0}.
         /// </summary>
         public static string Entities_Child_Entity_Group_Title {
             get {
@@ -2610,7 +2610,7 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new {0} - {1}.
+        ///   Looks up a localized string similar to Create a new {0} .
         /// </summary>
         public static string Entity_New_Entity_Command_Title {
             get {

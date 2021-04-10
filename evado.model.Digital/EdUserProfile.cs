@@ -245,11 +245,8 @@ namespace Evado.Model.Digital
     public const string CONST_MANAGER_ROLE = "Manager";
     public const string CONST_DESIGNER_ROLE = "Designer";
     public const string CONST_STAFF_ROLE = "Staff";
+    public const string CONST_CUSTOMER_ROLE = "Customer";
 
-    public const String CONT_STATIC_ROLES = CONST_ADMINISTRATOR_ROLE + ":"
-      + CONST_MANAGER_ROLE + ":"
-      + CONST_DESIGNER_ROLE + ":"
-      + CONST_STAFF_ROLE;
     #endregion
 
     #region Class Properties
@@ -299,6 +296,8 @@ namespace Evado.Model.Digital
 
       }
     }
+
+    /// <summary>
     /// This property contains the user home page layout object.
     /// </summary>
     public EdPageLayout HomePage { get; set; }

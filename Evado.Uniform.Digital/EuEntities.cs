@@ -845,7 +845,7 @@ namespace Evado.UniForm.Digital
       //
       // Do not lock the record is the user does not have update access.
       //
-      if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
+      if ( this.Session.EntityLayout.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
       {
         return false;
       }
@@ -2118,7 +2118,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasRole ( this.Session.Entity.Design.ReadAccessRoles ) == false )
+        if ( this.Session.Entity.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getRecordExport_Object",
@@ -3411,7 +3411,7 @@ namespace Evado.UniForm.Digital
       // define the child entity group.
       //
       pageGroup = PageObject.AddGroup (
-        EdLabels.Entities_Child_Entity_Group_Title );
+      String.Format( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField( false ) ) );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.GroupId = this.ChildEntityGroupID;
 
@@ -3442,7 +3442,7 @@ namespace Evado.UniForm.Digital
         //
         if ( this.Session.UserProfile.hasRole ( child.ChildEditAccess ) == true )
         {
-          string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildLayoutId, child.ChildTitle );
+          string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildTitle );
           //
           // define the new entity command.
           //
@@ -3624,7 +3624,7 @@ namespace Evado.UniForm.Digital
 
       this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( LayoutId );
 
-      if ( this.Session.UserProfile.hasRole ( this.Session.EntityLayout.Design.EditAccessRoles ) == false )
+      if ( this.Session.EntityLayout.hasEditAccess( this.Session.UserProfile.Roles ) == false )
       {
         this.LogDebug ( "User does not have create access." );
         this.LogMethodEnd ( "CreateNewEntity" );

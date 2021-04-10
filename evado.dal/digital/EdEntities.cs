@@ -864,7 +864,7 @@ namespace Evado.Dal.Digital
               continue;
             }
 
-            if ( this.ClassParameters.UserProfile.hasRole ( entity.Design.ReadAccessRoles ) == false )
+            if ( entity.hasReadAccess ( this.ClassParameters.UserProfile.Roles ) == false )
             {
               this.LogDebug ( "User Role: {0}, does no have access to {1}, roles: {2}",
                 this.ClassParameters.UserProfile.Roles,

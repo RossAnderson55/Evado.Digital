@@ -429,7 +429,7 @@ namespace Evado.UniForm.Digital
       //
       // Do not lock the record is the user does not have update access.
       //
-      if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
+      if ( this.Session.Record.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
       {
         return false;
       }
@@ -941,7 +941,7 @@ namespace Evado.UniForm.Digital
 
       groupCommand.Title = String.Empty;
 
-      if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
+      if ( this.Session.Record.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
       {
         //
         // Switch to determine the icons and background colours.
@@ -956,9 +956,8 @@ namespace Evado.UniForm.Digital
                Model.UniForm.CommandParameters.Image_Url,
                EuRecords.ICON_RECORD_DRAFT );
 
-              if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
+              if ( this.Session.Record.hasReadAccess ( this.Session.UserProfile.Roles ) == true )
               {
-
                 groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Yellow );
               }
               break;
@@ -1071,7 +1070,7 @@ namespace Evado.UniForm.Digital
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
-        if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == false )
+        if ( this.Session.Record.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
         {
           this.LogIllegalAccess (
             this.ClassNameSpace + "getRecordExport_Object",
@@ -1714,7 +1713,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "setUserRecordAccess" );
       this.LogValue ( "RoleId: " + this.Session.UserProfile.Roles );
       this.LogValue ( "ActiveDirectoryUserId: " + this.Session.UserProfile.ActiveDirectoryUserId );
-      this.LogValue ( "hasRecordEditAccess: " + this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) );
+      this.LogValue ( "hasRecordEditAccess: " + this.Session.Record.hasEditAccess ( this.Session.UserProfile.Roles ) );
       this.LogValue ( "Record state: " + this.Session.Record.StateDesc );
 
       // 
@@ -1726,7 +1725,7 @@ namespace Evado.UniForm.Digital
         case EdRecordObjectStates.Empty_Record:
         case EdRecordObjectStates.Completed_Record:
           {
-            if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
+            if ( this.Session.Record.hasEditAccess ( this.Session.UserProfile.Roles ) == true )
             {
               // 
               // If the record state is draft of queried, and the user has Record Edit role
@@ -1738,7 +1737,7 @@ namespace Evado.UniForm.Digital
           }
         case EdRecordObjectStates.Submitted_Record:
           {
-            if ( this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) == true )
+            if ( this.Session.Record.hasEditAccess ( this.Session.UserProfile.Roles ) == true )
             {
               // 
               // If the record state is SubmittedRecords, and the user has Record Edit role
@@ -2216,7 +2215,7 @@ namespace Evado.UniForm.Digital
         // 
         EvEventCodes result = this._Bll_FormRecords.saveRecord (
           this.Session.Record,
-          this.Session.UserProfile.hasRole ( this.Session.Record.Design.ReadAccessRoles ) );
+          this.Session.Record.hasEditAccess ( this.Session.UserProfile.Roles ) );
 
         this.LogClass ( this._Bll_FormRecords.Log );
 

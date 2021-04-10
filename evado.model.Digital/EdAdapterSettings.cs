@@ -739,7 +739,7 @@ namespace Evado.Model.Digital
         optionList.Add ( new EvOption ( ) );
       }
 
-      optionList.Add ( new EvOption ( "Administrator" ) );
+      optionList.Add ( new EvOption ( "Evado" ) );
       optionList.Add ( new EvOption ( "Customer" ) );
 
       //
@@ -772,9 +772,6 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Role Group
-
-    public const String StaticRoles = "Administrator;Manager;Designer;Staff;Customer";
-
 
     /// <summary>
     /// This property contains the name of the person who last updated the trial object.
@@ -838,11 +835,11 @@ namespace Evado.Model.Digital
       //
       // add the static roles.
       //
-      optionList.Add ( new EvOption ( "Administrator" ) );
-      optionList.Add ( new EvOption ( "Manager" ) );
-      optionList.Add ( new EvOption ( "Designer" ) );
-      optionList.Add ( new EvOption ( "Staff" ) );
-      optionList.Add ( new EvOption ( "Customer" ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_MANAGER_ROLE ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_DESIGNER_ROLE ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_STAFF_ROLE ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_CUSTOMER_ROLE ) );
 
       //
       // Iterate through the array of roles to create the option list.
