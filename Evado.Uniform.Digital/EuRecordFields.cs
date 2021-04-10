@@ -1607,7 +1607,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        string FormId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+        string FormId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
         string stCount = PageCommand.GetParameter ( EuRecordFields.CONST_FIELD_COUNT );
         string stSectionNo = PageCommand.GetParameter ( EuRecordFields.CONST_FORM_SECTION );
 

@@ -3077,4 +3077,40 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Entity_Withdraw_Command" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Form_Field_Field_Height_Field_Label" xml:space="preserve">
+    <value>Field Height:</value>
+  </data>
+  <data name="Form_Field_Field_Width_Field_Label" xml:space="preserve">
+    <value>Field Width:</value>
+  </data>
+  <data name="Generator_Disp_Field_Title_2Value_Format" xml:space="preserve">
+    <value>[[table]]
+[[tr]][[td]] {0} [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
+[[/table]]</value>
+  </data>
+  <data name="Generator_Disp_Field_Title_Address_Format" xml:space="preserve">
+    <value>[[table]]
+[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
+[[/table]]</value>
+  </data>
+  <data name="Generator_Disp_Field_Title_FreeText_Format" xml:space="preserve">
+    <value>[[strong]]{0}[[/strong]]
+{1}</value>
+  </data>
+  <data name="Generator_Disp_Field_Title_Name_Format" xml:space="preserve">
+    <value>[[table]]
+[[tr]][[td]] {0} [[/td]] [[td]] {1} {2} {3} {4} [[/td]] [[/tr]]
+[[/table]]</value>
+  </data>
+  <data name="Generator_Disp_Field_Title_Value_Format" xml:space="preserve">
+    <value>[[table]]
+[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/td]][[/tr]]
+[[/table]]</value>
+  </data>
+  <data name="Generator_Disp_Field_Value_Format" xml:space="preserve">
+    <value>[[p]] {0} [[/p]]</value>
+  </data>
+  <data name="Generator_Disp_H2_Format" xml:space="preserve">
+    <value>[[h2]] {0} [[/h2]]</value>
+  </data>
 </root>

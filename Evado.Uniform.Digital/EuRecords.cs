@@ -538,9 +538,9 @@ namespace Evado.UniForm.Digital
         this.Session.RecordList = new List<EdRecord> ( );
       }
 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Layout_Id.ToString ( ) ) == true )
       {
-        this.Session.RecordLayoutIdSelection = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) );
+        this.Session.RecordLayoutIdSelection = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id.ToString ( ) );
       }
       this.LogValue ( "RecordSelectionFormId: " + this.Session.RecordLayoutIdSelection );
 
@@ -558,9 +558,9 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "RecordType: " + this.Session.RecordTypeSelection );
 
 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Status.ToString ( ) ) == true )
       {
-        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.FieldNames.Status.ToString ( ) );
 
         if ( this.Session.RecordStateSelection != stateValue )
         {
@@ -815,7 +815,7 @@ namespace Evado.UniForm.Digital
       }
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Layout_Id,
+        EdRecord.FieldNames.Layout_Id,
         EdLabels.Label_Form_Id,
         this.Session.RecordLayoutIdSelection,
         optionList );
@@ -829,7 +829,7 @@ namespace Evado.UniForm.Digital
       optionList = EdRecord.getRecordStates ( false );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Status.ToString ( ),
+        EdRecord.FieldNames.Status.ToString ( ),
         EdLabels.Record_State_Selection,
         this.Session.RecordStateSelection,
         optionList );
@@ -1181,7 +1181,7 @@ namespace Evado.UniForm.Digital
       // Add the selection pageMenuGroup.
       //
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Layout_Id,
+        EdRecord.FieldNames.Layout_Id,
         EdLabels.Label_Form_Id,
         this.Session.RecordLayoutIdSelection,
         this.Session.IssueFormList );
@@ -1572,7 +1572,7 @@ namespace Evado.UniForm.Digital
       //
       this._Bll_FormRecords = new EdRecords ( this.ClassParameters );
       Guid recordGuid = PageCommand.GetGuid ( );
-      String recordId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordId.ToString ( ) );
+      String recordId = PageCommand.GetParameter ( EdRecord.FieldNames.RecordId.ToString ( ) );
 
       //
       // If the record ids match then the record is loaded so exit.
@@ -2064,7 +2064,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        string LayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+        string LayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
 
         newRecord.Guid = Guid.NewGuid ( );
         newRecord.LayoutId = this.Session.RecordLayoutIdSelection;
@@ -2282,10 +2282,10 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "updateObject_AdminValues" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
 
-      String stDate = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordDate );
+      String stDate = PageCommand.GetParameter ( EdRecord.FieldNames.RecordDate );
       this.Session.Record.RecordDate = Evado.Model.Digital.EvcStatics.getDateTime ( stDate );
 
-      String stState = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status );
+      String stState = PageCommand.GetParameter ( EdRecord.FieldNames.Status );
       this.Session.Record.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.

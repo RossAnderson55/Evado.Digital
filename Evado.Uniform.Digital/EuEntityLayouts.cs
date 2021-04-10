@@ -370,9 +370,9 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "EntityType: " + this.Session.EntityTypeSelection );
 
 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Status.ToString ( ) ) == true )
       {
-        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.FieldNames.Status.ToString ( ) );
 
         if ( this.Session.EntityStateSelection != stateValue )
         {
@@ -820,7 +820,7 @@ namespace Evado.UniForm.Digital
       optionList [ 0 ].Value = EdRecordTypes.Null.ToString ( );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Status.ToString ( ),
+        EdRecord.FieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
         this.Session.RecordLayoutStateSelection.ToString ( ),
         optionList );
@@ -868,9 +868,9 @@ namespace Evado.UniForm.Digital
       // 
       // Get the form record type parameter value
       // 
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Status.ToString ( ) ) == true )
       {
-        parameterValue = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) );
+        parameterValue = PageCommand.GetParameter ( EdRecord.FieldNames.Status.ToString ( ) );
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
@@ -3385,7 +3385,7 @@ namespace Evado.UniForm.Digital
         this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
         try
         {
-          EdRecord.RecordFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecord.RecordFieldNames> ( parameter.Name );
+          EdRecord.FieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecord.FieldNames> ( parameter.Name );
 
           this.Session.EntityLayout.setValue ( fieldName, parameter.Value );
 

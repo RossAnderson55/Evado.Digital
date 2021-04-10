@@ -1891,6 +1891,9 @@ namespace Evado.Model
     public static String decodeHtmlText ( string EncodedHtmlString )
     {
       EncodedHtmlString = EncodedHtmlString.Replace ( "[CR]", "\r\n" );
+      EncodedHtmlString = EncodedHtmlString.Replace ( "[[CR]]", "\r\n" );
+      EncodedHtmlString = EncodedHtmlString.Replace ( "[[", "<" );
+      EncodedHtmlString = EncodedHtmlString.Replace ( "]]", ">" );
       EncodedHtmlString = EncodedHtmlString.Replace ( "[", "<" );
       EncodedHtmlString = EncodedHtmlString.Replace ( "]", ">" );
       return EncodedHtmlString;

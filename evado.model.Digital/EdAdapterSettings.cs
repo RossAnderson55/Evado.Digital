@@ -739,7 +739,7 @@ namespace Evado.Model.Digital
         optionList.Add ( new EvOption ( ) );
       }
 
-      optionList.Add ( new EvOption ( "Evado" ) );
+      optionList.Add ( new EvOption ( "Administrator" ) );
       optionList.Add ( new EvOption ( "Customer" ) );
 
       //

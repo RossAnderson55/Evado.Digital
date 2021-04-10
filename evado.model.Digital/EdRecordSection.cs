@@ -165,7 +165,7 @@ namespace Evado.Model.Digital
     public string Title
     {
       get { return this._Title; }
-      set { this._Title = value.Trim(); }
+      set { this._Title = value.Trim ( ); }
     }
     /// <summary>
     /// This property contains a section of a form
@@ -181,7 +181,8 @@ namespace Evado.Model.Digital
     /// </summary>
     public String LinkText
     {
-      get {
+      get
+      {
         String linkText = this._No
           + Evado.Model.Digital.EdLabels.Space_Hypen + this._Title
           + ", Order: " + this._Order;
@@ -219,7 +220,7 @@ namespace Evado.Model.Digital
     public string FieldId
     {
       get { return this._FieldId; }
-      set { this._FieldId = value.Trim(); }
+      set { this._FieldId = value.Trim ( ); }
     }
 
     private String _FieldValue = String.Empty;
@@ -229,7 +230,7 @@ namespace Evado.Model.Digital
     public string FieldValue
     {
       get { return this._FieldValue; }
-      set { this._FieldValue = value.Trim(); }
+      set { this._FieldValue = value.Trim ( ); }
     }
 
     private bool _OnMatchVisible = true;
@@ -252,29 +253,172 @@ namespace Evado.Model.Digital
       set { this._OnOpenVisible = value; }
     }
 
-    private String _DisplayRoles = String.Empty;
+    private String _ReadAccessRoles = String.Empty;
     /// <summary>
     /// This property contains default display roles of a form section
+    /// Empty indicated all users have access.
     /// </summary>
-    public string UserDisplayRoles
+    public string ReadAccessRoles
     {
-      get { return this._DisplayRoles; }
-      set { this._DisplayRoles = value.Trim(); }
+      get { return this._ReadAccessRoles; }
+      set
+      {
+        this._ReadAccessRoles = value.Trim ( );
+
+        this.updateReadAccessRole ( );
+      }
     }
 
-    private String _EditRoles = String.Empty;
+    private String _EditAccessRoles = String.Empty;
     /// <summary>
     /// This property contains default display roles of a form section
     /// </summary>
-    public string UserEditRoles
+    public string EditAccessRoles
     {
-      get { return this._EditRoles; }
-      set { this._EditRoles = value.Trim ( ); }
+      get { return this._EditAccessRoles; }
+      set
+      {
+        this._EditAccessRoles = value.Trim ( );
+
+        this.updateReadAccessRole ( );
+      }
     }
 
     #endregion
 
     #region Public methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method test to see if the user has a role contain in the roles delimited list.
+    /// Empty read access roles indicates that all users have access.
+    /// </summary>
+    /// <param name="Roles">';' delimted string of roles</param>
+    /// <returns>True: if the role exists.</returns>
+    // -------------------------------------------------------------------------------------
+    public bool hasRoleDisplay ( String Roles )
+    {
+      if ( Roles == null )
+      {
+        return false;
+      }
+
+      //
+      // no defined read access roles indicated all users have access.
+      //
+      if ( this._ReadAccessRoles == String.Empty )
+      {
+        return true;
+      }
+
+      //
+      // if roles are defined and an empty string is passed return false access.
+      //
+      if ( Roles == String.Empty
+        && this._ReadAccessRoles != String.Empty )
+      {
+        return false;
+      }
+
+      foreach ( String role in Roles.Split ( ';' ) )
+      {
+        foreach ( String role1 in this._ReadAccessRoles.Split ( ';' ) )
+        {
+          if ( role1.ToLower ( ) == role.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }//END method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method test to see if the user has a role contain in the roles delimited list.
+    /// Empty read access roles indicates that all users have edit access.
+    /// </summary>
+    /// <param name="Roles">';' delimted string of roles</param>
+    /// <returns>True: if the role exists.</returns>
+    // -------------------------------------------------------------------------------------
+    public bool hasRoleEdit ( String Roles )
+    {
+      if ( Roles == null )
+      {
+        return false;
+      }
+
+      //
+      // no defined read access roles indicated all users have access.
+      //
+      if ( this._EditAccessRoles == String.Empty )
+      {
+        return true;
+      }
+
+      //
+      // if roles are defined and an empty string is passed return false access.
+      //
+      if ( Roles == String.Empty
+        && this._EditAccessRoles != String.Empty )
+      {
+        return false;
+      }
+
+      //
+      // iterate through both role lists looking for a match.
+      //
+      foreach ( String role in Roles.Split ( ';' ) )
+      {
+        foreach ( String role1 in this._EditAccessRoles.Split ( ';' ) )
+        {
+          if ( role1.ToLower ( ) == role.ToLower ( ) )
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }//END method
+
+    // ===================================================================================
+    /// <summary>
+    /// This method updates the read access roles to ensure that all 
+    /// edit roles are included.
+    /// </summary>
+    // ----------------------------------------------------------------------------------
+    private void updateReadAccessRole ( )
+    {
+      //
+      // exit if the edit roles are not defined.
+      //
+      if ( this._EditAccessRoles == String.Empty
+        || this._ReadAccessRoles == String.Empty )
+      {
+        return;
+      }
+
+      //
+      // create an array of edit roles.
+      //
+      string [ ] arrEditRole = this._EditAccessRoles.Split ( ';' );
+
+      //
+      // Iterate through the edit roles add those that are not in the read access roles.
+      //
+      for ( int i = 0; i < arrEditRole.Length; i++ )
+      {
+        if ( this._ReadAccessRoles.Contains ( arrEditRole [ i ] ) == false )
+        {
+          if ( i > 0 )
+          {
+            this._ReadAccessRoles += ";";
+          }
+          this._ReadAccessRoles += arrEditRole [ i ];
+        }
+      }
+
+    }//END Method.
 
     // =====================================================================================
     /// <summary>
@@ -301,7 +445,7 @@ namespace Evado.Model.Digital
       {
         case FormSectionClassFieldNames.Sectn_No:
           {
-            this._No = EvStatics.getInteger( Value );
+            this._No = EvStatics.getInteger ( Value );
             return;
           }
         case FormSectionClassFieldNames.Sectn_Order:
@@ -331,7 +475,7 @@ namespace Evado.Model.Digital
           }
         case FormSectionClassFieldNames.Sectn_On_Match_Visible:
           {
-            this._OnMatchVisible = EvStatics.getBool( Value );
+            this._OnMatchVisible = EvStatics.getBool ( Value );
             return;
           }
         case FormSectionClassFieldNames.Sectn_On_Open_Visible:
@@ -342,13 +486,13 @@ namespace Evado.Model.Digital
 
         case FormSectionClassFieldNames.Sectn_Display_Roles:
           {
-              this._DisplayRoles = Value;
+            this._ReadAccessRoles = Value;
             return;
           }
 
         case FormSectionClassFieldNames.Sectn_Edit_Roles:
           {
-            this._EditRoles = Value;
+            this._EditAccessRoles = Value;
             return;
           }
 
@@ -359,60 +503,6 @@ namespace Evado.Model.Digital
       }//END Switch
 
     }//END setValue method
-
-
-    /// <summary>
-    /// This method adds a default display role to the section.
-    /// </summary>
-    /// <param name="Role">String: a role string</param>
-    public void addRole ( EdRecord.FormAccessRoles Role )
-    {
-      string role = Role.ToString ( );
-
-      if ( this._DisplayRoles.Contains ( role ) == false )
-      {
-        if ( this._DisplayRoles != String.Empty )
-        {
-        this._DisplayRoles += ";";
-        }
-        this._DisplayRoles += role;
-      }
-    }
-    /// <summary>
-    /// This method deletes a default display role to the section.
-    /// </summary>
-    /// <param name="Role">String: a role string</param>
-    public void deleteRole ( EdRecord.FormAccessRoles Role )
-    {
-      string role = Role.ToString ( );
-
-      if ( this._DisplayRoles.Contains ( role ) == false )
-      {
-        return;
-      }
-
-      this._DisplayRoles.Replace ( role, String.Empty );
-      this._DisplayRoles.Replace ( ";;", ";" );
-    }
-
-    /// <summary>
-    /// This method returns True of the role exists, False if the role does not exist.
-    /// </summary>
-    /// <param name="Role">EvRoleList: a role enumeration</param>
-    /// <returns></returns>
-    public bool hasRole ( EdRecord.FormAccessRoles Role )
-    {
-      if ( this._DisplayRoles == String.Empty )
-      {
-        return true;
-      }
-
-      if (this._DisplayRoles.Contains(Role.ToString()) == true)
-      {
-        return true;
-      }
-      return false;
-    }
     #endregion
 
   }//END EvFormSection class

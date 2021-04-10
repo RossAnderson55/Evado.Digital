@@ -149,61 +149,79 @@ namespace Evado.Dal.Digital
       // Initialise method template table string, a return formfield object and an annotation string. 
       // 
       string stTemplateTable = String.Empty;
-      EdRecordField recordField = new EdRecordField ( );
+      EdRecordField entityField = new EdRecordField ( );
 
       // 
       // Fill the evForm object.l
       //
-      recordField.Guid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_VALUES_GUID );
-      recordField.RecordGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
-      recordField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
-      recordField.FieldGuid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_FIELD_GUID );
+      entityField.Guid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_VALUES_GUID );
+      entityField.RecordGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
+      entityField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityLayouts.DB_LAYOUT_GUID );
+      entityField.FieldGuid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_FIELD_GUID );
 
 
-      recordField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
+      entityField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
       String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
-      recordField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      entityField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      recordField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
-      recordField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
-      recordField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
-      recordField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
-      recordField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
-      recordField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
-      recordField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
-      recordField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
-      recordField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
-      recordField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
-      recordField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
-      recordField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
-      recordField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
-      recordField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
+      entityField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
+      entityField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
+      entityField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
+      entityField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
+      entityField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
+      entityField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
+      entityField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
+      entityField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
+      entityField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
+      entityField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
+      entityField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
+      entityField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
+      entityField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
+      entityField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
 
-      recordField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
-      recordField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
-      recordField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
-      recordField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
-      recordField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
-      recordField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
+      entityField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
+      entityField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
+      entityField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
+      entityField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
+      entityField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
+      entityField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
 
-      recordField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
-      recordField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
-      recordField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
-      recordField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
-      recordField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
-      recordField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
+      entityField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
+      entityField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
+      entityField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
+      entityField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
+      entityField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
+      entityField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
+      entityField.Design.FieldLayout = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_LAYOUT );
+      entityField.Design.FieldWidth = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_FIELD_WIDTH );
+      entityField.Design.FieldHeight = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_FIELD_HEIGHT );
+
+      if ( entityField.Design.FieldLayout == null )
+      {
+        entityField.Design.FieldLayout = String.Empty;
+      }
+
+      if ( entityField.Design.FieldWidth < 5 )
+      {
+        entityField.Design.FieldWidth = 50;
+      }
+      if ( entityField.Design.FieldHeight < 2 )
+      {
+        entityField.Design.FieldHeight = 5;
+      } 
+
       //
       // if the field is a signature then decrypt the field.
       //
-      if ( recordField.TypeId == EvDataTypes.Signature )
+      if ( entityField.TypeId == EvDataTypes.Signature )
       {
         this.LogDebug ( "Encrypted Signature string" );
-        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.AdapterGuid, recordField.Guid );
+        EvEncrypt encrypt = new EvEncrypt ( this.ClassParameters.AdapterGuid, entityField.Guid );
         encrypt.ClassParameters = this.ClassParameters;
 
-        value = encrypt.decryptString ( recordField.ItemText );
+        value = encrypt.decryptString ( entityField.ItemText );
         this.LogDebug ( "clear string: " + value );
-        recordField.ItemText = value;
+        entityField.ItemText = value;
 
         this.LogClass ( encrypt.Log );
       }
@@ -211,18 +229,18 @@ namespace Evado.Dal.Digital
       //
       // Get the table or matric object.
       //
-      this.processTableRowObject ( Row, recordField );
+      this.processTableRowObject ( Row, entityField );
 
       //
       // Process the NA values in selectionlists.
       //
-      this.processNotAvailableValues ( Row, recordField );
+      this.processNotAvailableValues ( Row, entityField );
 
       //
       // Return the formfield object. 
       //
       this.LogMethodEnd ( "getRowData" );
-      return recordField;
+      return entityField;
 
     }//END getRowData method.
 

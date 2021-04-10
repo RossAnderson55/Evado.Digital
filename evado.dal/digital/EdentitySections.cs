@@ -153,8 +153,8 @@ namespace Evado.Dal.Digital
       formSection.FieldValue = EvSqlMethods.getString ( Row, EdEntitySections.DB_FIELD_VALUE );
       formSection.OnMatchVisible = EvSqlMethods.getBool ( Row, EdEntitySections.DB_ON_MATCH_VISIBLE );
       formSection.OnOpenVisible = EvSqlMethods.getBool ( Row, EdEntitySections.DB_VISIBLE );
-      formSection.UserDisplayRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_DISPLAY_ROLES );
-      formSection.UserEditRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_EDIT_ROLES );
+      formSection.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_DISPLAY_ROLES );
+      formSection.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_EDIT_ROLES );
       formSection.Title = EvSqlMethods.getString ( Row, EdEntitySections.DB_NAME );
 
       return formSection;
@@ -354,11 +354,11 @@ namespace Evado.Dal.Digital
         parmList.Add ( prm );
 
         prm = new SqlParameter ( EdEntitySections.PARM_DEFAULT_DISPLAY_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
-        prm.Value = section.UserDisplayRoles;
+        prm.Value = section.ReadAccessRoles;
         parmList.Add ( prm );
 
         prm = new SqlParameter ( EdEntitySections.PARM_DEFAULT_EDIT_ROLES + "_" + count, SqlDbType.NVarChar, 250 );
-        prm.Value = section.UserEditRoles;
+        prm.Value = section.EditAccessRoles;
         parmList.Add ( prm );
 
         //

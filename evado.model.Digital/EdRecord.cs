@@ -397,7 +397,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration list defines the form class field names enumerated identifiers.
     /// </summary>
-    public enum RecordFieldNames
+    public enum FieldNames
     {
       /// <summary>
       /// This enumeration is the null value
@@ -592,7 +592,17 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the form delimited ';' list of possible parent entities.  field.
       /// </summary>
-      ParentEntities
+      ParentEntities,
+
+      /// <summary>
+      /// This enumeration defines the text field width identifier.
+      /// </summary>,
+      FieldWidth,
+
+      /// <summary>
+      /// This enumeration defines the text field height identifier.
+      /// </summary>
+      FieldHeight
 
     }
 
@@ -1551,6 +1561,14 @@ namespace Evado.Model.Digital
       }
 
       //
+      // no defined read access roles indicated all users have access.
+      //
+      if ( this.Design.ReadAccessRoles == String.Empty )
+      {
+        return true;
+      }
+
+      //
       // an empty role is passed and the entity had read access roles return false.
       //
       if ( Roles == String.Empty
@@ -1588,6 +1606,18 @@ namespace Evado.Model.Digital
       {
         return false;
       }
+
+      //
+      // no defined read access roles indicated all users have access.
+      //
+      if ( this.Design.EditAccessRoles == String.Empty )
+      {
+        return true;
+      }
+
+      //
+      // if roles are defined and an empty string is passed return false access.
+      //
       if ( Roles == String.Empty
         && this.Design.EditAccessRoles != String.Empty )
       {
@@ -1900,18 +1930,18 @@ namespace Evado.Model.Digital
       //float fltValue = 0;
       //int intValue = 0;
       //bool bValue = false;
-      RecordFieldNames fieldname = RecordFieldNames.Null;
+      FieldNames fieldname = FieldNames.Null;
 
       //
       // Try convert the FieldName into a fieldname enumerated object
       //
       try
       {
-        fieldname = (RecordFieldNames) Enum.Parse ( typeof ( RecordFieldNames ), FieldName );
+        fieldname = (FieldNames) Enum.Parse ( typeof ( FieldNames ), FieldName );
       }
       catch
       {
-        fieldname = RecordFieldNames.Null;
+        fieldname = FieldNames.Null;
       }
 
       this.setValue ( fieldname, Value );
@@ -1933,7 +1963,7 @@ namespace Evado.Model.Digital
     /// 3. Switch fieldname and update value for the property defined by form class field names.
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public void setValue ( RecordFieldNames FieldName, string Value )
+    public void setValue ( FieldNames FieldName, string Value )
     {
       // 
       // Initialise the methods variables including date, float value, integer value, 
@@ -1946,13 +1976,13 @@ namespace Evado.Model.Digital
       // 
       switch ( FieldName )
       {
-        case RecordFieldNames.Layout_Id:
+        case FieldNames.Layout_Id:
           {
             this._LayoutId = Value;
             return;
           }
 
-        case RecordFieldNames.Status:
+        case FieldNames.Status:
           {
             try
             {
@@ -1965,17 +1995,17 @@ namespace Evado.Model.Digital
 
             return;
           }
-        case RecordFieldNames.SourceId:
+        case FieldNames.SourceId:
           {
             this._SourceId = Value;
             return;
           }
-        case RecordFieldNames.Data_Collect_Event_Id:
+        case FieldNames.Data_Collect_Event_Id:
           {
             this.DataCollectEventId = Value;
             return;
           }
-        case RecordFieldNames.IsMandatory:
+        case FieldNames.IsMandatory:
           {
             this._IsMandatory = EvcStatics.getBool ( Value );
             return;
@@ -1983,122 +2013,122 @@ namespace Evado.Model.Digital
         //
         // Design elements.
         //
-        case RecordFieldNames.Title:
+        case FieldNames.Title:
           {
             this._Design.Title = Value;
             return;
           }
 
-        case RecordFieldNames.Instructions:
+        case FieldNames.Instructions:
           {
             this._Design.Instructions = Value;
             return;
           }
 
-        case RecordFieldNames.Description:
+        case FieldNames.Description:
           {
             this._Design.Description = Value;
             return;
           }
 
-        case RecordFieldNames.UpdateReason:
+        case FieldNames.UpdateReason:
           {
             this._Design.UpdateReason = EvStatics.parseEnumValue<UpdateReasonList> ( Value );
             return;
           }
-        case RecordFieldNames.EditAccessRoles:
+        case FieldNames.EditAccessRoles:
           {
             this.Design.EditAccessRoles = Value;
             return;
           }
-        case RecordFieldNames.ReadAccessRoles:
+        case FieldNames.ReadAccessRoles:
           {
             this.Design.ReadAccessRoles = Value;
             return;
           }
-        case RecordFieldNames.AuthorAccess:
+        case FieldNames.AuthorAccess:
           {
             this.Design.AuthorAccess = Evado.Model.EvStatics.parseEnumValue<EdRecord.AuthorAccessList> ( Value );
             return;
           }
-        case RecordFieldNames.ParentType:
+        case FieldNames.ParentType:
           {
             this.Design.ParentType = Evado.Model.EvStatics.parseEnumValue<EdRecord.ParentTypeList> ( Value );
             return;
           }
-        case RecordFieldNames.ParentEntities:
+        case FieldNames.ParentEntities:
           {
             this._Design.ParentEntities = Value;
             return;
           }
-        case RecordFieldNames.Viaibility:
+        case FieldNames.Viaibility:
           {
             this.Visabilty = EvStatics.parseEnumValue<EdRecord.VisabilityList> ( Value );
             return;
           }
 
-        case RecordFieldNames.Reference:
+        case FieldNames.Reference:
           {
             this._Design.HttpReference = Value;
             return;
           }
 
-        case RecordFieldNames.FormCategory:
+        case FieldNames.FormCategory:
           {
             this._Design.RecordCategory = Value;
             return;
           }
-        case RecordFieldNames.TypeId:
+        case FieldNames.TypeId:
           {
             this._Design.TypeId = Evado.Model.EvStatics.parseEnumValue<EdRecordTypes> ( Value );
             return;
           }
-        case RecordFieldNames.HasCsScript:
+        case FieldNames.HasCsScript:
           {
             this._Design.hasCsScript = EvcStatics.getBool ( Value );
             return;
           }
-        case RecordFieldNames.FieldReadonlyDisplayFormat:
+        case FieldNames.FieldReadonlyDisplayFormat:
           {
             this._Design.FieldReadonlyDisplayFormat =
               EvStatics.parseEnumValue < FieldReadonlyDisplayFormats> ( Value );
             return;
           }
-        case RecordFieldNames.DefaultPageLayout:
+        case FieldNames.DefaultPageLayout:
           {
             this._Design.DefaultPageLayout = Value;
             return;
           }
-        case RecordFieldNames.RecordPrefix:
+        case FieldNames.RecordPrefix:
           {
             this._Design.RecordPrefix = Value;
             return;
           }
-        case RecordFieldNames.LinkContentSetting:
+        case FieldNames.LinkContentSetting:
           {
             this.Design.LinkContentSetting =
               Evado.Model.EvStatics.parseEnumValue<EdRecord.LinkContentSetting> ( Value );
             return;
           }
-        case RecordFieldNames.HeaderFormat:
+        case FieldNames.HeaderFormat:
           {
             this.Design.HeaderFormat =
               Evado.Model.EvStatics.parseEnumValue<EdRecord.HeaderFormat> ( Value );
             return;
           }
-        case RecordFieldNames.FooterFormat:
+        case FieldNames.FooterFormat:
           {
             this.Design.FooterFormat =
               Evado.Model.EvStatics.parseEnumValue<EdRecord.FooterFormat> ( Value );
             return;
           }
 
-        case RecordFieldNames.DisplayRelatedEntities:
+        case FieldNames.DisplayRelatedEntities:
           {
             this.Design.DisplayRelatedEntities = EvcStatics.getBool ( Value );
             return;
           }
-        case RecordFieldNames.DisplayAuthorDetails:
+        case FieldNames.DisplayAuthorDetails:
           {
             this.Design.DisplayAuthorDetails = EvcStatics.getBool ( Value );
             return;

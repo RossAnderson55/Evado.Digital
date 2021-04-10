@@ -151,7 +151,8 @@ namespace Evado.Model.Digital
       //
       // exit if the edit roles are not defined.
       //
-      if ( this._EditAccessRoles == String.Empty )
+      if ( this._EditAccessRoles == String.Empty
+        || this._ReadAccessRoles == String.Empty )
       {
         return;
       }
@@ -247,7 +248,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the page layout enumerated value 
     /// </summary>
-    public object DefaultPageLayout { get; set; }
+    public string DefaultPageLayout { get; set; }
 
     /// <summary>
     /// This property indicated whether record summary content is to be displayed in command titles of the page.

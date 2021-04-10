@@ -2923,6 +2923,24 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Field Height:.
+        /// </summary>
+        public static string Form_Field_Field_Height_Field_Label {
+            get {
+                return ResourceManager.GetString("Form_Field_Field_Height_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Width:.
+        /// </summary>
+        public static string Form_Field_Field_Width_Field_Label {
+            get {
+                return ResourceManager.GetString("Form_Field_Field_Width_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layout Field - General.
         /// </summary>
         public static string Form_Field_General_Group_Title {
@@ -4345,6 +4363,78 @@ namespace Evado.Model.Digital {
         public static string FormRecord_User_Endorsement_Statement {
             get {
                 return ResourceManager.GetString("FormRecord_User_Endorsement_Statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[table]]
+        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
+        ///[[/table]].
+        /// </summary>
+        public static string Generator_Disp_Field_Title_2Value_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Title_2Value_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[table]]
+        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
+        ///[[/table]].
+        /// </summary>
+        public static string Generator_Disp_Field_Title_Address_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Title_Address_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[strong]]{0}[[/strong]]
+        ///{1}.
+        /// </summary>
+        public static string Generator_Disp_Field_Title_FreeText_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Title_FreeText_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[table]]
+        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} {2} {3} {4} [[/td]] [[/tr]]
+        ///[[/table]].
+        /// </summary>
+        public static string Generator_Disp_Field_Title_Name_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Title_Name_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[table]]
+        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/td]][[/tr]]
+        ///[[/table]].
+        /// </summary>
+        public static string Generator_Disp_Field_Title_Value_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Title_Value_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[p]] {0} [[/p]].
+        /// </summary>
+        public static string Generator_Disp_Field_Value_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Value_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[h2]] {0} [[/h2]].
+        /// </summary>
+        public static string Generator_Disp_H2_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_H2_Format", resourceCulture);
             }
         }
         

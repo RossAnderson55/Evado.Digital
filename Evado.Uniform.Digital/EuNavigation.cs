@@ -584,7 +584,7 @@ namespace Evado.UniForm.Digital
 
               if ( this.Session.Entity != null )
               {
-                pageCommand.AddParameter ( EdRecord.RecordFieldNames.TypeId,
+                pageCommand.AddParameter ( EdRecord.FieldNames.TypeId,
                   this.Session.Entity.TypeId );
               }
               return pageCommand;
@@ -651,7 +651,7 @@ namespace Evado.UniForm.Digital
 
               if ( this.Session.Entity != null )
               {
-                pageCommand.AddParameter ( EdRecord.RecordFieldNames.TypeId,
+                pageCommand.AddParameter ( EdRecord.FieldNames.TypeId,
                   this.Session.Entity.TypeId );
               }
               return pageCommand;
@@ -702,10 +702,10 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter ( 
-          EdRecord.RecordFieldNames.ParentOrgId, 
+          EdRecord.FieldNames.ParentOrgId, 
           this.Session.Organisation.OrgId );
 
         return pageCommand;
@@ -728,10 +728,10 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentUserId,
+          EdRecord.FieldNames.ParentUserId,
           this.Session.UserProfile.UserId );
 
         return pageCommand;
@@ -760,10 +760,10 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentGuid,
+          EdRecord.FieldNames.ParentGuid,
           this.Session.Entity.Guid ); 
 
         return pageCommand;
@@ -784,7 +784,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
 
         return pageCommand;
 
@@ -804,7 +804,7 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
 
         return pageCommand;
 
@@ -824,9 +824,9 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentOrgId,
+          EdRecord.FieldNames.ParentOrgId,
           this.Session.Organisation.OrgId );
 
         return pageCommand;
@@ -847,9 +847,9 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentUserId,
+          EdRecord.FieldNames.ParentUserId,
           this.Session.UserProfile.UserId );
 
         return pageCommand;
@@ -870,10 +870,10 @@ namespace Evado.UniForm.Digital
           Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
-        pageCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter (
-          EdRecord.RecordFieldNames.ParentGuid,
+          EdRecord.FieldNames.ParentGuid,
           this.Session.Entity.Guid );
 
         return pageCommand;

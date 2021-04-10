@@ -1373,12 +1373,12 @@ namespace Evado.Dal.Digital
             newSection.FieldValue );
 
           dataChange.AddItem ( "Section_" + count + "_DefaultDisplayRoles",
-            oldSection.UserDisplayRoles,
-            newSection.UserDisplayRoles );
+            oldSection.ReadAccessRoles,
+            newSection.ReadAccessRoles );
 
           dataChange.AddItem ( "Section_" + count + "_DefaultEditRoles",
-            oldSection.UserEditRoles,
-            newSection.UserEditRoles );
+            oldSection.EditAccessRoles,
+            newSection.EditAccessRoles );
 
           dataChange.AddItem ( "Section_" + count + "_Order",
             oldSection.Order,

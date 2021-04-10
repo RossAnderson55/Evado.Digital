@@ -975,9 +975,9 @@ namespace Evado.UniForm.Digital
       //
       // if the entity layout is defined in the page command then update its value.
       //
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Layout_Id.ToString ( ) ) == true )
       {
-        this.Session.Selected_EntityLayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id.ToString ( ) );
+        this.Session.Selected_EntityLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id.ToString ( ) );
       }
       this.LogValue ( "Entity_SelectedLayoutId: " + this.Session.Selected_EntityLayoutId );
 
@@ -1006,9 +1006,9 @@ namespace Evado.UniForm.Digital
       //
       // if the entity record status is defined in the page command then update its value.
       //
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Status.ToString ( ) ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Status.ToString ( ) ) == true )
       {
-        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.RecordFieldNames.Status.ToString ( ) );
+        var stateValue = PageCommand.GetParameter<EdRecordObjectStates> ( EdRecord.FieldNames.Status.ToString ( ) );
 
         if ( this.Session.EntityStateSelection != stateValue )
         {
@@ -1288,7 +1288,7 @@ namespace Evado.UniForm.Digital
       }
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Layout_Id,
+        EdRecord.FieldNames.Layout_Id,
         EdLabels.Label_Form_Id,
         this.Session.Selected_EntityLayoutId,
         optionList );
@@ -1302,7 +1302,7 @@ namespace Evado.UniForm.Digital
       optionList = EdRecord.getRecordStates ( false );
 
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Status.ToString ( ),
+        EdRecord.FieldNames.Status.ToString ( ),
         EdLabels.Record_State_Selection,
         this.Session.EntityStateSelection,
         optionList );
@@ -1476,7 +1476,7 @@ namespace Evado.UniForm.Digital
         }
 
         groupField = pageGroup.createSelectionListField (
-          EdRecord.RecordFieldNames.Layout_Id,
+          EdRecord.FieldNames.Layout_Id,
           EdLabels.Label_Form_Id,
           this.Session.Selected_EntityLayoutId,
           optionList );
@@ -2005,7 +2005,7 @@ namespace Evado.UniForm.Digital
 
         groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
 
-        groupCommand.AddParameter ( Evado.Model.Digital.EdRecord.RecordFieldNames.Layout_Id,
+        groupCommand.AddParameter ( Evado.Model.Digital.EdRecord.FieldNames.Layout_Id,
         this.Session.Selected_EntityLayoutId );
       }
 
@@ -2228,7 +2228,7 @@ namespace Evado.UniForm.Digital
       // Add the selection pageMenuGroup.
       //
       selectionField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.Layout_Id,
+        EdRecord.FieldNames.Layout_Id,
         EdLabels.Label_Form_Id,
         this.Session.Selected_EntityLayoutId,
         this.Session.IssueFormList );
@@ -2742,7 +2742,7 @@ namespace Evado.UniForm.Digital
       //
       // if the page command has a layout identifier then assume parental identifier retrieval.
       //
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Layout_Id ) == true )
       {
         var result = this.GetEntityByParent ( PageCommand );
 
@@ -2838,28 +2838,28 @@ namespace Evado.UniForm.Digital
       //
       // retrieve the parent references from the command parameters.
       //
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.Layout_Id ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.Layout_Id ) == true )
       {
-        layoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+        layoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
       }
 
       //
       // There can only be one parental identifier and the organisation identifier is taking precedence
       // over the user parental identifier.
       //
-      if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.ParentOrgId ) == true )
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentOrgId ) == true )
       {
-        orgId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.ParentOrgId );
+        orgId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentOrgId );
       }
       else
-        if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.ParentUserId ) == true )
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentUserId ) == true )
         {
-          userId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.ParentUserId );
+          userId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentUserId );
         }
         else
-          if ( PageCommand.hasParameter ( EdRecord.RecordFieldNames.ParentGuid ) == true )
+          if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) == true )
           {
-            parentGuid = PageCommand.GetParameter<Guid> ( EdRecord.RecordFieldNames.ParentGuid );
+            parentGuid = PageCommand.GetParameter<Guid> ( EdRecord.FieldNames.ParentGuid );
           }
 
       this.LogDebug ( "LayoutId {0}, orgId {1}, userId {2} parent Guid {3}",
@@ -3452,7 +3452,7 @@ namespace Evado.UniForm.Digital
             EuAdapterClasses.Entities,
             Model.UniForm.ApplicationMethods.Create_Object );
 
-          groupCommand.AddParameter ( EdRecord.RecordFieldNames.Layout_Id, child.ChildLayoutId );
+          groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
 
           groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
         }//ENd edit access
@@ -3523,7 +3523,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        string LayoutId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+        string LayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
         Guid parentGuid = PageCommand.GetGuid ( );
         //
         // Create the new entity.
@@ -3829,10 +3829,10 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "updateObject_AdminValues" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
 
-      String stDate = PageCommand.GetParameter ( EdRecord.RecordFieldNames.RecordDate );
+      String stDate = PageCommand.GetParameter ( EdRecord.FieldNames.RecordDate );
       this.Session.Entity.RecordDate = Evado.Model.Digital.EvcStatics.getDateTime ( stDate );
 
-      String stState = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Status );
+      String stState = PageCommand.GetParameter ( EdRecord.FieldNames.Status );
       this.Session.Entity.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.

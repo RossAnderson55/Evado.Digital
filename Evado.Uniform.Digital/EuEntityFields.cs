@@ -929,6 +929,29 @@ namespace Evado.UniForm.Digital
       //
       // Form field selection options field.
       //
+      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text )
+      {
+        groupField = pageGroup.createNumericField (
+          EdRecordField.FieldClassFieldNames.FieldWidth,
+          EdLabels.Form_Field_Field_Width_Field_Label,
+          this.Session.EntityField.Design.FieldWidth,
+          5, 100 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Text )
+      {
+
+        groupField = pageGroup.createNumericField (
+          EdRecordField.FieldClassFieldNames.FieldHeight.ToString ( ),
+          EdLabels.Form_Field_Field_Height_Field_Label,
+          this.Session.EntityField.Design.FieldHeight,
+          2, 50 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+      //
+      // Form field selection options field.
+      //
       if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Analogue_Scale )
       {
         groupField = pageGroup.createTextField (
@@ -1606,7 +1629,7 @@ namespace Evado.UniForm.Digital
         // 
         // Initialise the methods variables and objects.
         //    
-        string FormId = PageCommand.GetParameter ( EdRecord.RecordFieldNames.Layout_Id );
+        string FormId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
         string stCount = PageCommand.GetParameter ( EuEntityFields.CONST_FIELD_COUNT );
         string stSectionNo = PageCommand.GetParameter ( EuEntityFields.CONST_FORM_SECTION );
 

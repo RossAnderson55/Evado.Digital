@@ -191,6 +191,16 @@ namespace Evado.Model.Digital
       /// </summary>
       Field_Layout,
 
+      /// <summary>
+      /// This enumeration defines the text field width identifier.
+      /// </summary>,
+      FieldWidth,
+
+      /// <summary>
+      /// This enumeration defines the text field height identifier.
+      /// </summary>
+      FieldHeight
+
     }
 
     #endregion
@@ -335,8 +345,8 @@ namespace Evado.Model.Digital
         String stTitle = String.Format (
             Evado.Model.Digital.EdLabels.Form_Field_Draft_List_Command_Title,
             this.FieldId,
-            this.Title, 
-            EvStatics.getEnumStringValue( this.TypeId ),
+            this.Title,
+            EvStatics.getEnumStringValue ( this.TypeId ),
             this.Order.ToString ( "###" ) );
 
         if ( this.Design.Mandatory == true )
@@ -824,7 +834,7 @@ namespace Evado.Model.Digital
 
         case FieldClassFieldNames.FormSection:
           {
-            this._Design.SectionNo = EvStatics.getInteger( Value );
+            this._Design.SectionNo = EvStatics.getInteger ( Value );
             break;
           }
 
@@ -891,6 +901,25 @@ namespace Evado.Model.Digital
         case FieldClassFieldNames.Field_Layout:
           {
             this._Design.FieldLayout = Value;
+            break;
+          }
+
+        case FieldClassFieldNames.FieldWidth:
+          {
+            if ( int.TryParse ( Value, out intValue ) == false )
+            {
+              return EvEventCodes.Data_Integer_Casting_Error;
+            }
+            this.Design.FieldWidth = intValue;
+            break;
+          }
+        case FieldClassFieldNames.FieldHeight:
+          {
+            if ( int.TryParse ( Value, out intValue ) == false )
+            {
+              return EvEventCodes.Data_Integer_Casting_Error;
+            }
+            this.Design.FieldHeight = intValue;
             break;
           }
 

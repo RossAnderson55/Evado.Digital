@@ -1477,6 +1477,107 @@ namespace Evado.Model.UniForm
 
     // ==================================================================================
     /// <summary>
+    /// This method creates a html markup page field object
+    /// </summary>
+    /// <param name="FieldId">string: the field data identifier</param>
+    /// <param name="FieldTitle">String: Field title</param>
+    /// <param name="Value">String: text content</param>
+    /// <param name="Size">Int: length of the field in characters</param>
+    /// <param name="Rows">Int: height of the field in characters</param>
+    /// <param name="FieldDescription">String: Description of Field </param>
+    /// <returns>Field object</returns>
+    ///<remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Add the field to the group list. 
+    /// 
+    /// 2. Return the field object.  
+    /// 
+    /// </remarks> 
+    // ----------------------------------------------------------------------------------
+    public Field createHtmlField (
+      object FieldId,
+      String FieldTitle,
+      String FieldDescription,
+      String Value )
+    {
+      if ( Value == null )
+      {
+        Value = String.Empty;
+      }
+      Field pageField = new Field ( );
+      pageField.Id = Guid.NewGuid ( );
+      pageField.Type = EvDataTypes.Html_Content;
+      pageField.FieldId = FieldId.ToString ( );
+      pageField.Title = FieldTitle;
+      if ( FieldDescription != String.Empty )
+      {
+        pageField.Description = FieldDescription;
+      }
+      pageField.Value = Value;
+      pageField.EditAccess = UniForm.EditAccess.Disabled;
+
+      //
+      // Add the field to the group list.
+      //
+      this._FieldList.Add ( pageField );
+
+      //
+      // Return the field object.
+      //
+      return pageField;
+    }//END createHtmlField method  
+
+    // ==================================================================================
+    /// <summary>
+    /// This method creates a html markup page field object
+    /// </summary>
+    /// <param name="FieldId">string: the field data identifier</param>
+    /// <param name="FieldTitle">String: Field title</param>
+    /// <param name="Value">String: text content</param>
+    /// <param name="Size">Int: length of the field in characters</param>
+    /// <param name="Rows">Int: height of the field in characters</param>
+    /// <param name="FieldDescription">String: Description of Field </param>
+    /// <returns>Field object</returns>
+    ///<remarks>
+    /// This method consists of following steps. 
+    /// 
+    /// 1. Add the field to the group list. 
+    /// 
+    /// 2. Return the field object.  
+    /// 
+    /// </remarks> 
+    // ----------------------------------------------------------------------------------
+    public Field createHtmlField (
+      object FieldId,
+      String FieldTitle,
+      String Value )
+    {
+      if ( Value == null )
+      {
+        Value = String.Empty;
+      }
+      Field pageField = new Field ( );
+      pageField.Id = Guid.NewGuid ( );
+      pageField.Type = EvDataTypes.Html_Content;
+      pageField.FieldId = FieldId.ToString ( );
+      pageField.Title = FieldTitle;
+      pageField.Value = Value;
+      pageField.EditAccess = UniForm.EditAccess.Disabled;
+
+      //
+      // Add the field to the group list.
+      //
+      this._FieldList.Add ( pageField );
+
+      //
+      // Return the field object.
+      //
+      return pageField;
+    }//END createHtmlField method  
+
+    // ==================================================================================
+    /// <summary>
     /// This method creates a boolean client page field object
     /// </summary>
     /// <param name="FieldId">string: the field data identifier</param>

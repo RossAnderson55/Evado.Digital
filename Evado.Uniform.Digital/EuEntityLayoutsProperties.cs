@@ -272,7 +272,7 @@ namespace Evado.UniForm.Digital
       // Form title
       //
       groupField = pageGroup.createTextField (
-        EdRecord.RecordFieldNames.Layout_Id.ToString ( ),
+        EdRecord.FieldNames.Layout_Id.ToString ( ),
         EdLabels.Label_Form_Id,
         this.Session.EntityLayout.LayoutId,
         10 );
@@ -283,7 +283,7 @@ namespace Evado.UniForm.Digital
       // Form title
       //
       groupField = pageGroup.createTextField (
-        EdRecord.RecordFieldNames.RecordPrefix,
+        EdRecord.FieldNames.RecordPrefix,
         EdLabels.Record_Layout_Record_Prefix_Field_Label,
         this.Session.EntityLayout.Design.RecordPrefix,
         5 );
@@ -294,7 +294,7 @@ namespace Evado.UniForm.Digital
       // Form title
       //
       groupField = pageGroup.createTextField (
-        EdRecord.RecordFieldNames.Title.ToString ( ),
+        EdRecord.FieldNames.Title.ToString ( ),
         EdLabels.Form_Title_Field_Label,
         this.Session.EntityLayout.Design.Title,
         50 );
@@ -304,7 +304,7 @@ namespace Evado.UniForm.Digital
       // Form reference
       //
       groupField = pageGroup.createTextField (
-        EdRecord.RecordFieldNames.Reference.ToString ( ),
+        EdRecord.FieldNames.Reference.ToString ( ),
         EdLabels.Form_Reference_Field_Label,
         this.Session.EntityLayout.Design.HttpReference,
         50 );
@@ -314,7 +314,7 @@ namespace Evado.UniForm.Digital
       // Form Instructions
       //
       groupField = pageGroup.createFreeTextField (
-        EdRecord.RecordFieldNames.Instructions.ToString ( ),
+        EdRecord.FieldNames.Instructions.ToString ( ),
         EdLabels.Form_Instructions_Field_Title,
         this.Session.EntityLayout.Design.Instructions,
         50, 4 );
@@ -325,7 +325,7 @@ namespace Evado.UniForm.Digital
       // Form category
       //
       groupField = pageGroup.createTextField (
-        EdRecord.RecordFieldNames.FormCategory.ToString ( ),
+        EdRecord.FieldNames.FormCategory.ToString ( ),
         EdLabels.Form_Category_Field_Title,
         this.Session.EntityLayout.Design.RecordCategory,
         50 );
@@ -337,7 +337,7 @@ namespace Evado.UniForm.Digital
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.UpdateReasonList ), false );
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.UpdateReason.ToString ( ),
+        EdRecord.FieldNames.UpdateReason.ToString ( ),
         EdLabels.Form_Update_Reason_Field_Title,
         this.Session.EntityLayout.Design.UpdateReason,
         optionList );
@@ -349,7 +349,7 @@ namespace Evado.UniForm.Digital
       // Form Change description
       //
       groupField = pageGroup.createFreeTextField (
-        EdRecord.RecordFieldNames.Description.ToString ( ),
+        EdRecord.FieldNames.Description.ToString ( ),
         EdLabels.Form_Description_Field_Title,
         this.Session.EntityLayout.Design.Description,
         90, 5 );
@@ -399,7 +399,7 @@ namespace Evado.UniForm.Digital
 
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.FieldReadonlyDisplayFormat.ToString ( ),
+        EdRecord.FieldNames.FieldReadonlyDisplayFormat.ToString ( ),
         EdLabels.EntityLayout_FieldDisplayFormat_Field_Title,
         this.Session.EntityLayout.Design.FieldReadonlyDisplayFormat,
         optionList );
@@ -411,7 +411,7 @@ namespace Evado.UniForm.Digital
       optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
 
       groupField = pageGroup.createCheckBoxListField (
-        EdRecord.RecordFieldNames.ReadAccessRoles.ToString ( ),
+        EdRecord.FieldNames.ReadAccessRoles.ToString ( ),
         EdLabels.Record_Layout_AccessRole_Field_Label,
         this.Session.EntityLayout.Design.EditAccessRoles,
         optionList );
@@ -421,7 +421,7 @@ namespace Evado.UniForm.Digital
 
 
       groupField = pageGroup.createCheckBoxListField (
-        EdRecord.RecordFieldNames.EditAccessRoles.ToString ( ),
+        EdRecord.FieldNames.EditAccessRoles.ToString ( ),
         EdLabels.Record_Layout_EditRole_Field_Label,
         this.Session.EntityLayout.Design.ReadAccessRoles,
         optionList );
@@ -438,7 +438,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "RecordLayout.Design.AuthorAccess: ", this.Session.EntityLayout.Design.AuthorAccess );
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.AuthorAccess.ToString ( ),
+        EdRecord.FieldNames.AuthorAccess.ToString ( ),
         EdLabels.Record_Layout_Author_Access_Setting_Field_Title,
         this.Session.EntityLayout.Design.AuthorAccess,
         optionList );
@@ -449,7 +449,7 @@ namespace Evado.UniForm.Digital
       // Enable display if chiled entities.
       //
       groupField = pageGroup.createBooleanField (
-        EdRecord.RecordFieldNames.DisplayRelatedEntities.ToString ( ),
+        EdRecord.FieldNames.DisplayRelatedEntities.ToString ( ),
         EdLabels.EntityLayout_Display_Related_Entities_Field_Title,
         this.Session.EntityLayout.Design.DisplayRelatedEntities );
 
@@ -461,7 +461,7 @@ namespace Evado.UniForm.Digital
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.ParentType.ToString ( ),
+        EdRecord.FieldNames.ParentType.ToString ( ),
         EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
         this.Session.EntityLayout.Design.ParentType,
         optionList );
@@ -477,7 +477,7 @@ namespace Evado.UniForm.Digital
         optionList = this.AdapterObjects.GetIssuedEntityOptions ( false );
 
         groupField = pageGroup.createCheckBoxListField (
-          EdRecord.RecordFieldNames.ParentEntities.ToString ( ),
+          EdRecord.FieldNames.ParentEntities.ToString ( ),
           EdLabels.Record_Layout_Parent_Entity_Selection_Field_Title,
           this.Session.EntityLayout.Design.ParentEntities,
           optionList );
@@ -494,7 +494,7 @@ namespace Evado.UniForm.Digital
       }
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.DefaultPageLayout.ToString ( ),
+        EdRecord.FieldNames.DefaultPageLayout.ToString ( ),
         EdLabels.Form_Llink_Default_Layout_Field_Title,
         this.Session.EntityLayout.Design.DefaultPageLayout,
         optionList );
@@ -512,7 +512,7 @@ namespace Evado.UniForm.Digital
       }
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.LinkContentSetting,
+        EdRecord.FieldNames.LinkContentSetting,
         EdLabels.Record_Link_Content_Setting_Field_Title,
         this.Session.EntityLayout.Design.LinkContentSetting,
         optionList );
@@ -530,7 +530,7 @@ namespace Evado.UniForm.Digital
       }
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.HeaderFormat,
+        EdRecord.FieldNames.HeaderFormat,
         EdLabels.RecordLayout_Header_Format_Field_Title,
         this.Session.EntityLayout.Design.HeaderFormat,
         optionList );
@@ -548,7 +548,7 @@ namespace Evado.UniForm.Digital
       }
 
       groupField = pageGroup.createSelectionListField (
-        EdRecord.RecordFieldNames.FooterFormat,
+        EdRecord.FieldNames.FooterFormat,
         EdLabels.RecordLayout_Footer_Format_Field_Title,
         this.Session.EntityLayout.Design.FooterFormat,
         optionList );
@@ -559,7 +559,7 @@ namespace Evado.UniForm.Digital
       // Form CS Script
       //
       groupField = pageGroup.createBooleanField (
-        EdRecord.RecordFieldNames.HasCsScript.ToString ( ),
+        EdRecord.FieldNames.HasCsScript.ToString ( ),
         EdLabels.Form_Cs_Script_Field_Title,
         this.Session.EntityLayout.Design.hasCsScript );
 
@@ -712,8 +712,8 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getPropertiesSectionDataObject" );
       this.LogDebug ( "FormSection.No: " + this.Session.FormSection.No );
       this.LogDebug ( "FormSection.Title: " + this.Session.FormSection.Title );
-      this.LogDebug ( "FormSection.DisplayRoles: " + this.Session.FormSection.UserDisplayRoles );
-      this.LogDebug ( "FormSection.EditRoles: " + this.Session.FormSection.UserEditRoles );
+      this.LogDebug ( "FormSection.DisplayRoles: " + this.Session.FormSection.ReadAccessRoles );
+      this.LogDebug ( "FormSection.EditRoles: " + this.Session.FormSection.EditAccessRoles );
       this.LogDebug ( "HasConfigrationEditAccess: " + this.Session.UserProfile.hasManagementAccess );
       // 
       // Initialise the methods variables and objects.
@@ -805,7 +805,6 @@ namespace Evado.UniForm.Digital
         this.Session.FormSection.Title,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
 
       //
       // Form Instructions
@@ -896,12 +895,11 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuPageGenerator.ApplicationFieldLayout;
       */
       //
-      // get the list of form roles.
+      // get the list of display roles.
       //
       optionList = new List<EvOption> ( );
 
-      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Author ) );
-      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Reader ) );
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
 
       //
       // The form section user display roles 
@@ -910,7 +908,18 @@ namespace Evado.UniForm.Digital
         EdRecordSection.FormSectionClassFieldNames.Sectn_Display_Roles.ToString ( ),
         EdLabels.Form_Section_User_Display_Roles_Field_Label,
         EdLabels.Form_Section_User_Display_Roles_Field_Description,
-        this.Session.FormSection.UserDisplayRoles,
+        this.Session.FormSection.ReadAccessRoles,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // get the list of edit roles.
+      //
+      pageField = pageGroup.createCheckBoxListField (
+        EdRecordSection.FormSectionClassFieldNames.Sectn_Edit_Roles.ToString ( ),
+        EdLabels.Form_Section_User_Edit_Roles_Field_Label,
+        EdLabels.Form_Section_User_Edit_Roles_Field_Description,
+        this.Session.FormSection.EditAccessRoles,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -982,8 +991,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FormSection.No: " + this.Session.FormSection.No );
       this.LogDebug ( "FormSection.Title: " + this.Session.FormSection.Title );
       this.LogDebug ( "FormSection.Instructions: " + this.Session.FormSection.Instructions );
-      this.LogDebug ( "FormSection.UserDisplayRoles: " + this.Session.FormSection.UserDisplayRoles );
-      this.LogDebug ( "FormSection.UserEditRoles: " + this.Session.FormSection.UserEditRoles );
+      this.LogDebug ( "FormSection.UserDisplayRoles: " + this.Session.FormSection.ReadAccessRoles );
+      this.LogDebug ( "FormSection.UserEditRoles: " + this.Session.FormSection.EditAccessRoles );
 
       //
       // Update teh common form section object.

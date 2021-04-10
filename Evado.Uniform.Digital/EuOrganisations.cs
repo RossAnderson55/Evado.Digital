@@ -615,7 +615,7 @@ namespace Evado.UniForm.Digital
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
       //
       // Set the user edit access to the objects.
@@ -721,6 +721,12 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
+      Evado.Model.UniForm.EditAccess adminAccess = Model.UniForm.EditAccess.Disabled;
+
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        adminAccess = Model.UniForm.EditAccess.Enabled;
+      }
 
       // 
       // create the page pageMenuGroup
@@ -745,6 +751,7 @@ namespace Evado.UniForm.Digital
         this.Session.AdminOrganisation.OrgId, 10 );
       pageField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
       pageField.Layout = EuAdapter.DefaultFieldLayout;
+      pageField.EditAccess = adminAccess;
 
       //
       // get the org type selection list.
@@ -762,11 +769,10 @@ namespace Evado.UniForm.Digital
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
       pageField.Mandatory = true;
+      pageField.EditAccess = adminAccess;
 
-      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      if ( this.Session.AdminOrganisation.OrgType == String.Empty )
       {
-        pageField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-
         pageField.setBackgroundColor (
           Model.UniForm.FieldParameterList.BG_Mandatory,
           Model.UniForm.Background_Colours.Red );

@@ -122,13 +122,15 @@ namespace Evado.Dal.Digital
     public const string DB_FIELD_CATEGORY = "EDELF_FIELD_CATEGORY";
     public const string DB_ANALOGUE_LEGEND_START = "EDELF_ANALOGUE_LEGEND_START";
     public const string DB_ANALOGUE_LEGEND_FINISH = "EDELF_ANALOGUE_LEGEND_FINISH";
+    public const string DB_FIELD_WIDTH = "EDELF_FIELD_WIDTH";
+    public const string DB_FIELD_HEIGHT = "EDELF_FIELD_HEIGHT";
     public const string DB_JAVA_SCRIPT = "EDELF_JAVA_SCRIPT";
     public const string DB_TABLE = "EDELF_TABLE";
     public const string DB_INITIAL_OPTION_LIST = "EDELF_INITIAL_OPTION_LIST";
     public const string DB_INITIAL_VERSION = "EDELF_INITIAL_VERSION";
     public const string DB_DELETED = "EDELF_DELETED";
-    private const string DB_LAYOUT_STATE = "EDEL_STATE";
-    private const string DB_FIELD_LAYOUT = "EDELF_FIELD_LAYOUT";
+    public const string DB_LAYOUT_STATE = "EDEL_STATE";
+    public const string DB_FIELD_LAYOUT = "EDELF_FIELD_LAYOUT";
 
     // query parmeters.
     private const string PARM_GUID = "@GUID";
@@ -161,6 +163,8 @@ namespace Evado.Dal.Digital
     private const string PARM_FIELD_CATEGORY = "@FIELD_CATEGORY";
     private const string PARM_ANALOGUE_LEGEND_START = "@ANALOGUE_LEGEND_START";
     private const string PARM_ANALOGUE_LEGEND_FINISH = "@ANALOGUE_LEGEND_FINISH";
+    private const string PARM_FIELD_WIDTH = "@FIELD_WIDTH";
+    private const string PARM_FIELD_HEIGHT = "@FIELD_HEIGHT";
     private const string PARM_JAVA_SCRIPT = "@JAVA_SCRIPT";
     private const string PARM_TABLE = "@TABLE";
     private const string PARM_INITIAL_OPTION_LIST = "@INITIAL_OPTION_LIST";
@@ -229,6 +233,8 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdEntityFields.PARM_INITIAL_OPTION_LIST, SqlDbType.NVarChar, 250),
         new SqlParameter(EdEntityFields. PARM_INITIAL_VERSION, SqlDbType.Int),
         new SqlParameter( EdEntityFields.PARM_FIELD_LAYOUT, SqlDbType.NVarChar, 250),
+        new SqlParameter( EdEntityFields.PARM_FIELD_WIDTH, SqlDbType.Int),
+        new SqlParameter( EdEntityFields.PARM_FIELD_HEIGHT, SqlDbType.Int),
 
       };
 
@@ -326,6 +332,8 @@ namespace Evado.Dal.Digital
       cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
       cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
       cmdParms [ 34 ].Value = FormField.Design.FieldLayout;
+      cmdParms [ 35 ].Value = FormField.Design.FieldWidth;
+      cmdParms [ 36 ].Value = FormField.Design.FieldHeight;
 
     }//END setParameters class.
     #endregion
@@ -365,88 +373,103 @@ namespace Evado.Dal.Digital
       // Initialise xmltable string and a return formfield object. 
       // 
       string xmlTable = String.Empty;
-      EdRecordField formField = new EdRecordField ( );
+      EdRecordField entityField = new EdRecordField ( );
 
       //
       // Update formfield object with the compatible data row items. 
       //
-      formField.RecordGuid = Guid.Empty;
-      formField.Guid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_GUID );
-      formField.FieldGuid = formField.Guid;
-      formField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_LAYOUT_GUID );
-      formField.LayoutId = EvSqlMethods.getString ( Row, EdEntityFields.DB_LAYOUT_ID );
-      formField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
+      entityField.RecordGuid = Guid.Empty;
+      entityField.Guid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_GUID );
+      entityField.FieldGuid = entityField.Guid;
+      entityField.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntityFields.DB_LAYOUT_GUID );
+      entityField.LayoutId = EvSqlMethods.getString ( Row, EdEntityFields.DB_LAYOUT_ID );
+      entityField.FieldId = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_ID );
       String value = EvSqlMethods.getString ( Row, EdEntityFields.DB_TYPE_ID );
-      formField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
+      entityField.Design.TypeId = Evado.Model.EvStatics.parseEnumValue<Evado.Model.EvDataTypes> ( value );
 
-      formField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
-      formField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
-      formField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
-      formField.Order = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_ORDER );
-      formField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
-      formField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
-      formField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
-      formField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
-      formField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
-      formField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
-      formField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
-      formField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
-      formField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
-      formField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
-      formField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
+      entityField.Design.Title = EvSqlMethods.getString ( Row, EdEntityFields.DB_TITLE );
+      entityField.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityFields.DB_INSTRUCTIONS );
+      entityField.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityFields.DB_HTTP_REFERENCE );
+      entityField.Order = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_ORDER );
+      entityField.Design.SectionNo = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_SECTION_ID );
+      entityField.Design.Options = EvSqlMethods.getString ( Row, EdEntityFields.DB_OPTIONS );
+      entityField.Design.IsSummaryField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_SUMMARY_FIELD );
+      entityField.Design.Mandatory = EvSqlMethods.getBool ( Row, EdEntityFields.DB_MANDATORY );
+      entityField.Design.AiDataPoint = EvSqlMethods.getBool ( Row, EdEntityFields.DB_AI_DATA_POINT );
+      entityField.Design.HideField = EvSqlMethods.getBool ( Row, EdEntityFields.DB_HIDDEN );
+      entityField.Design.ExSelectionListId = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_ID );
+      entityField.Design.ExSelectionListCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_EX_SELECTION_LIST_CATEGORY );
+      entityField.Design.DefaultValue = EvSqlMethods.getString ( Row, EdEntityFields.DB_DEFAULT_VALUE );
+      entityField.Design.Unit = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT );
+      entityField.Design.UnitScaling = EvSqlMethods.getString ( Row, EdEntityFields.DB_UNIT_SCALING );
 
-      formField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
-      formField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
-      formField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
-      formField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
-      formField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
-      formField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
+      entityField.Design.ValidationLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_LOWER_LIMIT );
+      entityField.Design.ValidationUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_VALIDATION_UPPER_LIMIT );
+      entityField.Design.AlertLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_LOWER_LIMIT );
+      entityField.Design.AlertUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_ALERT_UPPER_LIMIT );
+      entityField.Design.NormalRangeLowerLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_LOWER_LIMITD );
+      entityField.Design.NormalRangeUpperLimit = EvSqlMethods.getFloat ( Row, EdEntityFields.DB_NORMAL_UPPER_LIMIT );
 
-      formField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
-      formField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
-      formField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
-      formField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
+      entityField.Design.FieldCategory = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_CATEGORY );
+      entityField.Design.AnalogueLegendStart = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_START );
+      entityField.Design.AnalogueLegendFinish = EvSqlMethods.getString ( Row, EdEntityFields.DB_ANALOGUE_LEGEND_FINISH );
+      entityField.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityFields.DB_JAVA_SCRIPT );
       xmlTable = EvSqlMethods.getString ( Row, DB_TABLE );
-      formField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
-      formField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
-      formField.Design.FieldLayout = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_LAYOUT);
+      entityField.Design.InitialOptionList = EvSqlMethods.getString ( Row, EdEntityFields.DB_INITIAL_OPTION_LIST );
+      entityField.Design.InitialVersion = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_INITIAL_VERSION );
+      entityField.Design.FieldLayout = EvSqlMethods.getString ( Row, EdEntityFields.DB_FIELD_LAYOUT);
+      entityField.Design.FieldWidth = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_FIELD_WIDTH );
+      entityField.Design.FieldHeight = EvSqlMethods.getInteger ( Row, EdEntityFields.DB_FIELD_HEIGHT );
 
+      if ( entityField.Design.FieldLayout == null )
+      {
+        entityField.Design.FieldLayout = String.Empty ;
+      }
+
+      if ( entityField.Design.FieldWidth <5 )
+      {
+        entityField.Design.FieldWidth = 50;
+      }
+      if ( entityField.Design.FieldHeight < 2 )
+      {
+        entityField.Design.FieldHeight = 5;
+      } 
       //
       // if the data type is a table then deseriallise the formfield data table.
       //
-      if ( formField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
-        || formField.TypeId == Evado.Model.EvDataTypes.Table )
+      if ( entityField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
+        || entityField.TypeId == Evado.Model.EvDataTypes.Table )
       {
         this.LogValue ( "Table Length: " + xmlTable.Length.ToString ( ) );
         //
         // Initialise the table objects.
         //
-        formField.Table = new EdRecordTable ( );
+        entityField.Table = new EdRecordTable ( );
 
         //
         // Validate whehter the Table has data.
         //
         if ( xmlTable != String.Empty )
         {
-          formField.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
+          entityField.Table = Evado.Model.Digital.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
 
           // 
           // Iterate through the table and set the validation rules
           // 
-          for ( int i = 0; i < formField.Table.ColumnCount; i++ )
+          for ( int i = 0; i < entityField.Table.ColumnCount; i++ )
           {
             //
             // Addressing the 'NA' to negative infinity issue for non-numeric fields.
             //
             // Iterate through the table data converting the relevant cell values to NA.
             //
-            for ( int j = 0; j < formField.Table.Rows.Count; j++ )
+            for ( int j = 0; j < entityField.Table.Rows.Count; j++ )
             {
-              String cell = formField.Table.Rows [ j ].Column [ i ];
+              String cell = entityField.Table.Rows [ j ].Column [ i ];
 
-              if ( formField.Table.Header [ i ].TypeId != EvDataTypes.Numeric )
+              if ( entityField.Table.Header [ i ].TypeId != EvDataTypes.Numeric )
               {
-                formField.Table.Rows [ j ].Column [ i ] = Evado.Model.EvStatics.convertNumNullToTextNull ( cell );
+                entityField.Table.Rows [ j ].Column [ i ] = Evado.Model.EvStatics.convertNumNullToTextNull ( cell );
               }
 
             }//END column iteration loop
@@ -460,38 +483,38 @@ namespace Evado.Dal.Digital
       //
       // Resolve the numeric 'NA' to negative infinity issue.
       //
-      if ( formField.ItemValue == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
-        && formField.TypeId != Evado.Model.EvDataTypes.Numeric )
+      if ( entityField.ItemValue == Evado.Model.Digital.EvcStatics.CONST_NUMERIC_NULL.ToString ( )
+        && entityField.TypeId != Evado.Model.EvDataTypes.Numeric )
       {
-        formField.ItemValue = "NA";
+        entityField.ItemValue = "NA";
       }
 
       //
       // If formfield typeId is either analogue scale or horizontal radio buttons, select the design by coding value
       //
 
-      if ( formField.Design.ValidationLowerLimit >= formField.Design.ValidationUpperLimit )
+      if ( entityField.Design.ValidationLowerLimit >= entityField.Design.ValidationUpperLimit )
       {
-        formField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        formField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        entityField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        entityField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
       }
 
-      if ( formField.Design.AlertLowerLimit >= formField.Design.AlertUpperLimit )
+      if ( entityField.Design.AlertLowerLimit >= entityField.Design.AlertUpperLimit )
       {
-        formField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        formField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        entityField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        entityField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
       }
 
-      if ( formField.Design.NormalRangeLowerLimit >= formField.Design.NormalRangeUpperLimit )
+      if ( entityField.Design.NormalRangeLowerLimit >= entityField.Design.NormalRangeUpperLimit )
       {
-        formField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        formField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        entityField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        entityField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
       }
 
       // 
       // Return the formfield object.
       // 
-      return formField;
+      return entityField;
 
     }//END getRowData method.
 

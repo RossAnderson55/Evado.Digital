@@ -26,6 +26,7 @@ using Evado.Model;
 using Evado.Bll;
 using Evado.Bll.Digital;
 using Evado.Model.Digital;
+using MarkdownSharp;
 
 namespace Evado.UniForm.Digital
 {
@@ -143,7 +144,7 @@ namespace Evado.UniForm.Digital
     // 
     private List<Evado.Model.Digital.EdRecordField> _Fields = new List<Evado.Model.Digital.EdRecordField> ( );
 
-    private Evado.Model.UniForm.FieldLayoutCodes _FieldLayout = EuAdapter.DefaultFieldLayout;
+    private Evado.Model.UniForm.FieldLayoutCodes _DefaultFieldLayout = EuAdapter.DefaultFieldLayout;
 
     private String _PageId = String.Empty;
 
@@ -378,17 +379,17 @@ namespace Evado.UniForm.Digital
       this._Fields = Layout.Fields;
       this._Design = Layout.Design;
 
-      this.LogDebug ( "Default FieldLayout {0}. ", this._FieldLayout );
+      this.LogDebug ( "Default FieldLayout {0}. ", this._DefaultFieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
       {
         if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> (
           Layout.Design.DefaultPageLayout.ToString ( ),
-          out this._FieldLayout ) == false )
+          out this._DefaultFieldLayout ) == false )
         {
-          this._FieldLayout = EuAdapter.DefaultFieldLayout;
+          this._DefaultFieldLayout = EuAdapter.DefaultFieldLayout;
         }
       }
-      this.LogDebug ( "FieldLayout {0}. ", this._FieldLayout );
+      this.LogDebug ( "FieldLayout {0}. ", this._DefaultFieldLayout );
       //
       // IF the form does not display annotations when being completed
       // hide the annotations by setting hide annotations to true
@@ -481,7 +482,6 @@ namespace Evado.UniForm.Digital
 
     }//END public generateForm Method.
 
-
     //=====================================================================================
     /// <summary>
     /// This method selects and returns the selected field and returns null if not found.
@@ -506,6 +506,76 @@ namespace Evado.UniForm.Digital
       return null;
     }//END GetFieldObject method
 
+    // ==================================================================================
+    /// <summary>
+    /// This mehod generates the HTMl for a page group.
+    /// </summary>
+    /// <param name="command">Evado.Model.UniForm.Command command object</param>
+    /// <param name="cssClass">String: Css classes</param>
+    /// <returns>Html string</returns>
+    // ---------------------------------------------------------------------------------
+    private String encodeMarkDown (
+      String MarkDownText )
+    {
+      this.LogMethod ( "encodeMarkDown method. " );
+      //Global.LogDebugValue ( "Text length: " + MarkDownText.Length );
+      //
+      // Initialise the methods variables and objects.
+      //
+      String stMarkDown = String.Empty;
+
+      //
+      // Process the text to remove spaces.
+      //
+      MarkDownText = MarkDownText.Replace ( "\r\n", "~" );
+      MarkDownText = MarkDownText.Replace ( "\r", "~" );
+      MarkDownText = MarkDownText.Replace ( "\n", "~" );
+      MarkDownText = MarkDownText.Replace ( "~~", "~" );
+
+      string [ ] arrMarkDownText = MarkDownText.Split ( '~' );
+      foreach ( String str in arrMarkDownText )
+      {
+        stMarkDown += str.Trim ( ) + "\r\n";
+      }
+      //Global.LogDebugValue ( stMarkDown );
+      //Global.LogDebugValue ( "Processed test length: " + stMarkDown.Length );
+
+      //
+      // Initialise the markdown options object.
+      //
+      MarkdownSharp.MarkdownOptions markDownOptions = new MarkdownSharp.MarkdownOptions ( );
+      markDownOptions.AutoHyperlink = true;
+      markDownOptions.AutoNewlines = true;
+      markDownOptions.EmptyElementSuffix = "/>";
+      markDownOptions.EncodeProblemUrlCharacters = true;
+      markDownOptions.LinkEmails = true;
+      markDownOptions.StrictBoldItalic = true;
+
+      //
+      // Initialise the markdown object.
+      //
+      MarkdownSharp.Markdown markDown = new MarkdownSharp.Markdown ( markDownOptions );
+
+      string stHtml = markDown.Transform ( stMarkDown );
+
+      //
+      // convert old markup to html.
+      //
+      stHtml = stHtml.Replace ( "[i]", "<i>" );
+      stHtml = stHtml.Replace ( "[/i]", "</i>" );
+      stHtml = stHtml.Replace ( "[b]", "<b>" );
+      stHtml = stHtml.Replace ( "[/b]", "</b>" );
+      stHtml = stHtml.Replace ( "[u]", "<u>" );
+      stHtml = stHtml.Replace ( "[/u]", "</u>" );
+      stHtml = stHtml.Replace ( "<blockquote>", "" );
+      stHtml = stHtml.Replace ( "</blockquote>", "" );
+
+      this.LogDebug ( "MarkDown HTML: " + stHtml );
+
+      this.LogMethodEnd ( "encodeMarkDown method. " );
+      return stHtml;
+
+    }//END encodeMarkDown method.
     // ***********************************************************************************
     #endregion
 
@@ -1048,166 +1118,580 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise local variables.
       // 
-      int sectionFieldCount = 0;
+      int fieldCount = 0;
       this._PageId = PageObject.PageId;
-      Evado.Model.UniForm.Group fieldGroup;
+      bool bDocumentDisplayMode = false;
+
+      //
+      // determine the content should be in display mode.
+      //
+      if ( ( PageObject.EditAccess == Model.UniForm.EditAccess.Disabled )
+        && ( Layout.State == EdRecordObjectStates.Submitted_Record )
+        && ( this._Design.FieldReadonlyDisplayFormat == EdRecord.FieldReadonlyDisplayFormats.Document_Layout
+          || this._Design.FieldReadonlyDisplayFormat == EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles ) )
+      {
+        bDocumentDisplayMode = true;
+      }
 
       // 
       // Entering the form section iteration loop.
       // 
       foreach ( Evado.Model.Digital.EdRecordSection section in Layout.Design.FormSections )
       {
-        sectionFieldCount = 0;
-        // 
-        // Determine how many fields are in this section.
-        //
-        foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
-        {
-          if ( field.Design.SectionNo == section.No )
-          {
-            sectionFieldCount++;
-          }
-        }
+        this.LogDebug ( "No: '" + section.No + "' "
+          + " Section: '" + section.Title + "' Role: " + section.ReadAccessRoles );
 
-        if ( sectionFieldCount == 0 )
+        if ( section.hasRoleDisplay ( this.Session.UserProfile.Roles ) == false )
         {
-          this.LogDebug ( "No: '" + section.No + "' "
-            + " Section: '" + section.Title + "' >> SKIP NOT FIELDS " );
           continue;
         }
 
-        //
-        // Skip section if in patient access mode.
-        //
-
-        this.LogDebug ( "No: '" + section.No + "' "
-          + " Section: '" + section.Title + "' Role: " + section.UserDisplayRoles );
-
-        if ( section.hasRole ( this._FormAccessRole ) == false )
+        if ( bDocumentDisplayMode == true )
         {
-          this.LogDebug ( "No: '" + section.No + "' "
-            + " Section: '" + section.Title + "' >> SKIP USER DOES NOT HAVE ACCESS " );
-          continue;
+          this.creatSectionDocument ( Layout, section, PageObject );
         }
-
-        this.LogDebug ( "No: '" + section.No + "' "
-          + " Section: '" + section.Title + "' " );
-
-        fieldGroup = PageObject.AddGroup (
-          section.Title,
-          section.Instructions,
-          PageObject.EditAccess );
-
-        fieldGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-
-        //
-        // add an edit command if the page is in display mode and the user is the author and 
-        // selectable edit has been enabled.
-        //
-        if ( Layout.Design.AuthorAccess == EdRecord.AuthorAccessList.Only_Author_Selectable
-          && PageObject.EditAccess == Model.UniForm.EditAccess.Disabled
-          && Layout.Author == this.Session.UserProfile.UserId )
+        else
         {
-          var groupCommand = fieldGroup.addCommand (
-            EdLabels.Entity_Enable_Edit_Command_Title,
-              EuAdapter.ADAPTER_ID,
-              EuAdapterClasses.Entities.ToString ( ),
-              Evado.Model.UniForm.ApplicationMethods.Custom_Method );
-          groupCommand.SetGuid ( this.Session.Entity.Guid );
-
-          groupCommand.AddParameter (
-           EuRecordGenerator.CONST_ENABLE_EDIT_FIELD, "Yes" );
-
-          if ( Layout.Design.IsEntity == false )
-          {
-            groupCommand.Object = EuAdapterClasses.Records.ToString ( );
-          }
-
-        }//END command selection block.
-
-        //
-        // If the section has field name then add the pageMenuGroup hide parameters.
-        //
-        if ( section.FieldId != String.Empty )
-        {
-          fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Id,
-            section.FieldId );
-
-          fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Value,
-            section.FieldValue );
+          //
+          // generate the section fields
+          //
+          fieldCount = this.createSectionFormFields ( Layout, section, PageObject );
         }
-
-        this.LogDebug ( "GroupType:  " + fieldGroup.GroupType );
-
-        // 
-        // Iterate through each form field in the section.
-        // 
-        foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
-        {
-          // 
-          // If the field is in the section identified by its section name (backward compatibility) or
-          // the section number.
-          // 
-          if ( field.Design.SectionNo != section.No )
-          {
-            continue;
-          }
-
-          this.createFormField ( field, fieldGroup, Layout.State );
-
-        }//END field iteration loop.
-
-        this.LogDebug ( "Value Column Width: " + fieldGroup.GetParameter ( Evado.Model.UniForm.GroupParameterList.Field_Value_Column_Width ) );
 
       }//END Section interation loop.
 
-      sectionFieldCount = 0;
-      // 
-      // Determine how many fields are in this section.
       //
-      foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
+      // Generate the fields that are not allocated to a section.
+      //
+
+      if ( bDocumentDisplayMode == true )
       {
-        if ( field.Design.SectionNo == -1 )
-        {
-          sectionFieldCount++;
-        }
+        this.creatSectionDocument ( Layout, new EdRecordSection ( ), PageObject );
+      }
+      else
+      {
+        //
+        // generate the section fields
+        //
+        fieldCount = this.createSectionFormFields ( Layout, new EdRecordSection ( ), PageObject );
       }
 
+      this.LogMethodEnd ( "createFormSections" );
+
+    }//END createFormSections method
+
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates a form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Layout">EdRecord object .</param>
+    /// <param name="SectionNo">EdRecordSection object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <returns>int count of section fields.</returns>
+    //  ---------------------------------------------------------------------------------
+    private int createSectionFormFields (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.Digital.EdRecordSection section,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "createDocumentLayout" );
       //
-      // IF there are not fields that are not allocated to section exit the section 
-      // generation method.
+      // Initialise the methods variables and objects.
       //
-      if ( sectionFieldCount == 0 )
+      int count = 0;
+      Evado.Model.UniForm.Group fieldGroup = PageObject.AddGroup (
+          String.Empty );
+
+      if ( section.Title != String.Empty )
       {
-        this.LogDebug ( "EXIT - NO NON-SECTON FIELDS" );
-        return;
+        fieldGroup = PageObject.AddGroup (
+            section.Title,
+            section.Instructions,
+            PageObject.EditAccess );
       }
-
-      //
-      // Add an empty section if fields are note allocated to a section
-      //
-      fieldGroup = PageObject.AddGroup (
-        String.Empty,
-        PageObject.EditAccess );
-
       fieldGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // If the section has field name then add the pageMenuGroup hide parameters.
+      //
+      if ( section.FieldId != String.Empty )
+      {
+        fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Id,
+          section.FieldId );
+
+        fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Value,
+          section.FieldValue );
+      }
+
+      this.LogDebug ( "GroupType:  " + fieldGroup.GroupType );
 
       // 
       // Iterate through each form field in the section.
       // 
       foreach ( Evado.Model.Digital.EdRecordField field in Layout.Fields )
       {
-        if ( field.Design.SectionNo == -1 )
+        // 
+        // If the field is in the section identified by its section name (backward compatibility) or
+        // the section number.
+        // 
+        if ( field.Design.SectionNo != section.No )
         {
-          this.createFormField ( field, fieldGroup, Layout.State );
+          continue;
         }
+
+
+        this.createFormField ( field, fieldGroup, Layout.State );
+
+        count++;
 
       }//END field iteration loop.
 
-      this.LogDebug ( "Value Column Width: " + fieldGroup.GetParameter ( Evado.Model.UniForm.GroupParameterList.Field_Value_Column_Width ) );
+      //
+      // add an edit command if the page is in display mode and the user is the author and 
+      // selectable edit has been enabled.
+      //
+      if ( count > 0
+        && Layout.Design.AuthorAccess == EdRecord.AuthorAccessList.Only_Author_Selectable
+        && PageObject.EditAccess == Model.UniForm.EditAccess.Disabled
+        && Layout.Author == this.Session.UserProfile.UserId )
+      {
+        var groupCommand = fieldGroup.addCommand (
+          EdLabels.Entity_Enable_Edit_Command_Title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Entities.ToString ( ),
+            Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+        groupCommand.SetGuid ( this.Session.Entity.Guid );
+
+        groupCommand.AddParameter (
+         EuRecordGenerator.CONST_ENABLE_EDIT_FIELD, "Yes" );
+
+        if ( Layout.Design.IsEntity == false )
+        {
+          groupCommand.Object = EuAdapterClasses.Records.ToString ( );
+        }
+
+      }//END command selection block.
+      this.LogMethodEnd ( "createDocumentLayout" );
+      return count;
+
+    }//END method
+
+    //  =================================================================================
+    /// <summary>
+    /// This method creates a document layout containing all text fields and static images.
+    /// </summary>
+    /// <param name="Layout">EdRecord object .</param>
+    /// <param name="SectionNo">EdRecordSection object.</param>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <returns>int count of section fields.</returns>
+    //  ---------------------------------------------------------------------------------
+    private int creatSectionDocument (
+       Evado.Model.Digital.EdRecord Layout,
+      Evado.Model.Digital.EdRecordSection section,
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "creatSectionDocument" );
+      this.LogDebug ( "LayoutId: " + Layout.LayoutId );
+      this.LogDebug ( "FieldLayout {0}. ", this._DefaultFieldLayout );
+      this.LogDebug ( "HideFieldTitlesWhenReadOnly {0}. ", this._Design.FieldReadonlyDisplayFormat );
+
+      //
+      // editable pages are not displayed in document mode.
+      //
+      if ( PageObject.EditAccess == Model.UniForm.EditAccess.Enabled )
+      {
+        return 0;
+      }
+
+      //
+      // If the display form is not document types exit.
+      //
+      if ( this._Design.FieldReadonlyDisplayFormat != EdRecord.FieldReadonlyDisplayFormats.Document_Layout
+        && this._Design.FieldReadonlyDisplayFormat != EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles )
+      {
+        return 0;
+      }
+      //
+      // Initialise the methods variables and objects.
+      //
+      StringBuilder sbHtmlContent = new StringBuilder ( );
+      int count = 0;
+      bool displayTitle = true;
+
+      //
+      // If the title is to be hidden then delete the uniform field values.
+      //
+      if ( this._Design.FieldReadonlyDisplayFormat == EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles )
+      {
+        displayTitle = false;
+      }
+
+      //
+      // create the field group object.
+      //
+      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+          String.Empty );
+
+      if ( section.Title != String.Empty )
+      {
+        pageGroup = PageObject.AddGroup (
+            section.Title );
+      }
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      // 
+      // Iterate through each form field in the section.
+      // 
+      foreach ( Evado.Model.Digital.EdRecordField Field in Layout.Fields )
+      {
+        if ( Field.Design.SectionNo != section.No )
+        {
+          continue;
+        }
+
+        // 
+        // If the not valid sex rules match the FirstSubject's sex then
+        // only display the field.
+        // 
+        if ( Field.Design.HideField == true )
+        {
+          this.LogDebug ( "Hidden field." );
+          continue;
+        }
 
 
-    }//END createFormSections method
+        // 
+        // Select the method to generate the correct field type.
+        // 
+        switch ( Field.TypeId )
+        {
+          case Evado.Model.EvDataTypes.Computed_Field:
+          case Evado.Model.EvDataTypes.Text:
+          case Evado.Model.EvDataTypes.Boolean:
+          case Evado.Model.EvDataTypes.Yes_No:
+          case Evado.Model.EvDataTypes.Numeric:
+          case Evado.Model.EvDataTypes.Integer:
+          case Evado.Model.EvDataTypes.Date:
+          case Evado.Model.EvDataTypes.Time:
+          case Evado.Model.EvDataTypes.Telephone_Number:
+          case Evado.Model.EvDataTypes.Email_Address:
+          case Evado.Model.EvDataTypes.Read_Only_Text:
+          case Evado.Model.EvDataTypes.Analogue_Scale:
+          case Evado.Model.EvDataTypes.Special_Subsitute_Data:
+            {
+              this.getDisplaySingleValueField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+
+          case Evado.Model.EvDataTypes.Free_Text:
+            {
+              this.getDisplayFreeTextField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          case Evado.Model.EvDataTypes.Integer_Range:
+          case Evado.Model.EvDataTypes.Float_Range:
+          case Evado.Model.EvDataTypes.Date_Range:
+            {
+              this.getDisplayTwoValueField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          case Evado.Model.EvDataTypes.Address:
+            {
+              this.getDisplayAddressField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          case Evado.Model.EvDataTypes.Name:
+            {
+              this.getDisplayNameField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          case Evado.Model.EvDataTypes.Check_Box_List:
+          case Evado.Model.EvDataTypes.Selection_List:
+          case Evado.Model.EvDataTypes.External_Selection_List:
+          case Evado.Model.EvDataTypes.Radio_Button_List:
+          case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:
+          case Evado.Model.EvDataTypes.External_RadioButton_List:
+            {
+              this.getDisplaySelectionField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          case Evado.Model.EvDataTypes.Image:
+          case Evado.Model.EvDataTypes.External_Image:
+            {
+              this.getDisplayImageField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+          default:
+            {
+              this.getDisplaySingleValueField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
+        }//END switch statement
+
+      }//END iteration loop
+
+      this.LogDebug ( "Html Page. " + sbHtmlContent.ToString ( ) );
+
+      //groupField.Value = sbHtmlContent.ToString ( );
+      pageGroup.Description = sbHtmlContent.ToString ( );
+
+      this.LogMethodEnd ( "creatSectionDocument" );
+      return count;
+
+    }//END creatSectionDocument method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplaySingleValueField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplaySingleValueField" );
+
+      if ( Field.ItemValue == String.Empty )
+      {
+        return;
+      }
+      this.LogDebug ( "Value {0}. ", Field.ItemValue );
+
+      if ( displayTitle == true )
+      {
+        sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format, Field.Title, Field.ItemValue );
+        return;
+      }
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Value_Format, Field.ItemValue );
+
+      return;
+
+    }//END getDisplaySingleValueField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayTwoValueField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayTwoValueField" );
+      string [ ] arValue = Field.ItemValue.Split ( ';' );
+
+      if ( arValue.Length == 0 )
+      {
+        return;
+      }
+
+      if ( arValue.Length == 1 )
+      {
+        this.getDisplaySingleValueField ( Field, sbHtmlContent, displayTitle );
+        return;
+      }
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_2Value_Format, Field.Title, arValue [ 0 ], arValue [ 1 ] );
+
+      return;
+
+    }//END getDisplayTwoValueField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayAddressField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayAddressField" );
+      string [ ] arValue = Field.ItemValue.Split ( ';' );
+
+      if ( arValue.Length == 0 )
+      {
+        return;
+      }
+
+      if ( arValue.Length < 6 )
+      {
+        return;
+      }
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Address_Format, Field.Title,
+        arValue [ 0 ], arValue [ 1 ], arValue [ 2 ], arValue [ 3 ], arValue [ 4 ], arValue [ 5 ] );
+
+      return;
+
+    }//END getDisplayAddressField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the name user markup
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayNameField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayNameField" );
+      string [ ] arValue = Field.ItemValue.Split ( ';' );
+
+      if ( arValue.Length == 0 )
+      {
+        return;
+      }
+
+      if ( arValue.Length < 4 )
+      {
+        return;
+      }
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Name_Format, Field.Title,
+        arValue [ 0 ], arValue [ 1 ], arValue [ 2 ], arValue [ 3 ] );
+
+      return;
+
+    }//END getDisplayNameField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the selection list user markup
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplaySelectionField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplaySelectionField" );
+      string [ ] arValue = Field.ItemValue.Split ( ';' );
+      String value = String.Empty;
+
+      if ( arValue.Length == 0 )
+      {
+        return;
+      }
+
+      foreach ( string str in arValue )
+      {
+        foreach ( EvOption option in Field.Design.OptionList )
+        {
+          if ( option.Value == str )
+          {
+            if ( value != String.Empty )
+            {
+              value += "[[/br]]";
+            }
+            value += option.Value;
+          }
+        }//Iterate through the options 
+      }//Iterate through the values.
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format, Field.Title, value );
+
+      return;
+
+    }//END getDisplaySelectionField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayFreeTextField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayFreeTextField" );
+
+      if ( Field.ItemText == String.Empty )
+      {
+        return;
+      }
+
+      String html = "[[p]]" + encodeMarkDown ( Field.ItemText ) + "[[/p]]";
+
+      html = html.Replace ( "<", "[[" );
+      html = html.Replace ( ">", "]]" );
+
+      if ( displayTitle == true )
+      {
+        sbHtmlContent.AppendFormat (
+          EdLabels.Generator_Disp_Field_Title_FreeText_Format,
+          Field.Title,
+          html );
+        return;
+      }
+      sbHtmlContent.Append ( html );
+
+      return;
+
+    }//END getDisplayFreeTextField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the image field.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayImageField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayImageField" );
+
+      if ( Field.ItemValue.Length == 0 )
+      {
+        return;
+      }
+
+      string stUrl = this.UniForm_ImageServiceUrl + Field.ItemValue;
+
+      String htmlMarkup = "[[p style='text-align: center;']][[a href='" + stUrl + "' target='_blank' ]] \r\n"
+          + "[[img alt='Image " + Field.ItemValue + "' " + "src='" + stUrl + "'/]] [[/a]][[/p]]";
+
+      sbHtmlContent.AppendFormat ( htmlMarkup, Field.Title, Field.ItemText );
+
+      return;
+
+    }//END getDisplayImageField method.
 
     //  =================================================================================
     /// <summary>
@@ -1218,7 +1702,6 @@ namespace Evado.UniForm.Digital
     /// <param name="Field">EvSubject object containing the FirstSubject and form to be generated.</param>
     /// <param name="FieldGroup">Evado.Model.UniForm.Group object.</param>
     /// <param name="FormState">  Evado.Model.Digital.EvFormObjectStates enumerated value.</param>
-    /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormField (
@@ -1229,9 +1712,11 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getFormField" );
       this.LogDebug ( "FieldId: " + Field.FieldId );
       this.LogDebug ( "TypeId: " + Field.TypeId );
-      this.LogDebug ( "FieldLayout {0}. ", this._FieldLayout );
+      this.LogDebug ( "FieldLayout {0}. ", this._DefaultFieldLayout );
       this.LogDebug ( "FormAccessRole {0}. ", this._FormAccessRole );
       this.LogDebug ( "HideFieldTitlesWhenReadOnly {0}. ", this._Design.FieldReadonlyDisplayFormat );
+      this.LogDebug ( "Field.Design.FieldLayout {0}. ", Field.Design.FieldLayout );
+      this.LogDebug ( "this._FieldLayout {0}. ", this._DefaultFieldLayout );
 
       // 
       // If the not valid sex rules match the FirstSubject's sex then
@@ -1246,7 +1731,17 @@ namespace Evado.UniForm.Digital
       //
       // set the field layout setting.
       //
-      Evado.Model.UniForm.FieldLayoutCodes layout = this._FieldLayout;
+      Evado.Model.UniForm.FieldLayoutCodes layout = this._DefaultFieldLayout;
+      Evado.Model.UniForm.FieldLayoutCodes Fieldlayout = 
+        EvStatics.parseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout );
+
+      //
+      // set to the field settings.
+      //
+      if ( Fieldlayout != layout )
+      {
+        layout = Fieldlayout;
+      }
 
       //
       // IF the field had static readonly field display them across the entire page.
@@ -1258,6 +1753,7 @@ namespace Evado.UniForm.Digital
       {
         layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
       }
+
 
       // 
       // Initialise the UniFORm field object.
@@ -1301,22 +1797,6 @@ namespace Evado.UniForm.Digital
               break;
             }
 
-          case EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles:
-            {
-              groupField.Title = String.Empty;
-              groupField.Description = String.Empty;
-              groupField.Mandatory = false;
-
-              this.createFormDisplayLayout ( Field, groupField );
-              return;
-            }
-          case EdRecord.FieldReadonlyDisplayFormats.Document_Layout:
-            {
-              groupField.Mandatory = false;
-
-              this.createFormDisplayLayout ( Field, groupField );
-              return;
-            }
         }//END switch statment
       }//END if statement
 
@@ -1505,7 +1985,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field GroupField )
     {
       this.LogMethod ( "createFormDisplayLayout" );
-      
+
       // 
       // Select the method to generate the correct mobile field type.
       // 
@@ -1618,7 +2098,7 @@ namespace Evado.UniForm.Digital
       }
       this.LogMethodEnd ( "createFormDisplayLayout" );
     }//END MEthod
- 
+
     //  =================================================================================
     /// <summary>
     /// Description:
@@ -1773,72 +2253,11 @@ namespace Evado.UniForm.Digital
       // Initialise local variables.
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Text;
-      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, 50 );
+      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width,
+        Field.Design.FieldWidth );
+
 
       return;
-
-    }//END getTextField method.
-
-    //  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method generates the text form field object as html markup.
-    /// 
-    /// </summary>
-    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
-    /// <param name="FormState">Evado.Model.Digital.EvFormObjectStates enumeration object.</param>
-    //  ---------------------------------------------------------------------------------
-    private void getSignatureField (
-        Evado.Model.Digital.EdRecordField Field,
-      Evado.Model.UniForm.Field GroupField,
-      Evado.Model.Digital.EdRecordObjectStates FormState )
-    {
-      this.LogMethod ( "getSignatureField" );
-      this.LogDebug ( "FormState: " + FormState );
-
-      // 
-      // Insert a Yes No field if the user is not allowed to see the signature
-      // 
-      if ( this._HideSignatureField == true )
-      {
-        this.LogDebug ( "Hidden Signature field." );
-        GroupField.Type = Evado.Model.EvDataTypes.Text;
-        GroupField.Value = EdLabels.Signature_Field_Status_No_Text;
-        GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, "50" );
-        GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-
-        if ( Field.ItemText != String.Empty )
-        {
-          GroupField.Value = EdLabels.Signature_Field_Status_Yes_Text;
-        }
-
-        this.LogDebug ( "GroupField.Type: " + GroupField.Type );
-        this.LogDebug ( "GroupField.Value: " + GroupField.Value );
-
-        this.LogMethodEnd ( "getSignatureField" );
-        return;
-      }//END Hide signature field.
-
-      GroupField.Type = Evado.Model.EvDataTypes.Signature;
-      GroupField.Value = Field.ItemText;
-      GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, "600" );
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, "200" );
-      //
-      // the state is not empty or draft and a signature exists it is readonly.
-      //
-      if ( Field.ItemText != String.Empty
-        && FormState != EdRecordObjectStates.Empty_Record
-        && FormState != EdRecordObjectStates.Draft_Record
-        && FormState != EdRecordObjectStates.Completed_Record )
-      {
-        GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-      }
-
-      this.LogDebug ( "GroupField.Value: " + GroupField.Value );
-      this.LogDebug ( "GroupField.EditAccess: " + GroupField.EditAccess );
-      this.LogMethodEnd ( "getSignatureField" );
 
     }//END getTextField method.
 
@@ -1861,8 +2280,10 @@ namespace Evado.UniForm.Digital
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Free_Text;
       GroupField.Value = Field.ItemText;
-      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width, 50 );
-      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Height, 5 );
+      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Width,
+        Field.Design.FieldWidth );
+      GroupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Height,
+        Field.Design.FieldHeight );
 
       if ( GroupField.EditAccess != Model.UniForm.EditAccess.Enabled )
       {
@@ -2523,6 +2944,69 @@ namespace Evado.UniForm.Digital
 
       this.LogMethodEnd ( "getYesNoField" );
     }//END getYesNoField method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Description:
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
+    /// <param name="FormState">Evado.Model.Digital.EvFormObjectStates enumeration object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void getSignatureField (
+        Evado.Model.Digital.EdRecordField Field,
+      Evado.Model.UniForm.Field GroupField,
+      Evado.Model.Digital.EdRecordObjectStates FormState )
+    {
+      this.LogMethod ( "getSignatureField" );
+      this.LogDebug ( "FormState: " + FormState );
+
+      // 
+      // Insert a Yes No field if the user is not allowed to see the signature
+      // 
+      if ( this._HideSignatureField == true )
+      {
+        this.LogDebug ( "Hidden Signature field." );
+        GroupField.Type = Evado.Model.EvDataTypes.Text;
+        GroupField.Value = EdLabels.Signature_Field_Status_No_Text;
+        GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, "50" );
+        GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+
+        if ( Field.ItemText != String.Empty )
+        {
+          GroupField.Value = EdLabels.Signature_Field_Status_Yes_Text;
+        }
+
+        this.LogDebug ( "GroupField.Type: " + GroupField.Type );
+        this.LogDebug ( "GroupField.Value: " + GroupField.Value );
+
+        this.LogMethodEnd ( "getSignatureField" );
+        return;
+      }//END Hide signature field.
+
+      GroupField.Type = Evado.Model.EvDataTypes.Signature;
+      GroupField.Value = Field.ItemText;
+      GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, "600" );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, "200" );
+      //
+      // the state is not empty or draft and a signature exists it is readonly.
+      //
+      if ( Field.ItemText != String.Empty
+        && FormState != EdRecordObjectStates.Empty_Record
+        && FormState != EdRecordObjectStates.Draft_Record
+        && FormState != EdRecordObjectStates.Completed_Record )
+      {
+        GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+      }
+
+      this.LogDebug ( "GroupField.Value: " + GroupField.Value );
+      this.LogDebug ( "GroupField.EditAccess: " + GroupField.EditAccess );
+      this.LogMethodEnd ( "getSignatureField" );
+
+    }//END getTextField method.
 
     //  =================================================================================
     /// <summary>
@@ -3602,7 +4086,7 @@ namespace Evado.UniForm.Digital
       if ( section != null )
       {
         //this.LogDebugValue ( "Title: " + section.Title );
-        if ( section.hasRole ( this._FormAccessRole ) == false )
+        if ( section.hasRoleEdit ( this.Session.UserProfile.Roles ) == false )
         {
           //this.LogDebugValue ( "The user does not have update access to the endorsment field" );
           //this.LogMethodEnd ( "updateUserEndorcementField" );

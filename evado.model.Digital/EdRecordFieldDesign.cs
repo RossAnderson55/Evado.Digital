@@ -37,10 +37,8 @@ namespace Evado.Model.Digital
     /// </summary>
     public EdRecordFieldDesign ( )
     {
-      if ( this.TypeId == null )
-      {
-        this.TypeId = EvDataTypes.Null;
-      }
+      this.FieldWidth = 80;
+      this.FieldHeight = 5;
     }
 
     #region Internal members
@@ -487,7 +485,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains the page layout enumerated value 
     /// </summary>
-    public object FieldLayout { get; set; }
+    public String FieldLayout { get; set; }
 
     /// <summary>
     /// This property indicates a data point of form field design
@@ -556,6 +554,18 @@ namespace Evado.Model.Digital
         this._HideField = value;
       }
     }
+
+    /// <summary>
+    /// This property contains the page field width value
+    /// Used for text fields.
+    /// </summary>
+    public int FieldWidth { get; set; }
+
+    /// <summary>
+    /// This property contains the page field width value
+    /// Used for free text fields.
+    /// </summary>
+    public int FieldHeight { get; set; }
 
     /// <summary>
     /// This property indicates a summary field of form field design
