@@ -340,7 +340,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This enumeration value is the Entity query llist view page identifier.
     /// </summary>
-    Entity_Query_View,
+    Entity_Filter_View,
 
     /// <summary>
     /// This enumeration value is the Entity query llist view page identifier.

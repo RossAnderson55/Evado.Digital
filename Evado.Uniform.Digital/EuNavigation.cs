@@ -598,7 +598,7 @@ namespace Evado.UniForm.Digital
           // Entitity menu commands
           //
           case EdStaticPageIds.Entity_View:
-          case EdStaticPageIds.Entity_Query_View:
+          case EdStaticPageIds.Entity_Filter_View:
             {
               pageCommand = new Model.UniForm.Command (
                 Title,
@@ -672,6 +672,8 @@ namespace Evado.UniForm.Digital
 
         string stPageId = PageId.Replace ( EuAdapter.CONST_PAGE_ID_PREFIX, String.Empty );
 
+        this.LogDebug ( "PageId: {0}, Title: {1} StPageId: {2}.", PageId, Title, stPageId );
+
         pageCommand = new Model.UniForm.Command (
           Title,
           EuAdapter.ADAPTER_ID,
@@ -685,15 +687,40 @@ namespace Evado.UniForm.Digital
       }
 
       //
+      // Create the command to query Entities as a filtered list  
+      // i.e. retrieves an organisation's child entity layout.
+      //
+      if ( PageId.Contains ( EuAdapter.CONST_ENTITY_FILTERED_LIST_SUFFIX ) == true )
+      {
+
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
+        layoutId = layoutId.Replace ( EuAdapter.CONST_ENTITY_FILTERED_LIST_SUFFIX, String.Empty );
+
+        this.LogDebug ( "PageId: {0}, Title: {1} Layout: {2}, Filtered Query.", PageId, Title, layoutId );
+
+        pageCommand = new Model.UniForm.Command (
+          Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+        pageCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
+
+        return pageCommand;
+      }
+
+      //
       // Create the command to access a Entity by its organisation parent's identifier.  
       // i.e. retrieves an organisation's child entity layout.
       //
       if ( PageId.Contains ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX ) == true )
       {
-
-        this.LogDebug ( "PageId: {0}, Title: {1} Org Parent.", PageId, Title ); 
         string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
+        this.LogDebug ( "PageId: {0}, Title: {1} Layout: {2}, Org Parent..", PageId, Title, layoutId );
 
         pageCommand = new Model.UniForm.Command (
           Title,
@@ -716,10 +743,11 @@ namespace Evado.UniForm.Digital
       // i.e. retrieves an user's child entity layout.
       //
       else if ( PageId.Contains ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX ) == true )
-      {
-        this.LogDebug ( "PageId: {0}, Title: {1} User  Parent.", PageId, Title ); 
+      { 
         string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX, String.Empty );
+
+        this.LogDebug ( "PageId: {0}, Title: {1} Layout: {2}, User  Parent.", PageId, Title, layoutId );
 
         pageCommand = new Model.UniForm.Command (
           Title,

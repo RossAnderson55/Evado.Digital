@@ -1548,25 +1548,58 @@ namespace Evado.Model.Digital
 
     // =====================================================================================
     /// <summary>
-    /// This method returns the first field.
+    /// This method returns the first text field.
     /// </summary>
     /// <param name="FirstFreeText">Bool: true = return first free text field.</param>
     /// <returns>string: field value.</returns>
     // -------------------------------------------------------------------------------------
-    public string getFirstTextField ( bool FirstFreeText )
+    public string getFirstTextField (  )
     {
       String stValue = String.Empty;
       foreach ( EdRecordField field in this.Fields )
       {
-        if ( FirstFreeText == false )
-        {
           if ( field.TypeId == EvDataTypes.Text )
           {
-            stValue = this.Fields [ 0 ].ItemValue;
+            stValue = field.ItemValue;
 
             if ( this.Design.DisplayAuthorDetails == true )
             {
               stValue += EdLabels.Label_by + this.Updated;
+            }
+            return stValue;
+          }
+      }
+      return String.Empty ;
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This method returns the first free text field.
+    /// </summary>
+    /// <param name="AsAbstract">Bool: true = return only the first paragraph of the field.</param>
+    /// <returns>string: field value.</returns>
+    // -------------------------------------------------------------------------------------
+    public string getFirstFreeTextField ( bool AsAbstract )
+    {
+      String stValue = String.Empty;
+      foreach ( EdRecordField field in this.Fields )
+      {
+        if ( AsAbstract == false )
+        {
+          if ( field.TypeId == EvDataTypes.Free_Text )
+          {
+            stValue = field.ItemText;
+
+            if ( AsAbstract )
+            {
+              int paraIndex = stValue.IndexOf ( '\n' );
+
+              stValue = stValue.Substring ( 0, paraIndex );
+            }
+
+            if ( this.Design.DisplayAuthorDetails == true )
+            {
+              stValue += "\r\n" + EdLabels.Label_by + this.Updated;
             }
             return stValue;
           }
@@ -1585,8 +1618,10 @@ namespace Evado.Model.Digital
           }
         }
       }
-      return String.Empty ;
+      return String.Empty;
     }
+
+
     // =====================================================================================
     /// <summary>
     /// This method test to see if the user has a role contain in the roles delimited list.

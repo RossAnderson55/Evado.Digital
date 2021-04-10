@@ -593,7 +593,7 @@ namespace Evado.UniForm.Digital
       EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Export_Page ) );
       EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_View ) );
       EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Layout_Page ) );
-      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Query_View ) );
+      EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_Filter_View ) );
       EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Entity_View ) );
 
       EuAdapter.AdapterObjects.PageIdentifiers.Add ( EvStatics.getOption ( EdStaticPageIds.Login_Page ) );
@@ -673,7 +673,13 @@ namespace Evado.UniForm.Digital
 
         String pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId;
         String pageLabel = pageId.Replace ( "_", " " );
+        this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+
+
+        pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ENTITY_FILTERED_LIST_SUFFIX;
+        pageLabel = pageId.Replace ( "_", " " );
         this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
         EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );

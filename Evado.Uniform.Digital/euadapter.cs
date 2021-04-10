@@ -326,6 +326,11 @@ namespace Evado.UniForm.Digital
     public const string CONST_ENTITY_PARENT_PAGE_ID_SUFFIX = "_Entity_Parent";
 
     /// <summary>
+    /// This constant contains the entity prefix for a entity's Entity parent page identifier.
+    /// </summary>
+    public const string CONST_ENTITY_FILTERED_LIST_SUFFIX = "_Filtered_List";
+
+    /// <summary>
     /// This constant contains the entity list component prefix
     /// </summary>
     public const string CONST_ENTITY_LIST_PREFIX = "Entity_List_";
