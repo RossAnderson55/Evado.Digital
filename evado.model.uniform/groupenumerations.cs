@@ -121,6 +121,11 @@ namespace Evado.Model.UniForm
     public enum GroupParameterList
     {
       /// <summary>
+      /// This enumeration defines the group width in percent if total width
+      /// </summary>
+      Percent_Width,
+
+      /// <summary>
       /// This enumeration defines the group width in pixels
       /// </summary>
       Pixel_Width,

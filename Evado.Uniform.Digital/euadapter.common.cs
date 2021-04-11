@@ -241,7 +241,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogDebug ( "{0} - {1} PT: {2}.", layout.LayoutId, layout.Title, layout.Design.ParentType );
+        //this.LogDebug ( "{0} - {1} PT: {2}.", layout.LayoutId, layout.Title, layout.Design.ParentType );
         //
         // try and retrieve the user's child entity.
         //
@@ -689,15 +689,35 @@ namespace Evado.UniForm.Digital
         //
         switch ( entityLayout.Design.ParentType )
         {
-          case EdRecord.ParentTypeList.Organisation:
+          case EdRecord.ParentTypeList.Organisation_Default:
             {
-
-              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX2;
               pageLabel = pageId.Replace ( "_", " " );
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
 
               EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.Organisation:
+            {
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX;
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
+
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+              break;
+            }
+          case EdRecord.ParentTypeList.User_Default:
+            {
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_USER_PARENT_PAGE_ID_SUFFIX2;
+              pageLabel = pageId.Replace ( "_", " " );
+
+              this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
+
+              EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+
               break;
             }
           case EdRecord.ParentTypeList.User:

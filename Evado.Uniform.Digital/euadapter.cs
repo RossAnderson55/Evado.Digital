@@ -316,9 +316,18 @@ namespace Evado.UniForm.Digital
     public const string CONST_ORG_PARENT_PAGE_ID_SUFFIX = "_Organisation_Parent";
 
     /// <summary>
+    /// This constant contains the entity prefix for a entity's organisation parent page identifier.
+    /// </summary>
+    public const string CONST_ORG_PARENT_PAGE_ID_SUFFIX2 = "_Organisation_Parent_Default";
+
+    /// <summary>
     /// This constant contains the entity prefix for a entity's user parent page identifier.
     /// </summary>
     public const string CONST_USER_PARENT_PAGE_ID_SUFFIX = "User_Parent";
+    /// <summary>
+    /// This constant contains the entity prefix for a entity's user parent page identifier.
+    /// </summary>
+    public const string CONST_USER_PARENT_PAGE_ID_SUFFIX2 = "User_Parent_Default";
 
     /// <summary>
     /// This constant contains the entity prefix for a entity's Entity parent page identifier.
@@ -523,18 +532,17 @@ namespace Evado.UniForm.Digital
           // 
           return generateNoProfilePage ( );
         }
-        this.LogDebug ( "User OrgId: {0}. ", this.Session.UserProfile.OrgId );
-        this.LogDebug ( "User OrgType: {0}. ", this.Session.UserProfile.OrgType );
-        this.LogDebug ( "User Roles: {0}. ", this.Session.UserProfile.Roles );
-        this.LogDebug ( "User UserTypeId: {0}. ", this.Session.UserProfile.UserType );
-        this.LogDebug ( "User UserCategory:  {0}", this.Session.UserProfile.UserCategory );
+        this.LogDebug ( this.Session.UserProfile.getUserProfile( true ) );
 
         //
         // load the user's organisation.
         //
         this.loadUserOrganisation ( ); ;
 
-        this.LogDebug ( "User OrgType: " + this.Session.UserProfile.OrgType );
+        this.LogDebug ( "Organisation {0} - {1}, Type{2}: ", 
+          this.Session.Organisation.OrgId, 
+          this.Session.Organisation.Name, 
+          this.Session.Organisation.OrgType );
         
         //
         // load the default child entity.
@@ -553,10 +561,6 @@ namespace Evado.UniForm.Digital
           this.LogMethodEnd ( "getPageObject" );
           return clientDataObject;
         }
-
-        this.LogDebug ( this.Session.UserProfile.getUserProfile ( false ) );
-
-        this.LogDebug ( "UserProfile.RoleId: " + this.Session.UserProfile.Roles );
 
         //
         // get the application object.

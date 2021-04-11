@@ -1204,6 +1204,10 @@ namespace Evado.UniForm.Digital
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
         }
+        else
+        {
+          clientDataObject.Title = this.Session.EntityLayout.Title;
+        }
 
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EdStaticPageIds.Records_View.ToString ( );
@@ -1592,6 +1596,11 @@ namespace Evado.UniForm.Digital
           this.Session.UserProfile );
 
         //
+        // get the selected entity.
+        //
+        this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
+
+        //
         // Execute the monitor list record query.
         //
         this.executeRecordQuery ( );
@@ -1607,6 +1616,10 @@ namespace Evado.UniForm.Digital
         if ( this.AdapterObjects.Settings.UseHomePageHeaderOnAllPages == true )
         {
           clientDataObject.Title = this.AdapterObjects.Settings.HomePageHeaderText;
+        }
+        else
+        {
+          clientDataObject.Title = this.Session.EntityLayout.Title;
         }
 
         clientDataObject.Page.Title = clientDataObject.Title;
@@ -2169,6 +2182,7 @@ namespace Evado.UniForm.Digital
       pageGroup = PageObject.AddGroup ( String.Empty );
       pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Horizontal_Orientation;
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Dynamic;
+      pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Percent_Width, 25 );
 
       foreach ( EdRecordField field in Entity.Fields )
       {
@@ -2877,7 +2891,7 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
 
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
@@ -2888,11 +2902,11 @@ namespace Evado.UniForm.Digital
         }
 
 
+        if ( this.Session.Entity.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
+        {
+          clientDataObject.Title = this.Session.Entity.CommandTitle;
+        }
         clientDataObject.Page.Title = clientDataObject.Title;
-        this.LogDebug ( "Title.Length: " + clientDataObject.Title.Length );
-
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-
 
         // 
         // Generate the client ResultData object for the UniForm client.

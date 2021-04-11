@@ -94,11 +94,6 @@ namespace Evado.Model.UniForm
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Class enumerated lists
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
     #region Property members
 
     private Guid _Id = Guid.Empty;
