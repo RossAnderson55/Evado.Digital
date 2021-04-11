@@ -2726,7 +2726,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
     /// <param name="EntityId">String: Entity identifier</param>
     //  ------------------------------------------------------------------------------
-    public void getEntityClientData (
+    public void getObject (
       Evado.Model.UniForm.Page PageObject,
       Evado.Model.UniForm.Command PageCommand,
       String EntityId )
@@ -3269,7 +3269,7 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getEntityClientData (
+    public void getEntityClientData (
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getClientData" );

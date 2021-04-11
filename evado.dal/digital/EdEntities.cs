@@ -333,7 +333,7 @@ namespace Evado.Dal.Digital
       // define the filter field value array.
       // 
       String [ ] filterFieldValue = new string [ 5 ];
-      
+
       //
       // iterate through the fields updating the filterFieldValue values.
       //
@@ -790,8 +790,8 @@ namespace Evado.Dal.Digital
         QueryParameters.Org_Country = arrCity [ 0 ];
         QueryParameters.Org_City = arrCity [ 1 ];
 
-       // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
-       // this.LogDebug ( "City {0} ", QueryParameters.Org_City );
+        // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        // this.LogDebug ( "City {0} ", QueryParameters.Org_City );
       }
 
       if ( QueryParameters.Org_PostCode.Contains ( "_" ) == true )
@@ -800,8 +800,8 @@ namespace Evado.Dal.Digital
         QueryParameters.Org_Country = arrCity [ 0 ];
         QueryParameters.Org_PostCode = arrCity [ 1 ];
 
-       // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
-       // this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
+        // this.LogDebug ( "Country {0} ", QueryParameters.Org_Country );
+        // this.LogDebug ( "PostCode {0} ", QueryParameters.Org_PostCode );
       }
 
       // 
@@ -822,11 +822,11 @@ namespace Evado.Dal.Digital
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
-     // this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+      // this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
-     // this.LogDebug ( sqlQueryString );
+      // this.LogDebug ( sqlQueryString );
 
-     // this.LogDebug ( "Execute Query" );
+      // this.LogDebug ( "Execute Query" );
       //
       //Execute the query against the database.
       //
@@ -844,7 +844,7 @@ namespace Evado.Dal.Digital
 
           EdRecord entity = this.getRowData ( row, QueryParameters.IncludeSummary );
 
-         // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
+          // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
           // 
           // Attach fields and other trial data.
           // 
@@ -868,7 +868,7 @@ namespace Evado.Dal.Digital
             {
               this.LogDebug ( "User Role: {0}, does no have access to {1}, roles: {2}",
                 this.ClassParameters.UserProfile.Roles,
-                entity.LayoutId, 
+                entity.LayoutId,
                 entity.Design.ReadAccessRoles );
               continue;
             }
@@ -1179,7 +1179,7 @@ namespace Evado.Dal.Digital
     /// <returns>List of EdRecord (Entity) objects</returns>
     /// <returns>List of EdRecord  objects</returns>
     //  ----------------------------------------------------------------------------------
-    public List<EdRecord> getChildEntityList ( 
+    public List<EdRecord> getChildEntityList (
       EdRecord Entity )
     {
       this.LogMethod ( "getChildEntityList" );
@@ -1212,7 +1212,7 @@ namespace Evado.Dal.Digital
       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
       this.LogDebug ( sqlQueryString.ToString ( ) );
 
-   //   this.LogDebug ( " Execute Query" );
+      //   this.LogDebug ( " Execute Query" );
 
       //
       //Execute the query against the database.
@@ -1796,7 +1796,9 @@ namespace Evado.Dal.Digital
       String LayoutId,
       String ParentOrgId )
     {
-      this.LogMethod ( "GetItemByParentOrgId method. " );
+      this.LogMethod ( "GetItemByParentOrgId" );
+      this.LogDebug ( "LayoutId {0}.", LayoutId );
+      this.LogDebug ( "ParentOrgId {0}.", ParentOrgId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
@@ -1839,6 +1841,8 @@ namespace Evado.Dal.Digital
         // 
         if ( table.Rows.Count == 0 )
         {
+          this.LogDebug ( "Nothing Found." );
+          this.LogMethodEnd ( "GetItemByParentOrgId" );
           return entity;
         }
 
@@ -2032,7 +2036,7 @@ namespace Evado.Dal.Digital
     public EdRecord GetEntity ( String EntityId )
     {
       this.LogMethod ( "GetEntity" );
-     // this.LogDebug ( "EntityId: " + EntityId );
+      // this.LogDebug ( "EntityId: " + EntityId );
       //
       // Initialize the debug log, a return form object and a formfield object. 
       //
@@ -2194,8 +2198,8 @@ namespace Evado.Dal.Digital
 
       Entity.Design.FormSections = sections.getSectionList ( Entity.LayoutGuid );
 
-     // this.LogClass ( sections.Log );
-     // this.LogDebug ( "Section Count {0}.", Entity.Design.FormSections.Count );
+      // this.LogClass ( sections.Log );
+      // this.LogDebug ( "Section Count {0}.", Entity.Design.FormSections.Count );
 
       this.LogMethodEnd ( "GetRecordSections" );
     }//END UpdateFieldSectionReferences method.
@@ -2213,7 +2217,7 @@ namespace Evado.Dal.Digital
       EdRecord Entity )
     {
       this.LogMethod ( "GetEntityData." );
-   //   this.LogDebug ( "State: " + Entity.State );
+      //   this.LogDebug ( "State: " + Entity.State );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -2255,11 +2259,11 @@ namespace Evado.Dal.Digital
       EdRecord Entity )
     {
       this.LogMethod ( "getLayoutFields." );
-     // this.LogDebug ( "Entity Guid {0}, LayoutGuid: {1} ", Entity.Guid, Entity.LayoutGuid );
+      // this.LogDebug ( "Entity Guid {0}, LayoutGuid: {1} ", Entity.Guid, Entity.LayoutGuid );
 
       if ( Entity.Fields.Count > 0 )
       {
-     //   this.LogDebug ( "Field Count {0}.", Entity.Fields.Count );
+        //   this.LogDebug ( "Field Count {0}.", Entity.Fields.Count );
         this.LogMethodEnd ( "getLayoutFields" );
         return;
       }
@@ -2283,11 +2287,11 @@ namespace Evado.Dal.Digital
 
         Entity.Fields.Add ( field );
 
-      //  this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
+        //  this.LogDebug ( "(Value) Guid {0}. RecordGuid {1}, FieldGuid {2}.", field.Guid, field.RecordGuid, field.FieldGuid );
         //this.LogDebug ( "{0} - {1} > T: {2} ", field.FieldId, field.Title, field.TypeId );
       }
 
-     // this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
+      // this.LogDebug ( "Section Count {0}.", Entity.Fields.Count );
       this.LogMethodEnd ( "getLayoutFields" );
 
     }//END getRecordData method

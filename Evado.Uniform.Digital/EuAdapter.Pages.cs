@@ -523,7 +523,7 @@ namespace Evado.UniForm.Digital
       // 
       // initialise the methods objects and variables.
       //
-      this._Entities.getEntityClientData ( PageObject,
+      this._Entities.getObject ( PageObject,
         PageCommand,
         this.Session.PageLayout.DefaultPageEntity );
 
