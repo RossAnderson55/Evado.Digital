@@ -762,6 +762,16 @@ namespace Evado.Model
     /// This enumeration defines that a SMTP business logic email error event occured.
     /// </summary>
     Business_Logic_Email_Failure_Error = -654,
+    
+    /// <summary>
+    /// This enumeration defines that a SMTP business logic email no receiver address error event occured.
+    /// </summary>
+    Business_Logic_Email_No_Reciever_Addresses = -655,
+    
+    /// <summary>
+    /// This enumeration defines that a SMTP business logic email configuratin error event occured.
+    /// </summary>
+    Business_Logic_Email_Configuration_Error_Message = -656,
     #endregion
 
     #region Page error events

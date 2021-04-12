@@ -23,6 +23,26 @@ ALTER TABLE EV_MENUS
   MNU_GROUP  NVARCHAR(10)
 GO
 
+IF NOT EXISTS( SELECT 1 FROM EV_MENUS WHERE MNU_GROUP = N'DSGN' AND MNU_PLATFORM = 'ADMIN' )
+BEGIN
+Insert Into EV_MENUS 
+( Mnu_Guid, MNU_PAGE_ID, MNU_TITLE, MNU_ORDER, MNU_GROUP, MNU_GROUP_HEADER, 
+	MNU_PLATFORM, MNU_USER_TYPES, MNU_ROLES ) 
+values
+( NEWID(), 'Home_Page', 'Design',  5, 'DSGN', 1,'ADMIN','', 'Administrator' )
+END
+GO
+
+IF NOT EXISTS( SELECT 1 FROM EV_MENUS WHERE MNU_GROUP = N'DSGN' AND MNU_PLATFORM = 'PROD' )
+BEGIN
+Insert Into EV_MENUS 
+( Mnu_Guid, MNU_PAGE_ID, MNU_TITLE, MNU_ORDER, MNU_GROUP, MNU_GROUP_HEADER, 
+	MNU_PLATFORM, MNU_USER_TYPES, MNU_ROLES ) 
+values
+( NEWID(), 'Home_Page', 'Design',  5, 'DSGN', 1,'ADMIN','', 'Administrator' )
+END
+GO
+
 /****** Object:  StoredProcedure [dbo].[usr_Menu_add]    Script Date: 03/22/2021 15:38:16 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[usr_Menu_add]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[usr_Menu_add]

@@ -18,6 +18,7 @@ BinaryFiles/
 [Ll]ogs/
 *.ebin
 *.cmd
+__rar*.*
 Thumbs.db
 .ds_store
 web.config
