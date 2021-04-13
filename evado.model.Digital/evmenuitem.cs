@@ -93,6 +93,10 @@ namespace Evado.Model.Digital
     /// </summary>
     public const string CONST_MENU_STATIC_ADMIN_GROUP_ID = "ADMIN";
     /// <summary>
+    /// This constant defines the design menu group identifier.
+    /// </summary>
+    public const string CONST_MENU_STATIC_DESIGN_GROUP_ID = "DSGN";
+    /// <summary>
     /// this constant defines the management menu group identifier.
     /// </summary>
     public const string CONST_MENU_STATIC_MANAGEMENT_GROUP_ID = "MGT";
@@ -107,7 +111,7 @@ namespace Evado.Model.Digital
     /// <summary>
     /// this constant defines the project record menu group identifier.
     /// </summary>
-    public const string CONST_MENU_AUDIT_GROUP_ID = "AUDIT";
+    public const string CONST_MENU_STATIC_AUDIT_GROUP_ID = "AUDIT";
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

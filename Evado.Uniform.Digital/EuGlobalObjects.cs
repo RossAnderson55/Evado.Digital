@@ -622,7 +622,7 @@ namespace Evado.UniForm.Digital
           || item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
           || item.Group == EvMenuItem.CONST_MENU_STATIC_RECORD_GROUP_ID
           || item.Group == EvMenuItem.CONST_MENU_STATIC_ANALYSIS_GROUP_ID
-          || item.Group == EvMenuItem.CONST_MENU_AUDIT_GROUP_ID )
+          || item.Group == EvMenuItem.CONST_MENU_STATIC_AUDIT_GROUP_ID )
         {
           if ( menuList.Contains ( EvMenuItem.CONST_MAIN_MENU_ID ) == false )
           {
@@ -672,9 +672,10 @@ namespace Evado.UniForm.Digital
         {
           if ( item.Group == EvMenuItem.CONST_MENU_STATIC_ADMIN_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_DESIGN_GROUP_ID  
             || item.Group == EvMenuItem.CONST_MENU_STATIC_RECORD_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_ANALYSIS_GROUP_ID
-            || item.Group == EvMenuItem.CONST_MENU_AUDIT_GROUP_ID )
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_AUDIT_GROUP_ID )
           {
             menuList.Add ( item );
           }

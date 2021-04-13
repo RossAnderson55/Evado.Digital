@@ -2547,6 +2547,11 @@ namespace Evado.UniForm.Digital
       //
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      bool addNewField = false;
+      if ( this.Session.EntityLayout.State != EdRecordObjectStates.Form_Issued )
+      {
+        addNewField = true;
+      }
 
       //
       // If the section has a title then include the fields in that section.
@@ -2565,16 +2570,18 @@ namespace Evado.UniForm.Digital
       //
       // define the page pageMenuGroup for the section.
       //
-      pageGroup = PageObject.AddGroup (
-        FormSection.Title,
-        FormSection.Instructions,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+        pageGroup = PageObject.AddGroup (
+          FormSection.Title,
+          FormSection.Instructions,
+          Evado.Model.UniForm.EditAccess.Inherited );
+        pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
       //
       // Add new field command.
       //
+      if ( addNewField == true )
+      {
       groupCommand = pageGroup.addCommand (
         EdLabels.Form_New_Field_Page_Command_Title,
         EuAdapter.ADAPTER_ID,
@@ -2595,6 +2602,7 @@ namespace Evado.UniForm.Digital
       groupCommand.SetBackgroundColour (
         Model.UniForm.CommandParameters.BG_Default,
         Model.UniForm.Background_Colours.Purple );
+      }
 
       //
       // Iterate through the fields in the form, selecting those fields that are
@@ -2642,6 +2650,11 @@ namespace Evado.UniForm.Digital
       //
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      bool addNewField = false;
+      if ( this.Session.EntityLayout.State != EdRecordObjectStates.Form_Issued )
+      {
+        addNewField = true;
+      }
 
       //
       // define the page pageMenuGroup for the section.
@@ -2656,26 +2669,29 @@ namespace Evado.UniForm.Digital
       //
       // Add new field command.
       //
-      groupCommand = pageGroup.addCommand (
-        EdLabels.Form_New_Field_Page_Command_Title,
-        EuAdapter.ADAPTER_ID,
-        EuAdapterClasses.Record_Layout_Fields.ToString ( ),
-        Model.UniForm.ApplicationMethods.Get_Object );
+      if ( addNewField == true )
+      {
+        groupCommand = pageGroup.addCommand (
+          EdLabels.Form_New_Field_Page_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Record_Layout_Fields.ToString ( ),
+          Model.UniForm.ApplicationMethods.Get_Object );
 
-      groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
+        groupCommand.AddParameter ( Model.UniForm.CommandParameters.Create_Object, "1" );
 
-      groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
-        EdStaticPageIds.Form_Field_Page.ToString ( ) );
+        groupCommand.AddParameter ( Model.UniForm.CommandParameters.Page_Id,
+          EdStaticPageIds.Form_Field_Page.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
-        this.Session.RecordLayout.Fields.Count.ToString ( ) );
+        groupCommand.AddParameter ( EuRecordFields.CONST_FIELD_COUNT,
+          this.Session.RecordLayout.Fields.Count.ToString ( ) );
 
-      groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
-        "-1" );
+        groupCommand.AddParameter ( EuRecordFields.CONST_FORM_SECTION,
+          "-1" );
 
-      groupCommand.SetBackgroundColour (
-        Model.UniForm.CommandParameters.BG_Default,
-        Model.UniForm.Background_Colours.Purple );
+        groupCommand.SetBackgroundColour (
+          Model.UniForm.CommandParameters.BG_Default,
+          Model.UniForm.Background_Colours.Purple );
+      }
 
       //
       // Iterate through the fields in the form, selecting those fields that are

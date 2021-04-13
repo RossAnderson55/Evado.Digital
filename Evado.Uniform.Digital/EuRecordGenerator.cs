@@ -1313,6 +1313,7 @@ namespace Evado.UniForm.Digital
       {
         return 0;
       }
+
       //
       // Initialise the methods variables and objects.
       //
@@ -1361,6 +1362,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
+        this.LogDebug ( "FieldId {0}, TypeId {1} ", Field.FieldId, Field.TypeId );
 
         // 
         // Select the method to generate the correct field type.
@@ -1409,10 +1411,11 @@ namespace Evado.UniForm.Digital
             }
           case Evado.Model.EvDataTypes.Check_Box_List:
           case Evado.Model.EvDataTypes.Selection_List:
-          case Evado.Model.EvDataTypes.External_Selection_List:
           case Evado.Model.EvDataTypes.Radio_Button_List:
           case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:
+          case Evado.Model.EvDataTypes.External_Selection_List:
           case Evado.Model.EvDataTypes.External_RadioButton_List:
+          case Evado.Model.EvDataTypes.External_CheckBox_List:
             {
               this.getDisplaySelectionField ( Field, sbHtmlContent, displayTitle );
               break;
@@ -1457,6 +1460,7 @@ namespace Evado.UniForm.Digital
       bool displayTitle )
     {
       this.LogMethod ( "getDisplaySingleValueField" );
+      this.LogDebug ( "Title {0} V: {1}", Field.Title, Field.ItemValue );
 
       if ( Field.ItemValue == String.Empty )
       {
@@ -1592,6 +1596,11 @@ namespace Evado.UniForm.Digital
       bool displayTitle )
     {
       this.LogMethod ( "getDisplaySelectionField" );
+      this.LogDebug ( "id {0}, OptionList.Count {1}",Field.FieldId, Field.Design.OptionList.Count );
+      //
+      // initialise the methods variables and objects.
+      //
+      List<EvOption> optionList = Field.Design.OptionList;
       string [ ] arValue = Field.ItemValue.Split ( ';' );
       String value = String.Empty;
 
@@ -1600,26 +1609,58 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      foreach ( string str in arValue )
+      //
+      // search selection list if the list is external
+      //
+      if ( Field.TypeId == EvDataTypes.External_CheckBox_List
+        || Field.TypeId == EvDataTypes.External_RadioButton_List
+        || Field.TypeId == EvDataTypes.External_Selection_List )
       {
-        foreach ( EvOption option in Field.Design.OptionList )
-        {
-          if ( option.Value == str )
-          {
-            if ( value != String.Empty )
-            {
-              value += "[[/br]]";
-            }
-            value += option.Value;
-          }
-        }//Iterate through the options 
-      }//Iterate through the values.
+        optionList = this.AdapterObjects.getSelectionOptions (
+          Field.Design.ExSelectionListId, String.Empty, false, false );
+      }
 
-      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format, Field.Title, value );
+      if ( arValue.Length > 1 )
+      {
+        value += "[[ul]]";
+
+        foreach ( string str in arValue )
+        {
+          foreach ( EvOption option in optionList )
+          {
+            if ( option.Value == str )
+            {
+              value += "[[li]]" + option.Description + "[[/li]]";
+            }
+          }//Iterate through the options 
+        }//Iterate through the values.
+
+        value += "[[/ul]]";
+      }
+      else
+      {
+        foreach ( string str in arValue )
+        {
+          foreach ( EvOption option in optionList )
+          {
+            if ( option.Value == str )
+            {
+              if ( value != String.Empty )
+              {
+                value += "[[/br]]";
+              }
+              value += option.Description;
+            }
+          }//Iterate through the options 
+        }//Iterate through the values.
+      }
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format+"\r\n", Field.Title, value );
 
       return;
 
     }//END getDisplaySelectionField method.
+
 
     //  =================================================================================
     /// <summary>
@@ -1732,7 +1773,7 @@ namespace Evado.UniForm.Digital
       // set the field layout setting.
       //
       Evado.Model.UniForm.FieldLayoutCodes layout = this._DefaultFieldLayout;
-      Evado.Model.UniForm.FieldLayoutCodes Fieldlayout = 
+      Evado.Model.UniForm.FieldLayoutCodes Fieldlayout =
         EvStatics.parseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> ( Field.Design.FieldLayout );
 
       //

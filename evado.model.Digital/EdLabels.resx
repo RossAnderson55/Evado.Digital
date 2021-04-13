@@ -3085,12 +3085,12 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="Generator_Disp_Field_Title_2Value_Format" xml:space="preserve">
     <value>[[table]]
-[[tr]][[td]] {0} [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
+[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
 [[/table]]</value>
   </data>
   <data name="Generator_Disp_Field_Title_Address_Format" xml:space="preserve">
     <value>[[table]]
-[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
+[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
 [[/table]]</value>
   </data>
   <data name="Generator_Disp_Field_Title_FreeText_Format" xml:space="preserve">
@@ -3104,7 +3104,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="Generator_Disp_Field_Title_Value_Format" xml:space="preserve">
     <value>[[table]]
-[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/td]][[/tr]]
+[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} [[/td]][[/tr]]
 [[/table]]</value>
   </data>
   <data name="Generator_Disp_Field_Value_Format" xml:space="preserve">

@@ -2165,8 +2165,8 @@ namespace Evado.UniForm.Digital
       EdRecord Entity,
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "getGroupListCommand" );
-      this.LogDebug ( "CommandEntity.EntityId: " + Entity.EntityId );
+      this.LogMethod ( "getGroupSummaryListGroup" );
+      this.LogDebug ( "Entity.EntityId: " + Entity.EntityId );
       this.LogDebug ( "LinkContentSetting: " + Entity.Design.LinkContentSetting );
       this.LogDebug ( "DefaultPageLayout: " + Entity.Design.DefaultPageLayout );
       // 
@@ -2231,7 +2231,9 @@ namespace Evado.UniForm.Digital
           || field.TypeId == EvDataTypes.External_RadioButton_List
           || field.TypeId == EvDataTypes.External_CheckBox_List )
         {
-          value = getSelectionDescription ( field, value );
+          value = this.getSelectionDescription ( field, value );
+
+          continue;
         }
 
         groupField = pageGroup.createReadOnlyTextField (
@@ -2269,11 +2271,13 @@ namespace Evado.UniForm.Digital
     //  -----------------------------------------------------------------------------
     private string getSelectionDescription ( EdRecordField Field, String Value )
     {
-      this.LogMethod ( "getRecordExport_Object" );
+      this.LogMethod ( "getSelectionDescription" );
       //
       // initialise the methods variables and objects.
       //
       List<EvOption> optionList = Field.Design.OptionList;
+      string [ ] arValue = Field.ItemValue.Split ( ';' );
+      String value = Value;
 
       //
       // search selection list if the list is external
@@ -2291,13 +2295,18 @@ namespace Evado.UniForm.Digital
       //
       foreach ( EvOption option in optionList )
       {
+        if ( value != String.Empty )
+        {
+          value += ", ";
+        }
+
         if ( option.Value == Value )
         {
-          return option.Description;
+          value += option.Description;
         }
       }
 
-      return Value;
+      return value;
     }//END Method
 
 

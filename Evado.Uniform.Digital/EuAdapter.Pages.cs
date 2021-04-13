@@ -602,7 +602,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "generateMainMenu" );
-      this.LogValue ( "WebSiteIdentifier: " + EuAdapter.AdapterObjects.PlatformId );
+      this.LogValue ( "PlatformId: " + EuAdapter.AdapterObjects.PlatformId );
       this.LogValue ( "selectedMenuGroup : " + this.Session.MenuGroupItem.Group );
       this.LogDebug ( "User Role: " + this.Session.UserProfile.Roles );
       // 

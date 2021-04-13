@@ -4368,7 +4368,7 @@ namespace Evado.Model.Digital {
         
         /// <summary>
         ///   Looks up a localized string similar to [[table]]
-        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
+        ///[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} -  {2} [[/td]] [[/tr]]
         ///[[/table]].
         /// </summary>
         public static string Generator_Disp_Field_Title_2Value_Format {
@@ -4379,7 +4379,7 @@ namespace Evado.Model.Digital {
         
         /// <summary>
         ///   Looks up a localized string similar to [[table]]
-        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
+        ///[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} [[/br]] {2}[[/br]] {3} {4} {5} {6} [[/td]] [[/tr]]
         ///[[/table]].
         /// </summary>
         public static string Generator_Disp_Field_Title_Address_Format {
@@ -4411,7 +4411,7 @@ namespace Evado.Model.Digital {
         
         /// <summary>
         ///   Looks up a localized string similar to [[table]]
-        ///[[tr]][[td]] {0} [[/td]] [[td]] {1} [[/td]][[/tr]]
+        ///[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] {1} [[/td]][[/tr]]
         ///[[/table]].
         /// </summary>
         public static string Generator_Disp_Field_Title_Value_Format {
