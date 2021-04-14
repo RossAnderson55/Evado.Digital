@@ -294,7 +294,7 @@ namespace Evado.UniForm.Digital
       // Form title
       //
       groupField = pageGroup.createTextField (
-        EdRecord.FieldNames.Title.ToString ( ),
+        EdRecord.FieldNames.Object_Title.ToString ( ),
         EdLabels.Form_Title_Field_Label,
         this.Session.EntityLayout.Design.Title,
         50 );

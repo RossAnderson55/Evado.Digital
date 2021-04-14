@@ -987,6 +987,35 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "EntityLayout.LayoutId: " + this.Session.EntityLayout.LayoutId );
       }
+
+      //
+      // if the entity record type is defined in the page command then update its value.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentUserId ) == true )
+      {
+        var parentUserId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentUserId );
+
+        if ( parentUserId != String.Empty )
+        {
+          this.Session.SelectedUserId = parentUserId;
+        }
+      }
+      this.LogValue ( "SelectedUserId: " + this.Session.SelectedUserId );
+
+      //
+      // if the entity record type is defined in the page command then update its value.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentOrgId ) == true )
+      {
+        var parentOrgId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentOrgId );
+
+        if ( parentOrgId != String.Empty )
+        {
+          this.Session.SelectedOrgId = parentOrgId;
+        }
+      }
+      this.LogValue ( "SelectedOrgId: " + this.Session.SelectedOrgId );
+
       //
       // if the entity record type is defined in the page command then update its value.
       //
@@ -1212,6 +1241,12 @@ namespace Evado.UniForm.Digital
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Page.PageId = EdStaticPageIds.Records_View.ToString ( );
 
+        if ( this.Session.Entity.hasEditAccess ( this.Session.UserProfile.Roles ) == true )
+        {
+          clientDataObject.Page.EditAccess = Model.UniForm.EditAccess.Enabled;
+        }
+        this.LogValue ( "Page.EditAccess: " + clientDataObject.Page.EditAccess );
+
         // 
         // Create the new pageMenuGroup for query selection.
         // 
@@ -1371,6 +1406,29 @@ namespace Evado.UniForm.Digital
         queryParameters.NotSelectedState = false;
       }
 
+      //
+      // set the parent object selection criteria.
+      //
+      queryParameters.ParentType = this.Session.EntityLayout.Design.ParentType;
+
+      if ( this.Session.EntityLayout.Design.ParentType == EdRecord.ParentTypeList.Organisation )
+      {
+        queryParameters.ParentOrgId = this.Session.SelectedOrgId;
+      }
+
+      if ( this.Session.EntityLayout.Design.ParentType == EdRecord.ParentTypeList.User )
+      {
+        queryParameters.ParentUserId = this.Session.SelectedUserId;
+      }
+
+      if ( this.Session.EntityLayout.Design.ParentType == EdRecord.ParentTypeList.Entity )
+      {
+        queryParameters.ParentGuid = this.Session.Entity.Guid;
+      }
+
+      //
+      // Set the filter critier.
+      //
       queryParameters.Org_City = this.Session.SelectedOrganisationCity;
       queryParameters.Org_Country = this.Session.SelectedOrganisationCountry;
       queryParameters.Org_PostCode = this.Session.SelectedOrganisationPostCode;
@@ -1460,6 +1518,8 @@ namespace Evado.UniForm.Digital
 
         groupCommand.AddParameter ( Evado.Model.Digital.EdRecord.FieldNames.Layout_Id,
         this.Session.Selected_EntityLayoutId );
+        groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
+        groupCommand.SetGuid ( this.Session.Entity.Guid );
       }
 
       this.LogDebug ( "EntityList.Count: " + this.Session.EntityList.Count );
@@ -3673,6 +3733,8 @@ namespace Evado.UniForm.Digital
             Model.UniForm.ApplicationMethods.Create_Object );
 
           groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
+          groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
+          groupCommand.SetGuid( this.Session.Entity.Guid );
 
           groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
         }//ENd edit access
@@ -3745,6 +3807,11 @@ namespace Evado.UniForm.Digital
         //    
         string LayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
         Guid parentGuid = PageCommand.GetGuid ( );
+
+        if ( parentGuid == Guid.Empty )
+        {
+          parentGuid = this.Session.Entity.Guid;
+        }
         //
         // Create the new entity.
         //

@@ -214,9 +214,14 @@ namespace Evado.UniForm.Digital
     public String SelectedUserCategory { get; set; }
 
     /// <summary>
-    /// This property contains the current user type selection.
+    /// This property contains the current organisation id selection.
     /// </summary>
     public String SelectedOrgId { get; set; }
+
+    /// <summary>
+    /// This property contains the current user Id selection.
+    /// </summary>
+    public String SelectedUserId { get; set; }
 
     Evado.Model.Digital.EdUserProfile _UserProfile = new EdUserProfile ( );
     /// <summary>
@@ -882,18 +887,17 @@ namespace Evado.UniForm.Digital
     ///<summary>
     /// this property deines the record state selection.
     /// </summary>
-    public EdRecordObjectStates RecordStateSelection { get; set; }
+    public EdRecordObjectStates Selected_RecordState { get; set; }
 
     /// <summary>
     /// This property defines the Record type selection filter.
     /// </summary>
-    public EdRecordTypes RecordTypeSelection { get; set; }
-
+    public EdRecordTypes Selected_RecordType { get; set; }
 
     /// <summary>
     /// COntains the currently selected form type.
     /// </summary>
-    public String RecordLayoutIdSelection { get; set; }
+    public String Selected_RecordLayoutId { get; set; }
 
     /// <summary>
     /// This property defines the include draft record selection.
@@ -948,7 +952,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// COntains the currently selected form state.
     /// </summary>
-    public EdRecordObjectStates RecordLayoutStateSelection
+    public EdRecordObjectStates Selected_RecordLayoutState
     {
       get { return _FormState; }
       set { _FormState = value; }

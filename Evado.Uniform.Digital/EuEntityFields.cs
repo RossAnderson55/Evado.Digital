@@ -929,7 +929,8 @@ namespace Evado.UniForm.Digital
       //
       // Form field selection options field.
       //
-      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text )
+      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text
+        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Text )
       {
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.FieldWidth,
@@ -938,16 +939,23 @@ namespace Evado.UniForm.Digital
           5, 100 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
       }
-      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text
-        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Text )
+      else
       {
+        this.Session.EntityField.Design.FieldWidth = 0;
+      }
 
+      if ( this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.Free_Text )
+      {
         groupField = pageGroup.createNumericField (
           EdRecordField.FieldClassFieldNames.FieldHeight.ToString ( ),
           EdLabels.Form_Field_Field_Height_Field_Label,
           this.Session.EntityField.Design.FieldHeight,
           2, 50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
+      else
+      {
+        this.Session.EntityField.Design.FieldHeight = 0;
       }
       //
       // Form field selection options field.
@@ -1210,6 +1218,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "createFieldNumericValidationGroup" );
       this.LogValue ( "TypeId: " + this.Session.EntityField.TypeId );
+      this.LogValue ( "UnitScaling: " + this.Session.EntityField.Design.UnitScaling );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -1244,7 +1253,12 @@ namespace Evado.UniForm.Digital
       //
       // form field numeric scaling value.
       //
-      optionList = Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "-12:-12;-9:-9;_6:-6;-3:-3;0;3:3;6:6;9:9;12:12" ); ;
+      optionList = Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "-12:-12;-9:-9;-6:-6;-3:-3;0:0;3:3;6:6;9:9;12:12" );
+
+      foreach ( EvOption optn in optionList )
+      {
+        this.LogValue ( "{0} + {1} ", optn.Value, optn.Description  );
+      }
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.Unit_Scaling.ToString ( ),

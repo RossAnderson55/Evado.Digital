@@ -809,22 +809,28 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_PARENT_USER_ID, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdEntities.PARM_PARENT_ORG_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdOrganisations.PARM_Address_City, SqlDbType.NVarChar, 50),
         new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
       };
       cmdParms [ 0 ].Value = QueryParameters.LayoutId;
-      cmdParms [ 1 ].Value = QueryParameters.Org_City;
-      cmdParms [ 2 ].Value = QueryParameters.Org_Country;
+      cmdParms [ 1 ].Value = QueryParameters.ParentUserId;
+      cmdParms [ 2 ].Value = QueryParameters.ParentOrgId;
+      cmdParms [ 3 ].Value = QueryParameters.ParentGuid;
+      cmdParms [ 4 ].Value = QueryParameters.Org_City;
+      cmdParms [ 5 ].Value = QueryParameters.Org_Country;
 
       //
       // Generate the SQL query string.
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
-      // this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
-      // this.LogDebug ( sqlQueryString );
+       this.LogDebug ( sqlQueryString );
 
       // this.LogDebug ( "Execute Query" );
       //
@@ -960,6 +966,33 @@ namespace Evado.Dal.Digital
       if ( QueryParameters.LayoutId != String.Empty )
       {
         sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
+      }
+
+      //
+      // filter by parent user id if provided.
+      //
+      if ( QueryParameters.ParentType == EdRecord.ParentTypeList.User
+        && QueryParameters.ParentUserId != String.Empty )
+      {
+        sqlQueryString.AppendLine ( " AND ( " + EdEntities.DB_PARENT_USER_ID + " = " + EdEntities.PARM_PARENT_USER_ID + " ) " );
+      }
+
+      //
+      // filter by parent org id if provided.
+      //
+      if ( QueryParameters.ParentType == EdRecord.ParentTypeList.Organisation
+        && QueryParameters.ParentOrgId != String.Empty )
+      {
+        sqlQueryString.AppendLine ( " AND ( " + EdEntities.DB_PARENT_ORG_ID + " = " + EdEntities.PARM_PARENT_ORG_ID + " ) " );
+      }
+
+      //
+      // filter by parent Guid if provided.
+      //
+      if ( QueryParameters.ParentType == EdRecord.ParentTypeList.Entity
+        && QueryParameters.ParentGuid != Guid.Empty )
+      {
+        sqlQueryString.AppendLine ( " AND ( " + EdEntities.DB_PARENT_GUID + " = " + EdEntities.PARM_PARENT_GUID + " ) " );
       }
 
       //
@@ -1371,8 +1404,8 @@ namespace Evado.Dal.Digital
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
-      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
-      this.LogDebug ( sqlQueryString );
+      //this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+     // this.LogDebug ( sqlQueryString );
 
       this.LogDebug ( "Execute Query" );
       //

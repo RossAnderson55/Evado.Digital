@@ -63,6 +63,31 @@ namespace Evado.Model.Digital
     public bool EnableOrganisationFilter = false;
 
     /// <summary>
+    /// This field defines the author's user id filter.
+    /// </summary>
+    public string AuthorUserId = String.Empty;
+
+    /// <summary>
+    /// This field defines the parent type for an entity query.
+    /// </summary>
+    public EdRecord.ParentTypeList ParentType = EdRecord.ParentTypeList.Null;
+    
+    /// <summary>
+    /// This field defines the parent user's user id filter.
+    /// </summary>
+    public string ParentUserId = String.Empty;
+
+    /// <summary>
+    /// This field defines the parent organisation id filter.
+    /// </summary>
+    public string ParentOrgId = String.Empty;
+
+    /// <summary>
+    /// This field defines the parent entity Guid filter.
+    /// </summary>
+    public Guid ParentGuid = Guid.Empty;
+
+    /// <summary>
     /// This field defines the organisation city filter.
     /// </summary>
     public string Org_City = String.Empty;

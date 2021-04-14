@@ -128,7 +128,7 @@ namespace Evado.Dal.Digital
     /// </summary>
     private const string PARM_Guid = "@Guid";
     private const string PARM_ORG_ID = "@OrgId";
-    private const string PARM_UserId = "@UserId";
+    public const string PARM_UserId = "@UserId";
     private const string PARM_ACTIVE_DIRECTORY_NAME = "@ActiveDirectName";
     private const string PARM_PREFIX = "@PREFIX";
     private const string PARM_GIVEN_NAME = "@GIVEN_NAME";

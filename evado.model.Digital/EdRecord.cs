@@ -125,11 +125,6 @@ namespace Evado.Model.Digital
       /// This enumeration defines the record author role this person is able to update the form content.
       /// </summary>
       Record_Author,
-
-      /// <summary>
-      /// This enumerate defiens the record the form designer role.
-      /// </summary>
-      Form_Designer
     }
 
     /// <summary>
@@ -452,7 +447,7 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration identifies the form title field.
       /// </summary>
-      Title,
+      Object_Title,
 
       /// <summary>
       /// This enumeration identifies the form Instruction field.
@@ -1010,6 +1005,18 @@ namespace Evado.Model.Digital
           link += EdLabels.Label_by + this.Updated;
         }
 
+        if ( this.TypeId == EdRecordTypes.Comment_Record )
+        {
+          string value = this.getFirstFreeTextField ( true );
+
+          if ( value != String.Empty )
+          {
+            link = value;
+          }
+
+          return link;
+        }
+
         //
         // select the link display 
         //
@@ -1024,18 +1031,18 @@ namespace Evado.Model.Digital
         if ( this.Design.LinkContentSetting == LinkContentSetting.First_Text_Field
           && this.Fields.Count > 1 )
         {
-          foreach ( EdRecordField field in this.Fields )
-          {
-            if ( field.TypeId == EvDataTypes.Text )
-            {
-              link = this.Fields [ 0 ].ItemValue;
 
-              if ( this.Design.DisplayAuthorDetails == true )
-              {
-                link += EdLabels.Label_by + this.Updated;
-              }
-              return link;
+          String value = this.getFirstTextField ( );
+
+          if ( value != String.Empty )
+          {
+            link = value;
+
+            if ( this.Design.DisplayAuthorDetails == true )
+            {
+              link += EdLabels.Label_by + this.Updated;
             }
+            return link;
           }
         }
 
@@ -1553,23 +1560,23 @@ namespace Evado.Model.Digital
     /// <param name="FirstFreeText">Bool: true = return first free text field.</param>
     /// <returns>string: field value.</returns>
     // -------------------------------------------------------------------------------------
-    public string getFirstTextField (  )
+    public string getFirstTextField ( )
     {
       String stValue = String.Empty;
       foreach ( EdRecordField field in this.Fields )
       {
-          if ( field.TypeId == EvDataTypes.Text )
-          {
-            stValue = field.ItemValue;
+        if ( field.TypeId == EvDataTypes.Text )
+        {
+          stValue = field.ItemValue;
 
-            if ( this.Design.DisplayAuthorDetails == true )
-            {
-              stValue += EdLabels.Label_by + this.Updated;
-            }
-            return stValue;
+          if ( this.Design.DisplayAuthorDetails == true )
+          {
+            stValue += EdLabels.Label_by + this.Updated;
           }
+          return stValue;
+        }
       }
-      return String.Empty ;
+      return String.Empty;
     }
 
     // =====================================================================================
@@ -1582,40 +1589,26 @@ namespace Evado.Model.Digital
     public string getFirstFreeTextField ( bool AsAbstract )
     {
       String stValue = String.Empty;
+
       foreach ( EdRecordField field in this.Fields )
       {
-        if ( AsAbstract == false )
+        if ( field.TypeId == EvDataTypes.Free_Text )
         {
-          if ( field.TypeId == EvDataTypes.Free_Text )
+          if ( AsAbstract == false )
           {
             stValue = field.ItemText;
-
-            if ( AsAbstract )
-            {
-              int paraIndex = stValue.IndexOf ( '\n' );
-
-              stValue = stValue.Substring ( 0, paraIndex );
-            }
-
-            if ( this.Design.DisplayAuthorDetails == true )
-            {
-              stValue += "\r\n" + EdLabels.Label_by + this.Updated;
-            }
-            return stValue;
           }
-        }
-        else
-        {
-          if ( field.TypeId == EvDataTypes.Text )
+          else
           {
-            stValue = this.Fields [ 0 ].ItemValue;
-
-            if ( this.Design.DisplayAuthorDetails == true )
-            {
-              stValue += EdLabels.Label_by + this.Updated;
-            }
-            return stValue;
+            int paraIndex = stValue.IndexOf ( '\n' );
+            stValue = stValue.Substring ( 0, paraIndex );
           }
+
+          if ( this.Design.DisplayAuthorDetails == true )
+          {
+            stValue += "\r\n" + EdLabels.Label_by + this.Updated;
+          }
+          return stValue;
         }
       }
       return String.Empty;
@@ -1762,7 +1755,7 @@ namespace Evado.Model.Digital
       //
       // Set the default edit access 
       //
-      if ( this.hasEditAccess(  UserProfile.Roles ) == true )
+      if ( this.hasEditAccess ( UserProfile.Roles ) == true )
       {
         return true;
       }
@@ -1790,7 +1783,7 @@ namespace Evado.Model.Digital
         && ( this.State == EdRecordObjectStates.Form_Draft
           || this.State == EdRecordObjectStates.Form_Reviewed ) )
       {
-        this.FormAccessRole = EdRecord.FormAccessRoles.Form_Designer;
+        this.FormAccessRole = EdRecord.FormAccessRoles.Record_Author;
         return;
       }
 
@@ -1847,7 +1840,7 @@ namespace Evado.Model.Digital
             //
             // Set the reader access 
             //
-            if (  this.hasReadAccess(  UserProfile.Roles ) == true )
+            if ( this.hasReadAccess ( UserProfile.Roles ) == true )
             {
               this.FormAccessRole = EdRecord.FormAccessRoles.Record_Reader;
             }
@@ -2089,7 +2082,7 @@ namespace Evado.Model.Digital
         //
         // Design elements.
         //
-        case FieldNames.Title:
+        case FieldNames.Object_Title:
           {
             this._Design.Title = Value;
             return;
@@ -2167,7 +2160,7 @@ namespace Evado.Model.Digital
         case FieldNames.FieldReadonlyDisplayFormat:
           {
             this._Design.FieldReadonlyDisplayFormat =
-              EvStatics.parseEnumValue < FieldReadonlyDisplayFormats> ( Value );
+              EvStatics.parseEnumValue<FieldReadonlyDisplayFormats> ( Value );
             return;
           }
         case FieldNames.DefaultPageLayout:

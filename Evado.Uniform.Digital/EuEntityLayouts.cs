@@ -642,7 +642,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "loadRecordLayoutList method" );
       this.LogDebug ( "EntityType '{0}'", this.Session.EntityTypeSelection );
-      this.LogDebug ( "RecordFormState '{0}'", this.Session.RecordLayoutStateSelection );
+      this.LogDebug ( "RecordFormState '{0}'", this.Session.Selected_RecordLayoutState );
 
       if ( this.AdapterObjects.AllEntityLayouts.Count > 0 )
       {
@@ -822,7 +822,7 @@ namespace Evado.UniForm.Digital
       selectionField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.Status.ToString ( ),
         EdLabels.Form_State_Selection_Label,
-        this.Session.RecordLayoutStateSelection.ToString ( ),
+        this.Session.Selected_RecordLayoutState.ToString ( ),
         optionList );
 
       selectionField.Layout = EuAdapter.DefaultFieldLayout;
@@ -874,10 +874,10 @@ namespace Evado.UniForm.Digital
 
         this.LogValue ( "Selected Form Type: " + parameterValue );
 
-        this.Session.RecordLayoutStateSelection = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
+        this.Session.Selected_RecordLayoutState = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( parameterValue );
       }
       this.LogValue ( "SessionObjects.FormState: "
-        + this.Session.RecordLayoutStateSelection );
+        + this.Session.Selected_RecordLayoutState );
 
     }//END updateSessionObjects method
 

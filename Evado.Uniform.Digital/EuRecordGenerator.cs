@@ -2202,7 +2202,9 @@ namespace Evado.UniForm.Digital
       // 
       // design header information
       // 
-      if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Form_Designer )
+      if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author
+        && ( this._FormState == EdRecordObjectStates.Draft_Record 
+          || this._FormState == EdRecordObjectStates.Form_Reviewed ) )
       {
         GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
         sbDescription.Append (
@@ -3737,8 +3739,7 @@ namespace Evado.UniForm.Digital
       // 
       // If the state is editable then update the TestReport.
       // 
-      if ( this._FormAccessRole != EdRecord.FormAccessRoles.Form_Designer
-        && this._FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
+      if ( this._FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
       {
         this.LogDebug ( "Updating field values." );
 

@@ -151,7 +151,7 @@ namespace Evado.Dal.Digital
     public const string DB_DELETED = "O_DELETED";
 
     private const string PARM_Guid = "@Guid";
-    private const string PARM_ORG_ID = "@ORG_ID";
+    public const string PARM_ORG_ID = "@ORG_ID";
     private const string PARM_Name = "@Name";
     private const string PARM_ORG_TYPE = "@ORG_TYPE";
     private const string PARM_Address_1 = "@ADDRESS_1";

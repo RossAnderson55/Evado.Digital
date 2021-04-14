@@ -39,10 +39,13 @@ namespace Evado.UniForm.Digital
   /// </summary>
   public partial class EuRecordLayouts : EuClassAdapterBase
   {
-
+    
     #region Class form property page methods
 
     private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null;
+
+    private Model.UniForm.EditAccess _InitialAccess = Model.UniForm.EditAccess.Null; 
+
     // ==============================================================================
     /// <summary>
     /// This method returns a client application ResultData object
@@ -50,10 +53,10 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData GetLayoutProperties_Object (
+    private Evado.Model.UniForm.AppData GetRecordProperties_Object (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "GetLayoutPropoerties_Object" );
+      this.LogMethod ( "GetRecordProperties_Object" );
 
       // 
       // Initialise the methods variables and objects.
@@ -67,7 +70,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
-          this.ClassNameSpace + "GetLayoutPropoerties_Object",
+          this.ClassNameSpace + "GetRecordProperties_Object",
           this.Session.UserProfile );
 
         this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
@@ -79,32 +82,14 @@ namespace Evado.UniForm.Digital
       // Log access to page.
       // 
       this.LogPageAccess (
-        this.ClassNameSpace + "GetLayoutPropoerties_Object",
+        this.ClassNameSpace + "GetRecordProperties_Object",
         this.Session.UserProfile );
 
       try
       {
-        if ( this.getLayoutObject ( PageCommand, false ) == false )
+        if ( this.getRecordObject ( PageCommand, false ) == false )
         {
           return this.Session.LastPage;
-        }
-
-        string value = PageCommand.GetParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER );
-
-        //
-        // Update the session form object if a new section is added to the page.
-        //
-        if ( value == "1" )
-        {
-          // 
-          // Update the object.
-          // 
-          this.updateObjectValues ( PageCommand );
-
-          //
-          // Update the section table values.
-          //
-          this.updateSectionValues ( PageCommand );
         }
 
         // 
@@ -115,7 +100,7 @@ namespace Evado.UniForm.Digital
         // 
         // Return the client ResultData object to the calling method.
         // 
-        this.LogMethodEnd ( "GetLayoutPropoerties_Object" );
+        this.LogMethodEnd ( "GetRecordProperties_Object" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -131,10 +116,10 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-      this.LogMethodEnd ( "GetLayoutPropoerties_Object" );
+      this.LogMethodEnd ( "GetRecordProperties_Object" );
       return this.Session.LastPage;
 
-    }//END getFormPropertiesObject method
+    }//END GetRecordProperties_Object method
 
     // ==============================================================================
     /// <summary>
@@ -148,7 +133,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getPropertiesDataObject" );
 
       // 
-      // Initialise the client ResultData object.
+      // Initialise the client data object.
       // 
       if ( this.Session.RecordLayout.Guid != Guid.Empty )
       {
@@ -174,17 +159,35 @@ namespace Evado.UniForm.Digital
       {
         ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
       }
-
+      //
+      // initialise the methods variables and objects.
+      //
       this._DesignAccess = ClientDataObject.Page.EditAccess;
+        
       //
       // Design access is only available for un-issued layouts.  After issue
       // parameter changes can be made provided that don't change the data integrity.
       //
-      if ( this.Session.RecordLayout.State == EdRecordObjectStates.Form_Issued
-        || this.Session.RecordLayout.State == EdRecordObjectStates.Withdrawn )
+      if ( ( this.Session.RecordLayout.State == EdRecordObjectStates.Form_Issued
+          || this.Session.RecordLayout.State == EdRecordObjectStates.Withdrawn )
+        && ( this.Session.UserProfile.hasAdministrationAccess == false ) )
       {
         this._DesignAccess = Model.UniForm.EditAccess.Disabled;
       }
+
+      //
+      // Set the initial configuration access.
+      //
+      this._InitialAccess = this._DesignAccess;
+
+      if ( this.Session.RecordLayout.Design.Version >= 1 )
+      {
+        this._InitialAccess = Model.UniForm.EditAccess.Disabled;
+      }
+      this.LogDebug ( "Design Access {0}, Initial Acccess {1}",
+        this._DesignAccess, this._InitialAccess );
+
+
 
       //
       // Set the user's edit access if they have configuration edit access.
@@ -194,26 +197,27 @@ namespace Evado.UniForm.Digital
 
       this.LogValue ( "GENERATE FORM" );
 
-      this.setLayoutSave_PageCommands ( ClientDataObject.Page );
+      this.GetDataObject_PageCommands ( ClientDataObject.Page );
+
       //
-      // add the page layout selection commands.
+      // Add the page layout commands
       //
-      this.setFormPageLayoutCommands ( ClientDataObject.Page );
+      this.GetDataObject_LayoutCommands ( ClientDataObject.Page );
 
       //
       // Add the general field properties pageMenuGroup.
       //
-      this.getProperties_GeneralPageGroup ( ClientDataObject.Page );
+      this.getPropertiesPage_GeneralGroup ( ClientDataObject.Page );
 
       //
-      // add the property settings group.
+      // Add the settings group
       //
       this.getPropertiesPage_SettingGroup ( ClientDataObject.Page );
 
       //
       // Add the form sections properties pageMenuGroup.
       //
-      this.getProperties_SectionsPageGroup ( ClientDataObject.Page );
+      this.getPropertiesPage_SectionsGroup ( ClientDataObject.Page );
 
     }//END getPropertiesDataObject Method
 
@@ -221,10 +225,10 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
-    private void getProperties_GeneralPageGroup (
-      Evado.Model.UniForm.Page PageObject )
+    private void getPropertiesPage_GeneralGroup (
+      Evado.Model.UniForm.Page Page )
     {
       this.LogMethod ( "getProperties_GeneralPageGroup" );
       // 
@@ -232,21 +236,14 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
-      Model.UniForm.EditAccess initialAccess = this._DesignAccess;
-
-      if ( this.Session.RecordLayout.Design.Version >= 1 )
-      {
-        initialAccess = Model.UniForm.EditAccess.Disabled;
-      }
-
       //
       // Define the general properties pageMenuGroup..
       //
-      pageGroup = PageObject.AddGroup (
-        EdLabels.Form_Properties_General_Group_Title );
+      pageGroup = Page.AddGroup (
+        EdLabels.Form_Properties_General_Group_Title);
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
       pageGroup.SetCommandBackBroundColor (
@@ -256,91 +253,110 @@ namespace Evado.UniForm.Digital
       //
       // Define the form save commands.
       //
-      this.setFormSaveGroupCommands ( pageGroup );
+      this.GetDataObject_GroupCommands ( pageGroup );
 
       //
-      // Form type selection list.
+      // Define the page layout selection
       //
-      optionList = EdRecord.getFormTypes ( );
+      this.GetDataObject_LayoutCommands ( pageGroup );
 
-      pageField = pageGroup.createSelectionListField (
-        EdRecord.FieldNames.TypeId.ToString ( ),
-        EdLabels.Form_Type_Field_Label,
-        this.Session.RecordLayout.Design.TypeId.ToString ( ),
-        optionList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = initialAccess;
+      //
+      // Set the entity type
+      //
+      if ( this.Session.RecordLayout.Design.TypeId == EdRecordTypes.Null )
+      {
+        this.Session.RecordLayout.Design.TypeId = EdRecordTypes.Normal_Record;
+      }
 
       //
       // Form title
       //
-      pageField = pageGroup.createTextField (
+      groupField = pageGroup.createTextField (
         EdRecord.FieldNames.Layout_Id.ToString ( ),
         EdLabels.Label_Form_Id,
         this.Session.RecordLayout.LayoutId,
         10 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = initialAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._InitialAccess;
 
       //
       // Form title
       //
-      pageField = pageGroup.createTextField (
+      groupField = pageGroup.createTextField (
         EdRecord.FieldNames.RecordPrefix,
         EdLabels.Record_Layout_Record_Prefix_Field_Label,
         this.Session.RecordLayout.Design.RecordPrefix,
         5 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = initialAccess;
-
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._InitialAccess;
 
       //
       // Form title
       //
-      pageField = pageGroup.createTextField (
-        EdRecord.FieldNames.Title.ToString ( ),
+      groupField = pageGroup.createTextField (
+        EdRecord.FieldNames.Object_Title.ToString ( ),
         EdLabels.Form_Title_Field_Label,
         this.Session.RecordLayout.Design.Title,
         50 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Form reference
+      //
+      groupField = pageGroup.createTextField (
+        EdRecord.FieldNames.Reference.ToString ( ),
+        EdLabels.Form_Reference_Field_Label,
+        this.Session.RecordLayout.Design.HttpReference,
+        50 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form Instructions
       //
-      pageField = pageGroup.createFreeTextField (
+      groupField = pageGroup.createFreeTextField (
         EdRecord.FieldNames.Instructions.ToString ( ),
         EdLabels.Form_Instructions_Field_Title,
         this.Session.RecordLayout.Design.Instructions,
         50, 4 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+
+      //
+      // Form category
+      //
+      groupField = pageGroup.createTextField (
+        EdRecord.FieldNames.FormCategory.ToString ( ),
+        EdLabels.Form_Category_Field_Title,
+        this.Session.RecordLayout.Design.RecordCategory,
+        50 );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form Update reason
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.UpdateReasonList ), false );
 
-      pageField = pageGroup.createSelectionListField (
+      groupField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.UpdateReason.ToString ( ),
         EdLabels.Form_Update_Reason_Field_Title,
         this.Session.RecordLayout.Design.UpdateReason,
         optionList );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
 
       //
       // Form Change description
       //
-      pageField = pageGroup.createFreeTextField (
+      groupField = pageGroup.createFreeTextField (
         EdRecord.FieldNames.Description.ToString ( ),
         EdLabels.Form_Description_Field_Title,
         this.Session.RecordLayout.Design.Description,
         90, 5 );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
 
-      this.LogMethodEnd ( "getProperties_GeneralPageGroup" );
 
     }//END getProperties_GeneralPageGroup Method
 
@@ -348,10 +364,10 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="Page">Evado.Model.UniForm.Page object.</param>
     //  ------------------------------------------------------------------------------
     private void getPropertiesPage_SettingGroup (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.Model.UniForm.Page Page )
     {
       this.LogMethod ( "getPropertiesPage_SettingGroup" );
       // 
@@ -359,14 +375,14 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
       Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
       //
       // Define the general properties pageMenuGroup..
       //
-      pageGroup = PageObject.AddGroup (
+      pageGroup = Page.AddGroup (
         EdLabels.Form_Properties_Settings_Group_Title );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
 
@@ -374,41 +390,99 @@ namespace Evado.UniForm.Digital
         Model.UniForm.GroupParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
 
+      this.GetDataObject_GroupCommands ( pageGroup );
+
       //
-      // Define the form save commands.
+      // Layout field readonly display format settings
       //
-      this.setFormSaveGroupCommands ( pageGroup );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.FieldReadonlyDisplayFormats ), false );
+
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.FieldNames.FieldReadonlyDisplayFormat.ToString ( ),
+        EdLabels.EntityLayout_FieldDisplayFormat_Field_Title,
+        this.Session.RecordLayout.Design.FieldReadonlyDisplayFormat,
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // Form Update reason
+      //
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
+
+      groupField = pageGroup.createCheckBoxListField (
+        EdRecord.FieldNames.ReadAccessRoles.ToString ( ),
+        EdLabels.Record_Layout_AccessRole_Field_Label,
+        this.Session.RecordLayout.Design.EditAccessRoles,
+        optionList );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
+
+
+      groupField = pageGroup.createCheckBoxListField (
+        EdRecord.FieldNames.EditAccessRoles.ToString ( ),
+        EdLabels.Record_Layout_EditRole_Field_Label,
+        this.Session.RecordLayout.Design.ReadAccessRoles,
+        optionList );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
 
       //
       // Layout author only draft record access
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.AuthorAccessList ), false );
 
-      pageField = pageGroup.createRadioButtonListField (
+      this.LogDebug ( "Author Access option list length: ", optionList );
+      this.LogDebug ( "RecordLayout.Design.AuthorAccess: ", this.Session.RecordLayout.Design.AuthorAccess );
+
+      groupField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.AuthorAccess.ToString ( ),
         EdLabels.Record_Layout_Author_Access_Setting_Field_Title,
         this.Session.RecordLayout.Design.AuthorAccess,
         optionList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
+
+      //
+      // Enable display if chiled entities.
+      //
+      groupField = pageGroup.createBooleanField (
+        EdRecord.FieldNames.DisplayRelatedEntities.ToString ( ),
+        EdLabels.EntityLayout_Display_Related_Entities_Field_Title,
+        this.Session.RecordLayout.Design.DisplayRelatedEntities );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Layout author only edit record access
       //
-      this.Session.RecordLayout.Design.ParentType = EdRecord.ParentTypeList.Entity;
-      
-      //
-      // Layout parent entity selection list.
-      //
-      optionList = this.AdapterObjects.GetIssuedEntityOptions ( false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
 
-      pageField = pageGroup.createCheckBoxListField (
-        EdRecord.FieldNames.ParentEntities.ToString ( ),
-        EdLabels.Record_Layout_Parent_Entity_Selection_Field_Title,
-        this.Session.RecordLayout.Design.ParentEntities,
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.FieldNames.ParentType.ToString ( ),
+        EdLabels.Record_Layout_Parent_Object_Type_Field_Title,
+        this.Session.RecordLayout.Design.ParentType,
         optionList );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
 
+      //
+      // Select the hierachical entities this entity can be referenced to.
+      //
+
+      if ( this.Session.RecordLayout.Design.ParentType == EdRecord.ParentTypeList.Entity )
+      {
+        optionList = this.AdapterObjects.GetIssuedEntityOptions ( false );
+
+        groupField = pageGroup.createCheckBoxListField (
+          EdRecord.FieldNames.ParentEntities.ToString ( ),
+          EdLabels.Record_Layout_Parent_Entity_Selection_Field_Title,
+          this.Session.RecordLayout.Design.ParentEntities,
+          optionList );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
+      }
       //
       // Default field layout 
       //
@@ -419,91 +493,80 @@ namespace Evado.UniForm.Digital
         this.Session.RecordLayout.Design.DefaultPageLayout = EuAdapter.DefaultFieldLayout.ToString ( );
       }
 
-      pageField = pageGroup.createSelectionListField (
+      groupField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.DefaultPageLayout.ToString ( ),
         EdLabels.Form_Llink_Default_Layout_Field_Title,
         this.Session.RecordLayout.Design.DefaultPageLayout,
         optionList );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
-      // Record heaader setting
+      // Record LLnk content setting
       //
       optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
 
-      if ( this.Session.RecordLayout.Design.DefaultPageLayout == null )
+      if ( this.Session.RecordLayout.Design.LinkContentSetting == EdRecord.LinkContentSetting.Null )
       {
-        this.Session.RecordLayout.Design.DefaultPageLayout = EdRecord.LinkContentSetting.Default.ToString ( );
+        this.Session.RecordLayout.Design.LinkContentSetting = EdRecord.LinkContentSetting.Default;
       }
 
-      pageField = pageGroup.createSelectionListField (
+      groupField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.LinkContentSetting,
         EdLabels.Record_Link_Content_Setting_Field_Title,
         this.Session.RecordLayout.Design.LinkContentSetting,
         optionList );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
-      // Form Update reason
+      // Record header layout settings
       //
-      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.HeaderFormat ), false );
 
-      pageField = pageGroup.createCheckBoxListField (
-        EdRecord.FieldNames.ReadAccessRoles.ToString ( ),
-        EdLabels.Record_Layout_AccessRole_Field_Label,
-        this.Session.RecordLayout.Design.EditAccessRoles,
+      if ( this.Session.RecordLayout.Design.HeaderFormat == EdRecord.HeaderFormat.Null )
+      {
+        this.Session.RecordLayout.Design.HeaderFormat = EdRecord.HeaderFormat.Default;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.FieldNames.HeaderFormat,
+        EdLabels.RecordLayout_Header_Format_Field_Title,
+        this.Session.RecordLayout.Design.HeaderFormat,
         optionList );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      pageField = pageGroup.createCheckBoxListField (
-        EdRecord.FieldNames.EditAccessRoles.ToString ( ),
-        EdLabels.Record_Layout_EditRole_Field_Label,
-        this.Session.RecordLayout.Design.ReadAccessRoles,
+      //
+      // Record footer layout settings
+      //
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.FooterFormat ), false );
+
+      if ( this.Session.RecordLayout.Design.FooterFormat == EdRecord.FooterFormat.Null )
+      {
+        this.Session.RecordLayout.Design.FooterFormat = EdRecord.FooterFormat.Default;
+      }
+
+      groupField = pageGroup.createSelectionListField (
+        EdRecord.FieldNames.FooterFormat,
+        EdLabels.RecordLayout_Footer_Format_Field_Title,
+        this.Session.RecordLayout.Design.FooterFormat,
         optionList );
 
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
-
-      //
-      // Form Update reason
-      //
-      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.LinkContentSetting ), false );
-
-      pageField = pageGroup.createSelectionListField (
-        EdRecord.FieldNames.LinkContentSetting.ToString ( ),
-        EdLabels.Form_Llink_Content_Setting_Field_Title,
-        this.Session.RecordLayout.Design.LinkContentSetting,
-        optionList );
-
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      //
-      // Form category
-      //
-      pageField = pageGroup.createTextField (
-        EdRecord.FieldNames.FormCategory.ToString ( ),
-        EdLabels.Form_Category_Field_Title,
-        this.Session.RecordLayout.Design.RecordCategory,
-        50 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
       // Form CS Script
       //
-      pageField = pageGroup.createBooleanField (
+      groupField = pageGroup.createBooleanField (
         EdRecord.FieldNames.HasCsScript.ToString ( ),
         EdLabels.Form_Cs_Script_Field_Title,
         this.Session.RecordLayout.Design.hasCsScript );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = _DesignAccess;
 
-      this.LogMethodEnd ( "getProperties_GeneralPageGroup" );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+      groupField.EditAccess = this._DesignAccess;
 
+      this.LogMethodEnd ( "getPropertiesPage_SettingGroup" );
     }//END getProperties_GeneralPageGroup Method
 
     // ==============================================================================
@@ -512,10 +575,10 @@ namespace Evado.UniForm.Digital
     /// </summary>
     /// <param name="Page">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
-    private void getProperties_SectionsPageGroup (
+    private void getPropertiesPage_SectionsGroup (
       Evado.Model.UniForm.Page Page )
     {
-      this.LogMethod ( "getPropertiesDataObject" );
+      this.LogMethod ( "getProperties_SectionsPageGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -562,11 +625,8 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogValue ( "After No of form sections: " + this.Session.RecordLayout.Design.FormSections.Count );
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
-      this.SaveSessionObjects ( );
 
+      this.LogMethodEnd ( "getProperties_SectionsPageGroup" );
 
     }//END getProperties_SectionsPageGroup Method
 
@@ -582,7 +642,7 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getFormPropertiesSectionObject (
+    private Evado.Model.UniForm.AppData getPropertiesSectionObject (
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getFormPropertiesSection" );
@@ -745,7 +805,6 @@ namespace Evado.UniForm.Digital
         this.Session.FormSection.Title,
         50 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Inherited;
 
       //
       // Form Instructions
@@ -836,12 +895,11 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuPageGenerator.ApplicationFieldLayout;
       */
       //
-      // get the list of form roles.
+      // get the list of display roles.
       //
       optionList = new List<EvOption> ( );
 
-      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Author ) );
-      optionList.Add ( EvStatics.getOption ( EdRecord.FormAccessRoles.Record_Reader ) );
+      optionList = this.AdapterObjects.Settings.GetRoleOptionList ( false );
 
       //
       // The form section user display roles 
@@ -851,6 +909,17 @@ namespace Evado.UniForm.Digital
         EdLabels.Form_Section_User_Display_Roles_Field_Label,
         EdLabels.Form_Section_User_Display_Roles_Field_Description,
         this.Session.FormSection.ReadAccessRoles,
+        optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // get the list of edit roles.
+      //
+      pageField = pageGroup.createCheckBoxListField (
+        EdRecordSection.FormSectionClassFieldNames.Sectn_Edit_Roles.ToString ( ),
+        EdLabels.Form_Section_User_Edit_Roles_Field_Label,
+        EdLabels.Form_Section_User_Edit_Roles_Field_Description,
+        this.Session.FormSection.EditAccessRoles,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -868,11 +937,6 @@ namespace Evado.UniForm.Digital
       pageCommand.SetGuid ( this.Session.RecordLayout.Guid );
       pageCommand.AddParameter ( EuRecordLayouts.CONST_UPDATE_SECTION_COMMAND_PARAMETER, "1" );
 
-      // 
-      // Save the session ResultData so it is available for the next user generated groupCommand.
-      // 
-      this.SaveSessionObjects ( );
-      this.LogMethodEnd ( "getPropertiesSectionDataObject" );
 
     }//END getPropertiesDataObject Method
 
@@ -959,6 +1023,7 @@ namespace Evado.UniForm.Digital
           }
       );
 
+      this.LogDebug ( "EntityLayout.Design.FormSections.Count.Count: " + this.Session.RecordLayout.Design.FormSections.Count );
       this.LogMethodEnd ( "updateSectionValues" );
 
     }//END updateObjectValue method.

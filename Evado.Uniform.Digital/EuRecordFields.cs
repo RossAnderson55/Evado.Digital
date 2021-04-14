@@ -726,12 +726,12 @@ namespace Evado.UniForm.Digital
 
       Evado.Model.UniForm.EditAccess initialAccess = Model.UniForm.EditAccess.Disabled;
 
-      if ( this.Session.EntityField.Design.InitialVersion == formVersion )
+      if ( this.Session.RecordField.Design.InitialVersion == formVersion )
       {
         initialAccess = Model.UniForm.EditAccess.Enabled;
       }
       this.LogValue ( "formVersion: " + formVersion );
-      this.LogValue ( "Field.InitialVersion: " + this.Session.EntityField.Design.InitialVersion );
+      this.LogValue ( "Field.InitialVersion: " + this.Session.RecordField.Design.InitialVersion );
 
       this.LogValue ( "initialAccess: " + initialAccess );
 
@@ -893,15 +893,15 @@ namespace Evado.UniForm.Digital
       // Create the external selection list,
       //
       if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_Selection_List
-        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_CheckBox_List
-        || this.Session.EntityField.TypeId == Evado.Model.EvDataTypes.External_RadioButton_List )
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_CheckBox_List
+        || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.External_RadioButton_List )
       {
         optionList = this.AdapterObjects.getSelectionListOptions ( true );
 
         groupField = pageGroup.createSelectionListField (
           EdRecordField.FieldClassFieldNames.ExSelectionListId,
           EdLabels.Form_Field_External_Selection_Field_Label,
-          this.Session.EntityField.Design.ExSelectionListId,
+          this.Session.RecordField.Design.ExSelectionListId,
           optionList );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -918,7 +918,7 @@ namespace Evado.UniForm.Digital
           EdRecordField.FieldClassFieldNames.ExSelectionListCategory,
           EdLabels.Form_Field_External_Selection_Category_Field_Label,
          EdLabels.EntityField_External_Selection_Category_Field_Description,
-          this.Session.EntityField.Design.ExSelectionListCategory,
+          this.Session.RecordField.Design.ExSelectionListCategory,
           20 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
 
@@ -1222,7 +1222,7 @@ namespace Evado.UniForm.Digital
       //
       // form field numeric scaling value.
       //
-      optionList = Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "-12:-12;-9:-9;_6:-6;-3:-3;0;3:3;6:6;9:9;12:12" ); ;
+      optionList = Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "-12:-12;-9:-9;_6:-6;-3:-3;0:0;3:3;6:6;9:9;12:12" ); ;
 
       groupField = pageGroup.createSelectionListField (
         EdRecordField.FieldClassFieldNames.Unit_Scaling.ToString ( ),
