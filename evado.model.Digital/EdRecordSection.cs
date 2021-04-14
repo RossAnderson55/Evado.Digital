@@ -296,7 +296,7 @@ namespace Evado.Model.Digital
     /// <param name="Roles">';' delimted string of roles</param>
     /// <returns>True: if the role exists.</returns>
     // -------------------------------------------------------------------------------------
-    public bool hasRoleDisplay ( String Roles )
+    public bool hasReadAccess ( String Roles )
     {
       if ( Roles == null )
       {

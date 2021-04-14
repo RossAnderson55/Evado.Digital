@@ -4430,6 +4430,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [[h1 style=&apos;text-align: center;&apos;]]  {0} [[/h1]].
+        /// </summary>
+        public static string Generator_Disp_Field_Value_Format2 {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Field_Value_Format2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [[h2]] {0} [[/h2]].
         /// </summary>
         public static string Generator_Disp_H2_Format {

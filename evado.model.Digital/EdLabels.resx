@@ -3113,4 +3113,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Generator_Disp_H2_Format" xml:space="preserve">
     <value>[[h2]] {0} [[/h2]]</value>
   </data>
+  <data name="Generator_Disp_Field_Value_Format2" xml:space="preserve">
+    <value>[[h1 style='text-align: center;']]  {0} [[/h1]]</value>
+  </data>
 </root>

@@ -1138,11 +1138,19 @@ namespace Evado.UniForm.Digital
       // 
       foreach ( Evado.Model.Digital.EdRecordSection section in Layout.Design.FormSections )
       {
-        this.LogDebug ( "No: '" + section.No + "' "
-          + " Section: '" + section.Title + "' Role: " + section.ReadAccessRoles );
+        this.LogDebug ( "No: '{0}' Section: '{1}' Role: {2}, User Role:{3} ",
+          section.No, section.Title, section.ReadAccessRoles, this.Session.UserProfile.Roles );
 
-        if ( section.hasRoleDisplay ( this.Session.UserProfile.Roles ) == false )
+        if ( section.Title == String.Empty )
         {
+          this.LogDebug ( "Empty section" );
+          continue;
+        }
+
+        if ( section.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
+        {
+          this.LogDebug ( "User {0} does not have access to Section {1}",
+            this.Session.UserProfile.UserId, section.Title );
           continue;
         }
 
@@ -1196,36 +1204,35 @@ namespace Evado.UniForm.Digital
       Evado.Model.Digital.EdRecordSection section,
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "createDocumentLayout" );
+      this.LogMethod ( "createSectionFormFields" );
       //
       // Initialise the methods variables and objects.
       //
       int count = 0;
-      Evado.Model.UniForm.Group fieldGroup = PageObject.AddGroup (
-          String.Empty );
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group();
 
       if ( section.Title != String.Empty )
       {
-        fieldGroup = PageObject.AddGroup (
+        pageGroup = new Model.UniForm.Group (
             section.Title,
             section.Instructions,
             PageObject.EditAccess );
       }
-      fieldGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
       // If the section has field name then add the pageMenuGroup hide parameters.
       //
       if ( section.FieldId != String.Empty )
       {
-        fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Id,
+        pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Id,
           section.FieldId );
 
-        fieldGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Value,
+        pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Hide_Group_If_Field_Value,
           section.FieldValue );
       }
 
-      this.LogDebug ( "GroupType:  " + fieldGroup.GroupType );
+      this.LogDebug ( "GroupType:  " + pageGroup.GroupType );
 
       // 
       // Iterate through each form field in the section.
@@ -1242,7 +1249,7 @@ namespace Evado.UniForm.Digital
         }
 
 
-        this.createFormField ( field, fieldGroup, Layout.State );
+        this.createFormField ( field, pageGroup, Layout.State );
 
         count++;
 
@@ -1257,7 +1264,7 @@ namespace Evado.UniForm.Digital
         && PageObject.EditAccess == Model.UniForm.EditAccess.Disabled
         && Layout.Author == this.Session.UserProfile.UserId )
       {
-        var groupCommand = fieldGroup.addCommand (
+        var groupCommand = pageGroup.addCommand (
           EdLabels.Entity_Enable_Edit_Command_Title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities.ToString ( ),
@@ -1273,10 +1280,20 @@ namespace Evado.UniForm.Digital
         }
 
       }//END command selection block.
-      this.LogMethodEnd ( "createDocumentLayout" );
+
+      //
+      // Add the group if it has content.
+      //
+      if ( pageGroup.FieldList.Count > 0
+        || pageGroup.Description != String.Empty )
+      {
+        PageObject.AddGroup ( pageGroup );
+      }
+
+      this.LogMethodEnd ( "createSectionFormFields" );
       return count;
 
-    }//END method
+    }//END createSectionFormFields method
 
     //  =================================================================================
     /// <summary>
@@ -1332,13 +1349,11 @@ namespace Evado.UniForm.Digital
       //
       // create the field group object.
       //
-      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
-          String.Empty );
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
 
       if ( section.Title != String.Empty )
       {
-        pageGroup = PageObject.AddGroup (
-            section.Title );
+        pageGroup.Title = section.Title;
       }
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
@@ -1440,6 +1455,15 @@ namespace Evado.UniForm.Digital
       //groupField.Value = sbHtmlContent.ToString ( );
       pageGroup.Description = sbHtmlContent.ToString ( );
 
+      //
+      // Add the group if it has content.
+      //
+      if ( pageGroup.FieldList.Count > 0
+        || pageGroup.Description != String.Empty )
+      {
+        PageObject.AddGroup ( pageGroup );
+      }
+
       this.LogMethodEnd ( "creatSectionDocument" );
       return count;
 
@@ -1461,6 +1485,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getDisplaySingleValueField" );
       this.LogDebug ( "Title {0} V: {1}", Field.Title, Field.ItemValue );
+      String title = Field.Title.ToLower ( );
 
       if ( Field.ItemValue == String.Empty )
       {
@@ -1468,13 +1493,20 @@ namespace Evado.UniForm.Digital
       }
       this.LogDebug ( "Value {0}. ", Field.ItemValue );
 
-      if ( displayTitle == true )
+      if ( displayTitle == true
+        && title.Contains ( "title" ) == false
+        && title.Contains ( "name" ) == false )
       {
         sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format, Field.Title, Field.ItemValue );
         return;
       }
+      if ( title.Contains ( "title" ) == true
+        || title.Contains ( "name" ) == true )
+      {
+        sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Value_Format2, Field.ItemValue );
+        return;
+      }
       sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Value_Format, Field.ItemValue );
-
       return;
 
     }//END getDisplaySingleValueField method.
@@ -1596,7 +1628,7 @@ namespace Evado.UniForm.Digital
       bool displayTitle )
     {
       this.LogMethod ( "getDisplaySelectionField" );
-      this.LogDebug ( "id {0}, OptionList.Count {1}",Field.FieldId, Field.Design.OptionList.Count );
+      this.LogDebug ( "id {0}, OptionList.Count {1}", Field.FieldId, Field.Design.OptionList.Count );
       //
       // initialise the methods variables and objects.
       //
@@ -1655,12 +1687,11 @@ namespace Evado.UniForm.Digital
         }//Iterate through the values.
       }
 
-      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format+"\r\n", Field.Title, value );
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Field_Title_Value_Format + "\r\n", Field.Title, value );
 
       return;
 
     }//END getDisplaySelectionField method.
-
 
     //  =================================================================================
     /// <summary>
