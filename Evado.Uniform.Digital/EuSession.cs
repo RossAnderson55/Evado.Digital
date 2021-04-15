@@ -566,6 +566,11 @@ namespace Evado.UniForm.Digital
     /// </summary>
     public List<EvOption> LayoutVersionList { get; set; }
 
+    /// <summary>
+    /// This property indicated if the entity children list needs to be refreshed.
+    /// </summary>
+    public bool RefreshEntityChildren { get; set; }
+
 
     /// <summary>
     /// This property object contains the organisation country selection value
@@ -766,6 +771,7 @@ namespace Evado.UniForm.Digital
           && ( listEntity.ParentGuid == ParentGuid ) )
         {
           entity = listEntity;
+          entity.ButtonEditModeEnabled = false;
           exists = true;
         }
         else
@@ -833,6 +839,7 @@ namespace Evado.UniForm.Digital
             || listEntity.ParentUserId == ParentUserId ) )
         {
           entity = listEntity;
+          entity.ButtonEditModeEnabled = false;
           exists = true;
         }
         else

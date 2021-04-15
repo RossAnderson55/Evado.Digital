@@ -663,6 +663,15 @@ namespace Evado.Model.Digital
       set
       {
         this._LayoutId = value;
+
+        this._LayoutId = this._LayoutId.Replace ( "'", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( "/", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( @"\", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( @",", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( @";", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( @":", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( "\"", String.Empty );
+        this._LayoutId = this._LayoutId.Replace ( "=", String.Empty );
       }
     }
 
@@ -1011,10 +1020,8 @@ namespace Evado.Model.Digital
 
           if ( value != String.Empty )
           {
-            link = value;
+            return value;
           }
-
-          return link;
         }
 
         //
@@ -1031,18 +1038,11 @@ namespace Evado.Model.Digital
         if ( this.Design.LinkContentSetting == LinkContentSetting.First_Text_Field
           && this.Fields.Count > 1 )
         {
-
           String value = this.getFirstTextField ( );
 
           if ( value != String.Empty )
           {
-            link = value;
-
-            if ( this.Design.DisplayAuthorDetails == true )
-            {
-              link += EdLabels.Label_by + this.Updated;
-            }
-            return link;
+            return value;
           }
         }
 

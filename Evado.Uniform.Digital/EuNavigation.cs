@@ -688,6 +688,32 @@ namespace Evado.UniForm.Digital
       // Create the command to query Entities as a filtered list  
       // i.e. retrieves an organisation's child entity layout.
       //
+      if ( PageId.Contains ( EuAdapter.CONST_AUTHOR_PAGE_ID_SUFFIX ) == true )
+      {
+
+        string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
+        layoutId = layoutId.Replace ( EuAdapter.CONST_AUTHOR_PAGE_ID_SUFFIX, String.Empty );
+
+        this.LogDebug ( "AUTHOR: PageId: {0}, Title: {1} Layout: {2}, Filtered Query.", PageId, Title, layoutId );
+
+        pageCommand = new Model.UniForm.Command (
+          Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+        pageCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Author, this.Session.UserProfile.UserId );
+        pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
+
+        return pageCommand;
+      }
+
+      //
+      // Create the command to query Entities as a filtered list  
+      // i.e. retrieves an organisation's child entity layout.
+      //
       if ( PageId.Contains ( EuAdapter.CONST_ENTITY_FILTERED_LIST_SUFFIX ) == true )
       {
 
@@ -863,7 +889,10 @@ namespace Evado.UniForm.Digital
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
         pageCommand.AddParameter (
           EdRecord.FieldNames.ParentGuid,
-          this.Session.Entity.Guid ); 
+          this.Session.Entity.Guid );
+        pageCommand.AddParameter (
+          EdRecord.FieldNames.ParentLayoutId,
+          this.Session.Entity.LayoutId ); 
 
         return pageCommand;
       }

@@ -311,6 +311,11 @@ namespace Evado.UniForm.Digital
     public const string CONST_ENTITY_PREFIX = "Entity_";
 
     /// <summary>
+    /// This constant contains the entity prefix for a entity's author page identifier.
+    /// </summary>
+    public const string CONST_AUTHOR_PAGE_ID_SUFFIX = "_Author";
+
+    /// <summary>
     /// This constant contains the entity prefix for a entity's organisation parent page identifier.
     /// </summary>
     public const string CONST_ORG_PARENT_PAGE_ID_SUFFIX = "_Organisation_Parent";

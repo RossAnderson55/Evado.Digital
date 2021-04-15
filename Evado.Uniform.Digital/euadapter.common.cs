@@ -677,6 +677,12 @@ namespace Evado.UniForm.Digital
 
         EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
 
+        pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_AUTHOR_PAGE_ID_SUFFIX;
+        pageLabel = pageId.Replace ( "_", " " );
+        this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );
+
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageLabel ) );
+
 
         pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ENTITY_FILTERED_LIST_SUFFIX;
         pageLabel = pageId.Replace ( "_", " " );

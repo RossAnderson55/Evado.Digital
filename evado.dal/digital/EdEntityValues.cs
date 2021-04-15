@@ -795,7 +795,6 @@ namespace Evado.Dal.Digital
     {
       this.LogMethod ( "UpdateFields method " );
       this.LogDebug ( "RecordFieldList.Count: " + Entity.Fields.Count );
-      this.LogDebug ( "SubmitRecord: " + Entity.State );
       // 
       // Initialize the method debug log and the return event code. 
       // 
@@ -813,7 +812,7 @@ namespace Evado.Dal.Digital
       // Delete the sections
       //
       SqlUpdateStatement.AppendLine ( "DELETE FROM ED_ENTITY_VALUES "
-      + "WHERE " + EdEntityValues.DB_ENTITY_GUID + "= " + EdEntityValues.PARM_ENTITY_GUID + ";  \r\n\r\n" );
+      + "WHERE " + EdEntityValues.DB_ENTITY_GUID + "= " + EdEntityValues.PARM_ENTITY_GUID + "; " );
 
       // 
       // Iterate through the formfields object. 
@@ -822,7 +821,7 @@ namespace Evado.Dal.Digital
       {
         if ( field == null )
         {
-          //this.LogDebugValue ( "FIELD NULL" );
+          this.LogDebug ( "FIELD NULL" );
           continue;
         }
 
@@ -833,8 +832,7 @@ namespace Evado.Dal.Digital
         {
           field.Guid = Guid.NewGuid ( );
         }
-        this.LogDebug ( "field.FormFieldGuid: " + field.FieldGuid );
-        this.LogDebug ( "field.Guid: " + field.Guid );
+        this.LogDebug ( "field.FormFieldGuid: {0} field.Guid: {1}", field.FieldGuid, field.Guid );
 
         //
         // Create the list of update queries and parameters.
@@ -867,10 +865,14 @@ namespace Evado.Dal.Digital
       //
       try
       {
-        if ( EvSqlMethods.QueryUpdate ( SqlUpdateStatement.ToString ( ), parms ) == 0 )
+        int result = EvSqlMethods.QueryUpdate ( SqlUpdateStatement.ToString ( ), parms );
+
+        if ( result == 0 )
         {
           return EvEventCodes.Database_Record_Update_Error;
         }
+
+        this.LogDebug ( "result: " + result.ToString() );
       }
       catch ( Exception Ex )
       {
@@ -896,7 +898,7 @@ namespace Evado.Dal.Digital
       List<SqlParameter> ParmList,
       EdRecordField RecordField )
     {
-      this.LogMethod ( "updateField method. " );
+      this.LogMethod ( "GenerateUpdateQueryStatements" );
 
       //
       // If readonly field exit method.
@@ -933,6 +935,7 @@ namespace Evado.Dal.Digital
           }
       }
 
+      this.LogMethodEnd ( "GenerateUpdateQueryStatements" );
     }//END updateField method
 
     // =====================================================================================
@@ -942,15 +945,13 @@ namespace Evado.Dal.Digital
     /// <param name="SqlUpdateStatement">StringBuilder: containing the SQL update statemenet</param>
     /// <param name="ParmList">list of SqlParameter objects</param>
     /// <param name="RecordField">EvFormField: a formfield data object</param>
-    /// <param name="ColumnId">String: column identifier</param>
-    /// <param name="Row">Row: row index</param>
     // -------------------------------------------------------------------------------------
     private void updateSingleValueField (
       StringBuilder SqlUpdateStatement,
       List<SqlParameter> ParmList,
       EdRecordField RecordField )
     {
-      this.LogMethod ( "updateField method. " );
+      this.LogMethod ( "updateSingleValueField " );
       this.LogDebug ( "ValueCount: " + _ValueCount );
 
       // 
@@ -1020,7 +1021,7 @@ namespace Evado.Dal.Digital
         case EvDataTypes.Numeric:
           {
             prm = new SqlParameter ( EdEntityValues.PARM_VALUE_NUMERIC + "_" + this._ValueCount, SqlDbType.Float );
-            prm.Value = RecordField.ItemValue;
+            prm.Value = EvStatics.getFloat( RecordField.ItemValue );
             ParmList.Add ( prm );
             //
             // Create the add query .
@@ -1139,8 +1140,6 @@ namespace Evado.Dal.Digital
     /// <param name="SqlUpdateStatement">StringBuilder: containing the SQL update statemenet</param>
     /// <param name="ParmList">list of SqlParameter objects</param>
     /// <param name="EntityField">EvFormField: a formfield data object</param>
-    /// <param name="ColumnId">String: column identifier</param>
-    /// <param name="Row">Row: row index</param>
     // -------------------------------------------------------------------------------------
     private void updateCheckBoxValueField (
       StringBuilder SqlUpdateStatement,

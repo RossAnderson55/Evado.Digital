@@ -179,16 +179,14 @@ namespace Evado.Bll.Digital
     /// <summary>
     /// This class returns a list of form object based on VisitId, VisitId, FormId and state
     /// </summary>
-    /// <param name="LayoutId">string: (Mandatory) a layout identifier.</param>
-    /// <param name="EntityId">string: (Mandatory) a entity identifier.</param>
-    /// <param name="State">EvForm.FormObjecStates: (Optional) a form state.</param>
+    /// <param name="Entity">Entity Object.</param>
     /// <returns>List of EdRecord  objects</returns>
     //  ----------------------------------------------------------------------------------
     public List<EdRecord> getChildEntityList ( EdRecord Entity )
     {
       this.LogMethod ( "getChildEntityList" );
-      this.LogDebug ( "LayoutId {0).", Entity.LayoutId );
-      this.LogDebug ( "EntityId {0).", Entity.EntityId );
+      this.LogDebug ( "LayoutId {0}.", Entity.LayoutId );
+      this.LogDebug ( "EntityId {0}.", Entity.EntityId );
       //
       // Initialize the debuglog, a return list of form object and a formRecord field object. 
       //

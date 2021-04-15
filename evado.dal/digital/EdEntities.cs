@@ -592,6 +592,15 @@ namespace Evado.Dal.Digital
       entity.Design.AuthorAccess = EvSqlMethods.getString<EdRecord.AuthorAccessList> ( Row, EdEntityLayouts.DB_PARENT_ACCESS );
       entity.Design.RecordCategory = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_RECORD_CATEGORY );
       entity.Design.ParentEntities = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_PARENT_ENTITIES );
+      entity.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
+      entity.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
+
+      entity.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
+      if ( entity.Updated != string.Empty )
+      {
+        entity.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntities.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
+      }
+      entity.BookedOutBy = EvSqlMethods.getString ( Row, EdEntities.DB_BOOKED_OUT );
 
       entity.FilterFieldIds [ 0 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_0 );
       entity.FilterFieldIds [ 1 ] = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_FILTER_FIELD_1 );
@@ -604,23 +613,12 @@ namespace Evado.Dal.Digital
       //
       if ( SummaryQuery == false )
       {
-        entity.Design.HttpReference = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_HTTP_REFERENCE );
-        entity.Design.Instructions = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_INSTRUCTIONS );
         entity.Design.Description = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_DESCRIPTION );
         entity.Design.UpdateReason = Evado.Model.EvStatics.parseEnumValue<EdRecord.UpdateReasonList> (
           EvSqlMethods.getString ( Row, EdEntityLayouts.DB_UPDATE_REASON ) );
 
-
         entity.Design.JavaScript = EvSqlMethods.getString ( Row, EdEntityLayouts.DB_JAVA_SCRIPT );
         entity.Design.hasCsScript = EvSqlMethods.getBool ( Row, EdEntityLayouts.DB_HAS_CS_SCRIPT );
-
-
-        entity.Updated = EvSqlMethods.getString ( Row, EdEntities.DB_UPDATED_BY );
-        if ( entity.Updated != string.Empty )
-        {
-          entity.Updated += " on " + EvSqlMethods.getDateTime ( Row, EdEntities.DB_UPDATED_DATE ).ToString ( "dd MMM yyyy HH:mm" );
-        }
-        entity.BookedOutBy = EvSqlMethods.getString ( Row, EdEntities.DB_BOOKED_OUT );
 
         //
         // fill the comment list.
@@ -828,9 +826,9 @@ namespace Evado.Dal.Digital
       //
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
-       this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
 
-       this.LogDebug ( sqlQueryString );
+      this.LogDebug ( sqlQueryString );
 
       // this.LogDebug ( "Execute Query" );
       //
@@ -1405,7 +1403,7 @@ namespace Evado.Dal.Digital
       sqlQueryString = this.createSqlQueryStatement ( QueryParameters );
 
       //this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
-     // this.LogDebug ( sqlQueryString );
+      // this.LogDebug ( sqlQueryString );
 
       this.LogDebug ( "Execute Query" );
       //

@@ -712,11 +712,41 @@ namespace Evado.Model.UniForm
       {
         if ( parameter.Name == name )
         {
-          return parameter.Value;
+          return  parameter.Value ;
         }
       }
 
-      return string.Empty;
+      return String.Empty;
+
+    }//END GetParameter method
+
+    // ==================================================================================
+    /// <summary>
+    /// This method gets a parameter value.
+    /// </summary>
+    /// <param name="Name">String: the name of the parameter.</param>
+    /// <returns> String value of the header element</returns>
+    // ---------------------------------------------------------------------------------
+    public Guid GetParameterAsGuid ( object Name )
+    {
+      //
+      // get the string value of the parameter list.
+      //
+      String name = Name.ToString ( );
+      name = name.Trim ( );
+
+      //
+      // Iterate through the parameters to get the selectev value.
+      //
+      foreach ( Parameter parameter in this._ParameterList )
+      {
+        if ( parameter.Name == name )
+        {
+          return EvStatics.getGuid( parameter.Value );
+        }
+      }
+
+      return Guid.Empty;
 
     }//END GetParameter method
 

@@ -166,6 +166,9 @@ namespace Evado.UniForm.Digital
     bool EnableEntitySaveButtonUpdate = false;
     bool EnableEntityEditButtonUpdate = false;
 
+    Guid ParentGuid = Guid.Empty;
+    String ParentLayoutId = String.Empty;
+
     private EdRecord queryLayout = null;
     //
     // Initialise the page labels
@@ -256,6 +259,8 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
       this.LogValue ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
       this.LogValue ( "EnableEntitySaveButtonUpdate: " + this.EnableEntitySaveButtonUpdate );
+      this.LogValue ( "ButtonEditModeEnabled: " + this.Session.Entity.ButtonEditModeEnabled );
+      this.LogValue ( "RefreshEntityChildren: " + this.Session.RefreshEntityChildren );
 
       try
       {
@@ -1196,6 +1201,20 @@ namespace Evado.UniForm.Digital
         //
         this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
 
+        //
+        // Set the parent entity variables.
+        //
+        this.ParentLayoutId = this.Session.Entity.LayoutId;
+        this.ParentGuid = this.Session.Entity.Guid;
+        if(  PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) ==  true)
+        {
+        this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
+        }
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
+        {
+          this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+        }
+
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
@@ -1219,7 +1238,7 @@ namespace Evado.UniForm.Digital
         //
         // Execute the monitor list record query.
         //
-        this.executeRecordQuery ( );
+        this.executeRecordQuery ();
 
         // 
         // Initialise the client ResultData object.
@@ -1367,7 +1386,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method executed the form record query of the database.
     /// </summary>
-    /// <param name="queryParameters">EvQueryParameters: conting the query parameters</param>
+    /// <param name="ParentGuid">Guid: parent guid</param>
     /// <remarks>
     /// This method returns a list of forms based on the selection type of form record.
     /// </remarks>
@@ -1378,10 +1397,12 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "EntityLayoutIdSelection: " + this.Session.Selected_EntityLayoutId );
       this.LogDebug ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
       this.LogDebug ( "EntityStateSelection: " + this.Session.EntityStateSelection );
+      this.LogDebug ( "parentGuid: {0}.", this.ParentGuid );
       //
       // Initialise the methods variables and objects.
       //
       EdQueryParameters queryParameters = new EdQueryParameters ( );
+
 
       // 
       // Initialise the query values to the currently selected objects identifiers.
@@ -1424,6 +1445,11 @@ namespace Evado.UniForm.Digital
       if ( this.Session.EntityLayout.Design.ParentType == EdRecord.ParentTypeList.Entity )
       {
         queryParameters.ParentGuid = this.Session.Entity.Guid;
+
+        if ( this.ParentGuid != Guid.Empty )
+        {
+          queryParameters.ParentGuid = ParentGuid;
+        }
       }
 
       //
@@ -1441,6 +1467,8 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogDebug ( "Selected LayoutId: '" + queryParameters.LayoutId + "'" );
+      this.LogDebug ( "Selected ParentType: '" + queryParameters.ParentType + "'" );
+      this.LogDebug ( "Selected ParentGuid: '" + queryParameters.ParentGuid + "'" );
       this.LogDebug ( "Selected Org_City: '" + queryParameters.Org_City + "'" );
       this.LogDebug ( "Selected Org_Country: '" + queryParameters.Org_Country + "'" );
       this.LogDebug ( "Selected Org_PostCode: '" + queryParameters.Org_PostCode + "'" );
@@ -1474,11 +1502,16 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getEntity_ListGroup" );
       this.LogDebug ( "PageObject.EditAccess {0}.", PageObject.EditAccess );
+      this.LogDebug ( "this.Session.EntityLayout.Title {0}.", this.Session.EntityLayout.Title );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
+      //
+      // get the selected entity.
+      //
+      this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
 
       // 
       // Create the record display pageMenuGroup.
@@ -1506,7 +1539,9 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.Selected_EntityLayoutId != String.Empty
         && this.Session.PageId != EdStaticPageIds.Entity_Filter_View.ToString ( )
-        && pageGroup.EditAccess == Model.UniForm.EditAccess.Enabled )
+        && pageGroup.EditAccess == Model.UniForm.EditAccess.Enabled
+        && ( this.Session.EntityLayout.Design.ParentEntities.Contains( this.ParentLayoutId ) == true
+          || this.Session.EntityLayout.Design.ParentEntities == String.Empty ) )
       {
         groupCommand = pageGroup.addCommand (
           String.Format ( EdLabels.Entity_Create_New_List_Command_Title, this.Session.EntityLayout.Title ),
@@ -1625,11 +1660,24 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-      EdQueryParameters queryParameters = new EdQueryParameters ( );
       List<EdRecord> recordList = new List<EdRecord> ( );
       this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
       this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
       this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
+
+      //
+      // Set the parent entity variables.
+      //
+      this.ParentLayoutId = this.Session.Entity.LayoutId;
+      this.ParentGuid = this.Session.Entity.Guid;
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) == true )
+      {
+        this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
+      }
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
+      {
+        this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+      }
 
       try
       {
@@ -2848,6 +2896,11 @@ namespace Evado.UniForm.Digital
           return;
         }
 
+        //
+        // reload the entity children
+        //
+        this.ReloadEntityChildren ( PageCommand );
+
         // 
         // Log access to page.
         // 
@@ -2900,7 +2953,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getObject" );
-      this.LogDebug ( "UserProfile.Roles: {0}.", this.Session.UserProfile.Roles );
+      this.LogDebug ( "RefreshEntityChildren: {0}.", this.Session.RefreshEntityChildren );
       try
       {
         // 
@@ -2912,6 +2965,11 @@ namespace Evado.UniForm.Digital
         // Get the record.
 
         var result = this.GetEntity ( PageCommand );
+
+        //
+        // reload the entity children if needed.
+        //
+        this.ReloadEntityChildren ( PageCommand );
 
         // 
         // if the guid is empty the parameter was not found to exit.
@@ -3051,6 +3109,9 @@ namespace Evado.UniForm.Digital
       {
         this.LogDebug ( "Entity Loaded" );
         this.LogMethodEnd ( "GetEntity" );
+
+        this.Session.RefreshEntityChildren = true;
+
         return EvEventCodes.Ok;
       }
 
@@ -3064,10 +3125,13 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.Entity != null )
       {
+        this.Session.RefreshEntityChildren = true;
+
         this.LogDebug ( "Entity Loaded from dictionary" );
         this.LogMethodEnd ( "GetEntity" );
         return EvEventCodes.Ok;
       }
+
 
       // 
       // Retrieve the record object from the database via the DAL and BLL layers.
@@ -3093,10 +3157,49 @@ namespace Evado.UniForm.Digital
       //
       this.Session.PushEntity ( this.Session.Entity );
 
+      this.Session.RefreshEntityChildren = false;
+
       this.LogMethodEnd ( "GetEntity" );
       return EvEventCodes.Ok;
 
     }//ENd GetEntity method
+
+    //  =============================================================================== 
+    /// <summary>
+    ///  This method retrieves the entity into memory
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    //  ---------------------------------------------------------------------------------
+    private void ReloadEntityChildren (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "ReloadEntityChildren" );
+
+      if (  this.Session.RefreshEntityChildren == false
+        || PageCommand.Method != Model.UniForm.ApplicationMethods.Get_Object )
+      {
+        return;
+      };
+      this.LogDebug ( "Layout {0}, Entity {1}, Title {2}.",
+        this.Session.Entity.LayoutId,
+        this.Session.Entity.EntityId, 
+        this.Session.Entity.Title );
+
+      // 
+      // Retrieve the record object from the database via the DAL and BLL layers.
+      // 
+      this.Session.Entity.ChildEntities = this._Bll_Entities.getChildEntityList( this.Session.Entity );
+
+      this.LogClass ( this._Bll_Entities.Log );
+
+      this.LogDebug ( "Entity {0}, Title {1}.", this.Session.Entity.RecordId, this.Session.Entity.Title );
+      this.LogDebug ( "There are {0} of fields in the record.", this.Session.Entity.Fields.Count );
+
+      this.Session.RefreshEntityChildren = false;
+
+      this.LogMethodEnd ( "ReloadEntityChildren" );
+
+    }//ENd ReloadEntityChildren method
 
     //  =============================================================================== 
     /// <summary>
@@ -3455,6 +3558,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getDataObject_PageCommands" );
+      this.LogDebug ( "Entity.ButtonEditModeEnabled {0}. ", this.Session.Entity.ButtonEditModeEnabled );
 
       //
       // Initialise the methods variables and objects.
@@ -3782,7 +3886,8 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "createObject" );
-      this.LogDebug ( "Entity_SelectedLayoutId: " + this.Session.Selected_EntityLayoutId );
+      this.LogDebug ( "PageCommand: {0}.", PageCommand.getAsString ( false, true ) ); 
+      this.LogDebug ( "Entity_SelectedLayoutId: {0}.", this.Session.Selected_EntityLayoutId );
       try
       {
         //
@@ -3806,16 +3911,25 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         //    
         string LayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
-        Guid parentGuid = PageCommand.GetGuid ( );
-
-        if ( parentGuid == Guid.Empty )
+        //
+        // Set the parent entity variables.
+        //
+        this.ParentLayoutId = this.Session.Entity.LayoutId;
+        this.ParentGuid = this.Session.Entity.Guid;
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) == true )
         {
-          parentGuid = this.Session.Entity.Guid;
+          this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
         }
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
+        {
+          this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+        }
+        this.LogDebug ( "ParentGuid: {0}.", this.ParentGuid );
+        this.LogDebug ( "ParentLayoutId: {0}.", this.ParentLayoutId );
         //
         // Create the new entity.
         //
-        this.Session.Entity = this.CreateNewEntity ( LayoutId, parentGuid );
+        this.Session.Entity = this.CreateNewEntity ( LayoutId, this.ParentGuid );
 
         if ( this.Session.Entity.Guid == Guid.Empty )
         {
@@ -4037,7 +4151,7 @@ namespace Evado.UniForm.Digital
               break;
             }
         }
-        this.LogValue ( "Actual Action: " + this.Session.Entity.SaveAction );
+        this.LogDebug ( "Actual Action: " + this.Session.Entity.SaveAction );
 
         // 
         // Execute the save record groupCommand to save the record values to the 
@@ -4070,6 +4184,12 @@ namespace Evado.UniForm.Digital
 
           this.LogMethodEnd ( "updateObject" );
           return this.Session.LastPage;
+        }
+
+        if ( this.Session.Entity.Design.ParentType == EdRecord.ParentTypeList.Entity )
+        {
+          this.LogDebug ( "Refreshing Entity Children" );
+          this.Session.RefreshEntityChildren = true;
         }
 
         //
