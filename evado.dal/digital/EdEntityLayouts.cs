@@ -440,6 +440,8 @@ namespace Evado.Dal.Digital
           case EvDataTypes.Check_Box_List:
           case EvDataTypes.Selection_List:
           case EvDataTypes.External_Selection_List:
+          case EvDataTypes.External_CheckBox_List:
+          case EvDataTypes.External_RadioButton_List:
           case EvDataTypes.Horizontal_Radio_Buttons:
           case EvDataTypes.Radio_Button_List:
             {

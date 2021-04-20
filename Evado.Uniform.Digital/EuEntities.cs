@@ -1865,7 +1865,6 @@ namespace Evado.UniForm.Digital
         for ( int filterIndex = 0; filterIndex < queryLayout.FilterFieldIds.Length; filterIndex++ )
         {
           string fieldId = queryLayout.FilterFieldIds [ filterIndex ];
-          //this.LogDebug ( "Index {0}, FieldId {1}. ", filterIndex, fieldId );
 
           if ( fieldId == String.Empty )
           {
@@ -1883,7 +1882,7 @@ namespace Evado.UniForm.Digital
             continue;
           }
 
-          this.LogDebug ( "field.FieldId {0}. ", field.FieldId );
+          this.LogDebug ( "field.FieldId {0} - {1}. ", field.FieldId, field.Title );
 
           //
           // retrieve the current selection filter value.
