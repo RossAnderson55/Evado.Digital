@@ -605,7 +605,7 @@ namespace Evado.Bll.Digital
     public EvEventCodes UpdateEntity (
       EdRecord Entity )
     {
-      this.LogMethod ( "saveItem method. " );
+      this.LogMethod ( "UpdateEntity" );
       this.LogValue ( "Entity.Guid: " + Entity.Guid );
       this.LogValue ( "LayoutGuid: " + Entity.LayoutGuid );
       this.LogValue ( "SaveAction: " + Entity.SaveAction );
@@ -658,6 +658,7 @@ namespace Evado.Bll.Digital
       // 
       // Return the update status.
       // 
+      this.LogMethodEnd ( "UpdateEntity" );
       return iReturn;
 
     }//END saveRecord method.

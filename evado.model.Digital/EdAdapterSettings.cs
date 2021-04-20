@@ -93,6 +93,16 @@ namespace Evado.Model.Digital
       DemoRegistrationVideoUrl,
 
       /// <summary>
+      /// This enumeration defines the Vimeo Embedded Video base url.
+      /// </summary>
+      VimeoEmbeddedUrl,
+
+      /// <summary>
+      /// This enumeration defines the Vimeo Embedded Video base url.
+      /// </summary>
+      YouTubeEmbeddedUrl,
+
+      /// <summary>
       /// This enumeration defines a state field name of an customer
       /// </summary>
       State,
@@ -126,6 +136,11 @@ namespace Evado.Model.Digital
       /// This enumeration definse a collecting binary data field name of a trial
       /// </summary>
       Enable_Binary_Data,
+
+      /// <summary>
+      /// This enumeration defines if the Enable Entity Version field ley
+      /// </summary>
+      EnableAdminUpdateOfIssuedObjects,
 
       /// <summary>
       /// This enumeration defines if the user profile update can update the user's organisation details.
@@ -493,7 +508,26 @@ namespace Evado.Model.Digital
 
     // =====================================================================================
     /// <summary>
-    /// This property if the user can update their organisation deails.
+    /// This property if enabled this enables administrators to update issued entity properties.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public bool EnableAdminUpdateOfIssuedObjects
+    {
+      get
+      {
+        return EvStatics.getBool (
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.EnableAdminUpdateOfIssuedObjects ) );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.EnableAdminUpdateOfIssuedObjects,
+          EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+    // =====================================================================================
+    /// <summary>
+    /// This property if enabled hides the 'Submit' button and only uses the Save button to save the object.
     /// </summary>
     // -------------------------------------------------------------------------------------
     public bool EnableEntitySaveButtonUpdate
@@ -545,6 +579,42 @@ namespace Evado.Model.Digital
       {
         this.setParameter ( EdAdapterSettings.AdapterFieldNames.Enable_User_Address_Update,
           EvDataTypes.Boolean, value.ToString ( ) );
+      }
+    }
+
+
+    /// <summary>
+    /// This property contains the vimeo embedded video base url.
+    /// </summary>
+    public string VimeoEmbeddedUrl
+    {
+      get
+      {
+        return
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.VimeoEmbeddedUrl );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.VimeoEmbeddedUrl,
+          EvDataTypes.Text, value.ToString ( ) );
+      }
+    }
+
+
+    /// <summary>
+    /// This property contains the youtube embedded video base url.
+    /// </summary>
+    public string YouTubeEmbeddedUrl
+    {
+      get
+      {
+        return
+          this.getParameter ( EdAdapterSettings.AdapterFieldNames.YouTubeEmbeddedUrl );
+      }
+      set
+      {
+        this.setParameter ( EdAdapterSettings.AdapterFieldNames.YouTubeEmbeddedUrl,
+          EvDataTypes.Text, value.ToString ( ) );
       }
     }
 
@@ -739,8 +809,8 @@ namespace Evado.Model.Digital
         optionList.Add ( new EvOption ( ) );
       }
 
-      optionList.Add ( new EvOption ( "Evado" ) );
-      optionList.Add ( new EvOption ( "Customer" ) );
+      optionList.Add ( new EvOption ( "Evado", "Evado" ) );
+      optionList.Add ( new EvOption ( "Customer", "Customer" ) );
 
       //
       // get an array of org types
@@ -1222,6 +1292,12 @@ namespace Evado.Model.Digital
             return;
           }
 
+        case EdAdapterSettings.AdapterFieldNames.EnableAdminUpdateOfIssuedObjects:
+          {
+            this.setParameter ( AdapterFieldNames.EnableAdminUpdateOfIssuedObjects, EvDataTypes.Boolean, Value );
+            return;
+          }
+
         case EdAdapterSettings.AdapterFieldNames.Enable_User_Organisation_Update:
           {
             this.setParameter ( AdapterFieldNames.Enable_User_Organisation_Update, EvDataTypes.Boolean, Value );
@@ -1271,6 +1347,19 @@ namespace Evado.Model.Digital
             this.DefaultOrgType = Value;
             return;
           }
+
+        case EdAdapterSettings.AdapterFieldNames.VimeoEmbeddedUrl:
+          {
+            this.setParameter ( AdapterFieldNames.VimeoEmbeddedUrl, EvDataTypes.Text, Value );
+            return;
+          }
+
+        case EdAdapterSettings.AdapterFieldNames.YouTubeEmbeddedUrl:
+          {
+            this.setParameter ( AdapterFieldNames.YouTubeEmbeddedUrl, EvDataTypes.Text, Value );
+            return;
+          }
+
 
         case EdAdapterSettings.AdapterFieldNames.Static_Query_Filter_Options:
           {

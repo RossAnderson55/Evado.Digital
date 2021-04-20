@@ -1345,7 +1345,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Html_Link;
+      pageField.Type = EvDataTypes.Http_Link;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;

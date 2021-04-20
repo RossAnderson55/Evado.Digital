@@ -1962,6 +1962,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Administrator to update issued Entity Properties:.
+        /// </summary>
+        public static string Config_EnableAdminEntityUpdate_Field_Label {
+            get {
+                return ResourceManager.GetString("Config_EnableAdminEntityUpdate_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden Organisation Fields:.
         /// </summary>
         public static string Config_HiddenOrgFields_List_Field_Label {
@@ -2919,6 +2928,24 @@ namespace Evado.Model.Digital {
         public static string Form_Field_External_URL_Field_Label {
             get {
                 return ResourceManager.GetString("Form_Field_External_URL_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Instructions for entering the URL if the URL is user defined..
+        /// </summary>
+        public static string Form_Field_External_URL_Inst_Field_Label {
+            get {
+                return ResourceManager.GetString("Form_Field_External_URL_Inst_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Media URL Title:.
+        /// </summary>
+        public static string Form_Field_External_URL_Title_Field_Label {
+            get {
+                return ResourceManager.GetString("Form_Field_External_URL_Title_Field_Label", resourceCulture);
             }
         }
         
@@ -4444,6 +4471,19 @@ namespace Evado.Model.Digital {
         public static string Generator_Disp_H2_Format {
             get {
                 return ResourceManager.GetString("Generator_Disp_H2_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[table]]
+        ///[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] 
+        ///[[a href=&apos;{1}&apos; target=&apos;_blank&apos; tabindex = &apos; ]] {2}[[/a ]]
+        /// [[/td]] [[/tr]]
+        ///[[/table]].
+        /// </summary>
+        public static string Generator_Disp_Html_Field_Value_Format {
+            get {
+                return ResourceManager.GetString("Generator_Disp_Html_Field_Value_Format", resourceCulture);
             }
         }
         
@@ -8066,6 +8106,24 @@ namespace Evado.Model.Digital {
         public static string Settings_Standard_Trial_Max_Subject_No_Field_Label {
             get {
                 return ResourceManager.GetString("Settings_Standard_Trial_Max_Subject_No_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vimeo embedded base url:.
+        /// </summary>
+        public static string Settings_Vimeo_Video_URL_Field_Label {
+            get {
+                return ResourceManager.GetString("Settings_Vimeo_Video_URL_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YouTube embedded base url:.
+        /// </summary>
+        public static string Settings_YouTube_Video_URL_Field_Label {
+            get {
+                return ResourceManager.GetString("Settings_YouTube_Video_URL_Field_Label", resourceCulture);
             }
         }
         

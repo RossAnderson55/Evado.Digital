@@ -507,7 +507,7 @@ namespace Evado.Model.Digital
         {
           case Evado.Model.EvDataTypes.Read_Only_Text:
           case Evado.Model.EvDataTypes.Sound:
-          case Evado.Model.EvDataTypes.Html_Link:
+          case Evado.Model.EvDataTypes.Http_Link:
           case Evado.Model.EvDataTypes.Video:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:

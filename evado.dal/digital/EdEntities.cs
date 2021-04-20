@@ -2258,9 +2258,10 @@ namespace Evado.Dal.Digital
       // Get the record fields
       // 
       Entity.Fields = dal_EntityValues.GetlEntityValues ( Entity );
-      //this.LogClass ( dal_EntityValues.Log );
+      this.LogClass ( dal_EntityValues.Log );
 
       this.LogValue ( "Field count: " + Entity.Fields.Count );
+
       this.LogMethodEnd ( "GetEntityData" );
 
     }//END getRecordData method
@@ -2358,6 +2359,102 @@ namespace Evado.Dal.Digital
     #endregion
 
     #region Entity Update queries
+
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves a form object based on Guid
+    /// </summary>
+    /// <param name="EntityGuid">Guid: (Mandatory) Global Unique object identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the Guid is empty. 
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Loop through the table and extract the datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the form data object. 
+    /// </remarks>
+    //  ------------------------------------------------------------------------------------
+    private EdRecord GetEntityGuid (
+      Guid EntityGuid )
+    {
+      this.LogMethod ( "GetEntity" );
+      this.LogDebug ( "EntityGuid: " + EntityGuid );
+
+      //
+      // Initialize the debug log, a return form object and a formfield object.
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the Guid is not metpy. 
+      // 
+      if ( EntityGuid == Guid.Empty )
+      {
+        return entity;
+      }
+
+      // 
+      // Set the query parameter values
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdEntities.PARM_ENTITY_GUID, SqlDbType.UniqueIdentifier),
+      };
+      cmdParms [ 0 ].Value = EntityGuid;
+
+      // 
+      // Generate SQL query string
+      // 
+      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_GUID + "=" + EdEntities.PARM_ENTITY_GUID + ") ;" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, false );
+
+      }//END Using method
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.GetEntityValues ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      return entity;
+
+    }//END getRecord method
+
 
     // =====================================================================================
     /// <summary>
@@ -2742,7 +2839,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method updates the form table with the record data object.
     /// </summary>
-    /// <param name="Record">EvForm: a form data object</param>
+    /// <param name="Entity">EvForm: a form data object</param>
     /// <returns>EvEventCodes: an event code for updating form record object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -2760,17 +2857,15 @@ namespace Evado.Dal.Digital
     /// 6. Return the event code for updating items. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateItem ( EdRecord Record )
+    public EvEventCodes UpdateItem ( EdRecord Entity )
     {
       //
       // Initialize the method debug log, internal variables and objects. 
       //
       this.LogMethod ( "updateRecord, " );
-      this.LogDebug ( "UserProfile.RoleId: " + this.ClassParameters.UserProfile.Roles );
-      this.LogDebug ( "Guid: " + Record.Guid );
-      this.LogDebug ( "RecordId: " + Record.RecordId );
-      this.LogDebug ( "FormGuid: " + Record.LayoutGuid );
-      this.LogDebug ( "State: " + Record.State );
+      this.LogDebug ( "Guid: " + Entity.Guid );
+      this.LogDebug ( "EntityId: " + Entity.EntityId );
+      this.LogDebug ( "State: " + Entity.State );
 
       int databaseRecordAffected = 0;
       EvDataChanges dataChanges = new EvDataChanges ( this.ClassParameters );
@@ -2780,7 +2875,7 @@ namespace Evado.Dal.Digital
       // Validate whether the record object exists.
       // 
       this.LogDebug ( "Get previous record" );
-      EdRecord previousRecord = this.GetEntity ( Record.RecordId );
+      EdRecord previousRecord = this.GetEntityGuid ( Entity.Guid);
       if ( previousRecord.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Record_Id_Error;
@@ -2789,13 +2884,13 @@ namespace Evado.Dal.Digital
       // 
       // Set the data change object values.
       // 
-      EvDataChange dataChange = this.setChangeRecord ( Record, previousRecord );
+      EvDataChange dataChange = this.setChangeRecord ( Entity, previousRecord );
 
       // 
       // Define the SQL query parameters and load the query values.
       // 
       SqlParameter [ ] cmdParms = GetParameters ( );
-      SetParameters ( cmdParms, Record );
+      SetParameters ( cmdParms, Entity );
 
       //
       // Execute the update command.
@@ -2809,12 +2904,12 @@ namespace Evado.Dal.Digital
       //
       // Update the records field values..
       //
-      this.updateRecordData ( Record );
+      this.updateRecordData ( Entity );
 
       //
       // Update the records comments.
       //
-      this.updateRecordComments ( Record );
+      this.updateRecordComments ( Entity );
       // 
       // Add the data change values to the database.
       // 
@@ -2842,13 +2937,13 @@ namespace Evado.Dal.Digital
     {
       this.LogMethod ( "updateRecordData." );
       this.LogDebug ( "State: " + Entity.StateDesc );
+      this.LogValue ( "Entity.Fields.Count: " + Entity.Fields.Count );
       // 
       // Initialise the methods variables and objects.
       // 
       EdEntityValues dal_EntityValues = new EdEntityValues ( this.ClassParameters );
 
       // 
-      this.LogValue ( "Entity.Fields.Count: " + Entity.Fields.Count );
       if ( Entity.Fields.Count == 0 )
       {
         return EvEventCodes.Ok;

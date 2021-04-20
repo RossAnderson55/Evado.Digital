@@ -152,7 +152,7 @@ namespace Evado.Dal.Digital
       EdRecordField entityField = new EdRecordField ( );
 
       // 
-      // Fill the evForm object.l
+      // Fill the evForm object.
       //
       entityField.Guid = EvSqlMethods.getGuid ( Row, EdEntityValues.DB_VALUES_GUID );
       entityField.RecordGuid = EvSqlMethods.getGuid ( Row, EdEntities.DB_ENTITY_GUID );
@@ -208,7 +208,17 @@ namespace Evado.Dal.Digital
       if ( entityField.Design.FieldHeight < 2 )
       {
         entityField.Design.FieldHeight = 5;
-      } 
+      }
+
+      if ( entityField.TypeId == EvDataTypes.External_Image
+        || entityField.TypeId == EvDataTypes.Streamed_Video
+        || entityField.TypeId == EvDataTypes.Image)
+      {
+        entityField.RecordMedia = new EdRecordMedia ( );
+
+        entityField.RecordMedia.Data = entityField.Design.JavaScript;
+      }
+
 
       //
       // if the field is a signature then decrypt the field.
@@ -832,7 +842,7 @@ namespace Evado.Dal.Digital
         {
           field.Guid = Guid.NewGuid ( );
         }
-        this.LogDebug ( "field.FormFieldGuid: {0} field.Guid: {1}", field.FieldGuid, field.Guid );
+        //this.LogDebug ( "field.FormFieldGuid: {0} field.Guid: {1} fieldid: {2}", field.FieldGuid, field.Guid, field.FieldId );
 
         //
         // Create the list of update queries and parameters.

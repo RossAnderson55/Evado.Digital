@@ -231,7 +231,7 @@ namespace Evado.UniForm.Digital
            EuAdapterClasses.Events.ToString ( ),
            Model.UniForm.ApplicationMethods.Get_Object );
 
-          helpCommand.Type = Evado.Model.UniForm.CommandTypes.Html_Link;
+          helpCommand.Type = Evado.Model.UniForm.CommandTypes.Http_Link;
 
           helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (
@@ -612,7 +612,7 @@ namespace Evado.UniForm.Digital
          EuAdapterClasses.Events.ToString ( ),
          Model.UniForm.ApplicationMethods.Get_Object );
 
-        helpCommand.Type = Evado.Model.UniForm.CommandTypes.Html_Link;
+        helpCommand.Type = Evado.Model.UniForm.CommandTypes.Http_Link;
 
         helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
            EvcStatics.createHelpUrl (

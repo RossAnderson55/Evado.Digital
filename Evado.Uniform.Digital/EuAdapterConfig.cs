@@ -2032,6 +2032,15 @@ namespace Evado.UniForm.Digital
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
+      // create the enable administrators to edit issued object properties
+      //
+      pageField = pageGroup.createBooleanField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.EnableAdminUpdateOfIssuedObjects,
+        EdLabels.Config_EnableAdminEntityUpdate_Field_Label,
+        this.AdapterObjects.Settings.EnableAdminUpdateOfIssuedObjects );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
       // create the enable admin group on all entity pages.
       //
       pageField = pageGroup.createBooleanField (
@@ -2279,6 +2288,24 @@ namespace Evado.UniForm.Digital
         EdLabels.Config_Default_Org_Type_Field_Label,
         this.AdapterObjects.Settings.DefaultOrgType,
         optionList );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the demonstratoin page video URL .
+      //
+      pageField = pageGroup.createTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.VimeoEmbeddedUrl.ToString ( ),
+        EdLabels.Settings_Vimeo_Video_URL_Field_Label,
+        this.AdapterObjects.Settings.VimeoEmbeddedUrl, 100 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      //
+      // create the demonstratoin page video URL .
+      //
+      pageField = pageGroup.createTextField (
+        Model.Digital.EdAdapterSettings.AdapterFieldNames.YouTubeEmbeddedUrl.ToString ( ),
+        EdLabels.Settings_YouTube_Video_URL_Field_Label,
+        this.AdapterObjects.Settings.YouTubeEmbeddedUrl, 100 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       //

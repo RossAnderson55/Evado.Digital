@@ -2963,8 +2963,13 @@ namespace Evado.UniForm.Digital
 
         //
         // Get the record.
-
+        //
         var result = this.GetEntity ( PageCommand );
+
+        //
+        // add missing fields.
+        //
+        this.AddNewFields ( );
 
         //
         // reload the entity children if needed.
@@ -3163,6 +3168,72 @@ namespace Evado.UniForm.Digital
       return EvEventCodes.Ok;
 
     }//ENd GetEntity method
+
+    //  =============================================================================== 
+    /// <summary>
+    ///  This method adds any fields that exist in the template layout but not the 
+    ///  Entity.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    private void AddNewFields ( )
+    {
+      this.LogMethod ( "AddNewFields" );
+      this.LogDebug ( "Entity Field count {0}.", this.Session.Entity.Fields.Count );
+
+
+      //
+      // if the administrator cannot update issued object then full verisoning is 
+      // operating so new template fields cannot be added to entities.
+      //
+      if ( this.AdapterObjects.Settings.EnableAdminUpdateOfIssuedObjects == false )
+      {
+        return;
+      }
+
+      this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout (
+        this.Session.Entity.LayoutId );
+      this.LogDebug ( "Layout Field count {0}.", this.Session.EntityLayout.Fields.Count );
+
+      //
+      // iterate through the layout field looking for an existing entity field
+      // and add the missing fields.
+      //
+      foreach ( EdRecordField field in this.Session.EntityLayout.Fields )
+      {
+        this.LogDebug ( "Field Guid {0}, FieldID {1}.", field.Guid, field.FieldId );
+        EdRecordField entityField = this.Session.Entity.GetFieldObject ( field.FieldId );
+
+        if ( entityField != null )
+        {
+          this.LogDebug ( "Field Guid {0}, FieldGuid {1}, FieldId (2).", entityField.Guid, entityField.FieldGuid, entityField.FieldId );
+        }
+        //
+        // if the returned field is null then field was not found so add a field object 
+        // to the entity to collect the relevant data.
+        //
+        if ( entityField == null )
+        {
+          this.LogDebug ( "Null Field Id {0}.", field.FieldId  );
+          EdRecordField newField = new EdRecordField ( );
+          newField.Guid = Guid.NewGuid ( );
+          newField.FieldGuid = field.FieldGuid;
+          newField.LayoutGuid = field.LayoutGuid;
+          newField.RecordGuid = field.RecordGuid;
+          newField.FieldId = field.FieldId;
+          newField.LayoutId = field.LayoutId;
+          newField.RecordMedia = field.RecordMedia;
+          newField.Table = field.Table;
+          newField.Design = field.Design;
+
+          this.Session.Entity.Fields.Add ( newField );
+        }
+
+      }//END layout field iteration loop
+
+      this.LogDebug ( "NEW Entity Field count {0}.", this.Session.Entity.Fields.Count );
+      this.LogMethodEnd ( "AddNewFields" );
+
+    }//ENd ReloadEntityChildren method
 
     //  =============================================================================== 
     /// <summary>
@@ -4255,6 +4326,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
+
       // 
       // Initialise method variables and objects.
       // 

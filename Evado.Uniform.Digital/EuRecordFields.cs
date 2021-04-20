@@ -319,7 +319,7 @@ namespace Evado.UniForm.Digital
         // Extract the ResultData type to validated if it has been changed.
         //
         String stDataType = PageCommand.GetParameter (
-          EdRecordField.FieldClassFieldNames.TypeId.ToString ( ) );
+          EdRecordField.ClassFieldNames.TypeId.ToString ( ) );
         string value = PageCommand.GetParameter ( EuRecordLayouts.CONST_REFRESH );
 
         //
@@ -611,7 +611,7 @@ namespace Evado.UniForm.Digital
       // Form field id
       //
       groupField = pageGroup.createTextField (
-        EdRecordField.FieldClassFieldNames.FieldId.ToString ( ),
+        EdRecordField.ClassFieldNames.FieldId.ToString ( ),
         EdLabels.Form_Field_Identifier_Field_Label,
         this.Session.RecordField.FieldId,
         20 );
@@ -628,7 +628,7 @@ namespace Evado.UniForm.Digital
       optionList = EdRecordField.getDataTypes ( );
 
       groupField = pageGroup.createSelectionListField (
-        EdRecordField.FieldClassFieldNames.TypeId.ToString ( ),
+        EdRecordField.ClassFieldNames.TypeId.ToString ( ),
         EdLabels.Form_Field_Type_Field_Label,
         this.Session.RecordField.TypeId.ToString ( ),
         optionList );
@@ -647,7 +647,7 @@ namespace Evado.UniForm.Digital
       // Form title
       //
       groupField = pageGroup.createTextField (
-        EdRecordField.FieldClassFieldNames.Subject.ToString ( ),
+        EdRecordField.ClassFieldNames.Subject.ToString ( ),
         EdLabels.Form_Field_Subject_Field_Label,
         this.Session.RecordField.Design.Title,
         150 );
@@ -674,7 +674,7 @@ namespace Evado.UniForm.Digital
       if ( optionList.Count > 1 )
       {
         groupField = pageGroup.createSelectionListField (
-          EdRecordField.FieldClassFieldNames.FormSection.ToString ( ),
+          EdRecordField.ClassFieldNames.FormSection.ToString ( ),
           EdLabels.Form_Field_Section_Field_Label,
           this.Session.RecordField.Design.SectionNo,
           optionList );
@@ -693,7 +693,7 @@ namespace Evado.UniForm.Digital
       }
 
       groupField = pageGroup.createSelectionListField (
-        EdRecordField.FieldClassFieldNames.Field_Layout.ToString ( ),
+        EdRecordField.ClassFieldNames.Field_Layout.ToString ( ),
         EdLabels.LayoutField_Field_Layout_Field_Label,
         this.Session.RecordField.Design.FieldLayout.ToString ( ),
         optionList );
@@ -748,7 +748,7 @@ namespace Evado.UniForm.Digital
       // Form field order
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.Order.ToString ( ),
+        EdRecordField.ClassFieldNames.Order.ToString ( ),
         EdLabels.Form_Field_Order_Field_Label,
         this.Session.RecordField.Order,
         0,
@@ -761,7 +761,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Read_Only_Text )
       {
         groupField = pageGroup.createFreeTextField (
-          EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
+          EdRecordField.ClassFieldNames.Instructions.ToString ( ),
           EdLabels.Form_Field_Read_Only_Text_Field_Label,
           this.Session.RecordField.Design.Instructions,
           150, 20 );
@@ -778,7 +778,7 @@ namespace Evado.UniForm.Digital
         // Form hide hidden field
         //
         groupField = pageGroup.createBooleanField (
-          EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
+          EdRecordField.ClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
           this.Session.RecordField.Design.HideField );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -793,7 +793,7 @@ namespace Evado.UniForm.Digital
         || this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Streamed_Video )
       {
         groupField = pageGroup.createTextField (
-          EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
+          EdRecordField.ClassFieldNames.Instructions.ToString ( ),
           EdLabels.Form_Field_External_URL_Field_Label,
           this.Session.RecordField.Design.Instructions,
           100 );
@@ -844,7 +844,7 @@ namespace Evado.UniForm.Digital
         // Form hide hidden field
         //
         groupField = pageGroup.createBooleanField (
-          EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
+          EdRecordField.ClassFieldNames.Hide_Field.ToString ( ),
           EdLabels.Form_Field_Hide_Field_Label,
           this.Session.RecordField.Design.HideField );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -859,7 +859,7 @@ namespace Evado.UniForm.Digital
       // Form Instructions
       //
       groupField = pageGroup.createFreeTextField (
-        EdRecordField.FieldClassFieldNames.Instructions.ToString ( ),
+        EdRecordField.ClassFieldNames.Instructions.ToString ( ),
         EdLabels.Form_Field_Instructions_Field_Label,
         this.Session.RecordField.Design.Instructions,
         150, 5 );
@@ -869,7 +869,7 @@ namespace Evado.UniForm.Digital
       // Form reference
       //
       groupField = pageGroup.createTextField (
-        EdRecordField.FieldClassFieldNames.Reference.ToString ( ),
+        EdRecordField.ClassFieldNames.Reference.ToString ( ),
         EdLabels.Form_Field_Reference_Field_Label,
         this.Session.RecordField.Design.HttpReference,
         50 );
@@ -882,7 +882,7 @@ namespace Evado.UniForm.Digital
         && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Password )
       {
         groupField = pageGroup.createTextField (
-          EdRecordField.FieldClassFieldNames.FieldCategory.ToString ( ),
+          EdRecordField.ClassFieldNames.FieldCategory.ToString ( ),
           EdLabels.Form_Field_Category_Field_Title,
           this.Session.RecordField.Design.FieldCategory,
           20 );
@@ -899,7 +899,7 @@ namespace Evado.UniForm.Digital
         optionList = this.AdapterObjects.getSelectionListOptions ( true );
 
         groupField = pageGroup.createSelectionListField (
-          EdRecordField.FieldClassFieldNames.ExSelectionListId,
+          EdRecordField.ClassFieldNames.ExSelectionListId,
           EdLabels.Form_Field_External_Selection_Field_Label,
           this.Session.RecordField.Design.ExSelectionListId,
           optionList );
@@ -915,7 +915,7 @@ namespace Evado.UniForm.Digital
         }
 
         groupField = pageGroup.createTextField (
-          EdRecordField.FieldClassFieldNames.ExSelectionListCategory,
+          EdRecordField.ClassFieldNames.ExSelectionListCategory,
           EdLabels.Form_Field_External_Selection_Category_Field_Label,
          EdLabels.EntityField_External_Selection_Category_Field_Description,
           this.Session.RecordField.Design.ExSelectionListCategory,
@@ -934,14 +934,14 @@ namespace Evado.UniForm.Digital
       if ( this.Session.RecordField.TypeId == Evado.Model.EvDataTypes.Analogue_Scale )
       {
         groupField = pageGroup.createTextField (
-          EdRecordField.FieldClassFieldNames.AnalogueLegendStart.ToString ( ),
+          EdRecordField.ClassFieldNames.AnalogueLegendStart.ToString ( ),
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.RecordField.Design.AnalogueLegendStart,
           50 );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
 
         groupField = pageGroup.createTextField (
-          EdRecordField.FieldClassFieldNames.AnalogueLegendFinish.ToString ( ),
+          EdRecordField.ClassFieldNames.AnalogueLegendFinish.ToString ( ),
           EdLabels.Form_Field_Analogue_Legend_Start_Field_Label,
           this.Session.RecordField.Design.AnalogueLegendFinish,
           50 );
@@ -959,7 +959,7 @@ namespace Evado.UniForm.Digital
         string stOptions = this.Session.RecordField.Design.Options.Replace ( ";", ";\r\n" );
 
         groupField = pageGroup.createFreeTextField (
-          EdRecordField.FieldClassFieldNames.Selection_Options.ToString ( ),
+          EdRecordField.ClassFieldNames.Selection_Options.ToString ( ),
           EdLabels.Form_Field_Selection_Options_Field_Title,
           EdLabels.Form_Field_Selection_Options_Field_Description,
           stOptions,
@@ -980,7 +980,7 @@ namespace Evado.UniForm.Digital
         && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Special_Matrix )
       {
         groupField = pageGroup.createBooleanField (
-          EdRecordField.FieldClassFieldNames.Summary_Field.ToString ( ),
+          EdRecordField.ClassFieldNames.Summary_Field.ToString ( ),
           EdLabels.Form_Field_Summary_Field_Label,
           this.Session.RecordField.Design.IsSummaryField );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -992,7 +992,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.RecordField.isReadOnly == false )
       {
         groupField = pageGroup.createBooleanField (
-          EdRecordField.FieldClassFieldNames.Mandatory.ToString ( ),
+          EdRecordField.ClassFieldNames.Mandatory.ToString ( ),
           EdLabels.Form_Field_Mandatory_Field_Label,
           this.Session.RecordField.Design.Mandatory );
         groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1005,7 +1005,7 @@ namespace Evado.UniForm.Digital
           && this.Session.RecordField.TypeId != Evado.Model.EvDataTypes.Signature )
         {
           groupField = pageGroup.createBooleanField (
-            EdRecordField.FieldClassFieldNames.AI_Data_Point.ToString ( ),
+            EdRecordField.ClassFieldNames.AI_Data_Point.ToString ( ),
             EdLabels.LayoutFields_Enable_AI_Field_Label,
             this.Session.RecordField.Design.AiDataPoint );
           groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1015,7 +1015,7 @@ namespace Evado.UniForm.Digital
       // Form hide hidden field
       //
       groupField = pageGroup.createBooleanField (
-        EdRecordField.FieldClassFieldNames.Hide_Field.ToString ( ),
+        EdRecordField.ClassFieldNames.Hide_Field.ToString ( ),
         EdLabels.Form_Field_Hide_Field_Label,
         this.Session.RecordField.Design.HideField );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1072,7 +1072,7 @@ namespace Evado.UniForm.Digital
       // Form Instructions
       //
       groupField = pageGroup.createFreeTextField (
-        EdRecordField.FieldClassFieldNames.Java_Script.ToString ( ),
+        EdRecordField.ClassFieldNames.Java_Script.ToString ( ),
         String.Empty,
         this.Session.RecordField.Design.JavaScript,
         80, 10 );
@@ -1131,7 +1131,7 @@ namespace Evado.UniForm.Digital
       // Form Instructions
       //
       groupField = pageGroup.createFreeTextField (
-        EdRecordField.FieldClassFieldNames.Java_Script.ToString ( ),
+        EdRecordField.ClassFieldNames.Java_Script.ToString ( ),
         String.Empty,
         this.Session.RecordField.Design.JavaScript,
         80, 10 );
@@ -1225,7 +1225,7 @@ namespace Evado.UniForm.Digital
       optionList = Evado.Model.Digital.EvcStatics.getStringAsOptionList ( "-12:-12;-9:-9;_6:-6;-3:-3;0:0;3:3;6:6;9:9;12:12" ); ;
 
       groupField = pageGroup.createSelectionListField (
-        EdRecordField.FieldClassFieldNames.Unit_Scaling.ToString ( ),
+        EdRecordField.ClassFieldNames.Unit_Scaling.ToString ( ),
         EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.RecordField.Design.UnitScaling,
         optionList );
@@ -1235,7 +1235,7 @@ namespace Evado.UniForm.Digital
       // form field numeric unit
       //
       groupField = pageGroup.createTextField (
-        EdRecordField.FieldClassFieldNames.Unit.ToString ( ),
+        EdRecordField.ClassFieldNames.Unit.ToString ( ),
         EdLabels.Form_Field_Unit_Scale_Field_Label,
         this.Session.RecordField.Design.Unit,
         10 );
@@ -1245,7 +1245,7 @@ namespace Evado.UniForm.Digital
       // Form lower validation range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.DefaultNumericValue.ToString ( ),
+        EdRecordField.ClassFieldNames.DefaultNumericValue.ToString ( ),
         EdLabels.Form_Field_Default_Value_Field_Label,
         0,
         -1000000,
@@ -1263,7 +1263,7 @@ namespace Evado.UniForm.Digital
       // Form lower validation range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.ValidationLowerLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.ValidationLowerLimit.ToString ( ),
         EdLabels.Form_Field_Lower_Validation_Field_Label,
         this.Session.RecordField.Design.ValidationLowerLimit,
         -1000000,
@@ -1274,7 +1274,7 @@ namespace Evado.UniForm.Digital
       // Form upper validation range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.ValidationUpperLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.ValidationUpperLimit.ToString ( ),
         EdLabels.Form_Field_Upper_Validation_Field_Label,
         this.Session.RecordField.Design.ValidationUpperLimit,
         -1000000,
@@ -1285,7 +1285,7 @@ namespace Evado.UniForm.Digital
       // Form lower Alert range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.AlertLowerLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.AlertLowerLimit.ToString ( ),
         EdLabels.Form_Field_Lower_Alert_Field_Label,
         this.Session.RecordField.Design.AlertLowerLimit,
         -1000000,
@@ -1296,7 +1296,7 @@ namespace Evado.UniForm.Digital
       // Form upper Alert range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.AlertUpperLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.AlertUpperLimit.ToString ( ),
         EdLabels.Form_Field_Upper_Alert_Field_Label,
         this.Session.RecordField.Design.AlertUpperLimit,
         -1000000,
@@ -1307,7 +1307,7 @@ namespace Evado.UniForm.Digital
       // Form lower Alert range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.NormalRangeLowerLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.NormalRangeLowerLimit.ToString ( ),
         EdLabels.Form_Field_Lower_Normal_Range_Field_Label,
         this.Session.RecordField.Design.NormalRangeLowerLimit,
         -1000000,
@@ -1318,7 +1318,7 @@ namespace Evado.UniForm.Digital
       // Form upper Alert range value 
       //
       groupField = pageGroup.createNumericField (
-        EdRecordField.FieldClassFieldNames.NormalRangeUpperLimit.ToString ( ),
+        EdRecordField.ClassFieldNames.NormalRangeUpperLimit.ToString ( ),
         EdLabels.Form_Field_Upper_Normal_Range_Field_Label,
         this.Session.RecordField.Design.NormalRangeUpperLimit,
         -1000000,
@@ -1875,7 +1875,7 @@ namespace Evado.UniForm.Digital
           this.LogText ( " >> UPDATED" );
           try
           {
-            EdRecordField.FieldClassFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecordField.FieldClassFieldNames> ( parameter.Name );
+            EdRecordField.ClassFieldNames fieldName = Evado.Model.EvStatics.parseEnumValue<EdRecordField.ClassFieldNames> ( parameter.Name );
 
             this.Session.RecordField.setValue ( fieldName, parameter.Value );
 

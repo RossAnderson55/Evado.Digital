@@ -1188,7 +1188,7 @@ namespace Evado.UniForm.Digital
        this.Session.Report.ReportId + " "
         + this.Session.Report.ReportTitle + " "
         + EdLabels.Report_Html_Download_Link_Title,
-        Evado.Model.EvDataTypes.Html_Link,
+        Evado.Model.EvDataTypes.Http_Link,
         htmlFilename );
 
       groupField = pageGroup.addField (
@@ -1197,7 +1197,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Report_CSV_Download_Link_Title,
           this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
-        Evado.Model.EvDataTypes.Html_Link,
+        Evado.Model.EvDataTypes.Http_Link,
         csvFilename );
 
       groupField = pageGroup.addField (
@@ -1206,7 +1206,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Report_Data_Download_Link_Title,
           this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
-        Evado.Model.EvDataTypes.Html_Link,
+        Evado.Model.EvDataTypes.Http_Link,
         csvDataFilename );
 
       groupField = pageGroup.addField (
@@ -1215,7 +1215,7 @@ namespace Evado.UniForm.Digital
           EdLabels.Report_Json_Download_Link_Title,
           this.Session.Report.ReportId,
           this.Session.Report.ReportTitle ),
-        Evado.Model.EvDataTypes.Html_Link,
+        Evado.Model.EvDataTypes.Http_Link,
         jsonDataFilename );
 
 

@@ -3116,4 +3116,26 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Generator_Disp_Field_Value_Format2" xml:space="preserve">
     <value>[[h1 style='text-align: center;']]  {0} [[/h1]]</value>
   </data>
+  <data name="Config_EnableAdminEntityUpdate_Field_Label" xml:space="preserve">
+    <value>Enable Administrator to update issued Entity Properties:</value>
+  </data>
+  <data name="Form_Field_External_URL_Inst_Field_Label" xml:space="preserve">
+    <value>Enter Instructions for entering the URL if the URL is user defined.</value>
+  </data>
+  <data name="Form_Field_External_URL_Title_Field_Label" xml:space="preserve">
+    <value>Media URL Title:</value>
+  </data>
+  <data name="Generator_Disp_Html_Field_Value_Format" xml:space="preserve">
+    <value>[[table]]
+[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] 
+[[a href='{1}' target='_blank' tabindex = ' ]] {2}[[/a ]]
+ [[/td]] [[/tr]]
+[[/table]]</value>
+  </data>
+  <data name="Settings_Vimeo_Video_URL_Field_Label" xml:space="preserve">
+    <value>Vimeo embedded base url:</value>
+  </data>
+  <data name="Settings_YouTube_Video_URL_Field_Label" xml:space="preserve">
+    <value>YouTube embedded base url:</value>
+  </data>
 </root>

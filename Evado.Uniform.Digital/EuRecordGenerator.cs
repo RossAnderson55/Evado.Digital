@@ -1209,7 +1209,7 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       //
       int count = 0;
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group();
+      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
 
       if ( section.Title != String.Empty )
       {
@@ -1414,6 +1414,11 @@ namespace Evado.UniForm.Digital
               this.getDisplayTwoValueField ( Field, sbHtmlContent, displayTitle );
               break;
             }
+          case Evado.Model.EvDataTypes.Http_Link:
+            {
+              this.getDisplayHttpValueField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
           case Evado.Model.EvDataTypes.Address:
             {
               this.getDisplayAddressField ( Field, sbHtmlContent, displayTitle );
@@ -1544,6 +1549,47 @@ namespace Evado.UniForm.Digital
       return;
 
     }//END getDisplayTwoValueField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the text form field object as html markup.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayHttpValueField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplaySingleValueField" );
+      this.LogDebug ( "Title {0} V: {1}", Field.Title, Field.ItemValue );
+      String title = Field.Title;
+      String url = Field.ItemValue;
+      String urlTitle = Field.ItemValue;
+
+      if ( Field.ItemValue == String.Empty )
+      {
+        return;
+      }
+      this.LogDebug ( "Value {0}. ", url );
+
+      if ( Field.ItemValue.Contains ( ";" ) == true )
+      {
+        string [ ] arValue = Field.ItemValue.Split ( ';' );
+
+        url = arValue [ 0 ];
+        urlTitle = arValue [ 1 ];
+      }
+
+      this.LogDebug ( "Url {0}, UrlTitle {1}, field title {2}. ", url, urlTitle, title );
+
+      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Html_Field_Value_Format, url, urlTitle, title );
+      return;
+
+    }//END getDisplaySingleValueField method.
 
     //  =================================================================================
     /// <summary>
@@ -1764,6 +1810,137 @@ namespace Evado.UniForm.Digital
       return;
 
     }//END getDisplayImageField method.
+
+    //  =================================================================================
+    /// <summary>
+    ///   This method generates the image field.
+    /// 
+    /// </summary>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="StringBuilder">Html content string builder.</param>
+    /// <param name="displayTitle">Bool: True = display the title..</param>
+    //  ---------------------------------------------------------------------------------
+    private void getDisplayExternalVideoField (
+      Evado.Model.Digital.EdRecordField Field,
+      StringBuilder sbHtmlContent,
+      bool displayTitle )
+    {
+      this.LogMethod ( "getDisplayImageField" );
+
+      if ( Field.ItemValue.Length == 0 )
+      {
+        return;
+      }
+
+      string stUrl = this.UniForm_ImageServiceUrl + Field.ItemValue;
+
+      String htmlMarkup = "[[p style='text-align: center;']][[a href='" + stUrl + "' target='_blank' ]] \r\n"
+          + "[[img alt='Image " + Field.ItemValue + "' " + "src='" + stUrl + "'/]] [[/a]][[/p]]";
+
+      sbHtmlContent.AppendFormat ( htmlMarkup, Field.Title, Field.ItemText );
+
+      return;
+
+    }//END getDisplayImageField method.
+
+
+    // ===================================================================================
+    /// <summary>
+    /// This method creates a iframe containing a streamed video object
+    /// </summary>
+    /// <param name="PageField">Field object.</param>
+    /// <returns>String html</returns>
+    // ----------------------------------------------------------------------------------
+    private String getVideoIFrame (
+      Evado.Model.UniForm.Field PageField )
+    {
+      this.LogMethod ( "getVideoIFrame" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      StringBuilder sbHtml = new StringBuilder ( );
+      string value = PageField.Value.ToLower ( );
+      int width = PageField.GetParameterInt ( Evado.Model.UniForm.FieldParameterList.Width );
+      int height = PageField.GetParameterInt ( Evado.Model.UniForm.FieldParameterList.Height );
+      String videoTitle = PageField.GetParameter ( Evado.Model.UniForm.FieldParameterList.Value_Label );
+      String stVideoStreamParameters = String.Empty;
+      String stVideoSource = String.Empty;
+
+      if ( value == String.Empty )
+      {
+        return String.Empty;
+      }
+
+      //
+      // Set default width
+      //
+      if ( width == 0
+        && height == 0 )
+      {
+        width = 450;
+        height = width * 10 / 17;
+      }
+      else
+      {
+        if ( height == 0 )
+        {
+          height = width * 10 / 17;
+        }
+        else
+        {
+          width = height * 17 / 10;
+        }
+      }
+
+
+      if ( PageField.Value.Contains ( "vimeo.com" ) == true )
+      {
+        int index = PageField.Value.LastIndexOf ( '/' );
+        value = PageField.Value.Substring ( ( index + 1 ) );
+
+        stVideoSource = this.AdapterObjects.Settings.VimeoEmbeddedUrl + value;
+
+        stVideoStreamParameters = "frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen ";
+      }
+
+      if ( PageField.Value.Contains ( "youtube" ) == true
+        || PageField.Value.Contains ( "youtu.be" ) == true )
+      {
+        int index = PageField.Value.LastIndexOf ( '/' );
+
+        value = PageField.Value.Substring ( ( index + 1 ) );
+
+        value = value.Replace ( "watch?v=", "" );
+
+        stVideoSource = this.AdapterObjects.Settings.YouTubeEmbeddedUrl + value;
+
+        stVideoStreamParameters = "frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen";
+      }
+
+      this.LogValue ( "Video ID: " + value );
+      this.LogValue ( "VideoSource: " + stVideoSource );
+
+      sbHtml.AppendLine ( "<iframe "
+        + "id='" + PageField.FieldId + "' "
+        + "name='" + PageField.FieldId + "' "
+        + "src='" + stVideoSource + "' " );
+
+      if ( width > 0 )
+      {
+        sbHtml.AppendLine ( "width='" + width + "' " );
+      }
+      if ( height > 0 )
+      {
+        sbHtml.AppendLine ( "height='" + height + "' " );
+      }
+
+      sbHtml.AppendLine ( stVideoStreamParameters
+       + " style=' display: block; margin-left: auto; margin-right: auto' >"
+       + "</iframe>" );
+
+      return sbHtml.ToString ( );
+    }//END getVideoIFrame Method
+
 
     //  =================================================================================
     /// <summary>
@@ -2011,7 +2188,7 @@ namespace Evado.UniForm.Digital
             this.getExternalImageField ( Field, groupField );
             return;
           }
-        case Evado.Model.EvDataTypes.Html_Link:
+        case Evado.Model.EvDataTypes.Http_Link:
           {
             this.getHttpLinkField ( Field, groupField );
             return;
@@ -2141,7 +2318,7 @@ namespace Evado.UniForm.Digital
             this.getExternalImageField ( Field, GroupField );
             return;
           }
-        case Evado.Model.EvDataTypes.Html_Link:
+        case Evado.Model.EvDataTypes.Http_Link:
           {
             this.getHttpLinkField ( Field, GroupField );
             return;
@@ -2203,7 +2380,7 @@ namespace Evado.UniForm.Digital
       // design header information
       // 
       if ( this._FormAccessRole == Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author
-        && ( this._FormState == EdRecordObjectStates.Draft_Record 
+        && ( this._FormState == EdRecordObjectStates.Draft_Record
           || this._FormState == EdRecordObjectStates.Form_Reviewed ) )
       {
         GroupField.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
@@ -2401,7 +2578,8 @@ namespace Evado.UniForm.Digital
     ///   This method generates the streamed video form field object as html markup.
     /// 
     /// </summary>
-    /// <param name="Field">   Evado.Model.Digital.EvFormField object containing the field to be generated.</param>
+    /// <param name="Field">   Evado.Model.Digital.EvFormField object containing the 
+    /// field to be generated.</param>
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getStreamedVideoField (
@@ -2410,43 +2588,35 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getStreamedVideoField" );
 
-      this.LogDebug ( "URL: Instructions: " + Field.Design.Instructions );
+      if ( Field.RecordMedia == null )
+      {
+        Field.RecordMedia = new EdRecordMedia ( );
+      }
+      this.LogDebug ( "Url: " + Field.RecordMedia.Url );
+      this.LogDebug ( "Title: " + Field.RecordMedia.Title );
+      this.LogDebug ( "Width: " + Field.RecordMedia.Width );
+      this.LogDebug ( "Height: " + Field.RecordMedia.Height );
+
       // 
       // Initialise local variables.
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Streamed_Video;
-      GroupField.Value = Field.Design.Instructions;
-      GroupField.Description = String.Empty;
+      GroupField.Value = Field.ItemValue;
+      GroupField.Description = Field.Design.Instructions;
 
-      this.LogDebug ( "JavaScript: " + Field.Design.JavaScript );
-      int iWidth = 0;
-      int iHeight = 0;
-      if ( Field.Design.JavaScript != String.Empty )
+      //
+      // if the field value is empty load the media URL.
+      //
+      if ( GroupField.Value == String.Empty )
       {
-        String [ ] arParms = Field.Design.JavaScript.Split ( ';' );
-        if ( int.TryParse ( arParms [ 0 ], out iWidth ) == false )
-        {
-          iWidth = 0;
-        }
-        if ( arParms.Length > 1 )
-        {
-          if ( int.TryParse ( arParms [ 1 ], out iHeight ) == false )
-          {
-            iHeight = 0;
-          }
-        }
+        GroupField.Value = Field.RecordMedia.Url;
       }
 
-      this.LogDebug ( "iWidth: " + iWidth );
-      this.LogDebug ( "iHeight: " + iHeight );
-      if ( iWidth > 0 )
-      {
-        GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, iWidth.ToString ( ) );
-      }
-      if ( iHeight > 0 )
-      {
-        GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, iHeight.ToString ( ) );
-      }
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, Field.RecordMedia.Width.ToString ( ) );
+
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, Field.RecordMedia.Height.ToString ( ) );
+
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Value_Label, Field.RecordMedia.Title );
 
       this.LogDebug ( "Value: " + GroupField.Value );
 
@@ -2459,7 +2629,8 @@ namespace Evado.UniForm.Digital
     ///   This method generates the external image form field object as html markup.
     /// 
     /// </summary>
-    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
+    /// <param name="Field">Evado.Model.Digital.EvForm object containing the form 
+    /// to be generated.</param>
     /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
     //  ---------------------------------------------------------------------------------
     private void getImageField (
@@ -2492,30 +2663,14 @@ namespace Evado.UniForm.Digital
         System.IO.File.Copy ( stImagePath, stTargetPath, true );
       }
 
-      this.LogDebug ( "JavaScript: " + Field.Design.JavaScript );
-      int iWidth = 250;
-      int iHeight = 0;
-      if ( Field.Design.JavaScript != String.Empty )
-      {
-        String [ ] arParms = Field.Design.JavaScript.Split ( ';' );
-        if ( int.TryParse ( arParms [ 0 ], out iWidth ) == false )
-        {
-          iWidth = 0;
-        }
-        if ( arParms.Length > 1 )
-        {
-          if ( int.TryParse ( arParms [ 1 ], out iHeight ) == false )
-          {
-            iHeight = 0;
-          }
-        }
-      }
+      this.LogDebug ( "Width: " + Field.RecordMedia.Width );
+      this.LogDebug ( "Height: " + Field.RecordMedia.Height );
 
-      this.LogDebug ( "iWidth: " + iWidth );
-      this.LogDebug ( "iHeight: " + iHeight );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width,
+      Field.RecordMedia.Width.ToString ( ) );
 
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, iWidth.ToString ( ) );
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, iHeight.ToString ( ) );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height,
+      Field.RecordMedia.Height.ToString ( ) );
 
       this.LogDebug ( "Value: " + GroupField.Value );
 
@@ -2546,29 +2701,15 @@ namespace Evado.UniForm.Digital
       GroupField.Description = String.Empty;
 
       this.LogDebug ( "JavaScript: " + Field.Design.JavaScript );
-      int iWidth = 0;
-      int iHeight = 0;
-      if ( Field.Design.JavaScript != String.Empty )
-      {
-        String [ ] arParms = Field.Design.JavaScript.Split ( ';' );
-        if ( int.TryParse ( arParms [ 0 ], out iWidth ) == false )
-        {
-          iWidth = 0;
-        }
-        if ( arParms.Length > 1 )
-        {
-          if ( int.TryParse ( arParms [ 1 ], out iHeight ) == false )
-          {
-            iHeight = 0;
-          }
-        }
-      }
 
-      this.LogDebug ( "iWidth: " + iWidth );
-      this.LogDebug ( "iHeight: " + iHeight );
+      this.LogDebug ( "Width: " + Field.RecordMedia.Width );
+      this.LogDebug ( "Height: " + Field.RecordMedia.Height );
 
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width, iWidth.ToString ( ) );
-      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height, iHeight.ToString ( ) );
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Width,
+      Field.RecordMedia.Width.ToString ( ) );
+
+      GroupField.AddParameter ( Model.UniForm.FieldParameterList.Height,
+      Field.RecordMedia.Height.ToString ( ) );
 
       this.LogDebug ( "Value: " + GroupField.Value );
 
@@ -2595,7 +2736,7 @@ namespace Evado.UniForm.Digital
       // 
       // Initialise local variables.
       // 
-      GroupField.Type = Evado.Model.EvDataTypes.Html_Link;
+      GroupField.Type = Evado.Model.EvDataTypes.Http_Link;
       GroupField.Description = Field.Design.Instructions;
 
       return;
@@ -3464,7 +3605,6 @@ namespace Evado.UniForm.Digital
 
     }//END getCheckButtonListField method.
 
-
     //  =================================================================================
     /// <summary>
     /// Description:
@@ -3727,6 +3867,13 @@ namespace Evado.UniForm.Digital
       // Initialise the methods variables and objects.
       //
       Evado.Model.Digital.EvFormStaticField staticField = new Evado.Model.Digital.EvFormStaticField ( );
+      // 
+      // If the state is editable then update the TestReport.
+      // 
+      if ( this._FormAccessRole == EdRecord.FormAccessRoles.Record_Reader )
+      {
+        return;
+      }
 
       //
       // Set the form role for this user.
@@ -3736,45 +3883,40 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "FormAccessRole: " + Form.FormAccessRole );
 
       this._Sections = Form.Design.FormSections;
+
+      this.LogDebug ( "Updating field values." );
+
       // 
-      // If the state is editable then update the TestReport.
+      // Iterate through the test fields updating the fields that have changed.
       // 
-      if ( this._FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
+      for ( int count = 0; count < Form.Fields.Count; count++ )
       {
-        this.LogDebug ( "Updating field values." );
-
-        // 
-        // Iterate through the test fields updating the fields that have changed.
-        // 
-        for ( int count = 0; count < Form.Fields.Count; count++ )
+        if ( Form.Fields [ count ].Design.HideField == true )
         {
-          if ( Form.Fields [ count ].Design.HideField == true )
-          {
-            //this.LogDebugValue ( "Field: " + Form.Fields [ count ].FieldId + " a hidden value." );
-            continue;
-          }
-
-          // 
-          // Retrieve the form field value and update the field object if the value has changed.
-          // 
-          this.updateFormField (
-            CommandParameters,
-            Form.Fields [ count ],
-            Form.State );
-
-
-          //this.LogDebugValue ( "Field: " + Form.Fields [ count ].FieldId + " value: " + Form.Fields [ count ].ItemValue );
-
-        }//END test field iteration.
+          this.LogDebug ( "Field: " + Form.Fields [ count ].FieldId + " a hidden value." );
+          continue;
+        }
 
         // 
-        // Update the test comments
+        // Retrieve the form field value and update the field object if the value has changed.
         // 
-        this.updateFormComments (
-        CommandParameters,
-        Form );
+        this.updateFormField (
+          CommandParameters,
+          Form.Fields [ count ],
+          Form.State );
 
-      }//END Record is editable 
+
+        //this.LogDebug ( "Field: {0}, value {1}.", Form.Fields [ count ].FieldId , Form.Fields [ count ].ItemValue );
+
+      }//END test field iteration.
+
+      // 
+      // Update the test comments
+      // 
+      this.updateFormComments (
+      CommandParameters,
+      Form );
+
 
     }//END updateFormObject method
 
@@ -3904,9 +4046,7 @@ namespace Evado.UniForm.Digital
     {
 
       this.LogMethod ( "updateFormField" );
-      this.LogDebug ( "FieldId: " + FormField.FieldId );
-      this.LogDebug ( "TypeId: " + FormField.TypeId );
-      //this.LogDebugValue ( "Field State: " + FormField.State );
+      //this.LogDebug ( "FieldId: {0} type: {1}.", FormField.FieldId, FormField.TypeId );
       // 
       // Initialise methods variables and objects.
       // 

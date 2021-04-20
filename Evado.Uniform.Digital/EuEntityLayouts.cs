@@ -2910,7 +2910,9 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
       bool addNewField = false;
-      if ( this.Session.EntityLayout.State != EdRecordObjectStates.Form_Issued )
+      if ( this.Session.EntityLayout.State != EdRecordObjectStates.Form_Issued
+        || ( this.Session.UserProfile.hasAdministrationAccess == true
+          && this.AdapterObjects.Settings.EnableAdminUpdateOfIssuedObjects == true ) )
       {
         addNewField = true;
       }

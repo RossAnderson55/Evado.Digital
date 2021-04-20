@@ -118,6 +118,13 @@ namespace Evado.Model.UniForm
     public const string CONST_NAME_FORMAT_GIVEN_NAME = "GN;";
     public const string CONST_NAME_FORMAT_MIDDLE_NAME = "MN;";
     public const string CONST_NAME_FORMAT_FAMILY_NAME = "FN;";
+
+    public const String CONST_IMAGE_FIELD_SUFFIX = "_FILE";
+    public const String CONST_IMAGE_TITLE_SUFFIX = "_TITLE";
+
+
+    public const String CONST_HTTP_URL_FIELD_SUFFIX = "_URL";
+    public const String CONST_HTTP_TITLE_FIELD_SUFFIX = "_TITLE";
     #endregion 
 
     #region Class properties.
@@ -214,7 +221,7 @@ namespace Evado.Model.UniForm
           case Model.EvDataTypes.Computed_Field:
           case Model.EvDataTypes.External_Image:
           case Model.EvDataTypes.Html_Content:
-          case Model.EvDataTypes.Html_Link:
+          case Model.EvDataTypes.Http_Link:
           case Model.EvDataTypes.Line_Chart:
           case Model.EvDataTypes.Pie_Chart:
           case Model.EvDataTypes.Stacked_Bar_Chart:
@@ -248,7 +255,7 @@ namespace Evado.Model.UniForm
         {
           case Model.EvDataTypes.External_Image:
           case Model.EvDataTypes.Html_Content:
-          case Model.EvDataTypes.Html_Link:
+          case Model.EvDataTypes.Http_Link:
           case Model.EvDataTypes.Line_Chart:
           case Model.EvDataTypes.Pie_Chart:
           case Model.EvDataTypes.Stacked_Bar_Chart:

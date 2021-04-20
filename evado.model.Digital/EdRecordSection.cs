@@ -117,6 +117,11 @@ namespace Evado.Model.Digital
       /// This enumeration identifies the section edit roles field.
       /// </summary>
       Sectn_Edit_Roles,
+
+      /// <summary>
+      /// This enumeration identifies the section percentage width.
+      /// </summary>
+      Sectn_PercentWidth,
     }
     #endregion
 
@@ -167,6 +172,7 @@ namespace Evado.Model.Digital
       get { return this._Title; }
       set { this._Title = value.Trim ( ); }
     }
+
     /// <summary>
     /// This property contains a section of a form
     /// </summary>
@@ -174,6 +180,31 @@ namespace Evado.Model.Digital
     {
       get { return this._Title; }
       set { this._Title = value.Trim ( ); }
+    }
+
+    private int _PercentWidth = 100;
+    /// <summary>
+    /// This property contains the percent width of the section (page group).
+    /// 100 indicated full width.
+    /// </summary>
+    public int PercentWidth
+    {
+      get { return this._PercentWidth; }
+      set
+      {
+        this._PercentWidth = value;
+
+        if ( this._PercentWidth < 0 )
+        {
+          this._PercentWidth = 0;
+        }
+        if ( this._PercentWidth > 100 )
+        {
+          this._PercentWidth = 100;
+        }
+
+
+      }
     }
 
     /// <summary>
@@ -493,6 +524,12 @@ namespace Evado.Model.Digital
         case FormSectionClassFieldNames.Sectn_Edit_Roles:
           {
             this._EditAccessRoles = Value;
+            return;
+          }
+
+        case FormSectionClassFieldNames.Sectn_PercentWidth:
+          {
+            this.PercentWidth = EvStatics.getInteger ( Value );
             return;
           }
 

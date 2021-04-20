@@ -38,7 +38,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This enumeration defines the command as an html link that will call an external data object.
     /// </summary>
-    Html_Link = 2, // json enumeration: 2
+    Http_Link = 2, // json enumeration: 2
 
     /// <summary>
     /// This enumeration defines the command as a login command.

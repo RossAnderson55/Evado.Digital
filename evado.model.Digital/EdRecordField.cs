@@ -27,14 +27,14 @@ namespace Evado.Model.Digital
   /// This class defines the form field data object.
   /// </summary>
   [Serializable]
-  public partial class EdRecordField : EvHasSetValue<EdRecordField.FieldClassFieldNames>
+  public partial class EdRecordField : EvHasSetValue<EdRecordField.ClassFieldNames>
   {
     #region Class Enumerators
 
     /// <summary>
     /// This enumeration list defines the field names of form field class.
     /// </summary>
-    public enum FieldClassFieldNames
+    public enum ClassFieldNames
     {
       /// <summary>
       /// This enumeration defines null value or no selection state.
@@ -199,8 +199,27 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the text field height identifier.
       /// </summary>
-      FieldHeight
+      FieldHeight,
 
+      /// <summary>
+      /// This enumeration defines the media URL identifier.
+      /// </summary>
+      Media_Url,
+
+      /// <summary>
+      /// This enumeration defines the media title identifier.
+      /// </summary>
+      Media_Title,
+
+      /// <summary>
+      /// This enumeration defines the media height identifier.
+      /// </summary>
+      Media_Height,
+
+      /// <summary>
+      /// This enumeration defines the media width identifier.
+      /// </summary>
+      Media_Width,
     }
 
     #endregion
@@ -330,6 +349,11 @@ namespace Evado.Model.Digital
     }
 
     /// <summary>
+    /// This property contains the external media configuration parameters.
+    /// </summary>
+    public EdRecordMedia RecordMedia { get; set; } 
+
+    /// <summary>
     /// This property contains a table object of a form field.
     /// </summary>
     public EdRecordTable Table { get; set; }
@@ -412,7 +436,7 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Binary_File:
           case Evado.Model.EvDataTypes.Sound:
           case Evado.Model.EvDataTypes.Hidden:
-          case Evado.Model.EvDataTypes.Html_Link:
+          case Evado.Model.EvDataTypes.Http_Link:
           case Evado.Model.EvDataTypes.Video:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:
@@ -420,7 +444,6 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Pie_Chart:
           case Evado.Model.EvDataTypes.Donut_Chart:
           case Evado.Model.EvDataTypes.Stacked_Bar_Chart:
-          case Evado.Model.EvDataTypes.Streamed_Video:
           case Evado.Model.EvDataTypes.External_Image:
           case Evado.Model.EvDataTypes.Special_Document:
           case Evado.Model.EvDataTypes.Special_Subsitute_Data:
@@ -444,7 +467,7 @@ namespace Evado.Model.Digital
         {
           case Evado.Model.EvDataTypes.Read_Only_Text:
           case Evado.Model.EvDataTypes.Sound:
-          case Evado.Model.EvDataTypes.Html_Link:
+          case Evado.Model.EvDataTypes.Http_Link:
           case Evado.Model.EvDataTypes.Video:
           case Evado.Model.EvDataTypes.Image:
           case Evado.Model.EvDataTypes.Html_Content:
@@ -507,6 +530,7 @@ namespace Evado.Model.Digital
         return false;
       }
     }
+
     private string _BookedOutBy = String.Empty;
     /// <summary>
     /// This property contains a user who books out a form field.
@@ -671,7 +695,7 @@ namespace Evado.Model.Digital
     /// 2. Switch FieldName and update value for the property defined by form field class field name.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes setValue ( FieldClassFieldNames FieldName, String Value )
+    public EvEventCodes setValue ( ClassFieldNames FieldName, String Value )
     {
       // 
       // Initialise the internal variables
@@ -686,12 +710,12 @@ namespace Evado.Model.Digital
       // 
       switch ( FieldName )
       {
-        case FieldClassFieldNames.FieldId:
+        case ClassFieldNames.FieldId:
           {
             this.FieldId = Value;
             break;
           }
-        case FieldClassFieldNames.TypeId:
+        case ClassFieldNames.TypeId:
           {
             EvDataTypes type = EvDataTypes.Null;
             if ( EvStatics.tryParseEnumValue<EvDataTypes> ( Value, out type ) == false )
@@ -702,7 +726,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.Order:
+        case ClassFieldNames.Order:
           {
             if ( int.TryParse ( Value, out intValue ) == false )
             {
@@ -712,38 +736,38 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.Subject:
+        case ClassFieldNames.Subject:
           {
             this.Design.Title = Value;
             break;
           }
 
-        case FieldClassFieldNames.Instructions:
+        case ClassFieldNames.Instructions:
           {
             this.Design.Instructions = Value;
             break;
           }
 
-        case FieldClassFieldNames.Reference:
+        case ClassFieldNames.Reference:
           {
             this.Design.HttpReference = Value;
             break;
           }
 
 
-        case FieldClassFieldNames.Html_Link:
+        case ClassFieldNames.Html_Link:
           {
             this.Design.HttpReference = Value;
             break;
           }
 
-        case FieldClassFieldNames.Unit:
+        case ClassFieldNames.Unit:
           {
             this.Design.Unit = Value;
             break;
           }
 
-        case FieldClassFieldNames.ValidationLowerLimit:
+        case ClassFieldNames.ValidationLowerLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -754,7 +778,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.DefaultNumericValue:
+        case ClassFieldNames.DefaultNumericValue:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -765,7 +789,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.ValidationUpperLimit:
+        case ClassFieldNames.ValidationUpperLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -776,7 +800,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.AlertUpperLimit:
+        case ClassFieldNames.AlertUpperLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -787,7 +811,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.AlertLowerLimit:
+        case ClassFieldNames.AlertLowerLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -798,7 +822,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.NormalRangeUpperLimit:
+        case ClassFieldNames.NormalRangeUpperLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -809,7 +833,7 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.NormalRangeLowerLimit:
+        case ClassFieldNames.NormalRangeLowerLimit:
           {
             if ( float.TryParse ( Value, out fltValue ) == false )
             {
@@ -820,91 +844,91 @@ namespace Evado.Model.Digital
             break;
           }
 
-        case FieldClassFieldNames.Selection_Options:
+        case ClassFieldNames.Selection_Options:
           {
             this._Design.Options = Value.Replace ( "\r\n", String.Empty );
             break;
           }
 
-        case FieldClassFieldNames.FieldCategory:
+        case ClassFieldNames.FieldCategory:
           {
             this._Design.FieldCategory = Value;
             break;
           }
 
-        case FieldClassFieldNames.FormSection:
+        case ClassFieldNames.FormSection:
           {
             this._Design.SectionNo = EvStatics.getInteger ( Value );
             break;
           }
 
-        case FieldClassFieldNames.ExSelectionListId:
+        case ClassFieldNames.ExSelectionListId:
           {
             this._Design.ExSelectionListId = Value;
             break;
           }
 
-        case FieldClassFieldNames.ExSelectionListCategory:
+        case ClassFieldNames.ExSelectionListCategory:
           {
             this._Design.ExSelectionListCategory = Value;
             break;
           }
 
-        case FieldClassFieldNames.AnalogueLegendStart:
+        case ClassFieldNames.AnalogueLegendStart:
           {
             this._Design.AnalogueLegendStart = Value;
             break;
           }
 
-        case FieldClassFieldNames.AnalogueLegendFinish:
+        case ClassFieldNames.AnalogueLegendFinish:
           {
             this._Design.AnalogueLegendFinish = Value;
             break;
           }
 
-        case FieldClassFieldNames.Summary_Field:
+        case ClassFieldNames.Summary_Field:
           {
             this._Design.IsSummaryField = EvcStatics.getBool ( Value );
             break;
           }
 
-        case FieldClassFieldNames.Mandatory:
+        case ClassFieldNames.Mandatory:
           {
             this._Design.Mandatory = EvcStatics.getBool ( Value );
             break;
           }
 
-        case FieldClassFieldNames.AI_Data_Point:
+        case ClassFieldNames.AI_Data_Point:
           {
             this._Design.AiDataPoint = EvcStatics.getBool ( Value );
             break;
           }
 
-        case FieldClassFieldNames.Hide_Field:
+        case ClassFieldNames.Hide_Field:
           {
             this._Design.HideField = EvcStatics.getBool ( Value );
             break;
           }
 
-        case FieldClassFieldNames.Java_Script:
+        case ClassFieldNames.Java_Script:
           {
             this._Design.JavaScript = Value;
             break;
           }
 
-        case FieldClassFieldNames.Unit_Scaling:
+        case ClassFieldNames.Unit_Scaling:
           {
             this._Design.UnitScaling = Value;
             break;
           }
 
-        case FieldClassFieldNames.Field_Layout:
+        case ClassFieldNames.Field_Layout:
           {
             this._Design.FieldLayout = Value;
             break;
           }
 
-        case FieldClassFieldNames.FieldWidth:
+        case ClassFieldNames.FieldWidth:
           {
             if ( int.TryParse ( Value, out intValue ) == false )
             {
@@ -913,13 +937,44 @@ namespace Evado.Model.Digital
             this.Design.FieldWidth = intValue;
             break;
           }
-        case FieldClassFieldNames.FieldHeight:
+        case ClassFieldNames.FieldHeight:
           {
             if ( int.TryParse ( Value, out intValue ) == false )
             {
               return EvEventCodes.Data_Integer_Casting_Error;
             }
             this.Design.FieldHeight = intValue;
+            break;
+          }
+
+        case ClassFieldNames.Media_Url:
+          {
+            this.RecordMedia.Url = Value;
+            break;
+          }
+
+
+        case ClassFieldNames.Media_Title:
+          {
+            this.RecordMedia.Title = Value;
+            break;
+          }
+        case ClassFieldNames.Media_Width:
+          {
+            if ( int.TryParse ( Value, out intValue ) == false )
+            {
+              return EvEventCodes.Data_Integer_Casting_Error;
+            }
+            this.RecordMedia.Width = intValue;
+            break;
+          }
+        case ClassFieldNames.Media_Height:
+          {
+            if ( int.TryParse ( Value, out intValue ) == false )
+            {
+              return EvEventCodes.Data_Integer_Casting_Error;
+            }
+            this.RecordMedia.Height = intValue;
             break;
           }
 
@@ -995,7 +1050,7 @@ namespace Evado.Model.Digital
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Image ) );
 
-      list.Add ( EvStatics.getOption ( EvDataTypes.Html_Link ) );
+      list.Add ( EvStatics.getOption ( EvDataTypes.Http_Link ) );
 
       list.Add ( EvStatics.getOption ( EvDataTypes.Computed_Field ) );
 

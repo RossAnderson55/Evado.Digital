@@ -246,7 +246,7 @@ namespace Evado.Dal.Digital
     /// This class sets values from formfield object to the sql query parameter array. 
     /// </summary>
     /// <param name="cmdParms">SqlParameter: an array of sql query parameters</param>
-    /// <param name="FormField">EvFormField: a FormField data object</param>
+    /// <param name="EntityField">EvFormField: a FormField data object</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -255,7 +255,7 @@ namespace Evado.Dal.Digital
     /// 2. Update the values from formfield object to the sql query parameters array. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private void setParameters ( SqlParameter [ ] cmdParms, EdRecordField FormField )
+    private void setParameters ( SqlParameter [ ] cmdParms, EdRecordField EntityField )
     {
       //
       // Initialize the serialized table structure. 
@@ -265,75 +265,86 @@ namespace Evado.Dal.Digital
       //
       // if the data type is a table then seriallise the formfield data table.
       //
-      if ( FormField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
-        || FormField.TypeId == Evado.Model.EvDataTypes.Table )
+      if ( EntityField.TypeId == Evado.Model.EvDataTypes.Special_Matrix
+        || EntityField.TypeId == Evado.Model.EvDataTypes.Table )
       {
-        this.LogValue ( "Column 1 header text: " + FormField.Table.Header [ 0 ].Text );
+        this.LogValue ( "Column 1 header text: " + EntityField.Table.Header [ 0 ].Text );
 
-        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( FormField.Table );
+        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( EntityField.Table );
       }
 
-      if ( FormField.Design.ValidationLowerLimit >= FormField.Design.ValidationUpperLimit )
+      if ( EntityField.Design.ValidationLowerLimit >= EntityField.Design.ValidationUpperLimit )
       {
-        FormField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        FormField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        EntityField.Design.ValidationLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        EntityField.Design.ValidationUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
       }
 
-      if ( FormField.Design.AlertLowerLimit >= FormField.Design.AlertUpperLimit )
+      if ( EntityField.Design.AlertLowerLimit >= EntityField.Design.AlertUpperLimit )
       {
-        FormField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        FormField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        EntityField.Design.AlertLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        EntityField.Design.AlertUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
       }
 
-      if ( FormField.Design.NormalRangeLowerLimit >= FormField.Design.NormalRangeUpperLimit )
+      if ( EntityField.Design.NormalRangeLowerLimit >= EntityField.Design.NormalRangeUpperLimit )
       {
-        FormField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
-        FormField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+        EntityField.Design.NormalRangeLowerLimit = EvcStatics.CONST_NUMERIC_MINIMUM;
+        EntityField.Design.NormalRangeUpperLimit = EvcStatics.CONST_NUMERIC_MAXIMUM;
+      }
+
+      //
+      // store the media configuration data in the JavaScript field.
+      //
+      if ( EntityField.TypeId == EvDataTypes.External_Image
+        || EntityField.TypeId == EvDataTypes.Streamed_Video )
+      {
+        EntityField.Design.JavaScript = EntityField.RecordMedia.Data;
       }
 
       //
       // Update the values from formfield object to the sql query parameters array. 
       //
-      cmdParms [ 0 ].Value = FormField.Guid;
-      cmdParms [ 1 ].Value = FormField.LayoutGuid;
-      cmdParms [ 2 ].Value = FormField.LayoutId;
-      cmdParms [ 3 ].Value = FormField.FieldId;
-      cmdParms [ 4 ].Value = FormField.TypeId;
-      cmdParms [ 5 ].Value = FormField.Design.Order;
-      cmdParms [ 6 ].Value = FormField.Design.Title;
-      cmdParms [ 7 ].Value = FormField.Design.Instructions;
-      cmdParms [ 8 ].Value = FormField.Design.HttpReference;
-      cmdParms [ 9 ].Value = FormField.Design.SectionNo;
+      cmdParms [ 0 ].Value = EntityField.Guid;
+      cmdParms [ 1 ].Value = EntityField.LayoutGuid;
+      cmdParms [ 2 ].Value = EntityField.LayoutId;
+      cmdParms [ 3 ].Value = EntityField.FieldId;
+      cmdParms [ 4 ].Value = EntityField.TypeId;
+      cmdParms [ 5 ].Value = EntityField.Design.Order;
+      cmdParms [ 6 ].Value = EntityField.Design.Title;
+      cmdParms [ 7 ].Value = EntityField.Design.Instructions;
+      cmdParms [ 8 ].Value = EntityField.Design.HttpReference;
+      cmdParms [ 9 ].Value = EntityField.Design.SectionNo;
 
-      cmdParms [ 10 ].Value = FormField.Design.Options;
-      cmdParms [ 11 ].Value = FormField.Design.IsSummaryField;
-      cmdParms [ 12 ].Value = FormField.Design.Mandatory;
-      cmdParms [ 13 ].Value = FormField.Design.AiDataPoint;
-      cmdParms [ 14 ].Value = FormField.Design.AnalyticsDataPont;
-      cmdParms [ 15 ].Value = FormField.Design.HideField;
-      cmdParms [ 16 ].Value = FormField.Design.ExSelectionListId;
-      cmdParms [ 17 ].Value = FormField.Design.ExSelectionListCategory;
-      cmdParms [ 18 ].Value = FormField.Design.DefaultValue;
-      cmdParms [ 19 ].Value = FormField.Design.Unit;
+      cmdParms [ 10 ].Value = EntityField.Design.Options;
+      cmdParms [ 11 ].Value = EntityField.Design.IsSummaryField;
+      cmdParms [ 12 ].Value = EntityField.Design.Mandatory;
+      cmdParms [ 13 ].Value = EntityField.Design.AiDataPoint;
+      cmdParms [ 14 ].Value = EntityField.Design.AnalyticsDataPont;
+      cmdParms [ 15 ].Value = EntityField.Design.HideField;
+      cmdParms [ 16 ].Value = EntityField.Design.ExSelectionListId;
+      cmdParms [ 17 ].Value = EntityField.Design.ExSelectionListCategory;
+      cmdParms [ 18 ].Value = EntityField.Design.DefaultValue;
+      cmdParms [ 19 ].Value = EntityField.Design.Unit;
 
-      cmdParms [ 20 ].Value = FormField.Design.UnitScaling;
-      cmdParms [ 21 ].Value = FormField.Design.ValidationLowerLimit;
-      cmdParms [ 22 ].Value = FormField.Design.ValidationUpperLimit;
-      cmdParms [ 23 ].Value = FormField.Design.AlertLowerLimit;
-      cmdParms [ 24 ].Value = FormField.Design.AlertUpperLimit;
-      cmdParms [ 25 ].Value = FormField.Design.NormalRangeLowerLimit;
-      cmdParms [ 26 ].Value = FormField.Design.NormalRangeUpperLimit;
-      cmdParms [ 27 ].Value = FormField.Design.FieldCategory;
-      cmdParms [ 28 ].Value = FormField.Design.AnalogueLegendStart;
-      cmdParms [ 29 ].Value = FormField.Design.AnalogueLegendFinish;
+      cmdParms [ 20 ].Value = EntityField.Design.UnitScaling;
+      cmdParms [ 21 ].Value = EntityField.Design.ValidationLowerLimit;
+      cmdParms [ 22 ].Value = EntityField.Design.ValidationUpperLimit;
+      cmdParms [ 23 ].Value = EntityField.Design.AlertLowerLimit;
+      cmdParms [ 24 ].Value = EntityField.Design.AlertUpperLimit;
+      cmdParms [ 25 ].Value = EntityField.Design.NormalRangeLowerLimit;
+      cmdParms [ 26 ].Value = EntityField.Design.NormalRangeUpperLimit;
+      cmdParms [ 27 ].Value = EntityField.Design.FieldCategory;
+      cmdParms [ 28 ].Value = EntityField.Design.AnalogueLegendStart;
+      cmdParms [ 29 ].Value = EntityField.Design.AnalogueLegendFinish;
 
-      cmdParms [ 30 ].Value = FormField.Design.JavaScript;
+      cmdParms [ 30 ].Value = EntityField.Design.JavaScript;
+
+
       cmdParms [ 31 ].Value = serialisedTableStructure;
-      cmdParms [ 32 ].Value = FormField.Design.InitialOptionList;
-      cmdParms [ 33 ].Value = FormField.Design.InitialVersion;
-      cmdParms [ 34 ].Value = FormField.Design.FieldLayout;
-      cmdParms [ 35 ].Value = FormField.Design.FieldWidth;
-      cmdParms [ 36 ].Value = FormField.Design.FieldHeight;
+      cmdParms [ 32 ].Value = EntityField.Design.InitialOptionList;
+      cmdParms [ 33 ].Value = EntityField.Design.InitialVersion;
+      cmdParms [ 34 ].Value = EntityField.Design.FieldLayout;
+      cmdParms [ 35 ].Value = EntityField.Design.FieldWidth;
+      cmdParms [ 36 ].Value = EntityField.Design.FieldHeight;
 
     }//END setParameters class.
     #endregion
@@ -433,7 +444,17 @@ namespace Evado.Dal.Digital
       if ( entityField.Design.FieldHeight < 2 )
       {
         entityField.Design.FieldHeight = 5;
-      } 
+      }
+
+      if ( entityField.TypeId == EvDataTypes.External_Image
+       || entityField.TypeId == EvDataTypes.Streamed_Video
+       || entityField.TypeId == EvDataTypes.Image )
+      {
+        entityField.RecordMedia = new EdRecordMedia ( );
+
+        entityField.RecordMedia.Data = entityField.Design.JavaScript;
+      }
+
       //
       // if the data type is a table then deseriallise the formfield data table.
       //

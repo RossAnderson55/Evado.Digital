@@ -126,7 +126,7 @@ namespace Evado.Model
     /// <summary>
     /// This options defines a text field where the data is an http link 
     /// </summary>
-    Html_Link = 16,  // json enumeration: 16
+    Http_Link = 16,  // json enumeration: 16
 
     /// <summary>
     /// This options defines the audio page object this object interfaces with the device's 
