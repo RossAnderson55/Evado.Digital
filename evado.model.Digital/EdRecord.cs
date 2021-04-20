@@ -1581,6 +1581,26 @@ namespace Evado.Model.Digital
 
     // =====================================================================================
     /// <summary>
+    /// This method returns the first text field.
+    /// </summary>
+    /// <param name="FirstFreeText">Bool: true = return first free text field.</param>
+    /// <returns>string: field value.</returns>
+    // -------------------------------------------------------------------------------------
+    public EdRecordField getFirstHttpLinkField ( )
+    {
+      String stValue = String.Empty;
+      foreach ( EdRecordField field in this.Fields )
+      {
+        if ( field.TypeId == EvDataTypes.Http_Link )
+        {
+          return field;
+        }
+      }
+      return null;
+    }
+
+    // =====================================================================================
+    /// <summary>
     /// This method returns the first free text field.
     /// </summary>
     /// <param name="AsAbstract">Bool: true = return only the first paragraph of the field.</param>

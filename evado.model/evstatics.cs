@@ -2487,10 +2487,26 @@ namespace Evado.Model
     /// </summary>
     /// <param name="OptionList">List: list of options.</param>
     // -------------------------------------------------------------------------------------
-    public static void sortOptionList (
+    public static void sortOptionListValues (
       List<Evado.Model.EvOption> OptionList )
     {
       OptionComparer comparer = new OptionComparer ( );
+      //
+      // Sort using the default comparitor.
+      //
+      OptionList.Sort ( comparer );
+    }
+
+    // =====================================================================================
+    /// <summary>
+    ///  This method sorts the option list.
+    /// </summary>
+    /// <param name="OptionList">List: list of options.</param>
+    // -------------------------------------------------------------------------------------
+    public static void sortOptionListDescriptions (
+      List<Evado.Model.EvOption> OptionList )
+    {
+      OptionDescComparer comparer = new OptionDescComparer ( );
       //
       // Sort using the default comparitor.
       //
@@ -3501,6 +3517,26 @@ namespace Evado.Model
       public int Compare ( EvOption x, EvOption y )
       {
         return String.Compare ( x.Value, y.Value );
+      }//END compare method
+
+    }//END class
+
+    /// <summary>
+    /// this class defines the order comparer for actvity form object lists.
+    /// </summary>
+    public class OptionDescComparer : IComparer<EvOption>
+    {
+      //=================================================================================
+      /// <summary>
+      /// This method performs the order comparision 
+      /// </summary>
+      /// <param name="x">EvOption object</param>
+      /// <param name="y">EvOption object</param>
+      /// <returns>int </returns>
+      //---------------------------------------------------------------------------------
+      public int Compare ( EvOption x, EvOption y )
+      {
+        return String.Compare ( x.Description, y.Description );
       }//END compare method
 
     }//END class

@@ -343,7 +343,7 @@ namespace Evado.UniForm.Digital
       //
       optionList =  Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvEventCodes ), true );
 
-       Evado.Model.Digital.EvcStatics.sortOptionList ( optionList );
+      Evado.Model.Digital.EvcStatics.sortOptionListValues ( optionList );
 
       // 
       // Set the selection to the event id

@@ -1206,9 +1206,9 @@ namespace Evado.UniForm.Digital
         //
         this.ParentLayoutId = this.Session.Entity.LayoutId;
         this.ParentGuid = this.Session.Entity.Guid;
-        if(  PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) ==  true)
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) == true )
         {
-        this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
+          this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
         }
         if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
         {
@@ -1238,7 +1238,7 @@ namespace Evado.UniForm.Digital
         //
         // Execute the monitor list record query.
         //
-        this.executeRecordQuery ();
+        this.executeRecordQuery ( );
 
         // 
         // Initialise the client ResultData object.
@@ -1540,7 +1540,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.Selected_EntityLayoutId != String.Empty
         && this.Session.PageId != EdStaticPageIds.Entity_Filter_View.ToString ( )
         && pageGroup.EditAccess == Model.UniForm.EditAccess.Enabled
-        && ( this.Session.EntityLayout.Design.ParentEntities.Contains( this.ParentLayoutId ) == true
+        && ( this.Session.EntityLayout.Design.ParentEntities.Contains ( this.ParentLayoutId ) == true
           || this.Session.EntityLayout.Design.ParentEntities == String.Empty ) )
       {
         groupCommand = pageGroup.addCommand (
@@ -2065,6 +2065,8 @@ namespace Evado.UniForm.Digital
       List<EvOption> optionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
         Field.Design.Options );
 
+      optionList.Sort ( ( n1, n2 ) => n1.Description.CompareTo ( n2.Description) );
+
       List<EvOption> selectionOptionList = new List<EvOption> ( );
       selectionOptionList.Add ( new EvOption ( ) );
       foreach ( EvOption opt in optionList )
@@ -2145,6 +2147,7 @@ namespace Evado.UniForm.Digital
               this.LogDebug ( "No CheckBox list options" );
               break;
             }
+
 
             var field = PageGroup.createCheckBoxListField (
               EuEntities.CONST_SELECTION_FIELD + FilterIndex,
@@ -2283,6 +2286,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Field groupField = new Model.UniForm.Field ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
 
+
       // 
       // Create the record display pageMenuGroup.
       // 
@@ -2307,55 +2311,74 @@ namespace Evado.UniForm.Digital
         {
           continue;
         }
-        var layout = EvStatics.parseEnumValue<Model.UniForm.FieldLayoutCodes> ( 
-          Entity.Design.DefaultPageLayout );
 
         //
-        // layout image fields
+        // skip all empty items.
         //
-        if ( field.TypeId == EvDataTypes.Image )
+        if ( field.ItemValue == String.Empty )
         {
-          groupField = pageGroup.createImageField(
-            String.Empty,
-            field.Title, 
-            field.ItemValue, 125, 0 );
-          groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
-          groupField.Layout = layout;
-
           continue;
         }
 
-        //
-        // layout text fields.
-        //
-        string value = field.ItemValue;
 
-        if ( field.TypeId == EvDataTypes.Selection_List
-          || field.TypeId == EvDataTypes.Check_Box_List
-          || field.TypeId == EvDataTypes.Radio_Button_List
-          || field.TypeId == EvDataTypes.Horizontal_Radio_Buttons
-          || field.TypeId == EvDataTypes.External_Selection_List
-          || field.TypeId == EvDataTypes.External_RadioButton_List
-          || field.TypeId == EvDataTypes.External_CheckBox_List )
+        this.LogDebug ( "FieldId {0}, value {1} ", field.FieldId, field.ItemValue );
+
+        //
+        // Define the layout.
+        //
+        Model.UniForm.FieldLayoutCodes layout = Model.UniForm.FieldLayoutCodes.Left_Justified;
+
+        switch ( field.TypeId )
         {
-          value = this.getSelectionDescription ( field, value );
+          case EvDataTypes.Image:
+            {
+              groupField = pageGroup.createImageField (
+                String.Empty,
+                field.Title,
+                field.ItemValue, 125, 0 );
+              groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
+              groupField.Layout = layout;
 
-          continue;
-        }
+              continue;
+            }
+          case EvDataTypes.Selection_List:
+          case EvDataTypes.Check_Box_List:
+          case EvDataTypes.Radio_Button_List:
+          case EvDataTypes.Horizontal_Radio_Buttons:
+          case EvDataTypes.External_Selection_List:
+          case EvDataTypes.External_RadioButton_List:
+          case EvDataTypes.External_CheckBox_List:
+            {
+              var value = this.getSelectionDescription ( field, field.ItemValue );
 
-        groupField = pageGroup.createReadOnlyTextField (
-          String.Empty,
-          field.Title,
-          value );
-        groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
-        groupField.Layout = layout;
-      }
+              groupField = pageGroup.createReadOnlyTextField (
+                String.Empty,
+                field.Title,
+                value );
+              groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
+              groupField.Layout = layout;
+
+              continue;
+            }
+
+          default:
+            {
+              groupField = pageGroup.createReadOnlyTextField (
+                String.Empty,
+                field.Title,
+                field.ItemValue );
+              groupField.EditAccess = Model.UniForm.EditAccess.Disabled;
+              groupField.Layout = layout;
+              continue;
+            }
+        }//END type switch statement.
+      }//END field iteration loop
 
       //
       // Define the pageMenuGroup groupCommand.
       //
       groupCommand = pageGroup.addCommand (
-          Entity.CommandTitle,
+          Entity.Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -2363,9 +2386,31 @@ namespace Evado.UniForm.Digital
       groupCommand.Id = Entity.Guid;
       groupCommand.SetGuid ( Entity.Guid );
 
-      groupCommand.AddParameter (
-        Model.UniForm.CommandParameters.Short_Title,
-        EdLabels.Label_Record_Id + Entity.RecordId );
+      //
+      // Define the link groupCommand.
+      //
+      EdRecordField commandField = Entity.getFirstHttpLinkField ( );
+
+      if ( commandField != null )
+      {
+        this.LogDebug ( "FieldId {0}, value {1} ", commandField.FieldId, commandField.ItemValue );
+
+        if ( commandField.ItemValue != String.Empty )
+        {
+          var title = commandField.Title.Replace ( ";", "" );
+
+          groupCommand = pageGroup.addCommand (
+              title,
+              EuAdapter.ADAPTER_ID,
+              EuAdapterClasses.Entities,
+              Evado.Model.UniForm.ApplicationMethods.Get_Object );
+          groupCommand.Type = Model.UniForm.CommandTypes.Http_Link;
+
+          groupCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url, commandField.ItemValue );
+        }
+      }
+
+      this.LogMethodEnd ( "getGroupSummaryListGroup" );
 
     }//END getGroupListCommand method
 
@@ -2384,7 +2429,8 @@ namespace Evado.UniForm.Digital
       //
       List<EvOption> optionList = Field.Design.OptionList;
       string [ ] arValue = Field.ItemValue.Split ( ';' );
-      String value = Value;
+      String outputText = String.Empty;
+      String valueList = String.Empty;
 
       //
       // search selection list if the list is external
@@ -2393,7 +2439,7 @@ namespace Evado.UniForm.Digital
         || Field.TypeId == EvDataTypes.External_RadioButton_List
         || Field.TypeId == EvDataTypes.External_Selection_List )
       {
-        optionList = this.AdapterObjects.getSelectionOptions ( 
+        optionList = this.AdapterObjects.getSelectionOptions (
           Field.Design.ExSelectionListId, String.Empty, false, false );
       }
 
@@ -2402,20 +2448,28 @@ namespace Evado.UniForm.Digital
       //
       foreach ( EvOption option in optionList )
       {
-        if ( value != String.Empty )
+        if ( option.Value != Value )
         {
-          value += ", ";
+          continue;
         }
 
-        if ( option.Value == Value )
+        if ( valueList.Contains ( Value ) == true )
         {
-          value += option.Description;
+          continue;
         }
+
+        valueList += ";" + Value;
+        
+        if ( outputText != String.Empty )
+        {
+          outputText += @"[[/br]]";
+        }
+
+        outputText += option.Description;
       }
 
-      return value;
+      return outputText;
     }//END Method
-
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -3212,7 +3266,7 @@ namespace Evado.UniForm.Digital
         //
         if ( entityField == null )
         {
-          this.LogDebug ( "Null Field Id {0}.", field.FieldId  );
+          this.LogDebug ( "Null Field Id {0}.", field.FieldId );
           EdRecordField newField = new EdRecordField ( );
           newField.Guid = Guid.NewGuid ( );
           newField.FieldGuid = field.FieldGuid;
@@ -3245,20 +3299,20 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "ReloadEntityChildren" );
 
-      if (  this.Session.RefreshEntityChildren == false
+      if ( this.Session.RefreshEntityChildren == false
         || PageCommand.Method != Model.UniForm.ApplicationMethods.Get_Object )
       {
         return;
       };
       this.LogDebug ( "Layout {0}, Entity {1}, Title {2}.",
         this.Session.Entity.LayoutId,
-        this.Session.Entity.EntityId, 
+        this.Session.Entity.EntityId,
         this.Session.Entity.Title );
 
       // 
       // Retrieve the record object from the database via the DAL and BLL layers.
       // 
-      this.Session.Entity.ChildEntities = this._Bll_Entities.getChildEntityList( this.Session.Entity );
+      this.Session.Entity.ChildEntities = this._Bll_Entities.getChildEntityList ( this.Session.Entity );
 
       this.LogClass ( this._Bll_Entities.Log );
 
@@ -3865,7 +3919,7 @@ namespace Evado.UniForm.Digital
       // define the child entity group.
       //
       pageGroup = PageObject.AddGroup (
-      String.Format( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField( ) ) );
+      String.Format ( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField ( ) ) );
       pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
       pageGroup.GroupId = this.ChildEntityGroupID;
 
@@ -3908,7 +3962,7 @@ namespace Evado.UniForm.Digital
 
           groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
           groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
-          groupCommand.SetGuid( this.Session.Entity.Guid );
+          groupCommand.SetGuid ( this.Session.Entity.Guid );
 
           groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
         }//ENd edit access
@@ -3956,7 +4010,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "createObject" );
-      this.LogDebug ( "PageCommand: {0}.", PageCommand.getAsString ( false, true ) ); 
+      this.LogDebug ( "PageCommand: {0}.", PageCommand.getAsString ( false, true ) );
       this.LogDebug ( "Entity_SelectedLayoutId: {0}.", this.Session.Selected_EntityLayoutId );
       try
       {
@@ -4095,7 +4149,7 @@ namespace Evado.UniForm.Digital
 
       this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( LayoutId );
 
-      if ( this.Session.EntityLayout.hasEditAccess( this.Session.UserProfile.Roles ) == false )
+      if ( this.Session.EntityLayout.hasEditAccess ( this.Session.UserProfile.Roles ) == false )
       {
         this.LogDebug ( "User does not have create access." );
         this.LogMethodEnd ( "CreateNewEntity" );

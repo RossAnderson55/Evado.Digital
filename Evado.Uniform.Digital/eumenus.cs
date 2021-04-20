@@ -867,7 +867,7 @@ namespace Evado.UniForm.Digital
       // 
       optionList = this.AdapterObjects.PageIdentifiers;
 
-      Evado.Model.Digital.EvcStatics.sortOptionList ( optionList );
+      Evado.Model.Digital.EvcStatics.sortOptionListValues ( optionList );
 
       pageField = pageGroup.createSelectionListField (
         EvMenuItem.MenuFieldNames.Page_Id.ToString ( ),

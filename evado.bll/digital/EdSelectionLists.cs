@@ -249,7 +249,7 @@ namespace Evado.Bll.Digital
       {
         this.LogDebug ( "Delete SelectionList " );
 
-        iReturn = this._dal_SelectionLists.deleteItem ( SelectionList );
+        iReturn = this._dal_SelectionLists.DeleteItem ( SelectionList );
         this.LogClass ( this._dal_SelectionLists.Log );
         return iReturn;
       }

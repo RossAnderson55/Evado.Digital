@@ -581,10 +581,6 @@ namespace Evado.UniForm.Digital
 
     #region Private Layout Integrate methods
 
-    private void MergeRecordLayout ( EdRecord Record )
-    {
-    }
-
     // ***********************************************************************************
     #endregion
 

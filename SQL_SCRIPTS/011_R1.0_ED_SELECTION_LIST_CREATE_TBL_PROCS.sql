@@ -65,6 +65,25 @@ CREATE TABLE [dbo].[ED_SELECTION_LISTS](
 END
 GO
 
+
+
+/****** Object:  Table [dbo].[ED_RECORD_LAYOUTS]    Script Date: 12/24/2020 10:45:30 ******/
+
+IF NOT EXISTS( SELECT 1 FROM sys.columns 
+          WHERE Name = N'EDSL_GUID'
+          AND Object_ID = Object_ID(N'ED_SELECTION_LIST_OPTIONS' ))
+BEGIN
+
+CREATE TABLE [dbo].[ED_SELECTION_LIST_OPTIONS](
+	EDSL_LIST_ID nvarchar(20) NULL,
+	EDS0_No int NULL,
+	EDS0_VALUE varchar(50) NULL,
+	EDSO_DESCRIPTION nvarchar(250) NULL,
+	EDSO_CATEGORY nvarchar(100) NULL )
+
+END
+GO
+
 /****** Object:  StoredProcedure dbo.USR_SELECTION_LIST_ADD    Script Date: 01/04/2021 10:32:51 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.USR_SELECTION_LIST_ADD') AND type in (N'P', N'PC'))
 DROP PROCEDURE dbo.USR_SELECTION_LIST_ADD

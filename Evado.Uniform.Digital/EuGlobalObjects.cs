@@ -361,6 +361,7 @@ namespace Evado.UniForm.Digital
       List<EvOption> optionList = new List<EvOption> ( );
       string categories = String.Empty;
       bool hasCategories = true;
+      string inList = String.Empty;
 
       if ( IsSelectionList == true )
       {
@@ -405,6 +406,12 @@ namespace Evado.UniForm.Digital
             continue;
           }
 
+          if ( inList.Contains ( item.Value ) == true )
+          {
+            continue;
+          }
+          inList += ";" + item.Value;
+
           //
           // the first option category is empty then list does not have 
           // categories so use options only.
@@ -422,10 +429,8 @@ namespace Evado.UniForm.Digital
           {
             if ( item.Category != String.Empty )
             {
-              if ( categories.Contains ( item.Category ) == false )
-              {
-                optionList.Add ( new EvOption ( item.Category ) );
-              }
+
+              optionList.Add ( new EvOption ( item.Category ) );
             }
             continue;
           }
@@ -450,6 +455,11 @@ namespace Evado.UniForm.Digital
         }// List item iteration loop
 
       }//Selection list iteration loop
+
+      //
+      // sort the list alphabeticallly.
+      //
+      optionList.Sort ( ( n1, n2 ) => n1.Description.CompareTo ( n2.Description ) );
 
       //
       // Return the selection list's options.
@@ -672,7 +682,7 @@ namespace Evado.UniForm.Digital
         {
           if ( item.Group == EvMenuItem.CONST_MENU_STATIC_ADMIN_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_MANAGEMENT_GROUP_ID
-            || item.Group == EvMenuItem.CONST_MENU_STATIC_DESIGN_GROUP_ID  
+            || item.Group == EvMenuItem.CONST_MENU_STATIC_DESIGN_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_RECORD_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_ANALYSIS_GROUP_ID
             || item.Group == EvMenuItem.CONST_MENU_STATIC_AUDIT_GROUP_ID )
@@ -897,7 +907,7 @@ namespace Evado.UniForm.Digital
       //
       // return null if not found.
       //
-      return new EdRecord();
+      return new EdRecord ( );
 
     }//END method
 

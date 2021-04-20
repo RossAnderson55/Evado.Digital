@@ -711,6 +711,11 @@ namespace Evado.Dal.Digital
       // 
       dataChanges.AddItem ( dataChange );
 
+      //
+      // Update the option list
+      //
+      this.updateOptions ( Item );
+
       return EvEventCodes.Ok;
 
     }//END updateItem class 
@@ -772,6 +777,11 @@ namespace Evado.Dal.Digital
       {
         return EvEventCodes.Database_Record_Update_Error;
       }
+
+      //
+      // Update the option list
+      //
+      this.updateOptions ( Item );
 
       //
       // Return the event code for adding new items. 
@@ -839,7 +849,7 @@ namespace Evado.Dal.Digital
     /// 2. Return an event code for deleting the items. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes deleteItem ( EdSelectionList Item )
+    public EvEventCodes DeleteItem ( EdSelectionList Item )
     {
       this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "deleteItem method. " );
@@ -870,6 +880,95 @@ namespace Evado.Dal.Digital
       return EvEventCodes.Ok;
 
     }// End deleteYear method.
+
+
+
+    // ==================================================================================
+    /// <summary>
+    /// This class updates the appliocation parameter records data object. 
+    /// </summary>
+    /// <param name="ParameterList">list of EvObjectParameter</param>
+    /// <param name="ObjectGuid">parameter's Guid identifier.</param>
+    /// <returns>EvEventCodes: an event code for update data object</returns>
+    /// <remarks>
+    /// This method consists of the following steps:
+    /// 
+    /// 1. Exit, if the FormId or Activity's Guid or the Old activity object's Guid is empty.
+    /// 
+    /// 2. Generate the DB row Guid, if it does not exist. 
+    /// 
+    /// 3. Define the SQL query parameters and execute the storeprocedure for updating items.
+    /// 
+    /// 4. Return an event code for updating items. 
+    /// 
+    /// </remarks>
+    // ----------------------------------------------------------------------------------
+    public EvEventCodes updateOptions ( EdSelectionList Item )
+    {
+
+      this.LogMethod ( "updateOptions " );
+      this.LogValue ( "ListId: {0}.", Item.ListId );
+      this.LogValue ( "Item.Items.Count: {0}.", Item.Items.Count );
+      //
+      // Initialize the Sql update query string. 
+      //
+      System.Text.StringBuilder SqlUpdateQuery = new System.Text.StringBuilder ( );
+
+      if ( Item.Items.Count == 0 )
+      {
+        this.LogValue ( "No options in the list" );
+
+        this.LogMethodEnd ( "updateOptions " );
+        return EvEventCodes.Ok;
+      }
+
+      //
+      // Delete the milestone activities for this milestone.
+      //
+      SqlUpdateQuery.AppendLine ( "/** DELETE ALL OF OBJECT PARAMETERS FOR THE OBJECT **/" );
+      SqlUpdateQuery.AppendLine ( " DELETE FROM ED_SELECTION_LIST_OPTIONS " );
+      SqlUpdateQuery.AppendLine ( " WHERE  (EDSL_LIST_ID = '" + Item.ListId + "') ; \r\n" );
+
+      for ( int count = 0; count < Item.Items.Count; count++ )
+      {
+        EdSelectionList.Item selectionItem = Item.Items [ count ];
+        //
+        // Skip the non selected forms
+        //
+        if ( selectionItem == null )
+        {
+          continue;
+        }
+
+        this.LogDebug ( "Value: {0}, Description: {1}, Category: {1} ", selectionItem.Value, selectionItem.Description, selectionItem.Category );
+
+        SqlUpdateQuery.AppendLine ( "Insert Into ED_SELECTION_LIST_OPTIONS " );
+        SqlUpdateQuery.AppendLine ( "( EDSL_LIST_ID, EDS0_NO, EDS0_VALUE, EDSO_DESCRIPTION, EDSO_CATEGORY )  " );
+        SqlUpdateQuery.AppendLine ( "values  " );
+        SqlUpdateQuery.AppendLine ( "('" + Item.ListId + "', " );
+        SqlUpdateQuery.AppendLine ( " " + selectionItem.No + ", " );
+        SqlUpdateQuery.AppendLine ( "'" + selectionItem.Value + "', " );
+        SqlUpdateQuery.AppendLine ( "'" + selectionItem.Description + "', " );
+        SqlUpdateQuery.AppendLine ( " '" + selectionItem.Category + "' ); \r\n" );
+
+      }//END form list iteration loop.
+
+
+      if ( EvSqlMethods.QueryUpdate ( SqlUpdateQuery.ToString ( ), null ) == 0 )
+      {
+        this.LogValue ( "Update failed" );
+        this.LogMethodEnd ( "updateOptions " );
+        return EvEventCodes.Database_Record_Update_Error;
+      }
+
+      this.LogValue ( "Update completed" );
+      // 
+      // Return code
+      //       
+      this.LogMethodEnd ( "updateOptions " );
+      return EvEventCodes.Ok;
+
+    }//END updateOptions class
 
     #endregion
 
