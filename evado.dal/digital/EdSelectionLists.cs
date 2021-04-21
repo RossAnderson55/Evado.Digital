@@ -645,6 +645,11 @@ namespace Evado.Dal.Digital
         return EvEventCodes.Identifier_Global_Unique_Identifier_Error;
       }
 
+      //
+      // trime the item options.
+      //
+      this.trimItemOptions ( Item );
+
       // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // Compare the objects.
       // 
@@ -758,6 +763,11 @@ namespace Evado.Dal.Digital
 
         return EvEventCodes.Data_Duplicate_Id_Error;
       }
+
+      //
+      // trime the item options.
+      //
+      this.trimItemOptions ( Item );
 
       // 
       // Create the Guid
@@ -880,32 +890,51 @@ namespace Evado.Dal.Digital
       return EvEventCodes.Ok;
 
     }// End deleteYear method.
+    
+    // ==================================================================================
+    /// <summary>
+    /// This class updates the appliocation parameter records data object. 
+    /// </summary>
+    /// <param name="Item">EdSelectionList object</param>
+    /// <returns>EvEventCodes: an event code for update data object</returns>
+    // ----------------------------------------------------------------------------------
+    private int trimItemOptions ( EdSelectionList Item )
+    {
+      this.LogMethod ( "trimOptions " );
+      string hasOptions = String.Empty ;
+      int count = 0;
 
+      this.LogDebug( "Items.Count {0}.", Item.Items.Count);
 
+      //
+      // iterate through the options in the list.
+      //
+      for ( int i = 0; i < Item.Items.Count; i++ )
+      {
+        if ( hasOptions.Contains ( Item.Items [ i ].Value ) == true )
+        {
+          Item.Items.RemoveAt ( i );
+          i--;
+          continue;
+        }
+        hasOptions += ";" + Item.Items [ i ].Value;
+
+      }//END option item iteration loop.
+
+      this.LogDebug ( "TRIMMED: Items.Count {0}.", Item.Items.Count );
+      this.LogMethod ( "trimOptions " );
+      return count;
+    }
 
     // ==================================================================================
     /// <summary>
     /// This class updates the appliocation parameter records data object. 
     /// </summary>
-    /// <param name="ParameterList">list of EvObjectParameter</param>
-    /// <param name="ObjectGuid">parameter's Guid identifier.</param>
+    /// <param name="Item">EdSelectionList object</param>
     /// <returns>EvEventCodes: an event code for update data object</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. Exit, if the FormId or Activity's Guid or the Old activity object's Guid is empty.
-    /// 
-    /// 2. Generate the DB row Guid, if it does not exist. 
-    /// 
-    /// 3. Define the SQL query parameters and execute the storeprocedure for updating items.
-    /// 
-    /// 4. Return an event code for updating items. 
-    /// 
-    /// </remarks>
     // ----------------------------------------------------------------------------------
-    public EvEventCodes updateOptions ( EdSelectionList Item )
+    private EvEventCodes updateOptions ( EdSelectionList Item )
     {
-
       this.LogMethod ( "updateOptions " );
       this.LogValue ( "ListId: {0}.", Item.ListId );
       this.LogValue ( "Item.Items.Count: {0}.", Item.Items.Count );

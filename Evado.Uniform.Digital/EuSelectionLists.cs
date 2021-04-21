@@ -157,7 +157,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getDataObject" );
-      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString (false, true ) );
+      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString (false, false ) );
       try
       {
         // 
@@ -1677,7 +1677,7 @@ namespace Evado.UniForm.Digital
       try
       {
         this.LogMethod ( "updateObject" );
-        this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+        this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
         //
         // Initialise the methods variables and objects.
         //

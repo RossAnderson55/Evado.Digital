@@ -3125,13 +3125,6 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Form_Field_External_URL_Title_Field_Label" xml:space="preserve">
     <value>Media URL Title:</value>
   </data>
-  <data name="Generator_Disp_Html_Field_Value_Format" xml:space="preserve">
-    <value>[[table]]
-[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] 
-[[a href='{1}' target='_blank'  ]] {2}[[/a ]]
- [[/td]] [[/tr]]
-[[/table]]</value>
-  </data>
   <data name="Settings_Vimeo_Video_URL_Field_Label" xml:space="preserve">
     <value>Vimeo embedded base url:</value>
   </data>

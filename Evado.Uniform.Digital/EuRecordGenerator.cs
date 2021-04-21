@@ -1836,9 +1836,9 @@ namespace Evado.UniForm.Digital
       StringBuilder sbHtmlContent,
       bool displayTitle )
     {
-      this.LogMethod ( "getDisplayImageField" );
+      this.LogMethod ( "getDisplayStreamedVideoField" );
 
-      if ( Field.ItemValue.Length == 0 )
+      if ( Field.ItemValue == String.Empty )
       {
         return;
       }
@@ -1849,7 +1849,7 @@ namespace Evado.UniForm.Digital
 
       sbHtmlContent.AppendFormat ( htmlMarkup, Field.Title, Field.ItemText );
 
-      return;
+      this.LogMethodEnd ( "getDisplayStreamedVideoField" );
 
     }//END getDisplayImageField method.
 
@@ -1875,7 +1875,11 @@ namespace Evado.UniForm.Digital
       String stVideoStreamParameters = String.Empty;
       String stVideoSource = String.Empty;
 
-      if ( value == String.Empty )
+      //
+      // data or parameters are missing exit. 
+      if ( value == String.Empty
+        || this.AdapterObjects.Settings.VimeoEmbeddedUrl == String.Empty
+        || this.AdapterObjects.Settings.YouTubeEmbeddedUrl == String.Empty )
       {
         return String.Empty;
       }

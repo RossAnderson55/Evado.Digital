@@ -86,6 +86,7 @@ namespace Evado.Dal.Digital
     private const string DB_VISIBLE = "EDRLS_VISIBLE";
     private const string DB_DEFAULT_DISPLAY_ROLES = "EDRLS_DEFAULT_DISPLAY_ROLES";
     private const string DB_DEFAULT_EDIT_ROLES = "EDRLS_DEFAULT_EDIT_ROLES";
+    private const string DB_PERCENT_WIDTH = "EDRLS_PERCENT_WIDTH";
 
 
     //
@@ -109,6 +110,7 @@ namespace Evado.Dal.Digital
     private const string PARM_VISIBLE = "@VISIBLE";
     private const string PARM_DEFAULT_DISPLAY_ROLES = "@DEFAULT_DISPLAY_ROLES";
     private const string PARM_DEFAULT_EDIT_ROLES = "@DEFAULT_EDIT_ROLES";
+    private const string PARM_PERCENT_WIDTH = "@PERCENT_WIDTH";
     #endregion
 
     #region Read FormField data
@@ -152,7 +154,8 @@ namespace Evado.Dal.Digital
       // Update formfield object with the compatible data row items. 
       //
       formSection.LayoutGuid = EvSqlMethods.getGuid ( Row, EdRecordSections.DB_LAYOUT_GUID );
-      formSection.No = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_NUMBER );
+      formSection.No = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_NUMBER );;
+      formSection.Title = EvSqlMethods.getString ( Row, EdRecordSections.DB_NAME );
       formSection.Order = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_ORDER );
       formSection.FieldId = EvSqlMethods.getString ( Row, EdRecordSections.DB_FIELD_NAME );
       formSection.Instructions = EvSqlMethods.getString ( Row, EdRecordSections.DB_INSTRUCTIONS );
@@ -161,7 +164,7 @@ namespace Evado.Dal.Digital
       formSection.OnOpenVisible = EvSqlMethods.getBool ( Row, EdRecordSections.DB_VISIBLE );
       formSection.ReadAccessRoles = EvSqlMethods.getString ( Row, EdRecordSections.DB_DEFAULT_DISPLAY_ROLES );
       formSection.EditAccessRoles = EvSqlMethods.getString ( Row, EdRecordSections.DB_DEFAULT_EDIT_ROLES );
-      formSection.Title = EvSqlMethods.getString ( Row, EdRecordSections.DB_NAME );
+      formSection.PercentWidth = EvSqlMethods.getInteger ( Row, EdRecordSections.DB_PERCENT_WIDTH);
 
       return formSection;
 
@@ -364,34 +367,40 @@ namespace Evado.Dal.Digital
         prm.Value = section.EditAccessRoles;
         parmList.Add ( prm );
 
+        prm = new SqlParameter ( EdRecordSections.PARM_PERCENT_WIDTH + "_" + count, SqlDbType.Int );
+        prm.Value = section.EditAccessRoles;
+        parmList.Add ( prm );
+
         //
         // Create the add query .
         //
         sbSQL_AddQuery.AppendLine ( " INSERT INTO ED_RECORD_SECTIONS  "
-        + "(" +  DB_LAYOUT_GUID
-        + ", " + DB_NUMBER
-        + ", " + DB_ORDER
-        + ", " + DB_NAME
-        + ", " + DB_INSTRUCTIONS
-        + ", " + DB_FIELD_NAME
-        + ", " + DB_FIELD_VALUE
-        + ", " + DB_ON_MATCH_VISIBLE
-        + ", " + DB_VISIBLE
-        + ", " + DB_DEFAULT_DISPLAY_ROLES
-        + ", " + DB_DEFAULT_EDIT_ROLES
+        + "(" + EdRecordSections.DB_LAYOUT_GUID
+        + ", " + EdRecordSections.DB_NUMBER
+        + ", " + EdRecordSections.DB_ORDER
+        + ", " + EdRecordSections.DB_NAME
+        + ", " + EdRecordSections.DB_INSTRUCTIONS
+        + ", " + EdRecordSections.DB_FIELD_NAME
+        + ", " + EdRecordSections.DB_FIELD_VALUE
+        + ", " + EdRecordSections.DB_ON_MATCH_VISIBLE
+        + ", " + EdRecordSections.DB_VISIBLE
+        + ", " + EdRecordSections.DB_DEFAULT_DISPLAY_ROLES
+        + ", " + EdRecordSections.DB_DEFAULT_EDIT_ROLES
+        + ", " + EdRecordSections.DB_PERCENT_WIDTH
         + "  )  \r\n"
         + "VALUES ("
-        + "  " + PARM_FORM_GUID 
-        + ", " + PARM_NUMBER + "_" + count
-        + ", " + PARM_ORDER + "_" + count
-        + ", " + PARM_NAME + "_" + count
-        + ", " + PARM_INSTRUCTIONS + "_" + count
-        + ", " + PARM_FIELD_NAME + "_" + count
-        + ", " + PARM_FIELD_VALUE + "_" + count
-        + ", " + PARM_ON_MATCH_VISIBLE + "_" + count
-        + ", " + PARM_VISIBLE + "_" + count
-        + ", " + PARM_DEFAULT_DISPLAY_ROLES + "_" + count
-        + ", " + PARM_DEFAULT_EDIT_ROLES + "_" + count + " );  \r\n" );
+        + "  " + EdRecordSections.PARM_FORM_GUID
+        + ", " + EdRecordSections.PARM_NUMBER + "_" + count
+        + ", " + EdRecordSections.PARM_ORDER + "_" + count
+        + ", " + EdRecordSections.PARM_NAME + "_" + count
+        + ", " + EdRecordSections.PARM_INSTRUCTIONS + "_" + count
+        + ", " + EdRecordSections.PARM_FIELD_NAME + "_" + count
+        + ", " + EdRecordSections.PARM_FIELD_VALUE + "_" + count
+        + ", " + EdRecordSections.PARM_ON_MATCH_VISIBLE + "_" + count
+        + ", " + EdRecordSections.PARM_VISIBLE + "_" + count
+        + ", " + EdRecordSections.PARM_DEFAULT_DISPLAY_ROLES + "_" + count
+        + ", " + EdRecordSections.PARM_DEFAULT_EDIT_ROLES + "_" + count
+        + ", " + EdRecordSections.PARM_PERCENT_WIDTH + "_" + count + " );  \r\n" );
       }
 
       if ( parmList.Count > 1 )

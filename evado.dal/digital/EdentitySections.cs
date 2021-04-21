@@ -80,6 +80,7 @@ namespace Evado.Dal.Digital
     private const string DB_VISIBLE = "EDELS_VISIBLE";
     private const string DB_DEFAULT_DISPLAY_ROLES = "EDELS_DEFAULT_DISPLAY_ROLES";
     private const string DB_DEFAULT_EDIT_ROLES = "EDELS_DEFAULT_EDIT_ROLES";
+    private const string DB_PERCENT_WIDTH = "EDELS_PERCENT_WIDTH";
 
 
     //
@@ -103,6 +104,7 @@ namespace Evado.Dal.Digital
     private const string PARM_VISIBLE = "@VISIBLE";
     private const string PARM_DEFAULT_DISPLAY_ROLES = "@DEFAULT_DISPLAY_ROLES";
     private const string PARM_DEFAULT_EDIT_ROLES = "@DEFAULT_EDIT_ROLES";
+    private const string PARM_PERCENT_WIDTH = "@PERCENT_WIDTH";
     #endregion
 
     #region Read FormField data
@@ -147,6 +149,7 @@ namespace Evado.Dal.Digital
       //
       formSection.LayoutGuid = EvSqlMethods.getGuid ( Row, EdEntitySections.DB_LAYOUT_GUID );
       formSection.No = EvSqlMethods.getInteger ( Row, EdEntitySections.DB_NUMBER );
+      formSection.Title = EvSqlMethods.getString ( Row, EdEntitySections.DB_NAME );
       formSection.Order = EvSqlMethods.getInteger ( Row, EdEntitySections.DB_ORDER );
       formSection.FieldId = EvSqlMethods.getString ( Row, EdEntitySections.DB_FIELD_NAME );
       formSection.Instructions = EvSqlMethods.getString ( Row, EdEntitySections.DB_INSTRUCTIONS );
@@ -155,7 +158,7 @@ namespace Evado.Dal.Digital
       formSection.OnOpenVisible = EvSqlMethods.getBool ( Row, EdEntitySections.DB_VISIBLE );
       formSection.ReadAccessRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_DISPLAY_ROLES );
       formSection.EditAccessRoles = EvSqlMethods.getString ( Row, EdEntitySections.DB_DEFAULT_EDIT_ROLES );
-      formSection.Title = EvSqlMethods.getString ( Row, EdEntitySections.DB_NAME );
+      formSection.PercentWidth = EvSqlMethods.getInteger ( Row, EdEntitySections.DB_PERCENT_WIDTH );
 
       return formSection;
 
@@ -361,6 +364,10 @@ namespace Evado.Dal.Digital
         prm.Value = section.EditAccessRoles;
         parmList.Add ( prm );
 
+        prm = new SqlParameter ( EdEntitySections.PARM_PERCENT_WIDTH + "_" + count, SqlDbType.Int );
+        prm.Value = section.EditAccessRoles;
+        parmList.Add ( prm );
+
         //
         // Create the add query .
         //
@@ -376,6 +383,7 @@ namespace Evado.Dal.Digital
         + ", " + EdEntitySections.DB_VISIBLE
         + ", " + EdEntitySections.DB_DEFAULT_DISPLAY_ROLES
         + ", " + EdEntitySections.DB_DEFAULT_EDIT_ROLES
+        + ", " + EdEntitySections.DB_PERCENT_WIDTH
         + "  ) " );
         sbSQL_AddQuery.AppendLine ( "VALUES "
         + "( " + EdEntitySections.PARM_LAYOUT_GUID
@@ -388,7 +396,8 @@ namespace Evado.Dal.Digital
         + ", " + EdEntitySections.PARM_ON_MATCH_VISIBLE + "_" + count
         + ", " + EdEntitySections.PARM_VISIBLE + "_" + count
         + ", " + EdEntitySections.PARM_DEFAULT_DISPLAY_ROLES + "_" + count
-        + ", " + EdEntitySections.PARM_DEFAULT_EDIT_ROLES + "_" + count + " );" );
+        + ", " + EdEntitySections.PARM_DEFAULT_EDIT_ROLES + "_" + count
+        + ", " + EdEntitySections.PARM_PERCENT_WIDTH + "_" + count + " );" );
       }
 
       if ( parmList.Count > 1 )

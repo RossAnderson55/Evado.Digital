@@ -1799,13 +1799,16 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }
 
+        if ( this.Session.EntityField.RecordMedia != null )
+        {
+          this.LogDebug ( "Media URL {0} T: {1}, W: {2}, H: {3}.",
+            this.Session.EntityField.RecordMedia.Url,
+            this.Session.EntityField.RecordMedia.Title,
+            this.Session.EntityField.RecordMedia.Width,
+            this.Session.EntityField.RecordMedia.Height );
 
-        this.LogDebug ( "Media URL {0}.", this.Session.EntityField.RecordMedia.Url );
-        this.LogDebug ( "Media Title {0}.", this.Session.EntityField.RecordMedia.Title );
-        this.LogDebug ( "Media Width {0}.", this.Session.EntityField.RecordMedia.Width );
-        this.LogDebug ( "Media Height {0}.", this.Session.EntityField.RecordMedia.Height );
-
-        this.LogDebug ( "Media Data {0}.", this.Session.EntityField.RecordMedia.Data );
+          this.LogDebug ( "Media Data {0}.", this.Session.EntityField.RecordMedia.Data );
+        }
 
         //
         // Add the new entity to the field list.
