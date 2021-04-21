@@ -905,11 +905,11 @@ namespace Evado.Model.Digital
       //
       // add the static roles.
       //
-      optionList.Add ( new EvOption ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) );
-      optionList.Add ( new EvOption ( EdUserProfile.CONST_MANAGER_ROLE ) );
-      optionList.Add ( new EvOption ( EdUserProfile.CONST_DESIGNER_ROLE ) );
-      optionList.Add ( new EvOption ( EdUserProfile.CONST_STAFF_ROLE ) );
-      optionList.Add ( new EvOption ( EdUserProfile.CONST_CUSTOMER_ROLE ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ROLE_MANAGER ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ROLE_DESIGNER ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ROLE_STAFF ) );
+      optionList.Add ( new EvOption ( EdUserProfile.CONST_ROLE_CUSTOMER ) );
 
       //
       // Iterate through the array of roles to create the option list.

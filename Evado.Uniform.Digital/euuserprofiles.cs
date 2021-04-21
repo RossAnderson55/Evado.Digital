@@ -1451,8 +1451,8 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true )
       {
-      optionList.Add ( new EvOption ( "EVADO", "Evado" ) );
-      optionList.Add ( new EvOption ( "CUST", "Customer" ) );
+        optionList.Add ( new EvOption ( EdUserProfile.CONST_USER_TYPE_EVADO ) );
+        optionList.Add ( new EvOption ( EdUserProfile.CONST_USER_TYPE_CUSTOMER ) );
       }
       EvStatics.sortOptionListValues ( optionList );
 
@@ -1956,10 +1956,17 @@ namespace Evado.UniForm.Digital
         //
         // get the user category for the currently selected user type selection.
         //
-        this.Session.AdminUserProfile.UserCategory = this.AdapterObjects.getSelectionCategory (
-          this.AdapterObjects.Settings.UserCategoryList,
-          this.Session.AdminUserProfile.UserType );
-
+        if ( this.Session.AdminUserProfile.UserType == EdUserProfile.CONST_USER_TYPE_EVADO
+          || this.Session.AdminUserProfile.UserType == EdUserProfile.CONST_USER_TYPE_CUSTOMER )
+        {
+          this.Session.AdminUserProfile.UserCategory = this.Session.AdminUserProfile.UserType;
+        }
+        else
+        {
+          this.Session.AdminUserProfile.UserCategory = this.AdapterObjects.getSelectionCategory (
+            this.AdapterObjects.Settings.UserCategoryList,
+            this.Session.AdminUserProfile.UserType );
+        }
         this.LogValue ( "AdminUserProfile.UserType: {0}. ", this.Session.AdminUserProfile.UserType );
         this.LogValue ( "AdminUserProfile.UserCategory: {0}. ", this.Session.AdminUserProfile.UserCategory );
 

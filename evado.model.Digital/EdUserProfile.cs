@@ -241,11 +241,14 @@ namespace Evado.Model.Digital
 
     #region Class contants
 
-    public const string CONST_ADMINISTRATOR_ROLE = "Administrator";
-    public const string CONST_MANAGER_ROLE = "Manager";
-    public const string CONST_DESIGNER_ROLE = "Designer";
-    public const string CONST_STAFF_ROLE = "Staff";
-    public const string CONST_CUSTOMER_ROLE = "Customer";
+    public const string CONST_ROLE_ADMINISTRATOR = "Administrator";
+    public const string CONST_ROLE_MANAGER = "Manager";
+    public const string CONST_ROLE_DESIGNER = "Designer";
+    public const string CONST_ROLE_STAFF = "Staff";
+    public const string CONST_ROLE_CUSTOMER = "Customer";
+
+    public const string CONST_USER_TYPE_EVADO = "Evado";
+    public const string CONST_USER_TYPE_CUSTOMER = "Customer";
 
     #endregion
 
@@ -410,7 +413,7 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.OrgId == "Evado" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true ) )
         {
           return true;
         }
@@ -426,9 +429,9 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.OrgId == "Evado" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_DESIGNER ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_MANAGER ) == true ) )
         {
           return true;
         }
@@ -444,10 +447,10 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.OrgId == "Evado" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_DESIGNER ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_MANAGER ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_STAFF ) == true ) )
         {
           return true;
         }
@@ -463,7 +466,7 @@ namespace Evado.Model.Digital
       get
       {
         if ( ( this.OrgId == "Evado" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true ) )
         {
           return true;
         }
@@ -480,8 +483,8 @@ namespace Evado.Model.Digital
       {
         if ( ( this.OrgId == "Evado"
             || this.OrgType == "Customer" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_DESIGNER ) == true ) )
         {
           return true;
         }
@@ -499,8 +502,8 @@ namespace Evado.Model.Digital
       {
         if ( ( this.OrgId == "Evado"
             || this.OrgType == "Customer" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_MANAGER ) == true ) )
         {
           return true;
         }
@@ -518,10 +521,10 @@ namespace Evado.Model.Digital
       {
         if ( ( this.OrgId == "Evado"
             || this.OrgType == "Customer" )
-          && ( this._Roles.Contains ( EdUserProfile.CONST_ADMINISTRATOR_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_MANAGER_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_DESIGNER_ROLE ) == true
-            || this._Roles.Contains ( EdUserProfile.CONST_STAFF_ROLE ) == true ) )
+          && ( this._Roles.Contains ( EdUserProfile.CONST_ROLE_ADMINISTRATOR ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_MANAGER ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_DESIGNER ) == true
+            || this._Roles.Contains ( EdUserProfile.CONST_ROLE_STAFF ) == true ) )
         {
           return true;
         }

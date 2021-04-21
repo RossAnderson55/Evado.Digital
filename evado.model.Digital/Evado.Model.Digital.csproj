@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="EdOrganisation.cs" />
     <Compile Include="EdRecordEntity.cs" />
+    <Compile Include="EdRecordMedia.cs" />
     <Compile Include="EdReport.cs" />
     <Compile Include="EdReportColumn.cs" />
     <Compile Include="EdReportCsv.cs" />

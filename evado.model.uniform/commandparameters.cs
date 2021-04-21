@@ -84,7 +84,7 @@ namespace Evado.Model.UniForm
       /// <summary>
       /// This enumeration defines the default background colour.
       /// </summary>
-      BG_Default = 10,
+      BG_Default,
 
       /// <summary>
       /// This enumeration defines the default background colour.

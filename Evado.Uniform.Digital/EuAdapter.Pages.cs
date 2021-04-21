@@ -268,6 +268,8 @@ namespace Evado.UniForm.Digital
       //
       if ( this.Session.PageLayout.DisplayMainMenu == true )
       {
+        this.getSelectedGroupItem ( PageCommand ) ;
+
         this.generateMainMenu ( page );
       }
 
@@ -504,6 +506,14 @@ namespace Evado.UniForm.Digital
 
       }//END page header group list .
 
+      //
+      // display the user if they exist.
+      //
+      if( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        generateCurrentUserList ( PageObject, PageCommand );
+      }
+
       this.LogMethodEnd ( "createPage_Center" );
 
     }//END createPage_Center method
@@ -596,10 +606,9 @@ namespace Evado.UniForm.Digital
     /// This method generates the home page menu based on user roles.
     /// </summary>
     /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    /// <param name="OnlyAdministrationMenu">Bool: display administration menu.</param>
     // ----------------------------------------------------------------------------------
     public void generateMainMenu (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.Model.UniForm.Page PageObject)
     {
       this.LogMethod ( "generateMainMenu" );
       this.LogValue ( "PlatformId: " + EuAdapter.AdapterObjects.PlatformId );
@@ -611,6 +620,7 @@ namespace Evado.UniForm.Digital
       int countOfGroups = 0;
       Evado.Model.UniForm.Group pageHeaderMenuGroup = new Model.UniForm.Group ( );
       List<EvMenuItem> menuHeaders = new List<EvMenuItem> ( );
+      
 
       //
       // Iterate through the menu items to extract the menu groups.
@@ -627,17 +637,16 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        this.LogDebug ( "Group: {0}, User Role: {1}, HR: {2},",
+        this.LogDebug ( "Group: {0}, User Role: {1}, Hdr Roles: {2},",
           groupHeader.Group,
           this.Session.UserProfile.Roles,
           groupHeader.RoleList );
         //
         // Validate the menu item
         //
-        if ( groupHeader.SelectMenuHeader (
-          this.Session.UserProfile.Roles ) == false )
+        if ( groupHeader.SelectMenuHeader ( this.Session.UserProfile.Roles ) == false )
         {
-          //this.LogDebug ( "SKIPPED HEADER" );
+         this.LogDebug ( "SKIPPED HEADER" );
           continue;
         }
 
@@ -662,18 +671,17 @@ namespace Evado.UniForm.Digital
       // 
       foreach ( EvMenuItem groupHeader in menuHeaders )
       {
-
         //
         // If the group header length 1 set the header to the menu group item.
         //
         if ( countOfGroups == 1 )
         {
           this.Session.MenuGroupItem.Group = groupHeader.Group;
-          //this.LogDebug ( "MenuGroupItem group: " + groupHeader.Group + " - " + groupHeader.Title );
+          this.LogDebug ( "MenuGroupItem group: " + groupHeader.Group + " - " + groupHeader.Title );
         }
 
 
-        //this.LogDebug ( "Header group: " + groupHeader.Group + " - " + groupHeader.Title );
+        this.LogDebug ( "Header group: " + groupHeader.Group + " - " + groupHeader.Title );
 
         // 
         // Add a header groupCommand 
@@ -694,9 +702,7 @@ namespace Evado.UniForm.Digital
         {
           command.Type = Model.UniForm.CommandTypes.Null;
 
-          //pageMenuGroup.SetPageColumnCode ( Model.UniForm.PageColumnCodes.Left );
-
-          //this.LogDebug ( "groupHeader.Title: " + groupHeader.Title );
+          this.LogDebug ( "groupHeader.Title: " + groupHeader.Title );
 
           this.getMenuGroupItems ( groupHeader, pageHeaderMenuGroup.CommandList );
         }
@@ -1202,148 +1208,6 @@ namespace Evado.UniForm.Digital
 
     }//END getSelectedGroupItem method
 
-    // ==================================================================================
-    /// <summary>
-    /// This method gets generates the site dashboard for the user.
-    /// 
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    // ----------------------------------------------------------------------------------
-    public void generateUserRoleGroup (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      this.LogMethod ( "generateUserRoleGroup" );
-
-      // 
-      // Define the pageMenuGroup.
-      // 
-      Evado.Model.UniForm.Group group = PageObject.AddGroup (
-        EdLabels.HomePage_Welcome_Message
-        + this.Session.UserProfile.CommonName );
-      group.AddParameter ( Evado.Model.UniForm.GroupParameterList.Pixel_Width, 300 );
-
-      String profile = String.Empty;
-
-      //
-      // Display the customer the user is associated with if it exist.
-      //
-      /*
-      if ( this.Session.UserProfile.Customer != null )
-      {
-        profile += String.Format (
-           EvCustomerLabels.Customer_User_Name_Format,
-           this.Session.UserProfile.Customer.CustomerNo, 
-           this.Session.UserProfile.Customer.Name );
-      }
-      profile += String.Format (
-         EdLabels.HomePage_User_Role_Message,
-          Evado.Model.EvStatics.enumValueToString ( this.Session.UserProfile.Roles ) );
-      
-      */
-      group.Description = profile;
-
-
-    }///END generateUerRoleGroup method
-    ///
-    /*
-    // ==================================================================================
-    /// <summary>
-    /// This method generates the trial dashboard for the user.
-    /// 
-    /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
-    // ----------------------------------------------------------------------------------
-    public void getApplicationDashboard (
-      Evado.Model.UniForm.Page PageObject )
-    {
-      this.LogMethod ( "getApplicationDashboard" );
-      this.LogDebug ( "Configration Access: " + this.Session.UserProfile.hasManagementAccess );
-      this.LogDebug ( "ProjectDashboardComponents: " + this.Session.UserProfile.ProjectDashboardComponents );
-      // 
-      // Initialise the methods variables and objects.
-      // 
-      Evado.Model.UniForm.Field pageField = new Model.UniForm.Field ( );
-      if ( this.Session.UserProfile.ProjectDashboardComponents == String.Empty )
-      {
-        //this.Session.UserProfile.ProjectDashboardComponents = EvProject.ProjectDashboardOptions.Recruitment_Chart.ToString();
-      }
-
-      string [ ] displayOptions = this.Session.UserProfile.ProjectDashboardComponents.Split ( ';' );
-
-
-      if ( this.Session.UserProfile.hasManagementAccess )
-      {
-        return;
-      }
-
-      Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group (
-        EdLabels.HomePage_Application_Dashboard,
-        String.Empty,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Horizontal_Orientation;
-      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
-      pageGroup.DescriptionAlignment = Model.UniForm.GroupDescriptionAlignments.Center_Align;
-
-      //
-      // Define the group description containing the project and it's status.
-      //
-      pageGroup.Description = String.Format (
-        EdLabels.HomePage_Application_Dashboard_Description,
-        this.Session.Application.ApplicationId,
-        this.Session.Application.Title,
-        this.Session.Application.StateDesc );
-
-
-      //
-      // Iterate through the list if menu item and select the items for the 
-      // project dashboard.
-      //
-
-
-      foreach ( EvMenuItem item in this._AdapterObjects.MenuList )
-      {
-        //
-        // if the user does not have config access or is not group is not
-        // project dashboard continue.
-        //
-        if ( this.Session.UserProfile.hasManagementAccess == false
-          || item.Group != EvMenuItem.CONST_PROJECT_DASHBOARD_GROUP )
-        {
-          continue;
-        }
-
-        //
-        // Validate the menu item
-        //
-        if ( item.SelectMenuItem (
-          this.Session.UserProfile.Roles ) == false )
-        {
-          continue;
-        }
-
-        Evado.Model.UniForm.Command command = this._MenuUtility.getMenuItemCommandObject ( item );
-        if ( command != null )
-        {
-          pageGroup.addCommand ( command );
-        }
-      }//END menu iteration loop
-
-      // 
-      // If the groupCommand list exists then output it
-      // 
-      if ( pageGroup.CommandList.Count > 0 )
-      {
-        PageObject.AddGroup ( pageGroup );
-      }
-
-      this.LogDebugClass ( this._MenuUtility.Log );
-      this.LogMethodEnd ( "getApplicationDashboard" );
-
-    }//END generateProjectDashboard method
-    */
     // ==================================================================================
     /// <summary>
     /// This method gets generates the site dashboard for the user.

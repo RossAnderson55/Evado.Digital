@@ -1577,9 +1577,9 @@ namespace Evado.UniForm.Digital
       }
       this.LogDebug ( "Value {0}. ", url );
 
-      if ( Field.ItemValue.Contains ( ";" ) == true )
+      if ( Field.ItemValue.Contains ( "^" ) == true )
       {
-        string [ ] arValue = Field.ItemValue.Split ( ';' );
+        string [ ] arValue = Field.ItemValue.Split ( '^' );
 
         url = arValue [ 0 ];
         urlTitle = arValue [ 1 ];
@@ -2231,135 +2231,6 @@ namespace Evado.UniForm.Digital
       }//END Field type switch.
 
     }//END public getFormField method.
-
-    //  =================================================================================
-    /// <summary>
-    /// Description:
-    ///   This method generates the form field object header as html markup.
-    /// 
-    /// </summary>
-    /// <param name="Field">   Evado.Model.Digital.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.Model.UniForm.Field object.</param>
-    /// <param name="ViewState">  Evado.Model.Digital.EvForm.FormDisplayStates enumerated value.</param>
-    //  ---------------------------------------------------------------------------------
-    private void createFormDisplayLayout (
-       Evado.Model.Digital.EdRecordField Field,
-      Evado.Model.UniForm.Field GroupField )
-    {
-      this.LogMethod ( "createFormDisplayLayout" );
-
-      // 
-      // Select the method to generate the correct mobile field type.
-      // 
-      switch ( Field.TypeId )
-      {
-        case Evado.Model.EvDataTypes.Computed_Field:
-        case Evado.Model.EvDataTypes.Text:
-        case Evado.Model.EvDataTypes.Boolean:
-        case Evado.Model.EvDataTypes.Yes_No:
-        case Evado.Model.EvDataTypes.Numeric:
-        case Evado.Model.EvDataTypes.Integer:
-        case Evado.Model.EvDataTypes.Float_Range:
-        case Evado.Model.EvDataTypes.Date_Range:
-        case Evado.Model.EvDataTypes.Date:
-        case Evado.Model.EvDataTypes.Time:
-        case Evado.Model.EvDataTypes.Telephone_Number:
-        case Evado.Model.EvDataTypes.Email_Address:
-        case Evado.Model.EvDataTypes.Selection_List:
-        case Evado.Model.EvDataTypes.External_Selection_List:
-        case Evado.Model.EvDataTypes.Radio_Button_List:
-        case Evado.Model.EvDataTypes.External_RadioButton_List:
-        case Evado.Model.EvDataTypes.Read_Only_Text:
-        case Evado.Model.EvDataTypes.Special_Subsitute_Data:
-          {
-            this.getDisplayField ( Field, GroupField );
-            return;
-          }
-
-        case Evado.Model.EvDataTypes.Free_Text:
-          {
-            this.getFreeTextField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Integer_Range:
-          {
-            this.getIntegerRangeField ( Field, GroupField );
-            break;
-          }
-        case Evado.Model.EvDataTypes.Address:
-          {
-            this.getAddressField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Name:
-          {
-            this.getNameField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Check_Box_List:
-          {
-            this.getCheckButtonListField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.External_CheckBox_List:
-          {
-            this.getExternalCheckBoxField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Horizontal_Radio_Buttons:
-          {
-            this.getHorizontalRadioButtonField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Analogue_Scale:
-          {
-            this.getAnalogueScaleField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Streamed_Video:
-          {
-            this.getStreamedVideoField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Image:
-          {
-            this.getImageField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.External_Image:
-          {
-            this.getExternalImageField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Http_Link:
-          {
-            this.getHttpLinkField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Signature:
-          {
-            this.getSignatureField ( Field, GroupField, EdRecordObjectStates.Submitted_Record );
-            return;
-          }
-        case Evado.Model.EvDataTypes.User_Endorsement:
-          {
-            this.getUserEndorsementField ( Field, GroupField );
-            return;
-          }
-        case Evado.Model.EvDataTypes.Table:
-        case Evado.Model.EvDataTypes.Special_Matrix:
-          {
-            this.getTableField ( Field, GroupField );
-            return;
-          }
-        default:
-          {
-            this.getDisplayField ( Field, GroupField );
-            return;
-          }
-      }
-      this.LogMethodEnd ( "createFormDisplayLayout" );
-    }//END MEthod
 
     //  =================================================================================
     /// <summary>

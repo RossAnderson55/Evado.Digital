@@ -1287,6 +1287,15 @@ namespace Evado.UniForm.Digital
       String userSelectionList = this.AdapterObjects.Settings.UserCategoryList;
       optionList = this.AdapterObjects.getSelectionOptions ( userSelectionList, String.Empty, false, false );
 
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        optionList.Add ( new EvOption ( "EVADO", "Evado" ) );
+        optionList.Add ( new EvOption ( "CUST", "Customer" ) );
+      }
+      EvStatics.sortOptionListValues ( optionList );
+
+
+
       // 
       // Create the user type selection.
       // 

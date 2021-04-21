@@ -192,7 +192,12 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constand definee the include test sites property identifier
     /// </summary>
-    private const string CONST_SELECTION_FIELD = "SFID_";
+    public const string CONST_SELECTION_FIELD = "SELFID";
+
+    /// <summary>
+    /// This constand definee command field to indicated if empty selectin is enabled.
+    /// </summary>
+    private const string CONST_EMPTY_SELECTION_FIELD = "EMSEL";
     /// <summary>
     /// This constand definee the include test sites property identifier
     /// </summary>
@@ -658,7 +663,10 @@ namespace Evado.UniForm.Digital
         //
         // Execute the monitor list record query.
         //
-        this.executeRecordQuery ( );
+        if ( this.enableQuery ( ) == true )
+        {
+          this.executeRecordQuery ( );
+        }
 
         // 
         // Create the new pageMenuGroup for query selection.
@@ -976,6 +984,24 @@ namespace Evado.UniForm.Digital
         this.Session.Entity.ButtonEditModeEnabled = true;
       }
       this.LogValue ( "ButtonEditModeEnabled: " + this.Session.Entity.ButtonEditModeEnabled );
+
+      //
+      // enable empty selection query.
+      //
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
+      {
+        var value = PageCommand.GetParameter ( EuEntities.CONST_EMPTY_SELECTION_FIELD );
+
+        if ( EvStatics.getBool ( value ) == true )
+        {
+          this.Session.EnableEmptyQuerySelection = true;
+        }
+        else
+        {
+          this.Session.EnableEmptyQuerySelection = false;
+        }
+      }
+      this.LogValue ( "EnableEmptyQuerySelection: " + this.Session.EnableEmptyQuerySelection );
 
       //
       // if the entity layout is defined in the page command then update its value.
@@ -1381,7 +1407,6 @@ namespace Evado.UniForm.Digital
 
     }//ENd getList_SelectionGroup method
 
-
     // ==============================================================================
     /// <summary>
     /// This method executed the form record query of the database.
@@ -1653,7 +1678,7 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData GetFilteredListObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "GetFilteredListObject" );
+      this.LogMethod ( "GetFilteredListObject 1" );
       this.LogDebug ( "EntitySelectionState: " + this.Session.EntityStateSelection );
       this.LogDebug ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
       // 
@@ -1676,7 +1701,7 @@ namespace Evado.UniForm.Digital
       }
       if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
       {
-        this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+        this.ParentLayoutId = PageCommand.GetParameter ( EuEntities.CONST_EMPTY_SELECTION_FIELD );
       }
 
       try
@@ -1709,9 +1734,12 @@ namespace Evado.UniForm.Digital
         this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
 
         //
-        // Execute the monitor list record query.
+        // Execute the query list record query.
         //
-        this.executeRecordQuery ( );
+        if ( this.enableQuery ( ) == true )
+        {
+          this.executeRecordQuery ( );
+        }
 
         // 
         // Initialise the client ResultData object.
@@ -1742,8 +1770,7 @@ namespace Evado.UniForm.Digital
         // 
         // Create the pageMenuGroup containing commands to open the records.
         //         
-        this.getEntity_Summary_ListGroup (
-          clientDataObject.Page );
+        this.getEntity_Summary_ListGroup ( clientDataObject.Page );
 
         this.LogValue ( "data.Page.Title: " + clientDataObject.Page.Title );
 
@@ -1769,6 +1796,44 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage; ;
 
     }//END GetFilteredListObject method.
+
+    // ==============================================================================
+    /// <summary>
+    /// This method test for criteria for the selection query.
+    /// </summary>
+    /// <returns> true: query is enabled.</returns>
+    //  ------------------------------------------------------------------------------
+    private bool enableQuery ( )
+    {
+      this.LogMethod ( "enableQuery" );
+      if( this.Session.EnableEmptyQuerySelection == true )
+      {
+        return true;
+      }
+
+      bool enableEmptyQuery = false;
+
+      if ( this.Session.SelectedOrganisationCity != String.Empty
+        || this.Session.SelectedOrganisationCountry != String.Empty
+        || this.Session.SelectedOrganisationPostCode != String.Empty )
+      {
+        this.LogDebug ( "Organisation filter enabled." );
+        enableEmptyQuery = true;
+      }
+
+      foreach ( string str in this.Session.EntitySelectionFilters )
+      {
+        if ( str != String.Empty )
+        {
+          this.LogDebug ( "Field filter enabled." );
+          enableEmptyQuery = true;
+        }
+      }
+
+      this.LogDebug ( "enableEmptyQuery {0}.", enableEmptyQuery );
+      this.LogMethodEnd ( "enableQuery" );
+      return enableEmptyQuery;
+    }
 
     // ==============================================================================
     /// <summary>
@@ -2065,7 +2130,7 @@ namespace Evado.UniForm.Digital
       List<EvOption> optionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
         Field.Design.Options );
 
-      optionList.Sort ( ( n1, n2 ) => n1.Description.CompareTo ( n2.Description) );
+      optionList.Sort ( ( n1, n2 ) => n1.Description.CompareTo ( n2.Description ) );
 
       List<EvOption> selectionOptionList = new List<EvOption> ( );
       selectionOptionList.Add ( new EvOption ( ) );
@@ -2170,7 +2235,7 @@ namespace Evado.UniForm.Digital
     /// open the form record.
     /// </summary>
     /// <param name="Field">EdRecordField object.</param>
-    /// <param name="IsSelectionList">bool: True - is for a selection list.</param>
+    /// <returns>List of EvOption objects</returns>
     //  ------------------------------------------------------------------------------
     private List<EvOption> getFilteredList_SelectionOptions (
       EdRecordField Field,
@@ -2234,7 +2299,6 @@ namespace Evado.UniForm.Digital
     /// open the form record.
     /// </summary>
     /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
-    /// <param name="RecordList">List of EvForm: form record objects.</param>
     //  ------------------------------------------------------------------------------
     private void getEntity_Summary_ListGroup (
       Evado.Model.UniForm.Page PageObject )
@@ -2297,7 +2361,7 @@ namespace Evado.UniForm.Digital
 
       foreach ( EdRecordField field in Entity.Fields )
       {
-        this.LogDebug ( "fid {0} - {1} V: {2}. ", field.FieldId, field.TypeId, field.ItemValue   );
+        this.LogDebug ( "fid {0} - {1} V: {2}. ", field.FieldId, field.TypeId, field.ItemValue );
 
         if ( field.Design.IsSummaryField == false
           && field.TypeId != EvDataTypes.Image
@@ -2399,7 +2463,16 @@ namespace Evado.UniForm.Digital
 
         if ( commandField.ItemValue != String.Empty )
         {
-          var title = commandField.Title.Replace ( ";", "" );
+          string title = commandField.Title;
+          string url = commandField.ItemValue;
+
+          if ( url.Contains ( "^" ) == true )
+          {
+            string [ ] arValue = commandField.ItemValue.Split ( '^' );
+
+            url = arValue [ 0 ];
+            title = arValue [ 1 ];
+          }
 
           groupCommand = pageGroup.addCommand (
               title,
@@ -2408,7 +2481,7 @@ namespace Evado.UniForm.Digital
               Evado.Model.UniForm.ApplicationMethods.Get_Object );
           groupCommand.Type = Model.UniForm.CommandTypes.Http_Link;
 
-          groupCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url, commandField.ItemValue );
+          groupCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url, url );
         }
       }
 
@@ -2448,26 +2521,29 @@ namespace Evado.UniForm.Digital
       //
       // iterate through the list options to retrieve the matching description.
       //
-      foreach ( EvOption option in optionList )
+      foreach ( String str in arValue )
       {
-        if ( option.Value != Value )
+        foreach ( EvOption option in optionList )
         {
-          continue;
-        }
+          if ( option.Value  != str )
+          {
+            continue;
+          }
 
-        if ( valueList.Contains ( Value ) == true )
-        {
-          continue;
-        }
+          if ( valueList.Contains ( option.Value ) == true )
+          {
+            continue;
+          }
 
-        valueList += ";" + Value;
-        
-        if ( outputText != String.Empty )
-        {
-          outputText += @"[[/br]]";
-        }
+          valueList += ";" + option.Value;
 
-        outputText += option.Description;
+          if ( outputText != String.Empty )
+          {
+            outputText += @"[[/br]]";
+          }
+
+          outputText += option.Description;
+        }
       }
 
       return outputText;

@@ -567,6 +567,11 @@ namespace Evado.UniForm.Digital
     public List<EvOption> LayoutVersionList { get; set; }
 
     /// <summary>
+    /// This property indicated data is to be queried for empty selection criteria.
+    /// </summary>
+    public bool EnableEmptyQuerySelection { get; set; }
+
+    /// <summary>
     /// This property indicated if the entity children list needs to be refreshed.
     /// </summary>
     public bool RefreshEntityChildren { get; set; }
