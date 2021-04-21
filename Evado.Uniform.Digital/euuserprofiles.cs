@@ -409,7 +409,7 @@ namespace Evado.UniForm.Digital
       // 
       // Add the organisation list list field.
       // 
-      this.getUserTypeSelection ( clientDataObject.Page );
+      this.getList_Selection_Group ( clientDataObject.Page );
 
       //
       // Create the userprofile list group.
@@ -772,10 +772,10 @@ namespace Evado.UniForm.Digital
     /// <param name="PageObject">Application</param>
     /// <returns>Evado.Model.UniForm.Group object</returns>
     //  ---------------------------------------------------------------------------------
-    public void getUserTypeSelection (
+    public void getList_Selection_Group (
       Evado.Model.UniForm.Page PageObject )
     {
-      this.LogMethod ( "getUserTypeSelection" );
+      this.LogMethod ( "getList_Selection_Group" );
 
       // 
       // initialise the methods variables and objects.
@@ -789,36 +789,12 @@ namespace Evado.UniForm.Digital
       pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
       //
-      // get the list of organisations.
-      //
-      String userCategory = this.AdapterObjects.Settings.UserCategoryList;
-      if ( userCategory == String.Empty )
-      {
-        userCategory = "UserCategory";
-      }
-
-      optionList = this.AdapterObjects.getSelectionOptions ( userCategory, String.Empty, false, true );
-
-      // 
-      // Set the selection to the current site org id.
-      // 
-      groupField = pageGroup.createSelectionListField (
-        EdUserProfile.FieldNames.User_Type,
-        EdLabels.UserProfile_User_Type_Field_Label,
-        this.Session.SelectedUserType.ToString ( ),
-        optionList );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-
-
-      //
       // Create the organisation selection list.
       //
       optionList = new List<Evado.Model.EvOption> ( );
       optionList.Add ( new EvOption ( ) );
 
-      foreach ( EdOrganisation org in this.Session.AdminOrganisationList )
+      foreach ( EdOrganisation org in this.AdapterObjects.OrganisationList )
       {
         optionList.Add ( new EvOption ( org.OrgId, org.LinkText ) );
       }
@@ -834,6 +810,37 @@ namespace Evado.UniForm.Digital
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+
+      //
+      // get the list of user types and create the user type selection field.
+      //
+      String userCategory = this.AdapterObjects.Settings.UserCategoryList;
+      if ( userCategory == String.Empty )
+      {
+        userCategory = "UserCategory";
+      }
+
+      optionList = this.AdapterObjects.getSelectionOptions ( userCategory, String.Empty, false, true );
+
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        optionList.Add ( new EvOption ( "EVADO", "Evado" ) );
+        optionList.Add ( new EvOption ( "CUST", "Customer" ) );
+      }
+      EvStatics.sortOptionListValues ( optionList );
+
+      // 
+      // Set the selection to the current site org id.
+      // 
+      groupField = pageGroup.createSelectionListField (
+        EdUserProfile.FieldNames.User_Type,
+        EdLabels.UserProfile_User_Type_Field_Label,
+        this.Session.SelectedUserType.ToString ( ),
+        optionList );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+
       // 
       // Create a custom groupCommand to process the selection.
       // 
@@ -848,9 +855,9 @@ namespace Evado.UniForm.Digital
       // 
       customCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
-      this.LogMethodEnd ( "getUserTypeSelection" );
+      this.LogMethodEnd ( "getList_Selection_Group" );
 
-    }//END getOrganisationSelection method
+    }//END getList_Selection_Group method
 
     // ==============================================================================
     /// <summary>
@@ -1252,22 +1259,28 @@ namespace Evado.UniForm.Digital
         300 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      try
+      //
+      // copy the user image file if it exists.
+      //
+      if ( this.Session.AdminUserProfile.ImageFileName != String.Empty )
       {
-        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
-        String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
+        try
+        {
+          String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
+          String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
 
-        this.LogDebug ( "Target path {0}.", stTargetPath );
-        this.LogDebug ( "Image path {0}.", stImagePath );
+          this.LogDebug ( "Target path {0}.", stTargetPath );
+          this.LogDebug ( "Image path {0}.", stImagePath );
 
-        //
-        // copy the file into the image directory.
-        //
-        System.IO.File.Copy ( stImagePath, stTargetPath, true );
-      }
-      catch ( Exception Ex )
-      {
-        this.LogException ( Ex );
+          //
+          // copy the file into the image directory.
+          //
+          System.IO.File.Copy ( stImagePath, stTargetPath, true );
+        }
+        catch ( Exception Ex )
+        {
+          this.LogException ( Ex );
+        }
       }
 
       //
@@ -1363,7 +1376,7 @@ namespace Evado.UniForm.Digital
       //
       // define the user address field.
       //
-      #region User Address 
+      #region User Address
       if ( this.AdapterObjects.Settings.EnableUserAddressUpdate == true )
       {
         if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Address_1 ) == false )
@@ -1435,6 +1448,13 @@ namespace Evado.UniForm.Digital
       String userSelectionList = this.AdapterObjects.Settings.UserCategoryList;
 
       optionList = this.AdapterObjects.getSelectionOptions ( userSelectionList, String.Empty, false, true );
+
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+      optionList.Add ( new EvOption ( "EVADO", "Evado" ) );
+      optionList.Add ( new EvOption ( "CUST", "Customer" ) );
+      }
+      EvStatics.sortOptionListValues ( optionList );
 
       // 
       // Set the selection to the current site org id.
@@ -2041,7 +2061,7 @@ namespace Evado.UniForm.Digital
       {
         return;
       }
-      
+
 
       //
       // Initialise the method variables and objects.
@@ -2059,7 +2079,7 @@ namespace Evado.UniForm.Digital
       {
         System.IO.File.Copy ( stSourcePath, stImagePath, true );
       }
-      catch ( Exception Ex  )
+      catch ( Exception Ex )
       {
         this.LogException ( Ex );
       }
