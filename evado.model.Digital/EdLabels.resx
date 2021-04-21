@@ -3128,7 +3128,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Generator_Disp_Html_Field_Value_Format" xml:space="preserve">
     <value>[[table]]
 [[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] 
-[[a href='{1}' target='_blank' tabindex = ' ]] {2}[[/a ]]
+[[a href='{1}' target='_blank'  ]] {2}[[/a ]]
  [[/td]] [[/tr]]
 [[/table]]</value>
   </data>

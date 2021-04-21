@@ -4475,19 +4475,6 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [[table]]
-        ///[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]] 
-        ///[[a href=&apos;{1}&apos; target=&apos;_blank&apos; tabindex = &apos; ]] {2}[[/a ]]
-        /// [[/td]] [[/tr]]
-        ///[[/table]].
-        /// </summary>
-        public static string Generator_Disp_Html_Field_Value_Format {
-            get {
-                return ResourceManager.GetString("Generator_Disp_Html_Field_Value_Format", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Access Denied.
         /// </summary>
         public static string Home_Page_Access_Denied_Header {

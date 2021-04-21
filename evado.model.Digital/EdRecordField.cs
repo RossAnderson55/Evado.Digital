@@ -436,7 +436,6 @@ namespace Evado.Model.Digital
           case Evado.Model.EvDataTypes.Binary_File:
           case Evado.Model.EvDataTypes.Sound:
           case Evado.Model.EvDataTypes.Hidden:
-          case Evado.Model.EvDataTypes.Http_Link:
           case Evado.Model.EvDataTypes.Video:
           case Evado.Model.EvDataTypes.Html_Content:
           case Evado.Model.EvDataTypes.Bar_Chart:

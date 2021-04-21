@@ -1415,6 +1415,11 @@ namespace Evado.UniForm.Digital
               this.getDisplayHttpValueField ( Field, sbHtmlContent, displayTitle );
               break;
             }
+          case Evado.Model.EvDataTypes.Streamed_Video:
+            {
+              this.getDisplayStreamedVideoField ( Field, sbHtmlContent, displayTitle );
+              break;
+            }
           case Evado.Model.EvDataTypes.Address:
             {
               this.getDisplayAddressField ( Field, sbHtmlContent, displayTitle );
@@ -1560,7 +1565,7 @@ namespace Evado.UniForm.Digital
       StringBuilder sbHtmlContent,
       bool displayTitle )
     {
-      this.LogMethod ( "getDisplaySingleValueField" );
+      this.LogMethod ( "getDisplayHttpValueField" );
       this.LogDebug ( "Title {0} V: {1}", Field.Title, Field.ItemValue );
       String title = Field.Title;
       String url = Field.ItemValue;
@@ -1580,10 +1585,20 @@ namespace Evado.UniForm.Digital
         urlTitle = arValue [ 1 ];
       }
 
+      String format = "[[table]]\r\n"
+          + "[[tr]][[td]][[strong]] {0}[[/strong]] [[/td]] [[td]]\r\n"
+          + "[[a href='{1}' target='_blank' ]] {2}[[/a]] \r\n"
+          + "[[/td]] [[/tr]]\r\n"
+          + "[[/table]]";
+
       this.LogDebug ( "Url {0}, UrlTitle {1}, field title {2}. ", url, urlTitle, title );
 
-      sbHtmlContent.AppendFormat ( EdLabels.Generator_Disp_Html_Field_Value_Format, url, urlTitle, title );
-      return;
+      sbHtmlContent.AppendFormat ( format, title, url, urlTitle );
+
+      // EdLabels.Generator_Disp_Field_Title_2Value_Format
+      // EdLabels.Generator_Disp_Html_Field_Value_Format
+
+      this.LogMethodEnd ( "getDisplayHttpValueField" );
 
     }//END getDisplaySingleValueField method.
 
@@ -1756,7 +1771,7 @@ namespace Evado.UniForm.Digital
         return;
       }
 
-      String html = "[[p]]" + encodeMarkDown ( Field.ItemText ) + "[[/p]]";
+      String html =  encodeMarkDown ( Field.ItemText );
 
       html = html.Replace ( "<", "[[" );
       html = html.Replace ( ">", "]]" );
@@ -1816,7 +1831,7 @@ namespace Evado.UniForm.Digital
     /// <param name="StringBuilder">Html content string builder.</param>
     /// <param name="displayTitle">Bool: True = display the title..</param>
     //  ---------------------------------------------------------------------------------
-    private void getDisplayExternalVideoField (
+    private void getDisplayStreamedVideoField (
       Evado.Model.Digital.EdRecordField Field,
       StringBuilder sbHtmlContent,
       bool displayTitle )
@@ -1830,8 +1845,7 @@ namespace Evado.UniForm.Digital
 
       string stUrl = this.UniForm_ImageServiceUrl + Field.ItemValue;
 
-      String htmlMarkup = "[[p style='text-align: center;']][[a href='" + stUrl + "' target='_blank' ]] \r\n"
-          + "[[img alt='Image " + Field.ItemValue + "' " + "src='" + stUrl + "'/]] [[/a]][[/p]]";
+      String htmlMarkup = this.getVideoIFrame (Field) ;
 
       sbHtmlContent.AppendFormat ( htmlMarkup, Field.Title, Field.ItemText );
 
@@ -1844,21 +1858,20 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This method creates a iframe containing a streamed video object
     /// </summary>
-    /// <param name="PageField">Field object.</param>
+    /// <param name="Field">Field object.</param>
     /// <returns>String html</returns>
     // ----------------------------------------------------------------------------------
     private String getVideoIFrame (
-      Evado.Model.UniForm.Field PageField )
+     Evado.Model.Digital.EdRecordField Field )
     {
       this.LogMethod ( "getVideoIFrame" );
       //
       // Initialise the methods variables and objects.
       //
       StringBuilder sbHtml = new StringBuilder ( );
-      string value = PageField.Value.ToLower ( );
-      int width = PageField.GetParameterInt ( Evado.Model.UniForm.FieldParameterList.Width );
-      int height = PageField.GetParameterInt ( Evado.Model.UniForm.FieldParameterList.Height );
-      String videoTitle = PageField.GetParameter ( Evado.Model.UniForm.FieldParameterList.Value_Label );
+      string value = Field.ItemValue.ToLower ( );
+      int width = Field.RecordMedia.Width;
+      int height = Field.RecordMedia.Height ;
       String stVideoStreamParameters = String.Empty;
       String stVideoSource = String.Empty;
 
@@ -1889,22 +1902,22 @@ namespace Evado.UniForm.Digital
       }
 
 
-      if ( PageField.Value.Contains ( "vimeo.com" ) == true )
+      if ( Field.ItemValue.Contains ( "vimeo.com" ) == true )
       {
-        int index = PageField.Value.LastIndexOf ( '/' );
-        value = PageField.Value.Substring ( ( index + 1 ) );
+        int index = Field.ItemValue.LastIndexOf ( '/' );
+        value = Field.ItemValue.Substring ( ( index + 1 ) );
 
         stVideoSource = this.AdapterObjects.Settings.VimeoEmbeddedUrl + value;
 
         stVideoStreamParameters = "frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen ";
       }
 
-      if ( PageField.Value.Contains ( "youtube" ) == true
-        || PageField.Value.Contains ( "youtu.be" ) == true )
+      if ( Field.ItemValue.Contains ( "youtube" ) == true
+        || Field.ItemValue.Contains ( "youtu.be" ) == true )
       {
-        int index = PageField.Value.LastIndexOf ( '/' );
+        int index = Field.ItemValue.LastIndexOf ( '/' );
 
-        value = PageField.Value.Substring ( ( index + 1 ) );
+        value = Field.ItemValue.Substring ( ( index + 1 ) );
 
         value = value.Replace ( "watch?v=", "" );
 
@@ -1916,9 +1929,9 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "Video ID: " + value );
       this.LogValue ( "VideoSource: " + stVideoSource );
 
-      sbHtml.AppendLine ( "<iframe "
-        + "id='" + PageField.FieldId + "' "
-        + "name='" + PageField.FieldId + "' "
+      sbHtml.AppendLine ( "[[iframe "
+        + "id='" + Field.FieldId + "' "
+        + "name='" + Field.FieldId + "' "
         + "src='" + stVideoSource + "' " );
 
       if ( width > 0 )
@@ -1931,12 +1944,12 @@ namespace Evado.UniForm.Digital
       }
 
       sbHtml.AppendLine ( stVideoStreamParameters
-       + " style=' display: block; margin-left: auto; margin-right: auto' >"
-       + "</iframe>" );
+       + " style=' display: block; margin-left: auto; margin-right: auto' ]]"
+       + "[[/iframe]]" );
 
+      this.LogMethodEnd ( "getVideoIFrame" );
       return sbHtml.ToString ( );
     }//END getVideoIFrame Method
-
 
     //  =================================================================================
     /// <summary>

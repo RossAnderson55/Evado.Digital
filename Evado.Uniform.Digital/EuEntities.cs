@@ -2060,7 +2060,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getFilteredList_SelectionField" );
 
       this.LogDebug ( "FilterIndex: {0}, SelectionFilter: {1}. ", FilterIndex, SelectionFilter );
-      this.LogDebug ( "F: {0}, T: {1}, Type {2}. ", Field.FieldId, Field.Title, Field.TypeId );
+      //this.LogDebug ( "F: {0}, T: {1}, Type {2}. ", Field.FieldId, Field.Title, Field.TypeId );
 
       List<EvOption> optionList = Evado.Model.UniForm.EuStatics.getStringAsOptionList (
         Field.Design.Options );
@@ -2297,6 +2297,8 @@ namespace Evado.UniForm.Digital
 
       foreach ( EdRecordField field in Entity.Fields )
       {
+        this.LogDebug ( "fid {0} - {1} V: {2}. ", field.FieldId, field.TypeId, field.ItemValue   );
+
         if ( field.Design.IsSummaryField == false
           && field.TypeId != EvDataTypes.Image
           && field.TypeId != EvDataTypes.Text
