@@ -262,10 +262,10 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getDataObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
-      this.LogValue ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
-      this.LogValue ( "EnableEntitySaveButtonUpdate: " + this.EnableEntitySaveButtonUpdate );
-      this.LogValue ( "ButtonEditModeEnabled: " + this.Session.Entity.ButtonEditModeEnabled );
-      this.LogValue ( "RefreshEntityChildren: " + this.Session.RefreshEntityChildren );
+      this.LogDebug ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
+      this.LogDebug ( "EnableEntitySaveButtonUpdate: " + this.EnableEntitySaveButtonUpdate );
+      this.LogDebug ( "ButtonEditModeEnabled: " + this.Session.Entity.ButtonEditModeEnabled );
+      this.LogDebug ( "RefreshEntityChildren: " + this.Session.RefreshEntityChildren );
 
       try
       {
@@ -3326,7 +3326,20 @@ namespace Evado.UniForm.Digital
       return EvEventCodes.Ok;
 
     }//ENd GetEntity method
+    
+    //  =============================================================================== 
+    /// <summary>
+    ///  This method adds any fields that exist in the template layout but not the 
+    ///  Entity.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    private void RefreshChildren ( )
+    {
+      this.LogMethod ( "RefreshChildren" );
+      this.LogDebug ( "ChildEntities count {0}.", this.Session.Entity.ChildEntities.Count );
+      this.LogDebug ( "ChildRecords count {0}.", this.Session.Entity.ChildRecords.Count );
 
+    }
     //  =============================================================================== 
     /// <summary>
     ///  This method adds any fields that exist in the template layout but not the 
@@ -4118,7 +4131,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getDataObject_ChildRecords" );
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
-      this.LogDebug ( "Entity.ChildEntities.Count {0}.", this.Session.Entity.ChildRecords.Count );
+      this.LogDebug ( "Entity.ChildRecords.Count {0}.", this.Session.Entity.ChildRecords.Count );
 
       if ( this.Session.Entity.Design.DisplayRelatedEntities == false
         || this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )

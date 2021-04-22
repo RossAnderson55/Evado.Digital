@@ -142,6 +142,12 @@ namespace Evado.UniForm.Digital
     private Evado.Bll.Digital.EdRecords _Bll_FormRecords = new EdRecords ( );
     private EvServerPageScript _ServerPageScript = new EvServerPageScript ( );
 
+
+
+    Guid ParentGuid = Guid.Empty;
+    String ParentLayoutId = String.Empty;
+
+    private EdRecord queryLayout = null;
     //
     // Initialise the page labels
     //
@@ -2065,8 +2071,22 @@ namespace Evado.UniForm.Digital
         //    
         string LayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.Layout_Id );
 
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentGuid ) == true )
+        {
+          this.ParentGuid = PageCommand.GetParameterAsGuid ( EdRecord.FieldNames.ParentGuid );
+        }
+        if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
+        {
+          this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+        }
+        this.LogDebug ( "ParentGuid: {0}.", this.ParentGuid );
+        this.LogDebug ( "ParentLayoutId: {0}.", this.ParentLayoutId );
+
         newRecord.Guid = Guid.NewGuid ( );
         newRecord.LayoutId = this.Session.Selected_RecordLayoutId;
+        newRecord.ParentGuid = this.ParentGuid;
+        newRecord.ParentLayoutId = this.ParentLayoutId;
+        newRecord.ParentUserId = this.Session.UserProfile.UserId;
         newRecord.RecordDate = DateTime.Now;
 
         // 

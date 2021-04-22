@@ -370,7 +370,7 @@ namespace Evado.Dal.Digital
     /// This class binds values parameters 
     /// </summary>
     /// <param name="cmdParms">SqlParameter: an array of Database parameters</param>
-    /// <param name="EntityLayout">EvForm: Values to bind to parameters</param>
+    /// <param name="Layout">EvForm: Values to bind to parameters</param>
     /// <remarks>
     /// This method consists of the following steps: 
     /// 
@@ -379,15 +379,15 @@ namespace Evado.Dal.Digital
     /// 2. Fill the parameters array with the values from the form object. 
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord EntityLayout )
+    private void SetParameters ( SqlParameter [ ] cmdParms, EdRecord Layout )
     {
       // 
       // If the FormUid is emptry create a new value.
       // 
       int filterCount = 0;
-      if ( EntityLayout.Guid == Guid.Empty )
+      if ( Layout.Guid == Guid.Empty )
       {
-        EntityLayout.Guid = Guid.NewGuid ( );
+        Layout.Guid = Guid.NewGuid ( );
       }
 
       //
@@ -410,12 +410,12 @@ namespace Evado.Dal.Digital
        * table.
        * 
        ************************************************************************************/
-      for ( int filterIndex = 0; filterIndex < EntityLayout.FilterFieldIds.Length; filterIndex++ )
+      for ( int filterIndex = 0; filterIndex < Layout.FilterFieldIds.Length; filterIndex++ )
       {
-        EntityLayout.FilterFieldIds [ filterIndex ] = String.Empty;
+        Layout.FilterFieldIds [ filterIndex ] = String.Empty;
       }
 
-      foreach ( EdRecordField field in EntityLayout.Fields )
+      foreach ( EdRecordField field in Layout.Fields )
       {
         if ( field.Design.IsSummaryField == false )
         {
@@ -425,7 +425,7 @@ namespace Evado.Dal.Digital
         //
         // break the iteration loop there are more than 5 values.
         //
-        if ( filterCount >= EntityLayout.FilterFieldIds.Length )
+        if ( filterCount >= Layout.FilterFieldIds.Length )
         {
           continue;
         }
@@ -445,7 +445,7 @@ namespace Evado.Dal.Digital
           case EvDataTypes.Horizontal_Radio_Buttons:
           case EvDataTypes.Radio_Button_List:
             {
-              EntityLayout.FilterFieldIds [ filterCount ] = field.FieldId;
+              Layout.FilterFieldIds [ filterCount ] = field.FieldId;
               filterCount++;
               continue;
             }
@@ -456,41 +456,41 @@ namespace Evado.Dal.Digital
       // 
       // Fill the parameters array with the values from the form object. 
       // 
-      cmdParms [ 0 ].Value = EntityLayout.Guid;
-      cmdParms [ 1 ].Value = EntityLayout.LayoutId.Trim ( );
-      cmdParms [ 2 ].Value = EntityLayout.State.ToString ( );
-      cmdParms [ 3 ].Value = EntityLayout.Design.Title;
-      cmdParms [ 4 ].Value = EntityLayout.Design.HttpReference;
-      cmdParms [ 5 ].Value = EntityLayout.Design.Instructions;
-      cmdParms [ 6 ].Value = EntityLayout.Design.Description;
-      cmdParms [ 7 ].Value = EntityLayout.Design.UpdateReason.ToString ( );
-      cmdParms [ 8 ].Value = EntityLayout.Design.RecordCategory;
-      cmdParms [ 9 ].Value = EntityLayout.Design.TypeId.ToString ( );
+      cmdParms [ 0 ].Value = Layout.Guid;
+      cmdParms [ 1 ].Value = Layout.LayoutId.Trim ( );
+      cmdParms [ 2 ].Value = Layout.State.ToString ( );
+      cmdParms [ 3 ].Value = Layout.Design.Title;
+      cmdParms [ 4 ].Value = Layout.Design.HttpReference;
+      cmdParms [ 5 ].Value = Layout.Design.Instructions;
+      cmdParms [ 6 ].Value = Layout.Design.Description;
+      cmdParms [ 7 ].Value = Layout.Design.UpdateReason.ToString ( );
+      cmdParms [ 8 ].Value = Layout.Design.RecordCategory;
+      cmdParms [ 9 ].Value = Layout.Design.TypeId.ToString ( );
 
-      cmdParms [ 10 ].Value = EntityLayout.Design.Version;
-      cmdParms [ 11 ].Value = EntityLayout.Design.JavaScript;
-      cmdParms [ 12 ].Value = EntityLayout.Design.hasCsScript;
-      cmdParms [ 13 ].Value = EntityLayout.Design.Language;
-      cmdParms [ 14 ].Value = EntityLayout.Design.ReadAccessRoles;
-      cmdParms [ 15 ].Value = EntityLayout.Design.EditAccessRoles;
-      cmdParms [ 16 ].Value = EntityLayout.Design.ParentEntities;
-      cmdParms [ 17 ].Value = EntityLayout.Design.DefaultPageLayout;
-      cmdParms [ 18 ].Value = EntityLayout.Design.LinkContentSetting;
-      cmdParms [ 19 ].Value = EntityLayout.Design.DisplayRelatedEntities;
+      cmdParms [ 10 ].Value = Layout.Design.Version;
+      cmdParms [ 11 ].Value = Layout.Design.JavaScript;
+      cmdParms [ 12 ].Value = Layout.Design.hasCsScript;
+      cmdParms [ 13 ].Value = Layout.Design.Language;
+      cmdParms [ 14 ].Value = Layout.Design.ReadAccessRoles;
+      cmdParms [ 15 ].Value = Layout.Design.EditAccessRoles;
+      cmdParms [ 16 ].Value = Layout.Design.ParentEntities;
+      cmdParms [ 17 ].Value = Layout.Design.DefaultPageLayout;
+      cmdParms [ 18 ].Value = Layout.Design.LinkContentSetting;
+      cmdParms [ 19 ].Value = Layout.Design.DisplayRelatedEntities;
 
-      cmdParms [ 20 ].Value = EntityLayout.Design.DisplayAuthorDetails;
-      cmdParms [ 21 ].Value = EntityLayout.Design.RecordPrefix;
-      cmdParms [ 22 ].Value = EntityLayout.Design.ParentType;
-      cmdParms [ 23 ].Value = EntityLayout.Design.AuthorAccess;
-      cmdParms [ 24 ].Value = EntityLayout.Design.HeaderFormat;
-      cmdParms [ 25 ].Value = EntityLayout.Design.FooterFormat;
-      cmdParms [ 26 ].Value = EntityLayout.FilterFieldIds [ 0 ];
-      cmdParms [ 27 ].Value = EntityLayout.FilterFieldIds [ 1 ];
-      cmdParms [ 28 ].Value = EntityLayout.FilterFieldIds [ 2 ];
-      cmdParms [ 29 ].Value = EntityLayout.FilterFieldIds [ 3 ];
+      cmdParms [ 20 ].Value = Layout.Design.DisplayAuthorDetails;
+      cmdParms [ 21 ].Value = Layout.Design.RecordPrefix;
+      cmdParms [ 22 ].Value = Layout.Design.ParentType;
+      cmdParms [ 23 ].Value = Layout.Design.AuthorAccess;
+      cmdParms [ 24 ].Value = Layout.Design.HeaderFormat;
+      cmdParms [ 25 ].Value = Layout.Design.FooterFormat;
+      cmdParms [ 26 ].Value = Layout.FilterFieldIds [ 0 ];
+      cmdParms [ 27 ].Value = Layout.FilterFieldIds [ 1 ];
+      cmdParms [ 28 ].Value = Layout.FilterFieldIds [ 2 ];
+      cmdParms [ 29 ].Value = Layout.FilterFieldIds [ 3 ];
 
-      cmdParms [ 30 ].Value = EntityLayout.FilterFieldIds [ 4 ];
-      cmdParms [ 31 ].Value = EntityLayout.Design.FieldReadonlyDisplayFormat;
+      cmdParms [ 30 ].Value = Layout.FilterFieldIds [ 4 ];
+      cmdParms [ 31 ].Value = Layout.Design.FieldReadonlyDisplayFormat;
       cmdParms [ 32 ].Value = this.ClassParameters.UserProfile.UserId;
       cmdParms [ 33 ].Value = this.ClassParameters.UserProfile.CommonName;
       cmdParms [ 34 ].Value = DateTime.Now;

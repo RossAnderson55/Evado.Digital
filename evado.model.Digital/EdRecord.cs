@@ -1645,7 +1645,10 @@ namespace Evado.Model.Digital
           else
           {
             int paraIndex = stValue.IndexOf ( '\n' );
-            stValue = stValue.Substring ( 0, paraIndex );
+            if ( paraIndex > 0 )
+            {
+              stValue = stValue.Substring ( 0, paraIndex );
+            }
           }
 
           if ( this.Design.DisplayAuthorDetails == true )
