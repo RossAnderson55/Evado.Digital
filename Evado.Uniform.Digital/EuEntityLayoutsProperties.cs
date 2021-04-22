@@ -38,8 +38,7 @@ namespace Evado.UniForm.Digital
   /// This class terminates the Customer object.
   /// </summary>
   public partial class EuEntityLayouts : EuClassAdapterBase
-  {
-    
+  {    
     #region Class form property page methods
 
     private Model.UniForm.EditAccess _DesignAccess = Model.UniForm.EditAccess.Null;
@@ -56,7 +55,7 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData GetLayoutProperties_Object (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "GetLayoutPropoerties_Object" );
+      this.LogMethod ( "GetLayoutProoerties_Object" );
 
       // 
       // Initialise the methods variables and objects.
@@ -70,7 +69,7 @@ namespace Evado.UniForm.Digital
       if ( this.Session.UserProfile.hasManagementAccess == false )
       {
         this.LogIllegalAccess (
-          this.ClassNameSpace + "GetLayoutPropoerties_Object",
+          this.ClassNameSpace + "GetLayoutProperties_Object",
           this.Session.UserProfile );
 
         this.ErrorMessage = EdLabels.Illegal_Page_Access_Attempt;
@@ -82,7 +81,7 @@ namespace Evado.UniForm.Digital
       // Log access to page.
       // 
       this.LogPageAccess (
-        this.ClassNameSpace + "GetLayoutPropoerties_Object",
+        this.ClassNameSpace + "GetLayoutProperties_Object",
         this.Session.UserProfile );
 
       try
@@ -100,7 +99,7 @@ namespace Evado.UniForm.Digital
         // 
         // Return the client ResultData object to the calling method.
         // 
-        this.LogMethodEnd ( "GetLayoutPropoerties_Object" );
+        this.LogMethodEnd ( "GetLayoutProperties_Object" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -116,7 +115,7 @@ namespace Evado.UniForm.Digital
         this.LogException ( Ex );
       }
 
-      this.LogMethodEnd ( "GetLayoutPropoerties_Object" );
+      this.LogMethodEnd ( "GetLayoutProperties_Object" );
       return this.Session.LastPage;
 
     }//END getFormPropertiesObject method
@@ -458,7 +457,7 @@ namespace Evado.UniForm.Digital
       //
       // Layout author only edit record access
       //
-      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), false );
+      optionList = EvStatics.getOptionsFromEnum ( typeof ( EdRecord.ParentTypeList ), true );
 
       groupField = pageGroup.createSelectionListField (
         EdRecord.FieldNames.ParentType.ToString ( ),

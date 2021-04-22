@@ -730,7 +730,7 @@ namespace Evado.UniForm.Digital
 
         pageCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
-        pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
+        pageCommand.AddParameter ( EuEntities.CONST_EMPTY_SELECTION_FIELD, "Yes" ); 
 
         return pageCommand;
       }

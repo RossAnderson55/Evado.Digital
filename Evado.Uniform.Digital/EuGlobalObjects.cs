@@ -859,18 +859,18 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the entity list.
       //
-      foreach ( EdRecord laout in this._AllEntityLayouts )
+      foreach ( EdRecord layout in this._AllEntityLayouts )
       {
-        this.LogInitValue ( "EL: " + laout.LayoutId + ",  T: " + laout.Title + ", R" + laout.Design.EditAccessRoles );
+        this.LogInitValue ( "EL: " + layout.LayoutId + ",  T: " + layout.Title + ", R" + layout.Design.EditAccessRoles );
 
-        string [ ] parentEntities = laout.Design.ParentEntities.Split ( ';' );
+        string [ ] parentEntities = layout.Design.ParentEntities.Split ( ';' );
 
         foreach ( string parent in parentEntities )
         {
           if ( parent != String.Empty )
           {
             this._EntityParents.Add ( new EdObjectParent (
-              parent, laout.LayoutId, laout.Title, laout.Design.EditAccessRoles ) );
+              parent, layout.LayoutId, layout.Title, layout.Design.EditAccessRoles ) );
           }
         }//END parent iteration loop
       }//End entity iteration loop

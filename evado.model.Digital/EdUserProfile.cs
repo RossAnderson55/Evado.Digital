@@ -612,6 +612,10 @@ namespace Evado.Model.Digital
       sbText.AppendLine ( "OrgType: " + this.OrgType );
       sbText.AppendLine ( "TypeId: " + this.UserType );
       sbText.AppendLine ( "UserCategory: " + this.UserCategory );
+      if ( this.HomePage != null )
+      {
+        sbText.AppendLine ( "HomePage: " + this.HomePage.Title );
+      }
 
       if ( this.DomainGroupNames != String.Empty )
       {

@@ -58,11 +58,6 @@ namespace Evado.Dal.Digital
     {
       this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Dal.Digital.EvUserProfiles.";
-
-      this.LogMethod ( "EvUserProfiles initialisation method." );
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameters.AdapterGuid );
-
-      this.LogMethodEnd ( "EvUserProfiles" );
     }
 
     #endregion
@@ -290,13 +285,13 @@ namespace Evado.Dal.Digital
       // 
       // Update the object properties.
       // 
-      profile.Guid = EvSqlMethods.getGuid ( Row, DB_USER_GUID );
-      profile.OrgId = EvSqlMethods.getString ( Row, DB_ORG_ID );
+      profile.Guid = EvSqlMethods.getGuid ( Row, EdUserProfiles.DB_USER_GUID );
+      profile.OrgId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ORG_ID );
 
-      profile.UserId = EvSqlMethods.getString ( Row, DB_USER_ID );
-      profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, DB_AD_NAME );
-      profile.CommonName = EvSqlMethods.getString ( Row, DB_COMMON_NAME );
-      profile.Roles = EvSqlMethods.getString ( Row, DB_ROLES );
+      profile.UserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_USER_ID );
+      profile.ActiveDirectoryUserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_AD_NAME );
+      profile.CommonName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_COMMON_NAME );
+      profile.Roles = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ROLES );
       profile.UserType = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TYPE );
       profile.UserCategory = EvSqlMethods.getString ( Row, EdUserProfiles.DB_CATEGORY );
 
@@ -850,9 +845,9 @@ namespace Evado.Dal.Digital
         // 
         userProfile = this.readRow ( row );
 
-        //this.LogDebug ( "UserProfile.UserId: " + userProfile.UserId );
-        //this.LogDebug ( "UserProfile.CommonName: " + userProfile.CommonName );
-        //this.LogDebug ( "UserProfile.OrgId: " + userProfile.OrgId );
+        this.LogDebug ( "UserProfile.UserId: " + userProfile.UserId );
+        this.LogDebug ( "UserProfile.CommonName: " + userProfile.CommonName );
+        this.LogDebug ( "UserProfile.OrgId: " + userProfile.OrgId );
 
       }//END Using
 

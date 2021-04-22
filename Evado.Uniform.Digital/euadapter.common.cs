@@ -283,7 +283,10 @@ namespace Evado.UniForm.Digital
 
       }//END iteration loop
 
-      this.LogDebug ( "{0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
+      if ( this.Session.Entity != null )
+      {
+        this.LogDebug ( "{0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
+      }
       this.LogMethodEnd ( "loadDefaultChildEntity" );
       return true;
 

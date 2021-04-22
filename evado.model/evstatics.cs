@@ -182,7 +182,7 @@ namespace Evado.Model
     /// <summary>
     /// This constant defines the integer error value.
     /// </summary>
-    public const float CONST_NUMERIC_EMPTY = -1E+35F;
+    public const float CONST_NUMERIC_EMPTY = -1E-35F;
 
     /// <summary>
     /// This contant defines the numeric null value.

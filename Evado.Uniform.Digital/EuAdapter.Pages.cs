@@ -100,10 +100,10 @@ namespace Evado.UniForm.Digital
     /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
     /// <returns>Evado.Model.UniForm.AppData</returns>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.AppData generatePage (
+    public Evado.Model.UniForm.AppData getHomePage (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "generatePage" );
+      this.LogMethod ( "getHomePage" );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
       this.LogDebug ( "Current Entity: {0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
@@ -120,12 +120,12 @@ namespace Evado.UniForm.Digital
 
       string pageId = PageCommand.GetPageId ( );
 
-      this.LogDebug ( "Current PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
+      this.LogDebug ( "Entity PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
 
       if ( pageId == String.Empty )
       {
         this.LogDebug( "No Page ID provided ");
-        this.LogMethodEnd ( "generatePage" );
+        this.LogMethodEnd ( "getHomePage" );
         return this.Session.LastPage;
       }
 
@@ -147,7 +147,7 @@ namespace Evado.UniForm.Digital
           this.LogEvent (
             String.Format ( "Page Id {0} was not retrieved from the page layout list.", pageId ) );
 
-          this.LogMethodEnd ( "generatePage" );
+          this.LogMethodEnd ( "getHomePage" );
           return this.Session.LastPage;
         }
         //

@@ -1289,8 +1289,8 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true )
       {
-        optionList.Add ( new EvOption ( "EVADO", "Evado" ) );
-        optionList.Add ( new EvOption ( "CUST", "Customer" ) );
+        optionList.Add ( new EvOption ( EdUserProfile.CONST_USER_TYPE_EVADO  ) );
+        optionList.Add ( new EvOption ( EdUserProfile.CONST_USER_TYPE_CUSTOMER ) );
       }
       EvStatics.sortOptionListValues ( optionList );
 

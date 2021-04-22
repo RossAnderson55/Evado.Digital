@@ -1495,10 +1495,13 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Title {0} V: {1}", Field.Title, Field.ItemValue );
       String title = Field.Title.ToLower ( );
 
-      if ( Field.ItemValue == String.Empty )
+      if ( Field.ItemValue == String.Empty 
+        || Field.ItemValue.Contains ( "E+37" ) == true
+        || Field.ItemValue.Contains ( "E-35" ) == true )  
       {
         return;
       }
+
       this.LogDebug ( "Value {0}. ", Field.ItemValue );
 
       if ( displayTitle == true

@@ -490,19 +490,19 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
-
+        
         foreach ( EdRecord entity in this.Session.EntityDictionary )
         {
           this.LogDebug( "Loaded Entity {0} LayoutId {1} - {2}",
             entity.EntityId, entity.LayoutId, entity.Title );
         }
-
+        
         foreach ( EdObjectParent parent in EuAdapter.AdapterObjects.EntityParents )
         {
           this.LogDebug ( "ParentLayoutId {0} ChildLayoutId {1} ChildEditAccess {2}, IsRecord {3}",
             parent.ParentLayoutId, parent.ChildLayoutId, parent.ChildEditAccess, parent.IsRecord );
         }
-
+        
         //
         // Turn on BLL debug to match the current class setting.
         //
@@ -1236,7 +1236,7 @@ namespace Evado.UniForm.Digital
             this.LogDebug ( "pageId {0}.", pageId );
             if ( pageId != String.Empty )
             {
-              return this.generatePage ( PageCommand );
+              return this.getHomePage ( PageCommand );
             }
 
             // 
@@ -1251,10 +1251,14 @@ namespace Evado.UniForm.Digital
 
             String pageId = PageCommand.GetPageId ( );
 
+            this.LogDebug ( "PageId {0}", pageId );
+
             if ( pageId != String.Empty )
             {
-              return this.generatePage ( PageCommand );
+              return this.getHomePage ( PageCommand );
             }
+
+            this.LogDebug ( "UserType {0}", this.Session.UserProfile.UserType );
 
             //
             // If the user's home page is null load if based on teh user access to the page.
@@ -1265,6 +1269,12 @@ namespace Evado.UniForm.Digital
 
               foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
               {
+                this.LogDebug ( "PageId {0} - {1} UT: {2}", 
+                  pageLayout.PageId,
+                  pageLayout.Title,
+                  pageLayout.UserTypes );
+
+
                 if ( pageLayout.hasUserType ( this.Session.UserProfile ) == true )
                 {
                   this.Session.UserProfile.HomePage = pageLayout;
@@ -1272,6 +1282,7 @@ namespace Evado.UniForm.Digital
               }
             }
 
+           // this.LogDebug ( "UserProfile.HomePage {0}", this.Session.UserProfile.HomePage.PageId );
             //
             // Generate the user home page's layout if it is not null.
             //

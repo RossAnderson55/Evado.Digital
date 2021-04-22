@@ -197,7 +197,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constand definee command field to indicated if empty selectin is enabled.
     /// </summary>
-    private const string CONST_EMPTY_SELECTION_FIELD = "EMSEL";
+    public const string CONST_EMPTY_SELECTION_FIELD = "EMSEL";
     /// <summary>
     /// This constand definee the include test sites property identifier
     /// </summary>
@@ -1687,14 +1687,16 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "GetFilteredListObject 1" );
       this.LogDebug ( "EntitySelectionState: " + this.Session.EntityStateSelection );
       this.LogDebug ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
+      this.LogDebug ( "EnableEmptyQuerySelection: " + this.Session.EnableEmptyQuerySelection );
+
+      this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
+      this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
+      this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
       // 
       // Initialise the methods variables and objects.
       // 
       Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
       List<EdRecord> recordList = new List<EdRecord> ( );
-      this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
-      this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
-      this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
 
       //
       // Set the parent entity variables.
@@ -1712,6 +1714,12 @@ namespace Evado.UniForm.Digital
 
       try
       {
+        //
+        // get the selected entity.
+        //
+        this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
+        this.LogDebug ( "EntityLayout.Title: " + this.Session.EntityLayout.Title );
+
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
         // 
@@ -1734,10 +1742,6 @@ namespace Evado.UniForm.Digital
           this.ClassNameSpace + "GetFilteredListObject",
           this.Session.UserProfile );
 
-        //
-        // get the selected entity.
-        //
-        this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
 
         //
         // Execute the query list record query.
@@ -1812,6 +1816,8 @@ namespace Evado.UniForm.Digital
     private bool enableQuery ( )
     {
       this.LogMethod ( "enableQuery" );
+      this.LogDebug ( "EnableEmptyQuerySelection {0}.", this.Session.EnableEmptyQuerySelection );
+
       if ( this.Session.EnableEmptyQuerySelection == true )
       {
         return true;
@@ -1837,6 +1843,12 @@ namespace Evado.UniForm.Digital
       }
 
       this.LogDebug ( "enableEmptyQuery {0}.", enableEmptyQuery );
+
+      if ( enableEmptyQuery == false )
+      {
+        this.Session.EntityList = new List<EdRecord> ( );
+      }
+
       this.LogMethodEnd ( "enableQuery" );
       return enableEmptyQuery;
     }
@@ -2408,7 +2420,9 @@ namespace Evado.UniForm.Digital
         //
         // skip all empty items.
         //
-        if ( field.ItemValue == String.Empty )
+        if ( field.ItemValue == String.Empty
+          || field.ItemValue.Contains ( "E+37" ) == true
+          || field.ItemValue.Contains ( "E-35" ) == true )
         {
           continue;
         }
@@ -2456,6 +2470,8 @@ namespace Evado.UniForm.Digital
 
           default:
             {
+
+
               groupField = pageGroup.createReadOnlyTextField (
                 String.Empty,
                 field.Title,
@@ -4440,6 +4456,7 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "CreateNewEntity" );
       this.LogDebug ( "LayoutId {0}.", LayoutId );
       this.LogDebug ( "ParentGuid {0}.", ParentGuid );
+      this.LogDebug ( this.Session.UserProfile.getUserProfile ( true ) );
       //
       // Initialiset the methods variables and objects.
       //
@@ -4481,6 +4498,11 @@ namespace Evado.UniForm.Digital
           }
       }//END switch statement
 
+      this.LogDebug ( "LayoutId {0}.", newRecord.LayoutId );
+      this.LogDebug ( "AuthorUserId {0}.", newRecord.AuthorUserId );
+      this.LogDebug ( "ParentOrgId {0}.", newRecord.ParentOrgId );
+      this.LogDebug ( "ParentUserId {0}.", newRecord.ParentUserId );
+      this.LogDebug ( "ParentLayoutId {0}.", newRecord.ParentLayoutId );
       // 
       // Create the record.
       // 
