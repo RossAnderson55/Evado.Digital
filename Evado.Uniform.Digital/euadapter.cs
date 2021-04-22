@@ -497,6 +497,12 @@ namespace Evado.UniForm.Digital
             entity.EntityId, entity.LayoutId, entity.Title );
         }
 
+        foreach ( EdObjectParent parent in EuAdapter.AdapterObjects.EntityParents )
+        {
+          this.LogDebug ( "ParentLayoutId {0} ChildLayoutId {1} ChildEditAccess {2}, IsRecord {3}",
+            parent.ParentLayoutId, parent.ChildLayoutId, parent.ChildEditAccess, parent.IsRecord );
+        }
+
         //
         // Turn on BLL debug to match the current class setting.
         //

@@ -726,11 +726,6 @@ namespace Evado.UniForm.Digital
       set
       {
         this._OrganisationList = value;
-
-        //
-        // Create the entiy parent list.
-        //
-        this.createEntityParents ( );
       }
     }
 
@@ -864,21 +859,40 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the entity list.
       //
-      foreach ( EdRecord entity in this._AllEntityLayouts )
+      foreach ( EdRecord laout in this._AllEntityLayouts )
       {
+        this.LogInitValue ( "EL: " + laout.LayoutId + ",  T: " + laout.Title + ", R" + laout.Design.EditAccessRoles );
 
-        this.LogInitValue ( "L: " + entity.LayoutId + ",  T: " + entity.Title + ", R" + entity.Design.EditAccessRoles );
-
-        string [ ] parentEntities = entity.Design.ParentEntities.Split ( ';' );
+        string [ ] parentEntities = laout.Design.ParentEntities.Split ( ';' );
 
         foreach ( string parent in parentEntities )
         {
-          this._EntityParents.Add ( new EdObjectParent (
-            parent, entity.LayoutId, entity.Title, entity.Design.EditAccessRoles ) );
-
+          if ( parent != String.Empty )
+          {
+            this._EntityParents.Add ( new EdObjectParent (
+              parent, laout.LayoutId, laout.Title, laout.Design.EditAccessRoles ) );
+          }
         }//END parent iteration loop
       }//End entity iteration loop
 
+      //
+      // Iterate through the entity list.
+      //
+      foreach ( EdRecord layout in this._AllRecordLayoutList )
+      {
+        this.LogInitValue ( "RL: " + layout.LayoutId + ",  T: " + layout.Title + ", R" + layout.Design.EditAccessRoles );
+
+        string [ ] parentEntities = layout.Design.ParentEntities.Split ( ';' );
+
+        foreach ( string parent in parentEntities )
+        {
+          if ( parent != String.Empty )
+          {
+            this._EntityParents.Add ( new EdObjectParent (
+              parent, layout.LayoutId, layout.Title, layout.Design.EditAccessRoles, true ) );
+          }
+        }//END parent iteration loop
+      }//End entity iteration loop
 
       this.LogInitValue ( "END createEntityParents" );
     }//ENd method
@@ -1006,7 +1020,15 @@ namespace Evado.UniForm.Digital
     public List<EdRecord> AllRecordLayouts
     {
       get { return _AllRecordLayoutList; }
-      set { _AllRecordLayoutList = value; }
+      set
+      {
+        _AllRecordLayoutList = value;
+
+        //
+        // Create the entiy parent list.
+        //
+        this.createEntityParents ( );
+      }
     }
 
     /// <summary>

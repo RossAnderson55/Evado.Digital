@@ -364,10 +364,11 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "generateLayout" );
       this.LogDebug ( "Layout.Title: " + Layout.Title );
       this.LogDebug ( "Layout.State: " + Layout.State );
+      /*
       this.LogDebug ( "Layout.DefaultPageLayout: " + Layout.Design.DefaultPageLayout );
       this.LogDebug ( "Layout.FieldReadonlyDisplayFormat: " + Layout.Design.FieldReadonlyDisplayFormat );
       this.LogDebug ( "Layout.FormAccessRole: " + Layout.FormAccessRole );
-
+      */
       // 
       // Set the default pageMenuGroup type to annotated fields.  This will enable the 
       // client annotation functions and initiate the service to including fields for
@@ -379,7 +380,7 @@ namespace Evado.UniForm.Digital
       this._Fields = Layout.Fields;
       this._Design = Layout.Design;
 
-      this.LogDebug ( "Default FieldLayout {0}. ", this._DefaultFieldLayout );
+      //this.LogDebug ( "Default FieldLayout {0}. ", this._DefaultFieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
       {
         if ( EvStatics.tryParseEnumValue<Evado.Model.UniForm.FieldLayoutCodes> (
@@ -389,14 +390,15 @@ namespace Evado.UniForm.Digital
           this._DefaultFieldLayout = EuAdapter.DefaultFieldLayout;
         }
       }
-      this.LogDebug ( "FieldLayout {0}. ", this._DefaultFieldLayout );
+     
+      //this.LogDebug ( "FieldLayout {0}. ", this._DefaultFieldLayout );
       //
       // IF the form does not display annotations when being completed
       // hide the annotations by setting hide annotations to true
       //
       if ( Layout.Design.TypeId == EdRecordTypes.Questionnaire )
       {
-        this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
+       // this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
         PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
 
         //
@@ -408,9 +410,9 @@ namespace Evado.UniForm.Digital
         }
       }
 
-      this.LogDebug ( "ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
-      this.LogDebug ( "Layout.State: " + Layout.State );
-      this.LogDebug ( "HideSignatureField: " + this._HideSignatureField );
+     // this.LogDebug ( "ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
+     // this.LogDebug ( "Layout.State: " + Layout.State );
+     // this.LogDebug ( "HideSignatureField: " + this._HideSignatureField );
       // 
       // Set all groups and field to inherited access
       // 
@@ -418,22 +420,22 @@ namespace Evado.UniForm.Digital
       {
         case Evado.Model.Digital.EdRecord.FormAccessRoles.Record_Author:
           {
-            this.LogDebug ( "Record Author " );
+           // this.LogDebug ( "Record Author " );
             PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
 
             break;
           }
         default:
           {
-            this.LogDebug ( "default" );
+           // this.LogDebug ( "default" );
             PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
             PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
             break;
           }
       }//END view state switch
 
-      this.LogDebug ( "Final: ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
-      this.LogDebug ( "Final: HideSignatureField: " + this._HideSignatureField );
+    //  this.LogDebug ( "Final: ClientPage.DefaultGroupType: " + PageObject.DefaultGroupType );
+    //  this.LogDebug ( "Final: HideSignatureField: " + this._HideSignatureField );
 
 
       // 
@@ -1134,8 +1136,8 @@ namespace Evado.UniForm.Digital
       // 
       foreach ( Evado.Model.Digital.EdRecordSection section in Layout.Design.FormSections )
       {
-        this.LogDebug ( "No: '{0}' Section: '{1}' Role: {2}, User Role:{3} ",
-          section.No, section.Title, section.ReadAccessRoles, this.Session.UserProfile.Roles );
+       // this.LogDebug ( "No: '{0}' Section: '{1}' Role: {2}, User Role:{3} ",
+       //   section.No, section.Title, section.ReadAccessRoles, this.Session.UserProfile.Roles );
 
         if ( section.Title == String.Empty )
         {
@@ -1145,8 +1147,8 @@ namespace Evado.UniForm.Digital
 
         if ( section.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
         {
-          this.LogDebug ( "User {0} does not have access to Section {1}",
-            this.Session.UserProfile.UserId, section.Title );
+        //  this.LogDebug ( "User {0} does not have access to Section {1}",
+        //    this.Session.UserProfile.UserId, section.Title );
           continue;
         }
 

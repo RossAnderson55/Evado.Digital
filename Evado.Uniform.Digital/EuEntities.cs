@@ -3674,6 +3674,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Page PageObject )
     {
       this.LogMethod ( "getClientData" );
+      /*
       this.LogDebug ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
       this.LogDebug ( "Entity.LayoutId: " + this.Session.Entity.LayoutId );
       this.LogDebug ( "Entity.Title: " + this.Session.Entity.Title );
@@ -3688,6 +3689,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "Entity.ParentUserId: " + this.Session.Entity.ParentUserId );
       this.LogDebug ( "EnableEntityEditButtonUpdate: " + this.EnableEntityEditButtonUpdate );
       this.LogDebug ( "ButtonEditModeEnabled: " + this.Session.Entity.ButtonEditModeEnabled );
+      */
 
       // 
       // Initialise the methods variables and objects.
@@ -3772,6 +3774,11 @@ namespace Evado.UniForm.Digital
       // if the entity has child entities add a group to display them.
       //
       this.getDataObject_ChildEntities ( PageObject );
+
+      //
+      // display the record child objects.
+      //
+      this.getDataObject_ChildRecords ( PageObject );
 
       this.LogMethodEnd ( "getClientData" );
 
@@ -4050,10 +4057,12 @@ namespace Evado.UniForm.Digital
       //
       foreach ( EdObjectParent child in entityChildren )
       {
+        this.LogDebug ( "Child roles {0} - UR {0}. ", child.ChildEditAccess, this.Session.UserProfile.Roles );
         //
         // if the user had edit access toteh entity add a create command for the entity.
         //
-        if ( this.Session.UserProfile.hasRole ( child.ChildEditAccess ) == true )
+        if ( child.hasEditAccess( this.Session.UserProfile.Roles ) == true
+          && child.IsRecord == false )
         {
           string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildTitle );
           //
@@ -4085,10 +4094,10 @@ namespace Evado.UniForm.Digital
           child.CommandTitle,
           child.Fields.Count );
 
-        this.getGroupListCommand (
+        this.getChildGroupListCommand (
          child,
          pageGroup,
-         child.Design.LinkContentSetting );
+         child.Design.LinkContentSetting, false );
 
       }
 
@@ -4096,6 +4105,182 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "getDataObject_ChildEntities" );
 
     }//END getClientData_SaveCommands method
+
+
+    // ==============================================================================
+    /// <summary>
+    /// This method displays the entity's chiled entities
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    //  ------------------------------------------------------------------------------
+    private void getDataObject_ChildRecords (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getDataObject_ChildRecords" );
+      this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
+      this.LogDebug ( "Entity.ChildEntities.Count {0}.", this.Session.Entity.ChildRecords.Count );
+
+      if ( this.Session.Entity.Design.DisplayRelatedEntities == false
+        || this.Session.Entity.FormAccessRole != EdRecord.FormAccessRoles.Record_Reader )
+      {
+        this.LogDebug ( "No displaying related entities." );
+        this.LogMethodEnd ( "getDataObject_ChildRecords" );
+        return;
+      }
+
+      //
+      // Initialise the methods variables and objects.
+      //
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+
+      //
+      // define the child entity group.
+      //
+      pageGroup = PageObject.AddGroup (
+      String.Format ( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField ( ) ) );
+      pageGroup.Layout = Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.GroupId = this.ChildEntityGroupID;
+
+      pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+
+      if ( this.Session.Entity.ChildEntities.Count <= 20 )
+      {
+        //pageGroup.CmdLayout = Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
+        //pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Command_Width, "20%" );
+        //pageGroup.AddParameter ( Model.UniForm.GroupParameterList.Command_Height, "50px" );
+      }
+
+      //
+      // Add a create record command.
+      //
+      var entityChildren = this.AdapterObjects.GetEntityChildren ( this.Session.Entity.LayoutId );
+
+      this.LogDebug ( "Entity Children count {0}. ", entityChildren.Count );
+
+      //
+      // iterate through the list of children add a create commend for each child
+      // if the user has edit access to the child entity.
+      //
+      foreach ( EdObjectParent child in entityChildren )
+      {
+        this.LogDebug ( "Child roles {0} - UR {0}. ", child.ChildEditAccess, this.Session.UserProfile.Roles );
+        //
+        // if the user had edit access toteh entity add a create command for the entity.
+        //
+        if ( child.hasEditAccess ( this.Session.UserProfile.Roles ) == true
+          && child.IsRecord == true )
+        {
+          string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildTitle );
+          //
+          // define the new entity command.
+          //
+          groupCommand = pageGroup.addCommand (
+            title,
+            EuAdapter.ADAPTER_ID,
+            EuAdapterClasses.Records,
+            Model.UniForm.ApplicationMethods.Create_Object );
+
+          groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
+          groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
+          groupCommand.SetGuid ( this.Session.Entity.Guid );
+
+          groupCommand.SetBackgroundDefaultColour ( Model.UniForm.Background_Colours.Purple );
+        }//ENd edit access
+      }//END child interation loop
+
+      //
+      // Iterate through the child entities
+      //
+      foreach ( EdRecord child in this.Session.Entity.ChildRecords)
+      {
+        this.LogDebug ( "record {0}, {1}, L {2}, LT {3}, FC {4}.",
+          child.EntityId,
+          child.Title,
+          child.Design.LinkContentSetting,
+          child.CommandTitle,
+          child.Fields.Count );
+
+        this.getChildGroupListCommand (
+         child,
+         pageGroup,
+         child.Design.LinkContentSetting, true );
+
+      }
+
+      this.LogDebug ( "Command Count {0}.", pageGroup.CommandList.Count );
+      this.LogMethodEnd ( "getDataObject_ChildRecords" );
+
+    }//END getDataObject_ChildRecords method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method appends the milestone groupCommand to the page milestone list pageMenuGroup
+    /// </summary>
+    /// <param name="CommandEntity">EvForm object</param>
+    /// <param name="PageGroup"> Evado.Model.UniForm.Group</param>
+    //  -----------------------------------------------------------------------------
+    private Evado.Model.UniForm.Command getChildGroupListCommand (
+      EdRecord CommandEntity,
+      Evado.Model.UniForm.Group PageGroup,
+      EdRecord.LinkContentSetting ParentLinkSetting,
+      bool IsRecord )
+    {
+      this.LogMethod ( "getChildGroupListCommand" );
+      this.LogDebug ( "CommandEntity.EntityId: " + CommandEntity.EntityId );
+      this.LogDebug ( "LinkContentSetting: " + CommandEntity.Design.LinkContentSetting );
+      this.LogDebug ( "TypeId: " + CommandEntity.TypeId );
+      this.LogDebug ( "ParentLinkSetting: " + ParentLinkSetting );
+      this.LogDebug ( "IsRecord: " + IsRecord );
+
+      EuAdapterClasses adapterClass = EuAdapterClasses.Entities;
+      if ( IsRecord == true )
+      {
+        adapterClass = EuAdapterClasses.Records;
+      }
+
+      //
+      // Set the link setting.
+      //
+      if ( CommandEntity.Design.LinkContentSetting == EdRecord.LinkContentSetting.Null
+        && ParentLinkSetting != EdRecord.LinkContentSetting.Null )
+      {
+        CommandEntity.Design.LinkContentSetting = ParentLinkSetting;
+      }
+
+      this.LogDebug ( "FINAL: LinkContentSetting: " + CommandEntity.Design.LinkContentSetting );
+      this.LogDebug ( "CommandTitle: " + CommandEntity.CommandTitle );
+      this.LogDebug ( "getFirstTextField: " + CommandEntity.getFirstTextField ( ) );
+
+      //
+      // Define the pageMenuGroup groupCommand.
+      //
+      Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
+          CommandEntity.CommandTitle,
+          EuAdapter.ADAPTER_ID,
+          adapterClass,
+          Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+      groupCommand.Id = CommandEntity.Guid;
+      groupCommand.SetGuid ( CommandEntity.Guid );
+
+      groupCommand.AddParameter (
+        Model.UniForm.CommandParameters.Short_Title,
+        EdLabels.Label_Record_Id + CommandEntity.RecordId );
+      if ( CommandEntity.ImageFileName != String.Empty )
+      {
+        string relativeURL = EuAdapter.CONST_IMAGE_FILE_DIRECTORY + CommandEntity.ImageFileName;
+        groupCommand.AddParameter ( Model.UniForm.CommandParameters.Image_Url, relativeURL );
+      }
+
+      if ( this.Session.UserProfile.hasAdministrationAccess == true )
+      {
+        groupCommand.Title = CommandEntity.EntityId + " >> " + groupCommand.Title;
+      }
+
+      return groupCommand;
+
+    }//END getGroupListCommand method
 
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
