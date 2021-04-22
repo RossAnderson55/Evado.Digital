@@ -522,9 +522,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "getListObject" );
       this.LogValue ( "LayoutId: " + LayoutId );
-      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
-      this.LogValue ( "Entity.ReadAccessRoles: " + this.Session.EntityLayout.Design.ReadAccessRoles );
-      this.LogValue ( "Entity.EditAccessRoles: " + this.Session.EntityLayout.Design.EditAccessRoles );
+      this.LogDebug ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
       try
       {
         if ( LayoutId == String.Empty )
@@ -536,6 +534,9 @@ namespace Evado.UniForm.Digital
         // get the selected entity.
         //
         this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( LayoutId );
+        this.LogDebug ( "Entity.ReadAccessRoles: " + this.Session.EntityLayout.Design.ReadAccessRoles );
+        this.LogDebug ( "Entity.EditAccessRoles: " + this.Session.EntityLayout.Design.EditAccessRoles );
+        this.LogDebug ( "Entity.LinkContentSetting: " + this.Session.EntityLayout.Design.LinkContentSetting );
 
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
@@ -1420,9 +1421,9 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "executeRecordQuery" );
       this.LogDebug ( "EntityLayoutIdSelection: " + this.Session.Selected_EntityLayoutId );
-      this.LogDebug ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
-      this.LogDebug ( "EntityStateSelection: " + this.Session.EntityStateSelection );
-      this.LogDebug ( "parentGuid: {0}.", this.ParentGuid );
+      //this.LogDebug ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
+      //this.LogDebug ( "EntityStateSelection: " + this.Session.EntityStateSelection );
+      //this.LogDebug ( "parentGuid: {0}.", this.ParentGuid );
       //
       // Initialise the methods variables and objects.
       //
@@ -1490,13 +1491,14 @@ namespace Evado.UniForm.Digital
       {
         queryParameters.EnableOrganisationFilter = true;
       }
-
+      /*
       this.LogDebug ( "Selected LayoutId: '" + queryParameters.LayoutId + "'" );
       this.LogDebug ( "Selected ParentType: '" + queryParameters.ParentType + "'" );
       this.LogDebug ( "Selected ParentGuid: '" + queryParameters.ParentGuid + "'" );
       this.LogDebug ( "Selected Org_City: '" + queryParameters.Org_City + "'" );
       this.LogDebug ( "Selected Org_Country: '" + queryParameters.Org_Country + "'" );
       this.LogDebug ( "Selected Org_PostCode: '" + queryParameters.Org_PostCode + "'" );
+      */
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -1597,7 +1599,7 @@ namespace Evado.UniForm.Digital
         this.getGroupListCommand (
           entity,
           pageGroup,
-          EdRecord.LinkContentSetting.Null );
+         this.Session.EntityLayout.Design.LinkContentSetting );
 
       }//END iteration loop
 
@@ -1621,17 +1623,21 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getGroupListCommand" );
       this.LogDebug ( "CommandEntity.EntityId: " + CommandEntity.EntityId );
       this.LogDebug ( "LinkContentSetting: " + CommandEntity.Design.LinkContentSetting );
+      this.LogDebug ( "TypeId: " + CommandEntity.TypeId );
       this.LogDebug ( "ParentLinkSetting: " + ParentLinkSetting );
 
       //
       // Set the link setting.
       //
-      if ( CommandEntity.Design.LinkContentSetting == EdRecord.LinkContentSetting.Null )
+      if ( CommandEntity.Design.LinkContentSetting == EdRecord.LinkContentSetting.Null
+        && ParentLinkSetting != EdRecord.LinkContentSetting.Null )
       {
         CommandEntity.Design.LinkContentSetting = ParentLinkSetting;
       }
 
-      this.LogDebug ( "LinkContentSetting: " + CommandEntity.Design.LinkContentSetting );
+      this.LogDebug ( "FINAL: LinkContentSetting: " + CommandEntity.Design.LinkContentSetting );
+      this.LogDebug ( "CommandTitle: " + CommandEntity.CommandTitle );
+      this.LogDebug ( "getFirstTextField: " + CommandEntity.getFirstTextField ( ) );
 
       //
       // Define the pageMenuGroup groupCommand.
@@ -1806,7 +1812,7 @@ namespace Evado.UniForm.Digital
     private bool enableQuery ( )
     {
       this.LogMethod ( "enableQuery" );
-      if( this.Session.EnableEmptyQuerySelection == true )
+      if ( this.Session.EnableEmptyQuerySelection == true )
       {
         return true;
       }
@@ -1853,9 +1859,18 @@ namespace Evado.UniForm.Digital
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Group pageGroup = null;
+      Evado.Model.UniForm.Command selectionCommand = null;
       List<EvOption> optionList;
       Evado.Model.UniForm.Field groupField;
+
+      //
+      // if hide selection group is enabled exit 
+      //
+      if ( this._HideSelectionGroup == true )
+      {
+        return;
+      }
 
       // 
       // Create the new pageMenuGroup for record selection.
@@ -1891,86 +1906,98 @@ namespace Evado.UniForm.Digital
         groupField.Layout = EuAdapter.DefaultFieldLayout;
         groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
+        // 
+        // Add the selection groupCommand
+        // 
+       selectionCommand = pageGroup.addCommand (
+          EdLabels.Entities_Selection_Command_Title,
+          EuAdapter.ADAPTER_ID,
+          EuAdapterClasses.Entities.ToString ( ),
+          Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+        selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+
+        selectionCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
+        ;
+        this.LogDebug ( "Group Command Count {0}. ", pageGroup.CommandList.Count );
+        this.LogMethodEnd ( "getFilteredList_SelectionGroup" );
+
       }//END layoutId selection
 
       //
       // if the entity layout id has been defined display the entity selection fields.
       //
-      else
+      //
+      // retrieve the selected entity layout object
+      //
+      this.queryLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
+
+      this.LogDebug ( "E: {0} S: {1}.", queryLayout.LayoutId, queryLayout.State );
+      this.LogDebug ( "Entity {0}. ", queryLayout.CommandTitle );
+
+
+
+      //
+      // Insert the static filter selection for organisation city.
+      //
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Country.ToString ( ) ) == true )
       {
-        //
-        // retrieve the selected entity layout object
-        //
-        this.queryLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Country );
+      }
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_City.ToString ( ) ) == true )
+      {
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_City );
+      }
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Post_Code.ToString ( ) ) == true )
+      {
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Post_Code );
+      }
 
-        this.LogDebug ( "E: {0} S: {1}.", queryLayout.LayoutId, queryLayout.State );
-        this.LogDebug ( "Entity {0}. ", queryLayout.CommandTitle );
+      //
+      // iterate through the filter field ids and display the filter field in the selection group.
+      //
+      for ( int filterIndex = 0; filterIndex < queryLayout.FilterFieldIds.Length; filterIndex++ )
+      {
+        string fieldId = queryLayout.FilterFieldIds [ filterIndex ];
 
-
-
-        //
-        // Insert the static filter selection for organisation city.
-        //
-        if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Country.ToString ( ) ) == true )
+        if ( fieldId == String.Empty )
         {
-          this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Country );
-        }
-        if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_City.ToString ( ) ) == true )
-        {
-          this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_City );
-        }
-        if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Post_Code.ToString ( ) ) == true )
-        {
-          this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Post_Code );
+          continue;
         }
 
+        this.LogDebug ( "fieldId {0}. ", fieldId );
         //
-        // iterate through the filter field ids and display the filter field in the selection group.
+        // retrieve the matching field object.
         //
-        for ( int filterIndex = 0; filterIndex < queryLayout.FilterFieldIds.Length; filterIndex++ )
+        EdRecordField field = queryLayout.GetFieldObject ( fieldId );
+
+        if ( field == null )
         {
-          string fieldId = queryLayout.FilterFieldIds [ filterIndex ];
+          continue;
+        }
 
-          if ( fieldId == String.Empty )
-          {
-            continue;
-          }
+        this.LogDebug ( "field.FieldId {0} - {1}. ", field.FieldId, field.Title );
 
-          this.LogDebug ( "fieldId {0}. ", fieldId );
-          //
-          // retrieve the matching field object.
-          //
-          EdRecordField field = queryLayout.GetFieldObject ( fieldId );
+        //
+        // retrieve the current selection filter value.
+        //
+        string selectionFilter = this.Session.EntitySelectionFilters [ filterIndex ];
+        this.LogDebug ( "selectionFilter {0}. ", selectionFilter );
 
-          if ( field == null )
-          {
-            continue;
-          }
-
-          this.LogDebug ( "field.FieldId {0} - {1}. ", field.FieldId, field.Title );
-
-          //
-          // retrieve the current selection filter value.
-          //
-          string selectionFilter = this.Session.EntitySelectionFilters [ filterIndex ];
-          this.LogDebug ( "selectionFilter {0}. ", selectionFilter );
-
-          //
-          // create the selection field object for the selected field.
-          //
-          this.getFilteredList_SelectionField (
-            pageGroup,
-            filterIndex,
-            selectionFilter,
-            field );
-        }//END of the Selection filter iteration loop.
-
-      }//END display enity filter fields.
+        //
+        // create the selection field object for the selected field.
+        //
+        this.getFilteredList_SelectionField (
+          pageGroup,
+          filterIndex,
+          selectionFilter,
+          field );
+      }//END of the Selection filter iteration loop.
 
       // 
       // Add the selection groupCommand
       // 
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
+      selectionCommand = pageGroup.addCommand (
         EdLabels.Entities_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
@@ -2525,7 +2552,7 @@ namespace Evado.UniForm.Digital
       {
         foreach ( EvOption option in optionList )
         {
-          if ( option.Value  != str )
+          if ( option.Value != str )
           {
             continue;
           }

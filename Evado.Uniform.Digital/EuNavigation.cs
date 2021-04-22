@@ -702,9 +702,9 @@ namespace Evado.UniForm.Digital
           EuAdapterClasses.Entities.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
-        pageCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
+        pageCommand.SetPageId ( EdStaticPageIds.Entity_View );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
-        pageCommand.AddParameter ( EdRecord.FieldNames.Author, this.Session.UserProfile.UserId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.ParentUserId, this.Session.UserProfile.UserId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
 
         return pageCommand;

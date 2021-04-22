@@ -367,6 +367,7 @@ namespace Evado.Model.Digital
       /// This enumeration set the command link to display the default content.
       /// </summary>
       Default = 0,
+
       /// <summary>
       /// This enumeration sets the command link to display the record summary.
       /// </summary>
@@ -996,9 +997,8 @@ namespace Evado.Model.Digital
                     this.Version,
                     this.StateDesc );
         }
-        //
-        // for data entity lists.
-        //
+
+
         if ( this.RecordId == String.Empty )
         {
           this.RecordId = "RECORD-ID";
@@ -1008,12 +1008,9 @@ namespace Evado.Model.Digital
                     this.RecordId,
                     this.LayoutId,
                     this.Title );
-
-        if ( this.Design.DisplayAuthorDetails == true )
-        {
-          link += EdLabels.Label_by + this.Updated;
-        }
-
+        //
+        // if a comment text then output an abstract of the linke..
+        //
         if ( this.TypeId == EdRecordTypes.Comment_Record )
         {
           string value = this.getFirstFreeTextField ( true );
@@ -1022,34 +1019,61 @@ namespace Evado.Model.Digital
           {
             return value;
           }
+          return link;
         }
 
-        //
-        // select the link display 
-        //
-        if ( this.Design.LinkContentSetting == LinkContentSetting.Display_Summary )
+        switch ( this.Design.LinkContentSetting )
         {
-          return this.RecordSummary;
-        }
+          //
+          // Abstract link
+          //
+          case LinkContentSetting.Abstract:
+            {
+              string value = this.getFirstFreeTextField ( true );
 
-        //
-        // Display the first field with a text value.
-        //
-        if ( this.Design.LinkContentSetting == LinkContentSetting.First_Text_Field
-          && this.Fields.Count > 1 )
-        {
-          String value = this.getFirstTextField ( );
+              if ( value != String.Empty )
+              {
+                return value;
+              }
+              return link;
+            }
+          //
+          // Display the first field with a text value.
+          //
+          case LinkContentSetting.First_Text_Field:
+            {
+              String value = this.getFirstTextField ( );
 
-          if ( value != String.Empty )
-          {
-            return value;
-          }
-        }
+              if ( value != String.Empty )
+              {
+                return value;
+              }
+              return link;
+            }
+          //
+          // Summary display
+          //
+          case LinkContentSetting.Display_Summary:
+            {
+              if ( this.RecordSummary != String.Empty )
+              {
+                return this.RecordSummary;
+              }
+              return link;
+            }
 
-        return link;
-      }//Get method
-
-    }//END method
+          default:
+          case LinkContentSetting.Default:
+            {
+              if ( this.Design.DisplayAuthorDetails == true )
+              {
+                link += EdLabels.Label_by + this.Updated;
+              }
+              return link;
+            }
+        }//END stitch statement
+      }//End get 
+    }//END property
 
 
     private List<EdUserSignoff> _Signoffs = new List<EdUserSignoff> ( );

@@ -307,7 +307,7 @@ namespace Evado.Bll
     {
       if ( this._ClassParameter.LoggingLevel >= 3 )
       {
-        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
           String.Format ( Format, args ) );
       }
     }
@@ -354,7 +354,7 @@ namespace Evado.Bll
     {
       if ( this._ClassParameter.LoggingLevel > 4 )
       {
-        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+        this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
           String.Format ( Format, args ) );
       }
     }

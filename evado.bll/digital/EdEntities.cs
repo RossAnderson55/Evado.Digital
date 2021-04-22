@@ -144,21 +144,28 @@ namespace Evado.Bll.Digital
       this.LogValue ( "-LayoutId: " + QueryParameters.LayoutId );
       this.LogValue ( "-IncludeRecordValues: " + QueryParameters.IncludeRecordValues );
       this.LogValue ( "-States.Count: " + QueryParameters.States.Count );
+      this.LogValue ( "-ParentType: " + QueryParameters.ParentType );
+      /*
+      this.LogDebug ( "-ParentUserId: {0}", QueryParameters.ParentUserId );
+      this.LogDebug ( "-ParentOrgId: {0}", QueryParameters.ParentOrgId );
+      this.LogDebug ( "-ParentGuid: {0}", QueryParameters.ParentGuid );
+      this.LogDebug ( "-Org_City: {0}", QueryParameters.Org_City );
+      this.LogDebug ( "-Org_Country: {0}", QueryParameters.Org_Country );
       this.LogValue ( "-NotSelectedState: " + QueryParameters.NotSelectedState );
       foreach ( EdRecordObjectStates state in QueryParameters.States )
       {
-        this.LogValue ( "-State: " + state );
+        this.LogDebug ( "-State: " + state );
       }
-      this.LogValue ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Length );
+      this.LogDebug ( "-NotSelectedState: " + QueryParameters.SelectionFilters.Length );
 
       for ( int i = 0; i < QueryParameters.SelectionFilters.Length; i++ )
       {
         if ( QueryParameters.SelectionFilters [ i ] != null )
         {
-          this.LogValue ( "-Filter: {0} Value: {1}.  ", i, QueryParameters.SelectionFilters [ i ] );
+          this.LogDebug ( "-Filter: {0} Value: {1}.  ", i, QueryParameters.SelectionFilters [ i ] );
         }
       }
-
+      */
       // 
       // Execute the query.
       // 

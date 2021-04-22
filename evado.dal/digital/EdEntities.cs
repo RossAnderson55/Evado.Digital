@@ -773,8 +773,8 @@ namespace Evado.Dal.Digital
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getEntityList" );
-      this.LogDebug ( "Org_City = {0}", QueryParameters.Org_City );
-      this.LogDebug ( "Org_Country = {0}", QueryParameters.Org_Country );
+      //this.LogDebug ( "Org_City: {0}", QueryParameters.Org_City );
+      //this.LogDebug ( "Org_Country: {0}", QueryParameters.Org_Country );
       //
       // Initialize the method debug log, a return form list and a number of result count. 
       //
@@ -834,77 +834,84 @@ namespace Evado.Dal.Digital
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
+      try
       {
-        // 
-        // Iterate through the results extracting the role information.
-        // 
-        for ( int count = 0; count < table.Rows.Count; count++ )
+        using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
         {
           // 
-          // Extract the table row
+          // Iterate through the results extracting the role information.
           // 
-          DataRow row = table.Rows [ count ];
-
-          EdRecord entity = this.getRowData ( row, QueryParameters.IncludeSummary );
-
-          // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
-          // 
-          // Attach fields and other trial data.
-          // 
-          if ( QueryParameters.IncludeRecordValues == true
-            || entity.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
+          for ( int count = 0; count < table.Rows.Count; count++ )
           {
-            if ( inResultCount < QueryParameters.ResultStartRange
-              || inResultCount >= ( QueryParameters.ResultFinishRange ) )
+            // 
+            // Extract the table row
+            // 
+            DataRow row = table.Rows [ count ];
+
+            EdRecord entity = this.getRowData ( row, QueryParameters.IncludeSummary );
+
+            // this.LogDebug ( "record.Design.LinkContentSetting {0}.", record.Design.LinkContentSetting );
+            // 
+            // Attach fields and other trial data.
+            // 
+            if ( QueryParameters.IncludeRecordValues == true
+              || entity.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
             {
-              //this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
+              if ( inResultCount < QueryParameters.ResultStartRange
+                || inResultCount >= ( QueryParameters.ResultFinishRange ) )
+              {
+                //this.LogDebug ( "Count: " + inResultCount + " >> not within record range." );
+
+                //
+                // Increment the result count.
+                //
+                inResultCount++;
+
+                continue;
+              }
+
+              if ( entity.hasReadAccess ( this.ClassParameters.UserProfile.Roles ) == false )
+              {
+                this.LogDebug ( "User Role: {0}, does no have access to {1}, roles: {2}",
+                  this.ClassParameters.UserProfile.Roles,
+                  entity.LayoutId,
+                  entity.Design.ReadAccessRoles );
+                continue;
+              }
+
+              // 
+              // Get the trial record fields
+              // 
+              this.GetEntityValues ( entity );
+
+              //
+              // Attach the entity list.
+              //
+              this.getRecordEntities ( entity );
+
+              //
+              // attach the record sections.
+              //
+              this.GetRecordSections ( entity );
 
               //
               // Increment the result count.
               //
               inResultCount++;
 
-              continue;
-            }
+              // 
+            }//END query selection state not set.
 
-            if ( entity.hasReadAccess ( this.ClassParameters.UserProfile.Roles ) == false )
-            {
-              this.LogDebug ( "User Role: {0}, does no have access to {1}, roles: {2}",
-                this.ClassParameters.UserProfile.Roles,
-                entity.LayoutId,
-                entity.Design.ReadAccessRoles );
-              continue;
-            }
+            view.Add ( entity );
 
-            // 
-            // Get the trial record fields
-            // 
-            this.GetEntityValues ( entity );
+          }//END record iteration loop
 
-            //
-            // Attach the entity list.
-            //
-            this.getRecordEntities ( entity );
-
-            //
-            // attach the record sections.
-            //
-            this.GetRecordSections ( entity );
-
-            //
-            // Increment the result count.
-            //
-            inResultCount++;
-
-            // 
-          }//END query selection state not set.
-
-          view.Add ( entity );
-
-        }//END record iteration loop
-
-      }//END using method
+        }//END using method
+      }
+      catch ( Exception ex )
+      {
+        this.LogException ( ex );
+      }
 
       // 
       // Get the array length
@@ -2875,7 +2882,7 @@ namespace Evado.Dal.Digital
       // Validate whether the record object exists.
       // 
       this.LogDebug ( "Get previous record" );
-      EdRecord previousRecord = this.GetEntityGuid ( Entity.Guid);
+      EdRecord previousRecord = this.GetEntityGuid ( Entity.Guid );
       if ( previousRecord.Guid == Guid.Empty )
       {
         return EvEventCodes.Identifier_Record_Id_Error;
