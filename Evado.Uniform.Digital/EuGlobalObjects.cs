@@ -238,6 +238,11 @@ namespace Evado.UniForm.Digital
       set { _ExportFilePath = value; }
     }
 
+    /// <summary>
+    /// This property contains a selection list of event codes.
+    /// </summary>
+    public List<EvOption> EventCodeSelectionList { get; set;  }
+
     private List<EdPageLayout> _AllPageLayouts = new List<EdPageLayout> ( );
     /// <summary>
     /// this field list containt the all page Layouts.

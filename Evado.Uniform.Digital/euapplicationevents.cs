@@ -26,7 +26,7 @@ using System.Web.SessionState;
 using Evado.Bll;
 using Evado.Model;
 using Evado.Bll.Digital;
-using  Evado.Model.Digital;
+using Evado.Model.Digital;
 // using Evado.Web;
 
 namespace Evado.UniForm.Digital
@@ -76,6 +76,18 @@ namespace Evado.UniForm.Digital
       this.LogInit ( "-LoggingLevel: " + Settings.LoggingLevel );
       this.LogInit ( "-UserId: " + Settings.UserProfile.UserId );
       this.LogInit ( "-UserCommonName: " + Settings.UserProfile.CommonName );
+
+      if ( this.Session.ApplicationEventList == null )
+      {
+        this.Session.ApplicationEventList = new List<EvApplicationEvent> ( );
+      }
+
+      if ( this.AdapterObjects.EventCodeSelectionList == null )
+      {
+        this.AdapterObjects.EventCodeSelectionList = new List<EvOption> ( );
+      }
+
+
     }//END Method
 
 
@@ -89,6 +101,8 @@ namespace Evado.UniForm.Digital
     private const String CONST_USER_FIELD_ID = "EUSR";
     private const String CONST_START_DATE_FIELD_ID = "ESD";
     private const String CONST_FINISH_DATE_FIELD_ID = "EFD";
+
+    bool _ChangeSelection = true;
 
     private Evado.Bll.EvApplicationEvents _Bll_ApplicationEvents = new Evado.Bll.EvApplicationEvents ( );
 
@@ -111,8 +125,7 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getClientDataObject" );
-
-      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString ( false, false ) );
+      this.LogValue ( "PageCommand Content: " + PageCommand.getAsString ( false, true ) );
       try
       {
         // 
@@ -140,6 +153,11 @@ namespace Evado.UniForm.Digital
         this.LogPageAccess (
          this.ClassNameSpace + "getClientDataObject",
           this.Session.UserProfile );
+
+        //
+        // save the event selection parameters.
+        //
+        this.saveEventLogSelectionParameters ( PageCommand );
 
         // 
         // Determine the method to be called
@@ -209,73 +227,22 @@ namespace Evado.UniForm.Digital
     public Evado.Model.UniForm.AppData getListObject (
       Evado.Model.UniForm.Command PageCommand )
     {
+      this.LogMethod ( "getListObject" );
       try
       {
-        this.LogMethod ( "getListObject" );
         // 
         // Initialise the methods variables and objects.
         //      
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-        EdUserprofiles userProfiles = new EdUserprofiles ( );
-        String value = String.Empty;
 
+        //
+        // initialise the list page.
+        //
         clientDataObject.Title = EdLabels.ApplicationEvent_List_Page_Title;
         clientDataObject.Page.Title = clientDataObject.Title;
         clientDataObject.Id = Guid.NewGuid ( );
 
-        if ( this.AdapterObjects.HelpUrl != String.Empty )
-        {
-          Evado.Model.UniForm.Command helpCommand = clientDataObject.Page.addCommand (
-           EdLabels.Label_Help_Command_Title,
-           EuAdapter.ADAPTER_ID,
-           EuAdapterClasses.Events.ToString ( ),
-           Model.UniForm.ApplicationMethods.Get_Object );
-
-          helpCommand.Type = Evado.Model.UniForm.CommandTypes.Http_Link;
-
-          helpCommand.AddParameter ( Model.UniForm.CommandParameters.Link_Url,
-           EvcStatics.createHelpUrl (
-            this.AdapterObjects.HelpUrl,
-             Evado.Model.Digital.EdStaticPageIds.Application_Event_View ) );
-        }
-        if ( this.Session.EventStartDate ==  Evado.Model.Digital.EvcStatics.CONST_DATE_MIN_RANGE )
-        {
-          this.Session.EventStartDate =
-           Evado.Model.Digital.EvcStatics.getDateTime ( DateTime.Now.ToString ( "dd MMM yyyy" ) );
-          this.Session.EventFinishDate = this.Session.EventStartDate.AddDays ( 1 );
-        }
-
-        //
-        // Retrieve the selection options.
-        //
-        this.Session.EventId = EvEventCodes.Null;
-
-        value = PageCommand.GetParameter ( EuApplicationEvents.CONST_EVENT_FIELD_ID );
-        if ( value != String.Empty )
-        {
-          this.Session.EventId =  Evado.Model.EvStatics.parseEnumValue<EvEventCodes> ( value );
-        }
-
-        this.Session.EventType = PageCommand.GetParameter ( EuApplicationEvents.CONST_TYPE_FIELD_ID );
-
-        value = PageCommand.GetParameter ( EuApplicationEvents.CONST_START_DATE_FIELD_ID );
-        if ( value != String.Empty )
-        {
-          this.Session.EventStartDate =  Evado.Model.Digital.EvcStatics.getDateTime ( value );
-        }
-        value = PageCommand.GetParameter ( EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID );
-        if ( value != String.Empty )
-        {
-          this.Session.EventFinishDate =  Evado.Model.Digital.EvcStatics.getDateTime ( value );
-        }
-
-        this.Session.EventUserName = PageCommand.GetParameter ( EuApplicationEvents.CONST_USER_FIELD_ID );
-
-        this.LogValue ( "EventId: " + this.Session.EventId );
-        this.LogValue ( "EventType: " + this.Session.EventType );
-        this.LogValue ( "EventUserName: " + this.Session.EventUserName );
-        this.LogValue ( "EventStartDate: " + this.Session.EventStartDate );
-        this.LogValue ( "EventFinishDate: " + this.Session.EventFinishDate );
+        this.queryApplicatinEventLog ( );
 
         // 
         // Create the new pageMenuGroup.
@@ -312,6 +279,172 @@ namespace Evado.UniForm.Digital
 
     }//END getListObject method.
 
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods saves the event log selection parameters to the session object.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    private void saveEventLogSelectionParameters (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "saveEventLogSelectionParameters" );
+      //
+      // Retrieve the selection options.
+      //
+      String value = String.Empty;
+      this.Session.EventId = EvEventCodes.Null;
+      this.LogValue ( "_ChangeSelection: " + this._ChangeSelection );
+
+      //
+      // Start date selection
+      //
+      if ( PageCommand.hasParameter ( EuApplicationEvents.CONST_START_DATE_FIELD_ID ) == true )
+      {
+        var startDate = EvStatics.getDateTime ( PageCommand.GetParameter ( EuApplicationEvents.CONST_START_DATE_FIELD_ID ) );
+
+        this.LogValue ( "startDate: " + startDate );
+
+        if ( this.Session.EventStartDate != startDate )
+        {
+          this.Session.EventStartDate = startDate;
+          this._ChangeSelection = true;
+        }
+      }
+
+      //
+      // finish data selection.
+      //
+      if ( PageCommand.hasParameter ( EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID ) == true )
+      {
+        var finishDate = EvStatics.getDateTime ( PageCommand.GetParameter ( EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID ) );
+
+        if ( this.Session.EventFinishDate != finishDate )
+        {
+          this.Session.EventFinishDate = finishDate;
+          this._ChangeSelection = true;
+        }
+      }
+
+      //
+      // Event Identifier selection.
+      //
+      if ( PageCommand.hasParameter ( EuApplicationEvents.CONST_EVENT_FIELD_ID ) == true )
+      {
+        var eventId = PageCommand.GetParameter<EvEventCodes> ( EuApplicationEvents.CONST_EVENT_FIELD_ID );
+
+        if ( eventId != this.Session.EventId )
+        {
+          this.Session.EventId = eventId;
+          this._ChangeSelection = true;
+        }
+      }
+
+      //
+      // Event type selection.
+      //
+      this.Session.EventType = PageCommand.GetParameter ( EuApplicationEvents.CONST_TYPE_FIELD_ID );
+
+      if ( PageCommand.hasParameter ( EuApplicationEvents.CONST_TYPE_FIELD_ID ) == true )
+      {
+        var eventId = PageCommand.GetParameter ( EuApplicationEvents.CONST_TYPE_FIELD_ID );
+
+        if ( eventId != this.Session.EventType )
+        {
+          this.Session.EventType = eventId;
+          this._ChangeSelection = true;
+        }
+      }
+
+      //
+      // user selection
+      //
+      this.Session.EventUserName = PageCommand.GetParameter ( EuApplicationEvents.CONST_USER_FIELD_ID );
+
+      //
+      // set the minimium event range.
+      //
+      if ( this.Session.EventStartDate == Evado.Model.Digital.EvcStatics.CONST_DATE_MIN_RANGE )
+      {
+        this.Session.EventStartDate =
+         Evado.Model.Digital.EvcStatics.getDateTime ( DateTime.Now.ToString ( "dd MMM yyyy" ) );
+        this.Session.EventFinishDate = this.Session.EventStartDate.AddDays ( 1 );
+      }
+
+      this.LogValue ( "EventId: " + this.Session.EventId );
+      this.LogValue ( "EventType: " + this.Session.EventType );
+      this.LogValue ( "EventUserName: " + this.Session.EventUserName );
+      this.LogValue ( "EventStartDate: " + this.Session.EventStartDate );
+      this.LogValue ( "EventFinishDate: " + this.Session.EventFinishDate );
+      this.LogValue ( "_ChangeSelection: " + this._ChangeSelection );
+      this.LogMethodEnd ( "saveEventLogSelectionParameters" );
+
+    }//END Method
+
+    // ==================================================================================
+    /// <summary>
+    /// This methods queries the application event log and returns a list of 
+    /// Event log objects sved to session ApplicationEventLog list.
+    /// </summary>
+    //  ---------------------------------------------------------------------------------
+    private void queryApplicatinEventLog ( )
+    {
+      this.LogMethod ( "queryApplicatinEventLog" );
+
+      if ( this.Session.ApplicationEventList.Count > 0
+        || this._ChangeSelection == false )
+      {
+        return;
+      }
+
+      // 
+      // get the list of customers.
+      // 
+      this.Session.ApplicationEventList = this._Bll_ApplicationEvents.getEventList (
+        (int) this.Session.EventId,
+        this.Session.EventType,
+        String.Empty,
+        this.Session.EventStartDate,
+        this.Session.EventFinishDate,
+        String.Empty );
+
+      this.LogClass ( this._Bll_ApplicationEvents.Log );
+
+          this._ChangeSelection = false;
+
+      this.LogValue ( "list count: " + this.Session.ApplicationEventList.Count );
+
+      //
+      // initialise the user selection values.
+      //
+      String hasUserName = String.Empty;
+      this.Session.EventUserSelectionList = new List<EvOption> ( );
+      this.Session.EventUserSelectionList.Add ( new EvOption ( ) );
+
+      //
+      // iterate through the user list
+      //
+      foreach ( EvApplicationEvent appEvent in this.Session.ApplicationEventList )
+      {
+        if ( hasUserName.Contains ( appEvent.UserName ) == true
+          || appEvent.UserName == String.Empty )
+        {
+          continue;
+        }
+
+        if ( appEvent.UserName != String.Empty )
+        {
+          this.Session.EventUserSelectionList.Add ( new EvOption ( appEvent.UserName ) );
+          hasUserName += ";" + appEvent.UserName;
+        }
+      }
+
+      this.LogValue ( "User name list count: " + this.Session.EventUserSelectionList.Count );
+
+      this.LogMethodEnd ( "queryApplicatinEventLog" );
+
+    }//END method
+
     // ==================================================================================
     /// <summary>
     /// This methods returns a pageMenuGroup object contains a selection of applicationEvents.
@@ -330,20 +463,51 @@ namespace Evado.UniForm.Digital
       // 
       // initialise the methods variables and objects.
       // 
-      List<Evado.Model.EvOption> optionList = new List<Evado.Model.EvOption> ( );
       Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      DateTime rangeStartDate = EvStatics.getDateTime ( "1 jan 2020" );
+      DateTime rangeFinishDate = DateTime.Now.AddDays ( 1 );
 
+      //
+      // create the selection group.
+      //
       Evado.Model.UniForm.Group selectionGroup = PageObject.AddGroup (
         EdLabels.ApplicationEvent_Selection_Group_Title,
         Evado.Model.UniForm.EditAccess.Enabled );
       selectionGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
 
-      //
-      // get the list of event ids.
-      //
-      optionList =  Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvEventCodes ), true );
+      // 
+      // Set the selection to the start date
+      // 
+      groupField = selectionGroup.createDateField (
+        EuApplicationEvents.CONST_START_DATE_FIELD_ID,
+        EdLabels.ApplicationEvent_Start_Date_Selection_Field_Label,
+        this.Session.EventStartDate,
+        rangeStartDate, rangeFinishDate );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-      Evado.Model.Digital.EvcStatics.sortOptionListValues ( optionList );
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+
+      // 
+      // Set the selection to the start date
+      // 
+      groupField = selectionGroup.createDateField (
+        EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID,
+        EdLabels.ApplicationEvent_Finish_Date_Selection_Field_Label,
+        this.Session.EventFinishDate,
+        rangeStartDate, rangeFinishDate );
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+
+      //
+      // get the list of event codes.
+      //
+      if ( this.AdapterObjects.EventCodeSelectionList.Count == 0 )
+      {
+        this.AdapterObjects.EventCodeSelectionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvEventCodes ), true );
+
+        Evado.Model.Digital.EvcStatics.sortOptionListValues ( this.AdapterObjects.EventCodeSelectionList );
+      }
 
       // 
       // Set the selection to the event id
@@ -352,7 +516,7 @@ namespace Evado.UniForm.Digital
         EuApplicationEvents.CONST_EVENT_FIELD_ID,
         EdLabels.ApplicationEvent_Event_Id_Selection_Field_Label,
         this.Session.EventId.ToString ( ),
-        optionList );
+        this.AdapterObjects.EventCodeSelectionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
@@ -361,7 +525,7 @@ namespace Evado.UniForm.Digital
       //
       // get the list of event ids.
       //
-      optionList =  Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvApplicationEvent.EventType ), true );
+      List<EvOption> optionList = Evado.Model.EvStatics.getOptionsFromEnum ( typeof ( EvApplicationEvent.EventType ), true );
       // 
       // Set the selection to the type id
       // 
@@ -377,37 +541,13 @@ namespace Evado.UniForm.Digital
       // 
       // Set the selection to the USER Name
       // 
+      Evado.Model.Digital.EvcStatics.sortOptionListValues ( this.Session.EventUserSelectionList );
+
       groupField = selectionGroup.createSelectionListField (
         EuApplicationEvents.CONST_USER_FIELD_ID,
         EdLabels.ApplicationEvent_UserName_Selection_Field_Label,
         this.Session.EventUserName,
         this.Session.EventUserSelectionList );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-
-      // 
-      // Set the selection to the start date
-      // 
-      groupField = selectionGroup.createDateField (
-        EuApplicationEvents.CONST_START_DATE_FIELD_ID,
-        EdLabels.ApplicationEvent_Start_Date_Selection_Field_Label,
-        this.Session.EventStartDate ,
-        EvStatics.getDateTime( "1 jan 2010"),
-        DateTime.Now.AddYears( 1 ) );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
-
-      // 
-      // Set the selection to the start date
-      // 
-      groupField = selectionGroup.createDateField (
-        EuApplicationEvents.CONST_FINISH_DATE_FIELD_ID,
-        EdLabels.ApplicationEvent_Finish_Date_Selection_Field_Label,
-        this.Session.EventFinishDate,
-        EvStatics.getDateTime( "1 jan 2010"),
-        DateTime.Now.AddYears( 1 ) );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       groupField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
@@ -452,23 +592,16 @@ namespace Evado.UniForm.Digital
         listGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
 
         // 
-        // get the list of customers.
-        // 
-        List<EvApplicationEvent> applicationEventList = this._Bll_ApplicationEvents.getEventList (
-          ( int ) this.Session.EventId,
-          this.Session.EventType,
-          String.Empty,
-          this.Session.EventStartDate,
-          this.Session.EventFinishDate,
-          this.Session.EventUserName );
-
-        this.LogClass ( this._Bll_ApplicationEvents.Log );
-        this.LogValue ( "list count: " + applicationEventList.Count );
-        // 
         // generate the page links.
         // 
-        foreach ( EvApplicationEvent applicationEvent in applicationEventList )
+        foreach ( EvApplicationEvent applicationEvent in this.Session.ApplicationEventList )
         {
+          if ( applicationEvent.UserName != this.Session.EventUserName
+            && this.Session.EventUserName != String.Empty)
+          {
+            continue;
+          }
+
           // 
           // Add the trial applicationEvent to the list of applicationEvents as a groupCommand.
           // 
@@ -645,10 +778,10 @@ namespace Evado.UniForm.Digital
       if ( this._ApplicationEvent.EventId == 0
         || this._ApplicationEvent.EventId == 1 )
       {
-        this._ApplicationEvent.EventId = ( int ) EvEventCodes.Ok;
+        this._ApplicationEvent.EventId = (int) EvEventCodes.Ok;
       }
 
-      EvEventCodes code = ( EvEventCodes ) this._ApplicationEvent.EventId;
+      EvEventCodes code = (EvEventCodes) this._ApplicationEvent.EventId;
 
       String content = this._ApplicationEvent.EventId.ToString ( "000000" )
         + " > " +

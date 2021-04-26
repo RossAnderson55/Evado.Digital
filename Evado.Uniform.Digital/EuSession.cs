@@ -133,6 +133,11 @@ namespace Evado.UniForm.Digital
     }
 
     /// <summary>
+    /// This property contains the current event log list.
+    /// </summary>
+   public List<EvApplicationEvent> ApplicationEventList {get; set; }
+
+    /// <summary>
     /// This property contains the last page object that was sent to the UniForm client. 
     /// </summary>
     public Evado.Model.UniForm.AppData LastPage { get; set; }

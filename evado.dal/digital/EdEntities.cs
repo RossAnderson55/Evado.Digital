@@ -1082,7 +1082,7 @@ namespace Evado.Dal.Digital
             LogDebug ( "Single value filter" );
 
             sqlQueryString.AppendLine ( " AND ( "
-              + EdEntities.DB_FILTER_VALUE_ + filterIndex + " = '" + value + "' ) " );
+              + EdEntities.DB_FILTER_VALUE_ + filterIndex + " like '%" + value + "%' ) " );
           }
           else
           {
