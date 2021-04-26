@@ -102,8 +102,6 @@ namespace Evado.UniForm.Digital
     private const String CONST_START_DATE_FIELD_ID = "ESD";
     private const String CONST_FINISH_DATE_FIELD_ID = "EFD";
 
-    bool _ChangeSelection = true;
-
     private Evado.Bll.EvApplicationEvents _Bll_ApplicationEvents = new Evado.Bll.EvApplicationEvents ( );
 
     private EvApplicationEvent _ApplicationEvent = new EvApplicationEvent ( );
@@ -294,7 +292,6 @@ namespace Evado.UniForm.Digital
       //
       String value = String.Empty;
       this.Session.EventId = EvEventCodes.Null;
-      this.LogValue ( "_ChangeSelection: " + this._ChangeSelection );
 
       //
       // Start date selection
@@ -308,7 +305,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EventStartDate != startDate )
         {
           this.Session.EventStartDate = startDate;
-          this._ChangeSelection = true;
+          this.Session.ApplicationEventList = new List<EvApplicationEvent> ( );
         }
       }
 
@@ -322,7 +319,7 @@ namespace Evado.UniForm.Digital
         if ( this.Session.EventFinishDate != finishDate )
         {
           this.Session.EventFinishDate = finishDate;
-          this._ChangeSelection = true;
+          this.Session.ApplicationEventList = new List<EvApplicationEvent> ( );
         }
       }
 
@@ -336,7 +333,7 @@ namespace Evado.UniForm.Digital
         if ( eventId != this.Session.EventId )
         {
           this.Session.EventId = eventId;
-          this._ChangeSelection = true;
+          this.Session.ApplicationEventList = new List<EvApplicationEvent> ( );
         }
       }
 
@@ -352,7 +349,7 @@ namespace Evado.UniForm.Digital
         if ( eventId != this.Session.EventType )
         {
           this.Session.EventType = eventId;
-          this._ChangeSelection = true;
+          this.Session.ApplicationEventList = new List<EvApplicationEvent> ( );
         }
       }
 
@@ -376,7 +373,7 @@ namespace Evado.UniForm.Digital
       this.LogValue ( "EventUserName: " + this.Session.EventUserName );
       this.LogValue ( "EventStartDate: " + this.Session.EventStartDate );
       this.LogValue ( "EventFinishDate: " + this.Session.EventFinishDate );
-      this.LogValue ( "_ChangeSelection: " + this._ChangeSelection );
+      this.LogValue ( "ApplicationEventList.Count: " + this.Session.ApplicationEventList.Count );
       this.LogMethodEnd ( "saveEventLogSelectionParameters" );
 
     }//END Method
@@ -391,9 +388,10 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "queryApplicatinEventLog" );
 
-      if ( this.Session.ApplicationEventList.Count > 0
-        || this._ChangeSelection == false )
+      if ( this.Session.ApplicationEventList.Count > 0 )
       {
+        this.LogDebug ( "No list update needed." );
+        this.LogMethodEnd ( "queryApplicatinEventLog" );
         return;
       }
 
@@ -409,8 +407,6 @@ namespace Evado.UniForm.Digital
         String.Empty );
 
       this.LogClass ( this._Bll_ApplicationEvents.Log );
-
-          this._ChangeSelection = false;
 
       this.LogValue ( "list count: " + this.Session.ApplicationEventList.Count );
 
