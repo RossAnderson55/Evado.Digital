@@ -2292,9 +2292,9 @@ namespace Evado.UniForm.Digital
       //
       // the category contains the category field then set the category value to this field value.
       //
-      if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTI_FIELD_IDENTIFIER ) == true )
+      if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER ) == true )
       {
-        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTI_FIELD_IDENTIFIER, String.Empty );
+        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
 
         this.LogDebug ( "autoCategory: {0} ", autoCategory );
         //

@@ -226,7 +226,7 @@ namespace Evado.Model.Digital
 
     #region Constants
 
-    public const string CONST_CATEGORY_AUTI_FIELD_IDENTIFIER = "AUTO:";
+    public const string CONST_CATEGORY_AUTO_FIELD_IDENTIFIER = "AUTO:";
 
     #endregion
 
