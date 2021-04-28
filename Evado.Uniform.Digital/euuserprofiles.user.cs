@@ -206,34 +206,40 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      this.Session.UserProfile.CurrentImageFileName = this.Session.UserProfile.ImageFileName;
-
-      groupField = pageGroup.createImageField (
-        Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
-        EdLabels.UserProfile_ImageFileame_Field_Label,
-        this.Session.UserProfile.ImageFileName,
-        300,
-        300 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      try
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Image_File_Name ) == false )
       {
-        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.UserProfile.ImageFileName;
-        String stImagePath = this.UniForm_ImageFilePath + this.Session.UserProfile.ImageFileName;
+        this.Session.UserProfile.CurrentImageFileName = this.Session.UserProfile.ImageFileName;
 
-        this.LogDebug ( "Target path {0}.", stTargetPath );
-        this.LogDebug ( "Image path {0}.", stImagePath );
+        groupField = pageGroup.createImageField (
+          Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
+          EdLabels.UserProfile_ImageFileame_Field_Label,
+          this.Session.UserProfile.ImageFileName,
+          300,
+          300 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-        //
-        // copy the file into the image directory.
-        //
-        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+        try
+        {
+          String stTargetPath = this.UniForm_BinaryFilePath + this.Session.UserProfile.ImageFileName;
+          String stImagePath = this.UniForm_ImageFilePath + this.Session.UserProfile.ImageFileName;
+
+          this.LogDebug ( "Target path {0}.", stTargetPath );
+          this.LogDebug ( "Image path {0}.", stImagePath );
+
+          //
+          // copy the file into the image directory.
+          //
+          System.IO.File.Copy ( stImagePath, stTargetPath, true );
+        }
+        catch ( Exception Ex )
+        {
+          this.LogException ( Ex );
+        }
       }
-      catch ( Exception Ex )
+      else
       {
-        this.LogException ( Ex );
+        this.Session.UserProfile.ImageFileName = String.Empty;
       }
-
 
       if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Title ) == false )
       {
@@ -377,28 +383,34 @@ namespace Evado.UniForm.Digital
       // 
       // Create the customer name object
       // 
-      groupField = pageGroup.createImageField (
-        EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
-        EdLabels.Organisation_ImageFileame_Field_Label,
-        this.Session.Organisation.ImageFileName,
-        300, 200 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      try
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField ( EdOrganisation.FieldNames.Image_File_Name ) == false )
       {
-        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.Organisation.ImageFileName;
-        String stImagePath = this.UniForm_ImageFilePath + this.Session.Organisation.ImageFileName;
+        groupField = pageGroup.createImageField (
+          EuUserProfiles.CONST_ORG_PREFIX + EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
+          EdLabels.Organisation_ImageFileame_Field_Label,
+          this.Session.Organisation.ImageFileName,
+          300, 200 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-        this.LogDebug ( "Target path {0}.", stTargetPath );
-        this.LogDebug ( "Image path {0}.", stImagePath );
+        try
+        {
+          String stTargetPath = this.UniForm_BinaryFilePath + this.Session.Organisation.ImageFileName;
+          String stImagePath = this.UniForm_ImageFilePath + this.Session.Organisation.ImageFileName;
 
-        //
-        // copy the file into the image directory.
-        //
-        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+          this.LogDebug ( "Target path {0}.", stTargetPath );
+          this.LogDebug ( "Image path {0}.", stImagePath );
+
+          //
+          // copy the file into the image directory.
+          //
+          System.IO.File.Copy ( stImagePath, stTargetPath, true );
+        }
+        catch { }
       }
-      catch { }
-
+      else
+      {
+        this.Session.Organisation.ImageFileName = String.Empty;
+      }
       // 
       // Create the street address 1
       //

@@ -2158,7 +2158,8 @@ namespace Evado.UniForm.Digital
       //
       // create the hidden user profile fields checkbox list.
       //
-      optionList = new List<EvOption> ( );
+      optionList = new List<EvOption> ( ); ;
+      optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Image_File_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Given_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Middle_Name ) );
       optionList.Add ( EvStatics.getOption ( EdUserProfile.FieldNames.Family_Name ) );
@@ -2184,6 +2185,7 @@ namespace Evado.UniForm.Digital
       // create the hidden organisastion checkbox list.
       //
       optionList = new List<EvOption> ( );
+      optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Image_File_Name ) );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_1 ) );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_City ) );
       optionList.Add ( EvStatics.getOption ( EdOrganisation.FieldNames.Address_Post_Code ) );

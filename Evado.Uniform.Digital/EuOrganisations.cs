@@ -795,28 +795,35 @@ namespace Evado.UniForm.Digital
 
       // 
       // Create the customer name object
-      // 
-      pageField = pageGroup.createImageField (
-        EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
-        EdLabels.Organisation_ImageFileame_Field_Label,
-        this.Session.AdminOrganisation.ImageFileName,
-        300, 200 );
-      pageField.Layout = EuAdapter.DefaultFieldLayout;
-
-      try
+      //
+      if ( this.AdapterObjects.Settings.hasHiddenOrganisationField ( EdOrganisation.FieldNames.Image_File_Name ) == false )
       {
-        String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminOrganisation.ImageFileName;
-        String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminOrganisation.ImageFileName;
+        pageField = pageGroup.createImageField (
+          EdOrganisation.FieldNames.Image_File_Name.ToString ( ),
+          EdLabels.Organisation_ImageFileame_Field_Label,
+          this.Session.AdminOrganisation.ImageFileName,
+          300, 200 );
+        pageField.Layout = EuAdapter.DefaultFieldLayout;
 
-        this.LogDebug ( "Target path {0}.", stTargetPath );
-        this.LogDebug ( "Image path {0}.", stImagePath );
+        try
+        {
+          String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminOrganisation.ImageFileName;
+          String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminOrganisation.ImageFileName;
 
-        //
-        // copy the file into the image directory.
-        //
-        System.IO.File.Copy ( stImagePath, stTargetPath, true );
+          this.LogDebug ( "Target path {0}.", stTargetPath );
+          this.LogDebug ( "Image path {0}.", stImagePath );
+
+          //
+          // copy the file into the image directory.
+          //
+          System.IO.File.Copy ( stImagePath, stTargetPath, true );
+        }
+        catch { }
       }
-      catch { }
+      else
+      {
+        this.Session.Organisation.ImageFileName = String.Empty;
+      }
 
       // 
       // Create the street address 1
@@ -1137,7 +1144,7 @@ namespace Evado.UniForm.Digital
         {
           return this.Session.LastPage;
         }
-        
+
         //
         // copy the image file to the image directory.
         //
@@ -1235,14 +1242,14 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "saveImageFile" );
 
-      if ( this.Session.AdminOrganisation .ImageFileName == String.Empty )
+      if ( this.Session.AdminOrganisation.ImageFileName == String.Empty )
       {
         return;
       }
-     if ( this._CurrentFileName == this.Session.AdminOrganisation.ImageFileName )
-     {
-       return;
-     }
+      if ( this._CurrentFileName == this.Session.AdminOrganisation.ImageFileName )
+      {
+        return;
+      }
       //
       // Initialise the method variables and objects.
       //

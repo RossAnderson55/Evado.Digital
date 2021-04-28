@@ -1245,42 +1245,49 @@ namespace Evado.UniForm.Digital
       }
        */
 
-      this.LogDebug ( "ImageFileName {0}.", this.Session.AdminUserProfile.ImageFileName );
       // 
       // Create the customer name object
       // 
-      this.Session.AdminUserProfile.CurrentImageFileName = this.Session.AdminUserProfile.ImageFileName;
-
-      groupField = pageGroup.createImageField (
-        Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
-        EdLabels.UserProfile_ImageFileame_Field_Label,
-        this.Session.AdminUserProfile.ImageFileName,
-        300,
-        300 );
-      groupField.Layout = EuAdapter.DefaultFieldLayout;
-
-      //
-      // copy the user image file if it exists.
-      //
-      if ( this.Session.AdminUserProfile.ImageFileName != String.Empty )
+      if ( this.AdapterObjects.Settings.hasHiddenUserProfileField ( EdUserProfile.FieldNames.Image_File_Name ) == false )
       {
-        try
-        {
-          String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
-          String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
+        this.LogDebug ( "ImageFileName {0}.", this.Session.AdminUserProfile.ImageFileName );
+        this.Session.AdminUserProfile.CurrentImageFileName = this.Session.AdminUserProfile.ImageFileName;
 
-          this.LogDebug ( "Target path {0}.", stTargetPath );
-          this.LogDebug ( "Image path {0}.", stImagePath );
+        groupField = pageGroup.createImageField (
+          Evado.Model.Digital.EdUserProfile.FieldNames.Image_File_Name,
+          EdLabels.UserProfile_ImageFileame_Field_Label,
+          this.Session.AdminUserProfile.ImageFileName,
+          300,
+          300 );
+        groupField.Layout = EuAdapter.DefaultFieldLayout;
 
-          //
-          // copy the file into the image directory.
-          //
-          System.IO.File.Copy ( stImagePath, stTargetPath, true );
-        }
-        catch ( Exception Ex )
+        //
+        // copy the user image file if it exists.
+        //
+        if ( this.Session.AdminUserProfile.ImageFileName != String.Empty )
         {
-          this.LogException ( Ex );
+          try
+          {
+            String stTargetPath = this.UniForm_BinaryFilePath + this.Session.AdminUserProfile.ImageFileName;
+            String stImagePath = this.UniForm_ImageFilePath + this.Session.AdminUserProfile.ImageFileName;
+
+            this.LogDebug ( "Target path {0}.", stTargetPath );
+            this.LogDebug ( "Image path {0}.", stImagePath );
+
+            //
+            // copy the file into the image directory.
+            //
+            System.IO.File.Copy ( stImagePath, stTargetPath, true );
+          }
+          catch ( Exception Ex )
+          {
+            this.LogException ( Ex );
+          }
         }
+      }
+      else
+      {
+        this.Session.AdminUserProfile.ImageFileName = String.Empty;
       }
 
       //
