@@ -989,7 +989,8 @@ namespace Evado.Digital.WebService
       //
       // If the command type is a annoymous then authenticate the user annoymously and exit
       //
-      if ( PageCommand.Type == CommandTypes.Anonymous_Command )
+      if ( PageCommand.Type == CommandTypes.Anonymous_Command
+        && Global.EnableAnonymousLogin == true )
       {
         this.LogDebug ( "PageCommand.Type = Anonymous_Command" );
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Anonymous_Access;
@@ -1089,7 +1090,8 @@ namespace Evado.Digital.WebService
       // if network authentication is active, then the user was authenticated an external validation source.
       //
       if ( PageCommand.Type == CommandTypes.Token_Login_Command
-        && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT )
+        && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT
+        && Global.EnableTokenLogin == true )
       {
         String message = message = "User: " + this._ServiceUserProfile.Token + " TOKEN AUTHENITCATED.";
 
@@ -1485,6 +1487,37 @@ namespace Evado.Digital.WebService
     //*********************************************************************************************
     #endregion
 
+    #region Token UserProfile Update PUT method.
+
+    //  =================================================================================
+    /// <summary>
+    /// Web Method
+    /// </summary>
+    /// <returns>json object.</returns>
+    //  ---------------------------------------------------------------------------------
+    [WebInvoke ( UriTemplate = "/{Version}", Method = "PUT" )]
+    public string UpdateUserProfile (  String Version, Stream content )
+    {
+      this.LogMethod ( "Evado.Digital.WebService.ClientService.UpdateUserProfile event method." );
+      this.LogValue ( "Version: " + Version );
+      this.LogValue ( "RawUrl: " + this._Context.Request.RawUrl );
+      this.LogValue ( "Url: " + this._Context.Request.Url );
+
+
+      //
+      // first load the POST payload into a string
+      // the POST content comes from the content param above
+      // as it is the only param that is not listed in the URI template
+      //
+      string content_value = new StreamReader ( content ).ReadToEnd ( );
+
+      this.LogMethod ( "UpdateUserProfile" );
+
+      return "{\"RESULT\":\"OK\"}";
+    }
+
+    #endregion
+
     #region unused http methods
 
 
@@ -1508,19 +1541,6 @@ namespace Evado.Digital.WebService
     public string Get ( string id )
     {
       // TODO: Return the instance of SampleItem with the given id
-      throw new NotImplementedException ( );
-    }
-
-    //  =================================================================================
-    /// <summary>
-    /// Web Method
-    /// </summary>
-    /// <returns>json object.</returns>
-    //  ---------------------------------------------------------------------------------
-    [WebInvoke ( UriTemplate = "{id}", Method = "PUT" )]
-    public string Update ( string id )
-    {
-      // TODO: Update the given instance of SampleItem in the collection
       throw new NotImplementedException ( );
     }
 

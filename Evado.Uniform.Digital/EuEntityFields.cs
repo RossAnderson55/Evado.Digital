@@ -667,7 +667,7 @@ namespace Evado.UniForm.Digital
       // Create the Section list list,
       //
       optionList = new List<EvOption> ( );
-      optionList.Add ( new EvOption ( ) );
+      optionList.Add ( new EvOption ( "-1", "" ) );
 
       foreach ( EdRecordSection section in this.Session.EntityLayout.Design.FormSections )
       {

@@ -52,6 +52,12 @@ namespace Evado.Digital.WebService
 
     private const string CONFIG_DEV_LOGGING = "DEV_LOGGING";
 
+    private const string CONFIG_ENABLE_ANONYMOUS_LOGIN_FIELD_ID = "ANNON_AUTH";
+
+    private const string CONFIG_ENABLE_TOKEN_LOGIN_FIELD_ID = "TOKEN_AUTH";
+
+    private const string CONFIG_VALID_IP_ADDRESS_FIELD_ID = "VALID_IP";
+
 
     // Variable containing the application path.  Used to generate the base URL.
     public static string EventLogSource = ConfigurationManager.AppSettings [ Evado.Model.EvStatics.CONFIG_EVENT_LOG_KEY ];
@@ -147,10 +153,46 @@ namespace Evado.Digital.WebService
 
     private static int TestSectionNo = 1;
 
+
     /// <summary>
     /// This object contains a hash list of global objects.
     /// </summary>
     private static bool RecordTestCases = false;
+
+    /// <summary>
+    /// This global variable defines if the debug Validation On bypassing Forms Authentcation.
+    /// </summary>
+    private static bool _EnableAnonymousLogin = false;
+
+    /// <summary>
+    /// This property indicates if anonymous authentication is enabled.
+    /// </summary>
+    public static bool EnableAnonymousLogin
+    {
+      get { return Global._EnableAnonymousLogin; }
+    }
+
+    private static bool _EnableTokenLogin = false;
+
+    /// <summary>
+    /// This property indicates if token authentication is enabled.
+    /// </summary>
+    public static bool EnableTokenLogin
+    {
+      get { return Global._EnableTokenLogin; }
+    }
+
+    public static string _ValidIntegrationIpAddresses = String.Empty;
+
+
+    /// <summary>
+    /// This property contains a delimited list of valid service integration IP addresses.
+    /// </summary>
+    public static String ValidIntegrationIpAddresses
+    {
+      get { return Global._ValidIntegrationIpAddresses; }
+    }
+
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -274,7 +316,42 @@ namespace Evado.Digital.WebService
        Global.LogValue ( "Application path: " + Global.ApplicationPath );
 
       Global.TempPath = Global.ApplicationPath + Global.TempPath;
-       Global.LogValue ( "Temp path: " + Global.TempPath );
+      Global.LogValue ( "Temp path: " + Global.TempPath );
+
+      //
+      // Set the debug validation on, if true password is not validated
+      //
+      if ( ConfigurationManager.AppSettings [ Global.CONFIG_ENABLE_ANONYMOUS_LOGIN_FIELD_ID ] != null )
+      {
+        if ( ( ConfigurationManager.AppSettings [ Global.CONFIG_ENABLE_ANONYMOUS_LOGIN_FIELD_ID ] ).ToLower ( ) == "true" )
+        {
+          Global._EnableAnonymousLogin = true;
+        }
+      }
+      Global.LogValue ( "Enable Anonymous Login: " + Global._EnableAnonymousLogin );
+
+      //
+      // Set the debug validation on, if true password is not validated
+      //
+      if ( ConfigurationManager.AppSettings [ Global.CONFIG_ENABLE_TOKEN_LOGIN_FIELD_ID ] != null )
+      {
+        if ( ( ConfigurationManager.AppSettings [ Global.CONFIG_ENABLE_TOKEN_LOGIN_FIELD_ID ] ).ToLower ( ) == "true" )
+        {
+          Global._EnableTokenLogin = true;
+        }
+      }
+      Global.LogValue ( "Enable Token Login: " + Global.EnableTokenLogin );
+
+      //
+      // Set the debug validation on, if true password is not validated
+      //
+      if ( ConfigurationManager.AppSettings [ Global.CONFIG_VALID_IP_ADDRESS_FIELD_ID ] != null )
+      {
+        Global._ValidIntegrationIpAddresses = ConfigurationManager.AppSettings [ Global.CONFIG_VALID_IP_ADDRESS_FIELD_ID ].ToString ( ); 
+      }
+      Global.LogValue ( "Valid Interation IP Addresses: " + Global._ValidIntegrationIpAddresses );
+
+
 
       if ( ConfigurationManager.AppSettings [ Evado.Model.EvStatics.CONFIG_APPLICATION_LOG_KEY ] != null )
       {

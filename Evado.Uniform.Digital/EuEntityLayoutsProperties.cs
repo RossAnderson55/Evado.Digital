@@ -1013,6 +1013,21 @@ namespace Evado.UniForm.Digital
       }
 
       //
+      // Remove empty sections, i.e. section without a title.
+      //
+      for ( int index = 0; index < this.Session.EntityLayout.Design.FormSections.Count; index++ )
+      {
+        if ( this.Session.EntityLayout.Design.FormSections [ index ].Title == String.Empty )
+        {
+          this.Session.EntityLayout.Design.FormSections.RemoveAt( index );
+          index--;
+
+        }
+      }
+
+
+
+      //
       // Sort the section based on the current secton order.
       //
       this.Session.EntityLayout.Design.FormSections.Sort (
