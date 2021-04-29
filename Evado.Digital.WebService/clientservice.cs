@@ -341,7 +341,8 @@ namespace Evado.Digital.WebService
         if ( ( this._Context.Session.IsNewSession == true )
           && ( PageCommand.Type != CommandTypes.Login_Command )
           && ( PageCommand.Type != CommandTypes.Network_Login_Command )
-          && ( PageCommand.Type != CommandTypes.Anonymous_Command ) )
+          && ( PageCommand.Type != CommandTypes.Anonymous_Command )
+          && ( PageCommand.Type != CommandTypes.Token_Login_Command ) )
         {
           string stLogMessage = "NewSession: " + this._Context.Session.IsNewSession
             + "\r\nThe session has changed SessionID: " + this._Context.Session.SessionID
@@ -373,6 +374,7 @@ namespace Evado.Digital.WebService
         #region Step 5: Validate user credentials
 
         this.LogEvent ( "STEP 5: Validating the user's credentials." );
+        this.LogDebug ( "UserAuthenticationState: {0} ", this._ServiceUserProfile.UserAuthenticationState );
 
         //
         // Revalidate the user if the command type is a re-authenticatin command.
@@ -1003,7 +1005,9 @@ namespace Evado.Digital.WebService
         return true;
       }
 
-
+      //
+      // Extract the command parameter values.
+      //
       string stUserToken = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_TOKEN );
       string stUserId = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
       string stPassword = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
@@ -1011,11 +1015,31 @@ namespace Evado.Digital.WebService
       string stDeviceId = PageCommand.GetDeviceId ( );
 
       //
+      // Verify that the groupCommand is login groupCommand.
+      //
+      if ( PageCommand.Type == CommandTypes.Token_Login_Command
+        && Global.EnableTokenLogin == true )
+      {
+        this.LogDebug ( "PageCommand.Type = Token_Login_Command" );
+
+        this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Token_Access;
+        this._ServiceUserProfile.IsAuthenticated = true;
+        this._ServiceUserProfile.NewAuthentication = true;
+        this._ServiceUserProfile.Token = new Guid( stUserToken );
+        this._ServiceUserProfile.UserId = stUserToken;
+
+        this.setServiceUserProfile ( );
+
+        this.LogMethodEnd ( "ValidateUserCredentials" );
+        return true;
+      }
+
+      //
       // Object values.
       //
       PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
       PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
-      this._ServiceUserProfile.Token = EvStatics.getGuid( stUserToken );
+      this._ServiceUserProfile.Token = EvStatics.getGuid ( stUserToken );
       this._ServiceUserProfile.UserId = stUserId;
       this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
 
@@ -1106,7 +1130,7 @@ namespace Evado.Digital.WebService
         //
         this._AppDataObject.Status = AppData.StatusCodes.Login_Authenticated;
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Authenticated;
-        this._ServiceUserProfile.DomainGroupNames = stNetworkRoles;
+        this._ServiceUserProfile.UserId = String.Empty;
         this._ServiceUserProfile.IsAuthenticated = true;
         this._ServiceUserProfile.UserLoginFailureCount = 0;
 
@@ -1380,7 +1404,7 @@ namespace Evado.Digital.WebService
 
       this.LogValue4 ( "Date Key: " + Date_Key );
 
-      String ClinicalObject_Key = userId + Evado.Model.Digital.EvcStatics.SESSION_CLINICAL_OBJECT;
+      String ClinicalObject_Key = userId + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_OBJECT;
 
       this.LogValue4 ( "Clinical Key: " + ClinicalObject_Key );
 
@@ -1496,7 +1520,7 @@ namespace Evado.Digital.WebService
     /// <returns>json object.</returns>
     //  ---------------------------------------------------------------------------------
     [WebInvoke ( UriTemplate = "/{Version}", Method = "PUT" )]
-    public string UpdateUserProfile (  String Version, Stream content )
+    public string UpdateUserProfile ( String Version, Stream content )
     {
       this.LogMethod ( "Evado.Digital.WebService.ClientService.UpdateUserProfile event method." );
       this.LogValue ( "Version: " + Version );
@@ -1707,6 +1731,22 @@ namespace Evado.Digital.WebService
       }
     }
 
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    private void LogDebug ( String Format, params object [ ] args )
+    {
+      if ( Global.LoggingLevel > 4 )
+      {
+        Global.LogService ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+          String.Format ( Format, args ) );
+      }
+    }
     // ==================================================================================
     /// <summary>
     /// This method appendes the debuglog string to the debug log for the class and adds

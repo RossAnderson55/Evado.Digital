@@ -426,7 +426,7 @@ namespace Evado.Dal.Digital
     /// This class binds the values to the array of createParameters
     /// </summary>
     /// <param name="CommandParameters">SqlParameter: an array of sql parameters</param>
-    /// <param name="Record">EvForm: a form data object containing the parmeter values.</param>
+    /// <param name="Entity">EvForm: a form data object containing the parmeter values.</param>
     /// <remarks>
     /// This method consists of the following step: 
     /// 
@@ -435,20 +435,20 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     private void SetCreateParameters (
       SqlParameter [ ] CommandParameters,
-      EdRecord Record )
+      EdRecord Entity )
     {
       // 
       // Load the command parmameter values
       // 
-      CommandParameters [ 0 ].Value = Record.Guid;
-      CommandParameters [ 1 ].Value = Record.LayoutId;
-      CommandParameters [ 2 ].Value = Record.ParentLayoutId;
-      CommandParameters [ 3 ].Value = Record.ParentGuid;
-      CommandParameters [ 4 ].Value = Record.ParentUserId;
-      CommandParameters [ 5 ].Value = Record.ParentOrgId;
+      CommandParameters [ 0 ].Value = Entity.Guid;
+      CommandParameters [ 1 ].Value = Entity.LayoutId;
+      CommandParameters [ 2 ].Value = Entity.ParentLayoutId;
+      CommandParameters [ 3 ].Value = Entity.ParentGuid;
+      CommandParameters [ 4 ].Value = Entity.ParentUserId;
+      CommandParameters [ 5 ].Value = Entity.ParentOrgId;
       CommandParameters [ 6 ].Value = this.ClassParameters.UserProfile.UserId;
-      CommandParameters [ 7 ].Value = Record.Author;
-      CommandParameters [ 8 ].Value = Record.DataCollectEventId;
+      CommandParameters [ 7 ].Value = Entity.Author;
+      CommandParameters [ 8 ].Value = Entity.DataCollectEventId;
       CommandParameters [ 9 ].Value = this.ClassParameters.UserProfile.UserId;
       CommandParameters [ 10 ].Value = this.ClassParameters.UserProfile.CommonName;
       CommandParameters [ 11 ].Value = DateTime.Now;
@@ -2467,7 +2467,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This method adds the EvRecord object to the database
     /// </summary>
-    /// <param name="Record">EvForm: a form data object</param>
+    /// <param name="Entity">EvForm: a form data object</param>
     /// <returns>EvForm: a new form data object</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -2479,24 +2479,24 @@ namespace Evado.Dal.Digital
     /// 4. Return the form data object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord createRecord ( EdRecord Record )
+    public EdRecord createRecord ( EdRecord Entity )
     {
       this.LogMethod ( "createRecord, " );
-      this.LogDebug ( "FormId: " + Record.LayoutId );
+      this.LogDebug ( "LayoutId: " + Entity.LayoutId );
 
       // 
       // Create the GUID for the database
       // 
-      if ( Record.Guid == Guid.Empty )
+      if ( Entity.Guid == Guid.Empty )
       {
-        Record.Guid = Guid.NewGuid ( );
+        Entity.Guid = Guid.NewGuid ( );
       }
 
       // 
       // Define the SQL query parameters and load the query values.
       // 
       SqlParameter [ ] cmdParms = GetCreateParameters ( );
-      SetCreateParameters ( cmdParms, Record );
+      SetCreateParameters ( cmdParms, Entity );
 
       this.LogDebug ( EvSqlMethods.ListParameters ( cmdParms ) );
 
@@ -2514,7 +2514,7 @@ namespace Evado.Dal.Digital
       // 
       // Return unique identifier of the new data object.
       // 
-      EdRecord record = this.GetEntity ( Record.Guid );
+      EdRecord record = this.GetEntity ( Entity.Guid );
 
       //
       // Get the empty field objects for the new record.

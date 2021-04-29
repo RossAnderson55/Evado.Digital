@@ -286,6 +286,7 @@ namespace Evado.Dal.Digital
       // Update the object properties.
       // 
       profile.Guid = EvSqlMethods.getGuid ( Row, EdUserProfiles.DB_USER_GUID );
+      profile.Token = profile.Guid;
       profile.OrgId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ORG_ID );
 
       profile.UserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_USER_ID );

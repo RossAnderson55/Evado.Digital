@@ -1469,7 +1469,7 @@ namespace Evado.UniForm.Digital
       groupField = pageGroup.createSelectionListField (
         EdUserProfile.FieldNames.User_Type,
         EdLabels.UserProfile_User_Type_Field_Label,
-        this.Session.AdminUserProfile.UserType.ToString ( ),
+        this.Session.AdminUserProfile.UserType,
         optionList );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
@@ -1602,6 +1602,8 @@ namespace Evado.UniForm.Digital
         this.Session.AdminUserProfile = new Evado.Model.Digital.EdUserProfile ( );
         this.Session.AdminUserProfile.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.AdminUserProfile.ExpiryDate = EvStatics.getDateTime ( "1 JAN 2100" );
+        this.Session.AdminUserProfile.UserType = String.Empty;
+        this.Session.AdminUserProfile.UserCategory = String.Empty;
 
 
         this.getDataObject ( clientDataObject );
@@ -1960,6 +1962,8 @@ namespace Evado.UniForm.Digital
           return this.Session.LastPage;
         }
 
+        this.LogValue ( "AdminUserProfile.CommonName: {0}. ", this.Session.AdminUserProfile.CommonName );
+
         //
         // get the user category for the currently selected user type selection.
         //
@@ -1989,6 +1993,9 @@ namespace Evado.UniForm.Digital
         // save the image file if it exists.
         //
         this.saveImageFile ( );
+
+        this.Session.AdminUserProfile.setNames ( );
+        this.LogValue ( "AdminUserProfile.CommonName: {0}. ", this.Session.AdminUserProfile.CommonName );
 
         //
         // Perform new user ADS duplication validation.

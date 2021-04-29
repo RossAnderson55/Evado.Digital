@@ -549,6 +549,10 @@ namespace Evado.Bll.Digital
     {
       this.LogMethod ( "CreateEntity method." );
       this.LogDebug ( "LayoutId: " + Entity.LayoutId );
+      this.LogDebug ( "ParentType: " + Entity.Design.ParentType );
+      this.LogDebug ( "ParentGuid: " + Entity.ParentGuid );
+      this.LogDebug ( "ParentOrgId: " + Entity.ParentOrgId );
+      this.LogDebug ( "ParentUserId: " + Entity.ParentUserId ); 
 
       // 
       // Instantiate the local variables
@@ -562,16 +566,6 @@ namespace Evado.Bll.Digital
         this.LogMethodEnd ( "createRecord" );
         return record;
       }
-
-      //
-      // Retrieve the specified form to determine the form QueryType.
-      //
-      EdRecord entity = this._DalLayouts.GetLayout ( Entity.LayoutId, true );
-
-      this.LogDebugClass ( this._DalLayouts.Log );
-      this.LogDebug ( "LayoutId: " + entity.LayoutId );
-      this.LogDebug ( "Title: " + entity.Title );
-      this.LogDebug ( "TypeId: " + entity.Design.TypeId );
 
       // 
       // Create a new trial Report to the database

@@ -700,7 +700,7 @@ namespace Evado.Digital.WebService
       UserName = UserName.Replace ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP, String.Empty );
 
       Global.LogDebugValue ( "User: " + UserName );
-      String ClinicalObject_Key = UserName + Evado.Model.Digital.EvcStatics.SESSION_CLINICAL_OBJECT;
+      String ClinicalObject_Key = UserName + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_OBJECT;
 
       Global.LogDebugValue ( "Clinical Key: " + ClinicalObject_Key );
 

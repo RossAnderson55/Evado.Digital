@@ -1306,7 +1306,7 @@ namespace Evado.UniForm.Digital
     // ----------------------------------------------------------------------------------
     private void deleteGlobalObjectEntries ( String EntryKey )
     {
-      this.LogMethod ( "Evado.UniForm.Service.deleteOldGlobalObjects method" );
+      this.LogMethod ( "Service.deleteOldGlobalObjects method" );
       this.LogValue ( "EntryKey: " + EntryKey );
 
       //
@@ -1317,7 +1317,7 @@ namespace Evado.UniForm.Digital
       UserName = UserName.Replace ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP, String.Empty );
 
       this.LogValue ( "User: " + UserName );
-      String ClinicalObject_Key = UserName + Evado.Model.Digital.EvcStatics.SESSION_CLINICAL_OBJECT;
+      String ClinicalObject_Key = UserName + EuAdapter.SESSION_OBJECT;
 
       this.LogValue ( "Clinical Key: " + ClinicalObject_Key );
 

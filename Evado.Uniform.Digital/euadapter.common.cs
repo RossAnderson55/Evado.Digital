@@ -49,6 +49,7 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "loadUserProfile" );
       this.LogDebug ( "ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
+      this.LogDebug ( "UserAuthenticationState: " + this.ServiceUserProfile.UserAuthenticationState );
 
       // 
       // Initialise the methods variables and objects.
@@ -74,37 +75,63 @@ namespace Evado.UniForm.Digital
       }
 
       // 
-      // Not user id exist false.
+      // IF the profile tokens match for token access return true.
       // 
-      if ( this.ServiceUserProfile.UserId == String.Empty )
+      if ( this.ServiceUserProfile.UserAuthenticationState == EvUserProfileBase.UserAuthenticationStates.Token_Access )
       {
-        this.LogEvent ( "Error: User DOES NOT EXIST" );
+        this.LogDebug ( "Token Access" );
 
-        return false;
-      }
+        if ( this.Session.UserProfile.Token == this.ServiceUserProfile.Token )
+        {
+          this.ClassParameters.UserProfile = this.Session.UserProfile;
 
-      // 
-      // IF the profile exists and matches the current user return true.
-      // 
-      if ( this.Session.UserProfile.UserId.ToLower ( ) == this.ServiceUserProfile.UserId.ToLower ( ) )
-      {
-        this.ClassParameters.UserProfile = this.Session.UserProfile;
+          this.LogDebug ( "User profile for {0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
 
-        this.LogDebug ( "User profile for {0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
+          return true;
+        }
 
-        return true;
-      }
+        this.LogDebug ( "User profile for token {0} IS EMPTY GENERATING NEW PROFILE.", this.ServiceUserProfile.Token );
 
-      // 
-      // Try to get the user profile form the passed user profile object.
-      // 
-      else if ( this.Session.UserProfile.UserId == String.Empty )
-      {
-        this.LogDebug ( "User profile for {0} IS EMPTY GENERATING NEW PROFILE.", this.ServiceUserProfile.UserId );
-
-        this.Session.UserProfile = userProfiles.getItem ( this.ServiceUserProfile.UserId );
+        this.Session.UserProfile = userProfiles.getItem ( this.ServiceUserProfile.Token );
 
         this.LogDebugClass ( userProfiles.Log );
+      }
+
+      else
+      {
+        // 
+        // Not user id exist false.
+        // 
+        if ( this.ServiceUserProfile.UserId == String.Empty )
+        {
+          this.LogEvent ( "Error: User DOES NOT EXIST" );
+
+          return false;
+        }
+        // 
+        // IF the profile exists and matches the current user return true.
+        // 
+        if ( this.Session.UserProfile.UserId.ToLower ( ) == this.ServiceUserProfile.UserId.ToLower ( )
+          && this.ServiceUserProfile.UserId != String.Empty )
+        {
+          this.ClassParameters.UserProfile = this.Session.UserProfile;
+
+          this.LogDebug ( "User profile for {0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
+
+          return true;
+        }
+
+        // 
+        // Try to get the user profile form the passed user profile object.
+        // 
+        if ( this.Session.UserProfile.UserId == String.Empty )
+        {
+          this.LogDebug ( "User profile for {0} IS EMPTY GENERATING NEW PROFILE.", this.ServiceUserProfile.UserId );
+
+          this.Session.UserProfile = userProfiles.getItem ( this.ServiceUserProfile.UserId );
+
+          this.LogDebugClass ( userProfiles.Log );
+        }
       }
 
       // 
@@ -127,7 +154,9 @@ namespace Evado.UniForm.Digital
         return false;
       }
 
-      this.LogAction ( "User profile for " + this.ServiceUserProfile.UserId + " GENERATED" );
+      this.LogAction ( "User profile for " + this.Session.UserProfile.UserId + " GENERATED" );
+
+      this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
 
       this.ClassParameters.UserProfile = this.Session.UserProfile;
 
@@ -241,7 +270,7 @@ namespace Evado.UniForm.Digital
           continue;
         }
 
-        //this.LogDebug ( "{0} - {1} PT: {2}.", layout.LayoutId, layout.Title, layout.Design.ParentType );
+        this.LogDebug ( "{0} - {1} PT: {2}.", layout.LayoutId, layout.Title, layout.Design.ParentType );
         //
         // try and retrieve the user's child entity.
         //

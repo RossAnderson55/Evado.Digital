@@ -224,6 +224,16 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This constant defines the user session clinical object key value.
     /// </summary>
+    public const string GLOBAL_SESSION_OBJECT = "_SESSION_OBJECT";
+
+    /// <summary>
+    /// This constant defines the user session clinical object key value.
+    /// </summary>
+    public const string GLOBAL_SESSION_CLIENT_DATA_OBJECT = "_CDO";
+
+    /// <summary>
+    /// This constant defines the user session clinical object key value.
+    /// </summary>
     public const string GLOBAL_COMMAND_HISTORY = "_HISTORY_OBJECT";
 
     /// <summary>

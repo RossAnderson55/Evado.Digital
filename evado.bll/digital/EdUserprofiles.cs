@@ -57,11 +57,6 @@ namespace Evado.Bll.Digital
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Bll.Clinical.EvUserProfiles.";
 
-      this.LogMethod ( "EvUserProfiles initialisation method." );
-      this.LogDebug ( "ApplicationGuid: " + this.ClassParameter.AdapterGuid );
-
-      this.LogMethodEnd ( "EvUserProfiles" );
-
       this._Dal_UserProfiles = new Evado.Dal.Digital.EdUserProfiles ( Settings );
     }
     #endregion
@@ -74,7 +69,7 @@ namespace Evado.Bll.Digital
 
     #endregion
 
-    #region Class methods
+    #region Class List methods
     // ==================================================================================
     /// <summary>
     /// This class returns a list of userprofile objects based on OrgId and OrderBy
@@ -104,6 +99,7 @@ namespace Evado.Bll.Digital
       return profiles;
 
     }//END GetView method.
+
     // =====================================================================================
     /// <summary>
     /// This method returns a list of UserProfile object
@@ -164,7 +160,7 @@ namespace Evado.Bll.Digital
      String OrgId,
       bool useGuid )
     {
-      LogMethod ( "GetView method." );
+      LogMethod ( "GetView" );
       this.LogDebug ( "OrgId: " + OrgId );
 
       List<EvOption> list = this._Dal_UserProfiles.GetList ( Type, OrgId, useGuid );
@@ -174,6 +170,9 @@ namespace Evado.Bll.Digital
 
     }//END GetList method
 
+    #endregion
+
+    #region Class  get methods
     // =====================================================================================
     /// <summary>
     /// This method returns true if the user exists in the database.
@@ -183,7 +182,7 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public bool ExistingUserId ( string UserId )
     {
-      this.LogMethod ( "ExistingUserId method." );
+      this.LogMethod ( "ExistingUserId" );
       this.LogDebug ( "UserId: " + UserId );
 
       bool response = this._Dal_UserProfiles.ExistingUserId ( UserId );
@@ -203,7 +202,7 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public int UserCount ( String UserType )
     {
-      this.LogMethod ( "UserCount method." );
+      this.LogMethod ( "UserCount" );
       this.LogDebug ( "UserType: " + UserType );
 
       int response = this._Dal_UserProfiles.UserCount ( UserType );
@@ -232,7 +231,7 @@ namespace Evado.Bll.Digital
     public EdUserProfile getItem ( string ConnectionStringKey, string UserId )
     {
       this.FlushLog ( );
-      this.LogMethod ( "getItem method" );
+      this.LogMethod ( "getItem" );
       Evado.Bll.EvStaticSetting.ConnectionStringKey = ConnectionStringKey;
 
       EdUserProfile userProfile = getItem ( UserId );
@@ -257,7 +256,7 @@ namespace Evado.Bll.Digital
     // -------------------------------------------------------------------------------------
     public Evado.Model.Digital.EdUserProfile getItem ( string UserId )
     {
-      this.LogMethod ( "getItem method." );
+      this.LogMethod ( "getItem" );
       this.LogDebug ( "UserId: " + UserId );
       //
       // Initialise the methods variables and objects.
@@ -307,7 +306,7 @@ namespace Evado.Bll.Digital
     public Evado.Model.Digital.EdUserProfile getItem ( Guid UserProfileGuid )
     {
       this.FlushLog ( );
-      this.LogMethod ( "getItem method." );
+      this.LogMethod ( "getItem" );
       this.LogDebug ( "UserProfileGuid: " + UserProfileGuid );
       //
       // Initialise the methods variables and objects.
@@ -327,6 +326,9 @@ namespace Evado.Bll.Digital
 
     }//END getItem method
 
+    #endregion
+
+    #region Class  update  methods
     // =====================================================================================
     /// <summary>
     /// This class retrieves a user profile with a specific connection String.
@@ -340,7 +342,7 @@ namespace Evado.Bll.Digital
       Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.FlushLog ( );
-      this.LogMethod ( "saveItem method." );
+      this.LogMethod ( "saveItem" );
       Evado.Bll.EvStaticSetting.ConnectionStringKey = ConnectionStringKey;
 
       EvEventCodes userProfile = this.saveItem ( UserProfile );
@@ -375,7 +377,7 @@ namespace Evado.Bll.Digital
     public EvEventCodes saveItem ( Evado.Model.Digital.EdUserProfile UserProfile )
     {
       this.FlushLog ( );
-      this.LogMethod ( "saveItem method." );
+      this.LogMethod ( "saveItem" );
       this.LogValue ( "UserId: " + UserProfile.UserId );
       this.LogValue ( "CommonName: " + UserProfile.CommonName );
       // 
@@ -425,6 +427,105 @@ namespace Evado.Bll.Digital
     }//END saveItem method
 
     #endregion
+
+    #region Class  update  methods
+
+    // =====================================================================================
+    /// <summary>
+    /// This method updates user profile for token authentication process.
+    /// </summary>
+    /// <param name="TokenUser">Evado.Model.EusTokenUserProfile object</param>
+    /// <param name="UserTypeList">EdSelectionList object containing the user category options.</param>
+    /// <returns>EvEventCodes: an event code for saving items</returns>
+    // -------------------------------------------------------------------------------------
+    public EvEventCodes updateTokenUser ( 
+      Evado.Model.EusTokenUserProfile TokenUser,
+      EdSelectionList UserTypeList )
+    {
+      this.FlushLog ( );
+      this.LogMethod ( "updateTokenUser" );
+      this.LogDebug ( "TokenUser.UserId {0}", TokenUser.UserId );
+      this.LogDebug ( "UserTypeList.Items Title: {0}, items {1}",
+        UserTypeList.Title, UserTypeList.Items.Count );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      EvEventCodes iReturn = EvEventCodes.Ok;
+      Evado.Model.Digital.EdUserProfile UserProfile = new EdUserProfile ( );
+
+      //
+      // Import the user token data.
+      //
+      UserProfile.ImportTokenProfile ( TokenUser );
+
+      // 
+      // Check that the user id is valid
+      // 
+      if ( UserProfile.UserId == String.Empty )
+      {
+        this.LogEvent ( "UserId is empty" );
+        return EvEventCodes.Identifier_User_Id_Error;
+      }
+
+      //
+      // match the user category with the user type.
+      //
+      if ( UserTypeList.Items.Count > 0 )
+      {
+        foreach ( EdSelectionList.Item item in UserTypeList.Items )
+        {
+          if ( UserProfile.UserType == item.Value )
+          {
+            UserProfile.UserCategory = item.Category;
+            break;
+          }
+        }
+      }
+
+      //
+      // based on the user status select the method of user update.
+      //
+      switch ( TokenUser.UserStatus )
+      {
+        case EusTokenUserProfile.UserStatusCodes.New_User:
+          {
+            this.LogValue ( "Add User" );
+            iReturn = this._Dal_UserProfiles.AddItem ( UserProfile );
+            this.LogDebug ( this._Dal_UserProfiles.Log );
+
+            this.LogMethodEnd ( "updateTokenUser" );
+            return iReturn;
+          }
+
+        case EusTokenUserProfile.UserStatusCodes.Subscribed_User:
+          {
+            this.LogValue ( "update User" );
+            iReturn = this._Dal_UserProfiles.UpdateItem ( UserProfile );
+            this.LogDebug ( this._Dal_UserProfiles.Log );
+
+            this.LogMethodEnd ( "updateTokenUser" );
+            return iReturn;
+          }
+
+        default:
+          {
+            this.LogValue ( "Disable user access" );
+
+            UserProfile.Roles = String.Empty;
+            UserProfile.UserCategory = String.Empty;
+            UserProfile.UserType = String.Empty;
+
+            iReturn = this._Dal_UserProfiles.UpdateItem ( UserProfile );
+            this.LogDebug ( this._Dal_UserProfiles.Log );
+
+            this.LogMethodEnd ( "updateTokenUser" );
+            return iReturn;
+          }
+      }
+    }//END saveItem method
+
+    #endregion
+
 
     // ++++++++++++++++++++++++++++++++++  END OF SOURCE CODE +++++++++++++++++++++++++++++++++++++
   }//END EvUserProfiles class

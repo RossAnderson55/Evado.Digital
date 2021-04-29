@@ -552,6 +552,28 @@ namespace Evado.Model.Digital
     #endregion
 
     #region Class General Methods
+    // =====================================================================================
+    /// <summary>
+    /// This method splits the CommonName string in to parts.
+    /// </summary>
+    // -------------------------------------------------------------------------------------
+    public void setNames ( )
+    {
+      if ( this.FamilyName == String.Empty
+        && this.GivenName == String.Empty )
+      {
+        return;
+      }
+
+      if ( this.Prefix != String.Empty )
+      {
+        this.CommonName = this.Prefix + " " + this.GivenName + " " + this.FamilyName;
+        return;
+      }
+
+      this.CommonName = this.GivenName + " " + this.FamilyName;
+
+    }//END method
 
     // =====================================================================================
     /// <summary>
@@ -645,6 +667,7 @@ namespace Evado.Model.Digital
     }//END getUserProfile class
 
     #region Class General Methods
+
     //====================================================================================
     /// <summary>
     /// This method imports the values from the base user profile.
@@ -657,6 +680,7 @@ namespace Evado.Model.Digital
       this.ActiveDirectoryUserId = BaseUserProfile.ActiveDirectoryUserId;
       this.Prefix = BaseUserProfile.Prefix;
       this.GivenName = BaseUserProfile.GivenName;
+      this.FamilyName = BaseUserProfile.FamilyName;
       this.Suffix = BaseUserProfile.Suffix;
       this.CommonName = BaseUserProfile.CommonName;
       this.EmailAddress = BaseUserProfile.EmailAddress;
@@ -669,8 +693,22 @@ namespace Evado.Model.Digital
       this.Telephone = BaseUserProfile.Telephone;
       this.Title = BaseUserProfile.Title;
       this.DomainGroups = BaseUserProfile.DomainGroups;
-
-
+    }
+    //====================================================================================
+    /// <summary>
+    /// This method imports the values from the base user profile.
+    /// </summary>
+    /// <param name="TokenUserProfile"></param>
+    //------------------------------------------------------------------------------------
+    public void ImportTokenProfile ( EusTokenUserProfile TokenUserProfile )
+    {
+      this.UserId = TokenUserProfile.UserId;
+      this.GivenName = TokenUserProfile.GivenName;
+      this.FamilyName = TokenUserProfile.FamilyName;
+      this.EmailAddress = TokenUserProfile.EmailAddress;
+      this.Token = TokenUserProfile.Token;
+      this.UserType = TokenUserProfile.UserType;
+      this.UserCategory = TokenUserProfile.UserType;
     }
 
     //===================================================================================
@@ -744,6 +782,8 @@ namespace Evado.Model.Digital
         case FieldNames.Given_Name:
           {
             this.GivenName = value;
+
+            this.setNames ( );
             break;
           }
         case FieldNames.Middle_Name:
@@ -754,6 +794,8 @@ namespace Evado.Model.Digital
         case FieldNames.Family_Name:
           {
             this.FamilyName = value;
+
+            this.setNames ( );
             break;
           }
         case FieldNames.Suffix:

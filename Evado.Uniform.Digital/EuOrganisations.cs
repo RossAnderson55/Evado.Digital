@@ -1040,6 +1040,9 @@ namespace Evado.UniForm.Digital
         //
         this.Session.AdminOrganisation = new EdOrganisation ( );
         this.Session.AdminOrganisation.Guid = Evado.Model.Digital.EvcStatics.CONST_NEW_OBJECT_ID;
+        this.Session.AdminOrganisation.OrgId = String.Empty;
+        this.Session.AdminOrganisation.ImageFileName = String.Empty;
+        this._CurrentFileName = String.Empty;
 
         this.getDataObject ( clientDataObject );
 
@@ -1244,6 +1247,8 @@ namespace Evado.UniForm.Digital
 
       if ( this.Session.AdminOrganisation.ImageFileName == String.Empty )
       {
+        this.LogDebug ( "No Image" );
+        this.LogMethodEnd ( "saveImageFile" );
         return;
       }
       if ( this._CurrentFileName == this.Session.AdminOrganisation.ImageFileName )

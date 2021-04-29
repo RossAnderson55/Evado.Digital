@@ -59,6 +59,11 @@ namespace Evado.Model
       Anonymous_Access,
 
       /// <summary>
+      /// This enumerated state indicates that the user has been provided with token access to the environment.
+      /// </summary>
+      Token_Access,
+
+      /// <summary>
       /// This enumerated state indicates that the user has been provided with anonymous access to the environment.
       /// </summary>
       Debug_Authentication,
@@ -193,7 +198,7 @@ namespace Evado.Model
     /// <summary>
     /// This method splits the CommonName string in to parts.
     /// </summary>
-    private void setNames ( )
+    protected void setNames ( )
     {
       if ( this._FamilyName == String.Empty
         && this._GivenName == String.Empty )

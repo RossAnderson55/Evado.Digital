@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Evado.UniForm.Digital</RootNamespace>
-    <AssemblyName>Evado.UniForm.Clinical</AssemblyName>
+    <AssemblyName>Evado.UniForm.Digital</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -1212,10 +1212,11 @@ namespace Evado.UniForm.Digital
       Evado.Model.UniForm.Command PageCommand )
     {
       this.LogMethod ( "getListObject" );
-      this.LogValue ( "EntitySelectionState: " + this.Session.EntityStateSelection );
-      this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
-      this.LogValue ( "EntityLayout.ReadAccessRoles: " + this.Session.EntityLayout.Design.ReadAccessRoles );
-      this.LogValue ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
+      this.LogValue ( "Selected_EntityLayoutId: " + this.Session.Selected_EntityLayoutId );
+      //this.LogValue ( "EntitySelectionState: " + this.Session.EntityStateSelection );
+      //this.LogValue ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
+      //this.LogValue ( "EntityLayout.ReadAccessRoles: " + this.Session.EntityLayout.Design.ReadAccessRoles );
+      //this.LogValue ( "UserProfile.Roles: " + this.Session.UserProfile.Roles );
       try
       {
         // 
@@ -1261,6 +1262,8 @@ namespace Evado.UniForm.Digital
         this.LogPageAccess (
           this.ClassNameSpace + "getListObject",
           this.Session.UserProfile );
+
+        this.LogDebug ( "LayoutId {0}", this.Session.EntityLayout.LayoutId );
 
         //
         // Execute the monitor list record query.
@@ -1535,10 +1538,6 @@ namespace Evado.UniForm.Digital
       // 
       Evado.Model.UniForm.Group pageGroup = new Model.UniForm.Group ( );
       Evado.Model.UniForm.Command groupCommand = new Model.UniForm.Command ( );
-      //
-      // get the selected entity.
-      //
-      this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
 
       // 
       // Create the record display pageMenuGroup.

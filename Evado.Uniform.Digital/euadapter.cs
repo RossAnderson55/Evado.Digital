@@ -49,7 +49,7 @@ namespace Evado.UniForm.Digital
     // ----------------------------------------------------------------------------------
     public EuAdapter ( )
     {
-      this.ClassNameSpace = "Evado.UniForm.Clinical.EuAdapter.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter.";
 
       Evado.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
@@ -99,7 +99,7 @@ namespace Evado.UniForm.Digital
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl )
     {
-      this.ClassNameSpace = "Evado.UniForm.Clinical.EuAdapter.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter.";
       this.LogInitMethod ( "EuAdapter initialisation" );
       try
       {
@@ -493,16 +493,16 @@ namespace Evado.UniForm.Digital
         
         foreach ( EdRecord entity in this.Session.EntityDictionary )
         {
-          this.LogDebug( "Loaded Entity {0} LayoutId {1} - {2}",
+          this.LogDebug( "Directory Entity {0} LayoutId {1} - {2}",
             entity.EntityId, entity.LayoutId, entity.Title );
         }
-        
+        /*
         foreach ( EdObjectParent parent in EuAdapter.AdapterObjects.EntityParents )
         {
           this.LogDebug ( "ParentLayoutId {0} ChildLayoutId {1} ChildEditAccess {2}, IsRecord {3}",
             parent.ParentLayoutId, parent.ChildLayoutId, parent.ChildEditAccess, parent.IsRecord );
         }
-        
+        */
         //
         // Turn on BLL debug to match the current class setting.
         //
@@ -543,7 +543,6 @@ namespace Evado.UniForm.Digital
           // 
           return generateNoProfilePage ( );
         }
-        this.LogDebug ( this.Session.UserProfile.getUserProfile( true ) );
 
         //
         // load the user's organisation.
@@ -1546,7 +1545,7 @@ namespace Evado.UniForm.Digital
         this.LogInit ( "Session object loaded." );
       }
 
-      this._ClientObjectKey = this.ServiceUserProfile.UserId + Evado.Model.Digital.EvcStatics.SESSION_CLIENT_DATA_OBJECT;
+      this._ClientObjectKey = this.ServiceUserProfile.UserId + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_CLIENT_DATA_OBJECT;
       this._ClientObjectKey = this._ClientObjectKey.Replace ( ".", "_" );
       this._ClientObjectKey = this._ClientObjectKey.ToUpper ( );
 

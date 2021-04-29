@@ -45,16 +45,6 @@ namespace Evado.Model.Digital
     /// </summary>
     public const String CONST_GLOBAL_FORM_PREFIX = "G_";
 
-    /// <summary>
-    /// This constant defines the user session clinical object key value.
-    /// </summary>
-    public const string SESSION_CLINICAL_OBJECT = "_CLINICAL_OBJECT";
-
-    /// <summary>
-    /// This constant defines the user session clinical object key value.
-    /// </summary>
-    public const string SESSION_CLIENT_DATA_OBJECT = "_CDO";
-
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
