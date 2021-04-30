@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="assemblyattributes.cs" />
+    <Compile Include="EvTokenUserProfile.cs" />
     <Compile Include="evapplicationevent.cs" />
     <Compile Include="evdatabaseupdate.cs" />
     <Compile Include="evdatachange.cs" />

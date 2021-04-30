@@ -100,7 +100,7 @@ namespace Evado.Dal.Digital
     public const string DB_GUID = "EDRLF_GUID";
     public const string DB_LAYOUT_GUID = "EDRL_GUID";
     public const string DB_LAYOUT_ID = "EDR_LAYOUT_ID";
-    public const string DB_FIELD_ID = "FIELD_ID";
+    public const string DB_FIELD_ID = "EDRLF_FIELD_ID";
     public const string DB_TYPE_ID = "EDRLF_TYPE_ID";
     public const string DB_ORDER = "EDRLF_ORDER";
     public const string DB_TITLE = "EDRLF_TITLE";

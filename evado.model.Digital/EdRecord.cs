@@ -1008,6 +1008,7 @@ namespace Evado.Model.Digital
                     this.RecordId,
                     this.LayoutId,
                     this.Title );
+
         //
         // if a comment text then output an abstract of the linke..
         //
@@ -1586,21 +1587,21 @@ namespace Evado.Model.Digital
     // -------------------------------------------------------------------------------------
     public string getFirstTextField ( )
     {
-      String stValue = String.Empty;
+      String stValue = EdLabels.Record_Empty_Value + this.Title;
       foreach ( EdRecordField field in this.Fields )
       {
         if ( field.TypeId == EvDataTypes.Text )
         {
           stValue = field.ItemValue;
-
-          if ( this.Design.DisplayAuthorDetails == true )
-          {
-            stValue += EdLabels.Label_by + this.Updated;
-          }
-          return stValue;
+          break;
         }
       }
-      return String.Empty;
+
+      if ( this.Design.DisplayAuthorDetails == true )
+      {
+        stValue += EdLabels.Label_by + this.Updated;
+      }
+      return stValue;
     }
 
     // =====================================================================================
@@ -1632,17 +1633,15 @@ namespace Evado.Model.Digital
     // -------------------------------------------------------------------------------------
     public string getFirstFreeTextField ( bool AsAbstract )
     {
-      String stValue = String.Empty;
+      String stValue = EdLabels.Record_Empty_Value + this.Title;
 
       foreach ( EdRecordField field in this.Fields )
       {
         if ( field.TypeId == EvDataTypes.Free_Text )
         {
-          if ( AsAbstract == false )
-          {
-            stValue = field.ItemText;
-          }
-          else
+          stValue = field.ItemText;
+
+          if ( AsAbstract == true )
           {
             int paraIndex = stValue.IndexOf ( '\n' );
             if ( paraIndex > 0 )
@@ -1650,15 +1649,16 @@ namespace Evado.Model.Digital
               stValue = stValue.Substring ( 0, paraIndex );
             }
           }
-
-          if ( this.Design.DisplayAuthorDetails == true )
-          {
-            stValue += "\r\n" + EdLabels.Label_by + this.Updated;
-          }
-          return stValue;
+          break;
         }
       }
-      return String.Empty;
+
+      if ( this.Design.DisplayAuthorDetails == true )
+      {
+        stValue += "\r\n" + EdLabels.Label_by + this.Updated;
+      }
+
+      return stValue;
     }
 
 

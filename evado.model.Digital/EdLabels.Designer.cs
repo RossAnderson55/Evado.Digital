@@ -6527,6 +6527,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty .
+        /// </summary>
+        public static string Record_Empty_Value {
+            get {
+                return ResourceManager.GetString("Record_Empty_Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record Export Downloads.
         /// </summary>
         public static string Record_Export_Download_Group_Title {

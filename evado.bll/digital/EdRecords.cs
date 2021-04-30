@@ -105,7 +105,7 @@ namespace Evado.Bll.Digital
     public int getRecordCount (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordCount method. " );
+      this.LogMethod ( "getRecordCount " );
       this.LogValue ( "EvQueryParameters parameters." );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
@@ -145,7 +145,7 @@ namespace Evado.Bll.Digital
     public List<EdRecord> getRecordList (
       EdQueryParameters QueryParameters )
     {
-      this.LogMethod ( "getRecordList method. " );
+      this.LogMethod ( "getRecordList " );
       this.LogDebug ( "EvQueryParameters parameters." );
       this.LogValue ( "- FormId: " + QueryParameters.LayoutId );
       this.LogValue ( "- IncludeRecordFields: " + QueryParameters.IncludeRecordValues );
@@ -202,9 +202,59 @@ namespace Evado.Bll.Digital
       return List;
     }//END GetList method.
 
+    // =====================================================================================
+    /// <summary>
+    /// This class returns a list of form object based on VisitId, VisitId, FormId and state
+    /// </summary>
+    /// <param name="Entity">Entity Object.</param>
+    /// <returns>List of EdRecord  objects</returns>
+    //  ----------------------------------------------------------------------------------
+    public List<EdRecord> getChildRecordList ( EdRecord Entity )
+    {
+      this.LogMethod ( "getChildRecordList" );
+      this.LogDebug ( "LayoutId {0}.", Entity.LayoutId );
+      this.LogDebug ( "EntityId {0}.", Entity.EntityId );
+      //
+      // Initialize the debuglog, a return list of form object and a formRecord field object. 
+      //
+      List<EdRecord> recordList = new List<EdRecord> ( );
+      // 
+      // Execute the query.
+      // 
+      recordList = this._DalRecords.getChildRecordList ( Entity );
+
+      this.LogClass ( this._DalRecords.Log );
+
+      this.LogMethodEnd ( "getChildRecordList" );
+      return recordList;
+
+    }//END getChildRecordList method.
+
     #endregion
 
     #region project record retrieval queries
+
+    // =====================================================================================
+    /// <summary>
+    /// This class returns the guid identifier for an entity identifier
+    /// </summary>
+    /// <param name="EntityId">string: (Mandatory) entity identifier.</param>
+    /// <returns>Guid identifier.</returns>
+    //  ----------------------------------------------------------------------------------
+    public Guid GetRecordGuid ( String EntityId )
+    {
+      this.LogMethod ( "GetRecordGuid" );
+      this.LogValue ( "EntityId: " + EntityId );
+      //
+      // Execute the query
+      //
+      var entityGuid = this._DalRecords.GetRecordGuid ( EntityId );
+      this.LogClass ( this._DalRecords.Log );
+
+      this.LogMethodEnd ( "GetRecordGuid" );
+      return entityGuid;
+
+    }//END GetEntityGuid method
 
     // =====================================================================================
     /// <summary>
@@ -222,7 +272,7 @@ namespace Evado.Bll.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord getRecord ( Guid RecordGuid )
     {
-      this.LogMethod( "getRecord method. " );
+      this.LogMethod( "getRecord " );
       this.LogValue ( "RecordGuid: " + RecordGuid );
 
       // 
@@ -256,7 +306,7 @@ namespace Evado.Bll.Digital
     //  ----------------------------------------------------------------------------------
     public EdRecord getRecord ( String RecordId )
     {
-      this.LogMethod ( "GetRecord method. " );
+      this.LogMethod ( "GetRecord " );
       this.LogValue ( "RecordId: " + RecordId );
       // 
       // Initialise the method variables and objects.
@@ -292,7 +342,7 @@ namespace Evado.Bll.Digital
     public EdRecord getRecordBySource (
       String SourceId )
     {
-      this.LogValue ( "DAL:EvRecord:getRecord method. " );
+      this.LogValue ( "DAL:EvRecord:getRecord " );
       this.LogValue ( "RecordId: " + SourceId );
       // 
       // Initialise the method variables and objects.
@@ -308,6 +358,96 @@ namespace Evado.Bll.Digital
       return record;
 
     }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent Guid.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentGuid">Guid: Parent Entity Guid identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentGuid (
+      String LayoutId,
+      Guid ParentGuid )
+    {
+      this.LogMethod ( "GetItemByParentGuid" );
+      this.LogValue ( "SourceId: " + ParentGuid );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalRecords.GetItemByParentGuid ( LayoutId, ParentGuid );
+      this.LogClass ( this._DalRecords.Log );
+
+      this.LogMethodEnd ( "GetItemByParentGuid" );
+      return entity;
+
+    }//END GetItemByParentGuid method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent org id.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentOrgId (
+      String LayoutId,
+      String ParentOrgId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId" );
+      this.LogValue ( "SourceId: " + ParentOrgId );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalRecords.GetItemByParentOrgId ( LayoutId, ParentOrgId );
+      this.LogClass ( this._DalRecords.Log );
+
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This method retrieves the entity using it layout identifier and parent user id.
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent user identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentUserId (
+      String LayoutId,
+      String ParentUserId )
+    {
+      this.LogMethod ( "GetItemByParentUserId" );
+      this.LogValue ( "SourceId: " + ParentUserId );
+      // 
+      // Initialise the method variables and objects.
+      // 
+      EdRecord entity = new EdRecord ( );
+
+      //
+      // Execute the query
+      //
+      entity = this._DalRecords.GetItemByParentUserId ( LayoutId, ParentUserId );
+      this.LogClass ( this._DalRecords.Log );
+
+      this.LogMethodEnd ( "_DalRecords" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
 
     #endregion
 
@@ -332,7 +472,7 @@ namespace Evado.Bll.Digital
       // 
       // Initialise method variables
       // 
-      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.lockItem method. " );
+      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.lockItem " );
       EvEventCodes iReturn = EvEventCodes.Ok;
 
       // 
@@ -363,7 +503,7 @@ namespace Evado.Bll.Digital
       // 
       // Initialise method variables
       // 
-      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.unlockItem method. " );
+      this.LogValue ( "<br/>Evado.Bll.Clinical.EvFormRecords.unlockItem " );
       EvEventCodes iReturn = EvEventCodes.Ok;
       // 
       // Update the trial record.
@@ -395,7 +535,7 @@ namespace Evado.Bll.Digital
     /// 3. Return the form object. 
     /// </remarks>
     //  ----------------------------------------------------------------------------------
-    public EdRecord createRecord ( EdRecord Record )
+    public EdRecord CreateRecord ( EdRecord Record )
     {
       this.LogMethod ( "createRecord method." );
       this.LogDebug ( "LayoutId: " + Record.LayoutId );
@@ -487,7 +627,7 @@ namespace Evado.Bll.Digital
       EdRecord FormRecord,
       bool HadEditAccess )
     {
-      this.LogMethod ( "saveItem method. " );
+      this.LogMethod ( "saveItem " );
       this.LogValue ( "FormRecord.Guid: " + FormRecord.Guid );
       this.LogValue ( "FormGuid: " + FormRecord.LayoutGuid );
       this.LogValue ( "Action: " + FormRecord.SaveAction );
@@ -570,7 +710,7 @@ namespace Evado.Bll.Digital
       EdRecord FormRecord,
       bool HadEditAccess )
     {
-      this.LogMethod ( "updateState method. " );
+      this.LogMethod ( "updateState " );
       this.LogValue ( "RecordId: " + FormRecord.RecordId );
       this.LogValue ( "Action: " + FormRecord.SaveAction );
       //

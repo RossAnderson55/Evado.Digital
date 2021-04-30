@@ -3131,4 +3131,7 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Settings_YouTube_Video_URL_Field_Label" xml:space="preserve">
     <value>YouTube embedded base url:</value>
   </data>
+  <data name="Record_Empty_Value" xml:space="preserve">
+    <value>Empty </value>
+  </data>
 </root>

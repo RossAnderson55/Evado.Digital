@@ -332,7 +332,7 @@ namespace Evado.Bll.Digital
       this.LogMethodEnd ( "GetEntityGuid" );
       return entityGuid;
 
-    }//END getRecord method
+    }//END GetEntityGuid method
 
     // =====================================================================================
     /// <summary>

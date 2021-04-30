@@ -1045,7 +1045,7 @@ namespace Evado.UniForm.Digital
       {
         List<EdRecord> recordLayoutList = new List<EdRecord> ( );
 
-        foreach ( EdRecord layout in _AllRecordLayoutList )
+        foreach ( EdRecord layout in this._AllRecordLayoutList )
         {
           if ( layout.State == EdRecordObjectStates.Form_Issued )
           {
@@ -1066,6 +1066,35 @@ namespace Evado.UniForm.Digital
       get { return _AlertListLength; }
       set { _AlertListLength = value; }
     }
+
+    // ==================================================================================
+    /// <summary>
+    /// This method returns a list of string containing child layouts.
+    /// </summary>
+    /// <param name="LayoutId">String parent LayoutID</param>
+    /// <returns>List of String containing child LaoutIds</returns>
+    // ----------------------------------------------------------------------------------
+    public EdRecord GetRecordLayout ( String LayoutId )
+    {
+      //
+      // iterate through the list of entity and return the issued entity layout.
+      //
+      foreach ( EdRecord layout in this._AllRecordLayoutList )
+      {
+        if ( layout.LayoutId == LayoutId
+          && layout.State == EdRecordObjectStates.Form_Issued )
+        {
+          return layout;
+        }
+      }
+
+      //
+      // return null if not found.
+      //
+      return new EdRecord ( );
+
+    }//END method
+
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="commandhistory.cs" />
     <Compile Include="Model\Device.cs" />
+    <Compile Include="Model\EusTokenUserProfile.cs" />
     <Compile Include="Properties\webattributes.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

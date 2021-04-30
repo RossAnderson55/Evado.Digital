@@ -1032,7 +1032,7 @@ namespace Evado.Dal.Digital
     //  ----------------------------------------------------------------------------------
     public List<EdRecord> getChildRecordList ( EdRecord Entity )
     {
-      this.LogMethod ( "getChildRecordList method " );
+      this.LogMethod ( "getChildRecordList" );
       this.LogValue ( "LayoutId: " + Entity.LayoutId );
       this.LogValue ( "EntityId: " + Entity.EntityId );
 
@@ -1055,9 +1055,9 @@ namespace Evado.Dal.Digital
       // Generate the SQL query string.
       // 
       sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
-      sqlQueryString.AppendLine ( " WHERE  AND ( " + EdEntities.DB_PARENT_GUID + " = " + EdRecords.PARM_PARENT_GUID + " ) " );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdRecords.DB_PARENT_GUID + " = '" + Entity.Guid + "' ) " );
  
-      sqlQueryString.AppendLine ( ") ORDER BY RecordId" );
+      sqlQueryString.AppendLine ( " ORDER BY " + EdRecords.DB_RECORD_ID );
 
       this.LogDebug ( sqlQueryString.ToString ( ) );
 
@@ -1066,8 +1066,10 @@ namespace Evado.Dal.Digital
       //
       //Execute the query against the database.
       //
-      using ( DataTable table = EvSqlMethods.RunQuery ( _sqlQueryString, cmdParms ) )
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString(), null ) )
       {
+
+        this.LogDebug ( "Returned Rows {0}, ", table.Rows.Count );
         // 
         // Iterate through the results extracting the role information.
         // 
@@ -1115,6 +1117,7 @@ namespace Evado.Dal.Digital
       // 
       // Return the result array.
       // 
+      this.LogMethodEnd ( "getChildRecordList" );
       return recordList;
 
     }//END getView method.
@@ -1499,6 +1502,398 @@ namespace Evado.Dal.Digital
       return record;
 
     }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class returns the guid identifier for an entity identifier
+    /// </summary>
+    /// <param name="EntityId">string: (Mandatory) entity identifier.</param>
+    /// <returns>Guid identifier.</returns>
+    //  ----------------------------------------------------------------------------------
+    public Guid GetRecordGuid ( String EntityId )
+    {
+      this.LogMethod ( "GetEntityGuid" );
+      // this.LogDebug ( "EntityId: " + EntityId );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // TestReport that the data object has a valid record identifier.
+      // 
+      if ( EntityId == String.Empty )
+      {
+        return Guid.Empty;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter(EdRecords.PARM_RECORD_ID, SqlDbType.NVarChar, 20),
+      };
+      cmdParms [ 0 ].Value = EntityId;
+
+      sqlQueryString.AppendLine ( EdRecords.SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdRecords.DB_RECORD_ID + " = " + EdRecords.PARM_RECORD_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return Guid.Empty;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        return EvSqlMethods.getGuid ( row, EdEntities.DB_ENTITY_GUID );
+
+      }//END Using method
+
+    }//END getRecord method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentGuid">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentGuid (
+      String LayoutId,
+      Guid ParentGuid )
+    {
+      this.LogMethod ( "GetItemByParentGuid method. " );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( ParentGuid == Guid.Empty )
+      {
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdRecords.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentGuid;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdRecordLayouts.DB_LAYOUT_ID + "= " + EdRecordLayouts.PARM_LAYOUT_ID + " ) " );
+      sqlQueryString.AppendLine ( "   AND (" + EdRecords.DB_PARENT_GUID + "= " + EdRecords.PARM_PARENT_GUID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.getRecordData ( entity );
+
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentGuid" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentOrgId">string: Parent orgnisation identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentOrgId (
+      String LayoutId,
+      String ParentOrgId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId" );
+      this.LogDebug ( "LayoutId {0}.", LayoutId );
+      this.LogDebug ( "ParentOrgId {0}.", ParentOrgId );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( ParentOrgId == String.Empty )
+      {
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdRecords.PARM_PARENT_ORG_ID, SqlDbType.NVarChar, 20 ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentOrgId;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdRecordLayouts.DB_LAYOUT_ID + "= " + EdRecordLayouts.PARM_LAYOUT_ID + " ) " );
+      sqlQueryString.AppendLine ( "   AND (" + EdRecords.DB_PARENT_ORG_ID + "= " + EdRecords.PARM_PARENT_ORG_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          this.LogDebug ( "Nothing Found." );
+          this.LogMethodEnd ( "GetItemByParentOrgId" );
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.getRecordData ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
+    // =====================================================================================
+    /// <summary>
+    /// This class gets a form object based on the record identifier
+    /// </summary>
+    /// <param name="LayoutId">String layout identifier</param>
+    /// <param name="ParentUserId">string: parent user identifier.</param>
+    /// <returns>EdRecord: a entitty data object.</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Return an empty Form object if the RecordId is empty
+    /// 
+    /// 2. Define the sql query parameters and sql query string. 
+    /// 
+    /// 3. Execute the sql query string and store the results on data table. 
+    /// 
+    /// 4. Extract the first datarow to the form object. 
+    /// 
+    /// 5. Attach the formfield items to the form object 
+    /// 
+    /// 6. Return the Form data object. 
+    /// </remarks>
+    //  ----------------------------------------------------------------------------------
+    public EdRecord GetItemByParentUserId (
+      String LayoutId,
+      String ParentUserId )
+    {
+      this.LogMethod ( "GetItemByParentOrgId" );
+      //
+      // Initialize the debug log, a return form object and a formfield object. 
+      //
+      EdRecord entity = new EdRecord ( );
+      StringBuilder sqlQueryString = new StringBuilder ( );
+
+      // 
+      // Validate whether the RecordId is not empty. 
+      // 
+      if ( LayoutId == String.Empty
+        || ParentUserId == String.Empty )
+      {
+        this.LogMethodEnd ( "GetItemByParentOrgId" );
+        return entity;
+      }
+
+      // 
+      // Define the parameters for the query
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter( EdRecordLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 20 ),
+        new SqlParameter( EdRecords.PARM_PARENT_USER_ID, SqlDbType.NVarChar, 100 ),
+      };
+      cmdParms [ 0 ].Value = LayoutId;
+      cmdParms [ 1 ].Value = ParentUserId;
+
+      //
+      // Define the SQL statement.
+      //
+      sqlQueryString.AppendLine ( SQL_QUERY_RECORD_VIEW );
+      sqlQueryString.AppendLine ( " WHERE (" + EdRecordLayouts.DB_LAYOUT_ID + "= " + EdRecordLayouts.PARM_LAYOUT_ID + " ) " );
+      sqlQueryString.AppendLine ( "   AND (" + EdRecords.DB_PARENT_USER_ID + "= " + EdRecords.PARM_PARENT_USER_ID + " );" );
+
+      //
+      // Execute the query against the database.
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString.ToString ( ), cmdParms ) )
+      {
+        // 
+        // If not rows the return
+        // 
+        if ( table.Rows.Count == 0 )
+        {
+          return entity;
+        }
+
+        // 
+        // Extract the table row
+        // 
+        DataRow row = table.Rows [ 0 ];
+
+        // 
+        // Fill the role object.
+        // 
+        entity = this.getRowData ( row, true );
+
+      }//END Using method
+
+      //
+      // Update the form record section references.
+      //
+      this.GetRecordSections ( entity );
+
+      //
+      // load layout fields if record field list is empty.
+      //
+      this.getLayoutFields ( entity );
+
+      // 
+      // Attach fields and other trial data.
+      // 
+      this.getRecordData ( entity );
+
+      // 
+      // Return the trial record.
+      // 
+      this.LogMethodEnd ( "GetItemByParentOrgId" );
+      return entity;
+
+    }//END GetItemByParentOrgId method
+
 
     // =====================================================================================
     /// <summary>

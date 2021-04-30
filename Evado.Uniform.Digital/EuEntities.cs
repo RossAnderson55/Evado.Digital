@@ -201,7 +201,7 @@ namespace Evado.UniForm.Digital
     /// <summary>
     /// This constand definee the include test sites property identifier
     /// </summary>
-    private const string CONST_EDIT_MODE_FIELD = "EM01";
+    public const string CONST_EDIT_MODE_FIELD = "EM01";
 
     /// <summary>
     /// This constant defines the draft record icon URL.
@@ -3449,14 +3449,24 @@ namespace Evado.UniForm.Digital
 
       this.LogClass ( this._Bll_Entities.Log );
 
-      this.LogDebug ( "Entity {0}, Title {1}.", this.Session.Entity.RecordId, this.Session.Entity.Title );
-      this.LogDebug ( "There are {0} of fields in the record.", this.Session.Entity.Fields.Count );
+      this.LogDebug ( "There are {0} of chiled entities.", this.Session.Entity.ChildEntities.Count );
+
+      //
+      // Refresh record children
+      //
+      EdRecords bll_Records = new EdRecords ( this.ClassParameters );
+
+      this.Session.Entity.ChildRecords = bll_Records.getChildRecordList ( this.Session.Entity );
+
+      this.LogClass ( bll_Records.Log );
+      this.LogDebug ( "There are {0} of child records.", this.Session.Entity.ChildRecords.Count );
 
       this.Session.RefreshEntityChildren = false;
 
       this.LogMethodEnd ( "ReloadEntityChildren" );
 
     }//ENd ReloadEntityChildren method
+
 
     //  =============================================================================== 
     /// <summary>
@@ -4384,7 +4394,7 @@ namespace Evado.UniForm.Digital
         }
 
 
-        this.LogDebug ( "CREATED Record Id: " + this.Session.Entity.RecordId );
+        this.LogDebug ( "CREATED Entity Id: " + this.Session.Entity.EntityId );
 
         // 
         // Initialise the client object.

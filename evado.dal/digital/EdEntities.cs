@@ -2188,12 +2188,12 @@ namespace Evado.Dal.Digital
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
-        new SqlParameter(PARM_ENTITY_ID, SqlDbType.NVarChar, 20),
+        new SqlParameter(EdEntities.PARM_ENTITY_ID, SqlDbType.NVarChar, 20),
       };
       cmdParms [ 0 ].Value = EntityId;
 
-      sqlQueryString.AppendLine ( SQL_QUERY_ENTITY_VIEW );
-      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + PARM_ENTITY_ID + " );" );
+      sqlQueryString.AppendLine ( EdEntities.SQL_QUERY_ENTITY_VIEW );
+      sqlQueryString.AppendLine ( " WHERE ( " + EdEntities.DB_ENTITY_ID + " = " + EdEntities.PARM_ENTITY_ID + " );" );
 
       //
       // Execute the query against the database.
@@ -2343,24 +2343,19 @@ namespace Evado.Dal.Digital
     //  ---------------------------------------------------------------------------------
     private void getRecordEntities ( EdRecord Entity )
     {
+      this.LogMethod ( "getRecordEntities." );
       //
       // initialise the methods variables and objects.
       //
       EdRecords dal_RecordEntities = new EdRecords ( this.ClassParameters );
-
-      //
-      // if no entities exit.
-      //
-      if ( Entity.ChildEntities.Count == 0 )
-      {
-        return;
-      }
 
       // 
       // Retrieve the instrument items.
       // 
       Entity.ChildRecords = dal_RecordEntities.getChildRecordList ( Entity );
       this.LogClass ( dal_RecordEntities.Log );
+
+      this.LogMethodEnd ( "getRecordEntities" );
     }
 
     #endregion
