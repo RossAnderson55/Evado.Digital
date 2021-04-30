@@ -457,6 +457,63 @@ namespace Evado.UniForm.Digital
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
+
+    #region Select Token User Update  methods.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method gets generates the page object for the UniFORM client.
+    /// </summary>
+    /// <param name="TokenUserProfile">Evado.Model.EusTokenUserProfile object</param>
+    /// <returns>String</returns>
+    /// <remarks>
+    /// This method consists of the following steps:
+    /// 
+    /// 1. 
+    /// </remarks>
+    // ----------------------------------------------------------------------------------
+    public String UpdateTokenUserProfile (
+      Evado.Model.EusTokenUserProfile TokenUserProfile )
+    {
+      this.LogMethod ( "UpdateTokenUserProfile" );
+
+      //
+      // define the methods variables and objects.
+      //
+      EdUserprofiles bll_userProfiles = new EdUserprofiles ( this.ClassParameters );
+      String userCategoryList = EuAdapter.AdapterObjects.Settings.UserCategoryList;
+
+      try
+      {
+        //
+        // get the user type and category selectionlist.
+        //
+        EdSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList( userCategoryList );
+
+        //
+        // update the user profile.
+        //
+        EvEventCodes result = bll_userProfiles.updateTokenUser ( TokenUserProfile, selectionList );
+
+        this.LogDebugClass ( bll_userProfiles.Log );
+
+        this.LogMethodEnd ( "UpdateTokenUserProfile" );
+        return "{\"RESULT\":\"OK\"}";
+      }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
+      }
+
+      this.LogMethodEnd ( "UpdateTokenUserProfile" );
+
+      return "{\"RESULT\":\"ERROR\"}";
+
+    }//END UpdateTokenUserProfile method
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
     #region Public class method
 
     // ==================================================================================
@@ -490,10 +547,10 @@ namespace Evado.UniForm.Digital
       {
         this.LogValue ( "Page Command: {0}. ", PageCommand.getAsString ( false, false ) );
         this.LogValue ( "Exit Command: {0}. ", this.ExitCommand.getAsString ( false, false ) );
-        
+
         foreach ( EdRecord entity in this.Session.EntityDictionary )
         {
-          this.LogDebug( "Directory Entity {0} LayoutId {1} - {2}",
+          this.LogDebug ( "Directory Entity {0} LayoutId {1} - {2}",
             entity.EntityId, entity.LayoutId, entity.Title );
         }
         /*
@@ -549,11 +606,11 @@ namespace Evado.UniForm.Digital
         //
         this.loadUserOrganisation ( ); ;
 
-        this.LogDebug ( "Organisation {0} - {1}, Type{2}: ", 
-          this.Session.Organisation.OrgId, 
-          this.Session.Organisation.Name, 
+        this.LogDebug ( "Organisation {0} - {1}, Type{2}: ",
+          this.Session.Organisation.OrgId,
+          this.Session.Organisation.Name,
           this.Session.Organisation.OrgType );
-        
+
         //
         // load the default child entity.
         //
@@ -609,6 +666,7 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END getPageObject method
+
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -1268,7 +1326,7 @@ namespace Evado.UniForm.Digital
 
               foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
               {
-                this.LogDebug ( "PageId {0} - {1} UT: {2}", 
+                this.LogDebug ( "PageId {0} - {1} UT: {2}",
                   pageLayout.PageId,
                   pageLayout.Title,
                   pageLayout.UserTypes );
@@ -1281,7 +1339,7 @@ namespace Evado.UniForm.Digital
               }
             }
 
-           // this.LogDebug ( "UserProfile.HomePage {0}", this.Session.UserProfile.HomePage.PageId );
+            // this.LogDebug ( "UserProfile.HomePage {0}", this.Session.UserProfile.HomePage.PageId );
             //
             // Generate the user home page's layout if it is not null.
             //

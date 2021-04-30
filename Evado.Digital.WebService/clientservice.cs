@@ -598,7 +598,7 @@ namespace Evado.Digital.WebService
       //
       // Initialise the methods variables and object.
       //
-      this.LogMethod ( "generateWebServiceResponse method. " );
+      this.LogMethod ( "generateWebServiceResponse" );
       string json = String.Empty;
       JsonSerializerSettings jsonSettings = new JsonSerializerSettings
         {
@@ -687,7 +687,7 @@ namespace Evado.Digital.WebService
       //
       // Initialise the methods variables and object.
       //
-      this.LogMethod ( "generateErrorWebServiceResponse method. " );
+      this.LogMethod ( "generateErrorWebServiceResponse " );
       string stFileName = @"eventlog.txt";
       string json = String.Empty;
       string stEventLogPath = Global.ApplicationPath + stFileName;
@@ -1511,36 +1511,6 @@ namespace Evado.Digital.WebService
     //*********************************************************************************************
     #endregion
 
-    #region Token UserProfile Update PUT method.
-
-    //  =================================================================================
-    /// <summary>
-    /// Web Method
-    /// </summary>
-    /// <returns>json object.</returns>
-    //  ---------------------------------------------------------------------------------
-    [WebInvoke ( UriTemplate = "/{Version}", Method = "PUT" )]
-    public string UpdateUserProfile ( String Version, Stream content )
-    {
-      this.LogMethod ( "Evado.Digital.WebService.ClientService.UpdateUserProfile event method." );
-      this.LogValue ( "Version: " + Version );
-      this.LogValue ( "RawUrl: " + this._Context.Request.RawUrl );
-      this.LogValue ( "Url: " + this._Context.Request.Url );
-
-
-      //
-      // first load the POST payload into a string
-      // the POST content comes from the content param above
-      // as it is the only param that is not listed in the URI template
-      //
-      string content_value = new StreamReader ( content ).ReadToEnd ( );
-
-      this.LogMethod ( "UpdateUserProfile" );
-
-      return "{\"RESULT\":\"OK\"}";
-    }
-
-    #endregion
 
     #region unused http methods
 
@@ -1553,6 +1523,20 @@ namespace Evado.Digital.WebService
       // TODO: Replace the current implementation to return a collection of SampleItem instances
       return "{\"RESULT\":\"OK\"}";
     }
+
+    //  =================================================================================
+    /// <summary>
+    /// Web Method
+    /// </summary>
+    /// <returns>json object.</returns>
+    //  ---------------------------------------------------------------------------------
+    [WebInvoke ( UriTemplate = "{id}", Method = "PUT" )]
+    public string Update ( string id )
+    {
+      // TODO: Update the given instance of SampleItem in the collection
+      throw new NotImplementedException ( );
+    }
+
 
     //  =================================================================================
     /// <summary>
@@ -1639,7 +1623,7 @@ namespace Evado.Digital.WebService
       {
         Global.LogService ( Evado.Model.EvStatics.CONST_METHOD_START
         + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
-        + ClientService.CONST_NAME_SPACE + Value );
+        + ClientService.CONST_NAME_SPACE + Value + " method" );
       }
     }
 

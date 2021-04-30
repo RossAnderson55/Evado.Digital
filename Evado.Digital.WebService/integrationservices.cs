@@ -276,6 +276,66 @@ namespace Evado.UniForm
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
+    #region Select Token User Update  methods.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method gets generates the page object for the UniFORM client.
+    /// </summary>
+    /// <param name="TokenUserProfile">Evado.Model.EusTokenUserProfile object</param>
+    /// <returns>String</returns>
+    /// <remarks>
+    /// This method consists of the following steps:
+    /// 
+    /// 1. 
+    /// </remarks>
+    // ----------------------------------------------------------------------------------
+    public String UpdateTokenUserProfile (
+      Evado.Model.EusTokenUserProfile TokenUserProfile )
+    {
+      this.LogMethod ( "UpdateTokenUserProfile" );
+
+      try
+      {
+        //
+        // Initialise the Evado clinical adapter object.
+        //
+        this._ApplicationAdapter = new Evado.UniForm.Digital.EuAdapter (
+          this._ClientVersion,
+          this._GlobalObjects,
+          this._ServiceUserProfile,
+          this._ExitCommand,
+          this._ApplicationPath,
+          this._UniForm_BinaryFilePath,
+          this._UniForm_BinaryServiceUrl );
+
+        this._ApplicationAdapter.LoggingLevel = this.LoggingLevel;
+
+        this.LogValue ( "ApplicationAdapter.LoggingLevel: " + this._ApplicationAdapter.LoggingLevel );
+
+        //
+        // Call the adapter token user update method.
+        //
+        String result = this._ApplicationAdapter.UpdateTokenUserProfile ( TokenUserProfile );
+
+        this.LogApplication ( this._ApplicationAdapter.AdapterLog );
+
+        this.LogMethodEnd ( "UpdateTokenUserProfile" );
+        return result;
+      }
+      catch ( Exception Ex )
+      {
+        this.LogException ( Ex );
+      }
+
+      this.LogMethodEnd ( "UpdateTokenUserProfile" );
+
+      return "{\"RESULT\":\"ERROR\"}";
+
+    }//END UpdateTokenUserProfile method
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
     #region Public class Methods
 
     // ==================================================================================

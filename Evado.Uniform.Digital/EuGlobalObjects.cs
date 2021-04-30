@@ -313,6 +313,43 @@ namespace Evado.UniForm.Digital
 
     // ==================================================================================
     /// <summary>
+    /// This method returns Selected selection list.
+    /// </summary>
+    /// <param name="ListId">String: the list identifier.</param>
+    /// <returns>EdSelectionList object</return>
+    // ----------------------------------------------------------------------------------
+    public EdSelectionList getSelectionList (
+      String ListId )
+    {
+      //
+      // Exit if parameters are empty.
+      //
+      if ( ListId == String.Empty )
+      {
+        return null;
+      }
+
+      //
+      // iterate through the issued selection lists.
+      //
+      foreach ( EdSelectionList list in this._SelectionLists )
+      {
+        if ( list.ListId == ListId )
+        {
+          return list;
+        }//END list selection
+
+      }//Selection list iteration loop
+
+      //
+      // Return empty string if nothing is found.
+      //
+      return null;
+
+    }//END method.
+
+    // ==================================================================================
+    /// <summary>
     /// This method returns a list of options for selection list objects.
     /// </summary>
     /// <param name="forSelectionList">bool true for a selection list.</param>

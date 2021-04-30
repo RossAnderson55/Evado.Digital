@@ -1661,7 +1661,6 @@ namespace Evado.Model.Digital
       return stValue;
     }
 
-
     // =====================================================================================
     /// <summary>
     /// This method test to see if the user has a role contain in the roles delimited list.

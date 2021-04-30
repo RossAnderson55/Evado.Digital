@@ -50,6 +50,8 @@ namespace Evado.Digital.WebService
 
     private const string WEB_SERVICE_UNIFORM_CLIENT_ROUTING_VALUE = "client";
 
+    private const string WEB_SERVICE_UNIFORM_USER_TOKEN_ROUTING_VALUE = "token";
+
     private const string CONFIG_DEV_LOGGING = "DEV_LOGGING";
 
     private const string CONFIG_ENABLE_ANONYMOUS_LOGIN_FIELD_ID = "ANNON_AUTH";
@@ -285,11 +287,15 @@ namespace Evado.Digital.WebService
         //
         // Define the route for the client service.
         //
-
         RouteTable.Routes.Add ( new ServiceRoute (
           Global.WEB_SERVICE_UNIFORM_CLIENT_ROUTING_VALUE,
           new WebServiceHostFactory ( ),
           typeof ( Evado.Digital.WebService.ClientService ) ) );
+
+        RouteTable.Routes.Add ( new ServiceRoute (
+          Global.WEB_SERVICE_UNIFORM_USER_TOKEN_ROUTING_VALUE,
+          new WebServiceHostFactory ( ),
+          typeof ( Evado.Digital.WebService.TokenService ) ) );
 
       }
       catch ( Exception Ex )
