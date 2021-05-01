@@ -702,6 +702,8 @@ namespace Evado.Model.Digital
     //------------------------------------------------------------------------------------
     public void ImportTokenProfile ( EusTokenUserProfile TokenUserProfile )
     {
+      this.Guid = TokenUserProfile.Token;
+      this.Token = TokenUserProfile.Token;
       this.UserId = TokenUserProfile.UserId;
       this.GivenName = TokenUserProfile.GivenName;
       this.FamilyName = TokenUserProfile.FamilyName;
@@ -709,6 +711,8 @@ namespace Evado.Model.Digital
       this.Token = TokenUserProfile.Token;
       this.UserType = TokenUserProfile.UserType;
       this.UserCategory = TokenUserProfile.UserType;
+      this.ImageFileName = String.Empty;
+      this.ExpiryDate = EvStatics.getDateTime ( "31-Dec-2099" );
     }
 
     //===================================================================================

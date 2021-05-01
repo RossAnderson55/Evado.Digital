@@ -137,7 +137,7 @@ namespace Evado.Digital.WebService
       Global.ClearApplicationLog ( );
       try
       {
-        this.LogMethod ( "Evado.Digital.WebService.ClientServicegetPageObject event method." );
+        this.LogMethod ( "getPageObject web service method." );
         this.LogValue ( "ServerVersion: " + this._ServerVersion );
         this.LogValue ( "URL sessionId: " + SessionId );
         this.LogValue ( "Context SessionId: " + this._Context.Session.SessionID );
@@ -469,6 +469,7 @@ namespace Evado.Digital.WebService
           Global.UniForm_BinaryFilePath,
           Global.UniForm_BinaryServiceUrl );
 
+        this._IntegrationServices.LoggingLevel = Global.LoggingLevel;
         this._IntegrationServices.EventLogSource = Global.EventLogSource;
 
         //
@@ -1533,8 +1534,14 @@ namespace Evado.Digital.WebService
     [WebInvoke ( UriTemplate = "{id}", Method = "PUT" )]
     public string Update ( string id )
     {
-      // TODO: Update the given instance of SampleItem in the collection
-      throw new NotImplementedException ( );
+      this.LogMethod ( "Update web service method." );
+      this.LogDebug ( "id: " + id );
+
+      Global.OutputApplicationLog ( );
+
+      Global.OutputEventLog ( );
+
+      return "{\"RESULT\":\"ERROR\"}";
     }
 
 

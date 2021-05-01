@@ -1381,7 +1381,7 @@ namespace Evado.Dal.Digital
       {
         user.Guid = UserProfile.Token;
       }
-
+      this.LogDebug ( "UserGuid: {0}, token{1}", user.Guid, UserProfile.Token );
       // 
       // Define the guid for the user of one is not allocated.
       // 

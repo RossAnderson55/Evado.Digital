@@ -94,7 +94,7 @@ namespace Evado.UniForm.Digital
 
         this.Session.UserProfile = userProfiles.getItem ( this.ServiceUserProfile.Token );
 
-        this.LogDebugClass ( userProfiles.Log );
+        this.LogAdapter ( userProfiles.Log );
       }
 
       else

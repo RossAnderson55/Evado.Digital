@@ -735,6 +735,26 @@ namespace Evado.Model
     /// This enumeration defines that no milestones have been selected for the questionnaire.
     /// </summary>
     Questionnaire_No_Milestones_Selected = -609,
+
+    /// <summary>
+    /// This enumeration defines Token user profile update encountered a general error.
+    /// </summary>
+    Token_User_Profile_Update_Error = -610,
+
+    /// <summary>
+    /// This enumeration defines that token user profile encountered a token error.
+    /// </summary>
+    Token_User_Profile_Token_Error = -611,
+
+    /// <summary>
+    /// This enumeration defines that token user profile encountered a userid error.
+    /// </summary>
+    Token_User_Profile_UserId_Error = -612,
+
+    /// <summary>
+    /// This enumeration defines that token user profile encountered a userid error.
+    /// </summary>
+    Token_User_Profile_UserId_Empty = -613,
     #endregion
 
     #region Process Email events

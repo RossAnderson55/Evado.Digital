@@ -450,21 +450,57 @@ namespace Evado.Bll.Digital
       // 
       // Initialise the methods variables and objects.
       // 
-      EvEventCodes iReturn = EvEventCodes.Ok;
-      Evado.Model.Digital.EdUserProfile UserProfile = new EdUserProfile ( );
+      EvEventCodes result = EvEventCodes.Ok;
+      Evado.Model.Digital.EdUserProfile userProfile = new EdUserProfile ( );
+      Evado.Model.Digital.EdUserProfile existingUserProfile = new EdUserProfile ( );
 
       //
       // Import the user token data.
       //
-      UserProfile.ImportTokenProfile ( TokenUser );
+      userProfile.ImportTokenProfile ( TokenUser );
 
       // 
       // Check that the user id is valid
       // 
-      if ( UserProfile.UserId == String.Empty )
+      if ( userProfile.UserId == String.Empty )
       {
         this.LogEvent ( "UserId is empty" );
-        return EvEventCodes.Identifier_User_Id_Error;
+        return EvEventCodes.Token_User_Profile_UserId_Empty;
+      }
+
+      //
+      // validate that the user does not already exist.
+      //
+      existingUserProfile = this._Dal_UserProfiles.GetItem ( userProfile.Guid );
+
+      this.LogDebug ( " userProfile.Guid: '{0}', UserId '{1}'", userProfile.Guid, userProfile.UserId );
+      this.LogDebug ( " existingUserProfile.Guid: '{0}', UserId '{1}'", existingUserProfile.Guid, existingUserProfile.UserId );
+
+      if ( existingUserProfile.UserId != userProfile.UserId
+        && existingUserProfile.Guid != Guid.Empty )
+      {
+        this.LogDebug ( "UserId does NOT match the Token value." );
+        this.LogMethodEnd ( "updateTokenUser" );
+        return EvEventCodes.Token_User_Profile_UserId_Error;
+      }
+
+      //
+      // If a new user exists the update their details as a subscribed user.
+      //
+      if ( existingUserProfile.UserId == userProfile.UserId
+        && TokenUser.UserStatus == EusTokenUserProfile.UserStatusCodes.New_User )
+      {
+        this.LogDebug ( "Existing User to update details as a subscribed user." );
+        TokenUser.UserStatus = EusTokenUserProfile.UserStatusCodes.Subscribed_User;
+      }
+
+      //
+      // if the user does not have an organisation create one for them.
+      //
+      if ( userProfile.OrgId == String.Empty )
+      {
+        this.LogDebug ( "No Organisation so create one for the user." );
+        this.AddTokenOrganisation ( userProfile );
       }
 
       //
@@ -472,58 +508,109 @@ namespace Evado.Bll.Digital
       //
       if ( UserTypeList.Items.Count > 0 )
       {
+        this.LogDebug ( "Updating the use category" );
+        this.LogDebug ( "UserType {0}.", userProfile.UserType );
         foreach ( EdSelectionList.Item item in UserTypeList.Items )
         {
-          if ( UserProfile.UserType == item.Value )
+          this.LogDebug ( "Item C: {0}, V: {1}, D: {2}", item.Category, item.Value, item.Description);
+          if ( userProfile.UserType == item.Value )
           {
-            UserProfile.UserCategory = item.Category;
+            userProfile.UserCategory = item.Category;
             break;
           }
         }
+      }
+      this.LogDebug ( "UserCatetory {0}.", userProfile.UserCategory );
+
+      //
+      // if the role is empty set to the category as a default.
+      //
+      if ( userProfile.Roles == String.Empty )
+      {
+        userProfile.Roles = userProfile.UserCategory;
       }
 
       //
       // based on the user status select the method of user update.
       //
+      this.LogDebug ( "UserStatus {0}.", TokenUser.UserStatus );
       switch ( TokenUser.UserStatus )
       {
         case EusTokenUserProfile.UserStatusCodes.New_User:
           {
             this.LogValue ( "Add User" );
-            iReturn = this._Dal_UserProfiles.AddItem ( UserProfile );
+            result = this._Dal_UserProfiles.AddItem ( userProfile );
             this.LogDebug ( this._Dal_UserProfiles.Log );
 
             this.LogMethodEnd ( "updateTokenUser" );
-            return iReturn;
+            return result;
           }
 
         case EusTokenUserProfile.UserStatusCodes.Subscribed_User:
           {
             this.LogValue ( "update User" );
-            iReturn = this._Dal_UserProfiles.UpdateItem ( UserProfile );
+            result = this._Dal_UserProfiles.UpdateItem ( userProfile );
             this.LogDebug ( this._Dal_UserProfiles.Log );
 
             this.LogMethodEnd ( "updateTokenUser" );
-            return iReturn;
+            return result;
           }
 
         default:
           {
             this.LogValue ( "Disable user access" );
 
-            UserProfile.Roles = String.Empty;
-            UserProfile.UserCategory = String.Empty;
-            UserProfile.UserType = String.Empty;
+            userProfile.Roles = String.Empty;
+            userProfile.UserCategory = String.Empty;
+            userProfile.UserType = String.Empty;
 
-            iReturn = this._Dal_UserProfiles.UpdateItem ( UserProfile );
+            result = this._Dal_UserProfiles.UpdateItem ( userProfile );
             this.LogDebug ( this._Dal_UserProfiles.Log );
 
             this.LogMethodEnd ( "updateTokenUser" );
-            return iReturn;
+            return result;
           }
       }
-    }//END saveItem method
+    }//END updateTokenUser method
+    
+    // =====================================================================================
+    /// <summary>
+    /// This method add an organisation for token generated users.
+    /// </summary>
+    /// <param name="UserProfile">Evado.Model.Digital.EdUserProfile object</param>
+    /// <returns>EvEventCodes: an event code for saving items</returns>
+    // -------------------------------------------------------------------------------------
+    public EvEventCodes AddTokenOrganisation (
+      EdUserProfile UserProfile )
+    {
+      this.LogMethod ( "AddTokenOrganisation" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      EvEventCodes result = EvEventCodes.Ok;
+      Evado.Model.Digital.EdOrganisation organisation = new EdOrganisation ( );
+      Evado.Dal.Digital.EdOrganisations dal_Organisations =
+        new Evado.Dal.Digital.EdOrganisations ( this.ClassParameter );
 
+      //
+      // Create the org identifier.
+      //
+      int orgCount = dal_Organisations.getOrganisationCount ( String.Empty );
+
+      String orgId = "T" + orgCount.ToString ( "0000" );
+      organisation.OrgId = orgId;
+      UserProfile.OrgId = orgId;
+
+      //
+      // Add organisation object
+      //
+      result = dal_Organisations.addItem ( organisation );
+
+      this.LogDebug ( dal_Organisations.Log );
+
+      this.LogMethodEnd ( "AddTokenOrganisation" );
+      return result;
+    }
     #endregion
 
 

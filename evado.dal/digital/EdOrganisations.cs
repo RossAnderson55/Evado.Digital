@@ -332,6 +332,78 @@ namespace Evado.Dal.Digital
     /// 5. Return the organizations list. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
+    public int getOrganisationCount ( String Type )
+    {
+      //
+      // Initialize the method status, a return organization list and an IsTrue string value
+      //
+      this.LogMethod ( "getOrganisationCount method. " );
+      this.LogDebug ( "Type: " + Type );
+      //
+      // Initialise the methods variables and objects.
+      //
+      int OrgCount = 0;
+
+
+      // 
+      // Define the SQL query parameters and load the query values.
+      // 
+      SqlParameter [ ] cmdParms = new SqlParameter [ ] 
+      {
+        new SqlParameter ( EdOrganisations.PARM_ORG_TYPE, SqlDbType.NVarChar, 50 )
+      };
+      cmdParms [ 0 ].Value = Type;
+
+      // 
+      // Create the sql query string.
+      // 
+      sqlQueryString = SQL_SELECT_QUERY
+        + "WHERE (" + EdOrganisations.DB_DELETED + " = 0) ";
+
+      if ( Type != String.Empty )
+      {
+        sqlQueryString += " AND (" + EdOrganisations.DB_ORG_TYPE + " = " + EdOrganisations.PARM_ORG_TYPE + ") ";
+      }
+
+      sqlQueryString += " ORDER BY " + EdOrganisations.DB_ORG_ID + ";";
+
+      this.LogDebug ( sqlQueryString );
+
+      // 
+      // Execute the query against the database
+      //
+      using ( DataTable table = EvSqlMethods.RunQuery ( sqlQueryString, cmdParms ) )
+      {
+        OrgCount = table.Rows.Count;
+      }
+      // 
+      // Return the arraylist of organisations.
+      // 
+      this.LogMethodEnd ( "getOrganisationCount" );
+      return OrgCount;
+
+    }//End getOrganisationCount method.
+
+    // =====================================================================================
+    /// <summary>
+    /// This class returns a list of organization data object based on the passed parameters. 
+    /// </summary>
+    /// <param name="Type">EvOrganisation.OrganisationTypes: the organisation type.</param>
+    /// <returns>List of EvOrganisation: a list of organization data object</returns>
+    /// <remarks>
+    /// This method consists of the following steps: 
+    /// 
+    /// 1. Set the IsTrue string to 0, if the selection type is not selected.
+    /// 
+    /// 2. Define the sql query string and execute the sql query string to a datatable
+    /// 
+    /// 3. Loop through the table and extract the row data to the organization object. 
+    /// 
+    /// 4. Add the organization object value to the Organizations list. 
+    /// 
+    /// 5. Return the organizations list. 
+    /// </remarks>
+    // -------------------------------------------------------------------------------------
     public List<EdOrganisation> getOrganisationList (
       String Type )
     {

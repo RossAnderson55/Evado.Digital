@@ -457,7 +457,6 @@ namespace Evado.UniForm.Digital
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-
     #region Select Token User Update  methods.
 
     // ==================================================================================
@@ -472,16 +471,20 @@ namespace Evado.UniForm.Digital
     /// 1. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public String UpdateTokenUserProfile (
+    public EvEventCodes UpdateTokenUserProfile (
       Evado.Model.EusTokenUserProfile TokenUserProfile )
     {
       this.LogMethod ( "UpdateTokenUserProfile" );
+      this.ClassParameters.LoggingLevel = this.LoggingLevel;
+      this.LogDebug ( "ClassParameters.LoggingLevel: {0}", this.ClassParameters.LoggingLevel );
 
       //
       // define the methods variables and objects.
       //
       EdUserprofiles bll_userProfiles = new EdUserprofiles ( this.ClassParameters );
       String userCategoryList = EuAdapter.AdapterObjects.Settings.UserCategoryList;
+
+      this.LogDebug ( "ClassParameter.LoggingLevel: " + bll_userProfiles.ClassParameter.LoggingLevel );
 
       try
       {
@@ -495,10 +498,10 @@ namespace Evado.UniForm.Digital
         //
         EvEventCodes result = bll_userProfiles.updateTokenUser ( TokenUserProfile, selectionList );
 
-        this.LogDebugClass ( bll_userProfiles.Log );
+        this.LogAdapter ( bll_userProfiles.Log );
 
         this.LogMethodEnd ( "UpdateTokenUserProfile" );
-        return "{\"RESULT\":\"OK\"}";
+        return result;
       }
       catch ( Exception Ex )
       {
@@ -507,7 +510,7 @@ namespace Evado.UniForm.Digital
 
       this.LogMethodEnd ( "UpdateTokenUserProfile" );
 
-      return "{\"RESULT\":\"ERROR\"}";
+      return EvEventCodes.Token_User_Profile_Update_Error;
 
     }//END UpdateTokenUserProfile method
 
@@ -666,7 +669,6 @@ namespace Evado.UniForm.Digital
       return this.Session.LastPage;
 
     }//END getPageObject method
-
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

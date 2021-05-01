@@ -103,6 +103,7 @@
     <Content Include="xsl\xsubject.xsl" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TokenService.cs" />
     <Compile Include="evapplicationevents.cs" />
     <Compile Include="IntegrationServices.cs" />
     <Compile Include="Dal\Devices.cs">

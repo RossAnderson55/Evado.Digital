@@ -58,7 +58,7 @@ namespace Evado.Digital.WebService
 
     private const string CONFIG_ENABLE_TOKEN_LOGIN_FIELD_ID = "TOKEN_AUTH";
 
-    private const string CONFIG_VALID_IP_ADDRESS_FIELD_ID = "VALID_IP";
+    private const string CONFIG_TOKEN_IP_ADDRESS_FIELD_ID = "TUPS_IPS";
 
 
     // Variable containing the application path.  Used to generate the base URL.
@@ -146,6 +146,11 @@ namespace Evado.Digital.WebService
 
 
     /// <summary>
+    /// This variables defines the image storage path
+    /// </summary>
+    public static string TokenUserOrganisationType = String.Empty ;
+
+    /// <summary>
     /// This object contains a hash list of global objects.
     /// </summary>
     public static Hashtable GlobalObjectList = new Hashtable ( );
@@ -184,15 +189,15 @@ namespace Evado.Digital.WebService
       get { return Global._EnableTokenLogin; }
     }
 
-    public static string _ValidIntegrationIpAddresses = String.Empty;
+    private static string _ValidTokenUserProfileIpAddresses = String.Empty;
 
 
     /// <summary>
     /// This property contains a delimited list of valid service integration IP addresses.
     /// </summary>
-    public static String ValidIntegrationIpAddresses
+    public static String ValidTokenUserProfileIpAddresses
     {
-      get { return Global._ValidIntegrationIpAddresses; }
+      get { return Global._ValidTokenUserProfileIpAddresses; }
     }
 
 
@@ -267,9 +272,10 @@ namespace Evado.Digital.WebService
 
         EventLog.WriteEntry ( EventLogSource, EventMessage, EventLogEntryType.Error );
 
-        Global.LogMethod ( EventMessage );
+        Global.LogEvent( EventMessage );
 
       } // Close catch   
+      Global.OutputStartupLog ( );
 
     }//END Application_Start event method
 
@@ -297,6 +303,12 @@ namespace Evado.Digital.WebService
           new WebServiceHostFactory ( ),
           typeof ( Evado.Digital.WebService.TokenService ) ) );
 
+        foreach ( ServiceRoute route in RouteTable.Routes )
+        {
+          Global.LogDebug ( "Route Handle " + route.RouteHandler + ", URL: " + route.Url  );
+        }
+
+        Global.LogMethodEnd ( "RegisterRoutes method" );
       }
       catch ( Exception Ex )
       {
@@ -351,11 +363,11 @@ namespace Evado.Digital.WebService
       //
       // Set the debug validation on, if true password is not validated
       //
-      if ( ConfigurationManager.AppSettings [ Global.CONFIG_VALID_IP_ADDRESS_FIELD_ID ] != null )
+      if ( ConfigurationManager.AppSettings [ Global.CONFIG_TOKEN_IP_ADDRESS_FIELD_ID ] != null )
       {
-        Global._ValidIntegrationIpAddresses = ConfigurationManager.AppSettings [ Global.CONFIG_VALID_IP_ADDRESS_FIELD_ID ].ToString ( ); 
+        Global._ValidTokenUserProfileIpAddresses = ConfigurationManager.AppSettings [ Global.CONFIG_TOKEN_IP_ADDRESS_FIELD_ID ].ToString ( ); 
       }
-      Global.LogValue ( "Valid Interation IP Addresses: " + Global._ValidIntegrationIpAddresses );
+      Global.LogValue ( "Valid Token User Service IP Addresses: " + Global._ValidTokenUserProfileIpAddresses );
 
 
 
@@ -643,15 +655,15 @@ namespace Evado.Digital.WebService
 
         periodHours = Evado.Model.EvStatics.getInteger ( value );
 
-        Global.LogDebugValue ( "CONFIG: Delete period: " + value );
+        Global.LogDebug ( "CONFIG: Delete period: " + value );
 
       }
 
-      Global.LogDebugValue ( "hours period: " + periodHours );
+      Global.LogDebug ( "hours period: " + periodHours );
 
       DateTime datePeriod = DateTime.Now.AddHours ( -periodHours );
 
-      Global.LogDebugValue ( "datePeriod: " + datePeriod.ToString ( "dd-MMM-yy hh:mm" ) );
+      Global.LogDebug ( "datePeriod: " + datePeriod.ToString ( "dd-MMM-yy hh:mm" ) );
 
        Global.LogValue ( "Global Object list length: " + Global.GlobalObjectList.Count );
 
@@ -662,13 +674,13 @@ namespace Evado.Digital.WebService
       {
         String stKey = entry.Key.ToString ( );
 
-        Global.LogDebugValue ( "Entry key: " + stKey );
+        Global.LogDebug ( "Entry key: " + stKey );
 
         if ( stKey.Contains ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP ) == true )
         {
           DateTime dateStamp = ( DateTime ) Global.GlobalObjectList [ entry.Key ];
 
-           Global.LogDebugValue ( "dateStamp: " + dateStamp.ToString ( "dd-MMM-yy hh:mm" ) );
+           Global.LogDebug ( "dateStamp: " + dateStamp.ToString ( "dd-MMM-yy hh:mm" ) );
 
           //
           // If the date stamp is older than the delete date delete object.
@@ -696,7 +708,7 @@ namespace Evado.Digital.WebService
     private static void deleteGlobalObjectEntries ( System.Collections.DictionaryEntry Entry )
     {
       Global.LogMethod ( "deleteOldGlobalObjects method" );
-       Global.LogDebugValue ( "Item.key: " + Entry.Key.ToString ( ) );
+       Global.LogDebug ( "Item.key: " + Entry.Key.ToString ( ) );
 
       //
       // Initialise the methods variables and objects.
@@ -705,14 +717,14 @@ namespace Evado.Digital.WebService
       UserName = UserName.ToUpper ( );
       UserName = UserName.Replace ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP, String.Empty );
 
-      Global.LogDebugValue ( "User: " + UserName );
+      Global.LogDebug ( "User: " + UserName );
       String ClinicalObject_Key = UserName + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_OBJECT;
 
-      Global.LogDebugValue ( "Clinical Key: " + ClinicalObject_Key );
+      Global.LogDebug ( "Clinical Key: " + ClinicalObject_Key );
 
       String HistoryList_Key = UserName + Evado.Model.UniForm.EuStatics.GLOBAL_COMMAND_HISTORY;
 
-      Global.LogDebugValue ( "Command History Key: " + HistoryList_Key );
+      Global.LogDebug ( "Command History Key: " + HistoryList_Key );
 
       Global.GlobalObjectList.Remove ( Entry );
       Global.GlobalObjectList.Remove ( ClinicalObject_Key );
@@ -731,7 +743,7 @@ namespace Evado.Digital.WebService
     public static void deleteUsersGlobalObjects ( EvUserProfileBase ServiceUserProfile )
     {
       Global.LogMethod ( "deleteUsersGlobalObjectEntries method" );
-       Global.LogDebugValue ( "UserName: " + ServiceUserProfile.UserId );
+       Global.LogDebug ( "UserName: " + ServiceUserProfile.UserId );
 
       if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_USER_OBJECT_KEY ] != null )
       {
@@ -739,7 +751,7 @@ namespace Evado.Digital.WebService
 
         if ( value.ToLower ( ) == "no" )
         {
-          Global.LogDebugValue ( "Not deleting user profile data" );
+          Global.LogDebug ( "Not deleting user profile data" );
           return;
         }
 
@@ -750,7 +762,7 @@ namespace Evado.Digital.WebService
         return;
       }
 
-      Global.LogDebugValue ( "Deleting global objects for user UserName: " + ServiceUserProfile );
+      Global.LogDebug ( "Deleting global objects for user UserName: " + ServiceUserProfile );
       String userId = ServiceUserProfile.UserId.ToUpper ( );
       //
       // iterate through the list deleting the value.
@@ -899,6 +911,7 @@ namespace Evado.Digital.WebService
     private const String CONST_COMMAND_LOG_FILE_NAME = @"command-log-";
     private const String CONST_EVENT_LOG_FILE_NAME = @"event-log-";
 
+    private const String CONST_STARTUP_LOG_FILE_NAME = @"startup-log";
     private const String CONST_APPLICATION_LOG_FILE_NAME = @"application-log-";
 
     private const String CONST_BASE_NAME_SPACE = "Evado.Digital.WebService.";
@@ -952,6 +965,81 @@ namespace Evado.Digital.WebService
 
     }//END writeOutDebugLog method}
 
+
+    //  =================================================================================
+    /// <summary>
+    ///   This static method removes a user from the online user list.
+    /// 
+    /// </summary>
+    //   ---------------------------------------------------------------------------------
+    public static void OutputStartupLog ( )
+    {
+      //
+      // Define the filename
+      //
+      String LogFileName = Global.LogFilePath
+        + APPLICATION_SERVICE_ROOT
+        + CONST_STARTUP_LOG_FILE_NAME
+        + DateTime.Now.ToString ( "yy-MM" ) + ".log";
+
+      if ( DevelopmentLogging == true )
+      {
+        LogFileName = Global.LogFilePath
+         + APPLICATION_SERVICE_ROOT
+         + CONST_STARTUP_LOG_FILE_NAME
+         + ".log";
+      }
+
+      LogFileName = LogFileName.Replace ( "/", "-" );
+
+
+      //
+      // IF Debug is turned off exit method.
+      //
+      if ( Global.LoggingLevel < 1 )
+      {
+        return;
+      }
+
+      //
+      // if the debug log path is defined output the debug log to the given path.
+      //
+      if ( Global.ApplicationPath == String.Empty )
+      {
+        return;
+      }
+
+      //
+      // Output the debug log to debug log page.
+      //
+      String stContent = String.Empty;
+
+      if ( Global._ApplicationLog.Length == 0 )
+      {
+        stContent = " APPLICATION LOG\r\n"
+          + "Saved: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm:ss" )
+          + "\r\nNo Debug Content";
+      }
+      else
+      {
+        stContent += " APPLICATION LOG\r\n"
+          + "Saved: " + DateTime.Now.ToString ( "dd MMM yyyy HH:mm:ss" )
+          + "\r\n"
+          + Global._ApplicationLog.ToString ( );
+      }
+
+      stContent = Evado.Model.EvStatics.getHtmlAsString ( stContent );
+
+      // 
+      // Open the stream to the file.
+      // 
+      using ( System.IO.StreamWriter sw = new System.IO.StreamWriter ( LogFileName ) )
+      {
+        sw.Write ( stContent );
+
+      }// End StreamWriter.
+
+    }//END writeOutDebugLog method
 
     //  =================================================================================
     /// <summary>
@@ -1326,7 +1414,7 @@ namespace Evado.Digital.WebService
     /// 
     /// </summary>
     //   ---------------------------------------------------------------------------------
-    public static void LogMethod ( String Value )
+    private static void LogMethod ( String Value )
     {
       //
       // log value if application logging level is exceeded.
@@ -1348,7 +1436,7 @@ namespace Evado.Digital.WebService
     /// </summary>
     /// <param name="MethodName">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    public static void LogMethodEnd ( String MethodName )
+    private static void LogMethodEnd ( String MethodName )
     {
       if ( Global.LoggingLevel > 0 )
       {
@@ -1371,7 +1459,7 @@ namespace Evado.Digital.WebService
     {
       if ( Global.LoggingLevel > 1 )
       {
-        Global._EventLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
+        Global._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
     }
 
@@ -1386,7 +1474,7 @@ namespace Evado.Digital.WebService
     {
       if ( Global.LoggingLevel > 2 )
       {
-        Global._EventLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
+        Global._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
     }
 
@@ -1397,11 +1485,27 @@ namespace Evado.Digital.WebService
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    private static void LogDebugValue ( String Value )
+    private static void LogDebug ( String Value )
     {
       if ( Global.LoggingLevel > 4 )
       {
-        Global._EventLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
+        Global._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
+      }
+    }
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Format">String: format text.</param>
+    /// <param name="args">Array of objects as parameters.</param>
+    // ----------------------------------------------------------------------------------
+    private void LogDebug ( String Format, params object [ ] args )
+    {
+      if ( Global.LoggingLevel > 4 )
+      {
+        Global._ApplicationLog.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ":" +
+          String.Format ( Format, args ) );
       }
     }
 

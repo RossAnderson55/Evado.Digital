@@ -198,10 +198,21 @@ namespace Evado.Model.Digital
       }
     }
 
+    String _ImageFileName = String.Empty;
     /// <summary>
     /// This property contains the image (logo) filename for the organisation.
     /// </summary>
-    public string ImageFileName { get; set; }
+    public string ImageFileName
+    {
+      get
+      {
+        return this._ImageFileName; 
+      }
+      set
+      {
+        this._ImageFileName = value;
+      }
+    }
 
     /// <summary>
     /// This property contains an address of an organization

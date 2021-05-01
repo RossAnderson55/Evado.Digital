@@ -290,11 +290,11 @@ namespace Evado.UniForm
     /// 1. 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public String UpdateTokenUserProfile (
+    public EvEventCodes UpdateTokenUserProfile (
       Evado.Model.EusTokenUserProfile TokenUserProfile )
     {
       this.LogMethod ( "UpdateTokenUserProfile" );
-
+      this.LogValue ( "LoggingLevel: " + this.LoggingLevel );
       try
       {
         //
@@ -316,7 +316,7 @@ namespace Evado.UniForm
         //
         // Call the adapter token user update method.
         //
-        String result = this._ApplicationAdapter.UpdateTokenUserProfile ( TokenUserProfile );
+        EvEventCodes result = this._ApplicationAdapter.UpdateTokenUserProfile ( TokenUserProfile );
 
         this.LogApplication ( this._ApplicationAdapter.AdapterLog );
 
@@ -329,8 +329,7 @@ namespace Evado.UniForm
       }
 
       this.LogMethodEnd ( "UpdateTokenUserProfile" );
-
-      return "{\"RESULT\":\"ERROR\"}";
+      return EvEventCodes.Token_User_Profile_Update_Error;
 
     }//END UpdateTokenUserProfile method
 
