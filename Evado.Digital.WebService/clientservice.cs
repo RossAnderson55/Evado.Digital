@@ -995,6 +995,7 @@ namespace Evado.Digital.WebService
       if ( PageCommand.Type == CommandTypes.Anonymous_Command
         && Global.EnableAnonymousLogin == true )
       {
+        PageCommand.Title = "Home Page";
         this.LogDebug ( "PageCommand.Type = Anonymous_Command" );
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Anonymous_Access;
         this._ServiceUserProfile.IsAuthenticated = true;
@@ -1022,6 +1023,7 @@ namespace Evado.Digital.WebService
         && Global.EnableTokenLogin == true )
       {
         this.LogDebug ( "PageCommand.Type = Token_Login_Command" );
+        PageCommand.Title = "Home Page";
 
         this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Token_Access;
         this._ServiceUserProfile.IsAuthenticated = true;
@@ -1083,6 +1085,7 @@ namespace Evado.Digital.WebService
       if ( PageCommand.Type == CommandTypes.Network_Login_Command
         && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT )
       {
+        PageCommand.Title = "Home Page";
         String message = message = "User: " + this._ServiceUserProfile.UserId + " NETWORK AUTHENITCATED.";
 
         this.LogValue ( message );

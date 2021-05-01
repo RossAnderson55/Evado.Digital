@@ -106,7 +106,9 @@ namespace Evado.UniForm.Digital
       this.LogMethod ( "getHomePage" );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
 
-      this.LogDebug ( "Current Entity: {0} - {1}.", this.Session.Entity.EntityId, this.Session.Entity.CommandTitle );
+      this.LogDebug ( "Current Entity: {0} - {1}.", 
+        this.Session.Entity.EntityId, 
+        this.Session.Entity.CommandTitle );
       //
       // initialise the methods objects and variables.
       //
@@ -303,7 +305,7 @@ namespace Evado.UniForm.Digital
       {
         this.createPage_RightColumn ( page, PageCommand );
       }
-
+      clientDataObject.Page.Exit = new Model.UniForm.Command ( );
       this.LogMethodEnd ( "generatePage" );
 
       return clientDataObject;
