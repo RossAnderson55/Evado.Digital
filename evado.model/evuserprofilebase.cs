@@ -491,7 +491,16 @@ namespace Evado.Model
       set { this._UpdatedByUserId = value; }
     }
 
-
+    /// <summary>
+    /// this property returns a selection option object for the user.
+    /// </summary>
+    public EvOption Option
+    {
+      get
+      {
+        return new EvOption(  this.UserId,String.Format( "{0} - {1} ", this.UserId,this.CommonName ) ) ;
+      }
+    }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion

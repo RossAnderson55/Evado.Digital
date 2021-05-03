@@ -128,17 +128,21 @@ namespace Evado.UniForm.Digital
       {
         this.Session.EntityDictionary = new List<EdRecord> ( );
       }
-      if ( this.Session.SelectedOrganisationCountry == null )
+      if ( this.Session.SelectedState == null )
       {
-        this.Session.SelectedOrganisationCountry = String.Empty;
+        this.Session.SelectedState = String.Empty;
       }
-      if ( this.Session.SelectedOrganisationCity == null )
+      if ( this.Session.SelectedCountry == null )
       {
-        this.Session.SelectedOrganisationCity = String.Empty;
+        this.Session.SelectedCountry = String.Empty;
       }
-      if ( this.Session.SelectedOrganisationPostCode == null )
+      if ( this.Session.SelectedCity == null )
       {
-        this.Session.SelectedOrganisationPostCode = String.Empty;
+        this.Session.SelectedCity = String.Empty;
+      }
+      if ( this.Session.SelectedPostCode == null )
+      {
+        this.Session.SelectedPostCode = String.Empty;
       }
       if ( this.Session.SelectedUserCategory == null )
       {
@@ -148,8 +152,6 @@ namespace Evado.UniForm.Digital
       {
         this.Session.SelectedUserType = String.Empty;
       }
-
-
 
     }//END Method
 
@@ -273,6 +275,9 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        this.Session.PageId = PageCommand.GetPageId();
+
+        this.LogDebug ( "PageId: {0}", this.Session.StaticPageId );
 
         //
         // UPdate the sessin variables.
@@ -324,6 +329,7 @@ namespace Evado.UniForm.Digital
               {
                 case EdStaticPageIds.Entity_User_Access_Page:
                   {
+                    this.LogDebug ( "Entity_User_Access_Page" );
                     clientDataObject = this.getUserAccessObject ( PageCommand );
                     break;
                   }
@@ -984,6 +990,43 @@ namespace Evado.UniForm.Digital
       }
 
       //
+      // Update the user access page parameters.
+      //
+      if ( this.Session.StaticPageId == EdStaticPageIds.Entity_User_Access_Page )
+      {
+        if ( PageCommand.hasParameter ( EdUserProfile.FieldNames.User_Category ) == true )
+        {
+          this.Session.SelectedUserCategory = PageCommand.GetParameter ( EdUserProfile.FieldNames.User_Category );
+        }
+        this.LogValue ( "SelectedUserCategory: " + this.Session.SelectedUserCategory );
+
+        if ( PageCommand.hasParameter ( EdUserProfile.FieldNames.User_Type ) == true )
+        {
+          this.Session.SelectedUserType = PageCommand.GetParameter ( EdUserProfile.FieldNames.User_Type );
+        }
+        this.LogValue ( "SelectedUserType: " + this.Session.SelectedUserType );
+
+        if ( PageCommand.hasParameter ( EdUserProfile.FieldNames.Address_City ) == true )
+        {
+          this.Session.SelectedCity = PageCommand.GetParameter ( EdUserProfile.FieldNames.Address_City );
+        }
+        this.LogValue ( "SelectedCity: " + this.Session.SelectedCity );
+
+        if ( PageCommand.hasParameter ( EdUserProfile.FieldNames.Address_State ) == true )
+        {
+          this.Session.SelectedState= PageCommand.GetParameter ( EdUserProfile.FieldNames.Address_State );
+        }
+        this.LogValue ( "SelectedState: " + this.Session.SelectedState );
+
+        if ( PageCommand.hasParameter ( EdUserProfile.FieldNames.Address_Country) == true )
+        {
+          this.Session.SelectedCountry = PageCommand.GetParameter ( EdUserProfile.FieldNames.Address_Country );
+        }
+        this.LogValue ( "SelectedCountry: " + this.Session.SelectedCountry );
+
+      }
+
+      //
       // if the entity layout is defined in the page command then update its value.
       //
       if ( PageCommand.hasParameter ( EuEntities.CONST_HIDE_SELECTION ) == true )
@@ -1107,27 +1150,27 @@ namespace Evado.UniForm.Digital
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_Country ) == true )
       {
-        this.Session.SelectedOrganisationCountry = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Country );
+        this.Session.SelectedCountry = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Country );
       }
-      this.LogValue ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
+      this.LogValue ( "SelectedOrganisationCountry: " + this.Session.SelectedCountry );
 
       //
       // if the selected organisation city exists updated its value.
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_City ) == true )
       {
-        this.Session.SelectedOrganisationCity = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_City );
+        this.Session.SelectedCity = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_City );
       }
-      this.LogValue ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
+      this.LogValue ( "SelectedOrganisationCity: " + this.Session.SelectedCity );
 
       //
       // if the selected organisation city exists updated its value.
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_Post_Code ) == true )
       {
-        this.Session.SelectedOrganisationPostCode = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Post_Code );
+        this.Session.SelectedPostCode = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Post_Code );
       }
-      this.LogValue ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
+      this.LogValue ( "SelectedOrganisationPostCode: " + this.Session.SelectedPostCode );
 
 
 
@@ -1457,6 +1500,11 @@ namespace Evado.UniForm.Digital
         // 
         // Update the object.
         // 
+        if ( this.Session.PageId == EdStaticPageIds.Entity_User_Access_Page.ToString ( ) )
+        {
+          this.updateObject_EntityAccessValues ( PageCommand );
+        }
+        else 
         if ( this.Session.PageId == EdStaticPageIds.Record_Admin_Page.ToString ( ) )
         {
           this.updateObject_AdminValues ( PageCommand );
@@ -1593,6 +1641,28 @@ namespace Evado.UniForm.Digital
       this.Session.Entity.State = Evado.Model.EvStatics.parseEnumValue<EdRecordObjectStates> ( stState );
 
     }//END updateObject_AdminValues method.
+
+    // ==================================================================================
+    /// <summary>
+    /// THis method updates the form record values with the groupCommand parameter values.
+    /// </summary>
+    /// <param name="PageCommand"> Evado.Model.UniForm.Command object.</param>
+    //  ----------------------------------------------------------------------------------
+    private void updateObject_EntityAccessValues (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "updateObject_UserAccessValues" );
+      this.LogValue ( "Parameters.Count: " + PageCommand.Parameters.Count );
+
+      if ( PageCommand.hasParameter ( EdRecord.FieldNames.EntityAccess ) == true )
+      {
+        this.Session.Entity.EntityAccess = PageCommand.GetParameter ( EdRecord.FieldNames.EntityAccess );
+      }
+
+      this.LogValue ( "Entity.EntityAccess: " + this.Session.Entity.EntityAccess );
+      this.LogMethodEnd ( "updateObject_UserAccessValues" );
+
+    }//END updateObject_UserAccessValues method.
 
     // ==================================================================================
     /// <summary>

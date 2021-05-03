@@ -3134,6 +3134,18 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   <data name="Record_Empty_Value" xml:space="preserve">
     <value>Empty </value>
   </data>
+  <data name="Entities_User_Selection_Group_Title" xml:space="preserve">
+    <value>User Selection:</value>
+  </data>
+  <data name="Entity_Access_User_List_Command_Title" xml:space="preserve">
+    <value>Save Selection</value>
+  </data>
+  <data name="Entity_Access_User_List_Field_Title" xml:space="preserve">
+    <value>Selected Users:</value>
+  </data>
+  <data name="Entity_User_Access_Command_Title" xml:space="preserve">
+    <value>Edit User Access</value>
+  </data>
   <data name="Entity_User_Access_Page_Title" xml:space="preserve">
     <value>User Access for {0} </value>
   </data>

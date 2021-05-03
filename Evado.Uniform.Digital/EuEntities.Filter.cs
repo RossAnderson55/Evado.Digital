@@ -55,9 +55,9 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
       this.LogDebug ( "EnableEmptyQuerySelection: " + this.Session.EnableEmptyQuerySelection );
 
-      this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
-      this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
-      this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
+      this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedCountry );
+      this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedCity );
+      this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedPostCode );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -191,9 +191,9 @@ namespace Evado.UniForm.Digital
 
       bool enableEmptyQuery = false;
 
-      if ( this.Session.SelectedOrganisationCity != String.Empty
-        || this.Session.SelectedOrganisationCountry != String.Empty
-        || this.Session.SelectedOrganisationPostCode != String.Empty )
+      if ( this.Session.SelectedCity != String.Empty
+        || this.Session.SelectedCountry != String.Empty
+        || this.Session.SelectedPostCode != String.Empty )
       {
         this.LogDebug ( "Organisation filter enabled." );
         enableEmptyQuery = true;
@@ -421,7 +421,7 @@ namespace Evado.UniForm.Digital
             var field = PageGroup.createSelectionListField (
               FieldName,
               EdLabels.Organisation_Address_Country_Field_Label,
-              this.Session.SelectedOrganisationCountry,
+              this.Session.SelectedCountry,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
@@ -434,7 +434,7 @@ namespace Evado.UniForm.Digital
             var field = PageGroup.createSelectionListField (
               FieldName,
               EdLabels.Organisation_Address_PostCode_Field_Label,
-              this.Session.SelectedOrganisationPostCode,
+              this.Session.SelectedPostCode,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
@@ -447,7 +447,7 @@ namespace Evado.UniForm.Digital
             var field = PageGroup.createSelectionListField (
               FieldName,
               EdLabels.Organisation_Address_City_Field_Label,
-              this.Session.SelectedOrganisationCity,
+              this.Session.SelectedCity,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
             field.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );

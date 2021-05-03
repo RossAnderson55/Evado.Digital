@@ -583,19 +583,24 @@ namespace Evado.UniForm.Digital
 
 
     /// <summary>
-    /// This property object contains the organisation country selection value
+    /// This property object contains the user or organisation country selection value
     /// </summary>
-    public String SelectedOrganisationCountry { get; set; }
+    public String SelectedCountry { get; set; }
 
     /// <summary>
-    /// This property object contains the organisation country selection value
+    /// This property object contains the user or organisation country selection value
     /// </summary>
-    public String SelectedOrganisationCity { get; set; }
+    public String SelectedCity { get; set; }
 
     /// <summary>
-    /// This property object contains the organisation country selection value
+    /// This property object contains the user or organisation state selection value
     /// </summary>
-    public String SelectedOrganisationPostCode { get; set; }
+    public String SelectedState { get; set; }
+
+    /// <summary>
+    /// This property object contains the user or organisation postcode selection value
+    /// </summary>
+    public String SelectedPostCode { get; set; }
 
 
     // ==================================================================================

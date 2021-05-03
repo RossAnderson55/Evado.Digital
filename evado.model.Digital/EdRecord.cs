@@ -598,7 +598,12 @@ namespace Evado.Model.Digital
       /// <summary>
       /// This enumeration defines the text field height identifier.
       /// </summary>
-      FieldHeight
+      FieldHeight,
+
+      /// <summary>
+      /// This enumeration defines the entity access to t.
+      /// </summary>
+      EntityAccess,
 
     }
 
@@ -2159,6 +2164,11 @@ namespace Evado.Model.Digital
         case FieldNames.ReadAccessRoles:
           {
             this.Design.ReadAccessRoles = Value;
+            return;
+          }
+        case FieldNames.EntityAccess:
+          {
+            this.EntityAccess = Value;
             return;
           }
         case FieldNames.AuthorAccess:

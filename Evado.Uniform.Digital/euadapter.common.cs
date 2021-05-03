@@ -159,9 +159,12 @@ namespace Evado.UniForm.Digital
       this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
 
       this.ClassParameters.UserProfile = this.Session.UserProfile;
-      this.Session.SelectedOrgId = this.Session.UserProfile.OrgId;
-      this.Session.SelectedUserId = this.Session.UserProfile.UserId;
-
+      if ( this.Session.UserProfile.hasAdministrationAccess == false
+        && this.Session.UserProfile.hasEvadoManagementAccess == false )
+      {
+        this.Session.SelectedOrgId = this.Session.UserProfile.OrgId;
+        this.Session.SelectedUserId = this.Session.UserProfile.UserId;
+      }
       return true;
 
     }//END loadUserProfile method.

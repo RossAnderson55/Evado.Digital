@@ -61,7 +61,7 @@ namespace Evado.UniForm.Digital
         // Initialise the methods variables and objects.
         // 
         Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
-
+        this.EnableEntityEditButtonUpdate = false; 
         //
         // get the selected entity.
         //
@@ -324,9 +324,9 @@ namespace Evado.UniForm.Digital
       //
       // Set the filter critier.
       //
-      queryParameters.Org_City = this.Session.SelectedOrganisationCity;
-      queryParameters.Org_Country = this.Session.SelectedOrganisationCountry;
-      queryParameters.Org_PostCode = this.Session.SelectedOrganisationPostCode;
+      queryParameters.Org_City = this.Session.SelectedCity;
+      queryParameters.Org_Country = this.Session.SelectedCountry;
+      queryParameters.Org_PostCode = this.Session.SelectedPostCode;
 
       if ( queryParameters.Org_City != String.Empty
         || queryParameters.Org_Country != String.Empty

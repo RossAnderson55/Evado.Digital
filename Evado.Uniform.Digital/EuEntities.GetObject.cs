@@ -373,7 +373,7 @@ namespace Evado.UniForm.Digital
       return EvEventCodes.Ok;
 
     }//ENd GetEntity method
-    
+
     //  =============================================================================== 
     /// <summary>
     ///  This method adds any fields that exist in the template layout but not the 
@@ -874,10 +874,11 @@ namespace Evado.UniForm.Digital
       //
       // If edit access is controlled then display the command to edit the user access.
       //
-      if ( this.Session.Entity.Design.AuthorAccess == EdRecord.AuthorAccessList.Edit_Access_Roles )
+      this.LogDebug ( "Entity.AuthorAccess {0}. ", this.Session.Entity.Design.AuthorAccess );
+      if ( this.Session.Entity.Design.AuthorAccess == EdRecord.AuthorAccessList.Only_Author_Selectable )
       {
         pageCommand = PageObject.addCommand (
-          EdLabels.Entity_Edit_Command_Title,
+          EdLabels.Entity_User_Access_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
           Evado.Model.UniForm.ApplicationMethods.Get_Object );
@@ -1133,7 +1134,7 @@ namespace Evado.UniForm.Digital
         //
         // if the user had edit access toteh entity add a create command for the entity.
         //
-        if ( child.hasEditAccess( this.Session.UserProfile.Roles ) == true
+        if ( child.hasEditAccess ( this.Session.UserProfile.Roles ) == true
           && child.IsRecord == false )
         {
           string title = String.Format ( EdLabels.Entity_New_Entity_Command_Title, child.ChildTitle );
@@ -1264,7 +1265,7 @@ namespace Evado.UniForm.Digital
       //
       // Iterate through the child entities
       //
-      foreach ( EdRecord child in this.Session.Entity.ChildRecords)
+      foreach ( EdRecord child in this.Session.Entity.ChildRecords )
       {
         this.LogDebug ( "record {0}, {1}, L {2}, LT {3}, FC {4}.",
           child.EntityId,
@@ -1353,7 +1354,7 @@ namespace Evado.UniForm.Digital
       return groupCommand;
 
     }//END getGroupListCommand method
-    
+
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
@@ -1369,7 +1370,7 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData getUserAccessObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "getObject" );
+      this.LogMethod ( "getUserAccessObject" );
       this.LogDebug ( "RefreshEntityChildren: {0}.", this.Session.RefreshEntityChildren );
       try
       {
@@ -1382,6 +1383,7 @@ namespace Evado.UniForm.Digital
         // Get the record.
         //
         var result = this.GetEntity ( PageCommand );
+
         // 
         // if the guid is empty the parameter was not found to exit.
         // 
@@ -1436,21 +1438,25 @@ namespace Evado.UniForm.Digital
 
         if ( this.Session.Entity.Design.LinkContentSetting == EdRecord.LinkContentSetting.First_Text_Field )
         {
-          clientDataObject.Title = 
-            String.Format( EdLabels.Entity_User_Access_Page_Title,
+          clientDataObject.Title =
+            String.Format ( EdLabels.Entity_User_Access_Page_Title,
             this.Session.Entity.CommandTitle );
         }
         clientDataObject.Page.Title = clientDataObject.Title;
 
         // 
-        // Generate the client ResultData object for the UniForm client.
+        // create the selection group..
         // 
-        this.getEntityClientData ( clientDataObject.Page );
+        this.getUserAccess_SelectionGroup ( clientDataObject.Page );
 
+        //
+        // create the use selection list.
+        //
+        this.getUserAccess_ListGroup ( clientDataObject.Page );
         // 
         // Return the client ResultData object to the calling method.
         // 
-        this.LogMethodEnd ( "getObject" );
+        this.LogMethodEnd ( "getUserAccessObject" );
         return clientDataObject;
       }
       catch ( Exception Ex )
@@ -1467,10 +1473,186 @@ namespace Evado.UniForm.Digital
       }
 
 
-      this.LogMethodEnd ( "getObject" );
+      this.LogMethodEnd ( "getUserAccessObject" );
       return this.Session.LastPage; ;
 
-    }//END getObject method
+    }//END getUserAccessObject method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates the record view pageMenuGroup containing a list of commands to 
+    /// open the form record.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
+    //  ------------------------------------------------------------------------------
+    private void getUserAccess_SelectionGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getUserAccess_SelectionGroup" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+
+      // 
+      // Create the new pageMenuGroup for record selection.
+      // 
+      pageGroup = PageObject.AddGroup (
+        EdLabels.Entities_User_Selection_Group_Title,
+        Evado.Model.UniForm.EditAccess.Enabled );
+      pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      //
+      // Insert the static filter selection for organisation city.
+      //
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Country.ToString ( ) ) == true
+        || this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdUserProfile.FieldNames.Address_Country.ToString ( ) ) == true )
+      {
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Country );
+      }
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_City.ToString ( ) ) == true
+        || this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdUserProfile.FieldNames.Address_City.ToString ( ) ) == true )
+      {
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_City );
+      }
+      if ( this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdOrganisation.FieldNames.Address_Post_Code.ToString ( ) ) == true
+        || this.AdapterObjects.Settings.StaticQueryFilterOptions.Contains ( EdUserProfile.FieldNames.Address_Post_Code.ToString ( ) ) == true )
+      {
+        this.getQueryList_StaticOrgFilter ( pageGroup, EdOrganisation.FieldNames.Address_Post_Code );
+      }
+
+      // 
+      // Add the selection groupCommand
+      // 
+      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
+        EdLabels.Select_Records_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entities.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+
+      selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.Get_Object );
+      selectionCommand.SetGuid ( this.Session.Entity.Guid );
+      selectionCommand.SetPageId ( EdStaticPageIds.Entity_User_Access_Page );
+
+      this.LogMethodEnd ( "getUserAccess_SelectionGroup" );
+    }//ENd getUserAccess_SelectionGroup method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates the record view pageMenuGroup containing a list of commands to 
+    /// open the form record.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
+    //  ------------------------------------------------------------------------------
+    private void getUserAccess_ListGroup (
+      Evado.Model.UniForm.Page PageObject )
+    {
+      this.LogMethod ( "getUserAccess_ListGroup" );
+      //
+      // Initialise the methods variables and objects.
+      //
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      List<EvOption> optionList = new List<EvOption> ( );
+
+      //
+      // query the database to display the list of selected users.
+      //
+      List<EdUserProfile> userList = this.getUser_SelectedList ( );
+
+      //
+      // create the selection of users.
+      //
+      foreach ( EdUserProfile user in userList )
+      {
+        if ( user.UserId == this.Session.UserProfile.UserId )
+        {
+          continue;
+        }
+
+        optionList.Add ( user.Option );
+      }
+
+      // 
+      // Create the new pageMenuGroup for record selection.
+      // 
+      pageGroup = PageObject.AddGroup (
+        EdLabels.Entities_User_Selection_Group_Title,
+        Evado.Model.UniForm.EditAccess.Enabled );
+      pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
+      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+
+      groupField = pageGroup.createCheckBoxListField (
+        EdRecord.FieldNames.EntityAccess,
+        EdLabels.Entity_Access_User_List_Field_Title,
+        this.Session.Entity.EntityAccess,
+        optionList );
+
+      groupField.Layout = EuAdapter.DefaultFieldLayout;
+
+      // 
+      // Add the submit comment to the page groupCommand list.
+      // 
+      groupCommand = pageGroup.addCommand (
+        EdLabels.Entity_Access_User_List_Command_Title,
+        EuAdapter.ADAPTER_ID,
+        EuAdapterClasses.Entities.ToString ( ),
+        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+      groupCommand.SetGuid ( this.Session.Entity.Guid );
+      groupCommand.AddParameter (
+        Evado.Model.Digital.EvcStatics.CONST_SAVE_ACTION,
+       EdRecord.SaveActionCodes.Submit_Record.ToString ( ) );
+      groupCommand.SetPageId ( EdStaticPageIds.Entity_User_Access_Page );
+
+      PageObject.addCommand ( groupCommand );
+
+      this.LogMethodEnd ( "getUserAccess_ListGroup" );
+    }//ENd getUserAccess_ListGroup method
+
+    // ==============================================================================
+    /// <summary>
+    /// This method creates the record view pageMenuGroup containing a list of commands to 
+    /// open the form record.
+    /// </summary>
+    /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
+    //  ------------------------------------------------------------------------------
+    private List<EdUserProfile> getUser_SelectedList ( )
+    {
+      this.LogMethod ( "getUser_SelectedList" );
+      //
+      // Initialise the list of selected users.
+      //
+      EdUserprofiles bll_Users = new EdUserprofiles ( this.ClassParameters );
+
+      //
+      // empty selection criteria return empty selectin.
+      //
+      if ( this.Session.SelectedCity == String.Empty
+      && this.Session.SelectedState == String.Empty
+      && this.Session.SelectedPostCode == String.Empty
+      && this.Session.SelectedCountry == String.Empty )
+      {
+        this.LogMethodEnd ( "getUser_SelectedList" );
+        return new List<EdUserProfile> ( );
+      }
+
+      //
+      // query the database to return the selected list of users.
+      //
+      List<EdUserProfile> userList = bll_Users.GetView ( String.Empty, this.Session.SelectedCity,
+       this.Session.SelectedState, this.Session.SelectedPostCode, this.Session.SelectedCountry,
+       String.Empty, String.Empty );
+
+      this.LogDebugClass ( bll_Users.Log );
+
+      this.LogDebug ( "userList.Count {0}", userList.Count );
+
+      this.LogMethodEnd ( "getUser_SelectedList" );
+      return userList;
+    }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 

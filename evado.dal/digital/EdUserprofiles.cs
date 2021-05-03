@@ -70,7 +70,7 @@ namespace Evado.Dal.Digital
     /// This constant selects all rows from EvUserProfile_View view.
     /// </summary>
 
-    private const string SQL_SELECT_QUERY = "Select * FROM ED_USER_PROFILES ";
+    private const string SQL_SELECT_QUERY = "Select * FROM ED_USER_PROFILE_VIEW ";
 
     /// <summary>
     /// This constant defines a store procedure for adding items to UserProfile table.
@@ -318,6 +318,27 @@ namespace Evado.Dal.Digital
       profile.UpdatedBy = EvSqlMethods.getString ( Row, EdUserProfiles.DB_UPDATE_BY );
       profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_UPDATE_DATE );
 
+      if ( profile.Address_1 == String.Empty )
+      {
+        profile.Address_1 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_1);
+      }
+      if ( profile.Address_2 == String.Empty )
+      {
+        profile.Address_2 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_2 );
+      }
+      if ( profile.Address_2 == String.Empty )
+      {
+        profile.AddressCity = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_CITY );
+      }
+      if ( profile.AddressCity == String.Empty )
+      {
+        profile.AddressState = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_STATE );
+      }
+      if ( profile.AddressCountry == String.Empty )
+      {
+        profile.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_COUNTRY );
+      }
+
       // 
       // Return the profile Object.
       // 
@@ -456,12 +477,20 @@ namespace Evado.Dal.Digital
     // -------------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EdUserProfile> GetView (
       String OrgId,
+      String City,
+      String State,
+      String PostCode,
+      String Country,
       String PartialUserId,
       String PartialCommonName )
     {
 
-      this.LogMethod ( "GetView method." );
+      this.LogMethod ( "GetView" );
       this.LogDebug ( "OrgId: " + OrgId );
+      this.LogDebug ( "City: " + City );
+      this.LogDebug ( "State: " + State );
+      this.LogDebug ( "PostCode: " + PostCode );
+      this.LogDebug ( "Country: " + Country );
       this.LogDebug ( "PartialUserId: " + PartialUserId );
       this.LogDebug ( "PartialCommonName: " + PartialCommonName );
 
@@ -477,8 +506,16 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
         new SqlParameter ( EdUserProfiles.PARM_ORG_ID, SqlDbType.Char, 20 ),
+        new SqlParameter ( EdUserProfiles.PARM_ADDRESS_CITY, SqlDbType.Char, 50 ),
+        new SqlParameter ( EdUserProfiles.PARM_ADDRESS_STATE, SqlDbType.Char, 50 ),
+        new SqlParameter ( EdUserProfiles.PARM_ADDRESS_POSTCODE, SqlDbType.Char, 50 ),
+        new SqlParameter ( EdUserProfiles.PARM_ADDRESS_COUNTRY, SqlDbType.Char, 50 ),
       };
       cmdParms [ 0 ].Value = OrgId;
+      cmdParms [ 1 ].Value = City;
+      cmdParms [ 2 ].Value = State;
+      cmdParms [ 3 ].Value = PostCode;
+      cmdParms [ 4 ].Value = Country;
 
       //
       // if the user is not an Evado user then set the Evado identifier (ApplicationGuid) to empty
@@ -490,16 +527,37 @@ namespace Evado.Dal.Digital
         cmdParms [ 1 ].Value = Guid.Empty;
       }
 
+      this.LogDebug ( EvSqlMethods.getParameterSqlText ( cmdParms ) );
+
+      PartialUserId = PartialUserId.Replace ( "'", "" );
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_SELECT_QUERY + " WHERE  ( UP_SUPERSEDED = 0) ";
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE  ( UP_DELETED = 0) ";
 
       if ( OrgId != String.Empty )
       {
-        PartialUserId = PartialUserId.Replace ( "'", "" );
-
         sqlQueryString += " AND (" + EdUserProfiles.DB_ORG_ID + " = " + EdUserProfiles.PARM_ORG_ID + " ) \r\n";
+      }
+      if ( City != String.Empty )
+      {
+        sqlQueryString += " AND  ( (" + EdUserProfiles.DB_ADDRESS_CITY + " = " + EdUserProfiles.PARM_ADDRESS_CITY + " ) \r\n";
+        sqlQueryString += " OR (" + EdOrganisations.DB_ADDRESS_CITY + " = " + EdUserProfiles.PARM_ADDRESS_CITY + " ) ) \r\n";
+      }
+      if ( State != String.Empty )
+      {
+        sqlQueryString += " AND  ( (" + EdUserProfiles.DB_ADDRESS_STATE + " = " + EdUserProfiles.PARM_ADDRESS_STATE + " ) \r\n";
+        sqlQueryString += " OR (" + EdOrganisations.DB_ADDRESS_STATE + " = " + EdUserProfiles.PARM_ADDRESS_STATE + " ) ) \r\n";
+      }
+      if ( PostCode != String.Empty )
+      {
+        sqlQueryString += " AND  ( (" + EdUserProfiles.DB_ADDRESS_POST_CODE + " = " + EdUserProfiles.PARM_ADDRESS_POSTCODE + " ) \r\n";
+        sqlQueryString += " OR (" + EdOrganisations.DB_ADDRESS_POST_CODE + " = " + EdUserProfiles.PARM_ADDRESS_POSTCODE + " ) ) \r\n";
+      }
+      if ( Country != String.Empty )
+      {
+        sqlQueryString += " AND  ( (" + EdUserProfiles.DB_ADDRESS_COUNTRY + " = " + EdUserProfiles.PARM_ADDRESS_COUNTRY + " ) \r\n";
+        sqlQueryString += " OR (" + EdOrganisations.DB_ADDRESS_COUNTRY + " = " + EdUserProfiles.PARM_ADDRESS_COUNTRY + " ) ) \r\n";
       }
 
       if ( PartialUserId != String.Empty )
@@ -516,7 +574,7 @@ namespace Evado.Dal.Digital
         sqlQueryString += " AND (" + EdUserProfiles.DB_COMMON_NAME + " LIKE '%" + PartialCommonName + "%' ) \r\n";
       }
 
-      sqlQueryString += " ORDER BY OrgId, UserId;";
+      sqlQueryString += " ORDER BY " +EdUserProfiles.DB_ORG_ID+ ", " +EdUserProfiles.DB_USER_ID+" ;";
 
       this.LogDebug ( sqlQueryString );
 

@@ -113,7 +113,7 @@ namespace Evado.Dal.Digital
     /// <summary>
     /// This constant defines the database country field .
     /// </summary>
-    public const string DB_COUNTRY = "O_COUNTRY";
+    public const string DB_ADDRESS_COUNTRY = "O_COUNTRY";
 
     /// <summary>
     /// This constant defines the database telephone field .
@@ -286,7 +286,7 @@ namespace Evado.Dal.Digital
       organisation.AddressCity = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_CITY );
       organisation.AddressPostCode = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_POST_CODE );
       organisation.AddressState = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_STATE );
-      organisation.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_COUNTRY );
+      organisation.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_COUNTRY );
       organisation.Telephone = EvSqlMethods.getString ( Row, EdOrganisations.DB_TELEPHONE );
       organisation.EmailAddress = EvSqlMethods.getString ( Row, EdOrganisations.DB_EMAIL_ADDRESS );
       organisation.OrgType = EvSqlMethods.getString ( Row, EdOrganisations.DB_ORG_TYPE );

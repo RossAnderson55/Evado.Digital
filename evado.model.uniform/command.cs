@@ -1078,8 +1078,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( CommandParameters.Page_Id );
 
-      return EvStatics.parseEnumValue<EnumeratedList> ( value );
-
+        return EvStatics.parseEnumValue<EnumeratedList> ( value );
     }//END GetPageType method.
 
     // ==================================================================================

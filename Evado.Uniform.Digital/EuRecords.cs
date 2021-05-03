@@ -116,17 +116,17 @@ namespace Evado.UniForm.Digital
       {
         this.Session.Selected_EntityLayoutId = String.Empty;
       }
-      if ( this.Session.SelectedOrganisationCountry == null )
+      if ( this.Session.SelectedCountry == null )
       {
-        this.Session.SelectedOrganisationCountry = String.Empty;
+        this.Session.SelectedCountry = String.Empty;
       }
-      if ( this.Session.SelectedOrganisationCity == null )
+      if ( this.Session.SelectedCity == null )
       {
-        this.Session.SelectedOrganisationCity = String.Empty;
+        this.Session.SelectedCity = String.Empty;
       }
-      if ( this.Session.SelectedOrganisationPostCode == null )
+      if ( this.Session.SelectedPostCode == null )
       {
-        this.Session.SelectedOrganisationPostCode = String.Empty;
+        this.Session.SelectedPostCode = String.Empty;
       }
       if ( this.Session.SelectedUserCategory == null )
       {
@@ -956,27 +956,27 @@ namespace Evado.UniForm.Digital
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_Country ) == true )
       {
-        this.Session.SelectedOrganisationCountry = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Country );
+        this.Session.SelectedCountry = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Country );
       }
-      this.LogValue ( "SelectedOrganisationCountry: " + this.Session.SelectedOrganisationCountry );
+      this.LogValue ( "SelectedOrganisationCountry: " + this.Session.SelectedCountry );
 
       //
       // if the selected organisation city exists updated its value.
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_City ) == true )
       {
-        this.Session.SelectedOrganisationCity = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_City );
+        this.Session.SelectedCity = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_City );
       }
-      this.LogValue ( "SelectedOrganisationCity: " + this.Session.SelectedOrganisationCity );
+      this.LogValue ( "SelectedOrganisationCity: " + this.Session.SelectedCity );
 
       //
       // if the selected organisation city exists updated its value.
       //
       if ( PageCommand.hasParameter ( EdOrganisation.FieldNames.Address_Post_Code ) == true )
       {
-        this.Session.SelectedOrganisationPostCode = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Post_Code );
+        this.Session.SelectedPostCode = PageCommand.GetParameter ( EdOrganisation.FieldNames.Address_Post_Code );
       }
-      this.LogValue ( "SelectedOrganisationPostCode: " + this.Session.SelectedOrganisationPostCode );
+      this.LogValue ( "SelectedOrganisationPostCode: " + this.Session.SelectedPostCode );
 
       // 
       // Set the page type to control the DB query type.
@@ -1310,9 +1310,9 @@ namespace Evado.UniForm.Digital
       //
       // Set the filter critier.
       //
-      queryParameters.Org_City = this.Session.SelectedOrganisationCity;
-      queryParameters.Org_Country = this.Session.SelectedOrganisationCountry;
-      queryParameters.Org_PostCode = this.Session.SelectedOrganisationPostCode;
+      queryParameters.Org_City = this.Session.SelectedCity;
+      queryParameters.Org_Country = this.Session.SelectedCountry;
+      queryParameters.Org_PostCode = this.Session.SelectedPostCode;
 
       if ( queryParameters.Org_City != String.Empty
         || queryParameters.Org_Country != String.Empty

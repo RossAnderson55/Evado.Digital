@@ -2529,11 +2529,38 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Selection:.
+        /// </summary>
+        public static string Entities_User_Selection_Group_Title {
+            get {
+                return ResourceManager.GetString("Entities_User_Selection_Group_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh Entity List.
         /// </summary>
         public static string EntittLayout_List_Refresh_Command_Title {
             get {
                 return ResourceManager.GetString("EntittLayout_List_Refresh_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Selection.
+        /// </summary>
+        public static string Entity_Access_User_List_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_Access_User_List_Command_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Users:.
+        /// </summary>
+        public static string Entity_Access_User_List_Field_Title {
+            get {
+                return ResourceManager.GetString("Entity_Access_User_List_Field_Title", resourceCulture);
             }
         }
         
@@ -2651,6 +2678,15 @@ namespace Evado.Model.Digital {
         public static string Entity_Submit_Command {
             get {
                 return ResourceManager.GetString("Entity_Submit_Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit User Access.
+        /// </summary>
+        public static string Entity_User_Access_Command_Title {
+            get {
+                return ResourceManager.GetString("Entity_User_Access_Command_Title", resourceCulture);
             }
         }
         

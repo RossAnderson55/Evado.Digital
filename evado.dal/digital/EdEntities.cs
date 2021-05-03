@@ -1018,7 +1018,7 @@ namespace Evado.Dal.Digital
         //
         if ( QueryParameters.Org_Country != String.Empty )
         {
-          sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_COUNTRY + " = " + EdOrganisations.PARM_COUNTRY + " ) " );
+          sqlQueryString.AppendLine ( " AND ( " + EdOrganisations.DB_ADDRESS_COUNTRY + " = " + EdOrganisations.PARM_COUNTRY + " ) " );
         }
 
         //

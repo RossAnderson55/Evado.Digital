@@ -100,40 +100,40 @@ namespace Evado.Bll.Digital
 
     }//END GetView method.
 
-    // =====================================================================================
+    // ==================================================================================
     /// <summary>
-    /// This method returns a list of UserProfile object
+    /// This class returns a list of userprofile objects based on OrgId and OrderBy
     /// </summary>
-    /// <param name="UserType">String: The selection organistion's identifier</param>
-    /// <param name="PartialUserId">String: partial string of the user's user identifier</param>
-    /// <param name="PartialCommonName">String: partial string of the user's common nbame identifier</param>
-    /// <returns>List of Evado.Model.Digital.EdUserProfile: A list of UserProfile objects.</returns>
+    /// <param name="Type">EdUserProfile.UserTypesList enumerated value</param>
+    /// <param name="OrgId">string: an organization identifier</param>
+    /// <returns>List of Evado.Model.Digital.EdUserProfile: a list of userprofile objects</returns>
     /// <remarks>
-    /// This method consists of following steps. 
+    /// This method consists of the following steps: 
     /// 
-    /// 1. Define the sql query parameters and sql query string. 
+    /// 1. Execute the method for retrieving the list of userprofile objects
     /// 
-    /// 2. Execute the sql query string and store the results on datatable. 
-    /// 
-    /// 3. Loop through the table and extract data row to the UserProfile object. 
-    /// 
-    /// 4. Add the UserProfile object's values to the UserProfiles list. 
-    /// 
-    /// 5. Return the UserProfiles list. 
-    /// 
+    /// 2. Return the list of userprofile objects. 
     /// </remarks>
-    // -------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
     public List<Evado.Model.Digital.EdUserProfile> GetView (
       String OrgId,
+      String City,
+      String State,
+      String PostCode,
+      String Country,
       String PartialUserId,
       String PartialCommonName )
     {
-      this.LogMethod ( "GetView method." );
+      this.LogMethod ( "GetView" );
       this.LogDebug ( "OrgId: " + OrgId );
+      this.LogDebug ( "City: " + City );
+      this.LogDebug ( "State: " + State );
+      this.LogDebug ( "PostCode: " + PostCode );
+      this.LogDebug ( "Country: " + Country );
+      this.LogDebug ( "PartialUserId: " + PartialUserId );
+      this.LogDebug ( "PartialCommonName: " + PartialCommonName );
 
-      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( OrgId,
-        PartialUserId,
-        PartialCommonName);
+      List<Evado.Model.Digital.EdUserProfile> profiles = this._Dal_UserProfiles.GetView ( OrgId, City, State, PostCode, Country, PartialUserId, PartialCommonName );
       this.LogClass ( this._Dal_UserProfiles.Log );
 
       return profiles;
