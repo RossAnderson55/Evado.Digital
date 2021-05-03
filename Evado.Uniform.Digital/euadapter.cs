@@ -556,6 +556,7 @@ namespace Evado.UniForm.Digital
           this.LogDebug ( "Directory Entity {0} LayoutId {1} - {2}",
             entity.EntityId, entity.LayoutId, entity.Title );
         }
+
         /*
         foreach ( EdObjectParent parent in EuAdapter.AdapterObjects.EntityParents )
         {
@@ -619,6 +620,7 @@ namespace Evado.UniForm.Digital
         //
         this.loadDefaultChildEntity ( );
 
+        this.LogValue ( "Current Entity: {0}. ", this.Session.Entity.CommandTitle );
         //
         // Process a demonstration user registration request. 
         //

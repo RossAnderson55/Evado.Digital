@@ -159,6 +159,8 @@ namespace Evado.UniForm.Digital
       this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
 
       this.ClassParameters.UserProfile = this.Session.UserProfile;
+      this.Session.SelectedOrgId = this.Session.UserProfile.OrgId;
+      this.Session.SelectedUserId = this.Session.UserProfile.UserId;
 
       return true;
 
@@ -218,6 +220,8 @@ namespace Evado.UniForm.Digital
       this.Session.UserProfile.OrgType = this.Session.Organisation.OrgType;
       this.Session.UserProfile.OrganisationName = this.Session.Organisation.Name;
 
+
+
       this.LogDebug ( "Org Type " + this.Session.Organisation.OrgType );
 
       this.LogAction ( "Organisation for " + this.Session.Organisation.OrgId + " GENERATED" );
@@ -225,7 +229,7 @@ namespace Evado.UniForm.Digital
       this.LogMethodEnd ( "loadUserOrganisation" );
       return true;
 
-    }//END loadUserProfile method.
+    }//END loadUserOrganisation method.
 
     // ==================================================================================
     /// <summary>
@@ -237,6 +241,7 @@ namespace Evado.UniForm.Digital
     private bool loadDefaultChildEntity ( )
     {
       this.LogMethod ( "loadDefaultChildEntity" );
+      this.LogDebug ( "this.Session.EntityDictionary.Count {0}.", this.Session.EntityDictionary.Count );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -286,7 +291,7 @@ namespace Evado.UniForm.Digital
           {
             this.Session.Entity = entity;
             this.Session.PushEntity ( this.Session.Entity );
-            //defaultEnityFound = true;
+            defaultEnityFound = true;
             break;
           }
         }
@@ -304,7 +309,7 @@ namespace Evado.UniForm.Digital
           {
             this.Session.Entity = entity;
             this.Session.PushEntity ( this.Session.Entity );
-            //defaultEnityFound = true;
+            defaultEnityFound = true;
 
             break;
           }

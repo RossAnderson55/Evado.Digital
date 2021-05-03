@@ -118,6 +118,30 @@ namespace Evado.Model
     }
 
     #endregion
+    /// <summary>
+    /// This method compare the value with the option value.
+    /// </summary>
+    /// <param name="Value">delimited ';' list of values.</param>
+    /// <returns></returns>
+    public bool hasValue ( String Value )
+    {
+      if ( this._Value == Value )
+      {
+        return true;
+      }
+
+      string [ ] arValues = Value.Split ( ';' );
+
+      foreach ( String val in arValues )
+      {
+        if ( this._Value == val )
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
 
   }//END EvOption method
 

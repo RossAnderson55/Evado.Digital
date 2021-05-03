@@ -499,6 +499,8 @@ namespace Evado.Bll.Digital
       //
       if ( userProfile.OrgId == String.Empty )
       {
+        userProfile.OrgId = existingUserProfile.OrgId;
+
         this.LogDebug ( "No Organisation so create one for the user." );
         this.AddTokenOrganisation ( userProfile );
       }

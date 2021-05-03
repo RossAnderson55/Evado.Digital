@@ -321,11 +321,16 @@ namespace Evado.Model.Digital
     /// </summary>
     Selection_List_View,
 
-
     /// <summary>
     /// This enumeration value is the entity page identifier.
     /// </summary>
     Entity_Page,
+
+    /// <summary>
+    /// This enumeration value is the entity user access page identifier.
+    /// used for entities that have private or controlled access.
+    /// </summary>
+    Entity_User_Access_Page,
 
     /// <summary>
     /// This enumeration value is the entity page identifier.

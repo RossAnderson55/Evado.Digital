@@ -2655,6 +2655,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Access for {0} .
+        /// </summary>
+        public static string Entity_User_Access_Page_Title {
+            get {
+                return ResourceManager.GetString("Entity_User_Access_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ERROR: Error was raised when generating a list of entities.
         /// </summary>
         public static string Entity_View_Error_Message {

@@ -254,7 +254,12 @@ namespace Evado.UniForm.Digital
           this.ClassNameSpace + "getListObject",
           this.Session.UserProfile );
 
-        //
+        if ( PageCommand.hasParameter ( Model.UniForm.CommandParameters.Custom_Method ) == true )
+        {
+          this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
+        }
+
+          //
         // fill the organisation list.
         //
         this.getOrganisationList ( );
@@ -1216,6 +1221,9 @@ namespace Evado.UniForm.Digital
           }
           return this.Session.LastPage;
         }//END save error returned.
+
+        this.Session.AdminOrganisationList = new List<EdOrganisation> ( );
+        this.AdapterObjects.OrganisationList = new List<EdOrganisation> ( );
 
         return new Model.UniForm.AppData ( );
 
