@@ -8643,6 +8643,33 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}.
+        /// </summary>
+        public static string UserProfile_Command_Text {
+            get {
+                return ResourceManager.GetString("UserProfile_Command_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}, Roles: {2}.
+        /// </summary>
+        public static string UserProfile_Command_Text1 {
+            get {
+                return ResourceManager.GetString("UserProfile_Command_Text1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}, Roles: {2}, Type: {3}, Category {4}.
+        /// </summary>
+        public static string UserProfile_Command_Text2 {
+            get {
+                return ResourceManager.GetString("UserProfile_Command_Text2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Display Name:.
         /// </summary>
         public static string UserProfile_CommonName_Field_Label {

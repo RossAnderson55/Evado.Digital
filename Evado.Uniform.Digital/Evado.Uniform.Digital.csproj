@@ -60,9 +60,12 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EuEntities.Lists.cs" />
+    <Compile Include="EuEntities.GetObject.cs" />
+    <Compile Include="EuEntities.cs" />
     <Compile Include="EuPageLayouts.cs" />
     <Compile Include="EuSelectionLists.cs" />
-    <Compile Include="EuEntities.cs" />
+    <Compile Include="EuEntities.Filter.cs" />
     <Compile Include="EuEntityFields.cs">
       <SubType>Code</SubType>
     </Compile>

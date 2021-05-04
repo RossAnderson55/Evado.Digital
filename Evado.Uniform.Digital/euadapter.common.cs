@@ -134,12 +134,17 @@ namespace Evado.UniForm.Digital
         }
       }
 
+      this.ClassParameters.UserProfile = this.Session.UserProfile;
+      this.ServiceUserProfile.UserId = this.Session.UserProfile.UserId;
+
       // 
       // if the user profile does not exist exit false.
       // 
+      this.LogDebug ( "Expired Date {0}", this.Session.UserProfile.ExpiryDate );
+
       if ( this.Session.UserProfile.ExpiryDate <= DateTime.Now )
       {
-        this.LogEvent ( "User profile for " + this.ServiceUserProfile.UserId + " HAS EXPIRED." );
+        this.LogEvent ( "User profile for {0} HAS EXPIRED.", this.Session.UserProfile.UserId );
 
         return false;
       }

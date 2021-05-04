@@ -168,6 +168,8 @@ namespace Evado.UniForm.Digital
     bool EnableEntitySaveButtonUpdate = false;
     bool EnableEntityEditButtonUpdate = false;
 
+    bool EnableAuthorSelection = false;
+
     Guid ParentGuid = Guid.Empty;
     String ParentLayoutId = String.Empty;
 
@@ -191,6 +193,10 @@ namespace Evado.UniForm.Digital
     /// This constand definee the include test sites property identifier
     /// </summary>
     public const string CONST_HIDE_SELECTION = "HSFID";
+    /// <summary>
+    /// This constand definee the include test sites property identifier
+    /// </summary>
+    public const string CONST_AUTHOR_SELECTION = "AUSEL";
     /// <summary>
     /// This constand definee the include test sites property identifier
     /// </summary>
@@ -1035,6 +1041,12 @@ namespace Evado.UniForm.Digital
       }
       this.LogValue ( "HideSelectionGroup: " + this._HideSelectionGroup );
 
+      if ( PageCommand.hasParameter ( EuEntities.CONST_AUTHOR_SELECTION) == true )
+      {
+        this.EnableAuthorSelection = true;
+      }
+      this.LogValue ( "EnableAuthorSelection: " + this.EnableAuthorSelection );
+      
       //
       // if the entity layout is defined in the page command then update its value.
       //

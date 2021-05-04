@@ -916,7 +916,7 @@ namespace Evado.UniForm.Digital
         foreach ( Evado.Model.Digital.EdUserProfile userProfile in this.Session.AdminUserProfileList )
         {
           Evado.Model.UniForm.Command command = PageGroup.addCommand (
-            userProfile.LinkText,
+            userProfile.CommandText,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Users.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );

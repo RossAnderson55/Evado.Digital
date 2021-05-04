@@ -491,7 +491,7 @@ namespace Evado.UniForm.Digital
         //
         // get the user type and category selectionlist.
         //
-        EdSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList( userCategoryList );
+        EdSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList ( userCategoryList );
 
         //
         // update the user profile.
@@ -620,7 +620,6 @@ namespace Evado.UniForm.Digital
         //
         this.loadDefaultChildEntity ( );
 
-        this.LogValue ( "Current Entity: {0}. ", this.Session.Entity.CommandTitle );
         //
         // Process a demonstration user registration request. 
         //
@@ -1621,18 +1620,14 @@ namespace Evado.UniForm.Digital
       }
 
       // 
-      // if the last page is empty, meaning that the home page has been opened for the first time,
-      // retrieve the ADS enabled property, this lets developers turn off the ADS access when it 
-      // is not available.
+      // define if the ADS service is enabled.
       // 
-      if ( this.Session.LastPage.Id == Guid.Empty )
+      if ( ConfigurationManager.AppSettings [ EuAdapter.CONFIG_ADS_ENABLED_ADDRESS_KEY ] != null )
       {
-        if ( ConfigurationManager.AppSettings [ EuAdapter.CONFIG_ADS_ENABLED_ADDRESS_KEY ] != null )
-        {
-          String value = ConfigurationManager.AppSettings [ EuAdapter.CONFIG_ADS_ENABLED_ADDRESS_KEY ];
+        String value = ConfigurationManager.AppSettings [ EuAdapter.CONFIG_ADS_ENABLED_ADDRESS_KEY ];
 
-          this.Session.AdsEnabled = EvStatics.getBool ( value );
-        }
+        this.LogInit ( "-AdsEnabled value: " + value );
+        this.Session.AdsEnabled = EvStatics.getBool ( value );
       }
       this.LogInit ( "Session Clinical objects: " );
       this.LogInit ( "-AdsEnabled: " + this.Session.AdsEnabled );
@@ -1845,6 +1840,29 @@ namespace Evado.UniForm.Digital
 
       this._AdapterLog.AppendLine (
         DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EVENT:  " + Value );
+    }
+    // ==================================================================================
+    /// <summary>
+    /// This method appendes the debuglog string to the debug log for the class and adds
+    /// a new line at the end of the text.
+    /// </summary>
+    /// <param name="Value">String:  debug text.</param>
+    // ----------------------------------------------------------------------------------
+    protected void LogEvent ( String Format, params object [ ] args )
+    {
+      String value = String.Format ( Format, args );
+
+      EvApplicationEvent ApplicationEvent = new EvApplicationEvent (
+        EvApplicationEvent.EventType.Warning,
+        EvEventCodes.Ok,
+        this.ClassNameSpace,
+        value,
+        this.ClassParameters.UserProfile.CommonName );
+
+      this.AddEvent ( ApplicationEvent );
+
+      this._AdapterLog.AppendLine (
+        DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EVENT:  " + value );
     }
 
     // ==================================================================================

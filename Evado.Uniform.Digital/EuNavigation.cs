@@ -694,7 +694,7 @@ namespace Evado.UniForm.Digital
         string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
         layoutId = layoutId.Replace ( EuAdapter.CONST_AUTHOR_PAGE_ID_SUFFIX, String.Empty );
 
-        this.LogDebug ( "AUTHOR: PageId: {0}, Title: {1} Layout: {2}, Filtered Query.", PageId, Title, layoutId );
+        this.LogDebug ( "AUTHOR: PageId: {0}, Title: {1} Layout: {2}, Author Query.", PageId, Title, layoutId );
 
         pageCommand = new Model.UniForm.Command (
           Title,
@@ -704,9 +704,11 @@ namespace Evado.UniForm.Digital
 
         pageCommand.SetPageId ( EdStaticPageIds.Entity_View );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
+        pageCommand.AddParameter ( EdRecord.FieldNames.Author, this.Session.UserProfile.UserId );
         pageCommand.AddParameter ( EdRecord.FieldNames.ParentUserId, this.Session.UserProfile.UserId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
-
+        pageCommand.AddParameter ( EuEntities.CONST_AUTHOR_SELECTION, "Yes" );
+        
         return pageCommand;
       }
 

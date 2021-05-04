@@ -356,7 +356,7 @@ namespace Evado.Dal.Digital
     {
       //this.LogMethod ( "processNotAvailableValues method " );
       //
-      // To address Null Numeric bug, convert from 1E-45F to Float Negative Infinity.
+      // To address Null Numeric bug, convert from 1E+35F to Float Negative Infinity.
       //
       Field.ItemValue = Evado.Model.EvStatics.convertNumNullToTextNull ( Field.ItemValue );
 
@@ -400,7 +400,6 @@ namespace Evado.Dal.Digital
     /// This class returns a list of formfield object retrieved by the record Guid. 
     /// </summary>
     /// <param name="Entity">EvForm: (Mandatory) The record object.</param>
-    /// <param name="IncludeComments">bool: true = include field comments.</param>
     /// <returns>List of EvFormField: a formfield object.</returns>
     /// <remarks>
     /// This method consists of the following steps: 
@@ -547,8 +546,18 @@ namespace Evado.Dal.Digital
               }
             case Evado.Model.EvDataTypes.Numeric:
               {
-                recordField.ItemValue = EvSqlMethods.getString ( row, EdEntityValues.DB_VALUES_NUMERIC );
-                this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
+                float flValue = EvSqlMethods.getFloat ( row, EdEntityValues.DB_VALUES_NUMERIC );
+                if ( flValue < -1E+37
+                  || flValue > 1E+37 )
+                {
+                  recordField.ItemValue = String.Empty;
+                  this.LogDebug ( "recordField.ItemValue: empty." );
+                }
+                else
+                {
+                  recordField.ItemValue = EvSqlMethods.getString ( row, EdEntityValues.DB_VALUES_NUMERIC );
+                  this.LogDebug ( "recordField.ItemValue: {0}.", recordField.ItemValue );
+                }
                 break;
               }
             case Evado.Model.EvDataTypes.Boolean:

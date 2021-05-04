@@ -95,7 +95,7 @@ namespace Evado.Model.Digital
       /// This enumeration defines the organisation identifier in user profile
       /// </summary>
       OrgId,
-      
+
       /// <summary>
       /// This enumeration defines the user image or photo filename.
       /// </summary>
@@ -388,15 +388,25 @@ namespace Evado.Model.Digital
     /// <summary>
     /// This property contains a summary of an organization
     /// </summary>
-    public string LinkText
+    public string CommandText
     {
       get
       {
-        String stLinkText = this.UserId
-          + Evado.Model.Digital.EdLabels.Space_Hypen
-          + this.CommonName;
-
-        return stLinkText;
+        if ( this.UserType == String.Empty )
+        {
+          return String.Format (
+               EdLabels.UserProfile_Command_Text1,
+               this.UserId,
+               this.CommonName,
+               this.Roles);
+        }
+        return String.Format (
+             EdLabels.UserProfile_Command_Text2,
+             this.UserId,
+             this.CommonName,
+             this.Roles,
+             this.UserType,
+             this.UserType );
       }
     }
 
@@ -760,7 +770,7 @@ namespace Evado.Model.Digital
           }
         case FieldNames.User_Type:
           {
-            this.UserType = value ;
+            this.UserType = value;
             break;
           }
         case FieldNames.User_Category:
@@ -780,7 +790,7 @@ namespace Evado.Model.Digital
           }
         case FieldNames.Delimted_Name:
           {
-           this.DelimitedName = value;
+            this.DelimitedName = value;
             break;
           }
         case FieldNames.Given_Name:

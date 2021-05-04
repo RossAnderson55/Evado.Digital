@@ -50,14 +50,14 @@ namespace Evado.UniForm.Digital
     private Evado.Model.UniForm.AppData GetFilteredListObject (
       Evado.Model.UniForm.Command PageCommand )
     {
-      this.LogMethod ( "GetFilteredListObject 1" );
+      this.LogMethod ( "GetFilteredListObject" );
       this.LogDebug ( "EntitySelectionState: " + this.Session.EntityStateSelection );
       this.LogDebug ( "EntitySelectionLayoutId: " + this.Session.Selected_EntityLayoutId );
       this.LogDebug ( "EnableEmptyQuerySelection: " + this.Session.EnableEmptyQuerySelection );
 
-      this.LogDebug ( "SelectedOrganisationCountry: " + this.Session.SelectedCountry );
-      this.LogDebug ( "SelectedOrganisationCity: " + this.Session.SelectedCity );
-      this.LogDebug ( "SelectedOrganisationPostCode: " + this.Session.SelectedPostCode );
+      this.LogDebug ( "SelectedCountry: " + this.Session.SelectedCountry );
+      this.LogDebug ( "SelectedCity: " + this.Session.SelectedCity );
+      this.LogDebug ( "SelectedPostCode: " + this.Session.SelectedPostCode );
       // 
       // Initialise the methods variables and objects.
       // 
@@ -75,9 +75,15 @@ namespace Evado.UniForm.Digital
       }
       if ( PageCommand.hasParameter ( EdRecord.FieldNames.ParentLayoutId ) == true )
       {
-        this.ParentLayoutId = PageCommand.GetParameter ( EuEntities.CONST_EMPTY_SELECTION_FIELD );
+        this.ParentLayoutId = PageCommand.GetParameter ( EdRecord.FieldNames.ParentLayoutId );
+
+        if ( this.ParentLayoutId != String.Empty )
+        {
+          this.Session.Selected_EntityLayoutId = this.ParentLayoutId;
+        }
       }
 
+      this.LogDebug ( "this.ParentLayoutId: " + this.ParentLayoutId );
       try
       {
         //
@@ -85,6 +91,10 @@ namespace Evado.UniForm.Digital
         //
         this.Session.EntityLayout = this.AdapterObjects.GetEntityLayout ( this.Session.Selected_EntityLayoutId );
         this.LogDebug ( "EntityLayout.Title: " + this.Session.EntityLayout.Title );
+        this.LogDebug ( 
+          "User Roles: {0}, Entity Roles {1}", 
+          this.Session.UserProfile.Roles, 
+          this.Session.EntityLayout.Design.ReadAccessRoles );
 
         // 
         // If the user does not have monitor or ResultData manager roles exit the page.
@@ -296,9 +306,10 @@ namespace Evado.UniForm.Digital
         selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
 
         selectionCommand.SetPageId ( EdStaticPageIds.Entity_Filter_View );
-        ;
+
         this.LogDebug ( "Group Command Count {0}. ", pageGroup.CommandList.Count );
         this.LogMethodEnd ( "getFilteredList_SelectionGroup" );
+        return;
 
       }//END layoutId selection
 
@@ -313,7 +324,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "E: {0} S: {1}.", queryLayout.LayoutId, queryLayout.State );
       this.LogDebug ( "Entity {0}. ", queryLayout.CommandTitle );
 
-
+      this.LogDebug ( "StaticQueryFilterOptions {0}. ", this.AdapterObjects.Settings.StaticQueryFilterOptions );
 
       //
       // Insert the static filter selection for organisation city.

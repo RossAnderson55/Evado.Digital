@@ -773,6 +773,7 @@ namespace Evado.Dal.Digital
       EdQueryParameters QueryParameters )
     {
       this.LogMethod ( "getEntityList" );
+      this.LogDebug ( "AuthorUserId: {0}", QueryParameters.AuthorUserId );
       //this.LogDebug ( "Org_City: {0}", QueryParameters.Org_City );
       //this.LogDebug ( "Org_Country: {0}", QueryParameters.Org_Country );
       //
@@ -808,6 +809,7 @@ namespace Evado.Dal.Digital
       SqlParameter [ ] cmdParms = new SqlParameter [ ] 
       {
         new SqlParameter( EdEntityLayouts.PARM_LAYOUT_ID, SqlDbType.NVarChar, 10),
+        new SqlParameter( EdEntities.PARM_AUTHOR_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_PARENT_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdEntities.PARM_PARENT_ORG_ID, SqlDbType.NVarChar, 10),
         new SqlParameter( EdEntities.PARM_PARENT_GUID, SqlDbType.UniqueIdentifier),
@@ -815,11 +817,12 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdOrganisations.PARM_COUNTRY, SqlDbType.NVarChar, 50),
       };
       cmdParms [ 0 ].Value = QueryParameters.LayoutId;
-      cmdParms [ 1 ].Value = QueryParameters.ParentUserId;
-      cmdParms [ 2 ].Value = QueryParameters.ParentOrgId;
-      cmdParms [ 3 ].Value = QueryParameters.ParentGuid;
-      cmdParms [ 4 ].Value = QueryParameters.Org_City;
-      cmdParms [ 5 ].Value = QueryParameters.Org_Country;
+      cmdParms [ 1 ].Value = QueryParameters.AuthorUserId;
+      cmdParms [ 2 ].Value = QueryParameters.ParentUserId;
+      cmdParms [ 3 ].Value = QueryParameters.ParentOrgId;
+      cmdParms [ 4 ].Value = QueryParameters.ParentGuid;
+      cmdParms [ 5 ].Value = QueryParameters.Org_City;
+      cmdParms [ 6 ].Value = QueryParameters.Org_Country;
 
       //
       // Generate the SQL query string.
@@ -971,6 +974,14 @@ namespace Evado.Dal.Digital
       if ( QueryParameters.LayoutId != String.Empty )
       {
         sqlQueryString.AppendLine ( " AND ( " + EdEntityLayouts.DB_LAYOUT_ID + " = " + EdEntityLayouts.PARM_LAYOUT_ID + " ) " );
+      }
+
+      //
+      // filter by layout id if provided.
+      //
+      if ( QueryParameters.AuthorUserId != String.Empty )
+      {
+        sqlQueryString.AppendLine ( " AND ( " + EdEntities.DB_AUTHOR_USER_ID + " = " + EdEntities.PARM_AUTHOR_USER_ID + " ) " );
       }
 
       //

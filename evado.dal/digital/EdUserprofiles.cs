@@ -339,6 +339,7 @@ namespace Evado.Dal.Digital
         profile.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_COUNTRY );
       }
 
+      this.LogDebug ( "Expiry Date{0}", profile.ExpiryDate );
       // 
       // Return the profile Object.
       // 
@@ -1065,6 +1066,8 @@ namespace Evado.Dal.Digital
       // 
       if ( UserProfileGuid == Guid.Empty )
       {
+        this.LogValue ( "UserProfileGuid Empty" );
+        this.LogMethodEnd ( "getItem method " );
         return userProfile;
       }
 
@@ -1095,6 +1098,8 @@ namespace Evado.Dal.Digital
         // 
         if ( table.Rows.Count == 0 )
         {
+          this.LogValue ( "Nothing Returned" );
+          this.LogMethodEnd ( "getItem method " );
           return userProfile;
         }
 

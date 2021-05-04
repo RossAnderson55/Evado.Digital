@@ -180,11 +180,6 @@ namespace Evado.Model
     public const float CONST_NUMERIC_ERROR = 1E+38F;
 
     /// <summary>
-    /// This constant defines the integer error value.
-    /// </summary>
-    public const float CONST_NUMERIC_EMPTY = -1E-35F;
-
-    /// <summary>
     /// This contant defines the numeric null value.
     /// </summary>
     public const int CONST_INTEGER_NULL = int.MinValue;
@@ -1672,10 +1667,15 @@ namespace Evado.Model
     // -------------------------------------------------------------------------------------
     public static String convertNumNullToTextNull ( string TextValue )
     {
+      float flValue = EvStatics.getFloat ( TextValue );
       //
       // Validate whether TextValue contains the float value
       //
-      if ( TextValue == EvStatics.CONST_NUMERIC_NULL.ToString ( ) )
+      if ( flValue < -1E+37 || flValue > 1E+37 )
+      {
+        return String.Empty;
+      }
+      if ( flValue > 1E+35 )
       {
         return EvStatics.CONST_NUMERIC_NOT_AVAILABLE;
       }
@@ -1801,7 +1801,7 @@ namespace Evado.Model
       // Create a floatvalue and upperboundary
       //
       float floatValue = 0;
-      float upperBoundary = EvStatics.CONST_NUMERIC_NULL * 10;
+      float upperBoundary = EvStatics.CONST_NUMERIC_NULL;
 
       //
       // Validate whether FloatValue string is float

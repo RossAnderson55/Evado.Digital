@@ -125,6 +125,14 @@ namespace Evado.UniForm.Digital
           return EvEventCodes.Ok;
         }
 
+        if ( this.AdapterObjects.Settings.AdsGroupName == null
+       || this.Session.AdsCustomerGroup.Name == null
+       || this.Session.AdsEnabled == false )
+        {
+          this.LogDebug ( "ADS not enabled so Email notificaton not needed." );
+          this.LogMethodEnd ( "saveUserProfile" );
+          return EvEventCodes.Ok;
+        }
         //
         // Set the email notification.
         //
@@ -296,11 +304,22 @@ namespace Evado.UniForm.Digital
     public EvEventCodes updateAdUserProfile ( )
     {
       this.LogMethod ( "updateAdUserProfile" );
+      this.LogDebug ( "this.Session.AdsEnabled: " + this.Session.AdsEnabled );
       //
       // Skip update if a new user.
       //
-      if (  this.AdapterObjects.Settings.AdsGroupName == null
-        || this.Session.AdsEnabled == false )
+      if ( this.Session.AdsEnabled == false )
+      {
+        this.LogValue ( "ADS disabled" );
+        this.LogMethodEnd ( "updateAdUserProfile" );
+        return EvEventCodes.Ok;
+      }
+
+      //
+      // Skip update if a new user.
+      //
+      if ( this.AdapterObjects.Settings.AdsGroupName == null
+        || this.Session.AdsCustomerGroup.Name == null )
       {
         this.LogValue ( "Debug Authenication or AD Group is null" );
         this.LogMethodEnd ( "updateAdUserProfile" );

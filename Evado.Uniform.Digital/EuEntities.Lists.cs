@@ -265,9 +265,10 @@ namespace Evado.UniForm.Digital
     {
       this.LogMethod ( "executeRecordQuery" );
       this.LogDebug ( "EntityLayoutIdSelection: " + this.Session.Selected_EntityLayoutId );
+      this.LogDebug ( "Layout.ParentType : " + this.Session.EntityLayout.Design.ParentType );
       this.LogDebug ( "EntityTypeSelection: " + this.Session.EntityTypeSelection );
       this.LogDebug ( "EntityStateSelection: " + this.Session.EntityStateSelection );
-      this.LogDebug ( "parentGuid: {0}.", this.ParentGuid );
+      this.LogDebug ( "ParentGuid: {0}.", this.ParentGuid );
       //
       // Initialise the methods variables and objects.
       //
@@ -296,6 +297,11 @@ namespace Evado.UniForm.Digital
         queryParameters.NotSelectedState = false;
       }
 
+      if ( this.EnableAuthorSelection == true )
+      {
+        queryParameters.AuthorUserId = this.Session.SelectedUserId;
+      }
+
       //
       // set the parent object selection criteria.
       //
@@ -317,7 +323,7 @@ namespace Evado.UniForm.Digital
 
         if ( this.ParentGuid != Guid.Empty )
         {
-          queryParameters.ParentGuid = ParentGuid;
+          queryParameters.ParentGuid = this.ParentGuid;
         }
       }
 
