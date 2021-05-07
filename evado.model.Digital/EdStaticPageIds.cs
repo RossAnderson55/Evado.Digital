@@ -64,6 +64,11 @@ namespace Evado.Model.Digital
     Email_Templates_Page,
 
     /// <summary>
+    /// This enumeration value is the user email user properties page identifier.
+    /// </summary>
+    Email_User_Page,
+
+    /// <summary>
     /// This enumeration value is the application event page identifier.
     /// </summary>
     Application_Event,

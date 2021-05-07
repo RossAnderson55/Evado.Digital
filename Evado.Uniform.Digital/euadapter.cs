@@ -649,6 +649,7 @@ namespace Evado.UniForm.Digital
         this.saveSessionObjects ( );
 
         this.LogDebug ( "Page Message: " + clientDataObject.Message );
+        this.LogDebug ( "Page Exit Command Title: " + clientDataObject.Page.Exit.Title );
 
         this.LogMethodEnd ( "getPageObject" );
 

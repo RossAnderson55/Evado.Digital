@@ -104,6 +104,10 @@ namespace Evado.UniForm.Digital
     private const String CONST_DELETE_ACTION = "DELETE";
     private const String CONST_DOWNLOAD_EXTENSION = "user-profiles.csv";
 
+
+    private const String CONST_EMAIL_SUBJECT = "EMAIL_SUBJECT";
+    private const String CONST_EMAIL_BODY = "EMAIL_BODY";
+
     private Evado.Bll.Digital.EdUserprofiles _Bll_UserProfiles = new Evado.Bll.Digital.EdUserprofiles ( );
 
     private EdStaticPageIds PageId = EdStaticPageIds.Null;
@@ -205,6 +209,11 @@ namespace Evado.UniForm.Digital
                     clientDataObject = this.getObject_MyUserProfile ( PageCommand );
                     break;
                   }
+                case EdStaticPageIds.Email_User_Page:
+                  {
+                    clientDataObject = this.getObject_EmailPage ( PageCommand );
+                    break;
+                  }
                 default:
                   {
                     clientDataObject = this.getObject ( PageCommand );
@@ -230,6 +239,11 @@ namespace Evado.UniForm.Digital
                 case EdStaticPageIds.My_User_Profile_Update_Page:
                   {
                     clientDataObject = this.updateUserObject ( PageCommand );
+                    break;
+                  }
+                case EdStaticPageIds.Email_User_Page:
+                  {
+                    clientDataObject = this.sendEmail ( PageCommand );
                     break;
                   }
                 default:
@@ -1477,11 +1491,8 @@ namespace Evado.UniForm.Digital
         Model.UniForm.FieldParameterList.BG_Mandatory,
         Model.UniForm.Background_Colours.Red );
 
-
-
       if ( this.Session.UserProfile.hasEvadoAdministrationAccess )
       {
-
         groupField = pageGroup.createTextField (
            Evado.Model.Digital.EdUserProfile.FieldNames.Expiry_Date.ToString ( ),
           EdLabels.UserProfile_Expiry_Date_Field_Label,
@@ -1552,6 +1563,132 @@ namespace Evado.UniForm.Digital
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
+
+    // ==============================================================================
+    /// <summary>
+    /// This method returns a client application ResultData object
+    /// </summary>
+    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <returns>ClientApplicationData object</returns>
+    //  ------------------------------------------------------------------------------
+    private Evado.Model.UniForm.AppData getObject_EmailPage (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "getObject_EmailPage" );
+      // 
+      // Initialise the methods variables and objects.
+      // 
+      Guid subjectGuid = Guid.Empty;
+      Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
+      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+      String userId = PageCommand.GetParameter ( EdUserProfile.FieldNames.UserId );
+      this.LogDebug ( "PageCommand userId {0}. ", userId );
+
+      // 
+      // Log access to page.
+      // 
+      this.LogPageAccess (
+          this.ClassNameSpace + "getObject_EmailPage",
+        this.Session.UserProfile );
+
+      //
+      // set the client ResultData object properties
+      //
+      clientDataObject.Id = Guid.NewGuid();
+      clientDataObject.Page.Id = this.Session.AdminUserProfile.Guid;
+      clientDataObject.Title = EdLabels.UserProfile_Email_Page_Title;
+      clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+      try
+      {
+        // 
+        // Retrieve the customer object from the database via the DAL and BLL layers.
+        // 
+       this.Session.AdminUserProfile = this._Bll_UserProfiles.getItem ( userId );
+
+       this.LogDebugClass ( this._Bll_UserProfiles.Log );
+
+       if ( this.Session.AdminUserProfile.Guid == Guid.Empty
+         || this.Session.AdminUserProfile.EmailAddress == String.Empty )
+        {
+          this.LogValue ( "userProfile or email address is empty." );
+
+          this.LogMethodEnd ( "getObject_EmailPage" );
+          return this.Session.LastPage; ;
+        }
+
+        this.LogClass ( this._Bll_UserProfiles.Log );
+
+        this.LogDebug ( "AdminUserProfile.Guid {0}. ", this.Session.AdminUserProfile.Guid );
+        this.LogDebug ( "AdminUserProfile.UserId {0}.", this.Session.AdminUserProfile.UserId );
+
+        clientDataObject.Page.Title = clientDataObject.Title;
+
+        clientDataObject.Title = String.Format ( EdLabels.UserProfile_Email_Page_Title1,
+           this.Session.AdminUserProfile.CommonName );
+
+        // 
+        // create the page pageMenuGroup
+        // 
+        pageGroup = clientDataObject.Page.AddGroup (
+           String.Empty,
+           Evado.Model.UniForm.EditAccess.Enabled );
+        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+
+        //
+        // Add the subject field.
+        //
+        groupField = pageGroup.createTextField (
+          EuUserProfiles.CONST_EMAIL_SUBJECT,
+          EdLabels.UserProfile_Email_Subject_Field_Title,
+          String.Empty, 100 );
+        groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+        //
+        // Add the body field.
+        //
+        groupField = pageGroup.createFreeTextField (
+          EuUserProfiles.CONST_EMAIL_BODY,
+          EdLabels.UserProfile_Email_Body_Field_Title,
+          String.Empty, 50, 5 );
+        groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+
+
+        groupCommand =pageGroup.addCommand (
+           EdLabels.UserProfile_Send_Email_Command_Title,
+           EuAdapter.ADAPTER_ID,
+           EuAdapterClasses.Users.ToString ( ),
+           Evado.Model.UniForm.ApplicationMethods.Save_Object );
+
+        // 
+        // Define the save and delete groupCommand parameters
+        // 
+        groupCommand.SetPageId ( PageCommand.GetPageId ( ) );
+
+
+        this.LogMethodEnd ( "getObject_EmailPage" );
+        return clientDataObject;
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // Create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.User_Profile_Page_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+
+      this.LogMethodEnd ( "getObject_EmailPage" );
+      return this.Session.LastPage; ;
+
+    }//END getObject_EmailPage method
 
     #region Create User methods
     // ==================================================================================
@@ -1906,6 +2043,113 @@ namespace Evado.UniForm.Digital
       return userProfile;
 
     }//End updateUserProfile method
+
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
+    #region Send Email methods.
+    // ===================================================================================
+    /// THis method emails the user message
+    /// </summary>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <returns>Application Data object</returns>
+    //  ----------------------------------------------------------------------------------
+    private Evado.Model.UniForm.AppData sendEmail (
+      Evado.Model.UniForm.Command PageCommand )
+    {
+      this.LogMethod ( "sendEmail" );
+      this.LogDebug ( "Parameter: " + PageCommand.getAsString ( false, true ) );
+
+      this.LogDebug ( "eClinical.AdminUserProfile:" );
+      this.LogDebug ( "Guid: " + this.Session.AdminUserProfile.Guid );
+      this.LogDebug ( "UserId: " + this.Session.AdminUserProfile.UserId );
+      this.LogDebug ( "CommonName: " + this.Session.AdminUserProfile.CommonName );
+
+      try
+      {
+        // 
+        // Initialise the methods variables and objects.
+        //      
+        Evado.Model.UniForm.AppData clientDataObject = new Model.UniForm.AppData ( );
+        string EmailTitle = String.Empty;
+        string EmailBody = String.Empty;
+        EvEmail email = new EvEmail ( );
+        EvEmail.EmailStatus emailStatus = EvEmail.EmailStatus.Null;
+        // 
+        // Log access to page.
+        // 
+        this.LogPageAccess (
+          this.ClassNameSpace + "sendEmail",
+          this.Session.UserProfile );
+
+        this.LogMethodEnd ( "sendEmail" );
+        this.LogDebug ( "Sender email address : " + this.Session.UserProfile.EmailAddress );
+        this.LogDebug ( "Receiver email address : " + this.Session.AdminUserProfile.EmailAddress );
+        this.LogDebug ( "EmailTitle: " + EmailTitle );
+        this.LogDebug ( "EmailBody: " + EmailBody );
+
+        EmailTitle = PageCommand.GetParameter ( EuUserProfiles.CONST_EMAIL_SUBJECT );
+        EmailBody = PageCommand.GetParameter ( EuUserProfiles.CONST_EMAIL_BODY );
+
+        EmailBody += "</br></br>" + String.Format ( "From user {0} - {1} at {2} ", 
+          this.Session.UserProfile.EmailAddress, 
+          this.Session.UserProfile.CommonName,
+          DateTime.Now.ToString( "dd-MMM-yyy HH:mm" ));
+        //
+        // Initialise the report alert class
+        //
+        email.SmtpServer = this.AdapterObjects.Settings.SmtpServer;
+        email.SmtpServerPort = this.AdapterObjects.Settings.SmtpServerPort;
+        email.SmtpUserId = this.AdapterObjects.Settings.SmtpUserId;
+        email.SmtpPassword = this.AdapterObjects.Settings.SmtpPassword;
+
+        //
+        // Set the email alert to the recipents
+        //
+        emailStatus = email.sendEmail (
+          EmailTitle,
+          EmailBody,
+          this.Session.UserProfile.EmailAddress,
+          this.Session.AdminUserProfile.EmailAddress,
+          String.Empty );
+
+        this.LogValue ( "Email DebugLog: " + email.Log );
+
+        //
+        // Log email send error.
+        //
+        if ( emailStatus != EvEmail.EmailStatus.Email_Sent )
+        {
+          this.LogError ( EvEventCodes.Business_Logic_Email_Send,
+            "User Email Event Status: " + emailStatus
+            + "\r\n" + email.Log );
+
+          this.LogClass ( email.Log );
+        }
+
+        this.Session.AdminUserProfile = new EdUserProfile ( );
+
+        return new Model.UniForm.AppData ( );
+
+      }
+      catch ( Exception Ex )
+      {
+        // 
+        // Create the error message to be displayed to the user.
+        // 
+        this.ErrorMessage = EdLabels.User_Profile_Save_Error_Message;
+
+        // 
+        // Generate the log the error event.
+        // 
+        this.LogException ( Ex );
+      }
+      this.Session.AdminUserProfile = new EdUserProfile ( );
+      this.LogMethodEnd ( "sendEmail" );
+      return this.Session.LastPage; ;
+
+    }//END method
 
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

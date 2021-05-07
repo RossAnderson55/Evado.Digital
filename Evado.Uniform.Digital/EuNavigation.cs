@@ -73,7 +73,7 @@ namespace Evado.UniForm.Digital
       this.LogDebug ( "MenuItem: PageId: {0}, Title: {1}, Group: {2} ",
         MenuItem.PageId, MenuItem.Title, MenuItem.Group );
 
-      return GetNavigationCommand ( MenuItem.PageId, MenuItem.Title );
+      return GetNavigationCommand ( MenuItem.PageId, MenuItem.Title, MenuItem.Parameters );
     }//END method
 
     // =====================================================================================
@@ -86,7 +86,8 @@ namespace Evado.UniForm.Digital
     //  ------------------------------------------------------------------------------------
     public Evado.Model.UniForm.Command GetNavigationCommand ( 
       String PageId, 
-      String Title )
+      String Title,
+      String Parameters)
     {
       this.resetAdapterLog ( );
       this.LogMethod ( "getMenuCommandObject" );
@@ -233,6 +234,31 @@ namespace Evado.UniForm.Digital
                 Evado.Model.UniForm.ApplicationMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
+
+              return pageCommand;
+            }
+          case EdStaticPageIds.Email_User_Page:
+            {
+              string [] arParameters = Parameters.Split ( ';' );
+
+              pageCommand = new Model.UniForm.Command (
+                Title,
+                EuAdapter.ADAPTER_ID,
+                EuAdapterClasses.Users.ToString ( ),
+                Evado.Model.UniForm.ApplicationMethods.Get_Object );
+
+              pageCommand.SetPageId ( PageId );
+
+              foreach ( string parm in arParameters )
+              {
+                if ( parm.Contains ( "=" ) == false )
+                {
+                  continue;
+                }
+                String [] arParm = parm.Split ( '=' );
+
+                pageCommand.AddParameter ( arParm [ 0 ], arParm [ 1 ] );
+              }
 
               return pageCommand;
             }

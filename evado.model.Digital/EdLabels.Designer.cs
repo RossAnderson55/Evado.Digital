@@ -5438,6 +5438,15 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameters:.
+        /// </summary>
+        public static string Menu_Parameters_Field_Label {
+            get {
+                return ResourceManager.GetString("Menu_Parameters_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Platform identifier:.
         /// </summary>
         public static string Menu_Platform_Field_Label {
@@ -8715,11 +8724,47 @@ namespace Evado.Model.Digital {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Body:.
+        /// </summary>
+        public static string UserProfile_Email_Body_Field_Title {
+            get {
+                return ResourceManager.GetString("UserProfile_Email_Body_Field_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Address:.
         /// </summary>
         public static string UserProfile_Email_Field_Label {
             get {
                 return ResourceManager.GetString("UserProfile_Email_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email User Page.
+        /// </summary>
+        public static string UserProfile_Email_Page_Title {
+            get {
+                return ResourceManager.GetString("UserProfile_Email_Page_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email User {0}.
+        /// </summary>
+        public static string UserProfile_Email_Page_Title1 {
+            get {
+                return ResourceManager.GetString("UserProfile_Email_Page_Title1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Subject:.
+        /// </summary>
+        public static string UserProfile_Email_Subject_Field_Title {
+            get {
+                return ResourceManager.GetString("UserProfile_Email_Subject_Field_Title", resourceCulture);
             }
         }
         
@@ -8846,6 +8891,15 @@ namespace Evado.Model.Digital {
         public static string UserProfile_Role_Field_Label {
             get {
                 return ResourceManager.GetString("UserProfile_Role_Field_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Email.
+        /// </summary>
+        public static string UserProfile_Send_Email_Command_Title {
+            get {
+                return ResourceManager.GetString("UserProfile_Send_Email_Command_Title", resourceCulture);
             }
         }
         

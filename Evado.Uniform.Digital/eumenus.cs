@@ -915,6 +915,17 @@ namespace Evado.UniForm.Digital
       pageField.Description = EdLabels.Menu_Role_List_Field_Description;
 
       // 
+      // Create the customer name object
+      // 
+      pageField = pageGroup.createTextField (
+        EvMenuItem.MenuFieldNames.Parameters.ToString ( ),
+        EdLabels.Menu_Parameters_Field_Label,
+        String.Empty,
+        this.Session.MenuItem.Parameters,
+        20 );
+      pageField.Layout = EuAdapter.DefaultFieldLayout;
+
+      // 
       // Add the save groupCommand
       // 
       pageCommand = pageGroup.addCommand (

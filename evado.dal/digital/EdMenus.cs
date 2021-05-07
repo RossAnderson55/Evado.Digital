@@ -133,6 +133,11 @@ namespace Evado.Dal.Digital
     // This constant defines a role list parameter
     // 
     private const string PARM_ROLES = "@ROLES";
+
+    // 
+    // This constant defines a parameter list parameter
+    // 
+    private const string PARM_PARAMETERS = "@PARAMETERS";
     #endregion
 
     #endregion
@@ -179,6 +184,7 @@ namespace Evado.Dal.Digital
         new SqlParameter( EdMenus.PARM_PLATFORM,SqlDbType.NVarChar,10),
         new SqlParameter( EdMenus.PARM_USER_TYPES,SqlDbType.NVarChar, 250),
         new SqlParameter( EdMenus.PARM_ROLES,SqlDbType.NVarChar, 250),
+        new SqlParameter( EdMenus.PARM_PARAMETERS,SqlDbType.NVarChar, 100),
       };
 
       //
@@ -216,6 +222,7 @@ namespace Evado.Dal.Digital
       cmdParms [ 6 ].Value = MenuItem.Platform;
       cmdParms [ 7 ].Value = MenuItem.UserTypes;
       cmdParms [ 8 ].Value = MenuItem.RoleList;
+      cmdParms [ 9 ].Value = MenuItem.Parameters;
 
     }//END SetLetterParameters.
 
@@ -257,7 +264,8 @@ namespace Evado.Dal.Digital
       menu.Platform = EvSqlMethods.getString ( Row, "MNU_PLATFORM" );
       menu.UserTypes = EvSqlMethods.getString ( Row, "MNU_USER_TYPES" );
       menu.RoleList = EvSqlMethods.getString ( Row, "MNU_ROLES" );
-
+      menu.Parameters = EvSqlMethods.getString ( Row, "MNU_PARAMETERS" );
+      
       return menu;
 
     }//END getRowData method.
@@ -682,10 +690,6 @@ namespace Evado.Dal.Digital
     public Evado.Model.EvEventCodes updateItem ( Evado.Model.Digital.EvMenuItem MenuItem )
     {
       this.LogMethod ( "updateItem method. " );
-      this.LogDebug ( "Guid: " + MenuItem.Guid );
-      this.LogDebug ( "Title: " + MenuItem.Title );
-      this.LogDebug ( "RoleList: " + MenuItem.RoleList );
-      this.LogDebug ( "Platform: " + MenuItem.Platform );
       //
       // Initialize a debug log
       //

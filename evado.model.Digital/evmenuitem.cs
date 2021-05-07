@@ -76,9 +76,14 @@ namespace Evado.Model.Digital
       Modules,
 
       /// <summary>
-      /// This enumeration defines the menu's delimited role list of menu field names.
+      /// This enumeration defines the menu's delimited role list of menu roles field names.
       /// </summary>
       Role_List,
+
+      /// <summary>
+      /// This enumeration defines the menu's delimited role list of menu parameters field names.
+      /// </summary>
+      Parameters,
     }
 
     #endregion
@@ -216,6 +221,16 @@ namespace Evado.Model.Digital
     {
       get { return _UserId; }
       set { _UserId = value; }
+    }
+
+    private string _Parameters = String.Empty;
+    /// <summary>
+    /// This property contains the menu item's parameter
+    /// </summary>
+    public string Parameters
+    {
+      get { return _Parameters; }
+      set { _Parameters = value; }
     }
 
     public String LinkText
@@ -434,6 +449,11 @@ namespace Evado.Model.Digital
         case MenuFieldNames.Role_List:
           {
             this.RoleList = value;
+            break;
+          }
+        case MenuFieldNames.Parameters:
+          {
+            this.Parameters = value;
             break;
           }
       }// End switch field name
