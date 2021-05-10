@@ -1397,7 +1397,7 @@ namespace Evado.Model
 
 
     #endregion
-  }//END EvEventCodes method
+  }//END Evado.Model.EvEventCodes method
 
 } //END namespace Evado.Model
  

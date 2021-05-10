@@ -13,7 +13,7 @@
  * </copyright>
  * 
  * Description: 
- *  This class contains the EvOption data object.
+ *  This class contains the Evado.Model.EvOption data object.
  *
  ****************************************************************************************/
 
@@ -143,6 +143,6 @@ namespace Evado.Model
       return false;
     }
 
-  }//END EvOption method
+  }//END Evado.Model.EvOption method
 
 }//END namespace Evado.Model

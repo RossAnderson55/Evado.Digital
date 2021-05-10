@@ -160,6 +160,11 @@ namespace Evado.Model
     public static readonly Guid CONST_NEW_OBJECT_ID = new Guid ( "51fb861f-35f2-4d52-95cd-000000000000" );
 
     /// <summary>
+    /// This static readonly value contains the date completed value.
+    /// </summary>
+    public static readonly Guid CONST_DEFAULT_HOME_PAGE_ID = new Guid ( "6ff565a2-ae55-4092-83a5-fe51f66bb269" );
+
+    /// <summary>
     /// This constant defines the default maximum numeric value.
     /// </summary>
     public const float CONST_NUMERIC_MINIMUM = (float) -1000000;
@@ -168,6 +173,11 @@ namespace Evado.Model
     /// This constant defines the default mimumum numeric value.
     /// </summary>
     public const float CONST_NUMERIC_MAXIMUM = (float) 1000000;
+
+    /// <summary>
+    /// This contant defines the integer null value.
+    /// </summary>
+    public const float CONST_NUMERIC_EMPTY = -1E+35F;
 
     /// <summary>
     /// This contant defines the integer null value.
@@ -534,18 +544,18 @@ namespace Evado.Model
     /// <param name="EventCode">T: Guid</param>
     /// <returns>EvEventCodes enumerated value.</returns>
     // -------------------------------------------------------------------------------------
-    public static EvEventCodes setEvadoEventCode<T> ( T EventCode )
+    public static Evado.Model.EvEventCodes setEvadoEventCode<T> ( T EventCode )
     {
       //
       // Define the methods variables and objects.
       //
       String eventCode = EventCode.ToString ( );
-      EvEventCodes outEventCode = EvEventCodes.Ok;
+      Evado.Model.EvEventCodes outEventCode = Evado.Model.EvEventCodes.Ok;
 
       //
       // Try the conversion
       //
-      if ( EvStatics.tryParseEnumValue<EvEventCodes> ( eventCode, out outEventCode ) == true )
+      if ( Evado.Model.EvStatics.tryParseEnumValue<EvEventCodes> ( eventCode, out outEventCode ) == true )
       {
         return outEventCode;
       }
@@ -553,7 +563,7 @@ namespace Evado.Model
       //
       // Return conversion error.
       //
-      return EvEventCodes.Null;
+      return Evado.Model.EvEventCodes.Null;
 
     }//END getEvadoEventCode method
 
@@ -564,7 +574,7 @@ namespace Evado.Model
     /// <param name="EventCode">T: Guid</param>
     /// <returns>EvEventCodes enumerated value.</returns>
     // -------------------------------------------------------------------------------------
-    public static T getEvadoEventCode<T> ( EvEventCodes EventCode )
+    public static T getEvadoEventCode<T> ( Evado.Model.EvEventCodes EventCode )
     {
       //
       // Define the methods variables and objects.
@@ -575,7 +585,7 @@ namespace Evado.Model
       //
       // Try the conversion
       //
-      if ( EvStatics.tryParseEnumValue<T> ( eventCode, out outEventCode ) == true )
+      if ( Evado.Model.EvStatics.tryParseEnumValue<T> ( eventCode, out outEventCode ) == true )
       {
         return outEventCode;
       }
@@ -813,9 +823,9 @@ namespace Evado.Model
       //
       float floatValue = 0;
       if ( FloatValue == String.Empty
-        || FloatValue == EvStatics.CONST_NUMERIC_NOT_AVAILABLE )
+        || FloatValue == Evado.Model.EvStatics.CONST_NUMERIC_NOT_AVAILABLE )
       {
-        return EvStatics.CONST_NUMERIC_NULL;
+        return Evado.Model.EvStatics.CONST_NUMERIC_NULL;
       }
 
       //
@@ -825,7 +835,7 @@ namespace Evado.Model
       {
         return floatValue;
       }
-      return EvStatics.CONST_NUMERIC_ERROR;
+      return Evado.Model.EvStatics.CONST_NUMERIC_ERROR;
 
     }//END getFloat method
 
@@ -985,7 +995,7 @@ namespace Evado.Model
       //
       // Create a return dateValue
       //
-      DateTime dateValue = EvStatics.CONST_DATE_NULL;
+      DateTime dateValue = Evado.Model.EvStatics.CONST_DATE_NULL;
 
       //
       // Return DateValue, if it contains date time value
@@ -994,7 +1004,7 @@ namespace Evado.Model
       {
         return dateValue;
       }
-      return EvStatics.CONST_DATE_NULL;
+      return Evado.Model.EvStatics.CONST_DATE_NULL;
     }//END getDateTime method
 
     //  ===================================================================================
@@ -1017,7 +1027,7 @@ namespace Evado.Model
       //
       if ( Date != CONST_DATE_NULL )
       {
-        if ( Date == EvStatics.CONST_DATE_NULL )
+        if ( Date == Evado.Model.EvStatics.CONST_DATE_NULL )
         {
           return String.Empty;
         }
@@ -1048,7 +1058,7 @@ namespace Evado.Model
       //
       if ( Date != CONST_DATE_NULL )
       {
-        if ( Date == EvStatics.CONST_DATE_NULL )
+        if ( Date == Evado.Model.EvStatics.CONST_DATE_NULL )
         {
           return String.Empty;
         }
@@ -1327,7 +1337,7 @@ namespace Evado.Model
         //
         // Get the option value from the string.
         //
-        Evado.Model.EvOption option = EvStatics.getStringAsOption ( stringOption );
+        Evado.Model.EvOption option = Evado.Model.EvStatics.getStringAsOption ( stringOption );
 
         //
         // If the use Code Value is true and the option does not have a coded value
@@ -1355,7 +1365,7 @@ namespace Evado.Model
 
     // =====================================================================================
     /// <summary>
-    ///  This method returns an EvOption object containing a value and description values.
+    ///  This method returns an Evado.Model.EvOption object containing a value and description values.
     ///  If the OptionValue contains a ':' the left side of the ':' is considered the option 
     ///  value  and the right side of the ':' is considered the option description 
     /// </summary>
@@ -1370,7 +1380,7 @@ namespace Evado.Model
       Evado.Model.EvOption option = new Evado.Model.EvOption ( );
 
       //
-      // Return EvOption object with the same value in the Option.Value and Option.Description fields.
+      // Return Evado.Model.EvOption object with the same value in the Option.Value and Option.Description fields.
       //
       if ( OptionValue.Contains ( ":" ) == false )
       {
@@ -1407,7 +1417,7 @@ namespace Evado.Model
     /// 3. Collect the value and description from the option list to the string option array
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public static String [ ] getOptionListAsStringArray ( List<EvOption> List )
+    public static String [ ] getOptionListAsStringArray ( List<Evado.Model.EvOption> List )
     {
       //
       // Initialize a return arrStringOptions array
@@ -1434,15 +1444,15 @@ namespace Evado.Model
     /// <summary>
     /// This method tests to see if a value is in the option list.
     /// </summary>
-    /// <param name="OptionList">List of EvOption objects</param>
+    /// <param name="OptionList">List of Evado.Model.EvOption objects</param>
     /// <param name="Value">String: Optoon value.</param>
     /// <returns>bool: True = Value exists</returns>
     //  -----------------------------------------------------------------------------------
-    public static bool hasOption ( List<EvOption> OptionList, object Value )
+    public static bool hasOption ( List<Evado.Model.EvOption> OptionList, object Value )
     {
       String value = Value.ToString ( );
 
-      foreach ( EvOption option in OptionList )
+      foreach ( Evado.Model.EvOption option in OptionList )
       {
         if ( option.Value.ToLower ( ) == value.ToLower ( ) )
         {
@@ -1534,16 +1544,16 @@ namespace Evado.Model
     /// 
     /// </remarks>
     //  -----------------------------------------------------------------------------------
-    public static String getHL7SexValue ( EvStatics.SexOptions SexValue )
+    public static String getHL7SexValue ( Evado.Model.EvStatics.SexOptions SexValue )
     {
       // 
       // Use the switch to get the relevant code for the sex value.
       // 
       switch ( SexValue )
       {
-        case EvStatics.SexOptions.Male:
+        case Evado.Model.EvStatics.SexOptions.Male:
           return "M";
-        case EvStatics.SexOptions.Female:
+        case Evado.Model.EvStatics.SexOptions.Female:
           return "F";
         default:
           return "U";
@@ -1564,22 +1574,22 @@ namespace Evado.Model
     /// 1. Switch to the code of retrieving the marital status options
     /// </remarks>
     //  -----------------------------------------------------------------------------------
-    public static String getHL7MaritalStatusValue ( EvStatics.MartialStatusOptions StatusValue )
+    public static String getHL7MaritalStatusValue ( Evado.Model.EvStatics.MartialStatusOptions StatusValue )
     {
       // 
       // Use the switch to get the relevant code for the martial status value.
       // 
       switch ( StatusValue )
       {
-        case EvStatics.MartialStatusOptions.Single:
+        case Evado.Model.EvStatics.MartialStatusOptions.Single:
           return "S";
-        case EvStatics.MartialStatusOptions.Married:
+        case Evado.Model.EvStatics.MartialStatusOptions.Married:
           return "M";
-        case EvStatics.MartialStatusOptions.Divorced:
+        case Evado.Model.EvStatics.MartialStatusOptions.Divorced:
           return "D";
-        case EvStatics.MartialStatusOptions.Separated:
+        case Evado.Model.EvStatics.MartialStatusOptions.Separated:
           return "A";
-        case EvStatics.MartialStatusOptions.Widowed:
+        case Evado.Model.EvStatics.MartialStatusOptions.Widowed:
           return "W";
         default:
           return "U";
@@ -1667,7 +1677,7 @@ namespace Evado.Model
     // -------------------------------------------------------------------------------------
     public static String convertNumNullToTextNull ( string TextValue )
     {
-      float flValue = EvStatics.getFloat ( TextValue );
+      float flValue = Evado.Model.EvStatics.getFloat ( TextValue );
       //
       // Validate whether TextValue contains the float value
       //
@@ -1677,7 +1687,7 @@ namespace Evado.Model
       }
       if ( flValue > 1E+35 )
       {
-        return EvStatics.CONST_NUMERIC_NOT_AVAILABLE;
+        return Evado.Model.EvStatics.CONST_NUMERIC_NOT_AVAILABLE;
       }
 
       return TextValue;
@@ -1704,9 +1714,9 @@ namespace Evado.Model
       //
       // Validate whether TextValue contains the float value
       //
-      if ( TextValue == EvStatics.CONST_NUMERIC_NOT_AVAILABLE )
+      if ( TextValue == Evado.Model.EvStatics.CONST_NUMERIC_NOT_AVAILABLE )
       {
-        return EvStatics.CONST_NUMERIC_NULL.ToString ( );
+        return Evado.Model.EvStatics.CONST_NUMERIC_NULL.ToString ( );
       }
 
       return TextValue;
@@ -1736,7 +1746,7 @@ namespace Evado.Model
       // Create a float value and upper boundary
       //
       float floatValue = 0;
-      float upperBoundary = EvStatics.CONST_NUMERIC_NULL;
+      float upperBoundary = Evado.Model.EvStatics.CONST_NUMERIC_NULL;
 
       //
       // Validate whether the TextValue has float value and smaller than upper boundary
@@ -1801,7 +1811,7 @@ namespace Evado.Model
       // Create a floatvalue and upperboundary
       //
       float floatValue = 0;
-      float upperBoundary = EvStatics.CONST_NUMERIC_NULL;
+      float upperBoundary = Evado.Model.EvStatics.CONST_NUMERIC_NULL;
 
       //
       // Validate whether FloatValue string is float
@@ -2050,7 +2060,7 @@ namespace Evado.Model
       //
       if ( FieldValue.ToLower ( ) == "na" )
       {
-        return "," + EvStatics.CONST_NUMERIC_NULL.ToString ( );
+        return "," + Evado.Model.EvStatics.CONST_NUMERIC_NULL.ToString ( );
       }
 
       //
@@ -2061,7 +2071,7 @@ namespace Evado.Model
         return "," + floatValue.ToString ( );
       }
 
-      return "," + EvStatics.CONST_NUMERIC_ERROR.ToString ( );
+      return "," + Evado.Model.EvStatics.CONST_NUMERIC_ERROR.ToString ( );
 
     }//END encodeFieldNumeric method
 
@@ -2960,7 +2970,7 @@ namespace Evado.Model
     /// <param name="EventCode">EvEventCodes enumerated list class</param>
     /// <returns>string: an event message</returns>
     // -------------------------------------------------------------------------------------
-    public static string getEventMessage ( EvEventCodes EventCode )
+    public static string getEventMessage ( Evado.Model.EvEventCodes EventCode )
     {
       //
       // Create an exception string
@@ -2970,7 +2980,7 @@ namespace Evado.Model
       stEventMessage = stEventMessage.Replace ( "Object_", String.Empty );
       stEventMessage = stEventMessage.Replace ( "Identifier_", String.Empty );
 
-      if ( EventCode == EvEventCodes.Data_General_Data_Error )
+      if ( EventCode == Evado.Model.EvEventCodes.Data_General_Data_Error )
       {
         stEventMessage = stEventMessage.Replace ( "Data_General_Data_Error", "General_Data_Error" );
       }
@@ -3031,7 +3041,7 @@ namespace Evado.Model
       // 
       // IF date is skip calculation.
       // 
-      if ( DateOfBirth == EvStatics.CONST_DATE_NULL )
+      if ( DateOfBirth == Evado.Model.EvStatics.CONST_DATE_NULL )
       {
         return 0;
       }
@@ -3436,7 +3446,7 @@ namespace Evado.Model
     ///
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public static List<EvOption> loadMimeTypes (
+    public static List<Evado.Model.EvOption> loadMimeTypes (
       String ApplicationDirectory,
       String FileName )
     {
@@ -3445,7 +3455,7 @@ namespace Evado.Model
       //
       String line = String.Empty;
       List<String> lines = new List<String> ( );
-      List<EvOption> mimeList = new List<EvOption> ( );
+      List<Evado.Model.EvOption> mimeList = new List<Evado.Model.EvOption> ( );
 
       try
       {
@@ -3473,7 +3483,7 @@ namespace Evado.Model
           }
 
           //
-          // Iterate through the file rows creating EvOption for each mime type
+          // Iterate through the file rows creating Evado.Model.EvOption for each mime type
           // and adding them to the mime list.
           //
           foreach ( String line1 in lines )
@@ -3482,7 +3492,7 @@ namespace Evado.Model
 
             if ( arrRow.Length > 1 )
             {
-              mimeList.Add ( new EvOption ( arrRow [ 0 ], arrRow [ 1 ] ) );
+              mimeList.Add ( new Evado.Model.EvOption ( arrRow [ 0 ], arrRow [ 1 ] ) );
             }
           }//END file row iteration loop
 
@@ -3504,7 +3514,7 @@ namespace Evado.Model
     /// <summary>
     /// this class defines the order comparer for actvity form object lists.
     /// </summary>
-    public class OptionComparer : IComparer<EvOption>
+    public class OptionComparer : IComparer<Evado.Model.EvOption>
     {
       //=================================================================================
       /// <summary>
@@ -3514,7 +3524,7 @@ namespace Evado.Model
       /// <param name="y">EvOption object</param>
       /// <returns>int </returns>
       //---------------------------------------------------------------------------------
-      public int Compare ( EvOption x, EvOption y )
+      public int Compare ( Evado.Model.EvOption x, Evado.Model.EvOption y )
       {
         return String.Compare ( x.Value, y.Value );
       }//END compare method
@@ -3524,7 +3534,7 @@ namespace Evado.Model
     /// <summary>
     /// this class defines the order comparer for actvity form object lists.
     /// </summary>
-    public class OptionDescComparer : IComparer<EvOption>
+    public class OptionDescComparer : IComparer<Evado.Model.EvOption>
     {
       //=================================================================================
       /// <summary>
@@ -3534,7 +3544,7 @@ namespace Evado.Model
       /// <param name="y">EvOption object</param>
       /// <returns>int </returns>
       //---------------------------------------------------------------------------------
-      public int Compare ( EvOption x, EvOption y )
+      public int Compare ( Evado.Model.EvOption x, Evado.Model.EvOption y )
       {
         return String.Compare ( x.Description, y.Description );
       }//END compare method

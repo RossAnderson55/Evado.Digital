@@ -204,11 +204,11 @@ namespace Evado.Model
               {
                 if ( index == value )
                 {
-                  return EvStatics.parseEnumValue<T> ( names [ index ] );
+                  return Evado.Model.EvStatics.parseEnumValue<T> ( names [ index ] );
                 }
               }
 
-              return EvStatics.parseEnumValue<T> ( names [ 0 ] );
+              return Evado.Model.EvStatics.parseEnumValue<T> ( names [ 0 ] );
             }//END getEnumValue method
        * 
             //  =========================================================================================
@@ -418,7 +418,7 @@ namespace Evado.Model
       /// 
       /// </remarks>
       //  ----------------------------------------------------------------------------------------------
-      public static List<EvOption> getOptionValueFromEnum( Type enumType, bool isSelectionList )
+      public static List<Evado.Model.EvOption> getOptionValueFromEnum( Type enumType, bool isSelectionList )
       {
         //
         // Create a value list of enumType elements
@@ -428,14 +428,14 @@ namespace Evado.Model
         //
         // Initialize a return option list
         //
-        List<EvOption> options = new List<EvOption>( );
+        List<Evado.Model.EvOption> options = new List<Evado.Model.EvOption>( );
 
         //
         // Add selection value to option list if it is selected
         //
         if ( isSelectionList == true )
         {
-          options.Add( new EvOption( ) );
+          options.Add( new Evado.Model.EvOption ( ) );
         }
 
         //
@@ -448,7 +448,7 @@ namespace Evado.Model
           int iValue = (int) value;
           if ( name.ToLower( ) != "null" )
           {
-            options.Add( new EvOption( iValue.ToString( ), name.Replace( "_", " " ) ) );
+            options.Add( new Evado.Model.EvOption ( iValue.ToString( ), name.Replace( "_", " " ) ) );
           }
 
         }
@@ -485,7 +485,7 @@ namespace Evado.Model
       /// 
       /// </remarks>
       //  ------------------------------------------------------------------------------------------------
-      public static List<EvOption> getOptionsFromEnum( Type enumType, bool isSelectionList )
+      public static List<Evado.Model.EvOption> getOptionsFromEnum( Type enumType, bool isSelectionList )
       {
         //
         // Create a list of enumType elements.
@@ -495,14 +495,14 @@ namespace Evado.Model
         //
         // Initialise the return option list
         //
-        List<EvOption> options = new List<EvOption>( );
+        List<Evado.Model.EvOption> options = new List<Evado.Model.EvOption>( );
 
         //
         // If it is not selection list, then dont add the empty name to the list.
         //
         if (  isSelectionList == true )
         {
-          options.Add ( new EvOption ( ) ); 
+          options.Add ( new Evado.Model.EvOption ( ) ); 
         }
 
         //
@@ -529,7 +529,7 @@ namespace Evado.Model
           //
           // Add the name to the list of selection options
           //
-          options.Add( new EvOption( name.Replace( " ", "_" ), name ) );
+          options.Add( new Evado.Model.EvOption ( name.Replace( " ", "_" ), name ) );
         }
 
         //
@@ -553,7 +553,7 @@ namespace Evado.Model
       /// 2. Initialize an option object with a replacing of "_" character with a blank character
       /// </remarks>
       //  ------------------------------------------------------------------------------------------------
-      public static EvOption getOption( Object enumObject )
+      public static Evado.Model.EvOption getOption( Object enumObject )
       {
         //
         // Create a string name of enumeObject
@@ -563,7 +563,7 @@ namespace Evado.Model
         //
         // Initialize a return option object
         //
-        EvOption option = new EvOption( name, name.Replace( "_", " " ) );
+        Evado.Model.EvOption option = new Evado.Model.EvOption ( name, name.Replace( "_", " " ) );
 
         //
         // Return a selection option object.

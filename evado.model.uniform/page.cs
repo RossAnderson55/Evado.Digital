@@ -1148,7 +1148,7 @@ namespace Evado.Model.UniForm
           //
           // Compare field type to data type and filed type to Null
           //
-          if ( field.Type == DataType || field.Type == EvDataTypes.Null )
+          if ( field.Type == DataType || field.Type == Evado.Model.EvDataTypes.Null )
           {
             if ( field.FieldId == DataId )
             {
@@ -1412,8 +1412,8 @@ namespace Evado.Model.UniForm
           //
           // If the matching field is not a table or matrix exit.
           //
-          if ( field.Type != EvDataTypes.Table
-            || field.Type != EvDataTypes.Special_Matrix )
+          if ( field.Type != Evado.Model.EvDataTypes.Table
+            || field.Type != Evado.Model.EvDataTypes.Special_Matrix )
           {
             return false;
           }
@@ -1547,7 +1547,7 @@ namespace Evado.Model.UniForm
         // 
         if ( Group.GroupType == UniForm.GroupTypes.Annotated_Fields
           && field.FieldId != String.Empty
-          && field.Type != EvDataTypes.Read_Only_Text )
+          && field.Type != Evado.Model.EvDataTypes.Read_Only_Text )
         {
           //
           // Retrieve the annotation value if it exists.
@@ -1585,7 +1585,7 @@ namespace Evado.Model.UniForm
           //A switch case for Evado.Model.UniFrom.EvDataType.Table
           // 
 
-          case EvDataTypes.Table:
+          case Evado.Model.EvDataTypes.Table:
             {
               this.getPageDataFieldTableData ( field, DataObjectList, stAnnotationParameter );
 
@@ -1597,7 +1597,7 @@ namespace Evado.Model.UniForm
           //
 
 
-          case EvDataTypes.Image:
+          case Evado.Model.EvDataTypes.Image:
             {
               string stHash = field.GetParameter ( FieldParameterList.MD5_Hash );
               string stHashParameters = "\"" + Evado.Model.UniForm.FieldParameterList.MD5_Hash

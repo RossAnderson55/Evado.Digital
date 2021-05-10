@@ -13,7 +13,7 @@
  * </copyright>
  * 
  * Description: 
- *  This class contains the EvOption data object.
+ *  This class contains the Evado.Model.EvOption data object.
  *
  ****************************************************************************************/
 
@@ -37,7 +37,7 @@ namespace Evado.Model
       this.Signature = new List<EvSegement> ( );
       this.Name = String.Empty;
       this.AcceptedBy = String.Empty;
-      this.DateStamp = EvStatics.CONST_DATE_NULL;
+      this.DateStamp = Evado.Model.EvStatics.CONST_DATE_NULL;
     }
     /// <summary>
     /// this propoerty contains the rastergraphic of the signature.

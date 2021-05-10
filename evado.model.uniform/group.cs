@@ -563,7 +563,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( Name );
 
-      return EvStatics.getInteger ( value );
+      return Evado.Model.EvStatics.getInteger ( value );
 
     }//END AddParameter method
 
@@ -859,7 +859,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EvStatics.parseEnumValue<FieldValueWidths> ( value );
+        return Evado.Model.EvStatics.parseEnumValue<FieldValueWidths> ( value );
       }
 
       return FieldValueWidths.Default;
@@ -1024,7 +1024,7 @@ namespace Evado.Model.UniForm
 
       try
       {
-        BgColour = EvStatics.parseEnumValue<Background_Colours> ( value );
+        BgColour = Evado.Model.EvStatics.parseEnumValue<Background_Colours> ( value );
         CssColour = BgColour.ToString ( );
         CssColour = CssColour.Replace ( "BG_", String.Empty );
         CssColour = CssColour.ToLower ( );
@@ -1064,7 +1064,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Text;
+      pageField.Type = Evado.Model.EvDataTypes.Text;
       pageField.EditAccess = this.EditAccess;
 
       //
@@ -1107,7 +1107,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Text;
+      pageField.Type = Evado.Model.EvDataTypes.Text;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1157,7 +1157,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Text;
+      pageField.Type = Evado.Model.EvDataTypes.Text;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1205,7 +1205,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Read_Only_Text;
+      pageField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
       pageField.FieldId = String.Empty;
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1250,7 +1250,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Read_Only_Text;
+      pageField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1296,7 +1296,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Read_Only_Text;
+      pageField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
@@ -1345,7 +1345,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Http_Link;
+      pageField.Type = Evado.Model.EvDataTypes.Http_Link;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
@@ -1396,7 +1396,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Free_Text;
+      pageField.Type = Evado.Model.EvDataTypes.Free_Text;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -1451,7 +1451,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Free_Text;
+      pageField.Type = Evado.Model.EvDataTypes.Free_Text;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1502,7 +1502,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Html_Content;
+      pageField.Type = Evado.Model.EvDataTypes.Html_Content;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -1554,7 +1554,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Html_Content;
+      pageField.Type = Evado.Model.EvDataTypes.Html_Content;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1604,14 +1604,14 @@ namespace Evado.Model.UniForm
       }
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Boolean;
+      pageField.Type = Evado.Model.EvDataTypes.Boolean;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = stTextValue;
 
-      pageField.OptionList = new List<EvOption> ( );
-      pageField.OptionList.Add ( new EvOption ( "Yes" ) );
-      pageField.OptionList.Add ( new EvOption ( "No" ) );
+      pageField.OptionList = new List<Evado.Model.EvOption> ( );
+      pageField.OptionList.Add ( new Evado.Model.EvOption ( "Yes" ) );
+      pageField.OptionList.Add ( new Evado.Model.EvOption ( "No" ) );
       pageField.EditAccess = this.EditAccess;
 
       //
@@ -1661,7 +1661,7 @@ namespace Evado.Model.UniForm
       }
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Boolean;
+      pageField.Type = Evado.Model.EvDataTypes.Boolean;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -1671,9 +1671,9 @@ namespace Evado.Model.UniForm
       pageField.Value = stTextValue;
       pageField.AddParameter ( FieldParameterList.Width, "12" );
 
-      pageField.OptionList = new List<EvOption> ( );
-      pageField.OptionList.Add ( new EvOption ( "Yes" ) );
-      pageField.OptionList.Add ( new EvOption ( "No" ) );
+      pageField.OptionList = new List<Evado.Model.EvOption> ( );
+      pageField.OptionList.Add ( new Evado.Model.EvOption ( "Yes" ) );
+      pageField.OptionList.Add ( new Evado.Model.EvOption ( "No" ) );
       pageField.EditAccess = this.EditAccess;
 
       //
@@ -1718,7 +1718,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Binary_File;
+      pageField.Type = Evado.Model.EvDataTypes.Binary_File;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -1769,7 +1769,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Binary_File;
+      pageField.Type = Evado.Model.EvDataTypes.Binary_File;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -1831,7 +1831,7 @@ namespace Evado.Model.UniForm
 
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Date;
+      pageField.Type = Evado.Model.EvDataTypes.Date;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( "dd MMM yyyy" );
@@ -1893,7 +1893,7 @@ namespace Evado.Model.UniForm
       DateTime MinimumDate = DateTime.Now.AddYears ( -100 );
       DateTime MaximumDate = DateTime.Now.AddYears ( +10 );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Date;
+      pageField.Type = Evado.Model.EvDataTypes.Date;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -1944,7 +1944,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Time;
+      pageField.Type = Evado.Model.EvDataTypes.Time;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( "HH:mm:ss" );
@@ -1994,7 +1994,7 @@ namespace Evado.Model.UniForm
       }
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Time;
+      pageField.Type = Evado.Model.EvDataTypes.Time;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -2052,7 +2052,7 @@ namespace Evado.Model.UniForm
       String stMaximum = MaximumValue.ToString ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Numeric;
+      pageField.Type = Evado.Model.EvDataTypes.Numeric;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2104,7 +2104,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Numeric;
+      pageField.Type = Evado.Model.EvDataTypes.Numeric;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2158,7 +2158,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Integer_Range;
+      pageField.Type = Evado.Model.EvDataTypes.Integer_Range;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2211,7 +2211,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Integer_Range;
+      pageField.Type = Evado.Model.EvDataTypes.Integer_Range;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2266,7 +2266,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Float_Range;
+      pageField.Type = Evado.Model.EvDataTypes.Float_Range;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2319,7 +2319,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Float_Range;
+      pageField.Type = Evado.Model.EvDataTypes.Float_Range;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2393,7 +2393,7 @@ namespace Evado.Model.UniForm
       }//END option iteration
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Radio_Button_List;
+      pageField.Type = Evado.Model.EvDataTypes.Radio_Button_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -2465,7 +2465,7 @@ namespace Evado.Model.UniForm
       }//END option iteration
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Radio_Button_List;
+      pageField.Type = Evado.Model.EvDataTypes.Radio_Button_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2541,7 +2541,7 @@ namespace Evado.Model.UniForm
       }//END option iteration
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Radio_Button_List;
+      pageField.Type = Evado.Model.EvDataTypes.Radio_Button_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2620,7 +2620,7 @@ namespace Evado.Model.UniForm
       }//END option iteration
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Selection_List;
+      pageField.Type = Evado.Model.EvDataTypes.Selection_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2691,7 +2691,7 @@ namespace Evado.Model.UniForm
       }//END option iteration
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Selection_List;
+      pageField.Type = Evado.Model.EvDataTypes.Selection_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -2770,7 +2770,7 @@ namespace Evado.Model.UniForm
       }//END option iteration 
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Selection_List;
+      pageField.Type = Evado.Model.EvDataTypes.Selection_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2822,7 +2822,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       object Value,
-      List<EvOption> OptionList )
+      List<Evado.Model.EvOption> OptionList )
     {
       if ( Value == null )
       {
@@ -2834,7 +2834,7 @@ namespace Evado.Model.UniForm
       //
       // Find the length of the option list largest option item less thatn 50 characters.
       //
-      foreach ( EvOption option in OptionList )
+      foreach ( Evado.Model.EvOption option in OptionList )
       {
         //
         // Set the maximum selection width th 50 characters
@@ -2848,7 +2848,7 @@ namespace Evado.Model.UniForm
       }//END option iteration 
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Check_Box_List;
+      pageField.Type = Evado.Model.EvDataTypes.Check_Box_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value.ToString ( );
@@ -2897,7 +2897,7 @@ namespace Evado.Model.UniForm
       String FieldTitle,
       String FieldDescription,
       object Value,
-      List<EvOption> OptionList )
+      List<Evado.Model.EvOption> OptionList )
     {
       if ( Value == null )
       {
@@ -2909,7 +2909,7 @@ namespace Evado.Model.UniForm
       //
       // Find the length of the option list largest option item less thatn 50 characters.
       //
-      foreach ( EvOption option in OptionList )
+      foreach ( Evado.Model.EvOption option in OptionList )
       {
         //
         // Set the maximum selection width th 50 characters
@@ -2923,7 +2923,7 @@ namespace Evado.Model.UniForm
       }//END option iteration 
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Check_Box_List;
+      pageField.Type = Evado.Model.EvDataTypes.Check_Box_List;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -2990,7 +2990,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Image;
+      pageField.Type = Evado.Model.EvDataTypes.Image;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = ImageFileName;
@@ -3069,7 +3069,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Image;
+      pageField.Type = Evado.Model.EvDataTypes.Image;
       pageField.FieldId = FielIdId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -3147,7 +3147,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Bar_Code;
+      pageField.Type = Evado.Model.EvDataTypes.Bar_Code;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3204,7 +3204,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Bar_Code;
+      pageField.Type = Evado.Model.EvDataTypes.Bar_Code;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -3263,7 +3263,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Sound;
+      pageField.Type = Evado.Model.EvDataTypes.Sound;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = FileName;
@@ -3308,7 +3308,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Hidden;
+      pageField.Type = Evado.Model.EvDataTypes.Hidden;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Value = Value;
 
@@ -3347,7 +3347,7 @@ namespace Evado.Model.UniForm
     {
       Field groupField = new Field ( );
       groupField.Id = Guid.NewGuid ( );
-      groupField.Type = EvDataTypes.Table;
+      groupField.Type = Evado.Model.EvDataTypes.Table;
       groupField.FieldId = FieldId.ToString ( );
       groupField.Title = FieldTitle;
       groupField.Table = new Table ( );
@@ -3402,7 +3402,7 @@ namespace Evado.Model.UniForm
     {
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Table;
+      pageField.Type = Evado.Model.EvDataTypes.Table;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -3464,7 +3464,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Currency;
+      pageField.Type = Evado.Model.EvDataTypes.Currency;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3515,7 +3515,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Currency;
+      pageField.Type = Evado.Model.EvDataTypes.Currency;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       if ( FieldDescription != String.Empty )
@@ -3568,7 +3568,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Email_Address;
+      pageField.Type = Evado.Model.EvDataTypes.Email_Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3620,7 +3620,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Email_Address;
+      pageField.Type = Evado.Model.EvDataTypes.Email_Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -3676,7 +3676,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Telephone_Number;
+      pageField.Type = Evado.Model.EvDataTypes.Telephone_Number;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3728,7 +3728,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Telephone_Number;
+      pageField.Type = Evado.Model.EvDataTypes.Telephone_Number;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -3785,7 +3785,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Name;
+      pageField.Type = Evado.Model.EvDataTypes.Name;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3836,7 +3836,7 @@ namespace Evado.Model.UniForm
       String format = String.Empty;
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Name;
+      pageField.Type = Evado.Model.EvDataTypes.Name;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -3903,7 +3903,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Telephone_Number;
+      pageField.Type = Evado.Model.EvDataTypes.Telephone_Number;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -3959,7 +3959,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Address;
+      pageField.Type = Evado.Model.EvDataTypes.Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -4012,7 +4012,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Address;
+      pageField.Type = Evado.Model.EvDataTypes.Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Address_1 + ";"
@@ -4068,7 +4068,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Address;
+      pageField.Type = Evado.Model.EvDataTypes.Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -4149,7 +4149,7 @@ namespace Evado.Model.UniForm
       }
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Analogue_Scale;
+      pageField.Type = Evado.Model.EvDataTypes.Analogue_Scale;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -4236,7 +4236,7 @@ namespace Evado.Model.UniForm
       }
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Address;
+      pageField.Type = Evado.Model.EvDataTypes.Address;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -4305,7 +4305,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Signature;
+      pageField.Type = Evado.Model.EvDataTypes.Signature;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -4360,7 +4360,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Signature;
+      pageField.Type = Evado.Model.EvDataTypes.Signature;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
@@ -4412,7 +4412,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Signature;
+      pageField.Type = Evado.Model.EvDataTypes.Signature;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -4476,7 +4476,7 @@ namespace Evado.Model.UniForm
       Field pageField = new Field ( );
 
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Signature;
+      pageField.Type = Evado.Model.EvDataTypes.Signature;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
 
@@ -4524,7 +4524,7 @@ namespace Evado.Model.UniForm
     {
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Password;
+      pageField.Type = Evado.Model.EvDataTypes.Password;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = String.Empty;
@@ -4566,7 +4566,7 @@ namespace Evado.Model.UniForm
     {
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Password;
+      pageField.Type = Evado.Model.EvDataTypes.Password;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.AddParameter ( FieldParameterList.Width, "50" );
@@ -4635,7 +4635,7 @@ namespace Evado.Model.UniForm
       //
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Line_Chart;
+      pageField.Type = Evado.Model.EvDataTypes.Line_Chart;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
@@ -4708,7 +4708,7 @@ namespace Evado.Model.UniForm
       //
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Line_Chart;
+      pageField.Type = Evado.Model.EvDataTypes.Line_Chart;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
@@ -4777,7 +4777,7 @@ namespace Evado.Model.UniForm
       //
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Pie_Chart;
+      pageField.Type = Evado.Model.EvDataTypes.Pie_Chart;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
@@ -4846,7 +4846,7 @@ namespace Evado.Model.UniForm
       //
       Field pageField = new Field ( );
       pageField.Id = Guid.NewGuid ( );
-      pageField.Type = EvDataTypes.Donut_Chart;
+      pageField.Type = Evado.Model.EvDataTypes.Donut_Chart;
       pageField.EditAccess = EditAccess.Disabled;
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;

@@ -586,6 +586,7 @@ namespace Evado.UniForm.Digital
         {
           PageCommand.ApplicationId = EuAdapter.ADAPTER_ID;
           PageCommand.Object = EuAdapterClasses.Home_Page.ToString ( );
+          PageCommand.Id = EvStatics.CONST_DEFAULT_HOME_PAGE_ID;
         }
 
         // 
@@ -603,6 +604,19 @@ namespace Evado.UniForm.Digital
           // The user does not have a valid profile exit with the no profile page.
           // 
           return generateNoProfilePage ( );
+        }
+
+        //  
+        // Load the paremeters from the web.config if not already loaded.
+        // 
+        if ( this.Session.HomePageGuid == null  )
+        {
+          this.Session.HomePageGuid = Guid.NewGuid ( );
+        }
+
+        if ( this.ExitCommand.Object == EuAdapterClasses.Home_Page.ToString ( ) )
+        {
+          this.ExitCommand.Id = EvStatics.CONST_DEFAULT_HOME_PAGE_ID;
         }
 
         //
@@ -637,6 +651,11 @@ namespace Evado.UniForm.Digital
         // get the application object.
         //
         clientDataObject = this.getApplicationObject ( PageCommand );
+
+        //
+        // set the exit command object.
+        //
+        clientDataObject.Page.Exit = this.ExitCommand;
 
         //
         // update the last page object.

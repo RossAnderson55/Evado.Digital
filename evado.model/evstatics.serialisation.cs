@@ -71,7 +71,7 @@ namespace Evado.Model
       }
       catch( Exception Ex )
       {
-        xmlDataObject = EvStatics.getException ( Ex );
+        xmlDataObject = Evado.Model.EvStatics.getException ( Ex );
       }
 
       writer.Close( );

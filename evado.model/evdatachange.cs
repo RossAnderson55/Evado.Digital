@@ -262,7 +262,7 @@ namespace Evado.Model
     private string _SubjectId = String.Empty;
     private string _RecordId = String.Empty;
     private string _UserId = String.Empty;
-    private DateTime _DateStamp = EvStatics.CONST_DATE_NULL;
+    private DateTime _DateStamp = Evado.Model.EvStatics.CONST_DATE_NULL;
 
     private List<EvDataChangeItem> _Items = new List<EvDataChangeItem>();
 
@@ -428,7 +428,7 @@ namespace Evado.Model
     {
       get
       {
-        if ( this._DateStamp > EvStatics.CONST_DATE_NULL )
+        if ( this._DateStamp > Evado.Model.EvStatics.CONST_DATE_NULL )
         {
           return this._DateStamp.ToString( "dd MMM yyyy HH:mm:ss" );
         }
@@ -1027,16 +1027,16 @@ namespace Evado.Model
       // Add items from option list to the return list
       //
 
-      option = EvStatics.getOption( DataChangeTableNames.EvAlerts );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EvAlerts );
       list.Add( option );
 
-      option = EvStatics.getOption( DataChangeTableNames.EvForms );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EvForms );
       list.Add( option );
 
-      option = EvStatics.getOption( DataChangeTableNames.EdApplicationSettings );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EdApplicationSettings );
       list.Add( option );
 
-      option = EvStatics.getOption( DataChangeTableNames.EvUserProfiles );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EvUserProfiles );
       list.Add( option );
 
       // 
@@ -1061,12 +1061,12 @@ namespace Evado.Model
     /// 3. Add items from the option list to the return list
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public static List<EvOption> getRecordTablesNameList( )
+    public static List<Evado.Model.EvOption> getRecordTablesNameList( )
     {
       //
       // Initialize a return list of record table name
       //
-      List<EvOption> list = new List<EvOption>();
+      List<Evado.Model.EvOption> list = new List<Evado.Model.EvOption>();
 
       //
       // Create an option list 
@@ -1076,7 +1076,7 @@ namespace Evado.Model
 
       // Add items from the option list to the return list
 
-      option = EvStatics.getOption( DataChangeTableNames.EvRecords );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EvRecords );
       list.Add ( option );
 
       // 
@@ -1101,12 +1101,12 @@ namespace Evado.Model
     /// 3. Add items from the option list to the return list
     /// </remarks>
     //  ------------------------------------------------------------------------------------
-    public static List<EvOption> getRecordItemTablesNameList( )
+    public static List<Evado.Model.EvOption> getRecordItemTablesNameList( )
     {
       //
       // Initialize a return list of record item table name
       //
-      List<EvOption> list = new List<EvOption>();
+      List<Evado.Model.EvOption> list = new List<Evado.Model.EvOption>();
 
       //
       // Create an option list
@@ -1117,7 +1117,7 @@ namespace Evado.Model
       //
       // Add items from the option list to the return list
       //
-      option = EvStatics.getOption( DataChangeTableNames.EvFormFields );
+      option = Evado.Model.EvStatics.getOption( DataChangeTableNames.EvFormFields );
       list.Add( option );
 
 

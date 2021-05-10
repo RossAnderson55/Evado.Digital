@@ -61,12 +61,12 @@ namespace Evado.Model.UniForm
       set { this._UniForm_BinaryServiceUrl = value; }
     }
 
-    private EvUserProfileBase _ServiceUserProfile = new EvUserProfileBase ( );
+    private Evado.Model.EvUserProfileBase _ServiceUserProfile = new Evado.Model.EvUserProfileBase ( );
 
     /// <summary>
     /// This property contains a user profile.
     /// </summary>
-    public EvUserProfileBase ServiceUserProfile
+    public Evado.Model.EvUserProfileBase ServiceUserProfile
     {
       get { return this._ServiceUserProfile; }
       set { this._ServiceUserProfile = value; }

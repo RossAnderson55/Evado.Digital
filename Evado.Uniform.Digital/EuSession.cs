@@ -68,6 +68,11 @@ namespace Evado.UniForm.Digital
 
     #region Adapter properties members
 
+    /// <summary>
+    /// This property contains the home page identifier.
+    /// </summary>
+    public Guid HomePageGuid { get; set; }
+
     public bool AdsEnabled = true;
     /// <summary>
     /// this property contains a list of ADS customer groups.

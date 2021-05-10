@@ -47,7 +47,7 @@ namespace Evado.Model
     {
       this.Order = 0;
       this.Name = Name;
-      this.DataType = EvDataTypes.Text;
+      this.DataType = Evado.Model.EvDataTypes.Text;
       this.Value = Value;
       this.Options = String.Empty;
     }
@@ -63,7 +63,7 @@ namespace Evado.Model
     {
       this.Order = 0;
       this.Name = Name.ToString ( );
-      this.DataType = EvDataTypes.Text;
+      this.DataType = Evado.Model.EvDataTypes.Text;
       this.Value = Value.ToString ( );
       this.Options = String.Empty;
     }
@@ -98,7 +98,7 @@ namespace Evado.Model
     {
       this.Order = 0;
       this.Name = Name.ToString ( );
-      this.DataType = EvDataTypes.Text;
+      this.DataType = Evado.Model.EvDataTypes.Text;
       this.Value = Value.ToString ( );
       this.Options = Options;
     }
@@ -136,11 +136,11 @@ namespace Evado.Model
     /// <summary>
     /// This property returns a list of options objects
     /// </summary>
-    public List<EvOption> OptionList
+    public List<Evado.Model.EvOption> OptionList
     {
       get
       {
-        List<EvOption> optionList = new List<EvOption> ( );
+        List<Evado.Model.EvOption> optionList = new List<Evado.Model.EvOption> ( );
         if ( Options == null )
         {
           return optionList;
@@ -154,11 +154,11 @@ namespace Evado.Model
           {
             string [ ] values = stOption.Split ( ':' );
 
-            optionList.Add ( new EvOption ( values [ 0 ].Trim ( ), values [ 1 ].Trim ( ) ) );
+            optionList.Add ( new Evado.Model.EvOption ( values [ 0 ].Trim ( ), values [ 1 ].Trim ( ) ) );
           }
           else
           {
-            optionList.Add ( new EvOption ( stOption.Trim ( ) ) );
+            optionList.Add ( new Evado.Model.EvOption ( stOption.Trim ( ) ) );
           }
         }
 
@@ -169,4 +169,4 @@ namespace Evado.Model
 
   }//END SiteProperties class
 
-}//END namespace Evado.Model.Clinical
+}//END namespace Evado.Clinical.Model

@@ -365,7 +365,7 @@ namespace Evado.Model
       set { this._Title = value; }
     }
 
-    private DateTime _ExpiryDate = EvStatics.CONST_DATE_NULL;
+    private DateTime _ExpiryDate = Evado.Model.EvStatics.CONST_DATE_NULL;
     /// <summary>
     /// This property defines the user's account expiry date.
     /// </summary>
@@ -471,7 +471,7 @@ namespace Evado.Model
       set { this._UpdatedBy = value; }
     }
 
-    private DateTime _UpdatedDate = EvStatics.CONST_DATE_NULL;
+    private DateTime _UpdatedDate = Evado.Model.EvStatics.CONST_DATE_NULL;
     /// <summary>
     /// The property defines the date time stamp on update log
     /// </summary>
@@ -494,11 +494,11 @@ namespace Evado.Model
     /// <summary>
     /// this property returns a selection option object for the user.
     /// </summary>
-    public EvOption Option
+    public Evado.Model.EvOption Option
     {
       get
       {
-        return new EvOption(  this.UserId,String.Format( "{0} - {1} ", this.UserId,this.CommonName ) ) ;
+        return new Evado.Model.EvOption (  this.UserId,String.Format( "{0} - {1} ", this.UserId,this.CommonName ) ) ;
       }
     }
 
@@ -667,7 +667,7 @@ namespace Evado.Model
       string value = Value.ToString ( );
       EvObjectParameter parm = new EvObjectParameter (
         Name, value );
-      parm.DataType = EvDataTypes.Boolean;
+      parm.DataType = Evado.Model.EvDataTypes.Boolean;
 
       this.setParameter ( parm );
     }
@@ -684,7 +684,7 @@ namespace Evado.Model
       var parameter = this.getParameterObject ( Name );
       T iValue = default ( T );
 
-      if ( EvStatics.tryParseEnumValue<T> ( parameter.Value, out iValue ) == true )
+      if ( Evado.Model.EvStatics.tryParseEnumValue<T> ( parameter.Value, out iValue ) == true )
       {
         return iValue;
       }
@@ -1013,7 +1013,7 @@ namespace Evado.Model
     /// 2. Update the related field name with value
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public EvEventCodes setValue ( UserProfileFieldNames fieldName, String value )
+    public Evado.Model.EvEventCodes setValue ( UserProfileFieldNames fieldName, String value )
     {
       //
       // Update the value of user profile's field name based retrieving fieldname
@@ -1044,7 +1044,7 @@ namespace Evado.Model
           break;
       }//End switch field name
       return 0;
-    }//END EvEventCodes method
+    }//END Evado.Model.EvEventCodes method
     */
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1052,4 +1052,4 @@ namespace Evado.Model
 
   }//END EvUserProfile method
 
-} //END namespace Evado.Model.Clinical
+} //END namespace Evado.Clinical.Model

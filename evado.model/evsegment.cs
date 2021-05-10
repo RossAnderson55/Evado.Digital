@@ -13,7 +13,7 @@
  * </copyright>
  * 
  * Description: 
- *  This class contains the EvOption data object.
+ *  This class contains the Evado.Model.EvOption data object.
  *
  ****************************************************************************************/
 

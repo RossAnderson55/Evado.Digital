@@ -457,7 +457,7 @@ namespace Evado.Model.UniForm
       catch ( Exception Ex )
       {
         stStatus += "\r\n Evado.Model.UniForm.Statics.readApplicationHomePage static method."
-          + "\r\n exception." + EvStatics.getException( Ex );
+          + "\r\n exception." + Evado.Model.EvStatics.getException( Ex );
       }
 
       return stStatus;
@@ -498,7 +498,7 @@ namespace Evado.Model.UniForm
         //
         foreach ( Evado.Model.UniForm.Field field in group.FieldList )
         {
-          if ( field.Type == EvDataTypes.Read_Only_Text )
+          if ( field.Type == Evado.Model.EvDataTypes.Read_Only_Text )
           {
 
             field.Value = field.Value.Replace( "[[", "<" );
@@ -582,7 +582,7 @@ namespace Evado.Model.UniForm
       catch ( Exception Ex )
       {
         stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.writeJsonFile static method Excpetion."
-          + EvStatics.getException( Ex );
+          + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -661,7 +661,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileSave static method Excpetion." + EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileSave static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -742,7 +742,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileAppend static method Excpetion." + EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileAppend static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -827,7 +827,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.readApplicationHomePage static method Excpetion." + EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.readApplicationHomePage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -915,7 +915,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.writeOutImage static method Excpetion." + EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.writeOutImage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //

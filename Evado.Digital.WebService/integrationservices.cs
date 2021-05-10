@@ -687,6 +687,8 @@ namespace Evado.UniForm
 
       Command homePageCommand = Command.getDefaultCommand ( );
 
+      homePageCommand.Id = EvStatics.CONST_DEFAULT_HOME_PAGE_ID;
+
       homePageCommand.Header = PageCommand.Header;
 
       this.LogDebug ( "Default Home page command: " + homePageCommand.getAsString ( true, false ) );
