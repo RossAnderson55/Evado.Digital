@@ -221,7 +221,7 @@ namespace Evado.Integration.Service
           Global.DebugLogOn = true;
         }
       }
-      Evado.Bll.EvStaticSetting.DebugOn = Global.DebugLogOn;
+      Evado.Digital.Bll.EvStaticSetting.DebugOn = Global.DebugLogOn;
 
       Global.WriteServiceLogLine ( "Debug on: " + Global.DebugLogOn );
 
@@ -245,7 +245,7 @@ namespace Evado.Integration.Service
         stConnectionSettingKey = (String)
           ConfigurationManager.AppSettings [ "ConnectionSetting" ];
 
-        Evado.Bll.EvStaticSetting.ConnectionStringKey = stConnectionSettingKey;
+        Evado.Digital.Bll.EvStaticSetting.ConnectionStringKey = stConnectionSettingKey;
 
         Global.WriteServiceLogLine ( "ConnectionSetting code: " + stConnectionSettingKey );
       }

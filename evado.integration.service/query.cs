@@ -159,9 +159,9 @@ namespace Evado.Integration.Service
         // Initialise the methods variables and object.
         //
         string json = String.Empty;
-        Evado.Bll.Integration.EiServices integrationServices = new Evado.Bll.Integration.EiServices ( );
+        Evado.Digital.Bll.EiServices integrationServices = new Evado.Digital.Bll.EiServices ( );
         this._ClientVersion = Evado.Model.EvStatics.decodeMinorVersion ( Version );
-        Evado.Bll.EvStaticSetting.DebugOn = Global.DebugLogOn;
+        Evado.Digital.Bll.EvStaticSetting.DebugOn = Global.DebugLogOn;
 
         Global.WriteServiceLogLine ( "ClientVersion: " + this._ClientVersion );
         Global.WriteServiceLogLine ( "Context SessionId: " + this._Context.Session.SessionID );
@@ -248,7 +248,7 @@ namespace Evado.Integration.Service
         Global.WriteDebugLogMethod ( "STEP 2 : Process the user's query request." );
         Global.WriteServiceMethod ( "STEP 2 : Process the user's query request." );
 
-        Global.WriteDebugLogLine ( "EvStaticSetting.DebugOn: " + Evado.Bll.EvStaticSetting.DebugOn );
+        Global.WriteDebugLogLine ( "EvStaticSetting.DebugOn: " + Evado.Digital.Bll.EvStaticSetting.DebugOn );
 
         //
         // execute the query

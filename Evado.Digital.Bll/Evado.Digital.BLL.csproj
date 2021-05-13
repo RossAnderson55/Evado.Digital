@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <DebugType>
+    </DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE805124-3D88-4AE5-A1E7-5A5A595A298E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Evado.Digital.Bll</AssemblyName>
+    <AssemblyOriginatorKeyFile>invision.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Evado.Digital.Bll</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>false</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Evado.Bll.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evado.Digital.Model\Evado.Digital.Model.csproj">
+      <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
+      <Name>Evado.Digital.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
+    <Reference Include="Accessibility" />
+    <Reference Include="markdownsharp">
+      <HintPath>..\exterial_packages\markdownsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="newtonsoft.json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\exterial_packages\newtonsoft.json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Evado.Integration.model\Evado.Integration.model.csproj">
+      <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
+      <Name>Evado.Integration.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Evado.Digital.DAL\Evado.Digital.DAL.csproj">
+      <Name>Evado.Digital.DAL</Name>
+      <Project>{E474874D-B81D-4A38-B3AB-88EEA768649D}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyAttributes.cs" />
+    <Compile Include="EdPageLayouts.cs" />
+    <Compile Include="EdAdapterConfig.cs" />
+    <Compile Include="EdEntities.cs" />
+    <Compile Include="EdEntityFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EdEntityLayouts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EdOrganisations.cs" />
+    <Compile Include="EdRecordFields.cs" />
+    <Compile Include="EdRecordLayouts.cs" />
+    <Compile Include="EdRecords.cs" />
+    <Compile Include="evancillaryrecords.cs" />
+    <Compile Include="evbinaryfiles.cs" />
+    <Compile Include="evdataanalysis.cs" />
+    <Compile Include="evdatachanges.cs" />
+    <Compile Include="EdSelectionLists.cs" />
+    <Compile Include="evformrecordexport.cs" />
+    <Compile Include="evformrecordfields.cs" />
+    <Compile Include="evmenus.cs" />
+    <Compile Include="evreportdataproviderbase.cs" />
+    <Compile Include="evreports.cs" />
+    <Compile Include="evreportsaved.cs" />
+    <Compile Include="evreporttemplates.cs" />
+    <Compile Include="EdUserprofiles.cs" />
+    <Compile Include="EvServerUtillities.cs" />
+    <Compile Include="EvBllBase.cs" />
+    <Compile Include="EvEmail.cs" />
+    <Compile Include="EvStaticSetting.cs" />
+    <Compile Include="EvApplicationEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EiCsvServices.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EiServices.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EvDataBaseUpdates.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="invision.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

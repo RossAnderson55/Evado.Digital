@@ -1,12 +1,12 @@
 Evado.UniForm.Service.c event method.
 System.NullReferenceException: Object reference not set to an instance of an object.
-   at Evado.Bll.Integration.EiSchedules.setMilestoneColumnData(EvMilestone Milestone, EiData ResultData) 
+   at Evado.Digital.Bll.EiSchedules.setMilestoneColumnData(EvMilestone Milestone, EiData ResultData) 
    in C:\Users\Ross\Projects\Evado.eClinical\evado.bll\Integation\EiSchedules.cs:line 575
 
-   at Evado.Bll.Integration.EiSchedules.ExportData(EiData QueryData) 
+   at Evado.Digital.Bll.EiSchedules.ExportData(EiData QueryData) 
    in C:\Users\Ross\Projects\Evado.eClinical\evado.bll\Integation\EiSchedules.cs:line 264
 
-   at Evado.Bll.Integration.EiServices.ProcessQuery(EiData QueryData) 
+   at Evado.Digital.Bll.EiServices.ProcessQuery(EiData QueryData) 
    in C:\Users\Ross\Projects\Evado.eClinical\evado.bll\Integation\EiServices.cs:line 267
 
    at Evado.Integration.Service.Query.getIntegrationObject(String Version, String QueryType, String SessionId, Stream content) 

@@ -128,9 +128,9 @@
     <Folder Include="logs\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\evado.model.Digital\Evado.Model.Digital.csproj">
+    <ProjectReference Include="..\Evado.Digital.Model\Evado.Digital.Model.csproj">
       <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
-      <Name>Evado.Model.Digital</Name>
+      <Name>Evado.Digital.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model.uniform\evado.model.uniform.csproj">
       <Project>{eb6a905c-2e28-4a70-b791-dc807165bcd7}</Project>
@@ -140,9 +140,9 @@
       <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Evado.UniForm.Digital\Evado.UniForm.Digital.csproj">
+    <ProjectReference Include="..\Evado.Digital.Adapter\Evado.Digital.Adapter.csproj">
       <Project>{35125365-b9a7-4a88-a50e-5d8b0c8ce9b9}</Project>
-      <Name>Evado.UniForm.Digital</Name>
+      <Name>Evado.Digital.Adapter</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

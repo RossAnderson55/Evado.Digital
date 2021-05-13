@@ -26,7 +26,7 @@ using System.Net;
 
 // Evado specific references
 using Evado.Model;
-using Evado.Model.Integration;
+using Evado.Integration.Model;
 
 namespace Evado.IntegrationClient
 {

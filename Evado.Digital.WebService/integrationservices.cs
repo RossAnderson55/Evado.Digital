@@ -226,8 +226,8 @@ namespace Evado.UniForm
     //
     // The eclinical application service.
     //
-    Evado.UniForm.Digital.EuAdapter _ApplicationAdapter =
-          new Evado.UniForm.Digital.EuAdapter ( );
+    Evado.Digital.Adapter.EuAdapter _ApplicationAdapter =
+          new Evado.Digital.Adapter.EuAdapter ( );
 
     private bool _NewUser = false;
 
@@ -300,7 +300,7 @@ namespace Evado.UniForm
         //
         // Initialise the Evado clinical adapter object.
         //
-        this._ApplicationAdapter = new Evado.UniForm.Digital.EuAdapter (
+        this._ApplicationAdapter = new Evado.Digital.Adapter.EuAdapter (
           this._ClientVersion,
           this._GlobalObjects,
           this._ServiceUserProfile,
@@ -367,7 +367,7 @@ namespace Evado.UniForm
           this.LogValue ( "last command: " + lastCommand.Title );
 
           if ( lastCommand.Id != Guid.Empty
-            && lastCommand.Object != Evado.UniForm.Digital.EuAdapterClasses.Home_Page.ToString ( ) )
+            && lastCommand.Object != Evado.Digital.Adapter.EuAdapterClasses.Home_Page.ToString ( ) )
           {
             this.LogValue ( "Executing the last command" );
             PageCommand = lastCommand;
@@ -524,7 +524,7 @@ namespace Evado.UniForm
         //
         // Initialise the Evado clinical adapter object.
         //
-        this._ApplicationAdapter = new Evado.UniForm.Digital.EuAdapter (
+        this._ApplicationAdapter = new Evado.Digital.Adapter.EuAdapter (
           this._ClientVersion,
           this._GlobalObjects,
           this._ServiceUserProfile,
@@ -554,7 +554,7 @@ namespace Evado.UniForm
         //  
         switch ( PageCommand.ApplicationId )
         {
-          case Evado.UniForm.Digital.EuAdapter.ADAPTER_ID:
+          case Evado.Digital.Adapter.EuAdapter.ADAPTER_ID:
             {
               this.LogValue ( "SELECTING APPLICATION AppId: '" + PageCommand.ApplicationId + "'"
                 + " >> CALLING ECLINICAL APPLICATION" );
@@ -686,6 +686,8 @@ namespace Evado.UniForm
       AppData clientDataObject = new AppData ( );
 
       Command homePageCommand = Command.getDefaultCommand ( );
+
+      homePageCommand.Id = EvStatics.CONST_DEFAULT_HOME_PAGE_ID;
 
       homePageCommand.Header = PageCommand.Header;
 

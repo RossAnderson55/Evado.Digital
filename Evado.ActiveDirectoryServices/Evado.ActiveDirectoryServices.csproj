@@ -67,9 +67,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\evado.model.integration\evado.model.integration.csproj">
+    <ProjectReference Include="..\Evado.Integration.model\Evado.Integration.model.csproj">
       <Project>{97753fa6-9bc8-46dc-bdfc-cc82771a5646}</Project>
-      <Name>evado.model.integration</Name>
+      <Name>Evado.Integration.model</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model\evado.model.csproj">
       <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>

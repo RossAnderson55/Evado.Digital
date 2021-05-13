@@ -90,17 +90,17 @@
     <Compile Include="Query.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\evado.bll\evado.bll.csproj">
+    <ProjectReference Include="..\Evado.Digital.BLL\Evado.Digital.BLL.csproj">
       <Project>{AE805124-3D88-4AE5-A1E7-5A5A595A298E}</Project>
-      <Name>evado.bll</Name>
+      <Name>Evado.Digital.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\evado.model.Digital\Evado.Model.Digital.csproj">
+    <ProjectReference Include="..\Evado.Digital.Model\Evado.Digital.Model.csproj">
       <Project>{c85c0fc2-76e7-496c-aea1-1f97fa573c93}</Project>
-      <Name>Evado.Model.Digital</Name>
+      <Name>Evado.Digital.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\evado.model.integration\evado.model.integration.csproj">
+    <ProjectReference Include="..\Evado.Integration.model\Evado.Integration.model.csproj">
       <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
-      <Name>evado.model.integration</Name>
+      <Name>Evado.Integration.model</Name>
     </ProjectReference>
     <ProjectReference Include="..\evado.model.uniform\evado.model.uniform.csproj">
       <Project>{eb6a905c-2e28-4a70-b791-dc807165bcd7}</Project>

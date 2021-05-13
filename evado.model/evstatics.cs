@@ -160,6 +160,11 @@ namespace Evado.Model
     public static readonly Guid CONST_NEW_OBJECT_ID = new Guid ( "51fb861f-35f2-4d52-95cd-000000000000" );
 
     /// <summary>
+    /// This static readonly value contains the date completed value.
+    /// </summary>
+    public static readonly Guid CONST_DEFAULT_HOME_PAGE_ID = new Guid ( "6ff565a2-ae55-4092-83a5-fe51f66bb269" );
+
+    /// <summary> 
     /// This constant defines the default maximum numeric value.
     /// </summary>
     public const float CONST_NUMERIC_MINIMUM = (float) -1000000;
