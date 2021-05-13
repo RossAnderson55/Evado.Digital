@@ -40,7 +40,7 @@ namespace Evado.Model
     /// <param name="value"> value to be setted</param>
     /// <returns>true if the operation passes all of the validations.</returns>
     //  ---------------------------------------------------------------------------------
-    EvEventCodes setValue ( ModelClassFiledNames fieldName, string value );
+    Evado.Model.EvEventCodes setValue ( ModelClassFiledNames fieldName, string value );
 
   }
 }

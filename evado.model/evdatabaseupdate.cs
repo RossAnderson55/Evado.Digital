@@ -141,7 +141,7 @@ namespace Evado.Model
     //
     private Guid _Guid = Guid.Empty;
     private int _UpdateNo = 0;
-    private DateTime _UpdateDate = EvStatics.CONST_DATE_NULL;
+    private DateTime _UpdateDate = Evado.Model.EvStatics.CONST_DATE_NULL;
     private string _Version = String.Empty;
     private string _Objects = String.Empty;
     private string _Description = String.Empty;

@@ -91,7 +91,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// THis varaible _TypeId conntains an empty string.
     /// </summary>
-    private EvDataTypes _TypeId = EvDataTypes.Text;
+    private EvDataTypes _TypeId = Evado.Model.EvDataTypes.Text;
     /// <summary>
     /// This variable _OptionOrUnit contains an empty string.
     /// </summary>
@@ -193,11 +193,11 @@ namespace Evado.Model.UniForm
       set { _MaximumValue = value; }
     }
 
-    private List<EvOption> _OptionList = new List<EvOption>( );
+    private List<Evado.Model.EvOption> _OptionList = new List<Evado.Model.EvOption>( );
     /// <summary>
     /// This property contains a selection list that is displayed on the device client.
     /// </summary>
-    public List<EvOption> OptionList
+    public List<Evado.Model.EvOption> OptionList
     {
       get { return _OptionList; }
       set { _OptionList = value; }
@@ -211,7 +211,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method adds a option as first item for a selection list and returns the completed array list.
     /// </summary>
-    /// <returns>A list of EvOption Object </returns>
+    /// <returns>A list of Evado.Model.EvOption Object </returns>
     /// <remarks>
     /// This method consists of following steps. 
     /// 
@@ -229,10 +229,10 @@ namespace Evado.Model.UniForm
       Evado.Model.EvOption option = new Evado.Model.EvOption( );
       List.Add( option );
 
-      option = new EvOption( "TXT", "Text Column" );
+      option = new Evado.Model.EvOption ( "TXT", "Text Column" );
       List.Add( option );
 
-      option = new EvOption( "MAT", "Matix Table (First Column Fixed)" );
+      option = new Evado.Model.EvOption ( "MAT", "Matix Table (First Column Fixed)" );
       List.Add( option );
 
       // 
@@ -247,7 +247,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method adds a option as first item for a selection list and returns the completed array list.
     /// </summary>
-    /// <returns> A list of EvOption object </returns>
+    /// <returns> A list of Evado.Model.EvOption object </returns>
     /// <remarks>
     /// This method consists of following steps. 
     /// 
@@ -265,22 +265,22 @@ namespace Evado.Model.UniForm
       Evado.Model.EvOption option = new Evado.Model.EvOption( );
       List.Add( option );
 
-      option = new EvOption( "YN", "Yes/No Column" );
+      option = new Evado.Model.EvOption ( "YN", "Yes/No Column" );
       List.Add( option );
 
-      option = new EvOption( "TXT", "Text Column" );
+      option = new Evado.Model.EvOption ( "TXT", "Text Column" );
       List.Add( option );
 
-      option = new EvOption( "NUM", "Numeric Column" );
+      option = new Evado.Model.EvOption ( "NUM", "Numeric Column" );
       List.Add( option );
 
-      option = new EvOption( "DT", "Date Column" );
+      option = new Evado.Model.EvOption ( "DT", "Date Column" );
       List.Add( option );
 
-      option = new EvOption( "RBL", "Radio Button Column" );
+      option = new Evado.Model.EvOption ( "RBL", "Radio Button Column" );
       List.Add( option );
 
-      option = new EvOption( "SL", "Selection List Column" );
+      option = new Evado.Model.EvOption ( "SL", "Selection List Column" );
       List.Add( option );
       // 
       //Return the completed Array List.
@@ -293,7 +293,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method adds a option as first item for a selection list and returns the completed array list.
     /// </summary>
-    /// <returns> A list of EvOption object </returns>
+    /// <returns> A list of Evado.Model.EvOption object </returns>
     /// <remarks>
     /// This method consists of following steps. 
     /// 
@@ -302,9 +302,9 @@ namespace Evado.Model.UniForm
     /// 2. Returns the Option list for the item.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public static List<EvOption> getWidthList ( )
+    public static List<Evado.Model.EvOption> getWidthList ( )
     {
-      List<EvOption> List = new List<EvOption> ( );
+      List<Evado.Model.EvOption> List = new List<Evado.Model.EvOption> ( );
       // 
       // Add a null option as first item for a selection list.
       // 
@@ -314,7 +314,7 @@ namespace Evado.Model.UniForm
       for ( int Count = 0; Count < 10; Count++ )
       {
         string sWidth = ( Count * 5 + 5 ).ToString( );
-        option = new EvOption( sWidth, sWidth );
+        option = new Evado.Model.EvOption ( sWidth, sWidth );
         List.Add( option );
       }
       // 

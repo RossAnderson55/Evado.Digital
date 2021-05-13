@@ -87,12 +87,12 @@ namespace Evado.Integration.Service
     /// <summary>
     /// This private data object contains the data that has been received from the external REST client
     /// </summary>
-    private Evado.Model.Integration.EiData _ReceivedData = new Evado.Model.Integration.EiData ( );
+    private Evado.Integration.Model.EiData _ReceivedData = new Evado.Integration.Model.EiData ( );
 
     /// <summary>
     /// This private data object contains the data that will be sent to the external REST client
     /// </summary>
-    private Evado.Model.Integration.EiData _ReturnData = new Evado.Model.Integration.EiData ( );
+    private Evado.Integration.Model.EiData _ReturnData = new Evado.Integration.Model.EiData ( );
 
     /// <summary>
     /// this variable contains the the user's profile.
@@ -190,9 +190,9 @@ namespace Evado.Integration.Service
         {
           Global.WriteDebugLogLine ( "POST content is empty." );
 
-          this._ReturnData = new Model.Integration.EiData ( );
+          this._ReturnData = new Evado.Integration.Model.EiData ( );
 
-          this._ReturnData.EventCode = Model.Integration.EiEventCodes.WebServices_JSON_Empty_Error;
+          this._ReturnData.EventCode = Evado.Integration.Model.EiEventCodes.WebServices_JSON_Empty_Error;
           this._ReturnData.ErrorMessage = "Received JSON object was empty.";
           //
           //  send the web service response to the device app.
@@ -209,10 +209,10 @@ namespace Evado.Integration.Service
           //
           // serialise the client groupCommand
           //
-          this._ReceivedData = JsonConvert.DeserializeObject<Evado.Model.Integration.EiData> ( content_value );
+          this._ReceivedData = JsonConvert.DeserializeObject< Evado.Integration.Model.EiData> ( content_value );
 
           String eventMessage = "Query Recieved from " + this._UserId 
-            + " querying project " + this._ReceivedData.GetQueryParameterValue ( Model.Integration.EiQueryParameterNames.Project_Id )
+            + " querying project " + this._ReceivedData.GetQueryParameterValue ( Evado.Integration.Model.EiQueryParameterNames.Project_Id )
             + " executing query type " + this._ReceivedData.QueryType ;
 
           EventLog.WriteEntry ( Global.EventLogSource, eventMessage, EventLogEntryType.Information );
@@ -222,9 +222,9 @@ namespace Evado.Integration.Service
         catch ( Exception Ex )
         {
 
-          this._ReturnData = new Model.Integration.EiData ( );
+          this._ReturnData = new Evado.Integration.Model.EiData ( );
 
-          this._ReturnData.EventCode = Model.Integration.EiEventCodes.WebServices_JSON_Deserialisation_Failed_Error;
+          this._ReturnData.EventCode = Evado.Integration.Model.EiEventCodes.WebServices_JSON_Deserialisation_Failed_Error;
           this._ReturnData.ErrorMessage = "JSON object deserialisation error.";
 
           String EventMessage = evado.model.Properties.Resources.JSON_DESERIALISATION_ERROR + "\r\n" + getExceptionAsString ( Ex );
@@ -271,21 +271,21 @@ namespace Evado.Integration.Service
         //
         if ( this._ReturnData == null )
         {
-          this._ReturnData = new Model.Integration.EiData ( );
-          this._ReturnData.EventCode = Model.Integration.EiEventCodes.Data_Null_Data_Error;
+          this._ReturnData = new Evado.Integration.Model.EiData ( );
+          this._ReturnData.EventCode = Evado.Integration.Model.EiEventCodes.Data_Null_Data_Error;
           this._ReturnData.ErrorMessage = "Query failed null data returned.";
 
-          Global.WriteDebugLogLine ( "Integration Service return Event " + Evado.Model.Integration.EiEventCodes.Data_Null_Data_Error );
+          Global.WriteDebugLogLine ( "Integration Service return Event " +  Evado.Integration.Model.EiEventCodes.Data_Null_Data_Error );
 
           EventLog.WriteEntry (
             Global.EventLogSource,
-            "Integration Services return Event " + Evado.Model.Integration.EiEventCodes.Data_Null_Data_Error,
+            "Integration Services return Event " +  Evado.Integration.Model.EiEventCodes.Data_Null_Data_Error,
             EventLogEntryType.Error );
 
         }
         else
         {
-          if ( this._ReturnData.EventCode != Model.Integration.EiEventCodes.Ok )
+          if ( this._ReturnData.EventCode != Evado.Integration.Model.EiEventCodes.Ok )
           {
             Global.WriteDebugLogLine ( "Integration Service return Event " + this._ReturnData.EventCode );
 

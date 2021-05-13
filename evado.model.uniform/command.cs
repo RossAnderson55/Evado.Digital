@@ -742,7 +742,7 @@ namespace Evado.Model.UniForm
       {
         if ( parameter.Name == name )
         {
-          return EvStatics.getGuid( parameter.Value );
+          return Evado.Model.EvStatics.getGuid( parameter.Value );
         }
       }
 
@@ -796,14 +796,14 @@ namespace Evado.Model.UniForm
 
       try
       {
-        return EvStatics.parseEnumValue<EnumeratedList> ( value );
+        return Evado.Model.EvStatics.parseEnumValue<EnumeratedList> ( value );
       }
       catch
       {
         // Try and return enumeration 'Null' value
         try
         {
-          return EvStatics.parseEnumValue<EnumeratedList> ( "Null" );
+          return Evado.Model.EvStatics.parseEnumValue<EnumeratedList> ( "Null" );
         }
         catch
         {
@@ -851,7 +851,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EvStatics.parseEnumValue<ApplicationMethods> ( value );
+        return Evado.Model.EvStatics.parseEnumValue<ApplicationMethods> ( value );
       }
 
       //
@@ -1001,7 +1001,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( CommandParameters.Enable_Mandatory_Fields );
 
-      return EvStatics.getBool ( value );
+      return Evado.Model.EvStatics.getBool ( value );
 
     }//END getEnableForMandatoryFields method 
 
@@ -1078,7 +1078,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( CommandParameters.Page_Id );
 
-        return EvStatics.parseEnumValue<EnumeratedList> ( value );
+        return Evado.Model.EvStatics.parseEnumValue<EnumeratedList> ( value );
     }//END GetPageType method.
 
     // ==================================================================================
@@ -1241,7 +1241,7 @@ namespace Evado.Model.UniForm
       //
       // Return an empty string 
       //
-      return EvStatics.parseEnumValue<Background_Colours> ( value );
+      return Evado.Model.EvStatics.parseEnumValue<Background_Colours> ( value );
 
     }//END GetParameter method
 

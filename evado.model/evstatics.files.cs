@@ -50,11 +50,11 @@ namespace Evado.Model
         }
       }
 
-      private static EvEventCodes _ReturnedEventCode = EvEventCodes.Ok;
+      private static Evado.Model.EvEventCodes _ReturnedEventCode = Evado.Model.EvEventCodes.Ok;
       /// <summary>
       /// This property contains the returned event code.
       /// </summary>
-      public static EvEventCodes ReturnedEventCode
+      public static Evado.Model.EvEventCodes ReturnedEventCode
       {
         get { return _ReturnedEventCode; }
       }
@@ -146,17 +146,17 @@ namespace Evado.Model
         //
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return false;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return false;
         }
         if ( FileContent == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Content_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Content_Empty;
           return false;
         }
 
@@ -184,9 +184,9 @@ namespace Evado.Model
         }
         catch(Exception ex )
         {
-          static_DebugLog += "\r\n" + EvStatics.getException( ex );
+          static_DebugLog += "\r\n" + Evado.Model.EvStatics.getException( ex );
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
         return false;
       }
@@ -214,17 +214,17 @@ namespace Evado.Model
         //
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return false;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return false;
         }
         if ( FileContent == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Content_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Content_Empty;
           return false;
         }
 
@@ -252,9 +252,9 @@ namespace Evado.Model
         }
         catch ( Exception ex )
         {
-          static_DebugLog += "\r\n" + EvStatics.getException ( ex );
+          static_DebugLog += "\r\n" + Evado.Model.EvStatics.getException ( ex );
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
         return false;
       }
@@ -281,21 +281,21 @@ namespace Evado.Model
         //
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return false;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return false;
         }
         if ( FileContent == null )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Content_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Content_Empty;
           return false;
         }
 
-        xmlFileContent = EvStatics.SerialiseObject<T> ( FileContent );
+        xmlFileContent = Evado.Model.EvStatics.SerialiseObject<T> ( FileContent );
 
         static_DebugLog += "\r\nContent.Length: " + xmlFileContent.Length;
 
@@ -323,9 +323,9 @@ namespace Evado.Model
         }
         catch ( Exception ex )
         {
-          static_DebugLog += "\r\n" + EvStatics.getException ( ex );
+          static_DebugLog += "\r\n" + Evado.Model.EvStatics.getException ( ex );
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
         return false;
       }
@@ -352,18 +352,18 @@ namespace Evado.Model
 
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return String.Empty;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return String.Empty;
         }
 
         if ( Files.hasDirectory ( FileDirectory ) == false )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Error;
           return String.Empty ;
         }
 
@@ -384,7 +384,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFiles content save failed.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
 
         return stFileContent;
@@ -412,18 +412,18 @@ namespace Evado.Model
 
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return fileContentList;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return fileContentList;
         }
 
         if ( Files.hasDirectory ( FileDirectory ) == false )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Error;
           return fileContentList;
         }
 
@@ -453,7 +453,7 @@ namespace Evado.Model
         {
           static_DebugLog += "Files content read failed.\r\n";
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
 
         return fileContentList;
@@ -483,18 +483,18 @@ namespace Evado.Model
 
         if ( FileDirectory == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
           return t_object;
         }
         if ( FileName == String.Empty )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_File_Name_Empty;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_File_Name_Empty;
           return t_object;
         }
 
         if ( Files.hasDirectory ( FileDirectory ) == false )
         {
-          Files._ReturnedEventCode = EvEventCodes.File_Directory_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Error;
           return t_object;
         }
 
@@ -516,7 +516,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFiles content read failed.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_Save_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Save_Error;
         }
 
         return t_object;
@@ -541,7 +541,7 @@ namespace Evado.Model
           //
           if ( DirectoryPath == String.Empty )
           {
-            Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+            Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
             return false;
           }
 
@@ -564,7 +564,7 @@ namespace Evado.Model
         {
           static_DebugLog = "Failed to create " + DirectoryPath + " directory.\r\n";
 
-          Files._ReturnedEventCode = EvEventCodes.File_General_Access_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_General_Access_Error;
         }
         return false;
 
@@ -589,7 +589,7 @@ namespace Evado.Model
           //
           if ( DirectoryPath == String.Empty )
           {
-            Files._ReturnedEventCode = EvEventCodes.File_Directory_Path_Empty;
+            Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_Directory_Path_Empty;
             return false;
           }
 
@@ -617,7 +617,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFailed to create " + DirectoryPath + " directory.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_General_Access_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_General_Access_Error;
         }
         return false;
 
@@ -696,7 +696,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFailed to delete " + DirectoryPath + " files.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_General_Access_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_General_Access_Error;
         }
         return false;
 
@@ -788,7 +788,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFailed to delete " + DirectoryPath + " files.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_General_Access_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_General_Access_Error;
         }
         return deletedFiled;
 
@@ -886,7 +886,7 @@ namespace Evado.Model
         {
           static_DebugLog = "\r\nFailed to delete " + DirectoryPath + " files.";
 
-          Files._ReturnedEventCode = EvEventCodes.File_General_Access_Error;
+          Files._ReturnedEventCode = Evado.Model.EvEventCodes.File_General_Access_Error;
         }
         return false;
 

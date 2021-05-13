@@ -49,7 +49,7 @@ namespace Evado.Model
     // ----------------------------------------------------------------------------------
     public EvApplicationEvent (
       EventType Type,
-      EvEventCodes EventId,
+      Evado.Model.EvEventCodes EventId,
       String Category,
       String Description,
       String UserName )
@@ -350,7 +350,7 @@ namespace Evado.Model
       {
 
         String description = this._Description;
-        EvEventCodes code = EvEventCodes.Ok;
+        Evado.Model.EvEventCodes code = Evado.Model.EvEventCodes.Ok;
 
         if ( description.Length > 80 )
         {
@@ -365,11 +365,11 @@ namespace Evado.Model
           }
           catch
           {
-            code = EvEventCodes.Ok;
+            code = Evado.Model.EvEventCodes.Ok;
           }
         }
 
-        String stContent = EvStatics.enumValueToString ( code )
+        String stContent = Evado.Model.EvStatics.enumValueToString ( code )
           + " > "
           + this._DateTime.ToString ( "dd MMM yyyy HH:mm" )
           + " >> "

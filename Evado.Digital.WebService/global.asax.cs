@@ -33,7 +33,7 @@ using System.Web.ApplicationServices;
 //Evado namespace references.
 using Evado.Model.UniForm;
 using Evado.Model;
-using Evado.Model.Digital;
+using Evado.Digital.Model;
 //using Evado.UniForm.Dal;
 
 namespace Evado.Digital.WebService
@@ -517,9 +517,9 @@ namespace Evado.Digital.WebService
       string repositoryFilePath = Global.ApplicationPath + @"FilePath";
        Global.LogValue ( "DEFAULT File Repository: " + repositoryFilePath );
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [  Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] != null )
       {
-        string stConfigRepositoryFilePath = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
+        string stConfigRepositoryFilePath = ConfigurationManager.AppSettings [  Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
 
          Global.LogValue ( "Config repository file path: " + stConfigRepositoryFilePath );
 
@@ -529,7 +529,7 @@ namespace Evado.Digital.WebService
           stConfigRepositoryFilePath );
       }
 
-      ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] = repositoryFilePath;
+      ConfigurationManager.AppSettings [  Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] = repositoryFilePath;
 
        Global.LogValue ( "SET Repository file path: " + repositoryFilePath );
 
@@ -579,9 +579,9 @@ namespace Evado.Digital.WebService
 
        Global.LogValue ( "ServiceVersion: " + Global.ServiceVersion );
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [  Evado.Digital.Model.EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ] != null )
       {
-        string questionnaire_URL = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ];
+        string questionnaire_URL = ConfigurationManager.AppSettings [  Evado.Digital.Model.EvcStatics.CONFIG_WEB_CLIENT_URL_KEY ];
 
          Global.LogValue ( "questionnaire_URL: " + questionnaire_URL );
 

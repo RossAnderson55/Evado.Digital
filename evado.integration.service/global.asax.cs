@@ -33,8 +33,8 @@ using System.Web.ApplicationServices;
 //Evado. namespace references.
 using Evado.Model;
 using Evado.Model.UniForm;
-using Evado.Model.Digital;
-using Evado.Model.Integration;
+using Evado.Digital.Model;
+using Evado.Integration.Model;
 
 namespace Evado.Integration.Service
 {
@@ -311,9 +311,9 @@ namespace Evado.Integration.Service
       string repositoryFilePath = Global.ApplicationPath + @"FilePath";
       Global.WriteServiceLogLine ( "DEFAULT File Repository: " + repositoryFilePath );
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] != null )
       {
-        string stConfigRepositoryFilePath = ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
+        string stConfigRepositoryFilePath = ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ];
 
         Global.WriteServiceLogLine ( "Config repository file path: " + stConfigRepositoryFilePath );
 
@@ -325,7 +325,7 @@ namespace Evado.Integration.Service
         Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.DebugLog );
       }
 
-      ConfigurationManager.AppSettings [ Evado.Model.Digital.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] = repositoryFilePath;
+      ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] = repositoryFilePath;
 
       Global.WriteServiceLogLine ( "SET Repository file path: " + repositoryFilePath );
 

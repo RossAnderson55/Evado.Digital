@@ -348,7 +348,7 @@ namespace Evado.Model.UniForm
                   for ( int i = 0; i < row.Column.Length && i < Table.Header.Length; i++ )
                   {
                     if ( row.Column [ i ] != String.Empty
-                      && Table.Header [ i ].TypeId !=  EvDataTypes.Read_Only_Text )
+                      && Table.Header [ i ].TypeId !=  Evado.Model.EvDataTypes.Read_Only_Text )
                     {
                       isEmpty = false;
                     }
@@ -357,7 +357,7 @@ namespace Evado.Model.UniForm
               }
               break;
             }
-          case EvDataTypes.Radio_Button_List:
+          case Evado.Model.EvDataTypes.Radio_Button_List:
             {
               if ( this.Value != "Null"
                 && this.Value != String.Empty )
@@ -621,7 +621,7 @@ namespace Evado.Model.UniForm
       //
       string value = this.GetParameter ( Name );
 
-      return EvStatics.getInteger( value );
+      return Evado.Model.EvStatics.getInteger( value );
 
     }//END AddParameter method
 
@@ -640,7 +640,7 @@ namespace Evado.Model.UniForm
       //
       string value = this.GetParameter ( Name );
 
-      return EvStatics.getFloat ( value );
+      return Evado.Model.EvStatics.getFloat ( value );
 
     }//END AddParameter method
 
@@ -659,7 +659,7 @@ namespace Evado.Model.UniForm
       //
       string value = this.GetParameter ( Name );
 
-      return EvStatics.getDateTime ( value );
+      return Evado.Model.EvStatics.getDateTime ( value );
 
     }//END AddParameter method
 
@@ -683,7 +683,7 @@ namespace Evado.Model.UniForm
     {
       String value = this.GetParameter ( FieldParameterList.Snd_Cmd_On_Change );
 
-      return EvStatics.getBool ( value );
+      return Evado.Model.EvStatics.getBool ( value );
     }
 
     // ==================================================================================
@@ -803,7 +803,7 @@ namespace Evado.Model.UniForm
         //
         if (value != String.Empty )
         {
-          colour = EvStatics.parseEnumValue<Background_Colours> ( parameter.Value );
+          colour = Evado.Model.EvStatics.parseEnumValue<Background_Colours> ( parameter.Value );
 
           return colour;
         }
@@ -835,7 +835,7 @@ namespace Evado.Model.UniForm
       //
       if ( value != String.Empty )
       {
-        if ( EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
+        if ( Evado.Model.EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
         {
           return colour;
         }
@@ -875,7 +875,7 @@ namespace Evado.Model.UniForm
       //
       if ( value != String.Empty )
       {
-        if ( EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
+        if ( Evado.Model.EvStatics.tryParseEnumValue<Background_Colours> ( value, out colour ) == true )
         {
           return colour;
         }
@@ -923,7 +923,7 @@ namespace Evado.Model.UniForm
 
       if ( value != String.Empty )
       {
-        return EvStatics.parseEnumValue<FieldValueWidths> ( value );
+        return Evado.Model.EvStatics.parseEnumValue<FieldValueWidths> ( value );
       }
 
       return FieldValueWidths.Default;
