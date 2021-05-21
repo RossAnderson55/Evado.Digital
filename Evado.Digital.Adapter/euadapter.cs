@@ -491,7 +491,7 @@ namespace Evado.Digital.Adapter
         //
         // get the user type and category selectionlist.
         //
-        EdSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList ( userCategoryList );
+        EvSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList ( userCategoryList );
 
         //
         // update the user profile.

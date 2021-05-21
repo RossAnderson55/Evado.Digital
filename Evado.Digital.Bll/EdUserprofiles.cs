@@ -440,7 +440,7 @@ namespace Evado.Digital.Bll
     // -------------------------------------------------------------------------------------
     public EvEventCodes updateTokenUser ( 
       Evado.Model.EusTokenUserProfile TokenUser,
-      EdSelectionList UserTypeList )
+      EvSelectionList UserTypeList )
     {
       this.FlushLog ( );
       this.LogMethod ( "updateTokenUser" );
@@ -512,7 +512,7 @@ namespace Evado.Digital.Bll
       {
         this.LogDebug ( "Updating the use category" );
         this.LogDebug ( "UserType {0}.", userProfile.UserType );
-        foreach ( EdSelectionList.Item item in UserTypeList.Items )
+        foreach ( EvSelectionList.Item item in UserTypeList.Items )
         {
           this.LogDebug ( "Item C: {0}, V: {1}, D: {2}", item.Category, item.Value, item.Description);
           if ( userProfile.UserType == item.Value )

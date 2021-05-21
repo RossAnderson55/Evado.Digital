@@ -503,7 +503,7 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This property object contains the an external selection list object.
     /// </summary>
-    public EdSelectionList AdminSelectionList { get; set; }
+    public EvSelectionList AdminSelectionList { get; set; }
 
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

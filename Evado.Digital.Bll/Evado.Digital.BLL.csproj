@@ -152,7 +152,7 @@
     <Compile Include="evbinaryfiles.cs" />
     <Compile Include="evdataanalysis.cs" />
     <Compile Include="evdatachanges.cs" />
-    <Compile Include="EdSelectionLists.cs" />
+    <Compile Include="EvSelectionLists.cs" />
     <Compile Include="evformrecordexport.cs" />
     <Compile Include="evformrecordfields.cs" />
     <Compile Include="evmenus.cs" />

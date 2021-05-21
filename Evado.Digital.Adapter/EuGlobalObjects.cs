@@ -299,13 +299,13 @@ namespace Evado.Digital.Adapter
       return null;
     }//END method
 
-    private List<EdSelectionList> _SelectionLists = new List<EdSelectionList> ( );
+    private List<EvSelectionList> _SelectionLists = new List<EvSelectionList> ( );
     /// <summary>
     /// this field list containt the currently loaded external field selection lists.  Used by forms to fill coding
     /// lists.
     /// </summary>
 
-    public List<EdSelectionList> AllSelectionLists
+    public List<EvSelectionList> AllSelectionLists
     {
       get { return _SelectionLists; }
       set { _SelectionLists = value; }
@@ -318,7 +318,7 @@ namespace Evado.Digital.Adapter
     /// <param name="ListId">String: the list identifier.</param>
     /// <returns>EdSelectionList object</return>
     // ----------------------------------------------------------------------------------
-    public EdSelectionList getSelectionList (
+    public EvSelectionList getSelectionList (
       String ListId )
     {
       //
@@ -332,7 +332,7 @@ namespace Evado.Digital.Adapter
       //
       // iterate through the issued selection lists.
       //
-      foreach ( EdSelectionList list in this._SelectionLists )
+      foreach ( EvSelectionList list in this._SelectionLists )
       {
         if ( list.ListId == ListId )
         {
@@ -373,7 +373,7 @@ namespace Evado.Digital.Adapter
       //
       // iterate through the issues selection lists.
       //
-      foreach ( EdSelectionList list in this._SelectionLists )
+      foreach ( EvSelectionList list in this._SelectionLists )
       {
         optionList.Add ( list.Option );
       }
@@ -413,7 +413,7 @@ namespace Evado.Digital.Adapter
       //
       // iterate through the issues selection lists.
       //
-      foreach ( EdSelectionList list in this._SelectionLists )
+      foreach ( EvSelectionList list in this._SelectionLists )
       {
         if ( list.ListId != ListId )
         {
@@ -432,7 +432,7 @@ namespace Evado.Digital.Adapter
         //
         // iterate through the list items.
         //
-        foreach ( EdSelectionList.Item item in list.Items )
+        foreach ( EvSelectionList.Item item in list.Items )
         {
           if ( item == null )
           {
@@ -534,14 +534,14 @@ namespace Evado.Digital.Adapter
       //
       // iterate through the issued selection lists.
       //
-      foreach ( EdSelectionList list in this._SelectionLists )
+      foreach ( EvSelectionList list in this._SelectionLists )
       {
         if ( list.ListId == ListId )
         {
           //
           // iterate through the list items.
           //
-          foreach ( EdSelectionList.Item item in list.Items )
+          foreach ( EvSelectionList.Item item in list.Items )
           {
             //
             // if the value matches the option value return the category.

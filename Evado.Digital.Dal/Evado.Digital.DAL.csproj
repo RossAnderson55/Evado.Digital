@@ -141,7 +141,7 @@
     <Compile Include="EdOrganisations.cs" />
     <Compile Include="EdRecordComments.cs" />
     <Compile Include="EdRecordFields.cs" />
-    <Compile Include="EdSelectionLists.cs" />
+    <Compile Include="EvSelectionLists.cs" />
     <Compile Include="EdRecordLayouts.cs" />
     <Compile Include="EdRecords.cs" />
     <Compile Include="EdRecordSections.cs" />

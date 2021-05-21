@@ -519,13 +519,13 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and object.
       //
-      EdSelectionLists bll_SelectionLists = new EdSelectionLists ( this.ClassParameters );
+      EvSelectionLists bll_SelectionLists = new EvSelectionLists ( this.ClassParameters );
       bll_SelectionLists.ClassParameter.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the selection lists that are issued.
       // 
-      EuAdapter.AdapterObjects.AllSelectionLists = bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
+      EuAdapter.AdapterObjects.AllSelectionLists = bll_SelectionLists.getView ( EvSelectionList.SelectionListStates.Null );
 
       this.LogInitClass ( bll_SelectionLists.Log );
 
@@ -540,7 +540,7 @@ namespace Evado.Digital.Adapter
     /// This method executes the form list query 
     /// </summary>
     //-----------------------------------------------------------------------------------
-    private List<EdSelectionList> getSelectionLists ( )
+    private List<EvSelectionList> getSelectionLists ( )
     {
       this.LogInitMethod ( "getSelectionLists" );
       this.LogInit ( "SelectionLists.Count: " + EuAdapter.AdapterObjects.AllSelectionLists.Count );
@@ -552,20 +552,20 @@ namespace Evado.Digital.Adapter
       {
         this.LogInit ( "No Selection Lists." );
         this.LogInitMethodEnd ( "getSelectionLists" );
-        return new List<EdSelectionList> ( );
+        return new List<EvSelectionList> ( );
       }
 
       //
       // Initialise methods variables and objects
       //
-      List<EdSelectionList> selectionList = new List<EdSelectionList> ( );
+      List<EvSelectionList> selectionList = new List<EvSelectionList> ( );
 
       //
       // iterate through the all selection list extracting the issued selection lists.
       //
-      foreach ( EdSelectionList list in EuAdapter.AdapterObjects.AllSelectionLists )
+      foreach ( EvSelectionList list in EuAdapter.AdapterObjects.AllSelectionLists )
       {
-        if ( list.State == EdSelectionList.SelectionListStates.Issued )
+        if ( list.State == EvSelectionList.SelectionListStates.Issued )
         {
           selectionList.Add ( list );
         }

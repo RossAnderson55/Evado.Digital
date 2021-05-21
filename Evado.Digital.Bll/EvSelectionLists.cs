@@ -34,7 +34,7 @@ namespace Evado.Digital.Bll
   /// <summary>
   /// This business object manages the ExternalSelectionLists objects in the system.
   /// </summary>
-  public class EdSelectionLists : EvBllBase
+  public class EvSelectionLists : EvBllBase
   {
     #region class initialisation methods
     // ==================================================================================
@@ -42,7 +42,7 @@ namespace Evado.Digital.Bll
     /// This method initialises the class
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public EdSelectionLists ( )
+    public EvSelectionLists ( )
     {
       this.ClassNameSpace = "Evado.Digital.Bll.Digital.EdSelectionLists.";
     }
@@ -53,12 +53,12 @@ namespace Evado.Digital.Bll
     /// </summary>
     /// <param name="Settings">EvApplicationSetting data object.</param>
     // ----------------------------------------------------------------------------------
-    public EdSelectionLists ( EvClassParameters Settings )
+    public EvSelectionLists ( EvClassParameters Settings )
     {
       this.ClassParameter = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Digital.EdEntities.";
 
-      this._dal_SelectionLists = new  Evado.Digital.Dal.EdSelectionLists ( Settings );
+      this._dal_SelectionLists = new  Evado.Digital.Dal.EvSelectionLists ( Settings );
     }
     #endregion
 
@@ -66,7 +66,7 @@ namespace Evado.Digital.Bll
     // 
     // Create instantiate the DAL class 
     // 
-    private  Evado.Digital.Dal.EdSelectionLists _dal_SelectionLists = new  Evado.Digital.Dal.EdSelectionLists ( );
+    private  Evado.Digital.Dal.EvSelectionLists _dal_SelectionLists = new  Evado.Digital.Dal.EvSelectionLists ( );
 
     #endregion
 
@@ -86,13 +86,13 @@ namespace Evado.Digital.Bll
     /// 2. Return the list of formfield selection list objects
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public List<EdSelectionList> getView (
-      EdSelectionList.SelectionListStates State )
+    public List<EvSelectionList> getView (
+      EvSelectionList.SelectionListStates State )
     {
       this.LogMethod ( "getView" );
       this.LogDebug ( "State: " + State );
 
-      List<EdSelectionList> view = this._dal_SelectionLists.getView ( State );
+      List<EvSelectionList> view = this._dal_SelectionLists.getView ( State );
       this.LogClass ( this._dal_SelectionLists.Log );
 
       return view;
@@ -115,7 +115,7 @@ namespace Evado.Digital.Bll
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public List<EvOption> getList
-      ( EdSelectionList.SelectionListStates State,
+      ( EvSelectionList.SelectionListStates State,
       bool SelectByGuid )
     {
       this.LogMethod ( "getList method." );
@@ -146,14 +146,14 @@ namespace Evado.Digital.Bll
     /// 2. Return a formfield selectionList object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EdSelectionList getItem ( Guid ListGuid )
+    public EvSelectionList getItem ( Guid ListGuid )
     {
       this.LogMethod ( "getItem" );
       this.LogDebug ( "ListGuid: " + ListGuid );
       // 
       // Initialise the method variables and objects.
       // 
-      EdSelectionList item = this._dal_SelectionLists.getItem ( ListGuid );
+      EvSelectionList item = this._dal_SelectionLists.getItem ( ListGuid );
       this.LogClass ( this._dal_SelectionLists.Log );
 
       return item;
@@ -174,7 +174,7 @@ namespace Evado.Digital.Bll
     /// 2. Return a formfield selectionList object
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EdSelectionList getItem ( string ListId )
+    public EvSelectionList getItem ( string ListId )
     {
       this.LogMethod ( "getItem" );
       this.LogDebug ( "ListId: " + ListId );
@@ -183,7 +183,7 @@ namespace Evado.Digital.Bll
       // Execute the DAL method to retrieve the ExternalSelectionList object and process the 
       // result.
       // 
-      EdSelectionList Item = this._dal_SelectionLists.getItem ( ListId, true );
+      EvSelectionList Item = this._dal_SelectionLists.getItem ( ListId, true );
       this.LogClass ( this._dal_SelectionLists.Log );
 
       return Item;
@@ -216,7 +216,7 @@ namespace Evado.Digital.Bll
     /// 6. Return an event code of method execution.
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    public EvEventCodes SaveItem ( EdSelectionList SelectionList )
+    public EvEventCodes SaveItem ( EvSelectionList SelectionList )
     {
       this._Log = new System.Text.StringBuilder ( );
       this.LogMethod ( "saveItem" );
@@ -232,9 +232,9 @@ namespace Evado.Digital.Bll
       {
         return EvEventCodes.Data_InvalidId_Error;
       }
-      if ( SelectionList.State == EdSelectionList.SelectionListStates.Null )
+      if ( SelectionList.State == EvSelectionList.SelectionListStates.Null )
       {
-        SelectionList.State = EdSelectionList.SelectionListStates.Draft;
+        SelectionList.State = EvSelectionList.SelectionListStates.Draft;
       }
 
       //
@@ -245,7 +245,7 @@ namespace Evado.Digital.Bll
       // 
       // delete selection list .
       // 
-      if ( SelectionList.Action == EdSelectionList.SaveActions.Delete_Object )
+      if ( SelectionList.Action == EvSelectionList.SaveActions.Delete_Object )
       {
         this.LogDebug ( "Delete SelectionList " );
 
@@ -279,13 +279,13 @@ namespace Evado.Digital.Bll
       // 
       // If the checklist being approved then withdraw the pervious issues checklist
       // 
-      if ( SelectionList.Action == EdSelectionList.SaveActions.Issue_List )
+      if ( SelectionList.Action == EvSelectionList.SaveActions.Issue_List )
       {
         this.LogDebug ( "Withdraw the existing checklist" );
         iReturn = this._dal_SelectionLists.WithdrawIssuedList ( SelectionList );
         this.LogClass ( this._dal_SelectionLists.Log );
 
-        SelectionList.State = EdSelectionList.SelectionListStates.Issued;
+        SelectionList.State = EvSelectionList.SelectionListStates.Issued;
       }
 
       // 
@@ -310,7 +310,7 @@ namespace Evado.Digital.Bll
     /// 1. Update the formfield selectionlist object's items and its state based on its action codes. 
     /// </remarks>
     // -------------------------------------------------------------------------------------
-    private void updateState ( EdSelectionList Item )
+    private void updateState ( EvSelectionList Item )
     {
       this.LogMethod ( "updateState." );
       this.LogDebug ( "Action: " + Item.Action );
@@ -320,26 +320,26 @@ namespace Evado.Digital.Bll
       // 
       switch ( Item.Action )
       {
-        case EdSelectionList.SaveActions.Draft:
+        case EvSelectionList.SaveActions.Draft:
           {
             this.LogDebug ( "Draft list" );
 
-            Item.State = EdSelectionList.SelectionListStates.Draft;
+            Item.State = EvSelectionList.SelectionListStates.Draft;
 
             return;
           }
 
-        case EdSelectionList.SaveActions.Issue_List:
+        case EvSelectionList.SaveActions.Issue_List:
           {
-            Item.State = EdSelectionList.SelectionListStates.Draft;
+            Item.State = EvSelectionList.SelectionListStates.Draft;
             Item.Version++;
 
             return;
           }
 
-        case EdSelectionList.SaveActions.Withdraw_List:
+        case EvSelectionList.SaveActions.Withdraw_List:
           {
-            Item.State = EdSelectionList.SelectionListStates.Withdrawn;
+            Item.State = EvSelectionList.SelectionListStates.Withdrawn;
             Item.Version++;
 
             return;

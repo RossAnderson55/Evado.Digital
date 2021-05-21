@@ -27,7 +27,7 @@ namespace Evado.Digital.Model
   /// This is the data model for the form field selection list class.
   /// </summary>
   [Serializable]
-  public class EdSelectionList
+  public class EvSelectionList
   {
 
     #region CodeItem class
@@ -224,7 +224,7 @@ namespace Evado.Digital.Model
 
     #endregion
 
-    public EdSelectionList ( )
+    public EvSelectionList ( )
     {
       this.State = SelectionListStates.Null;
       this.Version = 0;
@@ -442,7 +442,7 @@ namespace Evado.Digital.Model
     /// 2. Switch the FieldName and update the Value on the organization field names.
     /// </remarks>
     //  ---------------------------------------------------------------------------------
-    public void setValue ( EdSelectionList.SelectionListFieldNames FieldName, string Value )
+    public void setValue ( EvSelectionList.SelectionListFieldNames FieldName, string Value )
     {
       //
       // Initialize the internal variables
@@ -454,17 +454,17 @@ namespace Evado.Digital.Model
       //
       switch ( FieldName )
       {
-        case EdSelectionList.SelectionListFieldNames.ListId:
+        case EvSelectionList.SelectionListFieldNames.ListId:
           {
             this.ListId = Value;
             return;
           }
-        case EdSelectionList.SelectionListFieldNames.Title:
+        case EvSelectionList.SelectionListFieldNames.Title:
           {
             this.Title = Value;
             return;
           }
-        case EdSelectionList.SelectionListFieldNames.Description:
+        case EvSelectionList.SelectionListFieldNames.Description:
           {
             this.Description = Value;
             return;

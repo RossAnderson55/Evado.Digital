@@ -51,12 +51,12 @@ namespace Evado.Digital.Adapter
 
       if ( this.AdapterObjects.AllSelectionLists == null )
       {
-        this.AdapterObjects.AllSelectionLists = new List<EdSelectionList> ( );
+        this.AdapterObjects.AllSelectionLists = new List<EvSelectionList> ( );
       }
 
       if ( this.Session.AdminSelectionList == null )
       {
-        this.Session.AdminSelectionList = new EdSelectionList ( );
+        this.Session.AdminSelectionList = new EvSelectionList ( );
       }
 
       if ( this.Session.UploadFileName == null )
@@ -108,12 +108,12 @@ namespace Evado.Digital.Adapter
 
       if ( this.AdapterObjects.AllSelectionLists == null )
       {
-        this.AdapterObjects.AllSelectionLists = new List<EdSelectionList> ( );
+        this.AdapterObjects.AllSelectionLists = new List<EvSelectionList> ( );
       }
 
       if ( this.Session.AdminSelectionList == null )
       {
-        this.Session.AdminSelectionList = new EdSelectionList ( );
+        this.Session.AdminSelectionList = new EvSelectionList ( );
       }
 
       if ( this.Session.UploadFileName == null )
@@ -121,7 +121,7 @@ namespace Evado.Digital.Adapter
         this.Session.UploadFileName = String.Empty;
       }
 
-      this._Bll_SelectionLists = new Evado.Digital.Bll.EdSelectionLists ( this.ClassParameters );
+      this._Bll_SelectionLists = new Evado.Digital.Bll.EvSelectionLists ( this.ClassParameters );
 
     }//END Method
 
@@ -130,7 +130,7 @@ namespace Evado.Digital.Adapter
 
     #region Class constants and variables.
 
-    private Evado.Digital.Bll.EdSelectionLists _Bll_SelectionLists = new Evado.Digital.Bll.EdSelectionLists ( );
+    private Evado.Digital.Bll.EvSelectionLists _Bll_SelectionLists = new Evado.Digital.Bll.EvSelectionLists ( );
 
     private bool ImportExportSelected = false;
 
@@ -407,7 +407,7 @@ namespace Evado.Digital.Adapter
         return;
       }
 
-      this.AdapterObjects.AllSelectionLists = this._Bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
+      this.AdapterObjects.AllSelectionLists = this._Bll_SelectionLists.getView ( EvSelectionList.SelectionListStates.Null );
 
       this.LogDebugClass ( this._Bll_SelectionLists.Log );
 
@@ -456,14 +456,14 @@ namespace Evado.Digital.Adapter
         // 
         if ( this.AdapterObjects.AllSelectionLists.Count == 0 )
         {
-          this.AdapterObjects.AllSelectionLists = this._Bll_SelectionLists.getView ( EdSelectionList.SelectionListStates.Null );
+          this.AdapterObjects.AllSelectionLists = this._Bll_SelectionLists.getView ( EvSelectionList.SelectionListStates.Null );
           this.LogValue ( this._Bll_SelectionLists.Log );
         }
         this.LogValue ( "list count: " + this.AdapterObjects.AllSelectionLists.Count );
         // 
         // generate the page links.
         // 
-        foreach ( EdSelectionList listItem in this.AdapterObjects.AllSelectionLists )
+        foreach ( EvSelectionList listItem in this.AdapterObjects.AllSelectionLists )
         {
           // 
           // Add the trial organisation to the list of organisations as a groupCommand.
@@ -597,7 +597,7 @@ namespace Evado.Digital.Adapter
       // 
       Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
       Guid formGuid = Guid.Empty;
-      EdSelectionList selectionList = new EdSelectionList ( );
+      EvSelectionList selectionList = new EvSelectionList ( );
 
       //
       // Define the general properties pageMenuGroup..
@@ -628,7 +628,7 @@ namespace Evado.Digital.Adapter
       //
       // Empty the selection list to force a refresh.
       //
-      this.AdapterObjects.AllSelectionLists = new List<EdSelectionList> ( );
+      this.AdapterObjects.AllSelectionLists = new List<EvSelectionList> ( );
 
       //
       // reset the form template filename.
@@ -646,7 +646,7 @@ namespace Evado.Digital.Adapter
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private EdSelectionList ReadCsvData (
+    private EvSelectionList ReadCsvData (
        String FileDirectory,
         String FileName )
     {
@@ -654,8 +654,8 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      EdSelectionList selectionList = new EdSelectionList ( );
-      selectionList.Items = new List<EdSelectionList.Item> ( );
+      EvSelectionList selectionList = new EvSelectionList ( );
+      selectionList.Items = new List<EvSelectionList.Item> ( );
       String [ ] header = new String [ 6 ];
       int itemNo = 1;
 
@@ -715,7 +715,7 @@ namespace Evado.Digital.Adapter
           continue;
         }
 
-        var item = new EdSelectionList.Item ( );
+        var item = new EvSelectionList.Item ( );
         item.No = itemNo;
         itemNo++;
 
@@ -730,11 +730,11 @@ namespace Evado.Digital.Adapter
 
          // this.LogDebug ( "columnCount {0}, name {1}, V: {2} ", columnCount, name, columValue );
 
-          var columName = EvStatics.parseEnumValue<EdSelectionList.SelectionListFieldNames> ( name );
+          var columName = EvStatics.parseEnumValue<EvSelectionList.SelectionListFieldNames> ( name );
 
           switch ( columName )
           {
-            case EdSelectionList.SelectionListFieldNames.ListId:
+            case EvSelectionList.SelectionListFieldNames.ListId:
               {
                 if ( columValue != String.Empty )
                 {
@@ -742,7 +742,7 @@ namespace Evado.Digital.Adapter
                 }
                 break;
               }
-            case EdSelectionList.SelectionListFieldNames.Title:
+            case EvSelectionList.SelectionListFieldNames.Title:
               {
                 if ( columValue != String.Empty )
                 {
@@ -751,7 +751,7 @@ namespace Evado.Digital.Adapter
                 }
                 break;
               }
-            case EdSelectionList.SelectionListFieldNames.Description:
+            case EvSelectionList.SelectionListFieldNames.Description:
               {
                 if ( columValue != String.Empty )
                 {
@@ -759,17 +759,17 @@ namespace Evado.Digital.Adapter
                 }
                 break;
               }
-            case EdSelectionList.SelectionListFieldNames.Item_Category:
+            case EvSelectionList.SelectionListFieldNames.Item_Category:
               {
                 item.Category = columValue;
                 break;
               }
-            case EdSelectionList.SelectionListFieldNames.Item_Value:
+            case EvSelectionList.SelectionListFieldNames.Item_Value:
               {
                 item.Value = columValue;
                 break;
               }
-            case EdSelectionList.SelectionListFieldNames.Item_Description:
+            case EvSelectionList.SelectionListFieldNames.Item_Description:
               {
                 item.Description = columValue;
                 break;
@@ -800,7 +800,7 @@ namespace Evado.Digital.Adapter
     /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
     //  ------------------------------------------------------------------------------
     private String SaveUploadedSelectionList (
-      EdSelectionList UploadedForm )
+      EvSelectionList UploadedForm )
     {
       this.LogMethod ( "SaveUploadedSelectionList" );
       this.LogValue ( "Uploaded form is: " + UploadedForm.ListId );
@@ -824,13 +824,13 @@ namespace Evado.Digital.Adapter
       //
       // check if there is a draft form and delete it.
       //
-      foreach ( EdSelectionList selectionList in this.AdapterObjects.AllSelectionLists )
+      foreach ( EvSelectionList selectionList in this.AdapterObjects.AllSelectionLists )
       {
         //
         // get the list issued version of the form.
         //
         if ( selectionList.ListId == UploadedForm.ListId
-          && selectionList.State == EdSelectionList.SelectionListStates.Issued )
+          && selectionList.State == EvSelectionList.SelectionListStates.Issued )
         {
           version = selectionList.Version;
         }
@@ -839,11 +839,11 @@ namespace Evado.Digital.Adapter
         // delete any existing draft forms with form ID
         //
         if ( selectionList.ListId == UploadedForm.ListId
-          && selectionList.State == EdSelectionList.SelectionListStates.Draft )
+          && selectionList.State == EvSelectionList.SelectionListStates.Draft )
         {
           processLog.AppendLine ( "Existing draft version of " + UploadedForm.ListId + " " + UploadedForm.Title + " found." );
 
-          selectionList.Action = EdSelectionList.SaveActions.Delete_Object;
+          selectionList.Action = EvSelectionList.SaveActions.Delete_Object;
 
           result = this._Bll_SelectionLists.SaveItem ( selectionList );
           this.LogClass ( this._Bll_SelectionLists.Log );
@@ -866,8 +866,8 @@ namespace Evado.Digital.Adapter
       //
       // set the form's save parameters 
 
-      UploadedForm.State = EdSelectionList.SelectionListStates.Draft;
-      UploadedForm.Action = EdSelectionList.SaveActions.Save;
+      UploadedForm.State = EvSelectionList.SelectionListStates.Draft;
+      UploadedForm.Action = EvSelectionList.SaveActions.Save;
       UploadedForm.Version = version;
       UploadedForm.Guid = Guid.Empty;
 
@@ -1138,7 +1138,7 @@ namespace Evado.Digital.Adapter
         pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
         pageCommand.AddParameter (
            Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Save.ToString ( ) );
+          EvSelectionList.SaveActions.Save.ToString ( ) );
 
         //
         // Delete command
@@ -1155,7 +1155,7 @@ namespace Evado.Digital.Adapter
         pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
         pageCommand.AddParameter (
            Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+          EvSelectionList.SaveActions.Delete_Object.ToString ( ) );
       }
 
       this.LogMethodEnd ( "getDataObject_PageCommands" );
@@ -1274,7 +1274,7 @@ namespace Evado.Digital.Adapter
     /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
     /// <returns>Evado.Model.UniForm.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private String CreateCsvData ( EdSelectionList SelectionList )
+    private String CreateCsvData ( EvSelectionList SelectionList )
     {
       this.LogMethod ( "CreateCsvData" );
       //
@@ -1285,16 +1285,16 @@ namespace Evado.Digital.Adapter
       String outputFormat = "\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\"\r\n";
 
       sbCsvData.AppendFormat ( outputFormat,
-        EdSelectionList.SelectionListFieldNames.ListId,
-        EdSelectionList.SelectionListFieldNames.Title,
-        EdSelectionList.SelectionListFieldNames.Item_No,
-        EdSelectionList.SelectionListFieldNames.Item_Category,
-        EdSelectionList.SelectionListFieldNames.Item_Value,
-        EdSelectionList.SelectionListFieldNames.Item_Description );
+        EvSelectionList.SelectionListFieldNames.ListId,
+        EvSelectionList.SelectionListFieldNames.Title,
+        EvSelectionList.SelectionListFieldNames.Item_No,
+        EvSelectionList.SelectionListFieldNames.Item_Category,
+        EvSelectionList.SelectionListFieldNames.Item_Value,
+        EvSelectionList.SelectionListFieldNames.Item_Description );
 
       for ( int count = 0; count < SelectionList.Items.Count; count++ )
       {
-        EdSelectionList.Item item = SelectionList.Items [ count ];
+        EvSelectionList.Item item = SelectionList.Items [ count ];
         if ( count == 0 )
         {
           sbCsvData.AppendFormat ( outputFormat,
@@ -1354,7 +1354,7 @@ namespace Evado.Digital.Adapter
       // Create the customer id object
       // 
       groupField = pageGroup.createTextField (
-        EdSelectionList.SelectionListFieldNames.ListId.ToString ( ),
+        EvSelectionList.SelectionListFieldNames.ListId.ToString ( ),
         EdLabels.SelectionList_List_Id_Field_Label,
         this.Session.AdminSelectionList.ListId, 10 );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
@@ -1368,7 +1368,7 @@ namespace Evado.Digital.Adapter
       // Create the customer name object
       // 
       groupField = pageGroup.createTextField (
-        EdSelectionList.SelectionListFieldNames.Title.ToString ( ),
+        EvSelectionList.SelectionListFieldNames.Title.ToString ( ),
         EdLabels.SelectionList_Title_Field_Label,
         this.Session.AdminSelectionList.Title,
         50 );
@@ -1383,7 +1383,7 @@ namespace Evado.Digital.Adapter
       // Create the customer name object
       // 
       groupField = pageGroup.createFreeTextField (
-        EdSelectionList.SelectionListFieldNames.Description,
+        EvSelectionList.SelectionListFieldNames.Description,
         EdLabels.SelectionList_Description_Field_Label,
         this.Session.AdminSelectionList.Description,
         50, 10 );
@@ -1429,7 +1429,7 @@ namespace Evado.Digital.Adapter
       // Create the customer id object
       // 
       groupField = pageGroup.createTableField (
-        EdSelectionList.SelectionListFieldNames.Items.ToString ( ),
+        EvSelectionList.SelectionListFieldNames.Items.ToString ( ),
         EdLabels.SelectionList_Options_Field_Label,
         3 );
       groupField.Layout =  Evado.Model.UniForm.FieldLayoutCodes.Column_Layout;
@@ -1459,7 +1459,7 @@ namespace Evado.Digital.Adapter
       {
         for ( int i = 0; i < rowCount_Inital; i++ )
         {
-          this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item(
+          this.Session.AdminSelectionList.Items.Add ( new EvSelectionList.Item(
             i+1, String.Empty, String.Empty, String.Empty ) );
         }
       }
@@ -1468,7 +1468,7 @@ namespace Evado.Digital.Adapter
         for ( int i = 0; i < rowCount_Extend; i++ )
         {
           this.LogDebug ( "Adding Item" );
-          this.Session.AdminSelectionList.Items.Add ( new EdSelectionList.Item (
+          this.Session.AdminSelectionList.Items.Add ( new EvSelectionList.Item (
             this.Session.AdminSelectionList.Items.Count + i , String.Empty, String.Empty, String.Empty ) );
         }
       }
@@ -1480,7 +1480,7 @@ namespace Evado.Digital.Adapter
       //
       for ( int count = 0; count < this.Session.AdminSelectionList.Items.Count; count++ )
       {
-        EdSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
+        EvSelectionList.Item item = this.Session.AdminSelectionList.Items [ count ];
 
         var row = groupField.Table.addRow ( );
         row.No = count + 1;
@@ -1525,7 +1525,7 @@ namespace Evado.Digital.Adapter
         pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
         pageCommand.AddParameter (
            Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Save.ToString ( ) );
+          EvSelectionList.SaveActions.Save.ToString ( ) );
 
         //
         // Issue command
@@ -1542,13 +1542,13 @@ namespace Evado.Digital.Adapter
         pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
         pageCommand.AddParameter (
            Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION,
-          EdSelectionList.SaveActions.Issue_List.ToString ( ) );
+          EvSelectionList.SaveActions.Issue_List.ToString ( ) );
 
 
         //
         // Delete command
         //
-        if ( this.Session.AdminSelectionList.State == EdSelectionList.SelectionListStates.Draft )
+        if ( this.Session.AdminSelectionList.State == EvSelectionList.SelectionListStates.Draft )
         {
           pageCommand = PageGroup.addCommand (
             EdLabels.SelectionList_Delete_Command_Title,
@@ -1562,7 +1562,7 @@ namespace Evado.Digital.Adapter
           pageCommand.SetGuid ( this.Session.AdminSelectionList.Guid );
           pageCommand.AddParameter (
              Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION,
-            EdSelectionList.SaveActions.Delete_Object.ToString ( ) );
+            EvSelectionList.SaveActions.Delete_Object.ToString ( ) );
         }
       }
 
@@ -1616,12 +1616,12 @@ namespace Evado.Digital.Adapter
         //
         // Initialise the dlinical ResultData objects.
         //
-        this.Session.AdminSelectionList = new EdSelectionList ( );
+        this.Session.AdminSelectionList = new EvSelectionList ( );
         this.Session.AdminSelectionList.Guid = Evado.Digital.Model.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.AdminSelectionList.ListId = String.Empty;
         this.Session.AdminSelectionList.Title = String.Empty;
         this.Session.AdminSelectionList.Description = String.Empty;
-        this.Session.AdminSelectionList.Items = new List<EdSelectionList.Item> ( );
+        this.Session.AdminSelectionList.Items = new List<EvSelectionList.Item> ( );
 
         this.getDataObject ( clientDataObject );
 
@@ -1681,7 +1681,7 @@ namespace Evado.Digital.Adapter
         //
         // Initialise the methods variables and objects.
         //
-        EdSelectionList.SaveActions saveAction = EdSelectionList.SaveActions.Save;
+        EvSelectionList.SaveActions saveAction = EvSelectionList.SaveActions.Save;
 
         // 
         // Log access to page.
@@ -1693,7 +1693,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the update variables.
         // 
-        this.AdapterObjects.AllSelectionLists = new List<EdSelectionList> ( );
+        this.AdapterObjects.AllSelectionLists = new List<EvSelectionList> ( );
 
         // 
         // IF the guid is new object id  alue then set the save object for adding to the database.
@@ -1747,11 +1747,11 @@ namespace Evado.Digital.Adapter
         // 
         if ( stSaveAction != String.Empty )
         {
-          saveAction = Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SaveActions> ( stSaveAction );
+          saveAction = Evado.Model.EvStatics.parseEnumValue<EvSelectionList.SaveActions> ( stSaveAction );
         }
         this.Session.AdminSelectionList.Action = saveAction;
 
-        if ( saveAction == EdSelectionList.SaveActions.Delete_Object )
+        if ( saveAction == EvSelectionList.SaveActions.Delete_Object )
         {
           this.Session.AdminSelectionList.Title = String.Empty;
         }
@@ -1803,7 +1803,7 @@ namespace Evado.Digital.Adapter
         //
         // empty the selection lists to force a reload on the next initialisation.
         //
-        this.AdapterObjects.AllSelectionLists = new List<EdSelectionList> ( );
+        this.AdapterObjects.AllSelectionLists = new List<EvSelectionList> ( );
 
         this.LogMethodEnd ( "updateObject" );
         return new Evado.Model.UniForm.AppData ( );
@@ -1897,13 +1897,13 @@ namespace Evado.Digital.Adapter
         if ( parameter.Name.Contains ( Evado.Digital.Model.EvcStatics.CONST_GUID_IDENTIFIER ) == false
           && parameter.Name != Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
           && parameter.Name != Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION
-          && parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
+          && parameter.Name.Contains ( EvSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
         {
           this.LogDebug ( parameter.Name + " > " + parameter.Value + " >> UPDATED" );
           try
           {
-            EdSelectionList.SelectionListFieldNames fieldName =
-               Evado.Model.EvStatics.parseEnumValue<EdSelectionList.SelectionListFieldNames> (
+            EvSelectionList.SelectionListFieldNames fieldName =
+               Evado.Model.EvStatics.parseEnumValue<EvSelectionList.SelectionListFieldNames> (
               parameter.Name );
 
             this.Session.AdminSelectionList.setValue ( fieldName, parameter.Value );
@@ -1945,7 +1945,7 @@ namespace Evado.Digital.Adapter
       // 
       foreach ( Evado.Model.UniForm.Parameter parameter in Parameters )
       {
-        if ( parameter.Name.Contains ( EdSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
+        if ( parameter.Name.Contains ( EvSelectionList.SelectionListFieldNames.Items.ToString ( ) ) == false )
         {
           continue;
         }
