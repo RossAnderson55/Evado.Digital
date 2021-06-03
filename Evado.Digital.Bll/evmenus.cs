@@ -54,12 +54,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvMenus ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.EvMenus.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
 
       this._dalMenus = new  Evado.Digital.Dal.EdMenus ( Settings );

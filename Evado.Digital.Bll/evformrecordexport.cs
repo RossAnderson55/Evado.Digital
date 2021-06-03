@@ -48,12 +48,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvFormRecordExport ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvFormRecordExport.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
     }
     #endregion
@@ -203,7 +203,7 @@ namespace Evado.Digital.Bll
       // Initialise the methods objects and variables.
       // 
       List<EdRecord> recordList = new List<EdRecord> ( );
-      EdRecords formRecords = new EdRecords ( this.ClassParameter );
+      EdRecords formRecords = new EdRecords ( this.ClassParameters );
 
       EdQueryParameters queryParameters = new EdQueryParameters ( );
 

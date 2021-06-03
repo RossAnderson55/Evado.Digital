@@ -249,7 +249,7 @@ namespace Evado.Digital.Dal
         EvEventCodes.Ok,
         this.ClassNameSpace,
         value,
-        this.ClassParameters.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
@@ -293,7 +293,7 @@ namespace Evado.Digital.Dal
         EventId,
         this.ClassNameSpace,
         Description,
-        this.ClassParameters.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 

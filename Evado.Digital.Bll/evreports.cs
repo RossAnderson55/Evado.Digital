@@ -64,12 +64,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvReports ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvReports.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
 
       this. _dalReports = new  Evado.Digital.Dal.EdReports ( Settings );
@@ -125,7 +125,7 @@ namespace Evado.Digital.Bll
       {
         case EdReport.ReportSourceCode.FormFields:
           {
-             Evado.Digital.Dal.EdRecordFields DAL_formField = new  Evado.Digital.Dal.EdRecordFields ( this.ClassParameter );
+             Evado.Digital.Dal.EdRecordFields DAL_formField = new  Evado.Digital.Dal.EdRecordFields ( this.ClassParameters );
 
             report = DAL_formField.getReport ( Report );
 
@@ -135,7 +135,7 @@ namespace Evado.Digital.Bll
           }
         case EdReport.ReportSourceCode.Field_Monitoring_Query:
           {
-             Evado.Digital.Dal.EdRecordValues DAL_formRecordField = new  Evado.Digital.Dal.EdRecordValues ( this.ClassParameter );
+             Evado.Digital.Dal.EdRecordValues DAL_formRecordField = new  Evado.Digital.Dal.EdRecordValues ( this.ClassParameters );
 
             report = Report; // DAL_formRecordField.getMonitoringReport ( Report );
 
@@ -151,7 +151,7 @@ namespace Evado.Digital.Bll
           }
         case EdReport.ReportSourceCode.Subject_Record_Status:
           {
-             Evado.Digital.Dal.EdRecords dalRecords = new  Evado.Digital.Dal.EdRecords ( this.ClassParameter );
+             Evado.Digital.Dal.EdRecords dalRecords = new  Evado.Digital.Dal.EdRecords ( this.ClassParameters );
 
             report = Report; // new dalRecords.getRecordStatusReport ( Report );
             //this.LogDebug(  dalRecords.Log );

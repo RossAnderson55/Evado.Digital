@@ -52,7 +52,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdPageLayouts ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Digital.EdEntities.";
 
       this._dal_SelectionLists = new  Evado.Digital.Dal.EdPageLayouts ( Settings );

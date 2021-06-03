@@ -33,7 +33,7 @@ using Evado.Model;
     // ----------------------------------------------------------------------------------
     public EvEmail ( Evado.Digital.Model.EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvEmail.";
 
     }

@@ -355,7 +355,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and object.
       //
       EdOrganisations bll_Organisations = new EdOrganisations ( this.ClassParameters );
-      bll_Organisations.ClassParameter.LoggingLevel = 2;
+      bll_Organisations.ClassParameters.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -394,7 +394,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and object.
       //
       EdPageLayouts bll_PageLayouts = new EdPageLayouts ( this.ClassParameters );
-      bll_PageLayouts.ClassParameter.LoggingLevel = 2;
+      bll_PageLayouts.ClassParameters.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -438,7 +438,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and object.
       //
       EdEntityLayouts bll_EntityLayouts = new EdEntityLayouts ( this.ClassParameters );
-      bll_EntityLayouts.ClassParameter.LoggingLevel = 2;
+      bll_EntityLayouts.ClassParameters.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -479,7 +479,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and object.
       //
       EdRecordLayouts bll_RecordLayouts = new EdRecordLayouts ( this.ClassParameters );
-      bll_RecordLayouts.ClassParameter.LoggingLevel = 2;
+      bll_RecordLayouts.ClassParameters.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -520,7 +520,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and object.
       //
       EvSelectionLists bll_SelectionLists = new EvSelectionLists ( this.ClassParameters );
-      bll_SelectionLists.ClassParameter.LoggingLevel = 2;
+      bll_SelectionLists.ClassParameters.LoggingLevel = 2;
 
       // 
       // Query the database to retrieve a list of the selection lists that are issued.

@@ -341,7 +341,10 @@ namespace Evado.Digital.Model
       }
     }
 
-    public string LinkText
+    /// <summary>
+    /// This property returns the command title content
+    /// </summary>
+    public string CommandTitle
     {
       get
       {
@@ -354,6 +357,9 @@ namespace Evado.Digital.Model
       }
     }
 
+    /// <summary>
+    /// This property returns the Option list object content
+    /// </summary>
     public Evado.Model.EvOption Option
     {
       get

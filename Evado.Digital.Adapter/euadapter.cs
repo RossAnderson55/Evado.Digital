@@ -484,7 +484,7 @@ namespace Evado.Digital.Adapter
       EdUserprofiles bll_userProfiles = new EdUserprofiles ( this.ClassParameters );
       String userCategoryList = EuAdapter.AdapterObjects.Settings.UserCategoryList;
 
-      this.LogDebug ( "ClassParameter.LoggingLevel: " + bll_userProfiles.ClassParameter.LoggingLevel );
+      this.LogDebug ( "ClassParameter.LoggingLevel: " + bll_userProfiles.ClassParameters.LoggingLevel );
 
       try
       {

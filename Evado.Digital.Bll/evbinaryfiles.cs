@@ -54,7 +54,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvBinaryFiles ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvBinaryFiles.";
 
       this._DalBinaryFiles = new  Evado.Digital.Dal.EvBinaryFiles ( Settings );

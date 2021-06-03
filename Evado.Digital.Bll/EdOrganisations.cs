@@ -51,13 +51,13 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdOrganisations ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
 
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvOrganisations.";
 
       this.LogDebug ( "Settings:" );
-      this.LogDebug ( "-PlatformId: " + this.ClassParameter.PlatformId );
-      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameter.AdapterGuid );
+      this.LogDebug ( "-PlatformId: " + this.ClassParameters.PlatformId );
+      this.LogDebug ( "-ApplicationGuid: " + this.ClassParameters.AdapterGuid );
 
       this._DalOrganisations = new  Evado.Digital.Dal.EdOrganisations ( Settings );
     }

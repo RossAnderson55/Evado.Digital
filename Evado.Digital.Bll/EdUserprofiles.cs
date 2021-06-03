@@ -54,7 +54,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdUserprofiles ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvUserProfiles.";
 
       this._Dal_UserProfiles = new  Evado.Digital.Dal.EdUserProfiles ( Settings );
@@ -592,7 +592,7 @@ namespace Evado.Digital.Bll
       EvEventCodes result = EvEventCodes.Ok;
       Evado.Digital.Model.EdOrganisation organisation = new EdOrganisation ( );
        Evado.Digital.Dal.EdOrganisations dal_Organisations =
-        new  Evado.Digital.Dal.EdOrganisations ( this.ClassParameter );
+        new  Evado.Digital.Dal.EdOrganisations ( this.ClassParameters );
 
       //
       // Create the org identifier.

@@ -44,7 +44,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvBllBase ( )
     {
-      this._ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+      this._ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
     }
     #endregion
 
@@ -67,23 +67,23 @@ namespace Evado.Digital.Bll
       }
     }
 
-    private EvClassParameters _ClassParameter = new EvClassParameters ( );
+    private EvClassParameters _ClassParameters = new EvClassParameters ( );
     /// <summary>
     /// This property contains the class parameters data object. 
     /// </summary>
-    public EvClassParameters ClassParameter
+    public EvClassParameters ClassParameters
     {
       get
       {
-        return _ClassParameter;
+        return _ClassParameters;
       }
       set
       {
-        this._ClassParameter = value;
+        this._ClassParameters = value;
 
-        _CustomerId = this._ClassParameter.CustomerId;
+        _CustomerId = this._ClassParameters.CustomerId;
 
-        dalApplicationEvents = new Evado.Digital.Dal.EvApplicationEvents ( this._ClassParameter );
+        dalApplicationEvents = new Evado.Digital.Dal.EvApplicationEvents ( this._ClassParameters );
       }
     }        
     
@@ -130,7 +130,7 @@ namespace Evado.Digital.Bll
     //  ----------------------------------------------------------------------------------
     protected void LogMethod ( String MethodName )
     {
-      if ( this._ClassParameter.LoggingLevel >= 3 )
+      if ( this._ClassParameters.LoggingLevel >= 3 )
       {
         this._Log.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
           + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
@@ -145,7 +145,7 @@ namespace Evado.Digital.Bll
     //  ----------------------------------------------------------------------------------
     protected void LogMethodEnd ( String MethodName )
     {
-      if ( this._ClassParameter.LoggingLevel >= 3 )
+      if ( this._ClassParameters.LoggingLevel >= 3 )
       {
         String value = Evado.Model.EvStatics.CONST_METHOD_END;
 
@@ -173,9 +173,9 @@ namespace Evado.Digital.Bll
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.ClassParameter.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.UserId );
 
-      if ( this._ClassParameter.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EVENT: " );
         this._Log.AppendLine ( Value );
@@ -198,8 +198,8 @@ namespace Evado.Digital.Bll
     protected void LogException ( Exception Ex )
     {
       String value = "NameSpace: " + this.ClassNameSpace 
-       + "\r\nUser: " + this.ClassParameter.UserProfile.UserId 
-       + "\r\nUserCommonName: " + this.ClassParameter.UserProfile.CommonName 
+       + "\r\nUser: " + this.ClassParameters.UserProfile.UserId
+       + "\r\nUserCommonName: " + this.ClassParameters.UserProfile.CommonName 
        + "\r\n" + EvStatics.getException ( Ex ) ;
 
       // 
@@ -210,7 +210,7 @@ namespace Evado.Digital.Bll
         EvEventCodes.Ok,
         this.ClassNameSpace,
         value,
-        this.ClassParameter.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
@@ -254,11 +254,11 @@ namespace Evado.Digital.Bll
         EventId,
         this.ClassNameSpace,
         Description,
-        this.ClassParameter.UserProfile.CommonName );
+        this.ClassParameters.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
-      if ( this._ClassParameter.LoggingLevel >= 0 )
+      if ( this._ClassParameters.LoggingLevel >= 0 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + " EXCEPTION EVENT: " );
         this._Log.AppendLine ( Description );
@@ -274,7 +274,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogClass ( String Value )
     {
-      if ( this._ClassParameter.LoggingLevel >= 3 )
+      if ( this._ClassParameters.LoggingLevel >= 3 )
       {
         this._Log.AppendLine ( Value );
       }
@@ -289,7 +289,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogValue ( String Value )
     {
-      if ( this._ClassParameter.LoggingLevel >= 3 )
+      if ( this._ClassParameters.LoggingLevel >= 3 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
@@ -304,7 +304,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogValue ( String Format, params object [ ] args )
     {
-      if ( this._ClassParameter.LoggingLevel >= 3 )
+      if ( this._ClassParameters.LoggingLevel >= 3 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
           String.Format ( Format, args ) );
@@ -320,7 +320,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogDebugClass ( String Value )
     {
-      if ( this._ClassParameter.LoggingLevel > 4 )
+      if ( this._ClassParameters.LoggingLevel > 4 )
       {
         this._Log.Append ( Value );
       }
@@ -335,7 +335,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogDebug ( String Value )
     {
-      if ( this._ClassParameter.LoggingLevel > 4 )
+      if ( this._ClassParameters.LoggingLevel > 4 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " + Value );
       }
@@ -351,7 +351,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     protected void LogDebug ( String Format, params object [ ] args )
     {
-      if ( this._ClassParameter.LoggingLevel > 4 )
+      if ( this._ClassParameters.LoggingLevel > 4 )
       {
         this._Log.AppendLine ( DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": " +
           String.Format ( Format, args ) );

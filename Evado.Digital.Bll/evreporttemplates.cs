@@ -52,12 +52,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvReportTemplates ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvReportTemplates.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
 
       this._dalReportTemplates = new  Evado.Digital.Dal.EdReportTemplates ( Settings );
@@ -427,7 +427,7 @@ namespace Evado.Digital.Bll
         case EdReport.SelectionListTypes.LayoutId:
           {
             this.LogValue ( "Form source selected." );
-            EdRecordLayouts formsBll = new EdRecordLayouts ( this.ClassParameter );
+            EdRecordLayouts formsBll = new EdRecordLayouts ( this.ClassParameters );
             returnList = formsBll.getList ( EdRecordTypes.Null, EdRecordObjectStates.Form_Issued, false );
             break;
           }

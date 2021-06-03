@@ -53,7 +53,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdAdapterConfig ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EdAdapterSettings.";
 
       this._dll_AdapterSettings = new  Evado.Digital.Dal.EdAdapterConfig ( Settings );

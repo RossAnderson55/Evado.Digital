@@ -52,12 +52,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EiServices ( Evado.Digital.Model.EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EiServices.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
     }
 
@@ -139,7 +139,7 @@ namespace Evado.Digital.Bll
        Evado.Integration.Model.EiData QueryData )
     {
       this.LogMethod ( "ProcessQuery method." );
-      this.LogDebug ( "Settings.LoggingLevel: " + this.ClassParameter.LoggingLevel );
+      this.LogDebug ( "Settings.LoggingLevel: " + this.ClassParameters.LoggingLevel );
       this.LogDebug ( "QueryType: " + QueryData.QueryType );
       this.writeProcessLog ( "Integration Service - Commence processing query data." );
       //

@@ -52,7 +52,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdRecords ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvFormRecords.";
 
       this._DalRecords = new  Evado.Digital.Dal.EdRecords ( Settings );
@@ -817,8 +817,8 @@ namespace Evado.Digital.Bll
       // Append the signoff object.
       // 
       userSignoff.Type = EdUserSignoff.TypeCode.Record_Submitted_Signoff;
-      userSignoff.SignedOffUserId = this.ClassParameter.UserProfile.UserId;
-      userSignoff.SignedOffBy = this.ClassParameter.UserProfile.CommonName;
+      userSignoff.SignedOffUserId = this.ClassParameters.UserProfile.UserId;
+      userSignoff.SignedOffBy = this.ClassParameters.UserProfile.CommonName;
       userSignoff.SignOffDate = DateTime.Now;
 
       Record.Signoffs.Add ( userSignoff );

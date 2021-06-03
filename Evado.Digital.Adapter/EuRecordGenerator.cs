@@ -581,11 +581,6 @@ namespace Evado.Digital.Adapter
     // ***********************************************************************************
     #endregion
 
-    #region Private Layout Integrate methods
-
-    // ***********************************************************************************
-    #endregion
-
     #region private page header and footer generation method
 
     //  =================================================================================

@@ -2879,6 +2879,31 @@ namespace Evado.Model
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
+    #region Password methods.
+    
+    //====================================================================================
+    /// <summary>
+    /// This method returns a password string.
+    /// </summary>
+    /// <param name="int">length of password (min 8, max 16)</param>
+    /// <returns>String: password string</returns>
+    //------------------------------------------------------------------------------------
+    public static string CreatePassword ( int Length )
+    {
+      int length = 8;
+      if ( Length > length && Length <= 16 )
+      {
+        length = Length;
+      }
+      Guid guid = Guid.NewGuid ( );
+      String password = Convert.ToBase64String ( guid.ToByteArray ( ) );
+
+      return password.Substring ( 3, length );
+
+    }
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #endregion
+
     #region Static SQL conversion methods.
 
     // =====================================================================================

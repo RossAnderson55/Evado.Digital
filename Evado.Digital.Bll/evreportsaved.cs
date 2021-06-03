@@ -49,12 +49,12 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvReportSaved ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvReportSaved.";
 
-      if ( this.ClassParameter.LoggingLevel == 0 )
+      if ( this.ClassParameters.LoggingLevel == 0 )
       {
-        this.ClassParameter.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
+        this.ClassParameters.LoggingLevel = Evado.Digital.Dal.EvStaticSetting.LoggingLevel;
       }
 
       this._dalReportSaved = new  Evado.Digital.Dal.EvReportSaved ( Settings );

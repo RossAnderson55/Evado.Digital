@@ -360,9 +360,9 @@ namespace Evado.Digital.Bll
       this.LogDebugValue( "EventId: " + ApplicationEvent.EventId );
       EvEventCodes result = EvEventCodes.Ok;
 
-      if ( ApplicationEvent.UserName == String.Empty )
+      if ( ApplicationEvent.UserId == String.Empty )
       {
-        ApplicationEvent.UserName = "Evado Executive";  
+        ApplicationEvent.UserId = "Evado Executive";  
       }
 
       //

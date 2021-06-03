@@ -469,7 +469,7 @@ namespace Evado.Digital.Adapter
           // Add the trial organisation to the list of organisations as a groupCommand.
           // 
           Evado.Model.UniForm.Command command = pageGroup.addCommand (
-            listItem.LinkText,
+            listItem.CommandTitle,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Selection_Lists.ToString ( ),
             Evado.Model.UniForm.ApplicationMethods.Get_Object );

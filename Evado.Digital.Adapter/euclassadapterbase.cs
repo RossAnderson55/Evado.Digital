@@ -255,7 +255,7 @@ namespace Evado.Digital.Adapter
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
@@ -296,7 +296,7 @@ namespace Evado.Digital.Adapter
         EventId,
         this.ClassNameSpace,
         stEvent,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
@@ -341,7 +341,7 @@ namespace Evado.Digital.Adapter
         EventId,
         this.ClassNameSpace,
         stEvent,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 
@@ -368,7 +368,7 @@ namespace Evado.Digital.Adapter
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       //
       // Log the application event.
@@ -410,7 +410,7 @@ namespace Evado.Digital.Adapter
         EvEventCodes.Ok,
         this.ClassNameSpace,
         Value,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       //
       // Log the application event.
@@ -429,7 +429,7 @@ namespace Evado.Digital.Adapter
     {
       String value = "NameSpace: " + this.ClassNameSpace
        + "\r\nUser: " + this.Session.UserProfile.UserId
-       + "\r\nUserCommonName: " + this.Session.UserProfile.CommonName
+       + "\r\nCommonName: " + this.Session.UserProfile.CommonName
        + "\r\n" + EvStatics.getException ( Ex );
 
       // 
@@ -440,7 +440,7 @@ namespace Evado.Digital.Adapter
         EvEventCodes.Ok,
         this.ClassNameSpace,
         value,
-        this.Session.UserProfile.CommonName );
+        this.Session.UserProfile.UserId );
 
       this.AddEvent ( applicationEvent );
 

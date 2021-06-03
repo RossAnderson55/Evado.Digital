@@ -217,7 +217,7 @@ namespace Evado.Model.UniForm
     {
       this._AdapterLog.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
       + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
-      + this.ClassNameSpace + Value );
+      + this.ClassNameSpace + "." + Value );
     }
 
     // ==================================================================================
@@ -286,7 +286,7 @@ namespace Evado.Model.UniForm
       {
         this._AdapterLog.AppendLine ( Evado.Model.EvStatics.CONST_METHOD_START
         + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + ": "
-        + this.ClassNameSpace + Value + " method." );
+        + this.ClassNameSpace + "." + Value + " method." );
       }
     }
 

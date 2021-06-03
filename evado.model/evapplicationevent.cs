@@ -45,20 +45,20 @@ namespace Evado.Model
     /// <param name="EventId">EvEventCodes enumerated value</param>
     /// <param name="Category">String: the category of the event</param>
     /// <param name="Description">String: the description of the event.</param>
-    /// <param name="UserName">String: name of the user that created the event.</param>
+    /// <param name="UserId">String: name of the user that created the event.</param>
     // ----------------------------------------------------------------------------------
     public EvApplicationEvent (
       EventType Type,
       Evado.Model.EvEventCodes EventId,
       String Category,
       String Description,
-      String UserName )
+      String UserId )
     {
       this.EventId = (int) EventId;
       this.Type = Type;
       this.Category = Category;
       this.Description = Description;
-      this.UserName = UserName;
+      this.UserId = UserId;
     }
     #endregion
 
@@ -107,7 +107,7 @@ namespace Evado.Model
     private DateTime _DateTime = DateTime.Parse ( "01 Jan 190" );
     private EventType _Type = EventType.Null;
     private string _Category = String.Empty;
-    private string _UserName = String.Empty;
+    private string _userId = String.Empty;
     private string _Description = String.Empty;
     private string _PageUrl = String.Empty;
     private string _CustomerId = String.Empty;
@@ -234,15 +234,15 @@ namespace Evado.Model
     /// <summary>
     /// This property contains user name of the person that generated the Application Event
     /// </summary>
-    public string UserName
+    public string UserId
     {
       get
       {
-        return _UserName;
+        return _userId;
       }
       set
       {
-        _UserName = value;
+        _userId = value;
       }
     }
 
@@ -375,11 +375,11 @@ namespace Evado.Model
           + " >> "
           + description + " ...";
 
-        if ( this._UserName != String.Empty
-          && stContent.Contains ( this._UserName ) == false )
+        if ( this._userId != String.Empty
+          && stContent.Contains ( this._userId ) == false )
         {
           stContent += evado.model.Properties.Resources.Space_Open_Bracket
-          + this._UserName
+          + this._userId
           + evado.model.Properties.Resources.Space_Close_Bracket;
         }
 

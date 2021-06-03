@@ -57,7 +57,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EdRecordLayouts ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EdRecordLayouts.";
 
       this._Dal_RecordLayouts = new  Evado.Digital.Dal.EdRecordLayouts ( Settings );
@@ -318,8 +318,8 @@ namespace Evado.Digital.Bll
       // 
       // Initialise the local variables
       // 
-      EdRecords records = new EdRecords ( this.ClassParameter);
-      EdRecordFields formFields = new EdRecordFields ( this.ClassParameter );
+      EdRecords records = new EdRecords ( this.ClassParameters);
+      EdRecordFields formFields = new EdRecordFields ( this.ClassParameters );
       EvEventCodes iReturn = EvEventCodes.Ok;
 
       if ( Layout.LayoutId == String.Empty )
@@ -444,7 +444,7 @@ namespace Evado.Digital.Bll
       // If the form has an authenticated signoff pass the user id to the 
       // to the DAL layer and DB.
       // 
-      string  AuthenticatedUserId = this.ClassParameter.UserProfile.UserId;
+      string  AuthenticatedUserId = this.ClassParameters.UserProfile.UserId;
 
       // 
       // Set the form to reviewed.

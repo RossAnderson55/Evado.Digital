@@ -422,16 +422,16 @@ namespace Evado.Digital.Adapter
       //
       foreach ( EvApplicationEvent appEvent in this.Session.ApplicationEventList )
       {
-        if ( hasUserName.Contains ( appEvent.UserName ) == true
-          || appEvent.UserName == String.Empty )
+        if ( hasUserName.Contains ( appEvent.UserId ) == true
+          || appEvent.UserId == String.Empty )
         {
           continue;
         }
 
-        if ( appEvent.UserName != String.Empty )
+        if ( appEvent.UserId != String.Empty )
         {
-          this.Session.EventUserSelectionList.Add ( new EvOption ( appEvent.UserName ) );
-          hasUserName += ";" + appEvent.UserName;
+          this.Session.EventUserSelectionList.Add ( new EvOption ( appEvent.UserId ) );
+          hasUserName += ";" + appEvent.UserId;
         }
       }
 
@@ -592,7 +592,7 @@ namespace Evado.Digital.Adapter
         // 
         foreach ( EvApplicationEvent applicationEvent in this.Session.ApplicationEventList )
         {
-          if ( applicationEvent.UserName != this.Session.EventUserName
+          if ( applicationEvent.UserId != this.Session.EventUserName
             && this.Session.EventUserName != String.Empty)
           {
             continue;
@@ -824,7 +824,7 @@ namespace Evado.Digital.Adapter
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.ApplicationEvent_UserName_Field_Label,
-        this._ApplicationEvent.UserName );
+        this._ApplicationEvent.UserId );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
     }//END Method

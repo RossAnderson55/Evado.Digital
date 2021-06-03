@@ -51,7 +51,7 @@ namespace Evado.Digital.Bll
     // ----------------------------------------------------------------------------------
     public EvDataChanges ( EvClassParameters Settings )
     {
-      this.ClassParameter = Settings;
+      this.ClassParameters = Settings;
       this.ClassNameSpace = "Evado.Digital.Bll.Clinical.EvDataChanges.";
 
       this._dalChanges = new  Evado.Digital.Dal.EvDataChanges ( Settings );
