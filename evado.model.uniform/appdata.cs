@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\AppData.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\AppData.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class contains the content of an abstracted page.
@@ -436,13 +436,13 @@ namespace Evado.Model.UniForm
     /// </remarks>
     // -------------------------------------------------------------------------------------
 
-    public Evado.Model.UniForm.Field GetField (
+    public Evado.UniForm.Model.Field GetField (
       String DataId )
     {
       //
       // Loop through group list
       //
-      foreach ( Evado.Model.UniForm.Group group in this._Page.GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._Page.GroupList )
       {
         //
         // Loop through field loop 
@@ -490,7 +490,7 @@ namespace Evado.Model.UniForm
       //
       // Loop through group list
       //
-      foreach ( Evado.Model.UniForm.Group group in this._Page.GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._Page.GroupList )
       {
 
         //
@@ -539,7 +539,7 @@ namespace Evado.Model.UniForm
       //
       // Loop through group list
       //
-      foreach ( Evado.Model.UniForm.Group group in this._Page.GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._Page.GroupList )
       {
         //
         // Loop through field loop 
@@ -571,7 +571,7 @@ namespace Evado.Model.UniForm
     /// This method update the contents of the page field value.
     /// </summary>
     /// <param name="CommandId">Guid: command identifier</param>
-    /// <returns>Evado.Model.UniForm.Command object</returns>   
+    /// <returns>Evado.UniForm.Model.Command object</returns>   
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -591,7 +591,7 @@ namespace Evado.Model.UniForm
       //
       // Loop through group list
       //
-      foreach ( Evado.Model.UniForm.Command command in this._Page.CommandList )
+      foreach ( Evado.UniForm.Model.Command command in this._Page.CommandList )
       {
         //
         // If a command id matches the passed commandId return the command.
@@ -605,12 +605,12 @@ namespace Evado.Model.UniForm
       //
       // Iterate through the page group list.
       //
-      foreach ( Evado.Model.UniForm.Group group in this._Page.GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._Page.GroupList )
       {
         //
         // Iterate through the group command list
         //
-        foreach ( Evado.Model.UniForm.Command command in group.CommandList )
+        foreach ( Evado.UniForm.Model.Command command in group.CommandList )
         {
           //
           // If a command id matches the passed commandId return the command.

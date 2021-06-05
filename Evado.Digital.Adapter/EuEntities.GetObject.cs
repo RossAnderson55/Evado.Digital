@@ -44,13 +44,13 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     /// <param name="EntityId">String: Entity identifier</param>
     //  ------------------------------------------------------------------------------
     public void getObject (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand,
+      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.Command PageCommand,
       String EntityId )
     {
       this.LogMethod ( "getObject" );
@@ -151,11 +151,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <returns>Evado.UniForm.Model.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData getObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getObject" );
       this.LogDebug ( "RefreshEntityChildren: {0}.", this.Session.RefreshEntityChildren );
@@ -164,7 +164,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
 
         //
         // Get the record.
@@ -228,7 +228,7 @@ namespace Evado.Digital.Adapter
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+        clientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
@@ -279,10 +279,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     ///  This method retrieves the entity into memory
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     //  ---------------------------------------------------------------------------------
     private EvEventCodes GetEntity (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "GetEntity" );
       this.LogDebug ( "EntityDictionary count {0}.", this.Session.EntityDictionary.Count );
@@ -444,15 +444,15 @@ namespace Evado.Digital.Adapter
     /// <summary>
     ///  This method retrieves the entity into memory
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     //  ---------------------------------------------------------------------------------
     private void ReloadEntityChildren (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "ReloadEntityChildren" );
 
       if ( this.Session.RefreshEntityChildren == false
-        || PageCommand.Method != Evado.Model.UniForm.ApplicationMethods.Get_Object )
+        || PageCommand.Method != Evado.UniForm.Model.ApplicationMethods.Get_Object )
       {
         return;
       };
@@ -493,7 +493,7 @@ namespace Evado.Digital.Adapter
     /// </summary>
     //  ---------------------------------------------------------------------------------
     private EvEventCodes GetEntityByParent (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "GetEntityByParent" );
       //
@@ -687,9 +687,9 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method creates a save groupCommand.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.Command object</returns>
+    /// <returns>Evado.UniForm.Model.Command object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.Command createEntitySaveCommand (
+    private Evado.UniForm.Model.Command createEntitySaveCommand (
       Guid RecordGuid,
       String SaveCommandTitle,
       String SaveAction )
@@ -698,16 +698,16 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      Evado.UniForm.Model.Parameter parameter = new Evado.UniForm.Model.Parameter ( );
 
       // 
       // create the save groupCommand.
       // 
-      Evado.Model.UniForm.Command saveCommand = new Evado.Model.UniForm.Command (
+      Evado.UniForm.Model.Command saveCommand = new Evado.UniForm.Model.Command (
         SaveCommandTitle,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
       // 
       // Define the save groupCommand parameters.
@@ -725,10 +725,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.AppData object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.AppData object.</param>
     //  ------------------------------------------------------------------------------
     public void getEntityClientData (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getClientData" );
       /*
@@ -751,9 +751,9 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
-      Evado.Model.UniForm.Parameter parameter = new Evado.Model.UniForm.Parameter ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
+      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.Parameter parameter = new Evado.UniForm.Model.Parameter ( );
 
       //
       // Initialise the page generator.
@@ -786,8 +786,8 @@ namespace Evado.Digital.Adapter
       {
         pageGroup = PageObject.AddGroup (
           EdLabels.Entity_Administrator_Header_Group_Title );
-        pageGroup.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
-        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        pageGroup.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
 
         groupField = pageGroup.createTextField (
           String.Empty,
@@ -845,10 +845,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     //  ------------------------------------------------------------------------------
     private void getDataObject_PageCommands (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getDataObject_PageCommands" );
       this.LogDebug ( "Entity.ButtonEditModeEnabled {0}. ", this.Session.Entity.ButtonEditModeEnabled );
@@ -856,7 +856,7 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
       String stSubmitCommandTitle = EdLabels.Entity_Submit_Command;
 
       // 
@@ -881,7 +881,7 @@ namespace Evado.Digital.Adapter
           EdLabels.Entity_User_Access_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.ApplicationMethods.Get_Object );
 
         pageCommand.SetGuid ( this.Session.Entity.Guid );
         pageCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_User_Access_Page );
@@ -899,7 +899,7 @@ namespace Evado.Digital.Adapter
           EdLabels.Entity_Edit_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.ApplicationMethods.Get_Object );
 
         pageCommand.SetGuid ( this.Session.Entity.Guid );
 
@@ -914,8 +914,8 @@ namespace Evado.Digital.Adapter
         // 
         // Set the page status to edit enabled
         // 
-        PageObject.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
-        PageObject.DefaultGroupType = Evado.Model.UniForm.GroupTypes.Default;
+        PageObject.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+        PageObject.DefaultGroupType = Evado.UniForm.Model.GroupTypes.Default;
 
         // 
         // Add the save groupCommand and add it to the page groupCommand list.
@@ -926,7 +926,7 @@ namespace Evado.Digital.Adapter
             EdLabels.Entity_Save_Command_Title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities.ToString ( ),
-            Evado.Model.UniForm.ApplicationMethods.Save_Object );
+            Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
           pageCommand.SetGuid ( this.Session.Entity.Guid );
 
@@ -946,7 +946,7 @@ namespace Evado.Digital.Adapter
           stSubmitCommandTitle,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+          Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
         pageCommand.SetGuid ( this.Session.Entity.Guid );
         pageCommand.AddParameter (
@@ -966,7 +966,7 @@ namespace Evado.Digital.Adapter
             EdLabels.Entity_Withdraw_Command,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities.ToString ( ),
-            Evado.Model.UniForm.ApplicationMethods.Save_Object );
+            Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
           pageCommand.SetGuid ( this.Session.Entity.Guid );
           pageCommand.AddParameter (
@@ -985,10 +985,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     //  ------------------------------------------------------------------------------
     private void getDataObject_GroupCommands (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getDataObject_GroupCommands" );
       //
@@ -1004,8 +1004,8 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
+      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
       String stSubmitCommandTitle = EdLabels.Entity_Submit_Command;
 
       this.LogValue ( "Including save commands in the last group." );
@@ -1020,7 +1020,7 @@ namespace Evado.Digital.Adapter
           EdLabels.Entity_Save_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+          Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
         pageCommand.SetGuid ( this.Session.Entity.Guid );
 
@@ -1040,7 +1040,7 @@ namespace Evado.Digital.Adapter
         stSubmitCommandTitle,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
       pageCommand.SetGuid ( this.Session.Entity.Guid );
       pageCommand.AddParameter (
@@ -1060,7 +1060,7 @@ namespace Evado.Digital.Adapter
           EdLabels.Entity_Withdraw_Command,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Save_Object );
+          Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
         pageCommand.SetGuid ( this.Session.Entity.Guid );
         pageCommand.AddParameter (
@@ -1077,10 +1077,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method displays the entity's chiled entities
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     //  ------------------------------------------------------------------------------
     private void getDataObject_ChildEntities (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getDataObject_ChildEntities" );
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
@@ -1097,24 +1097,24 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
 
       //
       // define the child entity group.
       //
       pageGroup = PageObject.AddGroup (
       String.Format ( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField ( ) ) );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
       pageGroup.GroupId = this.ChildEntityGroupID;
 
-      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+      pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
 
       if ( this.Session.Entity.ChildEntities.Count <= 20 )
       {
-        //pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
-        //pageGroup.AddParameter ( Evado.Model.UniForm.GroupParameterList.Command_Width, "20%" );
-        //pageGroup.AddParameter ( Evado.Model.UniForm.GroupParameterList.Command_Height, "50px" );
+        //pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Tiled_Commands;
+        //pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Command_Width, "20%" );
+        //pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Command_Height, "50px" );
       }
 
       //
@@ -1145,13 +1145,13 @@ namespace Evado.Digital.Adapter
             title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities,
-            Evado.Model.UniForm.ApplicationMethods.Create_Object );
+            Evado.UniForm.Model.ApplicationMethods.Create_Object );
 
           groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
           groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
           groupCommand.SetGuid ( this.Session.Entity.Guid );
 
-          groupCommand.SetBackgroundDefaultColour ( Evado.Model.UniForm.Background_Colours.Purple );
+          groupCommand.SetBackgroundDefaultColour ( Evado.UniForm.Model.Background_Colours.Purple );
         }//ENd edit access
       }//END child interation loop
 
@@ -1184,10 +1184,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method displays the entity's chiled entities
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     //  ------------------------------------------------------------------------------
     private void getDataObject_ChildRecords (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getDataObject_ChildRecords" );
       this.LogDebug ( "DisplayRelatedEntities {0}.", this.Session.Entity.Design.DisplayRelatedEntities );
@@ -1204,24 +1204,24 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
 
       //
       // define the child entity group.
       //
       pageGroup = PageObject.AddGroup (
       String.Format ( EdLabels.Entities_Child_Entity_Group_Title, this.Session.Entity.getFirstTextField ( ) ) );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
       pageGroup.GroupId = this.ChildEntityGroupID;
 
-      pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+      pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
 
       if ( this.Session.Entity.ChildEntities.Count <= 20 )
       {
-        //pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Tiled_Commands;
-        //pageGroup.AddParameter ( Evado.Model.UniForm.GroupParameterList.Command_Width, "20%" );
-        //pageGroup.AddParameter ( Evado.Model.UniForm.GroupParameterList.Command_Height, "50px" );
+        //pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Tiled_Commands;
+        //pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Command_Width, "20%" );
+        //pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Command_Height, "50px" );
       }
 
       //
@@ -1252,13 +1252,13 @@ namespace Evado.Digital.Adapter
             title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Records,
-            Evado.Model.UniForm.ApplicationMethods.Create_Object );
+            Evado.UniForm.Model.ApplicationMethods.Create_Object );
 
           groupCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, child.ChildLayoutId );
           groupCommand.AddParameter ( EdRecord.FieldNames.ParentGuid, this.Session.Entity.Guid );
           groupCommand.SetGuid ( this.Session.Entity.Guid );
 
-          groupCommand.SetBackgroundDefaultColour ( Evado.Model.UniForm.Background_Colours.Purple );
+          groupCommand.SetBackgroundDefaultColour ( Evado.UniForm.Model.Background_Colours.Purple );
         }//ENd edit access
       }//END child interation loop
 
@@ -1291,11 +1291,11 @@ namespace Evado.Digital.Adapter
     /// This method appends the milestone groupCommand to the page milestone list pageMenuGroup
     /// </summary>
     /// <param name="CommandEntity">EvForm object</param>
-    /// <param name="PageGroup"> Evado.Model.UniForm.Group</param>
+    /// <param name="PageGroup"> Evado.UniForm.Model.Group</param>
     //  -----------------------------------------------------------------------------
-    private Evado.Model.UniForm.Command getChildGroupListCommand (
+    private Evado.UniForm.Model.Command getChildGroupListCommand (
       EdRecord CommandEntity,
-      Evado.Model.UniForm.Group PageGroup,
+      Evado.UniForm.Model.Group PageGroup,
       EdRecord.LinkContentSetting ParentLinkSetting,
       bool IsRecord )
     {
@@ -1328,22 +1328,22 @@ namespace Evado.Digital.Adapter
       //
       // Define the pageMenuGroup groupCommand.
       //
-      Evado.Model.UniForm.Command groupCommand = PageGroup.addCommand (
+      Evado.UniForm.Model.Command groupCommand = PageGroup.addCommand (
           CommandEntity.CommandTitle,
           EuAdapter.ADAPTER_ID,
           adapterClass,
-          Evado.Model.UniForm.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.ApplicationMethods.Get_Object );
 
       groupCommand.Id = CommandEntity.Guid;
       groupCommand.SetGuid ( CommandEntity.Guid );
 
       groupCommand.AddParameter (
-        Evado.Model.UniForm.CommandParameters.Short_Title,
+        Evado.UniForm.Model.CommandParameters.Short_Title,
         EdLabels.Label_Record_Id + CommandEntity.RecordId );
       if ( CommandEntity.ImageFileName != String.Empty )
       {
         string relativeURL = EuAdapter.CONST_IMAGE_FILE_DIRECTORY + CommandEntity.ImageFileName;
-        groupCommand.AddParameter ( Evado.Model.UniForm.CommandParameters.Image_Url, relativeURL );
+        groupCommand.AddParameter ( Evado.UniForm.Model.CommandParameters.Image_Url, relativeURL );
       }
 
       if ( this.Session.UserProfile.hasAdministrationAccess == true )
@@ -1364,11 +1364,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <returns>Evado.UniForm.Model.AppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getUserAccessObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData getUserAccessObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getUserAccessObject" );
       this.LogDebug ( "RefreshEntityChildren: {0}.", this.Session.RefreshEntityChildren );
@@ -1377,7 +1377,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
 
         //
         // Get the record.
@@ -1431,7 +1431,7 @@ namespace Evado.Digital.Adapter
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+        clientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
@@ -1486,22 +1486,22 @@ namespace Evado.Digital.Adapter
     /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
     //  ------------------------------------------------------------------------------
     private void getUserAccess_SelectionGroup (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getUserAccess_SelectionGroup" );
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
 
       // 
       // Create the new pageMenuGroup for record selection.
       // 
       pageGroup = PageObject.AddGroup (
         EdLabels.Entities_User_Selection_Group_Title,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EditAccess.Enabled );
+      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
 
       //
       // Insert the static filter selection for organisation city.
@@ -1525,13 +1525,13 @@ namespace Evado.Digital.Adapter
       // 
       // Add the selection groupCommand
       // 
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
+      Evado.UniForm.Model.Command selectionCommand = pageGroup.addCommand (
         EdLabels.Select_Records_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
 
-      selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.Get_Object );
+      selectionCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.Get_Object );
       selectionCommand.SetGuid ( this.Session.Entity.Guid );
       selectionCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_User_Access_Page );
 
@@ -1546,15 +1546,15 @@ namespace Evado.Digital.Adapter
     /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
     //  ------------------------------------------------------------------------------
     private void getUserAccess_ListGroup (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getUserAccess_ListGroup" );
       //
       // Initialise the methods variables and objects.
       //
-      Evado.Model.UniForm.Group pageGroup = new Evado.Model.UniForm.Group ( );
-      Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field groupField = new Evado.Model.UniForm.Field ( );
+      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
+      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
       //
@@ -1580,9 +1580,9 @@ namespace Evado.Digital.Adapter
       // 
       pageGroup = PageObject.AddGroup (
         EdLabels.Entities_User_Selection_Group_Title,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.GroupType = Evado.Model.UniForm.GroupTypes.Default;
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EditAccess.Enabled );
+      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
 
       groupField = pageGroup.createCheckBoxListField (
         EdRecord.FieldNames.EntityAccess,
@@ -1599,7 +1599,7 @@ namespace Evado.Digital.Adapter
         EdLabels.Entity_Access_User_List_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
       groupCommand.SetGuid ( this.Session.Entity.Guid );
       groupCommand.AddParameter (

@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 
 namespace Evado.UniForm
@@ -124,9 +124,9 @@ namespace Evado.UniForm
     /// This method generates and then saves the application data test cases for the 
     /// passed page command and client data.
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command: page command object.</param>
-    /// <param name="ExitCommand">Evado.Model.UniForm.Command: exit command object.</param>
-    /// <param name="ClientData">Evado.Model.UniForm.AppDate: client page data object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command: page command object.</param>
+    /// <param name="ExitCommand">Evado.UniForm.Model.Command: exit command object.</param>
+    /// <param name="ClientData">Evado.UniForm.Model.AppDate: client page data object.</param>
     // ----------------------------------------------------------------------------------
     public void saveTestCases (
       Command PageCommand,

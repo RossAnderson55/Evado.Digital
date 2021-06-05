@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="Evado.Model.UniForm\Table.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\Table.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {  /// 
   /// Business entity used to model ClientPageField
   /// 
@@ -113,11 +113,11 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method adds a new row in the table.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.TableRow</returns>
+    /// <returns>Evado.UniForm.Model.TableRow</returns>
     //---------------------------------------------------------------------------------
     public TableColHeader [ ] setHeader ( int ColumnCount )
     {
-      this._Header = new Model.UniForm.TableColHeader [ ColumnCount ];
+      this._Header = new Evado.UniForm.Model.TableColHeader [ ColumnCount ];
 
       for( int i=0; i<ColumnCount; i++ )
       {
@@ -130,11 +130,11 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method adds a new row in the table.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.TableRow</returns>
+    /// <returns>Evado.UniForm.Model.TableRow</returns>
     //---------------------------------------------------------------------------------
     public TableRow addRow ( )
     {
-      Evado.Model.UniForm.TableRow row = new Model.UniForm.TableRow ( );
+      Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
 
       this._Rows.Add ( row );
 
@@ -147,4 +147,4 @@ namespace Evado.Model.UniForm
 
   } // Close ClientPageFieldTable class
 
-} // Close namespace  Evado.Model.UniForm
+} // Close namespace  Evado.UniForm.Model

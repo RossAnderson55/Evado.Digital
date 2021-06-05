@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="Evado.Model.UniForm\statics.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\statics.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -29,7 +29,7 @@ using System.Xml.Serialization;
 
 using Evado.Model;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// 
   /// Business entity used to model EvFormField
@@ -398,7 +398,7 @@ namespace Evado.Model.UniForm
       String stHomePagePathname = ApplicationPath + ApplicationName;
       TextReader reader;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.readApplicationHomePage static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.readApplicationHomePage static method. "
         + "\r\n stHomePagePathname: " + stHomePagePathname;
 
       //
@@ -456,7 +456,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n Evado.Model.UniForm.Statics.readApplicationHomePage static method."
+        stStatus += "\r\n Evado.UniForm.Model.Statics.readApplicationHomePage static method."
           + "\r\n exception." + Evado.Model.EvStatics.getException( Ex );
       }
 
@@ -486,7 +486,7 @@ namespace Evado.Model.UniForm
       //
       // Iterate through the page groups to encode the HTML
       //
-      foreach ( Evado.Model.UniForm.Group group in ApplicationData.Page.GroupList )
+      foreach ( Evado.UniForm.Model.Group group in ApplicationData.Page.GroupList )
       {
         String description = group.Description;
         description = description.Replace ( "[[", "<" );
@@ -496,7 +496,7 @@ namespace Evado.Model.UniForm
         //
         // Iterate through the group fields to encode the HTML in readonly fields.
         //
-        foreach ( Evado.Model.UniForm.Field field in group.FieldList )
+        foreach ( Evado.UniForm.Model.Field field in group.FieldList )
         {
           if ( field.Type == Evado.Model.EvDataTypes.Read_Only_Text )
           {
@@ -544,7 +544,7 @@ namespace Evado.Model.UniForm
       String stHomePagePathname = ApplicationPath + FileName + ".JSON";
       TextWriter textFile;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.writeJsonFile static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.writeJsonFile static method. "
         + ", stHomePagePathname: " + stHomePagePathname;
 
       //
@@ -581,7 +581,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.writeJsonFile static method Excpetion."
+        stStatus += "\r\n\r\n Evado.UniForm.Model.Statics.writeJsonFile static method Excpetion."
           + Evado.Model.EvStatics.getException( Ex );
       }
 
@@ -624,7 +624,7 @@ namespace Evado.Model.UniForm
       String stHomePagePathname = ApplicationPath + FileName;
       TextWriter textFile;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.TextFileSave static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.TextFileSave static method. "
         + ", stHomePagePathname: " + stHomePagePathname;
 
       //
@@ -661,7 +661,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileSave static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.UniForm.Model.Statics.TextFileSave static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -703,7 +703,7 @@ namespace Evado.Model.UniForm
       String stHomePagePathname = ApplicationPath + FileName;
       TextWriter textFile;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.TextFileAppend static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.TextFileAppend static method. "
         + ", stHomePagePathname: " + stHomePagePathname;
 
 
@@ -742,7 +742,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.TextFileAppend static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.UniForm.Model.Statics.TextFileAppend static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -785,7 +785,7 @@ namespace Evado.Model.UniForm
       TextReader reader;
       StringText = String.Empty;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.readJsLibrary static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.readJsLibrary static method. "
         + ", stHomePagePathname: " + stHomePagePathname;
 
       //
@@ -827,7 +827,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.readApplicationHomePage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.UniForm.Model.Statics.readApplicationHomePage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -870,7 +870,7 @@ namespace Evado.Model.UniForm
       //
       BinaryObject = new Byte [ 0 ];
       String stImageFilePathname = ImageFilePath + ImageFileName;
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.readInImage static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.readInImage static method. "
         + ", stImageFilePathname: " + stImageFilePathname;
       try
       {
@@ -915,7 +915,7 @@ namespace Evado.Model.UniForm
       }
       catch ( Exception Ex )
       {
-        stStatus += "\r\n\r\n Evado.Model.UniForm.Statics.writeOutImage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
+        stStatus += "\r\n\r\n Evado.UniForm.Model.Statics.writeOutImage static method Excpetion." + Evado.Model.EvStatics.getException( Ex );
       }
 
       //
@@ -959,7 +959,7 @@ namespace Evado.Model.UniForm
       //
       String stImageFilePathname = ImageFilePath + ImageFileName;
 
-      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.Model.UniForm.Statics.writeOutImage static method. "
+      string stStatus = Evado.Model.EvStatics.CONST_METHOD_START + "Evado.UniForm.Model.Statics.writeOutImage static method. "
         + ", stImageFilePathname: " + stImageFilePathname
         + ", ImageSize: " + ImageObject.Length;
       try
@@ -1172,4 +1172,4 @@ namespace Evado.Model.UniForm
 
   } // Close Statics class
 
-} // Close namespace Evado.Model.UniForm
+} // Close namespace Evado.UniForm.Model

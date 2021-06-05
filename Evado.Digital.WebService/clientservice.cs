@@ -33,7 +33,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 
 //Evado. namespace references.
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 //using Evado.UniForm.Dal;
 using Evado.UniForm;
@@ -108,9 +108,9 @@ namespace Evado.Digital.WebService
     /// </summary>
     private String _CurrentServiceURL = String.Empty;
 
-    private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
+    private float _ClientVersion = Evado.UniForm.Model.AppData.API_Version;
 
-    private float _ServerVersion = Evado.Model.UniForm.AppData.API_Version;
+    private float _ServerVersion = Evado.UniForm.Model.AppData.API_Version;
 
     private DateTime _StartTime = DateTime.Now;
 
@@ -149,7 +149,7 @@ namespace Evado.Digital.WebService
         //
         string json = String.Empty;
         Command PageCommand = new Command ( );
-        this._ClientVersion = Evado.Model.UniForm.EuStatics.decodeMinorVersion (
+        this._ClientVersion = Evado.UniForm.Model.EuStatics.decodeMinorVersion (
           ClientVersion );
         this.LogValue4 ( "ClientVersion: " + this._ClientVersion );
 
@@ -188,8 +188,8 @@ namespace Evado.Digital.WebService
         //
 
         this.LogValue4 ( "Global Object count: " + Global.GlobalObjectList.Count
-        + ", " + Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
-        + Global.GlobalObjectList.ContainsKey ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ) );
+        + ", " + Evado.UniForm.Model.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
+        + Global.GlobalObjectList.ContainsKey ( Evado.UniForm.Model.EuStatics.GLOBAL_ECLINICAL_OBJECT ) );
         //this.LogDebugValue ( "JSON CONTENT: \r\n" + content_value );
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -508,7 +508,7 @@ namespace Evado.Digital.WebService
           //filename = filename.Replace ( ":", "" );
           //this.LogDebugValue ( "Filename: " + filename  );
 
-          //EvStatics.Files.saveFile<Evado.Model.UniForm.AppData> ( Global.TempPath, filename, this._AppDataObject );
+          //EvStatics.Files.saveFile<Evado.UniForm.Model.AppData> ( Global.TempPath, filename, this._AppDataObject );
         }
 
         //
@@ -517,15 +517,15 @@ namespace Evado.Digital.WebService
         Global.RecordTestCase ( PageCommand, this._AppDataObject.Page.Exit, this._AppDataObject );
 
         this.LogDebug ( "Global Object count: " + Global.GlobalObjectList.Count );
-        this.LogDebug ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
-        + Global.GlobalObjectList.ContainsKey ( Evado.Model.UniForm.EuStatics.GLOBAL_ECLINICAL_OBJECT ) );
+        this.LogDebug ( Evado.UniForm.Model.EuStatics.GLOBAL_ECLINICAL_OBJECT + " exists: "
+        + Global.GlobalObjectList.ContainsKey ( Evado.UniForm.Model.EuStatics.GLOBAL_ECLINICAL_OBJECT ) );
 
         this.LogDebug ( "Client data object: " + this._AppDataObject.Title
           + " send to user: " + this._ServiceUserProfile.UserId );
 
         Global.LogExitCommand ( this._AppDataObject.Page.Exit, this._Context.Session.SessionID );
 
-        if ( PageCommand.Method == Evado.Model.UniForm.ApplicationMethods.Save_Object )
+        if ( PageCommand.Method == Evado.UniForm.Model.ApplicationMethods.Save_Object )
         {
           Global.OutputApplicationLog_Save ( );
         }
@@ -803,7 +803,7 @@ namespace Evado.Digital.WebService
     /// This method saves the user profile.
     /// </summary>
     //-----------------------------------------------------------------------------------
-    private void getServiceUserProfile ( Evado.Model.UniForm.Command PageCommand )
+    private void getServiceUserProfile ( Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getServiceUserProfile method." );
       //
@@ -863,7 +863,7 @@ namespace Evado.Digital.WebService
       //
       this._ServiceUserProfile.NewAuthentication = false;
       this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
-      string stPassword = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
+      string stPassword = PageCommand.GetParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_PASSWORD );
 
       //
       // if debug validation is turned on, the ADS is by passed.
@@ -1010,10 +1010,10 @@ namespace Evado.Digital.WebService
       //
       // Extract the command parameter values.
       //
-      string stUserToken = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_TOKEN );
-      string stUserId = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
-      string stPassword = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
-      string stNetworkRoles = PageCommand.GetParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_NETWORK_ROLES );
+      string stUserToken = PageCommand.GetParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_USER_TOKEN );
+      string stUserId = PageCommand.GetParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_USER_ID );
+      string stPassword = PageCommand.GetParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_PASSWORD );
+      string stNetworkRoles = PageCommand.GetParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_NETWORK_ROLES );
       string stDeviceId = PageCommand.GetDeviceId ( );
 
       //
@@ -1040,8 +1040,8 @@ namespace Evado.Digital.WebService
       //
       // Object values.
       //
-      PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_USER_ID );
-      PageCommand.DeleteParameter ( Evado.Model.UniForm.EuStatics.PARAMETER_LOGIN_PASSWORD );
+      PageCommand.DeleteParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_USER_ID );
+      PageCommand.DeleteParameter ( Evado.UniForm.Model.EuStatics.PARAMETER_LOGIN_PASSWORD );
       this._ServiceUserProfile.Token = EvStatics.getGuid ( stUserToken );
       this._ServiceUserProfile.UserId = stUserId;
       this._ServiceUserProfile.UserAuthenticationState = EvUserProfileBase.UserAuthenticationStates.Not_Authenticated;
@@ -1083,7 +1083,7 @@ namespace Evado.Digital.WebService
       // if network authenticatin is active, then the user was authenticated by ADS at the web client
       //
       if ( PageCommand.Type == CommandTypes.Network_Login_Command
-        && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT )
+        && stDeviceId == Evado.UniForm.Model.EuStatics.CONST_WEB_CLIENT )
       {
         PageCommand.Title = "Home Page";
         String message = message = "User: " + this._ServiceUserProfile.UserId + " NETWORK AUTHENITCATED.";
@@ -1118,7 +1118,7 @@ namespace Evado.Digital.WebService
       // if network authentication is active, then the user was authenticated an external validation source.
       //
       if ( PageCommand.Type == CommandTypes.Token_Login_Command
-        && stDeviceId == Evado.Model.UniForm.EuStatics.CONST_WEB_CLIENT
+        && stDeviceId == Evado.UniForm.Model.EuStatics.CONST_WEB_CLIENT
         && Global.EnableTokenLogin == true )
       {
         String message = message = "User: " + this._ServiceUserProfile.Token + " TOKEN AUTHENITCATED.";
@@ -1266,8 +1266,8 @@ namespace Evado.Digital.WebService
 
       dataObject.Page.Exit = new Command ( evado.model.Properties.Resources.AUTHENTICATION_LOGIN_CMD_TITLE,
               CommandTypes.Login_Command,
-              Evado.Model.UniForm.EuStatics.CONST_DEFAULT,
-              Evado.Model.UniForm.EuStatics.CONST_DEFAULT,
+              Evado.UniForm.Model.EuStatics.CONST_DEFAULT,
+              Evado.UniForm.Model.EuStatics.CONST_DEFAULT,
               ApplicationMethods.Get_Object );
 
       //
@@ -1404,15 +1404,15 @@ namespace Evado.Digital.WebService
       }
       this.nullServiceUserProfile ( );
 
-      String Date_Key = userId + Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP;
+      String Date_Key = userId + Evado.UniForm.Model.EuStatics.GLOBAL_DATE_STAMP;
 
       this.LogValue4 ( "Date Key: " + Date_Key );
 
-      String ClinicalObject_Key = userId + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_OBJECT;
+      String ClinicalObject_Key = userId + Evado.UniForm.Model.EuStatics.GLOBAL_SESSION_OBJECT;
 
       this.LogValue4 ( "Clinical Key: " + ClinicalObject_Key );
 
-      String HistoryList_Key = userId + Evado.Model.UniForm.EuStatics.GLOBAL_COMMAND_HISTORY;
+      String HistoryList_Key = userId + Evado.UniForm.Model.EuStatics.GLOBAL_COMMAND_HISTORY;
 
       this.LogValue4 ( "Command History Key: " + HistoryList_Key );
 

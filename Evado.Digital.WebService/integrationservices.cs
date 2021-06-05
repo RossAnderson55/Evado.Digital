@@ -29,7 +29,7 @@ using System.Web.Security;
 using System.IO;
 using System.Runtime.Remoting;
 
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 
 
@@ -127,7 +127,7 @@ namespace Evado.UniForm
 
     const string CONST_NAME_SPACE = "Evado.UniForm.IntegrationServices.";
 
-    private float _ClientVersion = Evado.Model.UniForm.AppData.API_Version;
+    private float _ClientVersion = Evado.UniForm.Model.AppData.API_Version;
     /// <summary>
     /// This property contains the client's API version.
     /// </summary>
@@ -137,7 +137,7 @@ namespace Evado.UniForm
       set { _ClientVersion = value; }
     }
 
-    //private float _ApiVersion = Evado.Model.UniForm.AppData.API_Version;
+    //private float _ApiVersion = Evado.UniForm.Model.AppData.API_Version;
 
     private Hashtable _GlobalObjects = new Hashtable ( );
 
@@ -361,7 +361,7 @@ namespace Evado.UniForm
         if ( this._NewUser == true )
         {
           this.LogDebug ( "new user retreiving the last command" );
-          List<Evado.Model.UniForm.Parameter> header = PageCommand.Header;
+          List<Evado.UniForm.Model.Parameter> header = PageCommand.Header;
 
           Command lastCommand = this._CommandHistory.getLastCommand ( );
           this.LogValue ( "last command: " + lastCommand.Title );
@@ -673,11 +673,11 @@ namespace Evado.UniForm
     /// 
     /// </summary>
     /// <returns>ClientApplicationData</returns>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command PageCommand</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command PageCommand</param>
     /// <returns>ClientApplicationData object</returns>
     // ----------------------------------------------------------------------------------
     private AppData getDefaultPage (
-        Evado.Model.UniForm.Command PageCommand )
+        Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getDefaultPage method. " );
       //

@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="Evado.Model.UniForm\Group.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\Group.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class defines the page client structure.
@@ -274,9 +274,9 @@ namespace Evado.Model.UniForm
     /// </summary>
     /// <param name="PageStatus">FieldValueWidth: the value of the parameter.</param>
     //  ---------------------------------------------------------------------------------
-    public void setGroupStatus ( Model.UniForm.EditAccess PageStatus )
+    public void setGroupStatus ( Evado.UniForm.Model.EditAccess PageStatus )
     {
-      if ( PageStatus == Model.UniForm.EditAccess.Enabled
+      if ( PageStatus == Evado.UniForm.Model.EditAccess.Enabled
         && this._EditAccess == EditAccess.Inherited )
       {
         this._EditAccess = PageStatus;
@@ -323,7 +323,7 @@ namespace Evado.Model.UniForm
     public Field addField (
       object FieldId,
       String Title,
-      EvDataTypes DataType,
+      Evado.Model.EvDataTypes DataType,
       String Value )
     {
       //
@@ -1510,7 +1510,7 @@ namespace Evado.Model.UniForm
         pageField.Description = FieldDescription;
       }
       pageField.Value = Value;
-      pageField.EditAccess = UniForm.EditAccess.Disabled;
+      pageField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
       //
       // Add the field to the group list.
@@ -1558,7 +1558,7 @@ namespace Evado.Model.UniForm
       pageField.FieldId = FieldId.ToString ( );
       pageField.Title = FieldTitle;
       pageField.Value = Value;
-      pageField.EditAccess = UniForm.EditAccess.Disabled;
+      pageField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
       //
       // Add the field to the group list.
@@ -2590,7 +2590,7 @@ namespace Evado.Model.UniForm
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.Field createSelectionListField (
+    public Evado.UniForm.Model.Field createSelectionListField (
       object FieldId,
       String FieldTitle,
       object Value,
@@ -2665,7 +2665,7 @@ namespace Evado.Model.UniForm
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.Field createSelectionListField (
+    public Evado.UniForm.Model.Field createSelectionListField (
       object FieldId,
       String FieldTitle,
       String Value,
@@ -3351,7 +3351,7 @@ namespace Evado.Model.UniForm
       groupField.FieldId = FieldId.ToString ( );
       groupField.Title = FieldTitle;
       groupField.Table = new Table ( );
-      groupField.Layout = Model.UniForm.FieldLayoutCodes.Column_Layout;
+      groupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
 
       groupField.EditAccess = this.EditAccess;
 
@@ -4590,7 +4590,7 @@ namespace Evado.Model.UniForm
     /// <param name="FieldId">string: the field data identifier</param>
     /// <param name="FieldTitle">String: Field title</param>
     /// <param name="FieldDescription">String: field description </param>
-    /// <param name="Value">Evado.Model.UniForm.PlotData: plot data</param>
+    /// <param name="Value">Evado.UniForm.Model.PlotData: plot data</param>
     /// <param name="DisplayLegend">Bool: true = display legend</param>
     /// <returns>Field object</returns>
     /// <remarks>
@@ -4605,7 +4605,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       String FieldDescription,
-      Evado.Model.UniForm.PlotData Value,
+      Evado.UniForm.Model.PlotData Value,
       bool DisplayLegend )
     {
       //
@@ -4619,11 +4619,11 @@ namespace Evado.Model.UniForm
       //
       // Define the methods variables and objects.
       //
-      Evado.Model.UniForm.Plot plot = new Model.UniForm.Plot ( );
-      Evado.Model.UniForm.PlotData plotData = new Model.UniForm.PlotData ( );
+      Evado.UniForm.Model.Plot plot = new Evado.UniForm.Model.Plot ( );
+      Evado.UniForm.Model.PlotData plotData = new Evado.UniForm.Model.PlotData ( );
 
       Value.Label = FieldId.ToString ( );
-      Value.Type = Model.UniForm.PlotData.PlotType.Lines;
+      Value.Type = Evado.UniForm.Model.PlotData.PlotType.Lines;
       plot.DisplayLegend = DisplayLegend;
 
       plot.Data.Add ( Value );
@@ -4663,7 +4663,7 @@ namespace Evado.Model.UniForm
     /// <param name="FieldId">string: the field data identifier</param>
     /// <param name="FieldTitle">String: Field title</param>
     /// <param name="FieldDescription">String: field description </param>
-    /// <param name="Value">Evado.Model.UniForm.PlotData: plot data</param>
+    /// <param name="Value">Evado.UniForm.Model.PlotData: plot data</param>
     /// <param name="DisplayLegend">Bool: true = display legend</param>
     /// <returns>Field object</returns>
     /// <remarks>
@@ -4678,7 +4678,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       String FieldDescription,
-      Evado.Model.UniForm.PlotData Value,
+      Evado.UniForm.Model.PlotData Value,
       bool DisplayLegend )
     {
       //
@@ -4692,11 +4692,11 @@ namespace Evado.Model.UniForm
       //
       // Define the methods variables and objects.
       //
-      Evado.Model.UniForm.Plot plot = new Model.UniForm.Plot ( );
+      Evado.UniForm.Model.Plot plot = new Evado.UniForm.Model.Plot ( );
       plot.DisplayLegend = DisplayLegend;
 
       Value.Label = FieldId.ToString ( );
-      Value.Type = Model.UniForm.PlotData.PlotType.Bars;
+      Value.Type = Evado.UniForm.Model.PlotData.PlotType.Bars;
 
       plot.Data.Add ( Value );
 
@@ -4751,7 +4751,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       String FieldDescription,
-      List<Evado.Model.UniForm.PlotData> Value,
+      List<Evado.UniForm.Model.PlotData> Value,
       bool DisplayLegend )
     {
       //
@@ -4765,7 +4765,7 @@ namespace Evado.Model.UniForm
       //
       // Define the methods variables and objects.
       //
-      Evado.Model.UniForm.Plot plot = new Model.UniForm.Plot ( );
+      Evado.UniForm.Model.Plot plot = new Evado.UniForm.Model.Plot ( );
       plot.DisplayLegend = DisplayLegend;
 
       plot.Data = Value;
@@ -4820,7 +4820,7 @@ namespace Evado.Model.UniForm
       object FieldId,
       String FieldTitle,
       String FieldDescription,
-      List<Evado.Model.UniForm.PlotData> Value,
+      List<Evado.UniForm.Model.PlotData> Value,
       bool DisplayLegend )
     {
       //
@@ -4834,7 +4834,7 @@ namespace Evado.Model.UniForm
       //
       // Define the methods variables and objects.
       //
-      Evado.Model.UniForm.Plot plot = new Model.UniForm.Plot ( );
+      Evado.UniForm.Model.Plot plot = new Evado.UniForm.Model.Plot ( );
       plot.DisplayLegend = DisplayLegend;
 
       plot.Data = Value;

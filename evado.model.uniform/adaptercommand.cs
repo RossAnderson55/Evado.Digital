@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\AdapterCommand.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\AdapterCommand.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD..  All rights reserved.
  *     
@@ -20,7 +20,7 @@ using System;
 
 using Evado.Model;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class defines the adapter command class to pacce the user profile, 
@@ -43,8 +43,8 @@ namespace Evado.Model.UniForm
     //-----------------------------------------------------------------------------------
     public AdapterCommand (
       Evado.Model.EvUserProfileBase Profile,
-      Evado.Model.UniForm.Command PageCommand,
-      Evado.Model.UniForm.Command ExitCommand)
+      Evado.UniForm.Model.Command PageCommand,
+      Evado.UniForm.Model.Command ExitCommand)
     {
       this.ServiceUserProfile = Profile;
       this.PageCommand = PageCommand;

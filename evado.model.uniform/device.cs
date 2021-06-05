@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// Business entity used to model accounts

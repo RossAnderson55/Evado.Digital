@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\Page.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\Page.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
     /// <summary>
     /// This class contains the device client page description.
@@ -772,7 +772,7 @@ namespace Evado.Model.UniForm
     /// This method retrieves a command from the page object.  
     /// </summary>
     /// <param name="GroupTitle">String: A command's title as a string.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -814,7 +814,7 @@ namespace Evado.Model.UniForm
     /// This method retrieves a command from the page object.  
     /// </summary>
     /// <param name="CommandTitle">String: A command's title as a string.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -882,7 +882,7 @@ namespace Evado.Model.UniForm
     /// This method retrieves a command from the page object.  
     /// </summary>
     /// <param name="CommandId">GUID: the command identifier.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -950,7 +950,7 @@ namespace Evado.Model.UniForm
     /// This method retrieves a command from the page object.  
     /// </summary>
     /// <param name="CommandTitle">String: A command's title as a string.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -1028,7 +1028,7 @@ namespace Evado.Model.UniForm
     /// This method deleted a command from the page object.  
     /// </summary>
     /// <param name="CommandId">String: A command's title as a string.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -1122,7 +1122,7 @@ namespace Evado.Model.UniForm
     /// </remarks>
     // -------------------------------------------------------------------------------------
     public String getFieldValue (
-      EvDataTypes DataType,
+      Evado.Model.EvDataTypes DataType,
       String DataId )
     {
       //
@@ -1136,7 +1136,7 @@ namespace Evado.Model.UniForm
       //
 
 
-      foreach ( Evado.Model.UniForm.Group group in this._GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._GroupList )
       {
 
         //
@@ -1204,7 +1204,7 @@ namespace Evado.Model.UniForm
       //
       // iterate through the list group
       //
-      foreach ( Evado.Model.UniForm.Group group in this._GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._GroupList )
       {
         //
         // iterate throuth the list field
@@ -1269,7 +1269,7 @@ namespace Evado.Model.UniForm
       //
       // iterate through the list group
       //
-      foreach ( Evado.Model.UniForm.Group group in this._GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._GroupList )
       {
         //
         // iterate throuth the list field
@@ -1330,7 +1330,7 @@ namespace Evado.Model.UniForm
       //
       // iterate through the list group
       //
-      foreach ( Evado.Model.UniForm.Group group in this._GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._GroupList )
       {
         //
         // iterate throuth the list field
@@ -1394,7 +1394,7 @@ namespace Evado.Model.UniForm
       //
       // iterate through the list group
       //
-      foreach ( Evado.Model.UniForm.Group group in this._GroupList )
+      foreach ( Evado.UniForm.Model.Group group in this._GroupList )
       {
         //
         // iterate throuth the list field
@@ -1457,7 +1457,7 @@ namespace Evado.Model.UniForm
     /// </summary>
     /// <param name="AppId"> String: A variable to be initialized to page data AppId </param>
     /// <param name="Object"> String: A variable to be initialized to page data Object </param>
-    /// <returns>Evado.Model.UniForm.PageData object</returns>
+    /// <returns>Evado.UniForm.Model.PageData object</returns>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -1501,7 +1501,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method generate the field page data parameters.
     /// </summary>
-    /// <param name="DataObjectList"> List: A list of Evado.Model.UniForm.DataObject </param>
+    /// <param name="DataObjectList"> List: A list of Evado.UniForm.Model.DataObject </param>
     /// <param name="Group"> Group: the group object. </param>
     /// <remarks>
     /// This method consists of following steps
@@ -1545,7 +1545,7 @@ namespace Evado.Model.UniForm
         // 
         // Prepare the field annotation parameters.
         // 
-        if ( Group.GroupType == UniForm.GroupTypes.Annotated_Fields
+        if ( Group.GroupType ==  Evado.UniForm.Model.GroupTypes.Annotated_Fields
           && field.FieldId != String.Empty
           && field.Type != Evado.Model.EvDataTypes.Read_Only_Text )
         {
@@ -1561,7 +1561,7 @@ namespace Evado.Model.UniForm
           if ( stAnnotation != String.Empty )
           {
             stAnnotationParameter +=
-                 "\"" + Evado.Model.UniForm.FieldParameterList.Annotation
+                 "\"" + Evado.UniForm.Model.FieldParameterList.Annotation
                + "\":\"" + stAnnotation + "\",";
           }
 
@@ -1569,7 +1569,7 @@ namespace Evado.Model.UniForm
           // Add an annotation field object for the user entered annotation.
           // 
           stAnnotationParameter +=
-               "\"" + Evado.Model.UniForm.FieldParameterList.Annotation
+               "\"" + Evado.UniForm.Model.FieldParameterList.Annotation
                + DataObj.CONST_FIELD_ANNOTATION_NEW_SUFFIX
              + "\":\"\"";
         }
@@ -1593,16 +1593,16 @@ namespace Evado.Model.UniForm
             }
 
           //
-          // A switch case for Evado.Model.UniForm.EvDatatype.Image
+          // A switch case for Evado.UniForm.Model.EvDatatype.Image
           //
 
 
           case Evado.Model.EvDataTypes.Image:
             {
               string stHash = field.GetParameter ( FieldParameterList.MD5_Hash );
-              string stHashParameters = "\"" + Evado.Model.UniForm.FieldParameterList.MD5_Hash
+              string stHashParameters = "\"" + Evado.UniForm.Model.FieldParameterList.MD5_Hash
                + "\":\"" + stHash + "\""
-               + ",\"" + Evado.Model.UniForm.FieldParameterList.Field_Type
+               + ",\"" + Evado.UniForm.Model.FieldParameterList.Field_Type
                + "\":" + ( int ) field.Type;
 
               //
@@ -1649,7 +1649,7 @@ namespace Evado.Model.UniForm
     /// </summary>
     /// <param name="AnnotationParameters"> String: An Annotation Parameter </param>
     /// <param name="Field"> Field : The Field Object </param>
-    /// <param name="ParameterList"> List: List of Evado.Model.UniForm.DataObj object </param>
+    /// <param name="ParameterList"> List: List of Evado.UniForm.Model.DataObj object </param>
     /// <remarks>
     /// This method consists of following steps
     /// 
@@ -1710,7 +1710,7 @@ namespace Evado.Model.UniForm
     /// This method generate the field page data parameters.
     /// </summary>
     /// <param name="AnnotationParameters"> String: A AnnotationParameter </param>
-    /// <param name="DataObjectList"> List: A list of Evado.Model.UniForm.DataObj </param>
+    /// <param name="DataObjectList"> List: A list of Evado.UniForm.Model.DataObj </param>
     /// <param name="Field"> Field: A Field object </param>
     /// <remarks>
     /// This method consists of following steps
@@ -1879,7 +1879,7 @@ namespace Evado.Model.UniForm
     /// This method retrieves a command from the page object.  
     /// </summary>
     /// <param name="FieldId">String: A command's title as a string.</param>
-    /// <returns>Evado.Model.UniForm.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.Command object.</returns>
     /// <remarks>
     /// This method consists of following steps. 
     /// 

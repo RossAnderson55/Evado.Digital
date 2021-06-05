@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="Evado.Model.UniForm\TableRow.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\TableRow.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// 
   /// Business entity used to model ClientPageField
@@ -77,4 +77,4 @@ namespace Evado.Model.UniForm
     #endregion
   }//END ClientPageTableRow Class
 
-} // Close namespace  Evado.Model.UniForm
+} // Close namespace  Evado.UniForm.Model

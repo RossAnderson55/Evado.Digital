@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\Field.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\Field.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class contains defines the client page field object contents.
@@ -218,18 +218,18 @@ namespace Evado.Model.UniForm
 
         switch ( this._Type )
         {
-          case Model.EvDataTypes.Computed_Field:
-          case Model.EvDataTypes.External_Image:
-          case Model.EvDataTypes.Html_Content:
-          case Model.EvDataTypes.Http_Link:
-          case Model.EvDataTypes.Line_Chart:
-          case Model.EvDataTypes.Pie_Chart:
-          case Model.EvDataTypes.Stacked_Bar_Chart:
-          case Model.EvDataTypes.Read_Only_Text:
-          case Model.EvDataTypes.Donut_Chart:
-          case Model.EvDataTypes.Sound:
-          case Model.EvDataTypes.Streamed_Video:
-          case Model.EvDataTypes.Video:
+          case  Evado.Model.EvDataTypes.Computed_Field:
+          case  Evado.Model.EvDataTypes.External_Image:
+          case  Evado.Model.EvDataTypes.Html_Content:
+          case  Evado.Model.EvDataTypes.Http_Link:
+          case  Evado.Model.EvDataTypes.Line_Chart:
+          case  Evado.Model.EvDataTypes.Pie_Chart:
+          case  Evado.Model.EvDataTypes.Stacked_Bar_Chart:
+          case  Evado.Model.EvDataTypes.Read_Only_Text:
+          case  Evado.Model.EvDataTypes.Donut_Chart:
+          case  Evado.Model.EvDataTypes.Sound:
+          case  Evado.Model.EvDataTypes.Streamed_Video:
+          case  Evado.Model.EvDataTypes.Video:
             {
               return false;
             }
@@ -253,17 +253,17 @@ namespace Evado.Model.UniForm
         //
         switch ( this.Type )
         {
-          case Model.EvDataTypes.External_Image:
-          case Model.EvDataTypes.Html_Content:
-          case Model.EvDataTypes.Http_Link:
-          case Model.EvDataTypes.Line_Chart:
-          case Model.EvDataTypes.Pie_Chart:
-          case Model.EvDataTypes.Stacked_Bar_Chart:
-          case Model.EvDataTypes.Read_Only_Text:
-          case Model.EvDataTypes.Donut_Chart:
-          case Model.EvDataTypes.Sound:
-          case Model.EvDataTypes.Streamed_Video:
-          case Model.EvDataTypes.Video:
+          case  Evado.Model.EvDataTypes.External_Image:
+          case  Evado.Model.EvDataTypes.Html_Content:
+          case  Evado.Model.EvDataTypes.Http_Link:
+          case  Evado.Model.EvDataTypes.Line_Chart:
+          case  Evado.Model.EvDataTypes.Pie_Chart:
+          case  Evado.Model.EvDataTypes.Stacked_Bar_Chart:
+          case  Evado.Model.EvDataTypes.Read_Only_Text:
+          case  Evado.Model.EvDataTypes.Donut_Chart:
+          case  Evado.Model.EvDataTypes.Sound:
+          case  Evado.Model.EvDataTypes.Streamed_Video:
+          case  Evado.Model.EvDataTypes.Video:
             {
               return true;
             }
@@ -335,8 +335,8 @@ namespace Evado.Model.UniForm
         //
         switch ( this.Type )
         {
-          case Model.EvDataTypes.Table:
-          case Model.EvDataTypes.Special_Matrix:
+          case  Evado.Model.EvDataTypes.Table:
+          case  Evado.Model.EvDataTypes.Special_Matrix:
             {
               if ( Table != null )
               {

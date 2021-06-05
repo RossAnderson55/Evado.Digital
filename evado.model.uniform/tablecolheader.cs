@@ -1,5 +1,5 @@
 /***************************************************************************************
- * <copyright file="Evado.Model.UniForm\TableColumnHeader.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\TableColumnHeader.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 using Evado.Model;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// The Column Header Class definition.
@@ -325,5 +325,5 @@ namespace Evado.Model.UniForm
 
   } //END ClientPageFieldColumnHeader class 
 
-} //END namespace  Evado.Model.UniForm
+} //END namespace  Evado.UniForm.Model
     #endregion

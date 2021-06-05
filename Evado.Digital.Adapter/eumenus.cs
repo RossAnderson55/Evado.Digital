@@ -95,11 +95,11 @@ namespace Evado.Digital.Adapter
     /// This method gets the application object from the list.
     /// 
     /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.Command object</param>
     /// <returns>ClientApplicationData</returns>
     //  ----------------------------------------------------------------------------------
-    public Evado.Model.UniForm.AppData getClientDataObject (
-      Evado.Model.UniForm.Command PageCommand )
+    public Evado.UniForm.Model.AppData getClientDataObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getClientDataObject" );
       this.LogValue ( "Parameter PageCommand " + PageCommand.getAsString ( false, true ) );
@@ -109,7 +109,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
 
         //
         // Initialise the menu platformID value.
@@ -124,23 +124,23 @@ namespace Evado.Digital.Adapter
         // 
         switch ( PageCommand.Method )
         {
-          case Evado.Model.UniForm.ApplicationMethods.List_of_Objects:
+          case Evado.UniForm.Model.ApplicationMethods.List_of_Objects:
             {
               clientDataObject = this.getListObject ( PageCommand );
               break;
             }
-          case Evado.Model.UniForm.ApplicationMethods.Get_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Get_Object:
             {
               clientDataObject = this.getObject ( PageCommand );
               break;
             }
-          case Evado.Model.UniForm.ApplicationMethods.Create_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Create_Object:
             {
               clientDataObject = this.createObject ( PageCommand );
               break;
             }
-          case Evado.Model.UniForm.ApplicationMethods.Save_Object:
-          case Evado.Model.UniForm.ApplicationMethods.Delete_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Save_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Delete_Object:
             {
               clientDataObject = this.updateObject ( PageCommand );
               break;
@@ -188,11 +188,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getListObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData getListObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getListObject" );
       this.LogDebug ( "MenuPlatformId: " + this.Session.MenuPlatformId );
@@ -202,7 +202,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         //      
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
 
         //
         // Determine if the user has access to this page and log and error if they do not.
@@ -228,7 +228,7 @@ namespace Evado.Digital.Adapter
         //
         // if the customer command has been executed then refresh the menu list.
         //
-        if ( PageCommand.hasParameter ( Evado.Model.UniForm.CommandParameters.Custom_Method ) == true )
+        if ( PageCommand.hasParameter ( Evado.UniForm.Model.CommandParameters.Custom_Method ) == true )
         {
           this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
         }
@@ -275,7 +275,7 @@ namespace Evado.Digital.Adapter
           EdLabels.Menu_New_Item_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Menu.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Create_Object );
+          Evado.UniForm.Model.ApplicationMethods.Create_Object );
 
         // 
         // add the selection pageMenuGroup.
@@ -492,26 +492,26 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getSelectionListGroup ( Evado.Model.UniForm.Page PageObject )
+    private void getSelectionListGroup ( Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "getSelectionListGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
       EvOption option = new EvOption ( );
 
       //
       // Define the selection group object.
       //
-      Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
         EdLabels.Menu_Selection,
-        Evado.Model.UniForm.EditAccess.Enabled );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
 
       //
       // Add the platform selection list
@@ -530,7 +530,7 @@ namespace Evado.Digital.Adapter
         this.Session.MenuPlatformId,
         optionList );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
 
       // 
       // Create the pageMenuGroup selection list.
@@ -545,22 +545,22 @@ namespace Evado.Digital.Adapter
           this.Session.MenuGroupIdentifier,
           groupList );
         pageField.Layout = EuAdapter.DefaultFieldLayout;
-        pageField.AddParameter ( Evado.Model.UniForm.FieldParameterList.Snd_Cmd_On_Change, 1 );
+        pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
       }
 
       //
       // Add the selection command
       //
-      Evado.Model.UniForm.Command selectionCommand = pageGroup.addCommand (
+      Evado.UniForm.Model.Command selectionCommand = pageGroup.addCommand (
         EdLabels.Menu_Selection_Menu,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Menu.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
 
       // 
       // Set the custom groupCommand parametet.
       // 
-      selectionCommand.setCustomMethod ( Evado.Model.UniForm.ApplicationMethods.List_of_Objects );
+      selectionCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
 
     }
 
@@ -595,12 +595,12 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
     /// <param name="GroupId">string: group identifier.</param>    
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getList_Menu_List_Group (
-      Evado.Model.UniForm.Page PageObject,
+      Evado.UniForm.Model.Page PageObject,
       String GroupId )
     {
       this.LogMethod ( "getListGroup" );
@@ -611,17 +611,17 @@ namespace Evado.Digital.Adapter
         // initialise the methods variables and objects.
         //
         List<EvMenuItem> menuList = new List<EvMenuItem> ( );
-        Evado.Model.UniForm.Command groupCommand = new Evado.Model.UniForm.Command ( );
+        Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
 
         //
         // Create the list pageMenuGroup object.
         //
-        Evado.Model.UniForm.Group pageGroup = PageObject.AddGroup (
+        Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
          EdLabels.Menu_Item_List,
-          Evado.Model.UniForm.EditAccess.Inherited );
+          Evado.UniForm.Model.EditAccess.Inherited );
 
-        pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
-        pageGroup.CmdLayout = Evado.Model.UniForm.GroupCommandListLayouts.Vertical_Orientation;
+        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
         pageGroup.Title = EdLabels.Menu_Item_List;
 
         //
@@ -641,9 +641,9 @@ namespace Evado.Digital.Adapter
           EdLabels.Menu_New_Item_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Menu.ToString ( ),
-          Evado.Model.UniForm.ApplicationMethods.Create_Object );
+          Evado.UniForm.Model.ApplicationMethods.Create_Object );
 
-        groupCommand.SetBackgroundDefaultColour ( Evado.Model.UniForm.Background_Colours.Purple );
+        groupCommand.SetBackgroundDefaultColour ( Evado.UniForm.Model.Background_Colours.Purple );
 
         // 
         // get the list of customers.
@@ -670,7 +670,7 @@ namespace Evado.Digital.Adapter
             menuItem.LinkText,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Menu.ToString ( ),
-            Evado.Model.UniForm.ApplicationMethods.Get_Object );
+            Evado.UniForm.Model.ApplicationMethods.Get_Object );
 
           groupCommand.SetGuid ( menuItem.Guid );
 
@@ -704,17 +704,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData getObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData getObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
       Guid menuGuid = Guid.Empty;
 
       try
@@ -813,18 +813,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.Model.UniForm.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getClientData (
-      Evado.Model.UniForm.AppData ClientDataObject )
+      Evado.UniForm.Model.AppData ClientDataObject )
     {
       this.LogMethod ( "getDataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.Model.UniForm.Command pageCommand = new Evado.Model.UniForm.Command ( );
-      Evado.Model.UniForm.Field pageField = new Evado.Model.UniForm.Field ( );
+      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
       List<EvOption> optionList = new List<EvOption> ( );
       EvOption option = new EvOption ( );
 
@@ -833,15 +833,15 @@ namespace Evado.Digital.Adapter
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.Model.UniForm.Group pageGroup = ClientDataObject.Page.AddGroup (
+      Evado.UniForm.Model.Group pageGroup = ClientDataObject.Page.AddGroup (
         EdLabels.Menu_General_Group_Title,
-        Evado.Model.UniForm.EditAccess.Inherited );
-      pageGroup.Layout = Evado.Model.UniForm.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
 
       //
       // Add the platform selection list
@@ -860,7 +860,7 @@ namespace Evado.Digital.Adapter
         EdLabels.Menu_Platform_Field_Label,
         this.Session.MenuPlatformId,
         optionList );
-      pageField.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+      pageField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
       // 
       // Create the customer id object
@@ -932,7 +932,7 @@ namespace Evado.Digital.Adapter
         EdLabels.Menu_Save_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Menu.ToString ( ),
-        Evado.Model.UniForm.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
       // 
       // Define the save and delete groupCommand parameters
@@ -946,7 +946,7 @@ namespace Evado.Digital.Adapter
          EdLabels.Menu_Delete_Command_Title,
          EuAdapter.ADAPTER_ID,
          EuAdapterClasses.Menu.ToString ( ),
-         Evado.Model.UniForm.ApplicationMethods.Save_Object );
+         Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
       // 
       // Define the save and delete groupCommand parameters
@@ -967,10 +967,10 @@ namespace Evado.Digital.Adapter
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="Command">Evado.Model.UniForm.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData object</returns>
+    /// <param name="Command">Evado.UniForm.Model.Command object.</param>
+    /// <returns>Evado.UniForm.Model.AppData object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData createObject ( Evado.Model.UniForm.Command Command )
+    private Evado.UniForm.Model.AppData createObject ( Evado.UniForm.Model.Command Command )
     {
       this.LogMethod ( "createObject" );
       try
@@ -999,7 +999,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         //      
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
         this.Session.MenuItem = new EvMenuItem ( );
         this.Session.MenuItem.Guid = Evado.Digital.Model.EvcStatics.CONST_NEW_OBJECT_ID;
         this.Session.MenuItem.Group = this.Session.MenuGroupIdentifier;
@@ -1041,10 +1041,10 @@ namespace Evado.Digital.Adapter
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.ClientClientDataObjectEvado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.ClientClientDataObjectEvado.UniForm.Model.Command object.</param>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData updateObject ( Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData updateObject ( Evado.UniForm.Model.Command PageCommand )
     {
       try
       {
@@ -1146,7 +1146,7 @@ namespace Evado.Digital.Adapter
         this.AdapterObjects.MenuList = new List<EvMenuItem> ( );
 
         this.LogMethodEnd ( "updateObject" );
-        return new Evado.Model.UniForm.AppData ( );
+        return new Evado.UniForm.Model.AppData ( );
 
       }
       catch ( Exception Ex )
@@ -1221,7 +1221,7 @@ namespace Evado.Digital.Adapter
     /// <param name="Parameters">List of field values to be updated.</param>
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValue ( Evado.Model.UniForm.Command PageCommand )
+    private void updateObjectValue ( Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogValue ( "Parameters.Count: " + PageCommand.Parameters.Count );
@@ -1229,12 +1229,12 @@ namespace Evado.Digital.Adapter
       // 
       // Iterate through the parameter values updating the ResultData object
       // 
-      foreach ( Evado.Model.UniForm.Parameter parameter in PageCommand.Parameters )
+      foreach ( Evado.UniForm.Model.Parameter parameter in PageCommand.Parameters )
       {
         this.LogValue ( parameter.Name + " > " + parameter.Value );
 
         if ( parameter.Name.Contains ( Evado.Digital.Model.EvcStatics.CONST_GUID_IDENTIFIER ) == true
-          || parameter.Name == Evado.Model.UniForm.CommandParameters.Custom_Method.ToString ( )
+          || parameter.Name == Evado.UniForm.Model.CommandParameters.Custom_Method.ToString ( )
           || parameter.Name == Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION )
         {
           continue;

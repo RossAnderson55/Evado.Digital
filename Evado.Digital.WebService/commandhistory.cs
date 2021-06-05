@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 
 namespace Evado.UniForm
@@ -67,7 +67,7 @@ namespace Evado.UniForm
       // Initialise the sesion and Global object stores.
       //
       this._GlobalObjects = GlobalObjects;
-      this._GlobalKey = ServiceUserProfile.UserId + Evado.Model.UniForm.EuStatics.GLOBAL_COMMAND_HISTORY;
+      this._GlobalKey = ServiceUserProfile.UserId + Evado.UniForm.Model.EuStatics.GLOBAL_COMMAND_HISTORY;
       this._GlobalKey = this._GlobalKey.ToUpper ( );
       this.LogInitialDebug ( "GlobalKey: " + this._GlobalKey );
 

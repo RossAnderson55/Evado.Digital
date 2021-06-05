@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\EditCodes.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\EditCodes.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   ///<summary>
   /// This enumeration contains edit status. These page objects are rendered 

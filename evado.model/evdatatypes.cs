@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\AbstractedPage.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\AbstractedPage.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2002 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     

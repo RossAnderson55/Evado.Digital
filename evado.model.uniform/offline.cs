@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\Offline.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\Offline.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class contains the device client page description.
@@ -115,7 +115,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method generates appends the page to the page object list..
     /// </summary>
-    /// <param name="OffinePage">Evado.Model.UniForm.Page: object Evado.Model.UniForm.Page</param>
+    /// <param name="OffinePage">Evado.UniForm.Model.Page: object Evado.UniForm.Model.Page</param>
     /// <remarks> 
     /// This method consists of following steps. 
     /// 
@@ -123,12 +123,12 @@ namespace Evado.Model.UniForm
     /// 
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    public void AppendPage( Evado.Model.UniForm.Page OffinePage )
+    public void AppendPage( Evado.UniForm.Model.Page OffinePage )
     {
       //
       // Iterate through the offline pages to determine if the page exists and if not add it.
       //
-      foreach ( Evado.Model.UniForm.Page page in this._PageList )
+      foreach ( Evado.UniForm.Model.Page page in this._PageList )
       {
         if ( page.PageId == OffinePage.PageId )
         {

@@ -33,7 +33,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 
 //Evado. namespace references.
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 //using Evado.UniForm.Dal;
 using Evado.UniForm;

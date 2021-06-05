@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 
 namespace Evado.UniForm

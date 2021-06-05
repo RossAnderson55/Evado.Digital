@@ -6,7 +6,7 @@ using System.Text;
 using Evado.Model;
 
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This 
@@ -99,7 +99,7 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This is the base class name space for the adapter class.
     /// </summary>
-    protected String ClassNameSpace = "Evado.Model.UniForm.ApplicationServiceBase.";
+    protected String ClassNameSpace = "Evado.UniForm.Model.ApplicationServiceBase.";
 
     /// <summary>
     /// This constant defines session home page identifier.
@@ -182,7 +182,7 @@ namespace Evado.Model.UniForm
     /// This method gets the application object from the list.
     /// </summary>
     /// <param name="PageCommand">Command: ClientPateCommand object</param>
-    /// <returns>Evado.Model.UniForm.AppData</returns>
+    /// <returns>Evado.UniForm.Model.AppData</returns>
     // ----------------------------------------------------------------------------------
     public virtual AppData getPageObject ( Command PageCommand )
     {

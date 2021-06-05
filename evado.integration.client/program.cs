@@ -1352,7 +1352,7 @@ namespace Evado.IntegrationClient
           }// End StreamWriter.
         }
 
-        Program.writeDebugLog ( "Deserialising JSON to Evado.Model.UniForm.AppData object." );
+        Program.writeDebugLog ( "Deserialising JSON to Evado.UniForm.Model.AppData object." );
 
         ResultData = Newtonsoft.Json.JsonConvert.DeserializeObject<EiData> ( serialisedText );
 

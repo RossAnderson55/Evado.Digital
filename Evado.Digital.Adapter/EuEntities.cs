@@ -262,11 +262,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method gets the application object from the list.
     /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
-    /// <returns>Evado.Model.UniForm.AppData</returns>
+    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.Command object</param>
+    /// <returns>Evado.UniForm.Model.AppData</returns>
     //  ----------------------------------------------------------------------------------
-    override public Evado.Model.UniForm.AppData getDataObject (
-      Evado.Model.UniForm.Command PageCommand )
+    override public Evado.UniForm.Model.AppData getDataObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getDataObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
@@ -280,7 +280,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
         this.Session.PageId = PageCommand.GetPageId();
 
         this.LogDebug ( "PageId: {0}", this.Session.StaticPageId );
@@ -298,7 +298,7 @@ namespace Evado.Digital.Adapter
           // 
           // Generate a page containing a list of record commands
           // 
-          case Evado.Model.UniForm.ApplicationMethods.List_of_Objects:
+          case Evado.UniForm.Model.ApplicationMethods.List_of_Objects:
             {
               this.LogDebug ( "Get List of object method" );
 
@@ -328,7 +328,7 @@ namespace Evado.Digital.Adapter
           // 
           // Select the method to retrieve a record object.
           // 
-          case Evado.Model.UniForm.ApplicationMethods.Get_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Get_Object:
             {
 
               switch ( this.Session.StaticPageId )
@@ -355,7 +355,7 @@ namespace Evado.Digital.Adapter
           // 
           // Select the groupCommand to create a new record object.
           // 
-          case Evado.Model.UniForm.ApplicationMethods.Create_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Create_Object:
             {
               this.LogDebug ( "Create Object method" );
 
@@ -367,7 +367,7 @@ namespace Evado.Digital.Adapter
           // 
           // Select the method to update the record object.
           // 
-          case Evado.Model.UniForm.ApplicationMethods.Save_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Save_Object:
             {
               this.LogDebug ( "Save Object method" );
 
@@ -380,7 +380,7 @@ namespace Evado.Digital.Adapter
 
             }//END save case.
 
-          case Evado.Model.UniForm.ApplicationMethods.Delete_Object:
+          case Evado.UniForm.Model.ApplicationMethods.Delete_Object:
             {
               this.LogDebug ( "Delete Object method" );
 
@@ -438,13 +438,13 @@ namespace Evado.Digital.Adapter
     /// This method generates a component group output.
     /// </summary>
     /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object</param>
     /// <param name="Component">String: component identifier</param>
     /// <returns>EvEventCodes enumeration</returns>
     //  ----------------------------------------------------------------------------------
     public EvEventCodes getPageComponent (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand,
+      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.Command PageCommand,
       String Component )
     {
       this.LogMethod ( "getPageComponent" );
@@ -542,7 +542,7 @@ namespace Evado.Digital.Adapter
     /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
     //  -----------------------------------------------------------------------------
     private EvEventCodes getListObject (
-      Evado.Model.UniForm.Page PageObject,
+      Evado.UniForm.Model.Page PageObject,
       String LayoutId )
     {
       this.LogMethod ( "getListObject" );
@@ -640,7 +640,7 @@ namespace Evado.Digital.Adapter
     /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
     //  -----------------------------------------------------------------------------
     private EvEventCodes GetFilteredListObject (
-      Evado.Model.UniForm.Page PageObject,
+      Evado.UniForm.Model.Page PageObject,
       String LayoutId )
     {
       this.LogMethod ( "GetFilteredListObject" );
@@ -733,12 +733,12 @@ namespace Evado.Digital.Adapter
     /// This method generates an entity data page.
     /// </summary>
     /// <param name="PageObject">Evado.Model.Uniform.Page object .</param>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     /// <returns>EvEventCodes enumeration indicating the execution outcome.</returns>
     //  ------------------------------------------------------------------------------
     private EvEventCodes getObject (
-      Evado.Model.UniForm.Page PageObject,
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getObject" );
       try
@@ -835,11 +835,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method checks the unlock status of the record.
     /// </summary>
-    /// <param name="PageObject">Evado.Model.UniForm.Page object</param>
+    /// <param name="PageObject">Evado.UniForm.Model.Page object</param>
     /// <returns>True:  lock successful</returns>
     //  ------------------------------------------------------------------------------
     private bool checkRecordLockStatus (
-      Evado.Model.UniForm.Page PageObject )
+      Evado.UniForm.Model.Page PageObject )
     {
       this.LogMethod ( "checkRecordLockStatus" );
 
@@ -869,11 +869,11 @@ namespace Evado.Digital.Adapter
         //
         if ( this.Session.UserProfile.hasManagementAccess )
         {
-          Evado.Model.UniForm.Command pageCommand = PageObject.addCommand (
+          Evado.UniForm.Model.Command pageCommand = PageObject.addCommand (
             EdLabels.Form_UnLock_Command_Title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities.ToString ( ),
-             Evado.Model.UniForm.ApplicationMethods.Save_Object );
+             Evado.UniForm.Model.ApplicationMethods.Save_Object );
 
           pageCommand.SetGuid ( this.Session.Entity.Guid );
         }
@@ -946,14 +946,14 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <returns>True:  lock successful</returns>
     //  ------------------------------------------------------------------------------
-    public Evado.Model.UniForm.AppData unLockRecord_Admin ( )
+    public Evado.UniForm.Model.AppData unLockRecord_Admin ( )
     {
       // 
       // Test if the record is already locked.
       // 
       if ( this.Session.UserProfile.hasManagementAccess )
       {
-        return new Evado.Model.UniForm.AppData ( );
+        return new Evado.UniForm.Model.AppData ( );
       }
 
       // 
@@ -967,7 +967,7 @@ namespace Evado.Digital.Adapter
         return this.Session.LastPage;
       }
 
-      return new Evado.Model.UniForm.AppData ( );
+      return new Evado.UniForm.Model.AppData ( );
 
     }//END unLockRecord_Admin method
 
@@ -980,17 +980,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
     // ------------------------------------------------------------------------------
     private void updateSessionValue (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "updateSessionValue" );
 
       //
       // If it is a custom method then empty the Entity list.
       //
-      if ( PageCommand.hasParameter ( Evado.Model.UniForm.CommandParameters.Custom_Method ) == true )
+      if ( PageCommand.hasParameter ( Evado.UniForm.Model.CommandParameters.Custom_Method ) == true )
       {
         this.Session.EntityList = new List<EdRecord> ( );
       }
@@ -1276,11 +1276,11 @@ namespace Evado.Digital.Adapter
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.ClientDataObjectEvado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.ClientDataObjectEvado.UniForm.Model.Command object.</param>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData createObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData createObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "createObject" );
       this.LogDebug ( "PageCommand: {0}.", PageCommand.getAsString ( false, true ) );
@@ -1290,7 +1290,7 @@ namespace Evado.Digital.Adapter
         //
         // Initialiset the methods variables and objects.
         //
-        Evado.Model.UniForm.AppData clientDataObject = new Evado.Model.UniForm.AppData ( );
+        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
 
         if ( this.Session.Selected_EntityLayoutId == String.Empty )
         {
@@ -1347,7 +1347,7 @@ namespace Evado.Digital.Adapter
         clientDataObject.Page.Id = clientDataObject.Id;
         clientDataObject.Page.PageDataGuid = clientDataObject.Id;
         clientDataObject.Page.PageId = this.Session.Entity.LayoutId;
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Enabled;
+        clientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
 
         clientDataObject.Id = this.Session.Entity.Guid;
         clientDataObject.Title = this.Session.Entity.CommandTitle;
@@ -1361,7 +1361,7 @@ namespace Evado.Digital.Adapter
         this.LogDebug
           ( "Title.Length: " + clientDataObject.Title.Length );
 
-        clientDataObject.Page.EditAccess = Evado.Model.UniForm.EditAccess.Disabled;
+        clientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
 
         // 
         // Generate the new page layout 
@@ -1479,10 +1479,10 @@ namespace Evado.Digital.Adapter
     /// parameter list.
     /// </summary>
     /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
-    /// <returns>Evado.Model.UniForm.AppData</returns>
+    /// <returns>Evado.UniForm.Model.AppData</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.Model.UniForm.AppData updateObject (
-      Evado.Model.UniForm.Command PageCommand )
+    private Evado.UniForm.Model.AppData updateObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       try
       {
@@ -1614,7 +1614,7 @@ namespace Evado.Digital.Adapter
           this.AdapterObjects.PageComponents = new List<EvOption> ( );
         }
         this.LogMethodEnd ( "updateObject" );
-        return new Evado.Model.UniForm.AppData ( );
+        return new Evado.UniForm.Model.AppData ( );
 
       }
       catch ( Exception Ex )
@@ -1638,10 +1638,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// THis method updates the form record values with the groupCommand parameter values.
     /// </summary>
-    /// <param name="PageCommand"> Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand"> Evado.UniForm.Model.Command object.</param>
     //  ----------------------------------------------------------------------------------
     private void updateObject_AdminValues (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "updateObject_AdminValues" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
@@ -1658,10 +1658,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// THis method updates the form record values with the groupCommand parameter values.
     /// </summary>
-    /// <param name="PageCommand"> Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand"> Evado.UniForm.Model.Command object.</param>
     //  ----------------------------------------------------------------------------------
     private void updateObject_EntityAccessValues (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "updateObject_UserAccessValues" );
       this.LogValue ( "Parameters.Count: " + PageCommand.Parameters.Count );
@@ -1680,10 +1680,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// THis method updates the form record values with the groupCommand parameter values.
     /// </summary>
-    /// <param name="PageCommand"> Evado.Model.UniForm.Command object.</param>
+    /// <param name="PageCommand"> Evado.UniForm.Model.Command object.</param>
     //  ----------------------------------------------------------------------------------
     private void updateObjectValues (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogValue ( " Parameters.Count: " + PageCommand.Parameters.Count );
@@ -1717,7 +1717,7 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method creates a save groupCommand.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.Command object</returns>
+    /// <returns>Evado.UniForm.Model.Command object</returns>
     // ------------------------------------------------------------------------------
     private void updateSignatures ( )
     {

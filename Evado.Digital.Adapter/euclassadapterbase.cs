@@ -168,16 +168,16 @@ namespace Evado.Digital.Adapter
     /// This method gets the application object from the list.
     /// 
     /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.Model.UniForm.Command object</param>
+    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.Command object</param>
     /// <returns>ClientApplicationData</returns>
     //  ----------------------------------------------------------------------------------
-    public virtual Evado.Model.UniForm.AppData getDataObject (
-      Evado.Model.UniForm.Command PageCommand )
+    public virtual Evado.UniForm.Model.AppData getDataObject (
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "getDataObject" );
       this.LogValue ( "Parameter PageCommand " + PageCommand.getAsString ( false, false ) );
 
-      return new Evado.Model.UniForm.AppData ( );
+      return new Evado.UniForm.Model.AppData ( );
 
     }//END getSubjectObject method
 
@@ -229,7 +229,7 @@ namespace Evado.Digital.Adapter
       }
     }
 
-    public String ClassNameSpace = "Evado.Model.UniForm.ApplicationServiceBase.";
+    public String ClassNameSpace = "Evado.UniForm.Model.ApplicationServiceBase.";
 
     // ==================================================================================
     /// <summary>
@@ -389,7 +389,7 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Value">String:  debug text.</param>
     // ----------------------------------------------------------------------------------
-    public void LogAction ( Evado.Model.UniForm.Command PageCommand, bool WithParameters )
+    public void LogAction ( Evado.UniForm.Model.Command PageCommand, bool WithParameters )
     {
       //
       // get the command values.

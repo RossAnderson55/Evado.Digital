@@ -1460,7 +1460,7 @@ namespace Evado.Digital.Adapter
       }
     }
 
-    protected String _ClassNameSpace = "Evado.Model.UniForm.ApplicationServiceBase.";
+    protected String _ClassNameSpace = "Evado.UniForm.Model.ApplicationServiceBase.";
 
     // ==================================================================================
     /// <summary>

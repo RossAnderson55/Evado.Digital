@@ -35,7 +35,7 @@ using Evado.Digital.Model;
 
 namespace Evado.Digital.Adapter
 {
-  public partial class EuAdapter : Evado.Model.UniForm.ApplicationAdapterBase
+  public partial class EuAdapter : Evado.UniForm.Model.ApplicationAdapterBase
   {
     // ==================================================================================
     /// <summary>
@@ -45,7 +45,7 @@ namespace Evado.Digital.Adapter
     /// <returns>ClientApplicationData</returns>
     // ----------------------------------------------------------------------------------
     private bool loadUserProfile (
-      Evado.Model.UniForm.Command PageCommand )
+      Evado.UniForm.Model.Command PageCommand )
     {
       this.LogMethod ( "loadUserProfile" );
       this.LogDebug ( "ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
@@ -59,7 +59,7 @@ namespace Evado.Digital.Adapter
       //
       // if an anonoymous command is encountered create a user profile for a patient.
       //
-      if ( PageCommand.Type == Evado.Model.UniForm.CommandTypes.Anonymous_Command
+      if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command
         || this.ServiceUserProfile.UserAuthenticationState == EvUserProfileBase.UserAuthenticationStates.Anonymous_Access )
       {
         this.LogEvent ( "Anonymous command encountered" );

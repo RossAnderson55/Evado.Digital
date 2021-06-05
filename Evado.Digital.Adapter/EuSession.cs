@@ -144,7 +144,7 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This property contains the last page object that was sent to the UniForm client. 
     /// </summary>
-    public Evado.Model.UniForm.AppData LastPage { get; set; }
+    public Evado.UniForm.Model.AppData LastPage { get; set; }
 
     private EvDataBaseUpdate.UpdateOrderBy _DataBaseUpdateOrderBy = EvDataBaseUpdate.UpdateOrderBy.UpdateNo;
 

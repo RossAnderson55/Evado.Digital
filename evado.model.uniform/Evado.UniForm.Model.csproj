@@ -7,8 +7,8 @@
     <ProjectGuid>{EB6A905C-2E28-4A70-B791-DC807165BCD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>evado.model.uniform</RootNamespace>
-    <AssemblyName>evado.model.uniform</AssemblyName>
+    <RootNamespace>Evado.UniForm.Model</RootNamespace>
+    <AssemblyName>Evado.UniForm.Model</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
@@ -56,6 +56,7 @@
     <Compile Include="dataobj.cs" />
     <Compile Include="device.cs" />
     <Compile Include="editaccess.cs" />
+    <Compile Include="EuArticle.cs" />
     <Compile Include="EuLabels.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,16 +86,16 @@
     <Compile Include="tablerow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\evado.model\evado.model.csproj">
-      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
-      <Name>evado.model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="EuLabels.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EuLabels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

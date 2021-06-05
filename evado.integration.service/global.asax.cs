@@ -32,7 +32,7 @@ using System.Web.ApplicationServices;
 
 //Evado. namespace references.
 using Evado.Model;
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Digital.Model;
 using Evado.Integration.Model;
 
@@ -278,9 +278,9 @@ namespace Evado.Integration.Service
       //
       Global.UniForm_BinaryFilePath = Global.ApplicationPath + Global.UniForm_BinaryFilePath;
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ] != null )
       {
-        string stBinaryFilePath = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ];
+        string stBinaryFilePath = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ];
 
         Global.UniForm_BinaryFilePath = Evado.Model.EvStatics.Files.updateDirectoryPath (
           Global.ApplicationPath,
@@ -295,9 +295,9 @@ namespace Evado.Integration.Service
       //
       // Set the application log path
       //
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ] != null )
       {
-        string stBinaryFileUrl = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ];
+        string stBinaryFileUrl = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ];
 
         if ( stBinaryFileUrl != String.Empty )
         {

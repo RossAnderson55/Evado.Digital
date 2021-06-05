@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************
- * <copyright file="Evado.Model.UniForm\AbstractedPage.cs" company="EVADO HOLDING PTY. LTD.">
+ * <copyright file="Evado.UniForm.Model\AbstractedPage.cs" company="EVADO HOLDING PTY. LTD.">
  *     
  *      Copyright (c) 2013 - 2021 EVADO HOLDING PTY. LTD.  All rights reserved.
  *     
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Evado.Model.UniForm
+namespace Evado.UniForm.Model
 {
   /// <summary>
   /// This class defines the client page command object structure.
@@ -190,7 +190,7 @@ namespace Evado.Model.UniForm
     /// 3. return false
     /// 
     /// </remarks>
-    /// <param name="PageCommand">Evado.Model.UniForm.Command object</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.Command object</param>
     /// <returns>Bool: true = matching command</returns>
     // ---------------------------------------------------------------------------------
     public bool isCommand ( Command PageCommand )
@@ -263,7 +263,7 @@ namespace Evado.Model.UniForm
     public void SetClientUrl ( String ClientUrl )
     {
       this.AddHeader (
-        Evado.Model.UniForm.CommandHeaderElements.Client_Url,
+        Evado.UniForm.Model.CommandHeaderElements.Client_Url,
         ClientUrl );
     }
 
@@ -275,7 +275,7 @@ namespace Evado.Model.UniForm
     // ---------------------------------------------------------------------------------
     public String GetDeviceId (  )
     {
-       return this.GetHeaderValue( Evado.Model.UniForm.CommandHeaderElements.DeviceId );
+       return this.GetHeaderValue( Evado.UniForm.Model.CommandHeaderElements.DeviceId );
     }
 
     // ==================================================================================
@@ -286,7 +286,7 @@ namespace Evado.Model.UniForm
     // ---------------------------------------------------------------------------------
     public String GetDeviceName ( )
     {
-      return this.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.DeviceName );
+      return this.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName );
     }
 
     // ==================================================================================
@@ -1412,9 +1412,9 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method returns a logout command.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.Command object</returns>
+    /// <returns>Evado.UniForm.Model.Command object</returns>
     // ----------------------------------------------------------------------------------
-    public static Evado.Model.UniForm.Command getLogoutCommand ( )
+    public static Evado.UniForm.Model.Command getLogoutCommand ( )
     {
       Command pageCommand = new Command (
         EuLabels.Default_Logout_Command_Title,
@@ -1430,9 +1430,9 @@ namespace Evado.Model.UniForm
     /// <summary>
     /// This method returns a default home page command.
     /// </summary>
-    /// <returns>Evado.Model.UniForm.Command object</returns>
+    /// <returns>Evado.UniForm.Model.Command object</returns>
     // ----------------------------------------------------------------------------------
-    public static Evado.Model.UniForm.Command getDefaultCommand ( )
+    public static Evado.UniForm.Model.Command getDefaultCommand ( )
     {
       Command pageCommand = new Command (
         EuLabels.Default_Home_Page_Command_Title,

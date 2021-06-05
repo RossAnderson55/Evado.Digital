@@ -31,7 +31,7 @@ using System.IO;
 using System.Web.ApplicationServices;
 
 //Evado namespace references.
-using Evado.Model.UniForm;
+using Evado.UniForm.Model;
 using Evado.Model;
 using Evado.Digital.Model;
 //using Evado.UniForm.Dal;
@@ -419,11 +419,11 @@ namespace Evado.Digital.WebService
       //
       // Set the delete session on exit, if true 
       //
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_SESSION_ON_EXIT_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_SESSION_ON_EXIT_KEY ] != null )
       {
         Global.DeleteSessionOnExit = false;
 
-        string stValue = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_SESSION_ON_EXIT_KEY ];
+        string stValue = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_SESSION_ON_EXIT_KEY ];
         if ( stValue.ToLower ( ) == "true"
           || stValue.ToLower ( ) == "yes" )
         {
@@ -446,9 +446,9 @@ namespace Evado.Digital.WebService
       //
       // Set the application log path
       //
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_SERVICE_ID_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_SERVICE_ID_KEY ] != null )
       {
-        string stServiceId = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_SERVICE_ID_KEY ];
+        string stServiceId = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_SERVICE_ID_KEY ];
 
         if ( stServiceId != String.Empty )
         {
@@ -484,9 +484,9 @@ namespace Evado.Digital.WebService
       //
       Global.UniForm_BinaryFilePath = Global.ApplicationPath + Global.UniForm_BinaryFilePath;
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ] != null )
       {
-        string stBinaryFilePath = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ];
+        string stBinaryFilePath = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_FILE_KEY ];
 
         Global.UniForm_BinaryFilePath = Evado.Model.EvStatics.Files.updateDirectoryPath (
           Global.ApplicationPath,
@@ -501,9 +501,9 @@ namespace Evado.Digital.WebService
       //
       // Set the application log path
       //
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ] != null )
       {
-        string stBinaryFileUrl = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ];
+        string stBinaryFileUrl = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_UNIFORM_BINARY_URL_KEY ];
 
         if ( stBinaryFileUrl != String.Empty )
         {
@@ -613,9 +613,9 @@ namespace Evado.Digital.WebService
     /// </summary>
     //-----------------------------------------------------------------------------------
     public static void RecordTestCase (
-      Evado.Model.UniForm.Command PageCommand,
-      Evado.Model.UniForm.Command ExitCommand,
-      Evado.Model.UniForm.AppData PageData )
+      Evado.UniForm.Model.Command PageCommand,
+      Evado.UniForm.Model.Command ExitCommand,
+      Evado.UniForm.Model.AppData PageData )
     {
       Global.LogMethod ( "RecordTestCase method." );
 
@@ -649,9 +649,9 @@ namespace Evado.Digital.WebService
       //
       int periodHours = 0;
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_HR_PERIOD_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_HR_PERIOD_KEY ] != null )
       {
-        string value = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_HR_PERIOD_KEY ];
+        string value = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_HR_PERIOD_KEY ];
 
         periodHours = Evado.Model.EvStatics.getInteger ( value );
 
@@ -676,7 +676,7 @@ namespace Evado.Digital.WebService
 
         Global.LogDebug ( "Entry key: " + stKey );
 
-        if ( stKey.Contains ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP ) == true )
+        if ( stKey.Contains ( Evado.UniForm.Model.EuStatics.GLOBAL_DATE_STAMP ) == true )
         {
           DateTime dateStamp = ( DateTime ) Global.GlobalObjectList [ entry.Key ];
 
@@ -715,14 +715,14 @@ namespace Evado.Digital.WebService
       //
       String UserName = Entry.Key.ToString ( );
       UserName = UserName.ToUpper ( );
-      UserName = UserName.Replace ( Evado.Model.UniForm.EuStatics.GLOBAL_DATE_STAMP, String.Empty );
+      UserName = UserName.Replace ( Evado.UniForm.Model.EuStatics.GLOBAL_DATE_STAMP, String.Empty );
 
       Global.LogDebug ( "User: " + UserName );
-      String ClinicalObject_Key = UserName + Evado.Model.UniForm.EuStatics.GLOBAL_SESSION_OBJECT;
+      String ClinicalObject_Key = UserName + Evado.UniForm.Model.EuStatics.GLOBAL_SESSION_OBJECT;
 
       Global.LogDebug ( "Clinical Key: " + ClinicalObject_Key );
 
-      String HistoryList_Key = UserName + Evado.Model.UniForm.EuStatics.GLOBAL_COMMAND_HISTORY;
+      String HistoryList_Key = UserName + Evado.UniForm.Model.EuStatics.GLOBAL_COMMAND_HISTORY;
 
       Global.LogDebug ( "Command History Key: " + HistoryList_Key );
 
@@ -745,9 +745,9 @@ namespace Evado.Digital.WebService
       Global.LogMethod ( "deleteUsersGlobalObjectEntries method" );
        Global.LogDebug ( "UserName: " + ServiceUserProfile.UserId );
 
-      if ( ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_USER_OBJECT_KEY ] != null )
+      if ( ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_USER_OBJECT_KEY ] != null )
       {
-        string value = ConfigurationManager.AppSettings [ Evado.Model.UniForm.EuStatics.CONFIG_DELETE_USER_OBJECT_KEY ];
+        string value = ConfigurationManager.AppSettings [ Evado.UniForm.Model.EuStatics.CONFIG_DELETE_USER_OBJECT_KEY ];
 
         if ( value.ToLower ( ) == "no" )
         {
@@ -1257,12 +1257,12 @@ namespace Evado.Digital.WebService
       //
       stCommand = "\"" + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + "\""
         + ",\"Page Command\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.UserId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.UserId ) + "\""
         + ",\"" + SessionId + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.DeviceId ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.DeviceName ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.OSVersion ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.Client_Url ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.OSVersion ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.Client_Url ) + "\""
         + ",\"" + PageCommand.Title + "\""
         + ",\"" + PageCommand.ApplicationId + "\""
         + ",\"" + PageCommand.Object + "\""
@@ -1343,12 +1343,12 @@ namespace Evado.Digital.WebService
       //
       stCommand = "\"" + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + "\""
         + ",\"Exit Command\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.UserId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.UserId ) + "\""
         + ",\"" + SessionId + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.DeviceId ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.DeviceName ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.OSVersion ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.Model.UniForm.CommandHeaderElements.Client_Url ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.OSVersion ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.Client_Url ) + "\""
         + ",\"" + PageCommand.Title + "\""
         + ",\"" + PageCommand.ApplicationId + "\""
         + ",\"" + PageCommand.Object + "\""
