@@ -64,9 +64,9 @@ namespace Evado.Digital.Adapter
     /// This method generates the commands associated with the selected menu item.
     /// </summary>
     /// <param name="MenuItem">The menu object</param>
-    /// <returns>Evado.UniForm.Model.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.EuCommand object.</returns>
     //  ------------------------------------------------------------------------------------
-    public Evado.UniForm.Model.Command GetNavigationCommand ( EvMenuItem MenuItem )
+    public Evado.UniForm.Model.EuCommand GetNavigationCommand ( EvMenuItem MenuItem )
     {
       this.resetAdapterLog ( );
       this.LogMethod ( "getMenuCommandObject" );
@@ -82,9 +82,9 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="PageId">String: page identifier</param>
     /// <param name="Title">String: command  title</param>
-    /// <returns>Evado.UniForm.Model.Command object.</returns>
+    /// <returns>Evado.UniForm.Model.EuCommand object.</returns>
     //  ------------------------------------------------------------------------------------
-    public Evado.UniForm.Model.Command GetNavigationCommand ( 
+    public Evado.UniForm.Model.EuCommand GetNavigationCommand ( 
       String PageId, 
       String Title,
       String Parameters)
@@ -96,7 +96,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods variables and objects.
       //
       Evado.Digital.Model.EdStaticPageIds pageId = Evado.Digital.Model.EdStaticPageIds.Null;
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
 
       //
       // process static page identifeirs to create their commands.
@@ -112,11 +112,11 @@ namespace Evado.Digital.Adapter
         {
           case Evado.Digital.Model.EdStaticPageIds.Application_Profile:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Application_Properties.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -125,11 +125,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Database_Version:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Application_Properties.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Database_Version );
 
@@ -138,11 +138,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Email_Templates_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Email_Templates.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -151,11 +151,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Application_Event_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Events.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -164,11 +164,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Application_Event:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Events.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -183,11 +183,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Organisation_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Organisations.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -196,11 +196,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Organisation_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Organisations.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               // 
               // Add the groupCommand parameters.
@@ -214,11 +214,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.User_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Users.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -227,11 +227,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.My_User_Profile_Update_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Users.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -241,11 +241,11 @@ namespace Evado.Digital.Adapter
             {
               string [] arParameters = Parameters.Split ( ';' );
 
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Users.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -265,11 +265,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Menu_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Menu.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -289,11 +289,11 @@ namespace Evado.Digital.Adapter
         {
           case Evado.Digital.Model.EdStaticPageIds.Alert_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                Title,
                EuAdapter.ADAPTER_ID,
                EuAdapterClasses.Alert.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -302,11 +302,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Binary_File_List_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Binary_File.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -315,11 +315,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Page_Layout_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Page_Layouts.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -328,11 +328,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Page_Layout_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Page_Layouts.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -341,11 +341,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Selection_List_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Selection_Lists.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -354,11 +354,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Selection_List_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Selection_Lists.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -368,11 +368,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Record_Layout_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Record_Layouts.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -381,11 +381,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Entity_Layout_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Entity_Layouts.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -405,11 +405,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Data_Charting_Page:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Analysis.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -418,11 +418,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Record_Query_Page:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Analysis.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -430,11 +430,11 @@ namespace Evado.Digital.Adapter
             }
           case Evado.Digital.Model.EdStaticPageIds.Audit_Configuration_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Application_Properties.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -442,11 +442,11 @@ namespace Evado.Digital.Adapter
             }
           case Evado.Digital.Model.EdStaticPageIds.Audit_Records_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Application_Properties.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -454,11 +454,11 @@ namespace Evado.Digital.Adapter
             }
           case Evado.Digital.Model.EdStaticPageIds.Audit_Record_Items_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Application_Properties.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -478,11 +478,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Report_Template_View:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.ReportTemplates.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -491,11 +491,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Report_Template_Page:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.ReportTemplates.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -504,11 +504,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Operational_Report_List:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Reports.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -518,11 +518,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Operational_Report_Page:
             {
               this.LogValue ( PageId + " ADDED" );
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Reports.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -545,11 +545,11 @@ namespace Evado.Digital.Adapter
           // 
           case Evado.Digital.Model.EdStaticPageIds.Ancillary_Record_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Ancillary_Record.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -558,11 +558,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Records_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Records.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -571,11 +571,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Record_Export_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Records.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -584,11 +584,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Record_Admin_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Records.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -598,11 +598,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Record_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Records.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -626,11 +626,11 @@ namespace Evado.Digital.Adapter
           case Evado.Digital.Model.EdStaticPageIds.Entity_View:
           case Evado.Digital.Model.EdStaticPageIds.Entity_Filter_View:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Entities.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -639,11 +639,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Entity_Export_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Entities.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -652,11 +652,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Entity_Admin_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Entities.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+                Evado.UniForm.Model.EuMethods.List_of_Objects );
 
               pageCommand.SetPageId ( PageId );
 
@@ -665,11 +665,11 @@ namespace Evado.Digital.Adapter
 
           case Evado.Digital.Model.EdStaticPageIds.Entity_Page:
             {
-              pageCommand = new Evado.UniForm.Model.Command (
+              pageCommand = new Evado.UniForm.Model.EuCommand (
                 Title,
                 EuAdapter.ADAPTER_ID,
                 EuAdapterClasses.Entities.ToString ( ),
-                Evado.UniForm.Model.ApplicationMethods.Get_Object );
+                Evado.UniForm.Model.EuMethods.Get_Object );
 
               pageCommand.SetPageId ( PageId );
 
@@ -698,11 +698,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "PAGE: PageId: {0}, Title: {1} StPageId: {2}.", PageId, Title, stPageId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Page.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( stPageId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
@@ -722,11 +722,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "AUTHOR: PageId: {0}, Title: {1} Layout: {2}, Author Query.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_View );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -750,11 +750,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "FILTERED: PageId: {0}, Title: {1} Layout: {2}, Filtered Query.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_Filter_View );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -780,11 +780,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "ORG: PageId: {0}, Title: {1} Layout: {2}, Org Parent.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -815,11 +815,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "ORG: PageId: {0}, Title: {1} Layout: {2}, Org Parent.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -846,11 +846,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "DEF USR: PageId: {0}, Title: {1} Layout: {2}, User  Parent.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -873,11 +873,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "USER: PageId: {0}, Title: {1} Layout: {2}, User  Parent.", PageId, Title, layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -906,11 +906,11 @@ namespace Evado.Digital.Adapter
         this.LogDebug ( "2 layoutId: {0}.", layoutId );
 
         this.LogDebug ( "PARENT: PageId: {0}, Title: {1} Layout: {2}, User  Parent.", PageId, Title, layoutId );
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -941,11 +941,11 @@ namespace Evado.Digital.Adapter
 
         this.LogDebug ( "2 layoutId: {0}.", layoutId );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -964,11 +964,11 @@ namespace Evado.Digital.Adapter
         this.LogDebug ( "PageId: {0}, Title: {1} Layout.", PageId, Title ); 
         string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PREFIX, String.Empty );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EuEntities.CONST_HIDE_SELECTION, "Yes" );
@@ -985,11 +985,11 @@ namespace Evado.Digital.Adapter
       {
         string layoutId = PageId.Replace ( EuAdapter.CONST_RECORD_PREFIX, String.Empty );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -1005,11 +1005,11 @@ namespace Evado.Digital.Adapter
       {
         string layoutId = PageId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -1028,11 +1028,11 @@ namespace Evado.Digital.Adapter
       {
         string layoutId = PageId.Replace ( EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );
@@ -1051,11 +1051,11 @@ namespace Evado.Digital.Adapter
       {
         string layoutId = PageId.Replace ( EuAdapter.CONST_ENTITY_PARENT_PAGE_ID_SUFFIX, String.Empty );
 
-        pageCommand = new Evado.UniForm.Model.Command (
+        pageCommand = new Evado.UniForm.Model.EuCommand (
           Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Records.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+          Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         pageCommand.SetPageId ( PageId );
         pageCommand.AddParameter ( EdRecord.FieldNames.Layout_Id, layoutId );

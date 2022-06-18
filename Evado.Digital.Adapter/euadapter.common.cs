@@ -35,7 +35,7 @@ using Evado.Digital.Model;
 
 namespace Evado.Digital.Adapter
 {
-  public partial class EuAdapter : Evado.UniForm.Model.ApplicationAdapterBase
+  public partial class EuAdapter : Evado.UniForm.Model.EuApplicationAdapterBase
   {
     // ==================================================================================
     /// <summary>
@@ -45,11 +45,11 @@ namespace Evado.Digital.Adapter
     /// <returns>ClientApplicationData</returns>
     // ----------------------------------------------------------------------------------
     private bool loadUserProfile (
-      Evado.UniForm.Model.Command PageCommand )
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "loadUserProfile" );
       this.LogDebug ( "ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
-      this.LogDebug ( "UserAuthenticationState: " + this.ServiceUserProfile.UserAuthenticationState );
+      this.LogDebug ( "UserAuthenticationState: " + this.ServiceUserProfile.AuthenticationState );
 
       // 
       // Initialise the methods variables and objects.
@@ -59,8 +59,8 @@ namespace Evado.Digital.Adapter
       //
       // if an anonoymous command is encountered create a user profile for a patient.
       //
-      if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command
-        || this.ServiceUserProfile.UserAuthenticationState == EvUserProfileBase.UserAuthenticationStates.Anonymous_Access )
+      if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command
+        || this.ServiceUserProfile.AuthenticationState == EvUserProfileBase.UserAuthenticationStates.Anonymous_Access )
       {
         this.LogEvent ( "Anonymous command encountered" );
 
@@ -72,29 +72,6 @@ namespace Evado.Digital.Adapter
         this.ClassParameters.UserProfile = this.Session.UserProfile;
 
         return true;
-      }
-
-      // 
-      // IF the profile tokens match for token access return true.
-      // 
-      if ( this.ServiceUserProfile.UserAuthenticationState == EvUserProfileBase.UserAuthenticationStates.Token_Access )
-      {
-        this.LogDebug ( "Token Access" );
-
-        if ( this.Session.UserProfile.Token == this.ServiceUserProfile.Token )
-        {
-          this.ClassParameters.UserProfile = this.Session.UserProfile;
-
-          this.LogDebug ( "User profile for {0} EXISTS IN SESSION", this.ServiceUserProfile.UserId );
-
-          return true;
-        }
-
-        this.LogDebug ( "User profile for token {0} IS EMPTY GENERATING NEW PROFILE.", this.ServiceUserProfile.Token );
-
-        this.Session.UserProfile = userProfiles.getItem ( this.ServiceUserProfile.Token );
-
-        this.LogAdapter ( userProfiles.Log );
       }
 
       else
@@ -511,7 +488,7 @@ namespace Evado.Digital.Adapter
       //
       if ( EuAdapter.AdapterObjects.AllSelectionLists.Count > 0 )
       {
-        this.LogInit ( "No Selection Lists." );
+        this.LogInit ( "Selection list loaded." );
         this.LogInit ( "END loadSelectionLists" );
         return;
       }

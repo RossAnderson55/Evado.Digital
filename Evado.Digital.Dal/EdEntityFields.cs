@@ -270,7 +270,7 @@ namespace Evado.Digital.Dal
       {
         this.LogValue ( "Column 1 header text: " + EntityField.Table.Header [ 0 ].Text );
 
-        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( EntityField.Table );
+        serialisedTableStructure = Evado.Model.EvStatics.SerialiseXmlObject<EdRecordTable> ( EntityField.Table );
       }
 
       if ( EntityField.Design.ValidationLowerLimit >= EntityField.Design.ValidationUpperLimit )
@@ -472,7 +472,7 @@ namespace Evado.Digital.Dal
         //
         if ( xmlTable != String.Empty )
         {
-          entityField.Table =  Evado.Digital.Model.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
+          entityField.Table =  Evado.Model.EvStatics.DeserialiseXmlObject<EdRecordTable> ( xmlTable );
 
           // 
           // Iterate through the table and set the validation rules

@@ -268,7 +268,7 @@ namespace Evado.Integration.Service
           Global.LogFilePath,
           stConfigLogPath );
 
-        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.DebugLog );
+        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.Log );
       }
 
       Global.WriteServiceLogLine ( "Log file path: " + Global.LogFilePath );
@@ -287,7 +287,7 @@ namespace Evado.Integration.Service
           Global.UniForm_BinaryFilePath,
           stBinaryFilePath );
 
-        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.DebugLog );
+        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.Log );
       }
 
       Global.WriteServiceLogLine ( "UniForm binary File path: " + Global.UniForm_BinaryFilePath );
@@ -322,7 +322,7 @@ namespace Evado.Integration.Service
           repositoryFilePath,
           stConfigRepositoryFilePath );
 
-        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.DebugLog );
+        Global.WriteServiceLogLine ( Evado.Model.EvStatics.Files.Log );
       }
 
       ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_RESPOSITORY_FILE_PATH_KEY ] = repositoryFilePath;

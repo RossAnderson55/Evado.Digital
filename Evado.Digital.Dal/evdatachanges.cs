@@ -538,7 +538,7 @@ namespace Evado.Digital.Dal
       // 
       // serialise the datachange object.
       // 
-      xmlDataChange =  Evado.Digital.Model.EvcStatics.SerialiseObject<EvDataChange> ( DataChange );
+      xmlDataChange =  Evado.Model.EvStatics.SerialiseXmlObject<EvDataChange> ( DataChange );
 
       // 
       // Check whether the Guid exists. 
@@ -627,7 +627,7 @@ namespace Evado.Digital.Dal
           // 
           // deserialise the xml object.
           // 
-          dataChange =  Evado.Digital.Model.EvcStatics.DeserialiseObject<EvDataChange> ( encryptedData );
+          dataChange =  Evado.Model.EvStatics.DeserialiseXmlObject<EvDataChange> ( encryptedData );
 
           //
           // if default reinitialise.
@@ -668,7 +668,7 @@ namespace Evado.Digital.Dal
         // 
         // Deserialise the datachange object.
         // 
-        dataChange =  Evado.Digital.Model.EvcStatics.DeserialiseObject<EvDataChange> ( xmlDataChange );
+        dataChange =  Evado.Model.EvStatics.DeserialiseXmlObject<EvDataChange> ( xmlDataChange );
 
         //
         // if default reinitialise.

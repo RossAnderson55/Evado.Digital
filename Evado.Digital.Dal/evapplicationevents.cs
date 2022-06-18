@@ -140,8 +140,6 @@ namespace Evado.Digital.Dal
       Event.Category = EvSqlMethods.getString ( Row, DB_EVENT_CATEGORY );
       Event.UserId = EvSqlMethods.getString ( Row, DB_USER_NAME );
       Event.Description = EvSqlMethods.getString ( Row, DB_DESCRIPTION );
-      Event.PageUrl = EvSqlMethods.getString ( Row, DB_PAGE_URL );
-      Event.CustomerId = EvSqlMethods.getString ( Row, DB_SITE );
 
       return Event;
     }//END getRowData method.
@@ -201,8 +199,8 @@ namespace Evado.Digital.Dal
       cmdParms [ 2 ].Value = ApplicationEvent.Category;
       cmdParms [ 3 ].Value = ApplicationEvent.UserId;
       cmdParms [ 4 ].Value = ApplicationEvent.Description;
-      cmdParms [ 5 ].Value = ApplicationEvent.PageUrl;
-      cmdParms [ 6 ].Value = ApplicationEvent.CustomerId;
+      cmdParms [ 5 ].Value = String.Empty;
+      cmdParms [ 6 ].Value = 0;
 
     }//END SetParameters method.
 
@@ -414,7 +412,6 @@ namespace Evado.Digital.Dal
           DataRow row = table.Rows [ Count ];
           
           EvApplicationEvent Event = this.getReaderData ( row );
-          Event.Uid = Count.ToString ( "00000" ); ;
  
           applicationEventList.Add ( Event );
         

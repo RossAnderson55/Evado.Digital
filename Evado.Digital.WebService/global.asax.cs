@@ -298,11 +298,6 @@ namespace Evado.Digital.WebService
           new WebServiceHostFactory ( ),
           typeof ( Evado.Digital.WebService.ClientService ) ) );
 
-        RouteTable.Routes.Add ( new ServiceRoute (
-          Global.WEB_SERVICE_UNIFORM_USER_TOKEN_ROUTING_VALUE,
-          new WebServiceHostFactory ( ),
-          typeof ( Evado.Digital.WebService.TokenService ) ) );
-
         foreach ( ServiceRoute route in RouteTable.Routes )
         {
           Global.LogDebug ( "Route Handle " + route.RouteHandler + ", URL: " + route.Url  );
@@ -613,9 +608,9 @@ namespace Evado.Digital.WebService
     /// </summary>
     //-----------------------------------------------------------------------------------
     public static void RecordTestCase (
-      Evado.UniForm.Model.Command PageCommand,
-      Evado.UniForm.Model.Command ExitCommand,
-      Evado.UniForm.Model.AppData PageData )
+      Evado.UniForm.Model.EuCommand PageCommand,
+      Evado.UniForm.Model.EuCommand ExitCommand,
+      Evado.UniForm.Model.EuAppData PageData )
     {
       Global.LogMethod ( "RecordTestCase method." );
 
@@ -1199,7 +1194,7 @@ namespace Evado.Digital.WebService
     /// </summary>
     //   ---------------------------------------------------------------------------------
     public static void LogCommand (
-      Command PageCommand,
+      Evado.UniForm.Model.EuCommand PageCommand,
       String SessionId )
     {
       //
@@ -1257,12 +1252,12 @@ namespace Evado.Digital.WebService
       //
       stCommand = "\"" + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + "\""
         + ",\"Page Command\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.UserId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.UserId ) + "\""
         + ",\"" + SessionId + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceId ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.OSVersion ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.Client_Url ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.DeviceId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.DeviceName ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.OSVersion ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.Client_Url ) + "\""
         + ",\"" + PageCommand.Title + "\""
         + ",\"" + PageCommand.ApplicationId + "\""
         + ",\"" + PageCommand.Object + "\""
@@ -1289,7 +1284,7 @@ namespace Evado.Digital.WebService
     /// </summary>
     //   ---------------------------------------------------------------------------------
     public static void LogExitCommand (
-      Command PageCommand,
+      Evado.UniForm.Model.EuCommand PageCommand,
       String SessionId )
     {
       Global.LogMethod ( "WRITE EXIT COMMAND LOG ENTRY" );
@@ -1343,12 +1338,12 @@ namespace Evado.Digital.WebService
       //
       stCommand = "\"" + DateTime.Now.ToString ( "dd-MM-yy hh:mm:ss" ) + "\""
         + ",\"Exit Command\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.UserId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.UserId ) + "\""
         + ",\"" + SessionId + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceId ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.OSVersion ) + "\""
-        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.Client_Url ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.DeviceId ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.DeviceName ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.OSVersion ) + "\""
+        + ",\"" + PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.Client_Url ) + "\""
         + ",\"" + PageCommand.Title + "\""
         + ",\"" + PageCommand.ApplicationId + "\""
         + ",\"" + PageCommand.Object + "\""

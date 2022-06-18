@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EB6A905C-2E28-4A70-B791-DC807165BCD7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>evado.model.uniform</RootNamespace>
+    <AssemblyName>evado.model.uniform</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="newtonsoft.json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\exterial_packages\newtonsoft.json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="adaptercommand.cs" />
+    <Compile Include="appdata.cs" />
+    <Compile Include="applicationadapterbase.cs" />
+    <Compile Include="applicationmethods.cs" />
+    <Compile Include="binaryreference.cs" />
+    <Compile Include="command.cs" />
+    <Compile Include="commandheaderparameters.cs" />
+    <Compile Include="commandparameters.cs" />
+    <Compile Include="commandtypes.cs" />
+    <Compile Include="dataobj.cs" />
+    <Compile Include="device.cs" />
+    <Compile Include="editaccess.cs" />
+    <Compile Include="EuLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EuLabels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eustatics.cs" />
+    <Compile Include="field.cs" />
+    <Compile Include="fieldhtmltargets.cs" />
+    <Compile Include="fieldlayoutcodes.cs" />
+    <Compile Include="fieldparameters.cs" />
+    <Compile Include="group.cs" />
+    <Compile Include="groupenumerations.cs" />
+    <Compile Include="javalibaryreference.cs" />
+    <Compile Include="offline.cs" />
+    <Compile Include="page.cs" />
+    <Compile Include="page.enumerations.cs" />
+    <Compile Include="pagedata.cs" />
+    <Compile Include="pagereference.cs" />
+    <Compile Include="parameter.cs" />
+    <Compile Include="plot.cs" />
+    <Compile Include="plotdata.cs" />
+    <Compile Include="plotoptions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="soundfiles.cs" />
+    <Compile Include="table.cs" />
+    <Compile Include="tablecolheader.cs" />
+    <Compile Include="tablerow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\evado.model\evado.model.csproj">
+      <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
+      <Name>evado.model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EuLabels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EuLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

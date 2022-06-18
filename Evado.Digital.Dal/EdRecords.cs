@@ -392,7 +392,7 @@ namespace Evado.Digital.Dal
       CommandParameters [ 4 ].Value = Record.Visabilty;
       CommandParameters [ 5 ].Value = Record.EntityAccess;
       CommandParameters [ 6 ].Value = Record.AiIndex;
-      CommandParameters [ 7 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
+      CommandParameters [ 7 ].Value = Evado.Model.EvStatics.SerialiseXmlObject<List<EdUserSignoff>> ( Record.Signoffs );
       CommandParameters [ 8 ].Value = filterFieldValue [ 0 ];
       CommandParameters [ 9 ].Value = filterFieldValue [ 1 ];
       CommandParameters [ 10 ].Value = filterFieldValue [ 2 ];

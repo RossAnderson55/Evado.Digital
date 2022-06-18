@@ -153,7 +153,7 @@ namespace Evado.Digital.Dal
       parms [ 5 ].Value = Report.ReportTitle;
       parms [ 6 ].Value = Report.ReportType;
       parms [ 7 ].Value = Report.Category;
-      parms [ 8 ].Value = Evado.Model.EvStatics.SerialiseObject<EdReport> ( Report );
+      parms [ 8 ].Value = Evado.Model.EvStatics.SerialiseXmlObject<EdReport> ( Report );
       parms [ 9 ].Value = Report.UpdateUserId;
       parms [ 10 ].Value = Report.UserCommonName;
       parms [ 11 ].Value = DateTime.Now;
@@ -230,7 +230,7 @@ namespace Evado.Digital.Dal
         xmlReport = xmlReport.Replace ( "<ReportTypeId>", "<ReportType>" );
         xmlReport = xmlReport.Replace ( "</ReportTypeId>", "</ReportType>" );
 
-        report = Evado.Model.EvStatics.DeserialiseObject<EdReport> ( xmlReport ); ;
+        report = Evado.Model.EvStatics.DeserialiseXmlObject<EdReport> ( xmlReport ); ;
       }
 
       //

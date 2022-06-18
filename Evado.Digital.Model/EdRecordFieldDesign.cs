@@ -288,7 +288,7 @@ namespace Evado.Digital.Model
           this._SelectByCodingValue = true;
         }
 
-        return EvcStatics.getStringAsOptionList ( this._Options);
+        return EvcStatics.getStringAsOptionList ( this._Options , true);
       }
     }
 

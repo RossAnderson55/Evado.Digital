@@ -271,7 +271,7 @@ namespace Evado.Digital.Dal
       {
         this.LogValue ( "Column 1 header text: " + FormField.Table.Header [ 0 ].Text );
 
-        serialisedTableStructure = Evado.Model.EvStatics.SerialiseObject<EdRecordTable> ( FormField.Table );
+        serialisedTableStructure = Evado.Model.EvStatics.SerialiseXmlObject<EdRecordTable> ( FormField.Table );
       }
 
       if ( FormField.Design.ValidationLowerLimit >= FormField.Design.ValidationUpperLimit )
@@ -433,7 +433,7 @@ namespace Evado.Digital.Dal
         //
         if ( xmlTable != String.Empty )
         {
-          formField.Table =  Evado.Digital.Model.EvcStatics.DeserialiseObject<EdRecordTable> ( xmlTable );
+          formField.Table =  Evado.Model.EvStatics.DeserialiseXmlObject<EdRecordTable> ( xmlTable );
 
           // 
           // Iterate through the table and set the validation rules

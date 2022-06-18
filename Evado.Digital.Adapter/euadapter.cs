@@ -38,7 +38,7 @@ namespace Evado.Digital.Adapter
   /// This class manages the Evado.UniFORM.eClinical application services. Integrating
   /// Evado.eClinical with the Evado.UniFORM technology and user interface environment.
   /// </summary>
-  public partial class EuAdapter : Evado.UniForm.Model.ApplicationAdapterBase
+  public partial class EuAdapter : Evado.UniForm.Model.EuApplicationAdapterBase
   {
     #region Class Initialisation Methods
 
@@ -72,7 +72,7 @@ namespace Evado.Digital.Adapter
     /// <param name="GlobalObjects">Hashtable: Containing global application variables.</param>  
     /// <param name="ServiceUserProfile">HttpServiceUserProfile: containing the user session state and variables.</param>
     /// <param name="ServiceUserProfile">Evado.Model.EvUserProfile: the user base profile for the UniForm environment.</param>
-    /// <param name="ExitCommand">Evado.UniForm.Model.Command: the next page's exit groupCommand, to return to the previous page.</param>
+    /// <param name="ExitCommand">Evado.UniForm.Model.EuCommand: the next page's exit groupCommand, to return to the previous page.</param>
     /// <param name="ApplicationPath">String: The UNC path for the application.</param>
     /// <param name="UniForm_BinaryFilePath">String: The UNC path tp access the UniForm binary file objects</param>
     /// <param name="UniForm_BinaryServiceUrl">Url String: the url to access the UniForm binary objects.</param>
@@ -94,7 +94,7 @@ namespace Evado.Digital.Adapter
       float ClientVersion,
       Hashtable GlobalObjects,
       Evado.Model.EvUserProfileBase ServiceUserProfile,
-      Evado.UniForm.Model.Command ExitCommand,
+      Evado.UniForm.Model.EuCommand ExitCommand,
       String ApplicationPath,
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl )
@@ -402,9 +402,9 @@ namespace Evado.Digital.Adapter
 
     private Evado.Digital.Bll.EvApplicationEvents _Bll_ApplicationEvents = new Evado.Digital.Bll.EvApplicationEvents ( );
 
-    private float _ApiVersion = Evado.UniForm.Model.AppData.API_Version;
+    private float _ApiVersion = Evado.UniForm.Model.EuAppData.API_Version;
 
-    private float _ClientVersion = Evado.UniForm.Model.AppData.API_Version;
+    private float _ClientVersion = Evado.UniForm.Model.EuAppData.API_Version;
 
     private EuRecords _Records = new EuRecords ( );
 
@@ -452,67 +452,7 @@ namespace Evado.Digital.Adapter
     // <summary>
     // This constant defines the eClinical application field layout default setting.
     // </summary>
-    public const Evado.UniForm.Model.FieldLayoutCodes DefaultFieldLayout = Evado.UniForm.Model.FieldLayoutCodes.Left_Justified;
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
-    #region Select Token User Update  methods.
-
-    // ==================================================================================
-    /// <summary>
-    /// This method gets generates the page object for the UniFORM client.
-    /// </summary>
-    /// <param name="TokenUserProfile">Evado.Model.EusTokenUserProfile object</param>
-    /// <returns>String</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateTokenUserProfile (
-      Evado.Model.EusTokenUserProfile TokenUserProfile )
-    {
-      this.LogMethod ( "UpdateTokenUserProfile" );
-      this.ClassParameters.LoggingLevel = this.LoggingLevel;
-      this.LogDebug ( "ClassParameters.LoggingLevel: {0}", this.ClassParameters.LoggingLevel );
-
-      //
-      // define the methods variables and objects.
-      //
-      EdUserprofiles bll_userProfiles = new EdUserprofiles ( this.ClassParameters );
-      String userCategoryList = EuAdapter.AdapterObjects.Settings.UserCategoryList;
-
-      this.LogDebug ( "ClassParameter.LoggingLevel: " + bll_userProfiles.ClassParameters.LoggingLevel );
-
-      try
-      {
-        //
-        // get the user type and category selectionlist.
-        //
-        EvSelectionList selectionList = EuAdapter.AdapterObjects.getSelectionList ( userCategoryList );
-
-        //
-        // update the user profile.
-        //
-        EvEventCodes result = bll_userProfiles.updateTokenUser ( TokenUserProfile, selectionList );
-
-        this.LogAdapter ( bll_userProfiles.Log );
-
-        this.LogMethodEnd ( "UpdateTokenUserProfile" );
-        return result;
-      }
-      catch ( Exception Ex )
-      {
-        this.LogException ( Ex );
-      }
-
-      this.LogMethodEnd ( "UpdateTokenUserProfile" );
-
-      return EvEventCodes.Token_User_Profile_Update_Error;
-
-    }//END UpdateTokenUserProfile method
+    public const Evado.UniForm.Model.EuFieldLayoutCodes DefaultFieldLayout = Evado.UniForm.Model.EuFieldLayoutCodes.Left_Justified;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
@@ -523,8 +463,8 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method gets generates the page object for the UniFORM client.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object</param>
-    /// <returns>Evado.UniForm.Model.AppData</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
     /// <remarks>
     /// This method consists of the following steps:
     /// 
@@ -542,8 +482,8 @@ namespace Evado.Digital.Adapter
     /// 6. Return the generated page definition object to the calling method.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    override public Evado.UniForm.Model.AppData getPageObject (
-      Evado.UniForm.Model.Command PageCommand )
+    override public Evado.UniForm.Model.EuAppData getPageObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getPageObject" );
       try
@@ -577,7 +517,7 @@ namespace Evado.Digital.Adapter
         //
         // Set the web width.
         //
-        String deviceName = PageCommand.GetHeaderValue ( Evado.UniForm.Model.CommandHeaderElements.DeviceName );
+        String deviceName = PageCommand.GetHeaderValue ( Evado.UniForm.Model.EuCommandHeaderParameters.DeviceName );
 
         //
         // Resolve application id and class id issues for default page commands.
@@ -592,7 +532,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+        Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
         Evado.Digital.Bll.EvStaticSetting.SiteGuid = EuAdapter.AdapterObjects.Settings.Guid;
 
         // 
@@ -700,11 +640,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method calls the patient recorded observation module. 
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object</param>
-    /// <returns>Evado.UniForm.Model.AppData</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
     // ----------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData callDemonstrationRegistration (
-       Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData callDemonstrationRegistration (
+       Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "callDemonstrationRegistration" );
       this.LogValue ( "Page Command: " + PageCommand.getAsString ( false, true ) );
@@ -716,7 +656,7 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String description = String.Empty;
 
       clientDataObject.Id = Guid.NewGuid ( );
@@ -729,7 +669,7 @@ namespace Evado.Digital.Adapter
 
       clientDataObject.Message = "Demonstration Registration page.";
 
-      var pageGroup = clientDataObject.Page.AddGroup ( "", Evado.UniForm.Model.EditAccess.Disabled );
+      var pageGroup = clientDataObject.Page.AddGroup ( "", Evado.UniForm.Model.EuEditAccess.Disabled );
 
       description = PageCommand.getAsString ( false, true );
 
@@ -789,16 +729,16 @@ namespace Evado.Digital.Adapter
     /// This method selects the application object to be called.
     /// 
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object</param>
-    /// <returns>Evado.UniForm.Model.AppData</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
     /// <remarks>
     /// This method selects the application class to be called based on the groupCommand.object value.
     /// The default selection is to generate the applications home page definition object.
     /// Then returns the page definition object to the calling method.
     /// </remarks>
     // ----------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getApplicationObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getApplicationObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getApplicationObject" );
       this.LogValue ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
@@ -806,7 +746,7 @@ namespace Evado.Digital.Adapter
       //
       // Initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       this.ErrorMessage = String.Empty;
       //
       // Define the records class
@@ -850,7 +790,7 @@ namespace Evado.Digital.Adapter
       //
       // Log command and exit for illegal access attempty.
       //
-      if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command )
+      if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command )
       {
         return this.IllegalAnonymousAccessAttempt ( adapterClass );
       }
@@ -1200,7 +1140,7 @@ namespace Evado.Digital.Adapter
             //
             // Log command and exit for illegal access attempty.
             //
-            if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command )
+            if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command )
             {
               return this.IllegalAnonymousAccessAttempt ( adapterClass );
             }
@@ -1230,7 +1170,7 @@ namespace Evado.Digital.Adapter
             //
             // Log command and exit for illegal access attempty.
             //
-            if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command )
+            if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command )
             {
               return this.IllegalAnonymousAccessAttempt ( adapterClass );
             }
@@ -1260,7 +1200,7 @@ namespace Evado.Digital.Adapter
             //
             // Log command and exit for illegal access attempty.
             //
-            if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command )
+            if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command )
             {
               return this.IllegalAnonymousAccessAttempt ( adapterClass );
             }
@@ -1291,7 +1231,7 @@ namespace Evado.Digital.Adapter
             //
             // Log command and exit for illegal access attempty.
             //
-            if ( PageCommand.Type == Evado.UniForm.Model.CommandTypes.Anonymous_Command )
+            if ( PageCommand.Type == Evado.UniForm.Model.EuCommandTypes.Anonymous_Command )
             {
               return this.IllegalAnonymousAccessAttempt ( adapterClass );
             }
@@ -1600,7 +1540,7 @@ namespace Evado.Digital.Adapter
       //
       if ( this.Session.LastPage == null )
       {
-        this.Session.LastPage = new Evado.UniForm.Model.AppData ( );
+        this.Session.LastPage = new Evado.UniForm.Model.EuAppData ( );
       }
 
       // 
@@ -1634,7 +1574,7 @@ namespace Evado.Digital.Adapter
 
       if ( this.GlobalObjectList.ContainsKey ( this._ClientObjectKey ) == true )
       {
-        this.ClientDataObject = (Evado.UniForm.Model.AppData) this.GlobalObjectList [ this._ClientObjectKey ];
+        this.ClientDataObject = (Evado.UniForm.Model.EuAppData) this.GlobalObjectList [ this._ClientObjectKey ];
 
         //this.LogInitValue ( "Last client data object loaded." );
       }
@@ -1725,7 +1665,7 @@ namespace Evado.Digital.Adapter
     /// <param name="applicationObject">Adapter.ApplicationObjects enumerated list</param>
     /// <returns></returns>
     // ----------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData IllegalAnonymousAccessAttempt (
+    private Evado.UniForm.Model.EuAppData IllegalAnonymousAccessAttempt (
       EuAdapterClasses applicationObject )
     {
       this.ErrorMessage = EdLabels.Security_Illegal_Anonymoous_Access_Message;
@@ -1748,15 +1688,15 @@ namespace Evado.Digital.Adapter
     /// This property contains the Home page default command
     /// </summary>
     // ----------------------------------------------------------------------------------
-    public static Evado.UniForm.Model.Command HomePageCommand
+    public static Evado.UniForm.Model.EuCommand HomePageCommand
     {
       get
       {
-        Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command (
+        Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand (
           EdLabels.Default_Home_Page_Command_Title,
           EuAdapter.ADAPTER_ID,
            Evado.Digital.Model.EvcStatics.CONST_DEFAULT,
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
         return pageCommand;
       }

@@ -102,11 +102,11 @@
       <Project>{97753FA6-9BC8-46DC-BDFC-CC82771A5646}</Project>
       <Name>Evado.Integration.model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\evado.model.uniform\Evado.UniForm.Model.csproj">
+    <ProjectReference Include="..\..\Evado.Clinical\Evado.Uniform.Model\Evado.UniForm.Model.csproj">
       <Project>{eb6a905c-2e28-4a70-b791-dc807165bcd7}</Project>
       <Name>Evado.UniForm.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\evado.model\evado.model.csproj">
+    <ProjectReference Include="..\..\Evado.Clinical\evado.model\Evado.Model.csproj">
       <Project>{93ea9387-1172-48ec-b26e-c4d48d827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>

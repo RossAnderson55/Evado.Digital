@@ -382,13 +382,13 @@ namespace Evado.Digital.Model
       get
       {
         String stLinkText = this._OrgId
-          + evado.model.Properties.Resources.Space_Hypen
+          + Evado.Model.EvmLabels.Space_Hypen
           + this._Name;
 
         if ( this._OrgType != String.Empty )
         {
-          stLinkText += evado.model.Properties.Resources.Space_Coma
-            + evado.model.Properties.Resources.Organisation_Type_Label
+          stLinkText += Evado.Model.EvmLabels.Space_Coma
+            + Evado.Model.EvmLabels.Organisation_Type_Label
             + this._OrgType.Replace( "_", " ") ;
         }
 
@@ -408,17 +408,17 @@ namespace Evado.Digital.Model
           return new Evado.Model.EvOption (
               this._OrgId,
               this._OrgId
-             + evado.model.Properties.Resources.Space_Hypen
+             + Evado.Model.EvmLabels.Space_Hypen
              + this._Name );
         }
 
        return new Evado.Model.EvOption (
            this._OrgId,
            this._OrgId
-          + evado.model.Properties.Resources.Space_Hypen
+          + Evado.Model.EvmLabels.Space_Hypen
           + this._Name
-          + evado.model.Properties.Resources.Space_Coma
-          + evado.model.Properties.Resources.Organisation_Type_Label
+          + Evado.Model.EvmLabels.Space_Coma
+          + Evado.Model.EvmLabels.Organisation_Type_Label
           + this._OrgType.Replace ( "_", " " ) );
 
       }

@@ -867,7 +867,7 @@ namespace Evado.IntegrationClient
       //
       if ( Program.XmlResultFile == true )
       {
-        String result = Evado.Model.EvStatics.SerialiseObject<EiData> ( Program._ExportData );
+        String result = Evado.Model.EvStatics.SerialiseXmlObject<EiData> ( Program._ExportData );
 
         Evado.Model.EvStatics.Files.saveFile ( filename, Program.XmlFileName, result );
 
@@ -939,7 +939,7 @@ namespace Evado.IntegrationClient
       //
       if ( Program.XmlResultFile == true )
       {
-        String result = Evado.Model.EvStatics.SerialiseObject<EiData> ( Program._ExportData );
+        String result = Evado.Model.EvStatics.SerialiseXmlObject<EiData> ( Program._ExportData );
 
         Evado.Model.EvStatics.Files.saveFile ( Program.FilePath, Program.XmlFileName, result );
 

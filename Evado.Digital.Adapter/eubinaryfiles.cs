@@ -158,11 +158,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method gets the application ResultData object for a project groupCommand request. 
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
-    /// <returns>Evado.UniForm.Model.AppData</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
     //  ----------------------------------------------------------------------------------
-    override public Evado.UniForm.Model.AppData getDataObject (
-      Evado.UniForm.Model.Command PageCommand )
+    override public Evado.UniForm.Model.EuAppData getDataObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getDataObject" );
       this.LogValue ( "PageCommand " + PageCommand.getAsString ( false, true ) );
@@ -184,28 +184,28 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+        Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
         // 
         // Determine the method to be called
         // 
         switch ( PageCommand.Method )
         {
-          case Evado.UniForm.Model.ApplicationMethods.List_of_Objects:
+          case Evado.UniForm.Model.EuMethods.List_of_Objects:
             {
               clientDataObject = this.getListObject ( PageCommand );
 
               break;
             }
-          case Evado.UniForm.Model.ApplicationMethods.Get_Object:
-          case Evado.UniForm.Model.ApplicationMethods.Save_Object:
-          case Evado.UniForm.Model.ApplicationMethods.Delete_Object:
+          case Evado.UniForm.Model.EuMethods.Get_Object:
+          case Evado.UniForm.Model.EuMethods.Save_Object:
+          case Evado.UniForm.Model.EuMethods.Delete_Object:
             {
               clientDataObject = this.getObject ( PageCommand );
 
               break;
             }
-          case Evado.UniForm.Model.ApplicationMethods.Create_Object:
+          case Evado.UniForm.Model.EuMethods.Create_Object:
             {
               clientDataObject = this.createObject ( PageCommand );
 
@@ -266,11 +266,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getListObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getListObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       try
       {
@@ -278,7 +278,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         //      
-        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+        Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
         //
         // Determine if the user has access to this page and log and error if they do not.
@@ -361,25 +361,25 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method appends a group object containing the file's metadata.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object object.</param>
     // ------------------------------------------------------------------------------
     private void getBinaryFileList_Selection_Group (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getBinaryFileList_Selection_Group" );
       //
       // initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
 
       // 
       // create the list page selection group
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
        EdLabels.Binary_File_List_Selection_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       // 
       // Create a custom groupCommand to process the selection.
@@ -388,9 +388,9 @@ namespace Evado.Digital.Adapter
         EdLabels.HomePage_Select_Project,
         EuAdapter.ADAPTER_ID,
          EuAdapterClasses.Binary_File.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
-      groupCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+      groupCommand.setCustomMethod ( Evado.UniForm.Model.EuMethods.List_of_Objects );
 
       this.LogMethodEnd ( "getBinaryFileList_Selection_Group" );
 
@@ -400,39 +400,39 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method appends a group object containing the file's metadata.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object object.</param>
     // ------------------------------------------------------------------------------
     private void getBinaryFileList_Group (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getList_Group" );
       //
       // initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
 
       // 
       // Create the new list group.
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
         "File List",
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.CmdLayout = Evado.UniForm.Model.EuGroupCommandListLayouts.Vertical_Orientation;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       // 
       // Add the new trial groupCommand list.
       // 
-      Evado.UniForm.Model.Command newFileCommand = pageGroup.addCommand (
+      Evado.UniForm.Model.EuCommand newFileCommand = pageGroup.addCommand (
       EdLabels.Binary_File_Create_Command_Title,
       EuAdapter.ADAPTER_ID,
       EuAdapterClasses.Binary_File.ToString ( ),
-      Evado.UniForm.Model.ApplicationMethods.Create_Object );
+      Evado.UniForm.Model.EuMethods.Create_Object );
 
       newFileCommand.SetBackgroundColour (
-        Evado.UniForm.Model.CommandParameters.BG_Default,
-        Evado.UniForm.Model.Background_Colours.Purple );
+        Evado.UniForm.Model.EuCommandParameters.BG_Default,
+        Evado.UniForm.Model.EuBackgroundColours.Purple );
 
 
       // 
@@ -448,7 +448,7 @@ namespace Evado.Digital.Adapter
           continue;
         }
 
-        Evado.UniForm.Model.Command command = pageGroup.addCommand (
+        Evado.UniForm.Model.EuCommand command = pageGroup.addCommand (
           String.Format ( EdLabels.Binary_File_List_Command_Title,
            file.FileId,
            file.Title,
@@ -456,7 +456,7 @@ namespace Evado.Digital.Adapter
            file.UpdatedByDate.ToString ( "dd MMM yyyy" ) ),
            EuAdapter.ADAPTER_ID,
            EuAdapterClasses.Binary_File,
-           Evado.UniForm.Model.ApplicationMethods.Get_Object );
+           Evado.UniForm.Model.EuMethods.Get_Object );
 
         command.AddParameter (
           EdUserProfile.FieldNames.User_Type.ToString(),
@@ -481,17 +481,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
-    /// <returns>Evado.UniForm.Model.AppData object</returns>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
+    /// <returns>Evado.UniForm.Model.EuAppData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
       //
       // Determine if the user has access to this page and log and error if they do not.
@@ -568,10 +568,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method updates the session variables for the binary file upload
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object object.</param>
     // ------------------------------------------------------------------------------
     private void saveBinaryFile_Page_Parameters (
-      Evado.UniForm.Model.Command PageCommand )
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getFileUpload_Update_Session" );
       String value = string.Empty;
@@ -691,7 +691,7 @@ namespace Evado.Digital.Adapter
     /// </summary>
     // ------------------------------------------------------------------------------
     private EvEventCodes uploadBinaryFile (
-      Evado.UniForm.Model.Command PageCommand )
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "uploadBinaryFile" );
       this.LogDebug ( "Upload file enabled {0}", this._FileUpload );
@@ -802,10 +802,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// THis method updates the EvActivity object member with groupCommand parameter values.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.PageCommand object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuPageCommand object.</param>
     //  ----------------------------------------------------------------------------------
     private void updateObjectValue (
-      Evado.UniForm.Model.Command PageCommand )
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "updateObjectValue" );
       this.LogValue ( "Parameters.Count: " + PageCommand.Parameters.Count );
@@ -813,10 +813,10 @@ namespace Evado.Digital.Adapter
       // 
       // Iterate through the parameter values updating the ResultData object
       // 
-      foreach ( Evado.UniForm.Model.Parameter parameter in PageCommand.Parameters )
+      foreach ( Evado.UniForm.Model.EuParameter parameter in PageCommand.Parameters )
       {
         if ( parameter.Name == Evado.Digital.Model.EvcStatics.CONST_GUID_IDENTIFIER
-          || parameter.Name == Evado.UniForm.Model.CommandParameters.Custom_Method.ToString ( )
+          || parameter.Name == Evado.UniForm.Model.EuCommandParameters.Custom_Method.ToString ( )
           || parameter.Name == EdUserProfile.FieldNames.User_Type.ToString()
           || parameter.Name == EuBinaryFiles.CONST_UPLOAD_PARM_ID )
         {
@@ -848,10 +848,10 @@ namespace Evado.Digital.Adapter
     /// This method returns the application ResultData object defines the project 
     /// configuraiton page.
     /// </summary>
-    /// <returns>Evado.UniForm.Model.AppData object</returns>
+    /// <returns>Evado.UniForm.Model.EuAppData object</returns>
     //  ------------------------------------------------------------------------------
     private void getClientDataObject (
-      Evado.UniForm.Model.AppData ClientDataObject )
+      Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogMethod ( "getClientDataObject" );
       // 
@@ -884,11 +884,11 @@ namespace Evado.Digital.Adapter
       //
       // Set the user edit access to the objects.
       //
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
 
       if ( this.Session.UserProfile.hasManagementAccess == true )
       {
-        ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+        ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
       }
 
       //
@@ -914,17 +914,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method appends a group object containing the file's metadata.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object object.</param>
     // ------------------------------------------------------------------------------
     private void getFileMetadata_Group (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getFileMetadata_Group" );
       //
       // initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
 
       //
       // If the guid is empty then it is an empty file object.
@@ -937,10 +937,10 @@ namespace Evado.Digital.Adapter
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
        EdLabels.Binary_File_Metadata_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       // 
       // Create the project id object
@@ -1040,17 +1040,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method generates a list of file versions.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object object.</param>
     // ------------------------------------------------------------------------------
     private void getFileVersionList_Group (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getFileVersionList_Group" );
       this.LogDebug ( "BinaryFileVersionList.Count: " + this.Session.BinaryFileVersionList.Count );
       //
       // initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       //
       // Only display the list if exists and the binary file object is not empty.
@@ -1064,33 +1064,33 @@ namespace Evado.Digital.Adapter
       // 
       // create the page versioned file group.
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
        "Binary Group Title",
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       groupField = pageGroup.createTableField (
         String.Empty,
         EdLabels.Binary_File_Versioned_List_Field_Title, 3 );
 
-      groupField.Table.Header = new Evado.UniForm.Model.TableColHeader [ 4 ];
+      groupField.Table.Header = new Evado.UniForm.Model.EuTableColHeader [ 4 ];
 
-      groupField.Table.Header [ 0 ] = new Evado.UniForm.Model.TableColHeader ( );
+      groupField.Table.Header [ 0 ] = new Evado.UniForm.Model.EuTableColHeader ( );
       groupField.Table.Header [ 0 ].No = 1;
       groupField.Table.Header [ 0 ].Text = EdLabels.Binary_File_Version_Column_0_Text; // Version
       groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Text;
 
-      groupField.Table.Header [ 1 ] = new Evado.UniForm.Model.TableColHeader ( );
+      groupField.Table.Header [ 1 ] = new Evado.UniForm.Model.EuTableColHeader ( );
       groupField.Table.Header [ 1 ].No = 2;
       groupField.Table.Header [ 1 ].Text = EdLabels.Binary_File_Version_Column_1_Text;  // Status
       groupField.Table.Header [ 1 ].TypeId = EvDataTypes.Text;
 
-      groupField.Table.Header [ 2 ] = new Evado.UniForm.Model.TableColHeader ( );
+      groupField.Table.Header [ 2 ] = new Evado.UniForm.Model.EuTableColHeader ( );
       groupField.Table.Header [ 2 ].No = 3;
       groupField.Table.Header [ 2 ].Text = EdLabels.Binary_File_Version_Column_2_Text; // Comments
       groupField.Table.Header [ 2 ].TypeId = EvDataTypes.Text;
 
-      groupField.Table.Header [ 3 ] = new Evado.UniForm.Model.TableColHeader ( );
+      groupField.Table.Header [ 3 ] = new Evado.UniForm.Model.EuTableColHeader ( );
       groupField.Table.Header [ 3 ].No = 4;
       groupField.Table.Header [ 3 ].Text = EdLabels.Binary_File_Version_Column_3_Text; // update date
       groupField.Table.Header [ 3 ].TypeId = EvDataTypes.Text;
@@ -1100,7 +1100,7 @@ namespace Evado.Digital.Adapter
       //
       foreach ( EvBinaryFileMetaData file in this.Session.BinaryFileVersionList )
       {
-        Evado.UniForm.Model.TableRow row = groupField.Table.addRow ( );
+        Evado.UniForm.Model.EuTableRow row = groupField.Table.addRow ( );
 
         row.Column [ 0 ] = file.Version.ToString ( "##" );
         row.Column [ 1 ] = EvStatics.enumValueToString ( file.Status );
@@ -1116,25 +1116,25 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method display a page to upload a new file verson.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object object.</param>
     // ------------------------------------------------------------------------------
     private void getFileUpload_Group (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getFileUpload_Group" );
       //
       // initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
        EdLabels.Binary_File_Upload_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // Create the file identifer field
@@ -1179,9 +1179,9 @@ namespace Evado.Digital.Adapter
         EdLabels.Binary_File_Upload_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Binary_File,
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
-      groupCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.Get_Object );
+      groupCommand.setCustomMethod ( Evado.UniForm.Model.EuMethods.Get_Object );
       groupCommand.AddParameter ( EuBinaryFiles.CONST_UPLOAD_PARM_ID, "1" );
 
       this.LogMethodEnd ( "getFileUpload_Group" );
@@ -1198,11 +1198,11 @@ namespace Evado.Digital.Adapter
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData createObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData createObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       try
       {
@@ -1232,7 +1232,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         //      
-        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+        Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
         this._BinaryFile = new EvBinaryFileMetaData ( );
         this.Session.BinaryFile = new EvBinaryFileMetaData ( );
         this.Session.BinaryFileId = String.Empty;
@@ -1280,9 +1280,9 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="ApplicationClassType">ApplicationService.ApplicationObjects: enumeration indicating the 
     /// type of application object that is calling the binary file function.</param>
-    /// <returns>Evado.UniForm.Model.Group: pageMenuGroup containing the binary file references.</returns>
+    /// <returns>Evado.UniForm.Model.EuGroup: pageMenuGroup containing the binary file references.</returns>
     //  ------------------------------------------------------------------------------
-    public Evado.UniForm.Model.Group getProjectFileListGroup (
+    public Evado.UniForm.Model.EuGroup getProjectFileListGroup (
       String OrgId )
     {
       this.LogMethod ( "getProjectFileListGroup" );
@@ -1334,12 +1334,12 @@ namespace Evado.Digital.Adapter
         // Create the binary file pageMenuGroup to display the images or links to the 
         // retrieved binary files.
         // 
-        Evado.UniForm.Model.Group fileListGroup = new Evado.UniForm.Model.Group (
+        Evado.UniForm.Model.EuGroup fileListGroup = new Evado.UniForm.Model.EuGroup (
           EdLabels.Binary_Files_Project_List_Group_Title,
-          Evado.UniForm.Model.EditAccess.Enabled );
-        fileListGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-        fileListGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
-        fileListGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+          Evado.UniForm.Model.EuEditAccess.Enabled );
+        fileListGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+        fileListGroup.CmdLayout = Evado.UniForm.Model.EuGroupCommandListLayouts.Vertical_Orientation;
+        fileListGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
         //
         // Get the list of project files.
@@ -1428,11 +1428,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method adds binary file to the FileListGroup object
     /// </summary>
-    /// <param name="FileListGroup">Evado.UniForm.Model.Group object.</param>
+    /// <param name="FileListGroup">Evado.UniForm.Model.EuGroup object.</param>
     /// <param name="BinaryFile">Evado.Model.EvBinaryFileMetaData object.</param>
     //  ------------------------------------------------------------------------------
     private void getProjectFileObject (
-      Evado.UniForm.Model.Group FileListGroup,
+      Evado.UniForm.Model.EuGroup FileListGroup,
       EvBinaryFileMetaData BinaryFile )
     {
       this.LogMethod ( "getProjectFileObject" );
@@ -1442,7 +1442,7 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Field field = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuField field = new Evado.UniForm.Model.EuField ( );
 
       string title = String.Format ( EdLabels.Binary_File_List_Command_Title,
            BinaryFile.FileId,
@@ -1459,7 +1459,7 @@ namespace Evado.Digital.Adapter
 
       this.LogDebug ( "URL: " + field.Value );
 
-      field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+      field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
 
       this.LogMethodEnd ( "getProjectFileObject" );
 
@@ -1475,9 +1475,9 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="ApplicationClassType">ApplicationService.ApplicationObjects: enumeration indicating the 
     /// type of application object that is calling the binary file function.</param>
-    /// <returns>Evado.UniForm.Model.Group: pageMenuGroup containing the binary file references.</returns>
+    /// <returns>Evado.UniForm.Model.EuGroup: pageMenuGroup containing the binary file references.</returns>
     //  ------------------------------------------------------------------------------
-    public Evado.UniForm.Model.Group getListGroup (
+    public Evado.UniForm.Model.EuGroup getListGroup (
       EuAdapterClasses ApplicationClassType,
       int PixelWidth )
     {
@@ -1531,12 +1531,12 @@ namespace Evado.Digital.Adapter
         // Create the binary file pageMenuGroup to display the images or links to the 
         // retrieved binary files.
         // 
-        Evado.UniForm.Model.Group fileListGroup = new Evado.UniForm.Model.Group (
+        Evado.UniForm.Model.EuGroup fileListGroup = new Evado.UniForm.Model.EuGroup (
           EdLabels.Binary_Files_List_Group_Title,
-          Evado.UniForm.Model.EditAccess.Enabled );
-        fileListGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-        fileListGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
-        fileListGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+          Evado.UniForm.Model.EuEditAccess.Enabled );
+        fileListGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+        fileListGroup.CmdLayout = Evado.UniForm.Model.EuGroupCommandListLayouts.Vertical_Orientation;
+        fileListGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
 
         //
@@ -1655,11 +1655,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method adds binary file to the FileListGroup object
     /// </summary>
-    /// <param name="FileListGroup">Evado.UniForm.Model.Group object.</param>
+    /// <param name="FileListGroup">Evado.UniForm.Model.EuGroup object.</param>
     /// <param name="BinaryFile">Evado.Model.EvBinaryFileMetaData object.</param>
     //  ------------------------------------------------------------------------------
     private void getFieldDisplayObject (
-      Evado.UniForm.Model.Group FileListGroup,
+      Evado.UniForm.Model.EuGroup FileListGroup,
       EvBinaryFileMetaData BinaryFile,
       int PixelWidth )
     {
@@ -1672,7 +1672,7 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Field field = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuField field = new Evado.UniForm.Model.EuField ( );
 
       //
       // Create a image field if the mime type is a supported image type.
@@ -1685,8 +1685,8 @@ namespace Evado.Digital.Adapter
           BinaryFile.FileName,
           0, 0 );
 
-        field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
-        field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, PixelWidth );
+        field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
+        field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, PixelWidth );
 
         this.LogValue ( "URL: " + field.Value );
 
@@ -1707,7 +1707,7 @@ namespace Evado.Digital.Adapter
 
         this.LogValue ( "URL: " + field.Value );
 
-        field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+        field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
 
         this.LogMethodEnd ( "getFieldDisplayObject" );
 
@@ -1727,7 +1727,7 @@ namespace Evado.Digital.Adapter
 
         this.LogValue ( "URL: " + field.Value );
 
-        field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+        field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
 
         this.LogMethodEnd ( "getFieldDisplayObject" );
 
@@ -1744,7 +1744,7 @@ namespace Evado.Digital.Adapter
 
       this.LogValue ( "URL: " + field.Value );
 
-      field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+      field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
 
       this.LogMethodEnd ( "getFieldDisplayObject" );
 
@@ -1763,9 +1763,9 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="ApplicationClassType">ApplicationService.ApplicationObjects: enumeration indicating the 
     /// type of application object that is calling the binary file function.</param>
-    /// <returns>Evado.UniForm.Model.Group: pageMenuGroup containing the binary file references.</returns>
+    /// <returns>Evado.UniForm.Model.EuGroup: pageMenuGroup containing the binary file references.</returns>
     //  ------------------------------------------------------------------------------
-    public Evado.UniForm.Model.Group getUploadGroup (
+    public Evado.UniForm.Model.EuGroup getUploadGroup (
       EuAdapterClasses ApplicationClassType )
     {
       this.LogMethod ( "getUploadGroup" );
@@ -1776,19 +1776,19 @@ namespace Evado.Digital.Adapter
         // Initialise the methods variables and objects.
         // 
         List<EvBinaryFileMetaData> binaryFileList = new List<EvBinaryFileMetaData> ( );
-        Evado.UniForm.Model.Field field = new Evado.UniForm.Model.Field ( );
+        Evado.UniForm.Model.EuField field = new Evado.UniForm.Model.EuField ( );
         this.resetAdapterLog ( );
 
         // 
         // Create the binary file pageMenuGroup to display the images or links to the 
         // retrieved binary files.
         // 
-        Evado.UniForm.Model.Group imageFileGroup = new Evado.UniForm.Model.Group (
+        Evado.UniForm.Model.EuGroup imageFileGroup = new Evado.UniForm.Model.EuGroup (
           EdLabels.Binary_Files_Upload_Group_Title,
-          Evado.UniForm.Model.EditAccess.Enabled );
-        imageFileGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-        imageFileGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Vertical_Orientation;
-        imageFileGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+          Evado.UniForm.Model.EuEditAccess.Enabled );
+        imageFileGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+        imageFileGroup.CmdLayout = Evado.UniForm.Model.EuGroupCommandListLayouts.Vertical_Orientation;
+        imageFileGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
         imageFileGroup.Description = EdLabels.Binary_Files_Description_Text;
 
@@ -1820,7 +1820,7 @@ namespace Evado.Digital.Adapter
             String.Empty,
             0, 0 );
 
-          field.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+          field.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
         }
 
         this.LogMethodEnd ( "getUploadGroup" );
@@ -1859,13 +1859,13 @@ namespace Evado.Digital.Adapter
     /// 
     /// The 
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.ClientClientDataObjectEvado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.ClientClientDataObjectEvado.UniForm.Model.EuCommand object.</param>
     /// <param name="ObjectGuid">Guid: unique object identifier</param>
     /// <param name="ObjectId">String: an object identifier</param>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
     public bool addBinaryData (
-      Evado.UniForm.Model.Command PageCommand,
+      Evado.UniForm.Model.EuCommand PageCommand,
       Guid GroupGuid,
       String GroupId,
       Guid SubGroupGuid,
@@ -1887,7 +1887,7 @@ namespace Evado.Digital.Adapter
         // 
         // Delete the object.
         // 
-        if ( PageCommand.Method == Evado.UniForm.Model.ApplicationMethods.Delete_Object )
+        if ( PageCommand.Method == Evado.UniForm.Model.EuMethods.Delete_Object )
         {
           return true;
         }
@@ -1926,7 +1926,7 @@ namespace Evado.Digital.Adapter
         // 
         // Iterate through the parameter values updating the ResultData object
         // 
-        foreach ( Evado.UniForm.Model.Parameter parameter in PageCommand.Parameters )
+        foreach ( Evado.UniForm.Model.EuParameter parameter in PageCommand.Parameters )
         {
           if ( parameter.Name.Contains ( EuBinaryFiles.CONST_BINARY_FILE ) == true )
           {
@@ -1998,7 +1998,7 @@ namespace Evado.Digital.Adapter
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
     private bool addFileData (
-      Evado.UniForm.Model.Parameter Parameter,
+      Evado.UniForm.Model.EuParameter Parameter,
       Guid GroupGuid,
       String GroupId,
       Guid SubGroupGuid,

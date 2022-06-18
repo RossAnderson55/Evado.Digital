@@ -1729,10 +1729,10 @@ namespace Evado.Digital.Dal
       }
 
       string oldXmlReport =
-         Evado.Digital.Model.EvcStatics.SerialiseObject<EdReport> ( OldReportTemplate );
+         Evado.Model.EvStatics.SerialiseXmlObject<EdReport> ( OldReportTemplate );
 
       string newXmlReport =
-         Evado.Digital.Model.EvcStatics.SerialiseObject<EdReport> ( ReportTemplate );
+         Evado.Model.EvStatics.SerialiseXmlObject<EdReport> ( ReportTemplate );
 
       if ( ReportTemplate.Version != OldReportTemplate.Version )
       {

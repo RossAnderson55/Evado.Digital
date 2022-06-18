@@ -1290,15 +1290,6 @@ namespace Evado.Digital.Adapter
 
       this.LogDebug ( "PlatformId: " + this._PlatformId );
 
-      // 
-      // Set the connection string settings.
-      // 
-      if ( ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_HELP_URL_KEY ] != null )
-      {
-        this._HelpUrl = (String) ConfigurationManager.AppSettings [ Evado.Digital.Model.EvcStatics.CONFIG_HELP_URL_KEY ];
-
-      }
-
       this.LogDebug ( "HelpUrl: '" + this._HelpUrl + "'" );
 
       // 

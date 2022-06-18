@@ -179,8 +179,6 @@
     <Compile Include="Properties\assemblyinfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\eds-euws-client-application-log-.log" />
-    <None Include="Resources\evlabels.resx" />
     <EmbeddedResource Include="EdLabels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EdLabels.Designer.cs</LastGenOutput>
@@ -189,7 +187,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\evado.model\evado.model.csproj">
+    <ProjectReference Include="..\..\Evado.Clinical\evado.model\Evado.Model.csproj">
       <Project>{93EA9387-1172-48EC-B26E-C4D48D827976}</Project>
       <Name>evado.model</Name>
     </ProjectReference>

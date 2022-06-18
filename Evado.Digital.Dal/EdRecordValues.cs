@@ -294,7 +294,7 @@ namespace Evado.Digital.Dal
       // 
       // Deserialize the formfield item text to the formfield table. 
       // 
-      Field.Table =  Evado.Digital.Model.EvcStatics.DeserialiseObject<EdRecordTable> ( Field.ItemText );
+      Field.Table =  Evado.Model.EvStatics.DeserialiseXmlObject<EdRecordTable> ( Field.ItemText );
 
       // 
       // Empty the formfield itemtext so it will not cause problems when XML styling the record object.

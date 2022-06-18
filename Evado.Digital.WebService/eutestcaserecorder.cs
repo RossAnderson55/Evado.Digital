@@ -96,11 +96,11 @@ namespace Evado.UniForm
 
     private string _OutputFilePath = String.Empty;
 
-    private Command _PageCommand = new Command ( );
+    private Evado.UniForm.Model.EuCommand _PageCommand = new Evado.UniForm.Model.EuCommand ( );
 
-    private Command _ExitCommand = new Command ( );
+    private Evado.UniForm.Model.EuCommand _ExitCommand = new Evado.UniForm.Model.EuCommand ( );
 
-    private AppData _ClientData = new AppData ( );
+    private Evado.UniForm.Model.EuAppData _ClientData = new Evado.UniForm.Model.EuAppData ( );
 
     private List<EutAction> _TestCaseList = new List<EutAction> ( );
 
@@ -129,9 +129,9 @@ namespace Evado.UniForm
     /// <param name="ClientData">Evado.UniForm.Model.AppDate: client page data object.</param>
     // ----------------------------------------------------------------------------------
     public void saveTestCases (
-      Command PageCommand,
-      Command ExitCommand,
-     AppData ClientData )
+      Evado.UniForm.Model.EuCommand PageCommand,
+      Evado.UniForm.Model.EuCommand ExitCommand,
+     Evado.UniForm.Model.EuAppData ClientData )
     {
       this._ClassLog = new StringBuilder ( );
       this.LogMethod ( "saveTestCases" );
@@ -235,7 +235,7 @@ namespace Evado.UniForm
       //
       for ( int i = 0; i < this._ClientData.Page.CommandList.Count; i++ )
       {
-        Command command = this._ClientData.Page.CommandList [ i ];
+        Evado.UniForm.Model.EuCommand command = this._ClientData.Page.CommandList [ i ];
 
         action = new EutAction ( );
         action.Action = EutCommand.Test_Page_Command_Index;
@@ -301,7 +301,7 @@ namespace Evado.UniForm
         //
         // Create test case for group parameters
         //
-        foreach ( Parameter prm in command.Parameters )
+        foreach ( Evado.UniForm.Model.EuParameter prm in command.Parameters )
         {
           action = new EutAction ( );
           action.Action = EutCommand.Test_Group_Command_Parameter_Value;
@@ -335,7 +335,7 @@ namespace Evado.UniForm
       //
       // Create test case for page group object title.
       //
-      foreach ( Group group in this._ClientData.Page.GroupList )
+      foreach ( Evado.UniForm.Model.EuGroup group in this._ClientData.Page.GroupList )
       {
         action = new EutAction ( );
         action.Action = EutCommand.Test_Group_Title;
@@ -390,7 +390,7 @@ namespace Evado.UniForm
         //
         // Create test case for group parameters
         //
-        foreach ( Parameter prm in group.Parameters )
+        foreach ( Evado.UniForm.Model.EuParameter prm in group.Parameters )
         {
           action = new EutAction ( );
           action.Action = EutCommand.Test_Group_Parameter_Value;
@@ -419,7 +419,7 @@ namespace Evado.UniForm
     /// This method creates page group test cases.
     /// </summary>
     // ----------------------------------------------------------------------------------
-    private void generateGroupFieldsTestCases ( Group group )
+    private void generateGroupFieldsTestCases ( Evado.UniForm.Model.EuGroup group )
     {
       this.LogMethod ( "generateFieldsTestCases" );
       //
@@ -430,7 +430,7 @@ namespace Evado.UniForm
       //
       // Create test case for page field title.
       //
-      foreach ( Field field in group.FieldList )
+      foreach ( Evado.UniForm.Model.EuField field in group.FieldList )
       {
         action = new EutAction ( );
         action.Action = EutCommand.Test_Field_Title;
@@ -496,7 +496,7 @@ namespace Evado.UniForm
         //
         // Create test case for group parameters
         //
-        foreach ( Parameter prm in field.Parameters )
+        foreach ( Evado.UniForm.Model.EuParameter prm in field.Parameters )
         {
           action = new EutAction ( );
           action.Action = EutCommand.Test_Field_Parameter_Value;
@@ -518,7 +518,7 @@ namespace Evado.UniForm
     /// This method creates page group test cases.
     /// </summary>
     // ----------------------------------------------------------------------------------
-    private void generateGroupCommandTestCases ( Group group )
+    private void generateGroupCommandTestCases ( Evado.UniForm.Model.EuGroup group )
     {
       this.LogMethod ( "generateGroupCommandTestCases" );
       //
@@ -531,7 +531,7 @@ namespace Evado.UniForm
       //
       for ( int i = 0; i < group.CommandList.Count; i++ )
       {
-        Command command = group.CommandList [ i ];
+        Evado.UniForm.Model.EuCommand command = group.CommandList [ i ];
 
         action = new EutAction ( );
         action.Action = EutCommand.Test_Group_Command_Index;
@@ -596,7 +596,7 @@ namespace Evado.UniForm
         //
         // Create test case for group parameters
         //
-        foreach ( Parameter prm in command.Parameters )
+        foreach ( Evado.UniForm.Model.EuParameter prm in command.Parameters )
         {
           action = new EutAction ( );
           action.Action = EutCommand.Test_Group_Command_Parameter_Value;
@@ -664,7 +664,7 @@ namespace Evado.UniForm
         //fileName += pageId + "_";
       }
 
-      if ( this._PageCommand.hasParameter ( CommandParameters.Custom_Method ) == false )
+      if ( this._PageCommand.hasParameter ( Evado.UniForm.Model.EuCommandParameters.Custom_Method ) == false )
       {
         fileName += this._PageCommand.Method + ".CSV";
       }

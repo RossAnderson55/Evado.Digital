@@ -92,7 +92,7 @@ namespace Evado.UniForm
       //
       // Reset  the exit method for the object.
       //
-      this._ExitCommand = Command.getLogoutCommand ( );
+      this._ExitCommand = Evado.UniForm.Model.EuCommand.getLogoutCommand ( );
 
       //this._CommandHistory.DebugOn = true;
       //
@@ -127,7 +127,7 @@ namespace Evado.UniForm
 
     const string CONST_NAME_SPACE = "Evado.UniForm.IntegrationServices.";
 
-    private float _ClientVersion = Evado.UniForm.Model.AppData.API_Version;
+    private float _ClientVersion = Evado.UniForm.Model.EuAppData.API_Version;
     /// <summary>
     /// This property contains the client's API version.
     /// </summary>
@@ -137,7 +137,7 @@ namespace Evado.UniForm
       set { _ClientVersion = value; }
     }
 
-    //private float _ApiVersion = Evado.UniForm.Model.AppData.API_Version;
+    //private float _ApiVersion = Evado.UniForm.Model.EuAppData.API_Version;
 
     private Hashtable _GlobalObjects = new Hashtable ( );
 
@@ -209,13 +209,13 @@ namespace Evado.UniForm
     //
     // This object contains the client application data object for the implementation
     //
-    private AppData _ClientDataObject = new AppData ( );
+    private Evado.UniForm.Model.EuAppData _ClientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
     //
     // This object contains the exit groupCommand to be added to the Client Application Data object prior 
     // sending the data object to the device client. 
     //
-    private Command _ExitCommand = new Command ( );
+    private Evado.UniForm.Model.EuCommand _ExitCommand = new Evado.UniForm.Model.EuCommand ( );
 
     //
     // This variable containt the error message to be displayed on the device client when an error event occurs 
@@ -276,66 +276,6 @@ namespace Evado.UniForm
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     #endregion
 
-    #region Select Token User Update  methods.
-
-    // ==================================================================================
-    /// <summary>
-    /// This method gets generates the page object for the UniFORM client.
-    /// </summary>
-    /// <param name="TokenUserProfile">Evado.Model.EusTokenUserProfile object</param>
-    /// <returns>String</returns>
-    /// <remarks>
-    /// This method consists of the following steps:
-    /// 
-    /// 1. 
-    /// </remarks>
-    // ----------------------------------------------------------------------------------
-    public EvEventCodes UpdateTokenUserProfile (
-      Evado.Model.EusTokenUserProfile TokenUserProfile )
-    {
-      this.LogMethod ( "UpdateTokenUserProfile" );
-      this.LogValue ( "LoggingLevel: " + this.LoggingLevel );
-      try
-      {
-        //
-        // Initialise the Evado clinical adapter object.
-        //
-        this._ApplicationAdapter = new Evado.Digital.Adapter.EuAdapter (
-          this._ClientVersion,
-          this._GlobalObjects,
-          this._ServiceUserProfile,
-          this._ExitCommand,
-          this._ApplicationPath,
-          this._UniForm_BinaryFilePath,
-          this._UniForm_BinaryServiceUrl );
-
-        this._ApplicationAdapter.LoggingLevel = this.LoggingLevel;
-
-        this.LogValue ( "ApplicationAdapter.LoggingLevel: " + this._ApplicationAdapter.LoggingLevel );
-
-        //
-        // Call the adapter token user update method.
-        //
-        EvEventCodes result = this._ApplicationAdapter.UpdateTokenUserProfile ( TokenUserProfile );
-
-        this.LogApplication ( this._ApplicationAdapter.AdapterLog );
-
-        this.LogMethodEnd ( "UpdateTokenUserProfile" );
-        return result;
-      }
-      catch ( Exception Ex )
-      {
-        this.LogException ( Ex );
-      }
-
-      this.LogMethodEnd ( "UpdateTokenUserProfile" );
-      return EvEventCodes.Token_User_Profile_Update_Error;
-
-    }//END UpdateTokenUserProfile method
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #endregion
-
     #region Public class Methods
 
     // ==================================================================================
@@ -346,7 +286,7 @@ namespace Evado.UniForm
     /// is called on web service</param>
     /// <returns>ClientApplicationData</returns>
     // ----------------------------------------------------------------------------------
-    public AppData getPageObject ( Command PageCommand )
+    public Evado.UniForm.Model.EuAppData getPageObject ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getPageObject method, " );
       this.LogValue ( "NewUser: " + this._NewUser );
@@ -361,9 +301,9 @@ namespace Evado.UniForm
         if ( this._NewUser == true )
         {
           this.LogDebug ( "new user retreiving the last command" );
-          List<Evado.UniForm.Model.Parameter> header = PageCommand.Header;
+          List<Evado.UniForm.Model.EuParameter> header = PageCommand.Header;
 
-          Command lastCommand = this._CommandHistory.getLastCommand ( );
+          Evado.UniForm.Model.EuCommand lastCommand = this._CommandHistory.getLastCommand ( );
           this.LogValue ( "last command: " + lastCommand.Title );
 
           if ( lastCommand.Id != Guid.Empty
@@ -384,7 +324,7 @@ namespace Evado.UniForm
         //
         this._ErrorMessage = String.Empty;
 
-        this.LogValue ( "Short Title: " + PageCommand.GetParameter ( CommandParameters.Short_Title ) );
+        this.LogValue ( "Short Title: " + PageCommand.GetParameter ( Evado.UniForm.Model.EuCommandParameters.Short_Title ) );
 
         //
         // Set the groupCommand to a short title to it can be added to the groupCommand history.
@@ -397,8 +337,8 @@ namespace Evado.UniForm
         // If the method is to update a value then we need to undertake process processing after 
         // the method has been processed to return the user to the exit page.
 
-        if ( PageCommand.Method == ApplicationMethods.Delete_Object
-          || PageCommand.Method == ApplicationMethods.Save_Object )
+        if ( PageCommand.Method == Evado.UniForm.Model.EuMethods.Delete_Object
+          || PageCommand.Method == Evado.UniForm.Model.EuMethods.Save_Object )
         {
           this.LogMethod ( "SAVE OR DELETE METHODS." );
 
@@ -507,8 +447,8 @@ namespace Evado.UniForm
     /// is called on web service</param>
     /// <returns>ClientApplicationData</returns>
     // ----------------------------------------------------------------------------------
-    private AppData getObjectData (
-      Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getObjectData (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getDataObject method. " );
       this.LogValue ( "ClientVersion: " + this._ClientVersion );
@@ -517,7 +457,7 @@ namespace Evado.UniForm
       //
       // Initialise the methods variables and objects.
       //
-      AppData clientDataObject = new AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
       try
       {
@@ -541,8 +481,8 @@ namespace Evado.UniForm
         //
         // if the page is a custom groupCommand reset it to the customcommang parameter if it not null
         //
-        if ( PageCommand.Method == ApplicationMethods.Custom_Method
-          && PageCommand.getCustomMethod ( ) != ApplicationMethods.Null )
+        if ( PageCommand.Method == Evado.UniForm.Model.EuMethods.Custom_Method
+          && PageCommand.getCustomMethod ( ) != Evado.UniForm.Model.EuMethods.Null )
         {
           PageCommand.Method = PageCommand.getCustomMethod ( );
 
@@ -619,7 +559,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <returns>ClientApplicationData</returns>
     // ----------------------------------------------------------------------------------
-    private void fixIdentifiers ( Page PageObject )
+    private void fixIdentifiers ( Evado.UniForm.Model.EuPage PageObject )
     {
       PageObject.Id = Guid.NewGuid ( );
 
@@ -628,12 +568,12 @@ namespace Evado.UniForm
       //
       for ( int grpCount = 0; grpCount < PageObject.GroupList.Count; grpCount++ )
       {
-        Group group = PageObject.GroupList [ grpCount ];
+        Evado.UniForm.Model.EuGroup group = PageObject.GroupList [ grpCount ];
         group.Id = Guid.NewGuid ( );
 
         for ( int commandIndex = 0; commandIndex < group.CommandList.Count; commandIndex++ )
         {
-          Command command = group.CommandList [ commandIndex ];
+          Evado.UniForm.Model.EuCommand command = group.CommandList [ commandIndex ];
           command.Id = Guid.NewGuid ( );
         }
 
@@ -649,7 +589,7 @@ namespace Evado.UniForm
 
         for ( int fldCount = 0; fldCount < group.FieldList.Count; fldCount++ )
         {
-          Field field = group.FieldList [ fldCount ];
+          Evado.UniForm.Model.EuField field = group.FieldList [ fldCount ];
 
           field.Id = Guid.NewGuid ( );
           if ( field.FieldId == String.Empty )
@@ -676,16 +616,16 @@ namespace Evado.UniForm
     /// <param name="PageCommand">Evado.UniForm.Model.Command PageCommand</param>
     /// <returns>ClientApplicationData object</returns>
     // ----------------------------------------------------------------------------------
-    private AppData getDefaultPage (
-        Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getDefaultPage (
+        Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getDefaultPage method. " );
       //
       // Initialise the methods variables and objects.
       //
-      AppData clientDataObject = new AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
-      Command homePageCommand = Command.getDefaultCommand ( );
+      Evado.UniForm.Model.EuCommand homePageCommand = Evado.UniForm.Model.EuCommand.getDefaultCommand ( );
 
       homePageCommand.Id = EvStatics.CONST_DEFAULT_HOME_PAGE_ID;
 

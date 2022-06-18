@@ -227,7 +227,7 @@ namespace Evado.Integration.Service
           this._ReturnData.EventCode = Evado.Integration.Model.EiEventCodes.WebServices_JSON_Deserialisation_Failed_Error;
           this._ReturnData.ErrorMessage = "JSON object deserialisation error.";
 
-          String EventMessage = evado.model.Properties.Resources.JSON_DESERIALISATION_ERROR + "\r\n" + getExceptionAsString ( Ex );
+          String EventMessage = Evado.Model.EvmLabels.JSON_DESERIALISATION_ERROR + "\r\n" + getExceptionAsString ( Ex );
 
           EventLog.WriteEntry ( Global.EventLogSource, this._DebugLog.ToString ( ), EventLogEntryType.Error );
 

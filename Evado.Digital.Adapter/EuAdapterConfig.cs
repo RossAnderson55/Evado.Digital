@@ -103,11 +103,11 @@ namespace Evado.Digital.Adapter
     /// This method gets the trial site object.
     /// 
     /// </summary>
-    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.Command object</param>
-    /// <returns>Evado.UniForm.Model.AppData</returns>
+    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.EuCommand object</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
     //  ----------------------------------------------------------------------------------
-    public Evado.UniForm.Model.AppData getClientDataObject (
-      Evado.UniForm.Model.Command PageCommand )
+    public Evado.UniForm.Model.EuAppData getClientDataObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getClientDataObject" );
 
@@ -117,7 +117,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise the methods variables and objects.
         // 
-        Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+        Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
 
         // 
         // Set the page type to control the DB query type.
@@ -133,8 +133,8 @@ namespace Evado.Digital.Adapter
         // 
         switch ( PageCommand.Method )
         {
-          case Evado.UniForm.Model.ApplicationMethods.List_of_Objects:
-          case Evado.UniForm.Model.ApplicationMethods.Get_Object:
+          case Evado.UniForm.Model.EuMethods.List_of_Objects:
+          case Evado.UniForm.Model.EuMethods.Get_Object:
             {
               switch ( this.Session.StaticPageId )
               {
@@ -167,7 +167,7 @@ namespace Evado.Digital.Adapter
               }
               break;
             }
-          case Evado.UniForm.Model.ApplicationMethods.Save_Object:
+          case Evado.UniForm.Model.EuMethods.Save_Object:
             {
               this.LogValue ( " Save Object method" );
 
@@ -225,17 +225,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getDB_Update_Object (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getDB_Update_Object (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getDB_Update_Object" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String parameterValue = String.Empty;
       this.Session.DatabaseUpdateVersion = EvDataBaseUpdate.UpdateVersionList.Version_5;
 
@@ -308,17 +308,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.EuAppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDB_Update_DataObject ( Evado.UniForm.Model.AppData ClientDataObject )
+    private void getDB_Update_DataObject ( Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogMethod ( "getDB_Update_DataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       EvDataBaseUpdates bllDatabaseUpdates = new EvDataBaseUpdates ( );
       List<EvDataBaseUpdate> updateList = new List<EvDataBaseUpdate> ( );
       List<EvOption> optionList = new List<EvOption> ( );
@@ -331,7 +331,7 @@ namespace Evado.Digital.Adapter
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
 
       //
@@ -350,19 +350,19 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDB_Update_SelectionGroup ( Evado.UniForm.Model.Page Page )
+    private void getDB_Update_SelectionGroup ( Evado.UniForm.Model.EuPage Page )
     {
       this.LogMethod ( "getDB_Update_SelectionGroup" );
 
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
       List<EvOption> optionlist = new List<EvOption> ( );
 
 
@@ -371,8 +371,8 @@ namespace Evado.Digital.Adapter
       //
       pageGroup = Page.AddGroup (
         EdLabels.DataBase_Update_Selection_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // create the version selectoin field.
@@ -385,7 +385,7 @@ namespace Evado.Digital.Adapter
         this.Session.DatabaseUpdateVersion.ToString ( ),
         optionlist );
 
-      groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, "1" );
+      groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, "1" );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       //
@@ -400,7 +400,7 @@ namespace Evado.Digital.Adapter
         optionlist );
 
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, "1" );
+      groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, "1" );
 
       //
       // Add the selection groupCommand.
@@ -409,14 +409,14 @@ namespace Evado.Digital.Adapter
         EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
       groupCommand.AddParameter (
-        Evado.UniForm.Model.CommandParameters.Page_Id,
+        Evado.UniForm.Model.EuCommandParameters.Page_Id,
         Evado.Digital.Model.EdStaticPageIds.Database_Version );
 
       groupCommand.setCustomMethod (
-        Evado.UniForm.Model.ApplicationMethods.Get_Object );
+        Evado.UniForm.Model.EuMethods.Get_Object );
 
 
 
@@ -427,10 +427,10 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDB_Update_ListGroup ( Evado.UniForm.Model.Page Page )
+    private void getDB_Update_ListGroup ( Evado.UniForm.Model.EuPage Page )
     {
       this.LogMethod ( "getDB_Update_DataObject" );
       this.LogValue ( "UpdateVersion: " + this.Session.DatabaseUpdateVersion );
@@ -438,8 +438,8 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       EvDataBaseUpdates bllDatabaseUpdates = new EvDataBaseUpdates ( this.ClassParameters );
       List<EvDataBaseUpdate> updateList = new List<EvDataBaseUpdate> ( );
       List<EvOption> optionList = new List<EvOption> ( );
@@ -461,13 +461,13 @@ namespace Evado.Digital.Adapter
 
       pageGroup = Page.AddGroup (
         EdLabels.DataBase_Update_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       groupField = pageGroup.createTableField (
         String.Empty,
         EdLabels.Database_Update_Field_Title, 5 );
-      groupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
+      groupField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Column_Layout;
 
       groupField.Table.Header [ 0 ].Text = EdLabels.Database_Update_Table_Column_0;
       groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
@@ -491,7 +491,7 @@ namespace Evado.Digital.Adapter
 
       foreach ( EvDataBaseUpdate update in updateList )
       {
-        Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+        Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
 
         row.Column [ 0 ] = update.UpdateNo.ToString ( "000" );
         row.Column [ 1 ] = update.UpdateDate.ToString ( "dd-MMM-yy" );
@@ -520,17 +520,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getAudit_Update_Session (
-      Evado.UniForm.Model.Command PageCommand )
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getAudit_Update_Session" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String parameterValue = String.Empty;
 
       if ( this.Session.AuditRecordGuid == null )
@@ -596,17 +596,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand"> Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand"> Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getConfig_Audit_Object (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getConfig_Audit_Object (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getConfig_Audit_Object" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String parameterValue = String.Empty;
 
       //
@@ -662,18 +662,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.EuAppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getConfig_Audit_DataObject (
-      Evado.UniForm.Model.AppData ClientDataObject )
+      Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogMethod ( "getConfig_Audit_DataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
       //
@@ -684,7 +684,7 @@ namespace Evado.Digital.Adapter
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
       //
       // generate the selection pageMenuGroup.
@@ -705,18 +705,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getConfig_Audit_SelectionGroup ( Evado.UniForm.Model.Page Page )
+    private void getConfig_Audit_SelectionGroup ( Evado.UniForm.Model.EuPage Page )
     {
       this.LogMethod ( "getConfig_Audit_SelectionGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
       List<EvOption> optionlist = new List<EvOption> ( );
       EvDataChanges bllDataChanges = new EvDataChanges ( );
 
@@ -725,8 +725,8 @@ namespace Evado.Digital.Adapter
       //
       pageGroup = Page.AddGroup (
         EdLabels.Audit_Selection_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // create the version selectoin field.
@@ -740,7 +740,7 @@ namespace Evado.Digital.Adapter
         optionlist );
 
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
 
       //
@@ -767,7 +767,7 @@ namespace Evado.Digital.Adapter
           optionlist );
 
         groupField.Layout = EuAdapter.DefaultFieldLayout;
-        groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+        groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
       }
 
       //
@@ -777,14 +777,14 @@ namespace Evado.Digital.Adapter
         EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
       groupCommand.AddParameter (
-        Evado.UniForm.Model.CommandParameters.Page_Id,
+        Evado.UniForm.Model.EuCommandParameters.Page_Id,
         Evado.Digital.Model.EdStaticPageIds.Audit_Configuration_Page );
 
       groupCommand.setCustomMethod (
-        Evado.UniForm.Model.ApplicationMethods.Get_Object );
+        Evado.UniForm.Model.EuMethods.Get_Object );
 
 
 
@@ -795,12 +795,12 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page: page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage: page object.</param>
     /// <param name="RecordGuid">Guid: the record's guid identifier..</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getAudit_ListGroup (
-      Evado.UniForm.Model.Page Page,
+      Evado.UniForm.Model.EuPage Page,
       Guid RecordGuid )
     {
       this.LogMethod ( "getConfig_Audit_DataObject" );
@@ -809,8 +809,8 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       EvDataChanges bllDataChanges = new EvDataChanges ( );
       List<EvDataChange> dataChangeList = new List<EvDataChange> ( );
       List<EvOption> optionList = new List<EvOption> ( );
@@ -843,8 +843,8 @@ namespace Evado.Digital.Adapter
         //
         pageGroup = Page.AddGroup (
           EdLabels.Audit_Data_Group_Title,
-          Evado.UniForm.Model.EditAccess.Enabled );
-        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+          Evado.UniForm.Model.EuEditAccess.Enabled );
+        pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
         pageGroup.Description = EdLabels.Audit_Empty_Results_Message;
         return;
       }
@@ -860,8 +860,8 @@ namespace Evado.Digital.Adapter
         //
         pageGroup = Page.AddGroup (
           EdLabels.Audit_Data_Group_Title + EdLabels.Space_Hypen + index,
-          Evado.UniForm.Model.EditAccess.Enabled );
-        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+          Evado.UniForm.Model.EuEditAccess.Enabled );
+        pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
         //
         // Define the project identifier.
@@ -878,7 +878,7 @@ namespace Evado.Digital.Adapter
         groupField = pageGroup.createTableField (
           String.Empty,
           EdLabels.Database_Update_Field_Title, 5 );
-        groupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
+        groupField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Column_Layout;
 
         groupField.Table.Header [ 0 ].Text = EdLabels.Audit_Data_Table_Column_0;
         groupField.Table.Header [ 0 ].TypeId = EvDataTypes.Read_Only_Text;
@@ -930,7 +930,7 @@ namespace Evado.Digital.Adapter
               }
               else
               {
-                Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+                Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
                 row.Column [ 0 ] = count.ToString ( );
                 row.Column [ 1 ] = dataChangeItem.ItemId;
                 row.Column [ 2 ] = dataChangeItem.InitialValue;
@@ -973,12 +973,12 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method process the list of ResultData changes.
     /// </summary>
-    /// <param name="RowList">List<Evado.UniForm.Model.TableRow>: the list of rows in table</param>
+    /// <param name="RowList">List<Evado.UniForm.Model.EuTable>: the list of rows in table</param>
     /// <param name="Instance">int: th instance of the change</param>
     /// <param name="Item">EvDataChange object containing the change.</param>
     //-----------------------------------------------------------------------------------
     private void writeTrialDataValues (
-      List<Evado.UniForm.Model.TableRow> RowList,
+      List<Evado.UniForm.Model.EuTableRow> RowList,
       int Instance,
       EvDataChangeItem Item )
     {
@@ -990,12 +990,12 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method process the list of ResultData changes.
     /// </summary>
-    /// <param name="RowList">List<Evado.UniForm.Model.TableRow>: the list of rows in the table</param>
+    /// <param name="RowList">List<Evado.UniForm.Model.EuTable>: the list of rows in the table</param>
     /// <param name="Instance">int: th instance of the change</param>
     /// <param name="Item">EvDataChange object containing the change.</param>
     //-----------------------------------------------------------------------------------
     private void writeSignoffValues (
-      List<Evado.UniForm.Model.TableRow> RowList,
+      List<Evado.UniForm.Model.EuTableRow> RowList,
       int Instance,
       EvDataChangeItem Item )
     {
@@ -1016,7 +1016,7 @@ namespace Evado.Digital.Adapter
       {
         try
         {
-          initialContent = Evado.Digital.Model.EvcStatics.DeserialiseObject<List<EdUserSignoff>> ( Item.InitialValue );
+          initialContent = Evado.Model.EvStatics.DeserialiseXmlObject<List<EdUserSignoff>> ( Item.InitialValue );
         }
         catch
         {
@@ -1028,7 +1028,7 @@ namespace Evado.Digital.Adapter
       {
         try
         {
-          newContent = Evado.Digital.Model.EvcStatics.DeserialiseObject<List<EdUserSignoff>> ( Item.NewValue );
+          newContent = Evado.Model.EvStatics.DeserialiseXmlObject<List<EdUserSignoff>> ( Item.NewValue );
         }
         catch
         {
@@ -1055,12 +1055,12 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method process the list of ResultData changes.
     /// </summary>
-    /// <param name="RowList">List<Evado.UniForm.Model.TableRow>: the list of rows in a table</param>
+    /// <param name="RowList">List<Evado.UniForm.Model.EuTable>: the list of rows in a table</param>
     /// <param name="Instance">int: th instance of the change</param>
     /// <param name="Item">EvDataChange object containing the change.</param>
     //-----------------------------------------------------------------------------------
     private void writeFormDesignValues (
-      List<Evado.UniForm.Model.TableRow> RowList,
+      List<Evado.UniForm.Model.EuTableRow> RowList,
       int Instance,
       EvDataChangeItem Item )
     {
@@ -1070,7 +1070,7 @@ namespace Evado.Digital.Adapter
       //
       EdRecordDesign initialContent = new EdRecordDesign ( );
       EdRecordDesign newContent = new EdRecordDesign ( );
-      Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+      Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
 
       if ( Item.InitialValue == String.Empty
         && Item.NewValue == String.Empty )
@@ -1080,12 +1080,12 @@ namespace Evado.Digital.Adapter
 
       if ( Item.InitialValue != String.Empty )
       {
-        initialContent = Evado.Digital.Model.EvcStatics.DeserialiseObject<EdRecordDesign> ( Item.InitialValue );
+        initialContent = Evado.Model.EvStatics.DeserialiseXmlObject<EdRecordDesign> ( Item.InitialValue );
       }
 
       if ( Item.NewValue != String.Empty )
       {
-        newContent = Evado.Digital.Model.EvcStatics.DeserialiseObject<EdRecordDesign> ( Item.NewValue );
+        newContent = Evado.Model.EvStatics.DeserialiseXmlObject<EdRecordDesign> ( Item.NewValue );
       }
 
       Item.ItemId = "FormDesign";
@@ -1177,7 +1177,7 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method process the list of ResultData changes.
     /// </summary>
-    /// <param name="RowList">List<Evado.UniForm.Model.TableRow>: the list of rows in table.</param>
+    /// <param name="RowList">List<Evado.UniForm.Model.EuTable>: the list of rows in table.</param>
     /// <param name="Instance">int: th instance of the change</param>
     /// <param name="ItemId">String: the item identifeir</param>
     /// <param name="FieldId">String: the item field identifeir</param>
@@ -1185,7 +1185,7 @@ namespace Evado.Digital.Adapter
     /// <param name="NewData">List of EvUserSignoff new object</param>
     //-----------------------------------------------------------------------------------
     private void writeSignoffField (
-      List<Evado.UniForm.Model.TableRow> RowList,
+      List<Evado.UniForm.Model.EuTableRow> RowList,
       int Instance,
       String ItemId,
       String FieldId,
@@ -1304,20 +1304,20 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method process the list of ResultData changes.
     /// </summary>
-    /// <param name="RowList">List<Evado.UniForm.Model.TableRow>: the list of rows in table</param>
+    /// <param name="RowList">List<Evado.UniForm.Model.EuTable>: the list of rows in table</param>
     /// <param name="Instance">int: th instance of the change</param>
     /// <param name="ItemId">String: the record identifeir</param>
     /// <param name="InitialValue">String: initial value.</param>
     /// <param name="NewValue">String: new value.</param>
     //-----------------------------------------------------------------------------------
     private void addAuditReportRow (
-      List<Evado.UniForm.Model.TableRow> RowList,
+      List<Evado.UniForm.Model.EuTableRow> RowList,
       int Instance,
       String ItemId,
       String InitialValue,
       String NewValue )
     {
-      Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+      Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
       //
       // if there is no values then exit.
       //
@@ -1379,18 +1379,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getRecord_Audit_Object (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getRecord_Audit_Object (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogValue ( Evado.UniForm.Model.EuStatics.CONST_METHOD_START
         + this.ClassNameSpace + ".getRecord_Audit_Object" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String parameterValue = String.Empty;
 
       //
@@ -1446,19 +1446,19 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.EuAppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getRecord_Audit_DataObject (
-      Evado.UniForm.Model.AppData ClientDataObject )
+      Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogValue ( Evado.UniForm.Model.EuStatics.CONST_METHOD_START
         + " Evado.UniForm.Clinical.ApplicationProperties.getRecord_Audit_DataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
       //
@@ -1469,7 +1469,7 @@ namespace Evado.Digital.Adapter
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
       //
       // generate the selection pageMenuGroup.
@@ -1488,19 +1488,19 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getRecord_Audit_SelectionGroup ( Evado.UniForm.Model.Page Page )
+    private void getRecord_Audit_SelectionGroup ( Evado.UniForm.Model.EuPage Page )
     {
       this.LogMethod ( "getRecord_Audit_SelectionGroup" );
       this.LogValue ( "AuditTableName: " + this.Session.AuditTableName );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
       List<EvOption> optionlist = new List<EvOption> ( );
       Evado.Digital.Bll.EvDataChanges bllDataChanges = new Evado.Digital.Bll.EvDataChanges ( );
 
@@ -1518,17 +1518,17 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getRecord_Item_Audit_Object (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getRecord_Item_Audit_Object (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getRecord_Item_Audit_Object" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       String parameterValue = String.Empty;
 
       //
@@ -1584,18 +1584,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.EuAppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getRecord_Item_Audit_DataObject (
-      Evado.UniForm.Model.AppData ClientDataObject )
+      Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogMethod ( "getRecord_Item_Audit_DataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
       List<EvOption> optionList = new List<EvOption> ( );
 
       //
@@ -1606,7 +1606,7 @@ namespace Evado.Digital.Adapter
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
       //
       // generate the selection pageMenuGroup.
@@ -1627,11 +1627,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="Page">Evado.UniForm.Model.Page: page object.</param>
+    /// <param name="Page">Evado.UniForm.Model.EuPage: page object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
     private void getRecord_Item_Audit_SelectionGroup (
-      Evado.UniForm.Model.Page Page )
+      Evado.UniForm.Model.EuPage Page )
     {
       this.LogMethod ( "getRecord_Item_Audit_SelectionGroup" );
       this.LogValue ( "AuditTableName: " + this.Session.AuditTableName );
@@ -1640,9 +1640,9 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
       List<EvOption> optionlist = new List<EvOption> ( );
       Evado.Digital.Bll.EvDataChanges bllDataChanges = new Evado.Digital.Bll.EvDataChanges ( );
 
@@ -1651,8 +1651,8 @@ namespace Evado.Digital.Adapter
       //
       pageGroup = Page.AddGroup (
         EdLabels.Audit_Selection_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // create the record table selection field.
@@ -1666,7 +1666,7 @@ namespace Evado.Digital.Adapter
         optionlist );
 
       groupField.Layout = EuAdapter.DefaultFieldLayout;
-      groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+      groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
       //
       // create the record selection field.
@@ -1686,7 +1686,7 @@ namespace Evado.Digital.Adapter
           optionlist );
 
         groupField.Layout = EuAdapter.DefaultFieldLayout;
-        groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+        groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
       }
 
       //
@@ -1713,7 +1713,7 @@ namespace Evado.Digital.Adapter
             optionlist );
 
           groupField.Layout = EuAdapter.DefaultFieldLayout;
-          groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+          groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
         }//END option list exists.
 
@@ -1726,14 +1726,14 @@ namespace Evado.Digital.Adapter
         EdLabels.DataBase_Update_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
       groupCommand.AddParameter (
-        Evado.UniForm.Model.CommandParameters.Page_Id,
+        Evado.UniForm.Model.EuCommandParameters.Page_Id,
         Evado.Digital.Model.EdStaticPageIds.Audit_Record_Items_Page );
 
       groupCommand.setCustomMethod (
-        Evado.UniForm.Model.ApplicationMethods.Get_Object );
+        Evado.UniForm.Model.EuMethods.Get_Object );
 
     }//END getRecord_Item_Audit_SelectionGroup Method
 
@@ -1746,18 +1746,18 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData getObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData getObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getObject" );
       this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       Guid OrgGuid = Guid.Empty;
 
       //
@@ -1818,34 +1818,34 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object
     /// </summary>
-    /// <param name="ClientDataObject">Evado.UniForm.Model.AppData object.</param>
+    /// <param name="ClientDataObject">Evado.UniForm.Model.EuAppData object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  ------------------------------------------------------------------------------
-    private void getDataObject ( Evado.UniForm.Model.AppData ClientDataObject )
+    private void getDataObject ( Evado.UniForm.Model.EuAppData ClientDataObject )
     {
       this.LogMethod ( "getDataObject" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField ( );
 
       ClientDataObject.Id = this.AdapterObjects.Settings.Guid;
       ClientDataObject.Title = EdLabels.ApplicationProfile_Page_Title;
 
       ClientDataObject.Page.Id = ClientDataObject.Id;
       ClientDataObject.Page.Title = ClientDataObject.Title;
-      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      ClientDataObject.Page.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
       this.LogDebug ( "Page.EditAccess: " + ClientDataObject.Page.EditAccess );
 
       // 
       // Add the save groupCommand
       //
-      Evado.UniForm.Model.Command saveCommand = ClientDataObject.Page.addCommand (
+      Evado.UniForm.Model.EuCommand saveCommand = ClientDataObject.Page.addCommand (
         EdLabels.ApplicationProfiles_Save_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.EuMethods.Save_Object );
 
       //
       // Create the General Group.
@@ -1874,21 +1874,21 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method add the groups commands
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ------------------------------------------------------------------------------
     private void AddGroupCommands (
-      Evado.UniForm.Model.Group PageGroup )
+      Evado.UniForm.Model.EuGroup PageGroup )
     {
       this.LogMethod ( "AddGroupCommands" );
 
       // 
       // Add the save groupCommand
       //
-      Evado.UniForm.Model.Command saveCommand = PageGroup.addCommand (
+      Evado.UniForm.Model.EuCommand saveCommand = PageGroup.addCommand (
         EdLabels.ApplicationProfiles_Save_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Application_Properties.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Save_Object );
+        Evado.UniForm.Model.EuMethods.Save_Object );
 
       this.LogMethodEnd ( "AddGroupCommands" );
 
@@ -1898,26 +1898,26 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a general pageMenuGroup object.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ------------------------------------------------------------------------------
     private void createGeneralGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createGeneralGroup" );
       this.LogValue ( " version: " + this.AdapterObjects.Settings.Version );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField ( );
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
         EdLabels.ApplicationProfile_General_Group_Title,
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // Add the group commands.
@@ -1932,7 +1932,7 @@ namespace Evado.Digital.Adapter
         EdLabels.Application_Profile_Version_Field_Label,
         this.AdapterObjects.Settings.Version, 30 );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
-      pageField.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+      pageField.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
       // 
       // Create the home application URL
@@ -1977,27 +1977,27 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a general configuration Group object.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ------------------------------------------------------------------------------
     private void createPropertiesGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createPropertiesGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField ( );
       String stOptionListValue = String.Empty;
       List<EvOption> optionList = new List<EvOption>();
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
         EdLabels.AdapterConfig_Properties_Group_Title,
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // Add the group commands.
@@ -2219,27 +2219,27 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a general configuration Group object.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ------------------------------------------------------------------------------
     private void createConfigurationGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createConfigurationGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField ( );
       String stOptionListValue = String.Empty;
       List<EvOption> optionList = new List<EvOption> ( );
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
         EdLabels.ApplicationProfile_Configuration_Group_Title,
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // Add the group commands.
@@ -2337,26 +2337,26 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a general configuration Group object.
     /// </summary>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ------------------------------------------------------------------------------
     private void createEmailGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createEmailGroup" );
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Command pageCommand = new Evado.UniForm.Model.Command ( );
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuCommand pageCommand = new Evado.UniForm.Model.EuCommand ( );
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField ( );
       String stOptionListValue = String.Empty;
 
       // 
       // create the page pageMenuGroup
       // 
-      Evado.UniForm.Model.Group pageGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup pageGroup = PageObject.AddGroup (
         EdLabels.Application_Profile_Email_Group_Title,
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // Add the group commands.
@@ -2419,10 +2419,10 @@ namespace Evado.Digital.Adapter
     /// THis method saves the ResultData object updating the field values contained in the 
     /// parameter list.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>Application Data object</returns>
     //  ----------------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData updateObject ( Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData updateObject ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "updateObject" );
       this.LogValue ( "CommamdParameters: " + PageCommand.getAsString ( false, true ) );
@@ -2439,7 +2439,7 @@ namespace Evado.Digital.Adapter
         // 
         // Delete the object.
         // 
-        if ( PageCommand.Method == Evado.UniForm.Model.ApplicationMethods.Delete_Object )
+        if ( PageCommand.Method == Evado.UniForm.Model.EuMethods.Delete_Object )
         {
           return this.Session.LastPage;
         }
@@ -2486,7 +2486,7 @@ namespace Evado.Digital.Adapter
           return this.Session.LastPage;
         }
 
-        return new Evado.UniForm.Model.AppData ( );
+        return new Evado.UniForm.Model.EuAppData ( );
 
       }
       catch ( Exception Ex )
@@ -2513,7 +2513,7 @@ namespace Evado.Digital.Adapter
     /// <param name="Parameters">List of field values to be updated.</param>
     /// <returns></returns>
     //  ----------------------------------------------------------------------------------
-    private void updateObjectValue ( List<Evado.UniForm.Model.Parameter> Parameters )
+    private void updateObjectValue ( List<Evado.UniForm.Model.EuParameter> Parameters )
     {
       this.LogValue ( Evado.UniForm.Model.EuStatics.CONST_METHOD_START
         + " Evado.UniForm.Clinical.ApplicationProperties.updateObjectValue method. "
@@ -2523,10 +2523,10 @@ namespace Evado.Digital.Adapter
       /// 
       /// Iterate through the parameter values updating the ResultData object
       /// 
-      foreach ( Evado.UniForm.Model.Parameter parameter in Parameters )
+      foreach ( Evado.UniForm.Model.EuParameter parameter in Parameters )
       {
         if ( parameter.Name.Contains ( Evado.Digital.Model.EvcStatics.CONST_GUID_IDENTIFIER ) == true
-          || parameter.Name == Evado.UniForm.Model.CommandParameters.Custom_Method.ToString ( )
+          || parameter.Name == Evado.UniForm.Model.EuCommandParameters.Custom_Method.ToString ( )
           || parameter.Name == Evado.Digital.Model.EvcStatics.CONST_SAVE_ACTION
           || parameter.Name == EuAdapterConfig.CONST_ADDRESS_FIELD_ID
           || parameter.Name == EuAdapterConfig.CONST_CURRENT_FIELD_ID )

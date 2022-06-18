@@ -75,7 +75,7 @@ namespace Evado.UniForm
 
       if ( this._GlobalObjects [ this._GlobalKey ] != null )
       {
-        this._CommandHistoryList = (List<Command>) this._GlobalObjects [ this._GlobalKey ];
+        this._CommandHistoryList = (List<Evado.UniForm.Model.EuCommand>) this._GlobalObjects [ this._GlobalKey ];
 
         this.LogInitialDebug ( "History loaded from Global Object store." );
       }
@@ -84,7 +84,7 @@ namespace Evado.UniForm
 
       if ( this._CommandHistoryList.Count == 0 )
       {
-        this._CommandHistoryList.Add ( Command.getLogoutCommand ( ) );
+        this._CommandHistoryList.Add ( Evado.UniForm.Model.EuCommand.getLogoutCommand ( ) );
       }
 
       this.LogInitialDebug ( "CommandHistory count:" + this._CommandHistoryList.Count );
@@ -107,7 +107,7 @@ namespace Evado.UniForm
     /// <summary>
     /// This list contains a list of the server commands sent to the client.
     /// </summary>
-    private List<Command> _CommandHistoryList = new List<Command> ( );
+    private List<Evado.UniForm.Model.EuCommand> _CommandHistoryList = new List<Evado.UniForm.Model.EuCommand> ( );
 
     private bool _DebugOn = false;
     /// <summary>
@@ -145,7 +145,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="HomePageCommand">ClientPageCommand object</param>
     //  ----------------------------------------------------------------------------------
-    public void initialiseHistory ( Command HomePageCommand )
+    public void initialiseHistory ( Evado.UniForm.Model.EuCommand HomePageCommand )
     {
       this.LogMethod ( "initialiseHistory method. " );
       this.LogDebug ( "GlobalKey: " + this._GlobalKey );
@@ -153,7 +153,7 @@ namespace Evado.UniForm
       //
       // Initialise the home page groupCommand.
       //
-      this._CommandHistoryList = new List<Command> ( );
+      this._CommandHistoryList = new List<Evado.UniForm.Model.EuCommand> ( );
 
       if ( HomePageCommand.Id == Guid.Empty )
       {
@@ -164,7 +164,7 @@ namespace Evado.UniForm
       //
       // Initialise the list with an empty element
       //
-      this._CommandHistoryList.Add ( Command.getLogoutCommand ( ) );
+      this._CommandHistoryList.Add ( Evado.UniForm.Model.EuCommand.getLogoutCommand ( ) );
 
       //
       // Add the home page groupCommand to th list.
@@ -203,7 +203,7 @@ namespace Evado.UniForm
       //
       for ( int count = 0; count < this._CommandHistoryList.Count; count++ )
       {
-        Command command = this._CommandHistoryList [ count ];
+        Evado.UniForm.Model.EuCommand command = this._CommandHistoryList [ count ];
 
         if ( includeGuid == true )
         {
@@ -245,7 +245,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="PageCommand">ClientPageCommand object</param>
     // ----------------------------------------------------------------------------------
-    public Command getExitCommand ( Command PageCommand )
+    public Evado.UniForm.Model.EuCommand getExitCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this._log = new StringBuilder ( );
       this.LogMethod ( "getExitCommand method, " );
@@ -255,7 +255,7 @@ namespace Evado.UniForm
       //
       // Initialise the methods variables and objects.
       //
-      Command exitCommand = this.getLastCommand ( );
+      Evado.UniForm.Model.EuCommand exitCommand = this.getLastCommand ( );
 
       //
       // debug log of the objects in the groupCommand list.
@@ -270,7 +270,7 @@ namespace Evado.UniForm
         //
         // For customer methods update the exit groupCommand parameters and exit the method.
         //
-        case ApplicationMethods.Custom_Method:
+        case Evado.UniForm.Model.EuMethods.Custom_Method:
           {
 
             //
@@ -294,8 +294,8 @@ namespace Evado.UniForm
         //
         // For create, save and delete methods exit the method.
         //
-        case ApplicationMethods.Save_Object:
-        case ApplicationMethods.Delete_Object:
+        case Evado.UniForm.Model.EuMethods.Save_Object:
+        case Evado.UniForm.Model.EuMethods.Delete_Object:
           {
             //
             // get the previous groupCommand.
@@ -359,7 +359,7 @@ namespace Evado.UniForm
     /// <param name="PageCommand">ClientPageCommand object: containing the groupCommand that 
     /// is called on web service</param>
     // ----------------------------------------------------------------------------------
-    private Command getPreviousCommand ( Command PageCommand )
+    private Evado.UniForm.Model.EuCommand getPreviousCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "getPreviousCommand method, " );
       //this.LogDebug ( "PageCommand:" + PageCommand.getAsString ( false, false ) );
@@ -367,7 +367,7 @@ namespace Evado.UniForm
       // Intialise the methods variables and objects.
       //
       int previousCount = 0;
-      Command previousCommand = new Command ( );
+      Evado.UniForm.Model.EuCommand previousCommand = new Evado.UniForm.Model.EuCommand ( );
 
       //
       // if the list has more than one item it it .
@@ -420,7 +420,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="PageCommand">ClientPageCommand object</param>
     //  ----------------------------------------------------------------------------------
-    private void addCommand ( Command PageCommand )
+    private void addCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "addCommand method. " );
      // this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, false ) );
@@ -429,7 +429,7 @@ namespace Evado.UniForm
       // copy the command so the header list is not affected by the 
       // history add process.
       //
-      Command pageCommand = PageCommand.copyObject ( );
+      Evado.UniForm.Model.EuCommand pageCommand = PageCommand.copyObject ( );
 
       //
       // If the groupCommand identifier is empty then exit.
@@ -453,7 +453,7 @@ namespace Evado.UniForm
       //
       // Empty the header values as they are set by the client.
       //
-      pageCommand.Header = new List<Parameter> ( );
+      pageCommand.Header = new List<Evado.UniForm.Model.EuParameter> ( );
 
       //
       // If they do not match add the new previous page groupCommand to the list.
@@ -476,12 +476,12 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="PageCommand">Guid Command identifer</param>
     //  ----------------------------------------------------------------------------------
-    private bool hasCommand ( Command PageCommand )
+    private bool hasCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       //
       // Iterate through the groupCommand list to find a matching groupCommand
       //
-      foreach ( Command command in this._CommandHistoryList )
+      foreach ( Evado.UniForm.Model.EuCommand command in this._CommandHistoryList )
       {
         if ( command.isCommand ( PageCommand ) == true )
         {
@@ -497,7 +497,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="PageCommand">Guid Command identifer</param>
     //  ----------------------------------------------------------------------------------
-    private int deleteAfterCommand ( Command PageCommand )
+    private int deleteAfterCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "deleteAfterCommand method. " );
       //this.LogDebug ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
@@ -553,7 +553,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <param name="PageCommand">Guid Command identifer</param>
     //  ----------------------------------------------------------------------------------
-    private int deleteCommand ( Command PageCommand )
+    private int deleteCommand ( Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "deleteCommand method. " );
       //this.LogDebug ( " PageCommand: " + PageCommand.getAsString ( false, false ) );
@@ -602,23 +602,23 @@ namespace Evado.UniForm
     /// <param name="CustomCommand">Guid Command identifer</param>
     /// <returns>ClientPageCommand</returns>
     //  ----------------------------------------------------------------------------------
-    private bool updateCommandParameters ( Command CustomCommand )
+    private bool updateCommandParameters ( Evado.UniForm.Model.EuCommand CustomCommand )
     {
       this.LogMethod ( "updateCommandParameters method. " );
       //
       // Intialise the methods variables and objects.
       //
       int lastCount = this._CommandHistoryList.Count - 1;
-      Command lastCommand = this._CommandHistoryList [ lastCount ];
+      Evado.UniForm.Model.EuCommand lastCommand = this._CommandHistoryList [ lastCount ];
       //
       // Get the custom groupCommand parameter.
       //
-      ApplicationMethods method = CustomCommand.getCustomMethod ( );
+      Evado.UniForm.Model.EuMethods method = CustomCommand.getCustomMethod ( );
 
       //
       // custom groupCommand parameter method is not a selection groupCommand exit.
-      if ( method != ApplicationMethods.Get_Object
-        && method != ApplicationMethods.List_of_Objects )
+      if ( method != Evado.UniForm.Model.EuMethods.Get_Object
+        && method != Evado.UniForm.Model.EuMethods.List_of_Objects )
       {
         return false;
       }
@@ -636,7 +636,7 @@ namespace Evado.UniForm
       //
       // Iterate through the groupCommand parameters to update them.
       //
-      foreach ( Parameter customParameter in CustomCommand.Parameters )
+      foreach ( Evado.UniForm.Model.EuParameter customParameter in CustomCommand.Parameters )
       {
         lastCommand.AddParameter ( customParameter.Name, customParameter.Value );
 
@@ -652,7 +652,7 @@ namespace Evado.UniForm
     /// </summary>
     /// <returns>ClientPageCommand</returns>
     //  ----------------------------------------------------------------------------------
-    public Command getLastCommand ( )
+    public Evado.UniForm.Model.EuCommand getLastCommand ( )
     {
       this.LogMethod ( "getLastCommand method. " );
       //
@@ -661,7 +661,7 @@ namespace Evado.UniForm
       if ( this._CommandHistoryList.Count > 0 )
       {
         int lastCount = this._CommandHistoryList.Count - 1;
-        Command command = this._CommandHistoryList [ lastCount ];
+        Evado.UniForm.Model.EuCommand command = this._CommandHistoryList [ lastCount ];
 
         //this.writeDebugLogLine ( "Last Command: " + command.getAsString ( false, false ) );
 
@@ -673,7 +673,7 @@ namespace Evado.UniForm
       //
       // if the groupCommand is not found return the home page groupCommand.
       //
-      return new Command ( );
+      return new Evado.UniForm.Model.EuCommand ( );
 
     }//END getLastCommand method.
 

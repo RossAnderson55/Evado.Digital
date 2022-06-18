@@ -177,10 +177,10 @@ namespace Evado.Digital.Adapter
 
           string stEvent = "Email notitification error: " + emStatus;
 
-          this.LogError ( EvEventCodes.Business_Logic_Email_Failure_Error, stEvent );
+          this.LogError ( EvEventCodes.Email_Failure_Error, stEvent );
 
           this.LogMethodEnd ( "saveUserProfile" );
-          return EvEventCodes.Business_Logic_Email_Failure_Error;
+          return EvEventCodes.Email_Failure_Error;
 
         }//END email erorr handling.
 

@@ -12,9 +12,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evado.Digital.DAL", "Evado.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evado.Digital.Model", "Evado.Digital.Model\Evado.Digital.Model.csproj", "{C85C0FC2-76E7-496C-AEA1-1F97FA573C93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evado.model", "C:\Users\Ross\Projects\Evado.Digital\evado.model\evado.model.csproj", "{93EA9387-1172-48EC-B26E-C4D48D827976}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evado.Model", "..\Evado.Clinical\evado.model\Evado.Model.csproj", "{93EA9387-1172-48EC-B26E-C4D48D827976}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evado.UniForm.Model", "evado.model.uniform\Evado.UniForm.Model.csproj", "{EB6A905C-2E28-4A70-B791-DC807165BCD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evado.UniForm.Model", "..\Evado.Clinical\Evado.Uniform.Model\Evado.UniForm.Model.csproj", "{EB6A905C-2E28-4A70-B791-DC807165BCD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evado.Digital.Adapter", "Evado.Digital.Adapter\Evado.Digital.Adapter.csproj", "{35125365-B9A7-4A88-A50E-5D8B0C8CE9B9}"
 EndProject

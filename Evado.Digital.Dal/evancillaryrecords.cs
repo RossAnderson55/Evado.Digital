@@ -214,7 +214,7 @@ namespace Evado.Digital.Dal
       cmdParms [ 23 ].Value = Record.UserCommonName;
       cmdParms [ 24 ].Value = DateTime.Now;
       cmdParms [ 25 ].Value = Record.BookedOutBy;
-      cmdParms [ 26 ].Value = Evado.Model.EvStatics.SerialiseObject<List<EdUserSignoff>> ( Record.Signoffs );
+      cmdParms [ 26 ].Value = Evado.Model.EvStatics.SerialiseXmlObject<List<EdUserSignoff>> ( Record.Signoffs );
 
     }//END SetParameters class.
 
@@ -278,7 +278,7 @@ namespace Evado.Digital.Dal
       record.UpdatedBy = EvSqlMethods.getString( Row, "TSR_UpdatedBy" );
       record.UpdatedDate = EvSqlMethods.getDateTime( Row, "TSR_UpdateDate" );
       record.BookedOutBy = EvSqlMethods.getString( Row, "TSR_BookedOutBy" );
-      record.Signoffs = Evado.Model.EvStatics.DeserialiseObject<List<EdUserSignoff>> ( EvSqlMethods.getString ( Row, "TSR_Signoffs" ) );
+      record.Signoffs = Evado.Model.EvStatics.DeserialiseXmlObject<List<EdUserSignoff>> ( EvSqlMethods.getString ( Row, "TSR_Signoffs" ) );
 
       // 
       // Return an object containing EvSubjectRecord object. 

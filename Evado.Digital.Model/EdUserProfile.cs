@@ -704,27 +704,7 @@ namespace Evado.Digital.Model
       this.Title = BaseUserProfile.Title;
       this.DomainGroups = BaseUserProfile.DomainGroups;
     }
-    //====================================================================================
-    /// <summary>
-    /// This method imports the values from the base user profile.
-    /// </summary>
-    /// <param name="TokenUserProfile"></param>
-    //------------------------------------------------------------------------------------
-    public void ImportTokenProfile ( Evado.Model.EusTokenUserProfile TokenUserProfile )
-    {
-      this.Guid = TokenUserProfile.Token;
-      this.Token = TokenUserProfile.Token;
-      this.UserId = TokenUserProfile.UserId;
-      this.GivenName = TokenUserProfile.GivenName;
-      this.FamilyName = TokenUserProfile.FamilyName;
-      this.EmailAddress = TokenUserProfile.EmailAddress;
-      this.Token = TokenUserProfile.Token;
-      this.UserType = TokenUserProfile.UserType;
-      this.UserCategory = TokenUserProfile.UserType;
-      this.ImageFileName = String.Empty;
-      this.ExpiryDate = Evado.Model.EvStatics.getDateTime ( "31-Dec-2099" );
-    }
-
+    
     //===================================================================================
     /// <summary>
     /// This class defines value of the user profile

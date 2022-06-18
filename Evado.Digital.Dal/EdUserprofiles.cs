@@ -286,7 +286,6 @@ namespace Evado.Digital.Dal
       // Update the object properties.
       // 
       profile.Guid = EvSqlMethods.getGuid ( Row, EdUserProfiles.DB_USER_GUID );
-      profile.Token = profile.Guid;
       profile.OrgId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ORG_ID );
 
       profile.UserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_USER_ID );
@@ -1436,15 +1435,6 @@ namespace Evado.Digital.Dal
         return Evado.Model.EvEventCodes.Data_Duplicate_Id_Error;
       }
 
-      //
-      // Do a toke substitution of the token Guid exists.
-      // this will enable the token to be used to retrieve user profiles.
-      //
-      if ( UserProfile.Token != Guid.Empty )
-      {
-        user.Guid = UserProfile.Token;
-      }
-      this.LogDebug ( "UserGuid: {0}, token{1}", user.Guid, UserProfile.Token );
       // 
       // Define the guid for the user of one is not allocated.
       // 

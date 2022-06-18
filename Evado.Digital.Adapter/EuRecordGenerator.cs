@@ -144,7 +144,7 @@ namespace Evado.Digital.Adapter
     // 
     private List<Evado.Digital.Model.EdRecordField> _Fields = new List<Evado.Digital.Model.EdRecordField> ( );
 
-    private Evado.UniForm.Model.FieldLayoutCodes _DefaultFieldLayout = EuAdapter.DefaultFieldLayout;
+    private Evado.UniForm.Model.EuFieldLayoutCodes _DefaultFieldLayout = EuAdapter.DefaultFieldLayout;
 
     private String _PageId = String.Empty;
 
@@ -195,7 +195,7 @@ namespace Evado.Digital.Adapter
     ///   the entity definition.  
     /// </summary>
     /// <param name="Entity"> Evado.Digital.Model.EdRecord object</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
     /// <remarks>
@@ -207,7 +207,7 @@ namespace Evado.Digital.Adapter
     // ---------------------------------------------------------------------------------
     public bool generateEntityLayout (
        Evado.Digital.Model.EdRecord Entity,
-      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.EuPage PageObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "generateEntityLayout" );
@@ -269,7 +269,7 @@ namespace Evado.Digital.Adapter
     ///   the record definition.  
     /// </summary>
     /// <param name="Entity">  Evado.Digital.Model.EdRecord object</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
     /// <remarks>
@@ -281,7 +281,7 @@ namespace Evado.Digital.Adapter
     // ---------------------------------------------------------------------------------
     public bool generateRecordLayout (
        Evado.Digital.Model.EdRecord Record,
-      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.EuPage PageObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "generateRecordLayout" );
@@ -344,7 +344,7 @@ namespace Evado.Digital.Adapter
     ///   This method generates an instance of the form object.
     /// </summary>
     /// <param name="Layout">  Evado.Digital.Model.EdRecord object</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object</param>
     /// <param name="BinaryFilePath">String: the path to the UniForm binary file store.</param>
     /// <returns>bool:  true = page generated without error.</returns>
     /// <remarks>
@@ -358,7 +358,7 @@ namespace Evado.Digital.Adapter
     // ---------------------------------------------------------------------------------
     public bool generateLayout (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject,
+      Evado.UniForm.Model.EuPage PageObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "generateLayout" );
@@ -374,7 +374,7 @@ namespace Evado.Digital.Adapter
       // client annotation functions and initiate the service to including fields for
       // earlier uniform clients.
       // 
-      PageObject.DefaultGroupType = Evado.UniForm.Model.GroupTypes.Default;
+      PageObject.DefaultGroupType = Evado.UniForm.Model.EuGroupTypes.Default;
       this._FormAccessRole = Layout.FormAccessRole;
       this._FormState = Layout.State;
       this._Fields = Layout.Fields;
@@ -383,7 +383,7 @@ namespace Evado.Digital.Adapter
       //this.LogDebug ( "Default FieldLayout {0}. ", this._DefaultFieldLayout );
       if ( Layout.Design.DefaultPageLayout != null )
       {
-        if ( EvStatics.tryParseEnumValue<Evado.UniForm.Model.FieldLayoutCodes> (
+        if ( EvStatics.tryParseEnumValue<Evado.UniForm.Model.EuFieldLayoutCodes> (
           Layout.Design.DefaultPageLayout.ToString ( ),
           out this._DefaultFieldLayout ) == false )
         {
@@ -399,7 +399,7 @@ namespace Evado.Digital.Adapter
       if ( Layout.Design.TypeId == EdRecordTypes.Questionnaire )
       {
        // this.LogDebug ( "Questionnaire, Patient Consent or Patient Record so hide annotations. " );
-        PageObject.DefaultGroupType = Evado.UniForm.Model.GroupTypes.Default;
+        PageObject.DefaultGroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
         //
         // Hide signature from all non-record editors.
@@ -421,15 +421,15 @@ namespace Evado.Digital.Adapter
         case Evado.Digital.Model.EdRecord.FormAccessRoles.Record_Author:
           {
            // this.LogDebug ( "Record Author " );
-            PageObject.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+            PageObject.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
             break;
           }
         default:
           {
            // this.LogDebug ( "default" );
-            PageObject.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
-            PageObject.DefaultGroupType = Evado.UniForm.Model.GroupTypes.Default;
+            PageObject.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
+            PageObject.DefaultGroupType = Evado.UniForm.Model.EuGroupTypes.Default;
             break;
           }
       }//END view state switch
@@ -512,7 +512,7 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This mehod generates the HTMl for a page group.
     /// </summary>
-    /// <param name="command">Evado.UniForm.Model.Command command object</param>
+    /// <param name="command">Evado.UniForm.Model.EuCommand command object</param>
     /// <param name="cssClass">String: Css classes</param>
     /// <returns>Html string</returns>
     // ---------------------------------------------------------------------------------
@@ -589,19 +589,19 @@ namespace Evado.Digital.Adapter
     ///   This method generates the page header form record page.
     /// </summary>
     /// <param name="Layout"> Evado.Digital.Model.EvForm object</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object</param>
     //  ---------------------------------------------------------------------------------
     private void createPageHeader (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createFormHeader" );
       this.LogDebug ( "Layout.Design.HeaderFormat: " + Layout.Design.HeaderFormat );
       // 
       // Initialise local variables.
       // 
-      Evado.UniForm.Model.Group pageGroup;
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup;
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       if ( Layout.RecordId == String.Empty )
       {
@@ -640,9 +640,9 @@ namespace Evado.Digital.Adapter
         pageGroup = PageObject.AddGroup (
           String.Empty,
           String.Empty,
-          Evado.UniForm.Model.EditAccess.Inherited );
-        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-        pageGroup.DescriptionAlignment = Evado.UniForm.Model.GroupDescriptionAlignments.Center_Align;
+          Evado.UniForm.Model.EuEditAccess.Inherited );
+        pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+        pageGroup.DescriptionAlignment = Evado.UniForm.Model.EuGroupDescriptionAlignments.Center_Align;
         pageGroup.Description = Layout.Design.Instructions;
       }
 
@@ -655,17 +655,17 @@ namespace Evado.Digital.Adapter
     ///   This method generates a form footer header as html markup.
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object .</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ---------------------------------------------------------------------------------
     private void createAuthorHeader (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       // 
       // Initialise local variables.
       // 
-      Evado.UniForm.Model.Group pageGroup;
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup;
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       string header = String.Format (
         EdLabels.Layout_Author_Format,
@@ -675,11 +675,11 @@ namespace Evado.Digital.Adapter
       // Initialise the group if the user is not a patient.
       //
       pageGroup = PageObject.AddGroup ( String.Empty );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+      pageGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
       pageGroup.Description = header;
-      pageGroup.DescriptionAlignment = Evado.UniForm.Model.GroupDescriptionAlignments.Center_Align;
+      pageGroup.DescriptionAlignment = Evado.UniForm.Model.EuGroupDescriptionAlignments.Center_Align;
     }
 
     //  =================================================================================
@@ -687,24 +687,24 @@ namespace Evado.Digital.Adapter
     ///   This method generates a form footer header as html markup.
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object .</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ---------------------------------------------------------------------------------
     private void createDefaultHeader (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       // 
       // Initialise local variables.
       // 
-      Evado.UniForm.Model.Group pageGroup;
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup;
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       // 
       // Initialise the group if the user is not a patient.
       //
       pageGroup = PageObject.AddGroup ( String.Empty );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+      pageGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
       // 
       // if the design reference object exists include the 
@@ -714,12 +714,12 @@ namespace Evado.Digital.Adapter
       {
         pageGroup.Description =
           String.Format ( "<a href='{0}' target='_blank'>{1}</a>", Layout.Design.HttpReference, Layout.CommandTitle );
-        pageGroup.DescriptionAlignment = Evado.UniForm.Model.GroupDescriptionAlignments.Center_Align;
+        pageGroup.DescriptionAlignment = Evado.UniForm.Model.EuGroupDescriptionAlignments.Center_Align;
       }
       else
       {
         pageGroup.Description = Layout.CommandTitle;
-        pageGroup.DescriptionAlignment = Evado.UniForm.Model.GroupDescriptionAlignments.Center_Align;
+        pageGroup.DescriptionAlignment = Evado.UniForm.Model.EuGroupDescriptionAlignments.Center_Align;
       }
     }
 
@@ -728,11 +728,11 @@ namespace Evado.Digital.Adapter
     ///   This method generates a form footer header as html markup.
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object .</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     //  ---------------------------------------------------------------------------------
     private void createPageFooter (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createPageFooter" );
       this.LogDebug ( "Layout.State: " + Layout.State );
@@ -802,16 +802,16 @@ namespace Evado.Digital.Adapter
     /// This method creates a comment footer group
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object.</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     private void getCommentFooter (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       // 
       // Initialise local variables.
       // 
-      Evado.UniForm.Model.Group pageGroup;
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup;
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       // 
       // Display the comments.
@@ -826,9 +826,9 @@ namespace Evado.Digital.Adapter
         pageGroup = PageObject.AddGroup (
            String.Empty,
            String.Empty,
-           Evado.UniForm.Model.EditAccess.Enabled );
-        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-        pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+           Evado.UniForm.Model.EuEditAccess.Enabled );
+        pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+        pageGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
         // 
         // Display the comment list.
@@ -857,7 +857,7 @@ namespace Evado.Digital.Adapter
             5 );
 
           groupField.Layout = EuAdapter.DefaultFieldLayout;
-          groupField.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+          groupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
 
         }//END new comment to be added.
 
@@ -869,11 +869,11 @@ namespace Evado.Digital.Adapter
     /// This method creates a comment footer group
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object.</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     // ----------------------------------------------------------------------------------
     private void getSignatureFooter (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       //
       // edit if there are not signatures
@@ -886,8 +886,8 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise local variables.
       // 
-      Evado.UniForm.Model.Group pageGroup;
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
+      Evado.UniForm.Model.EuGroup pageGroup;
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
 
       // 
       // Define the comment pageMenuGroup.
@@ -895,9 +895,9 @@ namespace Evado.Digital.Adapter
       pageGroup = PageObject.AddGroup (
         String.Empty,
         String.Empty,
-        Evado.UniForm.Model.EditAccess.Inherited );
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
+        Evado.UniForm.Model.EuEditAccess.Inherited );
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+      pageGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
 
       StringBuilder sbSignoffLog = new StringBuilder ( );
 
@@ -935,20 +935,20 @@ namespace Evado.Digital.Adapter
     /// This method creates a comment footer group
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EdRecord object.</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     // ----------------------------------------------------------------------------------
     private void getApprovalFooter (
        Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       // 
       // Initialise pageMenuGroup object.
       // 
-      Evado.UniForm.Model.Group footerGroup = PageObject.AddGroup (
+      Evado.UniForm.Model.EuGroup footerGroup = PageObject.AddGroup (
         String.Empty,
         String.Empty,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      footerGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      footerGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       // 
       // Add the form record approval as a readonly field.
@@ -957,7 +957,7 @@ namespace Evado.Digital.Adapter
          String.Empty,
          String.Empty,
          Layout.Design.Approval );
-      groupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Center_Justified;
+      groupField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Center_Justified;
 
     }//END method
 
@@ -973,7 +973,7 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Form">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="PageGroup">Evado.UniForm.Model.Group object.</param>
+    /// <param name="PageGroup">Evado.UniForm.Model.EuGroup object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     /// <remarks>
     /// This method consists of following steps:
@@ -984,7 +984,7 @@ namespace Evado.Digital.Adapter
     //  ---------------------------------------------------------------------------------
     private void getFieldCategories (
        Evado.Digital.Model.EdRecord Form,
-      Evado.UniForm.Model.Group PageGroup )
+      Evado.UniForm.Model.EuGroup PageGroup )
     {
       this.LogMethod ( "getFieldCategories" );
       // 
@@ -1099,12 +1099,12 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Layout">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="PageObject">  Evado.UniForm.Model.Page Object.</param>
+    /// <param name="PageObject">  Evado.UniForm.Model.EuPage Object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormSections (
          Evado.Digital.Model.EdRecord Layout,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createFormSections" );
 
@@ -1118,7 +1118,7 @@ namespace Evado.Digital.Adapter
       //
       // determine the content should be in display mode.
       //
-      if ( ( PageObject.EditAccess == Evado.UniForm.Model.EditAccess.Disabled )
+      if ( ( PageObject.EditAccess == Evado.UniForm.Model.EuEditAccess.Disabled )
         && ( Layout.State == EdRecordObjectStates.Submitted_Record )
         && ( this._Design.FieldReadonlyDisplayFormat == EdRecord.FieldReadonlyDisplayFormats.Document_Layout
           || this._Design.FieldReadonlyDisplayFormat == EdRecord.FieldReadonlyDisplayFormats.Document_Layout_No_Titles ) )
@@ -1189,39 +1189,39 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Layout">EdRecord object .</param>
     /// <param name="SectionNo">EdRecordSection object.</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>int count of section fields.</returns>
     //  ---------------------------------------------------------------------------------
     private int createSectionFormFields (
        Evado.Digital.Model.EdRecord Layout,
       Evado.Digital.Model.EdRecordSection section,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "createSectionFormFields" );
       //
       // Initialise the methods variables and objects.
       //
       int count = 0;
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
 
       if ( section.Title != String.Empty )
       {
-        pageGroup = new Evado.UniForm.Model.Group (
+        pageGroup = new Evado.UniForm.Model.EuGroup (
             section.Title,
             section.Instructions,
             PageObject.EditAccess );
       }
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       //
       // If the section has field name then add the pageMenuGroup hide parameters.
       //
       if ( section.FieldId != String.Empty )
       {
-        pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Hide_Group_If_Field_Id,
+        pageGroup.AddParameter ( Evado.UniForm.Model.EuGroupParameters.Hide_Group_If_Field_Id,
           section.FieldId );
 
-        pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Hide_Group_If_Field_Value,
+        pageGroup.AddParameter ( Evado.UniForm.Model.EuGroupParameters.Hide_Group_If_Field_Value,
           section.FieldValue );
       }
 
@@ -1254,14 +1254,14 @@ namespace Evado.Digital.Adapter
       //
       if ( count > 0
         && Layout.Design.AuthorAccess == EdRecord.AuthorAccessList.Only_Author_Selectable
-        && PageObject.EditAccess == Evado.UniForm.Model.EditAccess.Disabled
+        && PageObject.EditAccess == Evado.UniForm.Model.EuEditAccess.Disabled
         && Layout.Author == this.Session.UserProfile.UserId )
       {
         var groupCommand = pageGroup.addCommand (
           EdLabels.Entity_Enable_Edit_Command_Title,
             EuAdapter.ADAPTER_ID,
             EuAdapterClasses.Entities.ToString ( ),
-            Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+            Evado.UniForm.Model.EuMethods.Custom_Method );
         groupCommand.SetGuid ( this.Session.Entity.Guid );
 
         groupCommand.AddParameter (
@@ -1294,13 +1294,13 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Layout">EdRecord object .</param>
     /// <param name="SectionNo">EdRecordSection object.</param>
-    /// <param name="PageObject">Evado.UniForm.Model.Page object.</param>
+    /// <param name="PageObject">Evado.UniForm.Model.EuPage object.</param>
     /// <returns>int count of section fields.</returns>
     //  ---------------------------------------------------------------------------------
     private int creatSectionDocument (
        Evado.Digital.Model.EdRecord Layout,
       Evado.Digital.Model.EdRecordSection section,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "creatSectionDocument" );
       this.LogDebug ( "LayoutId: " + Layout.LayoutId );
@@ -1310,7 +1310,7 @@ namespace Evado.Digital.Adapter
       //
       // editable pages are not displayed in document mode.
       //
-      if ( PageObject.EditAccess == Evado.UniForm.Model.EditAccess.Enabled )
+      if ( PageObject.EditAccess == Evado.UniForm.Model.EuEditAccess.Enabled )
       {
         return 0;
       }
@@ -1342,13 +1342,13 @@ namespace Evado.Digital.Adapter
       //
       // create the field group object.
       //
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
 
       if ( section.Title != String.Empty )
       {
         pageGroup.Title = section.Title;
       }
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
 
       // 
       // Iterate through each form field in the section.
@@ -1962,13 +1962,13 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">EvSubject object containing the FirstSubject and form to be generated.</param>
-    /// <param name="FieldGroup">Evado.UniForm.Model.Group object.</param>
+    /// <param name="FieldGroup">Evado.UniForm.Model.EuGroup object.</param>
     /// <param name="FormState">  Evado.Digital.Model.EvFormObjectStates enumerated value.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void createFormField (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Group FieldGroup,
+      Evado.UniForm.Model.EuGroup FieldGroup,
       Evado.Digital.Model.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "getFormField" );
@@ -1993,9 +1993,9 @@ namespace Evado.Digital.Adapter
       //
       // set the field layout setting.
       //
-      Evado.UniForm.Model.FieldLayoutCodes layout = this._DefaultFieldLayout;
-      Evado.UniForm.Model.FieldLayoutCodes Fieldlayout =
-        EvStatics.parseEnumValue<Evado.UniForm.Model.FieldLayoutCodes> ( Field.Design.FieldLayout );
+      Evado.UniForm.Model.EuFieldLayoutCodes layout = this._DefaultFieldLayout;
+      Evado.UniForm.Model.EuFieldLayoutCodes Fieldlayout =
+        EvStatics.parseEnumValue<Evado.UniForm.Model.EuFieldLayoutCodes> ( Field.Design.FieldLayout );
 
       //
       // set to the field settings.
@@ -2013,14 +2013,14 @@ namespace Evado.Digital.Adapter
         || Field.TypeId == EvDataTypes.Streamed_Video
         || Field.TypeId == EvDataTypes.Html_Content )
       {
-        layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
+        layout = Evado.UniForm.Model.EuFieldLayoutCodes.Column_Layout;
       }
 
 
       // 
       // Initialise the UniFORm field object.
       // 
-      Evado.UniForm.Model.Field groupField = FieldGroup.addField (
+      Evado.UniForm.Model.EuField groupField = FieldGroup.addField (
         Field.FieldId,
         Field.Title,
         Evado.Model.EvDataTypes.Text,
@@ -2047,7 +2047,7 @@ namespace Evado.Digital.Adapter
       //
       // If the title is to be hidden then delete the uniform field values.
       //
-      if ( groupField.EditAccess != Evado.UniForm.Model.EditAccess.Enabled )
+      if ( groupField.EditAccess != Evado.UniForm.Model.EuEditAccess.Enabled )
       {
         switch ( this._Design.FieldReadonlyDisplayFormat )
         {
@@ -2239,12 +2239,12 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     /// <param name="ViewState">  Evado.Digital.Model.EvForm.FormDisplayStates enumerated value.</param>
     //  ---------------------------------------------------------------------------------
     private void createFormFieldHeader (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "createFormFieldHeader" );
       // 
@@ -2257,7 +2257,7 @@ namespace Evado.Digital.Adapter
       //
       if ( this._FormAccessRole == Evado.Digital.Model.EdRecord.FormAccessRoles.Record_Author )
       {
-        GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+        GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
       }
 
       // 
@@ -2267,7 +2267,7 @@ namespace Evado.Digital.Adapter
         && ( this._FormState == EdRecordObjectStates.Draft_Record
           || this._FormState == EdRecordObjectStates.Form_Reviewed ) )
       {
-        GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
+        GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
         sbDescription.Append (
            "Form field identifier: " + Field.FieldId );
         if ( Field.Design.IsSummaryField == true )
@@ -2350,11 +2350,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getDisplayField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getDisplayField" );
 
@@ -2362,7 +2362,7 @@ namespace Evado.Digital.Adapter
       // Initialise local variables.
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, 50 );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, 50 );
       GroupField.Description = String.Empty;
 
       return;
@@ -2376,11 +2376,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getTextField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getTextField method." );
 
@@ -2388,7 +2388,7 @@ namespace Evado.Digital.Adapter
       // Initialise local variables.
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Text;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width,
         Field.Design.FieldWidth );
 
 
@@ -2403,11 +2403,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getFreeTextField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getFreeTextField" );
       // 
@@ -2415,12 +2415,12 @@ namespace Evado.Digital.Adapter
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Free_Text;
       GroupField.Value = Field.ItemText;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width,
         Field.Design.FieldWidth );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height,
         Field.Design.FieldHeight );
 
-      if ( GroupField.EditAccess != Evado.UniForm.Model.EditAccess.Enabled )
+      if ( GroupField.EditAccess != Evado.UniForm.Model.EuEditAccess.Enabled )
       {
         GroupField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
       }
@@ -2433,11 +2433,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getReadOnlyField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getReadOnlyField" );
 
@@ -2447,7 +2447,7 @@ namespace Evado.Digital.Adapter
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
       GroupField.Value = Field.Design.Instructions;
-      GroupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
+      GroupField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Column_Layout;
       GroupField.Description = String.Empty;
 
 
@@ -2464,11 +2464,11 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvFormField object containing the 
     /// field to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getStreamedVideoField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getStreamedVideoField" );
 
@@ -2496,11 +2496,11 @@ namespace Evado.Digital.Adapter
         GroupField.Value = Field.RecordMedia.Url;
       }
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, Field.RecordMedia.Width.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, Field.RecordMedia.Width.ToString ( ) );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height, Field.RecordMedia.Height.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height, Field.RecordMedia.Height.ToString ( ) );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Value_Label, Field.RecordMedia.Title );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Value_Label, Field.RecordMedia.Title );
 
       this.LogDebug ( "Value: " + GroupField.Value );
 
@@ -2515,11 +2515,11 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Field">Evado.Digital.Model.EvForm object containing the form 
     /// to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getImageField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getImageField" );
       this.LogDebug ( "Field.ItemValue {0}.", Field.ItemValue );
@@ -2550,10 +2550,10 @@ namespace Evado.Digital.Adapter
       this.LogDebug ( "Width: " + Field.RecordMedia.Width );
       this.LogDebug ( "Height: " + Field.RecordMedia.Height );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width,
       Field.RecordMedia.Width.ToString ( ) );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height,
       Field.RecordMedia.Height.ToString ( ) );
 
       this.LogDebug ( "Value: " + GroupField.Value );
@@ -2568,11 +2568,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getExternalImageField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getExternalImageField" );
 
@@ -2589,10 +2589,10 @@ namespace Evado.Digital.Adapter
       this.LogDebug ( "Width: " + Field.RecordMedia.Width );
       this.LogDebug ( "Height: " + Field.RecordMedia.Height );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width,
       Field.RecordMedia.Width.ToString ( ) );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height,
       Field.RecordMedia.Height.ToString ( ) );
 
       this.LogDebug ( "Value: " + GroupField.Value );
@@ -2607,11 +2607,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getHttpLinkField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getHttpLinkField" );
 
@@ -2634,11 +2634,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getComputedField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( ".getComputedField" );
 
@@ -2646,7 +2646,7 @@ namespace Evado.Digital.Adapter
       // set the field properties and parameters.
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Computed_Field;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, 20 );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, 20 );
 
       return;
 
@@ -2659,11 +2659,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getNumericField (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getNumericField" );
 
@@ -2673,24 +2673,24 @@ namespace Evado.Digital.Adapter
       GroupField.Type = Evado.Model.EvDataTypes.Numeric;
 
       GroupField.Value = Field.ItemValue;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, 12 );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, 12 );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Validation, Evado.UniForm.Model.Background_Colours.Red );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Alert, Evado.UniForm.Model.Background_Colours.Orange );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Normal, Evado.UniForm.Model.Background_Colours.Yellow );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Validation, Evado.UniForm.Model.EuBackgroundColours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Alert, Evado.UniForm.Model.EuBackgroundColours.Orange );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Normal, Evado.UniForm.Model.EuBackgroundColours.Yellow );
 
       // 
       // Add the field unit if it exists.
       // 
       if ( Field.Design.UnitHtml != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Unit, Field.Design.UnitHtml );
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Unit, Field.Design.UnitHtml );
       }
 
       // 
@@ -2698,12 +2698,12 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
       if ( Field.TypeId == Evado.Model.EvDataTypes.Integer )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Form.onIntegerValidation" );
       }
 
@@ -2717,11 +2717,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getIntegerRangeField (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getIntegerRangeField" );
 
@@ -2730,24 +2730,24 @@ namespace Evado.Digital.Adapter
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Integer_Range;
       GroupField.Value = Field.ItemValue;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, 12 );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, 12 );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Validation, Evado.UniForm.Model.Background_Colours.Red );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Alert, Evado.UniForm.Model.Background_Colours.Orange );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Normal, Evado.UniForm.Model.Background_Colours.Yellow );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Validation, Evado.UniForm.Model.EuBackgroundColours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Alert, Evado.UniForm.Model.EuBackgroundColours.Orange );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Normal, Evado.UniForm.Model.EuBackgroundColours.Yellow );
 
       // 
       // Add the field unit if it exists.
       // 
       if ( Field.Design.UnitHtml != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Unit, Field.Design.UnitHtml );
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Unit, Field.Design.UnitHtml );
       }
 
       // 
@@ -2755,12 +2755,12 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
       if ( Field.TypeId == Evado.Model.EvDataTypes.Integer )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Form.onIntegerValidation" );
       }
 
@@ -2773,11 +2773,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getFloatRangeField (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getFloatRangeField" );
 
@@ -2786,24 +2786,24 @@ namespace Evado.Digital.Adapter
       // 
       GroupField.Type = Evado.Model.EvDataTypes.Float_Range;
       GroupField.Value = Field.ItemValue;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, 12 );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, 12 );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Validation, Evado.UniForm.Model.Background_Colours.Red );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Alert, Evado.UniForm.Model.Background_Colours.Orange );
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Normal, Evado.UniForm.Model.Background_Colours.Yellow );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Value, Field.Design.ValidationLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Value, Field.Design.ValidationUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Alert, Field.Design.AlertLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Alert, Field.Design.AlertUpperLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Normal, Field.Design.NormalRangeLowerLimit.ToString ( ) );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Normal, Field.Design.NormalRangeUpperLimit.ToString ( ) );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Validation, Evado.UniForm.Model.EuBackgroundColours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Alert, Evado.UniForm.Model.EuBackgroundColours.Orange );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Normal, Evado.UniForm.Model.EuBackgroundColours.Yellow );
 
       // 
       // Add the field unit if it exists.
       // 
       if ( Field.Design.UnitHtml != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Unit, Field.Design.UnitHtml );
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Unit, Field.Design.UnitHtml );
       }
 
       // 
@@ -2811,12 +2811,12 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
       if ( Field.TypeId == Evado.Model.EvDataTypes.Integer )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Form.onIntegerValidation" );
       }
 
@@ -2829,10 +2829,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getDateField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getDateField" );
 
@@ -2847,7 +2847,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -2860,11 +2860,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getDateRangeField (
        Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getFloatRangeField" );
 
@@ -2879,12 +2879,12 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
       if ( Field.TypeId == Evado.Model.EvDataTypes.Integer )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Form.onIntegerValidation" );
       }
 
@@ -2897,10 +2897,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getTimeField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getTimeField" );
 
@@ -2915,7 +2915,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -2928,10 +2928,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getTelephoneField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getTelephoneField" );
 
@@ -2950,10 +2950,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getEmailAddressField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getEmailAddressField" );
 
@@ -2972,10 +2972,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getAddressField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getAddressField" );
 
@@ -2994,10 +2994,10 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getNameField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getNameField" );
 
@@ -3016,11 +3016,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getYesNoField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getYesNoField" );
 
@@ -3030,14 +3030,14 @@ namespace Evado.Digital.Adapter
       GroupField.Type = Evado.Model.EvDataTypes.Boolean;
       GroupField.Value = Field.ItemValue;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       // 
       // Set the custom validation script if it exists.
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3051,12 +3051,12 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     /// <param name="FormState">Evado.Digital.Model.EvFormObjectStates enumeration object.</param>
     //  ---------------------------------------------------------------------------------
     private void getSignatureField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField,
+      Evado.UniForm.Model.EuField GroupField,
       Evado.Digital.Model.EdRecordObjectStates FormState )
     {
       this.LogMethod ( "getSignatureField" );
@@ -3070,8 +3070,8 @@ namespace Evado.Digital.Adapter
         this.LogDebug ( "Hidden Signature field." );
         GroupField.Type = Evado.Model.EvDataTypes.Text;
         GroupField.Value = EdLabels.Signature_Field_Status_No_Text;
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
-        GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
+        GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
 
         if ( Field.ItemText != String.Empty )
         {
@@ -3087,9 +3087,9 @@ namespace Evado.Digital.Adapter
 
       GroupField.Type = Evado.Model.EvDataTypes.Signature;
       GroupField.Value = Field.ItemText;
-      GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Enabled;
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "600" );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height, "200" );
+      GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Enabled;
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "600" );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height, "200" );
       //
       // the state is not empty or draft and a signature exists it is readonly.
       //
@@ -3098,7 +3098,7 @@ namespace Evado.Digital.Adapter
         && FormState != EdRecordObjectStates.Draft_Record
         && FormState != EdRecordObjectStates.Completed_Record )
       {
-        GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+        GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
       }
 
       this.LogDebug ( "GroupField.Value: " + GroupField.Value );
@@ -3114,11 +3114,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getQueryYesNoField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getQueryYesNoField" );
 
@@ -3128,17 +3128,17 @@ namespace Evado.Digital.Adapter
       GroupField.Type = Evado.Model.EvDataTypes.Boolean;
       GroupField.Value = Field.ItemValue;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
-      GroupField.SetValueColumnWidth ( Evado.UniForm.Model.FieldValueWidths.Twenty_Percent );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Field_Value_Legend, EdLabels.FormField_YesNo_Query_Legend );
+      GroupField.SetValueColumnWidth ( Evado.UniForm.Model.EuFieldValueWidths.Twenty_Percent );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Field_Value_Legend, EdLabels.FormField_YesNo_Query_Legend );
 
       // 
       // Set the custom validation script if it exists.
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3151,11 +3151,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getRadioButtonListField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getRadioButtonoField method. Value: " + Field.ItemValue );
       this.LogDebug ( "Options: " + Field.Design.Options );
@@ -3164,7 +3164,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods object and variables.
       // 
       List<Evado.Model.EvOption> optionlist = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, false );
 
       optionlist.Add ( new Evado.Model.EvOption ( "", "Not Selected" ) );
 
@@ -3180,14 +3180,14 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       // 
       // Set the custom validation script if it exists.
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3200,11 +3200,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field  object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField  object.</param>
     //  ---------------------------------------------------------------------------------
     private void getSelectonField (
       Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getSelectonField" );
       this.LogDebug ( "Options: " + Field.Design.Options );
@@ -3213,7 +3213,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods object and variables.
       // 
       List<Evado.Model.EvOption> optionlist = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, true );
 
       optionlist.Add ( new Evado.Model.EvOption ( "", "Not Selected" ) );
 
@@ -3224,14 +3224,14 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       // 
       // Set the custom validation script if it exists.
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3244,11 +3244,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field  object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField  object.</param>
     //  ---------------------------------------------------------------------------------
     private void getExternalSelectonField (
       Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getExternalSelectonField" );
 
@@ -3293,7 +3293,7 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
     }//END getSelectonField method.
 
@@ -3304,11 +3304,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field  object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField  object.</param>
     //  ---------------------------------------------------------------------------------
     private void getExternalRadioButtonField (
       Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getExternalRadioButtonField" );
 
@@ -3342,7 +3342,7 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       this.LogMethodEnd ( "getExternalRadioButtonField" );
 
@@ -3355,11 +3355,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field  object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField  object.</param>
     //  ---------------------------------------------------------------------------------
     private void getExternalCheckBoxField (
       Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getExternalCheckBoxField" );
 
@@ -3393,7 +3393,7 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       this.LogMethodEnd ( "getExternalCheckBoxField" );
 
@@ -3406,11 +3406,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getCheckButtonListField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getCheckButtonoField" );
       this.LogDebug ( "ItemValue: " + Field.ItemValue );
@@ -3425,7 +3425,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods object and variables.
       // 
       List<Evado.Model.EvOption> optionlist = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, false );
 
       // 
       // set the field properties and parameters.
@@ -3442,7 +3442,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3455,11 +3455,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getQueryCheckButtonListField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getQueryCheckButtonListField" );
       this.LogDebug ( "ItemValue: " + Field.ItemValue );
@@ -3474,7 +3474,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods object and variables.
       // 
       List<Evado.Model.EvOption> optionlist = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, false );
 
       // 
       // set the field properties and parameters.
@@ -3484,8 +3484,8 @@ namespace Evado.Digital.Adapter
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
 
-      GroupField.SetValueColumnWidth ( Evado.UniForm.Model.FieldValueWidths.Twenty_Percent );
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Field_Value_Legend, EdLabels.FormField_Checkbox_Query_Legend );
+      GroupField.SetValueColumnWidth ( Evado.UniForm.Model.EuFieldValueWidths.Twenty_Percent );
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Field_Value_Legend, EdLabels.FormField_Checkbox_Query_Legend );
 
       this.LogDebug ( "GroupField.Value: " + GroupField.Value );
 
@@ -3494,7 +3494,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3507,11 +3507,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField"> Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField"> Evado.UniForm.Model.EuField object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getHorizontalRadioButtonField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getHorizontalRadioButtonField" );
 
@@ -3521,7 +3521,7 @@ namespace Evado.Digital.Adapter
       // Initialise the methods object and variables.
       // 
       List<Evado.Model.EvOption> optionlist = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, false );
 
       optionlist.Add ( new Evado.Model.EvOption ( "", "Not Selected" ) );
 
@@ -3532,14 +3532,14 @@ namespace Evado.Digital.Adapter
       GroupField.Value = Field.ItemValue;
       GroupField.OptionList = optionlist;
       GroupField.Mandatory = Field.Design.Mandatory;
-      GroupField.setBackgroundColor ( Evado.UniForm.Model.FieldParameterList.BG_Mandatory, Evado.UniForm.Model.Background_Colours.Red );
+      GroupField.setBackgroundColor ( Evado.UniForm.Model.EuFieldParameters.BG_Mandatory, Evado.UniForm.Model.EuBackgroundColours.Red );
 
       // 
       // Set the custom validation script if it exists.
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3552,11 +3552,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">  Evado.UniForm.Model.Fields object.</param>
+    /// <param name="GroupField">  Evado.UniForm.Model.EuFields object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getAnalogueScaleField ( Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getAnalogueScale" );
 
@@ -3566,10 +3566,10 @@ namespace Evado.Digital.Adapter
       GroupField.Type = Evado.Model.EvDataTypes.Analogue_Scale;
       GroupField.Value = Field.ItemValue;
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Min_Label,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Min_Label,
        Field.Design.AnalogueLegendStart );
 
-      GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Max_Label,
+      GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Max_Label,
        Field.Design.AnalogueLegendFinish );
 
       // 
@@ -3577,7 +3577,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3590,11 +3590,11 @@ namespace Evado.Digital.Adapter
     /// 
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     //  ---------------------------------------------------------------------------------
     private void getUserEndorsementField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getPasswordField" );
 
@@ -3616,12 +3616,12 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Field">   Evado.Digital.Model.EvForm object containing the form to be generated.</param>
     /// <param name="ViewState">  Evado.Digital.Model.EvForm.FormDisplayStates enumerated value.</param>
-    /// <param name="GroupField">Evado.UniForm.Model.Field object.</param>
+    /// <param name="GroupField">Evado.UniForm.Model.EuField object.</param>
     /// <returns>String containing HTML markup for the form.</returns>
     //  ---------------------------------------------------------------------------------
     private void getTableField (
         Evado.Digital.Model.EdRecordField Field,
-      Evado.UniForm.Model.Field GroupField )
+      Evado.UniForm.Model.EuField GroupField )
     {
       this.LogMethod ( "getFormFieldTable" );
 
@@ -3637,10 +3637,10 @@ namespace Evado.Digital.Adapter
       // 
       // set the field properties and parameters.
       // 
-      GroupField.Table = new Evado.UniForm.Model.Table ( );
+      GroupField.Table = new Evado.UniForm.Model.EuTable ( );
       GroupField.Type = Evado.Model.EvDataTypes.Table;
-      GroupField.EditAccess = Evado.UniForm.Model.EditAccess.Inherited;
-      GroupField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Column_Layout;
+      GroupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Inherited;
+      GroupField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Column_Layout;
 
       // 
       // Initialise the field object.
@@ -3675,11 +3675,16 @@ namespace Evado.Digital.Adapter
           GroupField.Table.Header [ column ].OptionsOrUnit = Field.Table.Header [ column ].OptionsOrUnit;
         }
 
-        if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Radio_Button_List
-          || GroupField.Table.Header [ column ].TypeId == EvDataTypes.Selection_List )
+        if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Radio_Button_List)
         {
           GroupField.Table.Header [ column ].OptionList = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-            Field.Table.Header [ column ].OptionsOrUnit );
+            Field.Table.Header [ column ].OptionsOrUnit, false );
+        }
+
+        if ( GroupField.Table.Header [ column ].TypeId == EvDataTypes.Selection_List )
+        {
+          GroupField.Table.Header [ column ].OptionList = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
+            Field.Table.Header [ column ].OptionsOrUnit, true );
         }
 
       }//END Column interation loop
@@ -3692,7 +3697,7 @@ namespace Evado.Digital.Adapter
         // 
         // Initialise iteration variables and objects.
         // 
-        Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+        Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
         Evado.Digital.Model.EdRecordTableRow evRow = Field.Table.Rows [ inRow ];
 
         // 
@@ -3728,7 +3733,7 @@ namespace Evado.Digital.Adapter
       // 
       if ( Field.Design.JavaScript != String.Empty )
       {
-        GroupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Validation_Callback,
+        GroupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Validation_Callback,
           "Evado.Pages.[ '" + this._PageId + "' ]." + Field.FieldId + "_Validation" );
       }
 
@@ -3750,7 +3755,7 @@ namespace Evado.Digital.Adapter
     /// <param name="User">the user profile.</param>
     //  ----------------------------------------------------------------------------------
     public void updateFormObject (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
          Evado.Digital.Model.EdRecord Form )
     {
       this.LogMethod ( "updateFormObject" );
@@ -3823,14 +3828,14 @@ namespace Evado.Digital.Adapter
     /// <param name="ParameterName">String: name of the parameter to be retrieved.</param>
     //  ---------------------------------------------------------------------------------
     private String GetParameterValue (
-      List<Evado.UniForm.Model.Parameter> ParameterList,
+      List<Evado.UniForm.Model.EuParameter> ParameterList,
       String ParameterName )
     {
       // 
       // Search the parmeters for existing parameters.
       // and exit if update the value.
       // 
-      foreach ( Evado.UniForm.Model.Parameter parameter in ParameterList )
+      foreach ( Evado.UniForm.Model.EuParameter parameter in ParameterList )
       {
         if ( parameter.Name.ToLower ( ) == ParameterName.ToLower ( ) )
         {
@@ -3854,7 +3859,7 @@ namespace Evado.Digital.Adapter
     /// <returns>Returns a string containing the Java Scripts.</returns>
     //  ----------------------------------------------------------------------------------
     private void updateFormComments (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
          Evado.Digital.Model.EdRecord Form )
     {
       this.LogMethod ( "updateFormComments" );
@@ -3935,7 +3940,7 @@ namespace Evado.Digital.Adapter
     /// <returns>Returns a   Evado.Digital.Model.EvFormField object.</returns>
     //  ----------------------------------------------------------------------------------
     private void updateFormField (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
         Evado.Digital.Model.EdRecordField FormField,
          Evado.Digital.Model.EdRecordObjectStates FormState )
     {
@@ -4056,7 +4061,7 @@ namespace Evado.Digital.Adapter
     /// <param name="IsFreeText">boolean: if the field is free text or not.</param>
     //  ----------------------------------------------------------------------------------
     private void updateTextField (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
         Evado.Digital.Model.EdRecordField FormField,
        bool IsFreeText )
     {
@@ -4180,7 +4185,7 @@ namespace Evado.Digital.Adapter
     /// <returns>String Returns a form field commenet.</returns>
     //  ----------------------------------------------------------------------------------
     private void updateUserEndorcementField (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
         Evado.Digital.Model.EdRecordField FormField )
     {
       //this.LogMethod ( "updateUserEndorcementField method " );
@@ -4272,7 +4277,7 @@ namespace Evado.Digital.Adapter
     /// <returns>String Returns a form field commenet.</returns>
     //  ----------------------------------------------------------------------------------
     private void updateFormTableFields (
-      List<Evado.UniForm.Model.Parameter> CommandParameters,
+      List<Evado.UniForm.Model.EuParameter> CommandParameters,
         Evado.Digital.Model.EdRecordField FormField )
     {
       this.LogMethod ( "updateFormTableFields method " );
@@ -4364,7 +4369,7 @@ namespace Evado.Digital.Adapter
     private void getFormJavaScript (
       Guid PageGuid,
       List<Evado.Digital.Model.EdRecordField> FieldList,
-      Evado.UniForm.Model.Page ClientDataObject,
+      Evado.UniForm.Model.EuPage ClientDataObject,
       String BinaryFilePath )
     {
       this.LogMethod ( "getFormJavaScript" );

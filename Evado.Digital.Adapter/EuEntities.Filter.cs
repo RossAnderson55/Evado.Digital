@@ -44,11 +44,11 @@ namespace Evado.Digital.Adapter
     /// <summary>
     /// This method returns a client application ResultData object using field filters.
     /// </summary>
-    /// <param name="PageCommand">Evado.UniForm.Model.Command object.</param>
+    /// <param name="PageCommand">Evado.UniForm.Model.EuCommand object.</param>
     /// <returns>ClientApplicationData object</returns>
     //  -----------------------------------------------------------------------------
-    private Evado.UniForm.Model.AppData GetFilteredListObject (
-      Evado.UniForm.Model.Command PageCommand )
+    private Evado.UniForm.Model.EuAppData GetFilteredListObject (
+      Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "GetFilteredListObject" );
       this.LogDebug ( "EntitySelectionState: " + this.Session.EntityStateSelection );
@@ -61,7 +61,7 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.AppData clientDataObject = new Evado.UniForm.Model.AppData ( );
+      Evado.UniForm.Model.EuAppData clientDataObject = new Evado.UniForm.Model.EuAppData ( );
       List<EdRecord> recordList = new List<EdRecord> ( );
 
       //
@@ -241,16 +241,16 @@ namespace Evado.Digital.Adapter
     /// <param name="ApplicationObject">Adapter.ApplicationObjects object.</param>
     //  ------------------------------------------------------------------------------
     private void getFilteredList_SelectionGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getFilteredList_SelectionGroup" );
       //
       // Initialise the methods variables and objects.
       //
-      Evado.UniForm.Model.Group pageGroup = null;
-      Evado.UniForm.Model.Command selectionCommand = null;
+      Evado.UniForm.Model.EuGroup pageGroup = null;
+      Evado.UniForm.Model.EuCommand selectionCommand = null;
       List<EvOption> optionList;
-      Evado.UniForm.Model.Field groupField;
+      Evado.UniForm.Model.EuField groupField;
 
       //
       // if hide selection group is enabled exit 
@@ -265,10 +265,10 @@ namespace Evado.Digital.Adapter
       // 
       pageGroup = PageObject.AddGroup (
         EdLabels.Entities_Selection_Group_Title,
-        Evado.UniForm.Model.EditAccess.Enabled );
-      pageGroup.GroupType = Evado.UniForm.Model.GroupTypes.Default;
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
-      pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Offline_Hide_Group, true );
+        Evado.UniForm.Model.EuEditAccess.Enabled );
+      pageGroup.GroupType = Evado.UniForm.Model.EuGroupTypes.Default;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
+      pageGroup.AddParameter ( Evado.UniForm.Model.EuGroupParameters.Offline_Hide_Group, true );
 
       //
       // if the entity is not selected display an entity selection field.
@@ -292,7 +292,7 @@ namespace Evado.Digital.Adapter
           optionList );
 
         groupField.Layout = EuAdapter.DefaultFieldLayout;
-        groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+        groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
         // 
         // Add the selection groupCommand
@@ -301,9 +301,9 @@ namespace Evado.Digital.Adapter
           EdLabels.Entities_Selection_Command_Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities.ToString ( ),
-          Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+          Evado.UniForm.Model.EuMethods.Custom_Method );
 
-        selectionCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+        selectionCommand.setCustomMethod ( Evado.UniForm.Model.EuMethods.List_of_Objects );
 
         selectionCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_Filter_View );
 
@@ -390,9 +390,9 @@ namespace Evado.Digital.Adapter
         EdLabels.Entities_Selection_Command_Title,
         EuAdapter.ADAPTER_ID,
         EuAdapterClasses.Entities.ToString ( ),
-        Evado.UniForm.Model.ApplicationMethods.Custom_Method );
+        Evado.UniForm.Model.EuMethods.Custom_Method );
 
-      selectionCommand.setCustomMethod ( Evado.UniForm.Model.ApplicationMethods.List_of_Objects );
+      selectionCommand.setCustomMethod ( Evado.UniForm.Model.EuMethods.List_of_Objects );
 
       selectionCommand.SetPageId ( Evado.Digital.Model.EdStaticPageIds.Entity_Filter_View );
       ;
@@ -409,7 +409,7 @@ namespace Evado.Digital.Adapter
     /// <param name="FieldName">EdOrganisation.FieldNames enumerated list value</param>
     //  ------------------------------------------------------------------------------
     private void getQueryList_StaticOrgFilter (
-      Evado.UniForm.Model.Group PageGroup,
+      Evado.UniForm.Model.EuGroup PageGroup,
       EdOrganisation.FieldNames FieldName )
     {
       this.LogMethod ( "getQueryList_StaticOrgFilter" );
@@ -435,7 +435,7 @@ namespace Evado.Digital.Adapter
               this.Session.SelectedCountry,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
         case EdOrganisation.FieldNames.Address_Post_Code:
@@ -448,7 +448,7 @@ namespace Evado.Digital.Adapter
               this.Session.SelectedPostCode,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
         case EdOrganisation.FieldNames.Address_City:
@@ -461,7 +461,7 @@ namespace Evado.Digital.Adapter
               this.Session.SelectedCity,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
       }
@@ -476,7 +476,7 @@ namespace Evado.Digital.Adapter
     /// <param name="FieldName">EdOrganisation.FieldNames enumerated list value</param>
     //  ------------------------------------------------------------------------------
     private void getQueryList_StaticUserFilter (
-      Evado.UniForm.Model.Group PageGroup,
+      Evado.UniForm.Model.EuGroup PageGroup,
       EdUserProfile.FieldNames FieldName )
     {
       this.LogMethod ( "getQueryList_StaticUserFilter" );
@@ -503,7 +503,7 @@ namespace Evado.Digital.Adapter
               this.Session.SelectedUserCategory,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
         case EdUserProfile.FieldNames.User_Type:
@@ -516,7 +516,7 @@ namespace Evado.Digital.Adapter
               this.Session.SelectedUserType,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
       }
@@ -533,7 +533,7 @@ namespace Evado.Digital.Adapter
     /// <param name="Field">EdRecordField object.</param>
     //  ------------------------------------------------------------------------------
     private void getFilteredList_SelectionField (
-      Evado.UniForm.Model.Group PageGroup,
+      Evado.UniForm.Model.EuGroup PageGroup,
       int FilterIndex,
       String SelectionFilter,
       EdRecordField Field )
@@ -544,7 +544,7 @@ namespace Evado.Digital.Adapter
       //this.LogDebug ( "F: {0}, T: {1}, Type {2}. ", Field.FieldId, Field.Title, Field.TypeId );
 
       List<EvOption> optionList = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-        Field.Design.Options );
+        Field.Design.Options, true );
 
       optionList.Sort ( ( n1, n2 ) => n1.Description.CompareTo ( n2.Description ) );
 
@@ -568,7 +568,7 @@ namespace Evado.Digital.Adapter
               SelectionFilter,
               optionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
             break;
           }
@@ -580,7 +580,7 @@ namespace Evado.Digital.Adapter
               Field.Title,
               EvStatics.getBool ( SelectionFilter ) );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
             break;
           }
@@ -593,7 +593,7 @@ namespace Evado.Digital.Adapter
               SelectionFilter,
               selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
             break;
           }
@@ -615,7 +615,7 @@ namespace Evado.Digital.Adapter
               SelectionFilter,
               selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
             break;
           }
         case EvDataTypes.External_CheckBox_List:
@@ -636,7 +636,7 @@ namespace Evado.Digital.Adapter
               SelectionFilter,
               selectionOptionList );
             field.Layout = EuAdapter.DefaultFieldLayout;
-            field.AddParameter ( Evado.UniForm.Model.FieldParameterList.Snd_Cmd_On_Change, 1 );
+            field.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Snd_Cmd_On_Change, 1 );
 
             break;
           }
@@ -717,7 +717,7 @@ namespace Evado.Digital.Adapter
     /// <param name="PageObject">Evado.Model.Uniform.Page object to add the pageMenuGroup to.</param>
     //  ------------------------------------------------------------------------------
     private void getEntity_Summary_ListGroup (
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getEntity_Summary_ListGroup" );
       this.LogDebug ( "PageObject.EditAccess {0}.", PageObject.EditAccess );
@@ -749,11 +749,11 @@ namespace Evado.Digital.Adapter
     /// This method appends the milestone groupCommand to the page milestone list pageMenuGroup
     /// </summary>
     /// <param name="Entity">EvForm object</param>
-    /// <param name="PageGroup"> Evado.UniForm.Model.Group</param>
+    /// <param name="PageGroup"> Evado.UniForm.Model.EuGroup</param>
     //  -----------------------------------------------------------------------------
     private void getGroupSummaryListGroup (
       EdRecord Entity,
-      Evado.UniForm.Model.Page PageObject )
+      Evado.UniForm.Model.EuPage PageObject )
     {
       this.LogMethod ( "getGroupSummaryListGroup" );
       this.LogDebug ( "Entity.EntityId: " + Entity.EntityId );
@@ -762,18 +762,18 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the methods variables and objects.
       // 
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group ( );
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field ( );
-      Evado.UniForm.Model.Command groupCommand = new Evado.UniForm.Model.Command ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup ( );
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField ( );
+      Evado.UniForm.Model.EuCommand groupCommand = new Evado.UniForm.Model.EuCommand ( );
 
 
       // 
       // Create the record display pageMenuGroup.
       // 
       pageGroup = PageObject.AddGroup ( String.Empty );
-      pageGroup.CmdLayout = Evado.UniForm.Model.GroupCommandListLayouts.Horizontal_Orientation;
-      pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Dynamic;
-      pageGroup.AddParameter ( Evado.UniForm.Model.GroupParameterList.Percent_Width, 25 );
+      pageGroup.CmdLayout = Evado.UniForm.Model.EuGroupCommandListLayouts.Horizontal_Orientation;
+      pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Dynamic;
+      pageGroup.AddParameter ( Evado.UniForm.Model.EuGroupParameters.Percent_Width, 25 );
 
       foreach ( EdRecordField field in Entity.Fields )
       {
@@ -810,7 +810,7 @@ namespace Evado.Digital.Adapter
         //
         // Define the layout.
         //
-        Evado.UniForm.Model.FieldLayoutCodes layout = Evado.UniForm.Model.FieldLayoutCodes.Left_Justified;
+        Evado.UniForm.Model.EuFieldLayoutCodes layout = Evado.UniForm.Model.EuFieldLayoutCodes.Left_Justified;
 
         switch ( field.TypeId )
         {
@@ -820,7 +820,7 @@ namespace Evado.Digital.Adapter
                 String.Empty,
                 field.Title,
                 field.ItemValue, 125, 0 );
-              groupField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+              groupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
               groupField.Layout = layout;
 
               continue;
@@ -839,7 +839,7 @@ namespace Evado.Digital.Adapter
                 String.Empty,
                 field.Title,
                 value );
-              groupField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+              groupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
               groupField.Layout = layout;
 
               continue;
@@ -853,7 +853,7 @@ namespace Evado.Digital.Adapter
                 String.Empty,
                 field.Title,
                 field.ItemValue );
-              groupField.EditAccess = Evado.UniForm.Model.EditAccess.Disabled;
+              groupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Disabled;
               groupField.Layout = layout;
               continue;
             }
@@ -867,7 +867,7 @@ namespace Evado.Digital.Adapter
           Entity.Title,
           EuAdapter.ADAPTER_ID,
           EuAdapterClasses.Entities,
-          Evado.UniForm.Model.ApplicationMethods.Get_Object );
+          Evado.UniForm.Model.EuMethods.Get_Object );
 
       groupCommand.Id = Entity.Guid;
       groupCommand.SetGuid ( Entity.Guid );
@@ -898,10 +898,10 @@ namespace Evado.Digital.Adapter
               title,
               EuAdapter.ADAPTER_ID,
               EuAdapterClasses.Entities,
-              Evado.UniForm.Model.ApplicationMethods.Get_Object );
-          groupCommand.Type = Evado.UniForm.Model.CommandTypes.Http_Link;
+              Evado.UniForm.Model.EuMethods.Get_Object );
+          groupCommand.Type = Evado.UniForm.Model.EuCommandTypes.Http_Link;
 
-          groupCommand.AddParameter ( Evado.UniForm.Model.CommandParameters.Link_Url, url );
+          groupCommand.AddParameter ( Evado.UniForm.Model.EuCommandParameters.Link_Url, url );
         }
       }
 
@@ -914,7 +914,7 @@ namespace Evado.Digital.Adapter
     /// This method returns the desciption value for a selection option value.
     /// </summary>
     /// <param name="Entity">EvForm object</param>
-    /// <param name="PageGroup"> Evado.UniForm.Model.Group</param>
+    /// <param name="PageGroup"> Evado.UniForm.Model.EuGroup</param>
     //  -----------------------------------------------------------------------------
     private string getSelectionDescription ( EdRecordField Field, String Value )
     {

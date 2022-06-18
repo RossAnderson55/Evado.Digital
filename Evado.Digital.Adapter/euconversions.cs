@@ -100,19 +100,19 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="FormRecordFields">The list of EvFormField objects.</param>
     /// <param name="Section">The EvFormSection defining the section to be displayed.</param>
-    /// <param name="EditStatus">Evado.UniForm.Model.EditAccess defining the field edit status.</param>
+    /// <param name="EditStatus">Evado.UniForm.Model.EuEditAccess defining the field edit status.</param>
     /// <returns>ClientClientDataObjectGorup object</returns>
     // ---------------------------------------------------------------------------------
-    public static Evado.UniForm.Model.Group convertListOfEvFormFields (
+    public static Evado.UniForm.Model.EuGroup convertListOfEvFormFields (
       List< Evado.Digital.Model.EdRecordField> FormRecordFields,
         Evado.Digital.Model.EdRecordSection Section,
-      Evado.UniForm.Model.EditAccess EditStatus )
+      Evado.UniForm.Model.EuEditAccess EditStatus )
     {
       return convertListOfEvFormFields (
         FormRecordFields,
         Section,
         EditStatus,
-        Evado.UniForm.Model.GroupLayouts.Full_Width );
+        Evado.UniForm.Model.EuGroupLayouts.Full_Width );
     }
 
     // =================================================================================
@@ -121,15 +121,15 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="FormRecordFields">The list of EvFormField objects.</param>
     /// <param name="Section">The EvFormSection defining the section to be displayed.</param>
-    /// <param name="EditStatus">Evado.UniForm.Model.EditAccess defining the field edit status.</param>
-    /// <param name="GroupLayout">Evado.UniForm.Model.GroupLayouts defining the pageMenuGroup layout setting.</param>
+    /// <param name="EditStatus">Evado.UniForm.Model.EuEditAccess defining the field edit status.</param>
+    /// <param name="GroupLayout">Evado.UniForm.Model.EuGroupLayouts defining the pageMenuGroup layout setting.</param>
     /// <returns>ClientClientDataObjectGorup object</returns>
     // ---------------------------------------------------------------------------------
-    public static Evado.UniForm.Model.Group convertListOfEvFormFields (
+    public static Evado.UniForm.Model.EuGroup convertListOfEvFormFields (
       List< Evado.Digital.Model.EdRecordField> FormRecordFields,
        Evado.Digital.Model.EdRecordSection Section,
-      Evado.UniForm.Model.EditAccess EditStatus,
-      Evado.UniForm.Model.GroupLayouts GroupLayout )
+      Evado.UniForm.Model.EuEditAccess EditStatus,
+      Evado.UniForm.Model.EuGroupLayouts GroupLayout )
     {
       EuConversions._Status = "Evado.UniForm.Clinical.Conversions.convertListOfEvFormFields method "
         + " Field Count: " + FormRecordFields.Count
@@ -139,8 +139,8 @@ namespace Evado.Digital.Adapter
       // 
       // Initialise the method variables and objects.
       // 
-      List<Evado.UniForm.Model.Field> pageFieldList = new List<Evado.UniForm.Model.Field> ( );
-      Evado.UniForm.Model.Group pageGroup = new Evado.UniForm.Model.Group (
+      List<Evado.UniForm.Model.EuField> pageFieldList = new List<Evado.UniForm.Model.EuField> ( );
+      Evado.UniForm.Model.EuGroup pageGroup = new Evado.UniForm.Model.EuGroup (
         Section.Title,
         String.Empty,
         EditStatus );
@@ -160,11 +160,11 @@ namespace Evado.Digital.Adapter
       if ( Section.Title != String.Empty )
       {
         EuConversions._Status += "\r\nSection No: " + Section.No + ", Section: " + Section.Title;
-        pageGroup = new Evado.UniForm.Model.Group (
+        pageGroup = new Evado.UniForm.Model.EuGroup (
           Section.Title,
           Section.Instructions,
-          Evado.UniForm.Model.EditAccess.Inherited );
-        pageGroup.Layout = Evado.UniForm.Model.GroupLayouts.Full_Width;
+          Evado.UniForm.Model.EuEditAccess.Inherited );
+        pageGroup.Layout = Evado.UniForm.Model.EuGroupLayouts.Full_Width;
       }
       // 
       // Iterate through the EV option list.
@@ -179,7 +179,7 @@ namespace Evado.Digital.Adapter
         // 
         if ( Section.Title == String.Empty )
         {
-          Evado.UniForm.Model.Field pageField = convertEvFormfield ( field );
+          Evado.UniForm.Model.EuField pageField = convertEvFormfield ( field );
 
           if ( pageField != null )
           {
@@ -196,7 +196,7 @@ namespace Evado.Digital.Adapter
           if ( field.Design.SectionNo == Section.No )
           {
             EuConversions._Status = " >> SECTION SELECTED";
-            Evado.UniForm.Model.Field pageField = convertEvFormfield ( field );
+            Evado.UniForm.Model.EuField pageField = convertEvFormfield ( field );
 
             if ( pageField != null )
             {
@@ -222,16 +222,16 @@ namespace Evado.Digital.Adapter
     /// <param name="FormField">The list of EvFormField objects.</param>
     /// <returns>List of ClientClientDataObjectFields</returns>
     // ---------------------------------------------------------------------------------
-    public static Evado.UniForm.Model.Field convertEvFormfield (  Evado.Digital.Model.EdRecordField FormField )
+    public static Evado.UniForm.Model.EuField convertEvFormfield (  Evado.Digital.Model.EdRecordField FormField )
     {
       // 
       // Initialise the method variables and objects.
       // 
-      Evado.UniForm.Model.Field pageField = new Evado.UniForm.Model.Field (
+      Evado.UniForm.Model.EuField pageField = new Evado.UniForm.Model.EuField (
         FormField.FieldId,
         FormField.Title,
         Evado.Model.EvDataTypes.Null );
-      pageField.Layout = Evado.UniForm.Model.FieldLayoutCodes.Left_Justified;
+      pageField.Layout = Evado.UniForm.Model.EuFieldLayoutCodes.Left_Justified;
 
       if ( FormField.Design.Instructions != String.Empty )
       {
@@ -244,29 +244,29 @@ namespace Evado.Digital.Adapter
           {
             pageField.Type = Evado.Model.EvDataTypes.Text;
             pageField.Value = FormField.ItemValue;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Free_Text:
           {
             pageField.Type = Evado.Model.EvDataTypes.Free_Text;
             pageField.Value = FormField.ItemText;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Height, "5" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Height, "5" );
             break;
           }
         case Evado.Model.EvDataTypes.Date:
           {
             pageField.Type = Evado.Model.EvDataTypes.Date;
             pageField.Value = FormField.ItemValue;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "12" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "12" );
             break;
           }
         case Evado.Model.EvDataTypes.Time:
           {
             pageField.Type = Evado.Model.EvDataTypes.Time;
             pageField.Value = FormField.ItemValue;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "6" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "6" );
             break;
           }
         case Evado.Model.EvDataTypes.Numeric:
@@ -275,15 +275,15 @@ namespace Evado.Digital.Adapter
             pageField.Value = FormField.ItemValue;
 
             pageField.AddParameter ( 
-              Evado.UniForm.Model.FieldParameterList.Min_Value, 
+              Evado.UniForm.Model.EuFieldParameters.Min_Value, 
               FormField.Design.ValidationLowerLimit.ToString ( ) );
 
             pageField.AddParameter ( 
-              Evado.UniForm.Model.FieldParameterList.Max_Value, 
+              Evado.UniForm.Model.EuFieldParameters.Max_Value, 
               FormField.Design.ValidationUpperLimit.ToString ( ) );
 
             pageField.AddParameter ( 
-              Evado.UniForm.Model.FieldParameterList.Width, "10" );
+              Evado.UniForm.Model.EuFieldParameters.Width, "10" );
             break;
           }
         case Evado.Model.EvDataTypes.Selection_List:
@@ -293,7 +293,7 @@ namespace Evado.Digital.Adapter
             pageField.Value = FormField.ItemValue;
             pageField.OptionList = EuConversions.convertEvOptionsList ( FormField.Design.OptionList, true );
             pageField.AddParameter ( 
-              Evado.UniForm.Model.FieldParameterList.Width, "50" );
+              Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Radio_Button_List:
@@ -303,14 +303,14 @@ namespace Evado.Digital.Adapter
             pageField.Value = FormField.ItemValue;
             pageField.OptionList = EuConversions.convertEvOptionsList ( FormField.Design.OptionList, true );
             pageField.AddParameter ( 
-              Evado.UniForm.Model.FieldParameterList.Width, "50" );
+              Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Boolean:
           {
             pageField.Type = Evado.Model.EvDataTypes.Boolean;
             pageField.Value = FormField.ItemValue;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Check_Box_List:
@@ -318,7 +318,7 @@ namespace Evado.Digital.Adapter
             pageField.Type = Evado.Model.EvDataTypes.Check_Box_List;
             pageField.Value = FormField.ItemValue;
             pageField.OptionList = EuConversions.convertEvOptionsList ( FormField.Design.OptionList, true );
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Analogue_Scale:
@@ -326,7 +326,7 @@ namespace Evado.Digital.Adapter
           {
             pageField.Type = Evado.Model.EvDataTypes.Read_Only_Text;
             pageField.Value = FormField.ItemValue;
-            pageField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "50" );
+            pageField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "50" );
             break;
           }
         case Evado.Model.EvDataTypes.Table:
@@ -357,12 +357,12 @@ namespace Evado.Digital.Adapter
     /// <param name="FormField">The list of EvFormField objects.</param>
     /// <returns>List of ClientClientDataObjectFields</returns>
     // ---------------------------------------------------------------------------------
-    private static Evado.UniForm.Model.Field generateTableField (  Evado.Digital.Model.EdRecordField FormField )
+    private static Evado.UniForm.Model.EuField generateTableField (  Evado.Digital.Model.EdRecordField FormField )
     {
       // 
       // Initialise the method variables and objects.
       // 
-      Evado.UniForm.Model.Field groupField = new Evado.UniForm.Model.Field (
+      Evado.UniForm.Model.EuField groupField = new Evado.UniForm.Model.EuField (
         FormField.FieldId,
         FormField.Title,
        Evado.Model.EvDataTypes.Table );
@@ -374,10 +374,10 @@ namespace Evado.Digital.Adapter
       {
         groupField.Description =  FormField.Design.Instructions ;
       }
-      groupField.AddParameter ( Evado.UniForm.Model.FieldParameterList.Width, "100" );
-      groupField.EditAccess = Evado.UniForm.Model.EditAccess.Inherited;
+      groupField.AddParameter ( Evado.UniForm.Model.EuFieldParameters.Width, "100" );
+      groupField.EditAccess = Evado.UniForm.Model.EuEditAccess.Inherited;
       groupField.Type = Evado.Model.EvDataTypes.Table;
-      groupField.Table = new Evado.UniForm.Model.Table ( );
+      groupField.Table = new Evado.UniForm.Model.EuTable ( );
 
       // 
       // Initialise the table header
@@ -398,11 +398,15 @@ namespace Evado.Digital.Adapter
           {
             groupField.Table.Header [ column ].OptionsOrUnit = FormField.Table.Header [ column ].OptionsOrUnit;
           }
-          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Radio_Button_List
-            || groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Selection_List )
+          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Radio_Button_List )
           {
             groupField.Table.Header [ column ].OptionList = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
-              FormField.Table.Header [ column ].OptionsOrUnit );
+              FormField.Table.Header [ column ].OptionsOrUnit,false );
+          }
+          if ( groupField.Table.Header [ column ].TypeId == Evado.Model.EvDataTypes.Selection_List )
+          {
+            groupField.Table.Header [ column ].OptionList = Evado.UniForm.Model.EuStatics.getStringAsOptionList (
+              FormField.Table.Header [ column ].OptionsOrUnit, true );
           }
 
         }//END Column interation loop
@@ -412,7 +416,7 @@ namespace Evado.Digital.Adapter
         // 
         for ( int inRow = 0; inRow < FormField.Table.Rows.Count; inRow++ )
         {
-          Evado.UniForm.Model.TableRow row = new Evado.UniForm.Model.TableRow ( );
+          Evado.UniForm.Model.EuTableRow row = new Evado.UniForm.Model.EuTableRow ( );
 
           for ( int inColumn = 0; inColumn < FormField.Table.ColumnCount; inColumn++ )
           {
