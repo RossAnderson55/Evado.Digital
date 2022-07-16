@@ -26,7 +26,7 @@ using System.Web;
 using System.Web.SessionState;
 using System.Configuration;
 
- 
+
 using Evado.Model;
 using Evado.Digital.Bll;
 using Evado.Digital.Model;
@@ -138,7 +138,7 @@ namespace Evado.Digital.Adapter
 
       this.LogAction ( "User profile for " + this.Session.UserProfile.UserId + " GENERATED" );
 
-      this.LogDebug( this.Session.UserProfile.getUserProfile( true ) );
+      this.LogDebug ( this.Session.UserProfile.getUserProfile ( true ) );
 
       this.ClassParameters.UserProfile = this.Session.UserProfile;
       if ( this.Session.UserProfile.hasAdministrationAccess == false
@@ -240,7 +240,7 @@ namespace Evado.Digital.Adapter
       if ( this.Session.EntityDictionary.Count > 0 )
       {
         this.LogMethodEnd ( "loadDefaultChildEntity" );
-        return true ;
+        return true;
       }
 
       //
@@ -255,7 +255,7 @@ namespace Evado.Digital.Adapter
           continue;
         }
 
-        if ( layout.hasReadAccess(  this.Session.UserProfile.Roles ) == false )
+        if ( layout.hasReadAccess ( this.Session.UserProfile.Roles ) == false )
         {
           continue;
         }
@@ -372,6 +372,11 @@ namespace Evado.Digital.Adapter
       //
       EdPageLayouts bll_PageLayouts = new EdPageLayouts ( this.ClassParameters );
       bll_PageLayouts.ClassParameters.LoggingLevel = 2;
+      string staticDataPath = this.ApplicationPath + @"StaticData\";
+      Newtonsoft.Json.JsonSerializerSettings jsonSettings = new Newtonsoft.Json.JsonSerializerSettings
+      {
+        NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+      };
 
       // 
       // Query the database to retrieve a list of the records matching the query parameter values.
@@ -380,12 +385,19 @@ namespace Evado.Digital.Adapter
 
       this.LogInitClass ( bll_PageLayouts.Log );
 
+      EdPageLayout defaultPage = Evado.Model.EvStatics.Files.readJsonFile<EdPageLayout> ( staticDataPath, @"default.PageLayout.json" );
+    
+      if ( defaultPage != null )
+      {
+        EuAdapter.AdapterObjects.AllPageLayouts.Add ( defaultPage );
+      }
+
+      this.LogInit ( "AllPageLayouts.Count: " + EuAdapter.AdapterObjects.AllPageLayouts.Count );
+
       foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
       {
         this.LogInit ( "{0} - {1} > UserType {2} ", pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
       }
-
-      this.LogInit ( "AllPageLayouts.Count: " + EuAdapter.AdapterObjects.AllPageLayouts.Count );
 
       this.LogInitMethodEnd ( "loadPageLayoutList" );
 
@@ -561,16 +573,16 @@ namespace Evado.Digital.Adapter
     //  ---------------------------------------------------------------------------------
     public void LoadPageIdentifiers ( )
     {
-      this.LogInitMethod( "LoadPageIdentifiers method" );
+      this.LogInitMethod ( "LoadPageIdentifiers method" );
 
       if ( EuAdapter.AdapterObjects.PageIdentifiers == null )
       {
         EuAdapter.AdapterObjects.PageIdentifiers = new List<EvOption> ( );
       }
-          
 
-      if( EuAdapter.AdapterObjects.PageIdentifiers.Count > 0 )
-      {  
+
+      if ( EuAdapter.AdapterObjects.PageIdentifiers.Count > 0 )
+      {
         return;
       }
 
@@ -666,7 +678,7 @@ namespace Evado.Digital.Adapter
       //
       foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
       {
-        if ( pageLayout.State !=  EdPageLayout.States.Issued )
+        if ( pageLayout.State != EdPageLayout.States.Issued )
         {
           continue;
         }
@@ -676,7 +688,7 @@ namespace Evado.Digital.Adapter
 
         this.LogInit ( "{0} = {1} - {2} > UserType {3} ", pageId, pageLayout.PageId, pageLayout.Title, pageLayout.UserTypes );
 
-        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageId + " - "+ pageLayout.Title ) );
+        EuAdapter.AdapterObjects.PageIdentifiers.Add ( new EvOption ( pageId, pageId + " - " + pageLayout.Title ) );
 
       }//END page list iteration
 
@@ -720,7 +732,7 @@ namespace Evado.Digital.Adapter
         {
           case EdRecord.ParentTypeList.Organisation_Default:
             {
-              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId +EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX2;
+              pageId = EuAdapter.CONST_ENTITY_PREFIX + entityLayout.LayoutId + EuAdapter.CONST_ORG_PARENT_PAGE_ID_SUFFIX2;
               pageLabel = pageId.Replace ( "_", " " );
 
               this.LogInit ( "{0} = {1} - {2} > ParentType {3} ", pageId, entityLayout.LayoutId, entityLayout.Title, entityLayout.Design.ParentType );

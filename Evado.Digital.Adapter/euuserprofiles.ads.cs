@@ -371,7 +371,7 @@ namespace Evado.Digital.Adapter
       adUserProfile.GivenName = this.Session.AdminUserProfile.GivenName;
       adUserProfile.Surname = this.Session.AdminUserProfile.FamilyName;
       adUserProfile.DisplayName = this.Session.AdminUserProfile.CommonName;
-      adUserProfile.EmailAddress = this.Session.AdminUserProfile.EmailAddress;
+      adUserProfile.EmailAddress = this.Session.AdminUserProfile.EmailAddress.Address;
       adUserProfile.Password = this.Session.AdminUserProfile.Password;
       adUserProfile.Enabled = true;
       string description = adUserProfile.Description;
@@ -541,8 +541,8 @@ namespace Evado.Digital.Adapter
       // Validate that the necessary parametes exist.
       //
       if ( this.AdapterObjects.ApplicationUrl == String.Empty
-        || this.Session.AdminUserProfile.EmailAddress == String.Empty
-        || this.AdapterObjects.SupportEmailAddress == String.Empty )
+        || this.Session.AdminUserProfile.EmailAddress.Address == String.Empty
+        || this.AdapterObjects.SupportEmailAddress.Address == String.Empty )
       {
         this.LogValue ( "Parameters Missing" );
         this.LogMethodEnd ( "sendUserNotificationEmail" );
@@ -595,7 +595,7 @@ namespace Evado.Digital.Adapter
         this.Session.AdminUserProfile.FamilyName );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_EMAIL_ADDRESS,
-        this.Session.AdminUserProfile.EmailAddress );
+        this.Session.AdminUserProfile.EmailAddress.TextEmailAddress );
 
       EmailBody = EmailBody.Replace ( EvcStatics.TEXT_SUBSITUTION_USER_ID,
         this.Session.AdminUserProfile.UserId );

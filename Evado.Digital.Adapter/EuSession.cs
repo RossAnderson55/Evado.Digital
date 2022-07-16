@@ -63,6 +63,11 @@ namespace Evado.Digital.Adapter
       set { this._PaperConsentPageAccess = value; }
     }
 
+    //
+    // this data object contains the current client data object.
+    //
+    public Evado.UniForm.Model.EuAppData ClientDataObject = new UniForm.Model.EuAppData ( );
+
     #endregion
 
     #region Adapter properties members

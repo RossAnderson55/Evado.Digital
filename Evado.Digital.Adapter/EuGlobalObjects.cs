@@ -608,11 +608,11 @@ namespace Evado.Digital.Adapter
       }
     }
 
-    private string _SupportEmailAddress = String.Empty;
+    private EvEmailAddress _SupportEmailAddress = new EvEmailAddress ( );
     /// <summary>
     /// This property contains the password reset Urla
     /// </summary>
-    public string SupportEmailAddress
+    public EvEmailAddress SupportEmailAddress
     {
       get
       {
@@ -1231,7 +1231,7 @@ namespace Evado.Digital.Adapter
         string value = ConfigurationManager.AppSettings [ EuAdapter.CONFIG_SUPPORT_EMAIL_ADDRESS_KEY ];
         if ( value != String.Empty )
         {
-          this._SupportEmailAddress = value;
+          this._SupportEmailAddress = new EvEmailAddress( value );
         }
       }
       this.LogDebug ( "SupportEmailAddress: " + this._SupportEmailAddress );

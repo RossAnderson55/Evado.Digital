@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="StaticData\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Evado.Digital.Model\Evado.Digital.Model.csproj">

@@ -432,24 +432,25 @@ namespace Evado.Digital.Adapter
     /// </summary>
     /// <param name="Subject">The email subject string</param>
     /// <param name="HtmlBody">The email html body</param>
-    /// <param name="SenderEmailAddress">The sender's email address</param>
-    /// <param name="RecipantEmailAddresses">Delimited string of recipant email addresses.</param>
+    /// <param name="SenderEmailAddress">The sender's email address object</param>
+    /// <param name="RecipantEmailAddress">recipant email addresses object.</param>
     /// <param name="AttachmentDirectoryPath">Directory path to the attachment if it exists.</param>
     /// <returns>EmailStatus value</returns>
     //  ---------------------------------------------------------------------------------
     public EmailStatus sendEmail (
       String Subject,
       String HtmlBody,
-      String SenderEmailAddress,
-      String RecipantEmailAddresses,
+      EvEmailAddress SenderEmailAddress,
+      EvEmailAddress RecipantEmailAddress,
       String AttachmentDirectoryPath )
     {
       this._DebugLog.AppendLine ( EvStatics.CONST_METHOD_START + "Evado.Model.EvMail.sendEmail" );
       this._DebugLog.AppendLine ( "Subject: " + Subject );
       //this._DebugLog.AppendLine ( "HtmlBody: " + HtmlBody );
       this._DebugLog.AppendLine ( "SenderEmailAddress: " + SenderEmailAddress );
-      this._DebugLog.AppendLine ( "RecipantEmailAddresses: " + RecipantEmailAddresses );
+      this._DebugLog.AppendLine ( "RecipantEmailAddress: " + RecipantEmailAddress.DelmitedEmailAddress );
       this._DebugLog.AppendLine ( "AttachmentDirectoryPath: " + AttachmentDirectoryPath );
+
       try
       {
         //
@@ -464,7 +465,7 @@ namespace Evado.Digital.Adapter
         //
         // Validate that the are the settings for the SMTP server.
         //
-        if ( RecipantEmailAddresses == String.Empty )
+        if ( RecipantEmailAddress.Address == String.Empty  )
         {
           this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
           return EmailStatus.No_Reciever_Addresses;
@@ -473,9 +474,9 @@ namespace Evado.Digital.Adapter
         //
         // If the sender's email address is empty put in a dummy address.
         //
-        if ( SenderEmailAddress == String.Empty )
+        if ( SenderEmailAddress.Address == String.Empty )
         {
-          SenderEmailAddress = this._SmtpUserId;
+          SenderEmailAddress = new EvEmailAddress ( this._SmtpUserId );
         }
 
         //
@@ -485,41 +486,170 @@ namespace Evado.Digital.Adapter
         MailAddressCollection recipantAddressList = new MailAddressCollection ( );
         MailAddress replyToAddress = new MailAddress ( this._SmtpUserId );
 
-        //
-        // Generate an array of email addresses.
-        //
-        String [ ] arrRecipantEmailAddresses = RecipantEmailAddresses.Split ( ';' );
 
         //
         // Create the to address list.
         //
-        foreach ( String recipantEmailAddress in arrRecipantEmailAddresses )
+        recipantAddressList.Add ( RecipantEmailAddress.MsEmailAddress );
+
+        this._DebugLog.AppendLine ( "toAddresses: " + recipantAddressList.Count );
+
+        if ( recipantAddressList.Count == 0 )
         {
-          String stRecipantEmailAddress = recipantEmailAddress.Replace ( "(", "<" );
-          stRecipantEmailAddress = stRecipantEmailAddress.Replace ( ")", ">" );
+          this._DebugLog.AppendLine ( "No Addressee list." );
+          return EmailStatus.No_Reciever_Addresses;
+        }
 
-          if ( stRecipantEmailAddress.Contains ( ">" ) == true )
-          {
-            stRecipantEmailAddress = stRecipantEmailAddress.Replace ( ">", String.Empty );
-            int index = stRecipantEmailAddress.IndexOf ( '<' );
-            string recipantntName = stRecipantEmailAddress.Substring ( 0, index ).Trim ( );
-            string recipantntAddress = stRecipantEmailAddress.Substring ( index + 1 ).Trim ( );
+        this._DebugLog.AppendLine ( "Creating Email message." );
 
-            //this._DebugLog.AppendLine ( "name: " + recipantntName + ", address: " + recipantntAddress );
+        //
+        // Initialise the email message content
+        //
+        MailMessage message = new MailMessage ( fromAddress, recipantAddressList [ 0 ] );
+        message.ReplyToList.Add ( replyToAddress );
+        message.Subject = Subject;
 
-            MailAddress toAddress = new MailAddress ( recipantntAddress, recipantntName );
-            recipantAddressList.Add ( toAddress );
-          }
-          else
-          {
-            if ( recipantEmailAddress.Length > 0 )
-            {
-              //this._DebugLog.AppendLine ( "name: " + recipantEmailAddress + ", address: " + recipantEmailAddress );
+        message.IsBodyHtml = true;
+        message.Body = HtmlBody;
 
-              MailAddress toAddress = new MailAddress ( recipantEmailAddress, recipantEmailAddress );
-              recipantAddressList.Add ( toAddress );
-            }
-          }
+        //
+        // Add the to recipant email address list.
+        //
+        for ( int i = 1; i < recipantAddressList.Count; i++ )
+        {
+          message.To.Add ( recipantAddressList [ i ] );
+
+        }//END interation loop
+        this._DebugLog.AppendLine ( "message.To: " + message.To.Count );
+
+        //
+        // Get the report and save it in a temporary file.
+        //
+        if ( AttachmentDirectoryPath != String.Empty )
+        {
+          //
+          // Create  the file attachment for this e-mail message.
+          //
+          Attachment attachment = new Attachment ( AttachmentDirectoryPath );
+
+          // Add the file attachment to this e-mail message.
+          message.Attachments.Add ( attachment );
+          this._DebugLog.AppendLine ( "message.Attachments: " + message.Attachments.Count );
+        }
+
+        //
+        // Initialise the Smtp Email client
+        //
+        SmtpClient smtpClient = new SmtpClient ( this._SmtpServer, this._SmtpServerPort );
+        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        smtpClient.EnableSsl = _EnableSsl;
+        this._DebugLog.AppendLine ( "client.Host: " + smtpClient.Host );
+        this._DebugLog.AppendLine ( "client.Port: " + smtpClient.Port );
+        this._DebugLog.AppendLine ( "client.DeliveryMethod: " + smtpClient.DeliveryMethod );
+        this._DebugLog.AppendLine ( "client.EnableSsl: " + smtpClient.EnableSsl );
+
+        //
+        // Initialise the email server credentials if it is needed.
+        //
+        if ( this._SmtpUserId != String.Empty )
+        {
+          this._DebugLog.AppendLine ( "SmtpUserId: " + this._SmtpUserId );
+          this._DebugLog.AppendLine ( "SmtpPassword: " + this._SmtpPassword );
+
+          smtpClient.Credentials = new System.Net.NetworkCredential ( this._SmtpUserId, this._SmtpPassword );
+        }
+
+        //
+        // Send the email message.
+        //
+        smtpClient.Send ( message );
+
+        this._DebugLog.AppendLine ( "Email Sent." );
+
+        return EmailStatus.Email_Sent;
+      }
+      catch ( Exception Ex )
+      {
+        this._DebugLog.AppendLine ( "Event content: " );
+        this._DebugLog.AppendLine ( EvStatics.getException ( Ex ) );
+
+        return EmailStatus.Email_Send_Request_Failed;
+      }
+
+    }//END sendEmail method
+
+    //  ==================================================================================
+    /// <summary>
+    ///
+    ///  This method sends an email to the recipants in the email address list.
+    /// 
+    /// </summary>
+    /// <param name="Subject">The email subject string</param>
+    /// <param name="HtmlBody">The email html body</param>
+    /// <param name="SenderEmailAddress">The sender's email address</param>
+    /// <param name="RecipantEmailAddresses">Delimited string of recipant email addresses.</param>
+    /// <param name="AttachmentDirectoryPath">Directory path to the attachment if it exists.</param>
+    /// <returns>EmailStatus value</returns>
+    //  ---------------------------------------------------------------------------------
+    public EmailStatus sendEmail (
+      String Subject,
+      String HtmlBody,
+      EvEmailAddress SenderEmailAddress,
+      List<EvEmailAddress> RecipantEmailAddresses,
+      String AttachmentDirectoryPath )
+    {
+      this._DebugLog.AppendLine ( EvStatics.CONST_METHOD_START + "Evado.Model.EvMail.sendEmail" );
+      this._DebugLog.AppendLine ( "Subject: " + Subject );
+      //this._DebugLog.AppendLine ( "HtmlBody: " + HtmlBody );
+      this._DebugLog.AppendLine ( "SenderEmailAddress: " + SenderEmailAddress );
+      this._DebugLog.AppendLine ( "RecipantEmailAddress.Count: " + RecipantEmailAddresses.Count );
+      this._DebugLog.AppendLine ( "AttachmentDirectoryPath: " + AttachmentDirectoryPath );
+      try
+      {
+        foreach ( EvEmailAddress mailAddress in RecipantEmailAddresses )
+        {
+          this._DebugLog.AppendFormat ( "mailAddress: {0}.\r\n", mailAddress.TextEmailAddress );
+        }
+        //
+        // Validate that the are the settings for the SMTP server.
+        //
+        if ( this._SmtpServer == String.Empty )
+        {
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_SMTP_Url ) );
+          return EmailStatus.No_SMTP_Url;
+        }
+
+        //
+        // Validate that the are the settings for the SMTP server.
+        //
+        if ( RecipantEmailAddresses.Count == 0 )
+        {
+          this._DebugLog.AppendLine ( EvStatics.enumValueToString ( EmailStatus.No_Reciever_Addresses ) );
+          return EmailStatus.No_Reciever_Addresses;
+        }
+
+        //
+        // If the sender's email address is empty put in a dummy address.
+        //
+        if ( SenderEmailAddress.Address == String.Empty )
+        {
+          SenderEmailAddress = new EvEmailAddress( this._SmtpUserId );
+        }
+
+        //
+        // Get the list of email addresses.
+        //
+        MailAddress fromAddress = new MailAddress ( this._SmtpUserId );
+        MailAddressCollection recipantAddressList = new MailAddressCollection ( );
+        MailAddress replyToAddress = new MailAddress ( this._SmtpUserId );
+
+
+        //
+        // Create the to address list.
+        //
+        foreach ( EvEmailAddress mailAddress in RecipantEmailAddresses )
+        {
+          recipantAddressList.Add ( mailAddress.MsEmailAddress );
 
         }//END interation loop
 

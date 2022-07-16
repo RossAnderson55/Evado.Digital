@@ -318,7 +318,7 @@ namespace Evado.Digital.Adapter
       groupField = pageGroup.createEmailAddressField (
          Evado.Digital.Model.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
-        this.Session.UserProfile.EmailAddress );
+        this.Session.UserProfile.EmailAddress.Address );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       #endregion
 

@@ -26,7 +26,7 @@ using System.Web;
 using System.Web.SessionState;
 using System.Configuration;
 
- 
+
 using Evado.Model;
 using Evado.Digital.Bll;
 using Evado.Digital.Model;
@@ -49,7 +49,7 @@ namespace Evado.Digital.Adapter
     // ----------------------------------------------------------------------------------
     public EuAdapter ( )
     {
-      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter";
 
       Evado.Digital.Bll.EvStaticSetting.EventLogSource = this._EventLogSource;
 
@@ -99,7 +99,7 @@ namespace Evado.Digital.Adapter
       String UniForm_BinaryFilePath,
       String UniForm_BinaryServiceUrl )
     {
-      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter.";
+      this.ClassNameSpace = "Evado.UniForm.Digital.EuAdapter";
       this.LogInitMethod ( "EuAdapter initialisation" );
       try
       {
@@ -115,7 +115,6 @@ namespace Evado.Digital.Adapter
         this.LogInit ( "Class Parameters: " );
         this.LogInit ( "-ClientVersion: " + this._ClientVersion );
         this.LogInit ( "-ServiceUserProfile UserId: " + this.ServiceUserProfile.UserId );
-        this.LogInit ( "-ClientDataObject.Title: " + this.ClientDataObject.Title );
         this.LogInit ( "-UniForm_BinaryFilePath: " + this.UniForm_BinaryFilePath );
         this.LogInit ( "-UniForm_BinaryServiceUrl: " + this.UniForm_BinaryServiceUrl );
         this.LogInit ( "-ApplicationPath: " + this.ApplicationPath );
@@ -216,7 +215,7 @@ namespace Evado.Digital.Adapter
         this.LogInit ( "-UserId: " + ClassParameters.UserProfile.UserId );
         this.LogInit ( "-UserCommonName: " + ClassParameters.UserProfile.CommonName );
 
-        this.LogInit ( "ClientDataObject.Page.Title: " + this.ClientDataObject.Page.Title );
+        this.LogInit ( "ClientDataObject.Page.Title: " + this.Session.ClientDataObject.Page.Title );
 
         if ( this.Session.AdminUserProfile != null )
         {
@@ -295,6 +294,8 @@ namespace Evado.Digital.Adapter
     public const int CONST_HOME_PAGE_GROUP_DEFAULT_WIDTH = 900;
     public const int CONST_HOME_PAGE_GROUP_MARGINS = 100;
     public const int CONST_HOME_PAGE_GROUP_MAXIMUM_WIDTH = 1200;
+
+    public const String CONST_DEFAULT_PAGE_ID = "Home_Page";
 
     /// <summary>
     /// This constant contains the page identifier prefix
@@ -549,7 +550,7 @@ namespace Evado.Digital.Adapter
         //  
         // Load the paremeters from the web.config if not already loaded.
         // 
-        if ( this.Session.HomePageGuid == null  )
+        if ( this.Session.HomePageGuid == null )
         {
           this.Session.HomePageGuid = Guid.NewGuid ( );
         }
@@ -564,7 +565,7 @@ namespace Evado.Digital.Adapter
         //
         this.loadUserOrganisation ( ); ;
 
-        this.LogDebug ( "Organisation {0} - {1}, Type{2}: ",
+        this.LogDebug ( "Organisation {0} - {1}, Type:{2} ",
           this.Session.Organisation.OrgId,
           this.Session.Organisation.Name,
           this.Session.Organisation.OrgType );
@@ -1251,70 +1252,42 @@ namespace Evado.Digital.Adapter
           {
             this.LogDebug ( "PAGE LAYOUT SELECTED." );
 
-            String pageId = PageCommand.GetPageId ( );
+            var clientdata = this.getPage ( PageCommand );
 
-            this.LogDebug ( "pageId {0}.", pageId );
-            if ( pageId != String.Empty )
+            if ( clientdata != null )
             {
-              return this.getHomePage ( PageCommand );
+              return clientdata;
             }
-
             // 
             // Return the instance to the list.
             // 
-            return this.generateHomePage ( PageCommand );
+            return this.generateDefaultHomePage ( PageCommand );
           }
         case EuAdapterClasses.Home_Page:
         default:
           {
             this.LogDebug ( "HOME PAGE SELECTED." );
 
-            String pageId = PageCommand.GetPageId ( );
-
-            this.LogDebug ( "PageId {0}", pageId );
-
-            if ( pageId != String.Empty )
-            {
-              return this.getHomePage ( PageCommand );
-            }
-
-            this.LogDebug ( "UserType {0}", this.Session.UserProfile.UserType );
-
             //
-            // If the user's home page is null load if based on teh user access to the page.
-            //
-            if ( this.Session.UserProfile.HomePage == null )
-            {
-              LogDebug ( "User Home page null" );
-
-              foreach ( EdPageLayout pageLayout in EuAdapter.AdapterObjects.AllPageLayouts )
-              {
-                this.LogDebug ( "PageId {0} - {1} UT: {2}",
-                  pageLayout.PageId,
-                  pageLayout.Title,
-                  pageLayout.UserTypes );
-
-
-                if ( pageLayout.hasUserType ( this.Session.UserProfile ) == true )
-                {
-                  this.Session.UserProfile.HomePage = pageLayout;
-                }
-              }
-            }
-
-            // this.LogDebug ( "UserProfile.HomePage {0}", this.Session.UserProfile.HomePage.PageId );
-            //
-            // Generate the user home page's layout if it is not null.
+            // Generate the user home page's layout if it exists.
             //
             if ( this.Session.UserProfile.HomePage != null )
             {
               return this.generatePage ( this.Session.UserProfile.HomePage, PageCommand );
             }
 
+            var clientdata = this.getHomePage ( PageCommand );
+
+            if ( clientdata != null )
+            {
+              return clientdata;
+            }
+
+
             // 
             // Return the instance to the list.
             // 
-            return this.generateHomePage ( PageCommand );
+            return this.generateDefaultHomePage ( PageCommand );
           }
       }//END Switch
 
@@ -1572,12 +1545,6 @@ namespace Evado.Digital.Adapter
 
       this.LogInit ( "ClientObjectKey: " + this._ClientObjectKey );
 
-      if ( this.GlobalObjectList.ContainsKey ( this._ClientObjectKey ) == true )
-      {
-        this.ClientDataObject = (Evado.UniForm.Model.EuAppData) this.GlobalObjectList [ this._ClientObjectKey ];
-
-        //this.LogInitValue ( "Last client data object loaded." );
-      }
 
       // 
       // define if the ADS service is enabled.
@@ -1601,7 +1568,7 @@ namespace Evado.Digital.Adapter
       this.LogInitValue ( "-Common Record: " + this.Session.CommonRecord.RecordId );
       this.LogInitValue ( "-RecordType: " + this.Session.FormRecordType );
       this.LogInitValue ( "-RecordQuerySelection: " + this.Session.RecordQuerySelection );
-      this.LogInitValue ( "-Last Page Title: " + this.ClientDataObject.Page.Title );
+      this.LogInitValue ( "-Last Page Title: " + this.Session.ClientDataObject.Page.Title );
       */
       this.LogInit ( "SESSION OBJECTS LOADED" );
 
@@ -1633,11 +1600,8 @@ namespace Evado.Digital.Adapter
       //
       // Save the last generated client data object
       //
-      //this.LogDebugValue ( "ClientObject.Page.Title: " + this.ClientDataObject.Page.Title );
-      //this.LogDebugValue ( "ClientObject.id: " + this.ClientDataObject.Id );
-
-
-      this.GlobalObjectList [ this._ClientObjectKey ] = this.ClientDataObject;
+      //this.LogDebugValue ( "ClientObject.Page.Title: " + this.Session.ClientDataObject.Page.Title );
+      //this.LogDebugValue ( "ClientObject.id: " + this.Session.ClientDataObject.Id );
 
       string Date_Key = this._SessionObjectKey;
 

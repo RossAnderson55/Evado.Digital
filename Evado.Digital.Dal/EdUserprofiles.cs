@@ -123,7 +123,7 @@ namespace Evado.Digital.Dal
     /// </summary>
     private const string PARM_Guid = "@Guid";
     private const string PARM_ORG_ID = "@OrgId";
-    public const string PARM_UserId = "@UserId";
+    public const string PARM_USER_ID = "@UserId";
     private const string PARM_ACTIVE_DIRECTORY_NAME = "@ActiveDirectName";
     private const string PARM_PREFIX = "@PREFIX";
     private const string PARM_GIVEN_NAME = "@GIVEN_NAME";
@@ -138,8 +138,8 @@ namespace Evado.Digital.Dal
     private const string PARM_ADDRESS_COUNTRY = "@ADDRESS_COUNTRY";
     private const string PARM_TELEPHONE = "@TELEPHONE";
     private const string PARM_MOBILE_PHONE = "@MOBILE_PHONE";
-    private const string PARM_CommonName = "@CommonName";
-    private const string PARM_EmailAddress = "@EmailAddress";
+    private const string PARM_COMMON_NAME = "@CommonName";
+    private const string PARM_EMAIL_ADDRESS = "@EmailAddress";
     private const string PARM_RoleId = "@RoleId";
     private const string PARM_TYPE = "@TYPE";
     private const string PARM_CATEGORY = "@CATEGORY";
@@ -177,7 +177,7 @@ namespace Evado.Digital.Dal
       {
         new SqlParameter( EdUserProfiles.PARM_Guid, SqlDbType.UniqueIdentifier),
         new SqlParameter( EdUserProfiles.PARM_ORG_ID, SqlDbType.NVarChar, 20),
-        new SqlParameter( EdUserProfiles.PARM_UserId, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_USER_ID, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_ACTIVE_DIRECTORY_NAME, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_PREFIX, SqlDbType.NVarChar, 10),
         new SqlParameter( EdUserProfiles.PARM_GIVEN_NAME, SqlDbType.NVarChar, 50),
@@ -192,8 +192,8 @@ namespace Evado.Digital.Dal
         new SqlParameter( EdUserProfiles.PARM_ADDRESS_COUNTRY, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_TELEPHONE, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_MOBILE_PHONE, SqlDbType.NVarChar, 50),
-        new SqlParameter( EdUserProfiles.PARM_CommonName, SqlDbType.NVarChar, 100),
-        new SqlParameter( EdUserProfiles.PARM_EmailAddress, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_COMMON_NAME, SqlDbType.NVarChar, 100),
+        new SqlParameter( EdUserProfiles.PARM_EMAIL_ADDRESS, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_RoleId, SqlDbType.NVarChar, 100),
         new SqlParameter( EdUserProfiles.PARM_TYPE, SqlDbType.NVarChar, 50),
         new SqlParameter( EdUserProfiles.PARM_CATEGORY, SqlDbType.NVarChar, 50),
@@ -242,7 +242,7 @@ namespace Evado.Digital.Dal
       parms [ 15 ].Value = UserProfile.Telephone;
       parms [ 16 ].Value = UserProfile.MobilePhone;
       parms [ 17 ].Value = UserProfile.CommonName;
-      parms [ 18 ].Value = UserProfile.EmailAddress.ToLower ( );
+      parms [ 18 ].Value = UserProfile.EmailAddress.DelmitedEmailAddress;
       parms [ 19 ].Value = UserProfile.Roles;
       parms [ 20 ].Value = UserProfile.UserType;
       parms [ 21 ].Value = UserProfile.UserCategory;
@@ -308,7 +308,7 @@ namespace Evado.Digital.Dal
       profile.AddressCountry = EvSqlMethods.getString ( Row, EdUserProfiles.DB_ADDRESS_COUNTRY );
       profile.Telephone = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TELEPHONE );
       profile.MobilePhone = EvSqlMethods.getString ( Row, EdUserProfiles.DB_MOBILE_PHONE );
-      profile.EmailAddress = EvSqlMethods.getString ( Row, EdUserProfiles.DB_EMAIL_ADDRESS ).ToLower ( );
+      profile.EmailAddress.DelmitedEmailAddress = EvSqlMethods.getString ( Row, EdUserProfiles.DB_EMAIL_ADDRESS );
       profile.Title = EvSqlMethods.getString ( Row, EdUserProfiles.DB_TITLE );
       profile.ExpiryDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_EXPIRY_DATE );
       profile.ImageFileName = EvSqlMethods.getString ( Row, EdUserProfiles.DB_IMAGE_FILENAME );
@@ -316,27 +316,6 @@ namespace Evado.Digital.Dal
       profile.UpdatedByUserId = EvSqlMethods.getString ( Row, EdUserProfiles.DB_UPDATED_BY_USER_ID );
       profile.UpdatedBy = EvSqlMethods.getString ( Row, EdUserProfiles.DB_UPDATE_BY );
       profile.UpdatedDate = EvSqlMethods.getDateTime ( Row, EdUserProfiles.DB_UPDATE_DATE );
-
-      if ( profile.Address_1 == String.Empty )
-      {
-        profile.Address_1 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_1);
-      }
-      if ( profile.Address_2 == String.Empty )
-      {
-        profile.Address_2 = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_2 );
-      }
-      if ( profile.Address_2 == String.Empty )
-      {
-        profile.AddressCity = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_CITY );
-      }
-      if ( profile.AddressCity == String.Empty )
-      {
-        profile.AddressState = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_STATE );
-      }
-      if ( profile.AddressCountry == String.Empty )
-      {
-        profile.AddressCountry = EvSqlMethods.getString ( Row, EdOrganisations.DB_ADDRESS_COUNTRY );
-      }
 
       this.LogDebug ( "Expiry Date{0}", profile.ExpiryDate );
       // 
@@ -717,7 +696,7 @@ namespace Evado.Digital.Dal
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-         new SqlParameter ( PARM_UserId, SqlDbType.Char, 50 )
+         new SqlParameter ( PARM_USER_ID, SqlDbType.Char, 50 )
       };
       cmdParms [ 0 ].Value = UserId;
 
@@ -726,7 +705,7 @@ namespace Evado.Digital.Dal
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_USER_ID + ")\r\n";
 
       //
       // Execute the query against the database
@@ -866,7 +845,7 @@ namespace Evado.Digital.Dal
       // 
       SqlParameter [ ] cmdParms = new SqlParameter [ ]
       {
-        new SqlParameter ( PARM_UserId, SqlDbType.Char, 100 )
+        new SqlParameter ( PARM_USER_ID, SqlDbType.Char, 100 )
       };
       cmdParms [ 0 ].Value = UserId;
 
@@ -874,7 +853,7 @@ namespace Evado.Digital.Dal
       // Generate the SQL query string
       // 
       sqlQueryString = SQL_SELECT_QUERY
-        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_UserId + ")\r\n";
+        + "WHERE (" + EdUserProfiles.DB_USER_ID + " = " + EdUserProfiles.PARM_USER_ID + ")\r\n";
 
       this.LogDebug ( sqlQueryString );
 
@@ -1177,12 +1156,12 @@ namespace Evado.Digital.Dal
       // 
       // Define the SQL query parameters and load the query values.
       // 
-      SqlParameter cmdParms = new SqlParameter ( PARM_UserId, SqlDbType.Char, 100 );
+      SqlParameter cmdParms = new SqlParameter ( PARM_USER_ID, SqlDbType.Char, 100 );
       cmdParms.Value = UserId;
       // 
       // Generate the SQL query string
       // 
-      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + DB_USER_ID + " = " + PARM_UserId + " );";
+      sqlQueryString = SQL_SELECT_QUERY + " WHERE (" + DB_USER_ID + " = " + PARM_USER_ID + " );";
 
       this.LogDebug ( sqlQueryString );
 

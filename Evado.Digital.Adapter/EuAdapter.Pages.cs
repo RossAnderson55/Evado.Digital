@@ -105,10 +105,13 @@ namespace Evado.Digital.Adapter
     {
       this.LogMethod ( "getHomePage" );
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+      this.LogDebug ( "Page List count {0}.", EuAdapter.AdapterObjects.PageLayouts.Count );
 
-      this.LogDebug ( "Current Entity: {0} - {1}.", 
-        this.Session.Entity.EntityId, 
-        this.Session.Entity.CommandTitle );
+      foreach ( EdPageLayout page in EuAdapter.AdapterObjects.PageLayouts )
+      {
+        this.LogDebug ( "PageId: {0}, Title: {1}. ", page.PageId, page.Title );
+      }
+
       //
       // initialise the methods objects and variables.
       //
@@ -122,14 +125,15 @@ namespace Evado.Digital.Adapter
 
       string pageId = PageCommand.GetPageId ( );
 
-      this.LogDebug ( "Entity PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
 
-      if ( pageId == String.Empty )
+      if ( pageId == String.Empty
+        && this.Session.PageLayout.PageId == String.Empty )
       {
-        this.LogDebug( "No Page ID provided ");
-        this.LogMethodEnd ( "getHomePage" );
-        return this.Session.LastPage;
+        this.LogDebug ( "Get Default page." );
+        pageId = EuAdapter.CONST_DEFAULT_PAGE_ID;
       }
+
+      this.LogDebug ( "Entity PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
 
       //
       // Update the page layout if it has changed.
@@ -152,6 +156,7 @@ namespace Evado.Digital.Adapter
           this.LogMethodEnd ( "getHomePage" );
           return this.Session.LastPage;
         }
+
         //
         // update the current page layout.
         //
@@ -159,6 +164,112 @@ namespace Evado.Digital.Adapter
 
       }//END change page layout.
 
+
+      this.LogDebug ( "PageId: {0}, Title: {1}. ", this.Session.PageLayout.PageId, this.Session.PageLayout.Title );
+      this.LogDebug ( "UserType {0}", this.Session.UserProfile.UserType );
+      
+      //
+      // If the user's home page is null load if based on teh user access to the page.
+      //
+      if ( this.Session.UserProfile.HomePage == null )
+      {
+        LogDebug ( "User Home page null" );
+
+        foreach ( EdPageLayout pageLayout1 in EuAdapter.AdapterObjects.AllPageLayouts )
+        {
+          this.LogDebug ( "PageId {0} - {1} UT: {2}",
+            pageLayout1.PageId,
+            pageLayout1.Title,
+            pageLayout1.UserTypes );
+
+
+          if ( pageLayout.hasUserType ( this.Session.UserProfile ) == true )
+          {
+            this.Session.UserProfile.HomePage = pageLayout;
+          }
+        }
+      }
+
+      this.LogMethod ( "getHomePage" );
+      //
+      // Generate the page's layout
+      //
+      return this.generatePage ( pageLayout, PageCommand );
+
+    }//END generate Pagemethod.
+
+    // ==================================================================================
+    /// <summary>
+    /// This method generates a Page Layout 
+    /// 
+    /// </summary>
+    /// <param name="PageId">String: page identifer.</param>
+    /// <param name="PageCommand">ClientPateEvado.UniForm.Model.EuCommand object</param>
+    /// <returns>Evado.UniForm.Model.EuAppData</returns>
+    // ----------------------------------------------------------------------------------
+    public Evado.UniForm.Model.EuAppData getPage (
+      Evado.UniForm.Model.EuCommand PageCommand )
+    {
+      this.LogMethod ( "getPage" );
+      this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
+
+      //
+      // initialise the methods objects and variables.
+      //
+      EdPageLayout pageLayout = new EdPageLayout ( );
+
+      if ( this.Session.PageLayout == null )
+      {
+        this.Session.PageLayout = new EdPageLayout ( );
+        this.Session.PageLayout.PageId = String.Empty;
+      }
+
+      string pageId = PageCommand.GetPageId ( );
+
+      this.LogDebug ( "Entity PageId {0}, Command PageId {1}. ", this.Session.PageLayout.PageId, pageId );
+
+      if ( pageId == String.Empty
+        || pageId == "Home_Page ")
+      {
+        this.LogDebug ( "No Page ID provided " );
+        this.LogMethodEnd ( "getPage" );
+        if ( this.Session.LastPage != null )
+        {
+          return this.Session.LastPage;
+        }
+        return null;
+      }
+
+      //
+      // Update the page layout if it has changed.
+      //
+      if ( pageId != this.Session.PageLayout.PageId )
+      {
+        this.LogDebug ( "New paged will be loaded." );
+
+        pageLayout = EuAdapter.AdapterObjects.getPageLayout ( pageId );
+
+        if ( pageLayout == null )
+        {
+          this.LogDebug ( "Page identifier not found" );
+
+          this.ErrorMessage = EdLabels.PageLayout_Get_Empty_Error_Message;
+
+          this.LogEvent (
+            String.Format ( "Page Id {0} was not retrieved from the page layout list.", pageId ) );
+
+          this.LogMethodEnd ( "getPage" );
+          return this.Session.LastPage;
+        }
+
+        //
+        // update the current page layout.
+        //
+        this.Session.PageLayout = pageLayout;
+
+      }//END change page layout.
+
+      this.LogMethodEnd ( "getPage" );
       //
       // Generate the page's layout
       //
@@ -183,6 +294,7 @@ namespace Evado.Digital.Adapter
       this.LogDebug ( "Page {0} - {1}",
          this.Session.UserProfile.HomePage.PageId,
          this.Session.UserProfile.HomePage.Title );
+
       this.LogDebug ( "PageCommand: " + PageCommand.getAsString ( false, true ) );
       this.LogDebug( this.Session.UserProfile.getUserProfile( true) );
       //
@@ -979,7 +1091,7 @@ namespace Evado.Digital.Adapter
     /// <param name="PageCommand">ClientPateEvado.UniForm.Model.EuCommand object</param>
     /// <returns>Evado.UniForm.Model.EuAppData</returns>
     // ----------------------------------------------------------------------------------
-    public Evado.UniForm.Model.EuAppData generateHomePage (
+    public Evado.UniForm.Model.EuAppData generateDefaultHomePage (
       Evado.UniForm.Model.EuCommand PageCommand )
     {
       this.LogMethod ( "generateHomePage" );

@@ -1,0 +1,77 @@
+{
+  "Guid": "6c7eafc7-27cb-4871-be6c-d4f1479d227f",
+  "PageId": "Home_Page",
+  "Title": "Home Page",
+  "HomePage": true,
+  "DisplayMainMenu": true,
+  "DefaultPageEntity": "",
+  "ActiveLayoutComponents": "Page_Header;Left_Column",
+  "MenuLocation": 2,
+  "PageCommands": "",
+  "HeaderContent": "",
+  "HeaderComponentList": "",
+  "LeftColumnContent": "",
+  "LeftColumnComponentList": "",
+  "LeftColumnWidth": 0,
+  "CenterColumnContent": "",
+  "CenterColumnComponentList": "",
+  "RightColumnContent": "",
+  "RightColumnComponentList": "",
+  "RightColumnWidth": 0,
+  "Version": 1,
+  "State": 2,
+  "UserTypes": "Evado",
+  "Action": 0,
+  "UpdatedBy": "Mr Ross Anderson",
+  "UpdatedByUserId": "Ross",
+  "UpdatedDate": "4/22/2021 3:43:03 PM",
+  "CommandText": "ADMIN - Administration Home Page, (Default Home Page) Version 1, State Issued",
+  "Option": {
+    "v": "ADMIN",
+    "d": "ADMIN - Administration Home Page, (Default Home Page) Version 1, State Issued"
+  },
+  "Parameters": [
+    {
+      "Guid": "6c7eafc7-27cb-4871-be6c-d4f1479d227f",
+      "Order": 5,
+      "Name": "DisplayMainMenu",
+      "DataType": 36,
+      "Value": "Yes",
+      "Options": "",
+      "OptionList": [
+        {
+          "v": "",
+          "d": ""
+        }
+      ]
+    },
+    {
+      "Guid": "6c7eafc7-27cb-4871-be6c-d4f1479d227f",
+      "Order": 10,
+      "Name": "LayoutComponents",
+      "DataType": 2,
+      "Value": "Page_Header;Left_Column",
+      "Options": "",
+      "OptionList": [
+        {
+          "v": "",
+          "d": ""
+        }
+      ]
+    },
+    {
+      "Guid": "6c7eafc7-27cb-4871-be6c-d4f1479d227f",
+      "Order": 15,
+      "Name": "DefaultPageEntity",
+      "DataType": 2,
+      "Value": "",
+      "Options": "",
+      "OptionList": [
+        {
+          "v": "",
+          "d": ""
+        }
+      ]
+    }
+  ]
+}

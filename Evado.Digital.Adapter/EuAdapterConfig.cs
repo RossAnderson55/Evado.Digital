@@ -1958,7 +1958,7 @@ namespace Evado.Digital.Adapter
       pageField = pageGroup.createReadOnlyTextField (
         String.Empty,
         EdLabels.Application_Support_Email_Address_Field_Title,
-        this.AdapterObjects.SupportEmailAddress );
+        this.AdapterObjects.SupportEmailAddress.Address );
       pageField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 

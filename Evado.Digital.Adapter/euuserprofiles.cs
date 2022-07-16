@@ -1434,7 +1434,7 @@ namespace Evado.Digital.Adapter
       groupField = pageGroup.createEmailAddressField (
          Evado.Digital.Model.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
-        this.Session.AdminUserProfile.EmailAddress );
+        this.Session.AdminUserProfile.EmailAddress.Address );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
 
       // 
@@ -1611,7 +1611,7 @@ namespace Evado.Digital.Adapter
        this.LogDebugClass ( this._Bll_UserProfiles.Log );
 
        if ( this.Session.AdminUserProfile.Guid == Guid.Empty
-         || this.Session.AdminUserProfile.EmailAddress == String.Empty )
+         || this.Session.AdminUserProfile.EmailAddress.Address == String.Empty )
         {
           this.LogValue ( "userProfile or email address is empty." );
 

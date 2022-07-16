@@ -639,7 +639,7 @@ namespace Evado.Digital.Model
       sbText.AppendLine ( "FamilyName: " + this.FamilyName );
       sbText.AppendLine ( "CommonName: " + this.CommonName );
       sbText.AppendLine ( "Title: " + this.Title );
-      sbText.AppendLine ( "EmailAddress: " + this.EmailAddress );
+      sbText.AppendLine ( "EmailAddress: " + this.EmailAddress.TextEmailAddress );
       sbText.AppendLine ( "RoleId: " + this.Roles );
       sbText.AppendLine ( "OrgType: " + this.OrgType );
       sbText.AppendLine ( "TypeId: " + this.UserType );
@@ -809,7 +809,7 @@ namespace Evado.Digital.Model
           }
         case FieldNames.Email_Address:
           {
-            this.EmailAddress = value;
+            this.EmailAddress = new Evado.Model.EvEmailAddress(  value, this.CommonName );
             break;
           }
         case FieldNames.Address_1:

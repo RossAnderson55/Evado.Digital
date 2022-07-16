@@ -539,7 +539,7 @@ namespace Evado.Digital.Adapter
       groupField = pageGroup.createEmailAddressField (
          Evado.Digital.Model.EdUserProfile.FieldNames.Email_Address.ToString ( ),
         EdLabels.UserProfile_Email_Field_Label,
-        this.Session.AdminUserProfile.EmailAddress );
+        this.Session.AdminUserProfile.EmailAddress.Address );
       groupField.Layout = EuAdapter.DefaultFieldLayout;
       groupField.Mandatory = true;
       groupField.setBackgroundColor (
