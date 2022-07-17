@@ -1025,7 +1025,9 @@ namespace Evado.Digital.Model
 
       list.Add (  Evado.Model.EvStatics.getOption ( Evado.Model.EvDataTypes.Numeric ) );
 
-      list.Add (  Evado.Model.EvStatics.getOption ( Evado.Model.EvDataTypes.Date ) );
+      list.Add ( Evado.Model.EvStatics.getOption ( Evado.Model.EvDataTypes.Date ) );
+
+      list.Add ( Evado.Model.EvStatics.getOption ( Evado.Model.EvDataTypes.Year ) );
 
       list.Add (  Evado.Model.EvStatics.getOption ( Evado.Model.EvDataTypes.Time ) );
 

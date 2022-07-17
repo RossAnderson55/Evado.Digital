@@ -631,7 +631,7 @@ namespace Evado.Digital.Dal
 
     #endregion
 
-    #region Form record Queries
+    #region Record layout list Queries
 
     // =====================================================================================
     /// <summary>
@@ -788,7 +788,8 @@ namespace Evado.Digital.Dal
     //  ---------------------------------------------------------------------------------
     public List<EvOption> GetList (
       EdRecordTypes TypeId,
-      EdRecordObjectStates State, bool SelectByGuid )
+      EdRecordObjectStates State, 
+      bool SelectByGuid )
     {
       //
       // Initialize the method status, a return option list and an option object

@@ -664,7 +664,7 @@ namespace Evado.Digital.Adapter
         header [ i ] = String.Empty;
       }
 
-      //this.LogDebug ( "Header length {0}", header.Length );
+      this.LogDebug ( "Header length {0}", header.Length );
       //
       // read in the file as list of string.
       //
@@ -672,6 +672,16 @@ namespace Evado.Digital.Adapter
          FileDirectory,
          FileName );
 
+      //this.LogDebug ( "ReturnedEventCode {0}", Evado.Model.EvStatics.Files.ReturnedEventCode );
+
+      if ( Evado.Model.EvStatics.Files.ReturnedEventCode != EvEventCodes.Ok )
+      {
+        this.LogError ( Evado.Model.EvStatics.Files.ReturnedEventCode );
+        this.LogMethodEnd ( "ReadCsvData" );
+        return selectionList;
+
+      }
+      //this.LogDebugClass ( Evado.Model.EvStatics.Files.Log  );
       //this.LogDebug ( "csvRows.Count {0}", csvRows.Count );
 
       //
@@ -687,17 +697,17 @@ namespace Evado.Digital.Adapter
           continue;
         }
 
-        //this.LogDebug ( "{0}: row: {1}", rowCount, row );
+        this.LogDebug ( "{0}: row: {1}", rowCount, row );
         //
         // separate the row columns.
         //
         String [ ] csvColumns = row.Split ( ',' );
 
-        //this.LogDebug ( "{0}: csvColumns.Length {1}", rowCount, csvColumns.Length );
+        this.LogDebug ( "{0}: csvColumns.Length {1}", rowCount, csvColumns.Length );
 
         if ( csvColumns.Length < header.Length )
         {
-          //this.LogDebug ( "{0}: row less than header length", rowCount );
+          this.LogDebug ( "{0}: row less than header length", rowCount );
           continue;
         }
 
@@ -728,7 +738,7 @@ namespace Evado.Digital.Adapter
           var columValue = csvColumns [ columnCount ];
           columValue = columValue.Replace ( "\"", "" );
 
-         // this.LogDebug ( "columnCount {0}, name {1}, V: {2} ", columnCount, name, columValue );
+         this.LogDebug ( "columnCount {0}, name {1}, V: {2} ", columnCount, name, columValue );
 
           var columName = EvStatics.parseEnumValue<EvSelectionList.SelectionListFieldNames> ( name );
 

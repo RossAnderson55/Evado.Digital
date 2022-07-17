@@ -2619,6 +2619,15 @@ namespace Evado.Digital.Model {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Entity Identifier is not defined.
+        /// </summary>
+        public static string Entity_Identifier_Error_Message {
+            get {
+                return ResourceManager.GetString("Entity_Identifier_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of Entities.
         /// </summary>
         public static string Entity_List_Group_Title {
@@ -2758,7 +2767,7 @@ namespace Evado.Digital.Model {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eClinical Mobile get Trial object error event..
+        ///   Looks up a localized string similar to Clinical Mobile get Trial object error event..
         /// </summary>
         public static string Error_Log_Mobile_Project_Messge {
             get {

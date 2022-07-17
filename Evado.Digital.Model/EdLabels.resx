@@ -849,7 +849,7 @@ Patient Recorded Outcomes module required the ___Patient Module___.</value>
     <value>Email failed to be sent.</value>
   </data>
   <data name="Error_Log_Mobile_Project_Messge" xml:space="preserve">
-    <value>eClinical Mobile get Trial object error event.</value>
+    <value>Clinical Mobile get Trial object error event.</value>
   </data>
   <data name="FormField_Checkbox_Query_Legend" xml:space="preserve">
     <value>Select any of the following if you have any questions.</value>
@@ -3172,5 +3172,8 @@ Alternatively enter 'Auto: FieldId' where the 'FieldId' is a Entity Field identi
   </data>
   <data name="UserProfile_Send_Email_Command_Title" xml:space="preserve">
     <value>Send Email</value>
+  </data>
+  <data name="Entity_Identifier_Error_Message" xml:space="preserve">
+    <value>Error: Entity Identifier is not defined</value>
   </data>
 </root>

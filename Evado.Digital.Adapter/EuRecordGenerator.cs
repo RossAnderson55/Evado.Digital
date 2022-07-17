@@ -3263,7 +3263,7 @@ namespace Evado.Digital.Adapter
       //
       if ( Field.Design.ExSelectionListCategory != null )
       {
-        category = Field.Design.ExSelectionListCategory; ;
+        category = Field.Design.ExSelectionListCategory;
 
         this.LogDebug ( "Auto Category: {0} ", category );
 
@@ -3272,9 +3272,10 @@ namespace Evado.Digital.Adapter
           string autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
 
           category = this.GetFieldObject ( autoCategory ).ItemValue;
-          if ( category == null )
+          if ( category == null
+            || category == String.Empty )
           {
-            category = String.Empty;
+            category = "CATEGORY_EMPTY";
           }
           this.LogDebug ( "Auto Category: {0} ", category );
         }
@@ -3324,11 +3325,24 @@ namespace Evado.Digital.Adapter
       //
       if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER ) == true )
       {
-        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
+        category = Field.Design.ExSelectionListCategory;
 
-        category = this.GetFieldObject ( autoCategory ).ItemValue;
         this.LogDebug ( "Auto Category: {0} ", category );
+
+        if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER ) == true )
+        {
+          string autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
+
+          category = this.GetFieldObject ( autoCategory ).ItemValue;
+          if ( category == null
+            || category == String.Empty )
+          {
+            category = "CATEGORY_EMPTY";
+          }
+          this.LogDebug ( "Auto Category: {0} ", category );
+        }
       }
+      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
 
       //
       // get the external selection list options.
@@ -3375,11 +3389,24 @@ namespace Evado.Digital.Adapter
       //
       if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER ) == true )
       {
-        var autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
+        category = Field.Design.ExSelectionListCategory;
 
-        category = this.GetFieldObject ( autoCategory ).ItemValue;
         this.LogDebug ( "Auto Category: {0} ", category );
+
+        if ( category.Contains ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER ) == true )
+        {
+          string autoCategory = category.Replace ( EdRecordField.CONST_CATEGORY_AUTO_FIELD_IDENTIFIER, String.Empty );
+
+          category = this.GetFieldObject ( autoCategory ).ItemValue;
+          if ( category == null
+            || category == String.Empty )
+          {
+            category = "CATEGORY_EMPTY";
+          }
+          this.LogDebug ( "Auto Category: {0} ", category );
+        }
       }
+      this.LogDebug ( "List: {0}, Category: {1} ", listId, category );
 
       //
       // get the external selection list options.
